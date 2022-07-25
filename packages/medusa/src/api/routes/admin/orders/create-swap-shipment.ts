@@ -5,9 +5,11 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
@@ -36,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *             description: If set to true no notification will be send related to this Claim.
  *             type: boolean
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

@@ -75,90 +75,6 @@
     }
   ],
   "paths": {
-    "/apps/authorize-app": {
-      "post": {
-        "operationId": "PostApps",
-        "summary": "Generates a token for an application.",
-        "description": "Generates a token for an application.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "application_name",
-                  "state",
-                  "code"
-                ],
-                "properties": {
-                  "application_name": {
-                    "type": "string",
-                    "description": "Name of the application for the token to be generated for."
-                  },
-                  "state": {
-                    "type": "string",
-                    "description": "State of the application."
-                  },
-                  "code": {
-                    "type": "string",
-                    "description": "The code for the generated token."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Apps"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "apps": {
-                      "$ref": "#/components/schemas/OAuth"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/apps": {
-      "get": {
-        "operationId": "GetApps",
-        "summary": "List applications",
-        "description": "Retrieve a list of applications.",
-        "x-authenticated": true,
-        "tags": [
-          "Apps"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "apps": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/OAuth"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/auth": {
       "post": {
         "operationId": "PostAuth",
@@ -249,25 +165,50 @@
         }
       }
     },
-    "/batch-jobs/{id}/cancel": {
+    "/customer-groups/{id}/customers/batch": {
       "post": {
-        "operationId": "PostBatchJobsBatchJobCancel",
-        "summary": "Marks a batch job as canceled",
-        "description": "Marks a batch job as canceled",
+        "operationId": "PostCustomerGroupsGroupCustomersBatch",
+        "summary": "Add a list of customers to a customer group ",
+        "description": "Adds a list of customers, represented by id's, to a customer group.",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the batch job.",
+            "description": "The id of the customer group.",
             "schema": {
               "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customer_ids": {
+                    "description": "The ids of the customers to add",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Batch Job"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -276,8 +217,69 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
+        "summary": "Remove a list of customers from a customer group ",
+        "description": "Removes a list of customers, represented by id's, from a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customer_ids": {
+                    "description": "The ids of the customers to remove",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
@@ -287,63 +289,25 @@
         }
       }
     },
-    "/batch-jobs/{id}/confirm": {
+    "/customer-groups": {
       "post": {
-        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
-        "summary": "Confirm a batch job",
-        "description": "Confirms that a previously requested batch job should be executed.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs": {
-      "post": {
-        "operationId": "PostBatchJobs",
-        "summary": "Create a Batch Job",
-        "description": "Creates a Batch Job.",
+        "operationId": "PostCustomerGroups",
+        "summary": "Create a CustomerGroup",
+        "description": "Creates a CustomerGroup.",
         "x-authenticated": true,
         "parameters": [],
         "tags": [
-          "Batch Job"
+          "CustomerGroup"
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
@@ -357,22 +321,16 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "type",
-                  "context",
-                  "dry_run"
+                  "name"
                 ],
                 "properties": {
-                  "type": {
+                  "name": {
                     "type": "string",
-                    "description": "The type of batch job to start."
+                    "description": "Name of the customer group"
                   },
-                  "context": {
-                    "type": "string",
-                    "description": "Additional infomration regarding the batch to be used for processing."
-                  },
-                  "dry_run": {
-                    "type": "boolean",
-                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
                   }
                 }
               }
@@ -381,15 +339,15 @@
         }
       },
       "get": {
-        "operationId": "GetBatchJobs",
-        "summary": "List Batch Jobs",
-        "description": "Retrieve a list of Batch Jobs.",
+        "operationId": "GetCustomerGroups",
+        "summary": "Retrieve a list of customer groups",
+        "description": "Retrieve a list of customer groups.",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return.",
+            "name": "q",
+            "description": "Query used for searching user group names.",
             "schema": {
               "type": "string"
             }
@@ -397,123 +355,62 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "The offset of collections to return.",
+            "description": "How many groups to skip in the result.",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "type",
-            "style": "form",
-            "explode": false,
-            "description": "Filter by the batch type",
+            "name": "id",
+            "description": "Ids of the groups to search for.",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "confirmed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "pre_processed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "completed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "failed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
+              "type": "string"
             }
           },
           {
             "in": "query",
             "name": "order",
-            "description": "Order used when retrieving batch jobs",
+            "description": "the field used to order the customer groups.",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "deleted_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
             "name": "created_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
             "schema": {
-              "type": "object",
-              "nullable": true
+              "type": "object"
             }
           },
           {
             "in": "query",
             "name": "updated_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
             "schema": {
-              "type": "object",
-              "nullable": true
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of customer groups returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
+            "schema": {
+              "type": "string"
             }
           }
         ],
         "tags": [
-          "Batch Job"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -522,11 +419,23 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "batch_jobs": {
+                    "customer_groups": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/batch_job"
+                        "$ref": "#/components/schemas/customer_group"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -536,25 +445,25 @@
         }
       }
     },
-    "/batch-jobs/{id}": {
-      "get": {
-        "operationId": "GetBatchJobsBatchJob",
-        "summary": "Retrieve a Batch Job",
-        "description": "Retrieves a Batch Job.",
+    "/customer-groups/{id}": {
+      "delete": {
+        "operationId": "DeleteCustomerGroupsCustomerGroup",
+        "summary": "Delete a CustomerGroup",
+        "description": "Deletes a CustomerGroup.",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Batch Job",
+            "description": "The id of the Customer Group",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Batch Job"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -563,8 +472,149 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted customer group."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether the customer group was deleted successfully or not."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroupsGroup",
+        "summary": "Retrieve a CustomerGroup",
+        "description": "Retrieves a Customer Group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomerGroupsGroup",
+        "summary": "Update a CustomerGroup",
+        "description": "Update a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}/customers": {
+      "get": {
+        "operationId": "GetCustomerGroupsGroupCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/customer"
+                      }
                     }
                   }
                 }
@@ -600,12 +650,8 @@
                     "description": "An array of Product IDs to add to the Product Collection.",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The ID of a Product to add to the Product Collection.",
-                          "type": "string"
-                        }
-                      }
+                      "description": "The ID of a Product to add to the Product Collection.",
+                      "type": "string"
                     }
                   }
                 }
@@ -618,7 +664,18 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -647,12 +704,8 @@
                     "description": "An array of Product IDs to remove from the Product Collection.",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The ID of a Product to remove from the Product Collection.",
-                          "type": "string"
-                        }
-                      }
+                      "description": "The ID of a Product to add to the Product Collection.",
+                      "type": "string"
                     }
                   }
                 }
@@ -665,7 +718,31 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the collection"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of object the removal was executed on"
+                    },
+                    "removed_products": {
+                      "description": "The IDs of the products removed from the collection",
+                      "type": "array",
+                      "items": {
+                        "description": "The ID of a Product to add to the Product Collection.",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -761,6 +838,14 @@
           },
           {
             "in": "query",
+            "name": "q",
+            "description": "a search term to search titles and handles.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "deleted_at",
             "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
             "schema": {
@@ -799,6 +884,18 @@
                       "items": {
                         "$ref": "#/components/schemas/product_collection"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -844,7 +941,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether the collection was deleted successfully or not."
                     }
                   }
                 }
@@ -1016,6 +1114,40 @@
         "summary": "List Customers",
         "description": "Retrieves a list of Customers.",
         "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "a search term to search email, first_name, and last_name.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1031,6 +1163,18 @@
                       "items": {
                         "$ref": "#/components/schemas/customer"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -1052,6 +1196,14 @@
             "name": "id",
             "required": true,
             "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in the customer.",
             "schema": {
               "type": "string"
             }
@@ -1166,6 +1318,90 @@
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apps/authorize-app": {
+      "post": {
+        "operationId": "PostApps",
+        "summary": "Generates a token for an application.",
+        "description": "Generates a token for an application.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "application_name",
+                  "state",
+                  "code"
+                ],
+                "properties": {
+                  "application_name": {
+                    "type": "string",
+                    "description": "Name of the application for the token to be generated for."
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State of the application."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The code for the generated token."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Apps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "apps": {
+                      "$ref": "#/components/schemas/OAuth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apps": {
+      "get": {
+        "operationId": "GetApps",
+        "summary": "List applications",
+        "description": "Retrieve a list of applications.",
+        "x-authenticated": true,
+        "tags": [
+          "Apps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "apps": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/OAuth"
+                      }
                     }
                   }
                 }
@@ -1307,30 +1543,45 @@
                 "properties": {
                   "operator": {
                     "description": "Operator of the condition",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "in",
+                      "not_in"
+                    ]
                   },
-                  "items": {
-                    "properties": {
-                      "products": {
-                        "type": "array",
-                        "description": "list of products"
-                      },
-                      "product_types": {
-                        "type": "array",
-                        "description": "list of product types"
-                      },
-                      "product_collections": {
-                        "type": "array",
-                        "description": "list of product collections"
-                      },
-                      "product_tags": {
-                        "type": "array",
-                        "description": "list of product tags"
-                      },
-                      "customer_groups": {
-                        "type": "array",
-                        "description": "list of customer_groups"
-                      }
+                  "products": {
+                    "type": "array",
+                    "description": "list of product IDs if the condition is applied on products.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_types": {
+                    "type": "array",
+                    "description": "list of product type IDs if the condition is applied on product types.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_collections": {
+                    "type": "array",
+                    "description": "list of product collection IDs if the condition is applied on product collections.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_tags": {
+                    "type": "array",
+                    "description": "list of product tag IDs if the condition is applied on product tags.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "customer_groups": {
+                    "type": "array",
+                    "description": "list of customer group IDs if the condition is applied on customer groups.",
+                    "items": {
+                      "type": "string"
                     }
                   }
                 }
@@ -1339,7 +1590,7 @@
           }
         },
         "tags": [
-          "Discount"
+          "DiscountCondition"
         ],
         "responses": {
           "200": {
@@ -1384,11 +1635,59 @@
                   },
                   "rule": {
                     "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "value",
+                      "allocation"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "A short description of the discount"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
+                        "enum": [
+                          "fixed",
+                          "percentage",
+                          "free_shipping"
+                        ]
+                      },
+                      "value": {
+                        "type": "number",
+                        "description": "The value that the discount represents; this will depend on the type of the discount"
+                      },
+                      "allocation": {
+                        "type": "string",
+                        "description": "The scope that the discount should apply to.",
+                        "enum": [
+                          "total",
+                          "item"
+                        ]
+                      },
+                      "conditions": {
+                        "type": "array",
+                        "description": "A set of conditions that can be used to limit when  the discount can be used",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "operator"
+                          ],
+                          "properties": {
+                            "operator": {
+                              "type": "string",
+                              "description": "Operator of the condition",
+                              "enum": [
+                                "in",
+                                "not_in"
+                              ]
+                            }
+                          }
+                        }
                       }
-                    ]
+                    }
                   },
                   "is_disabled": {
                     "type": "boolean",
@@ -1403,6 +1702,11 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "The time at which the Discount should no longer be available."
+                  },
+                  "valid_duration": {
+                    "type": "string",
+                    "description": "Duration the discount runs between",
+                    "example": "P3Y6M4DT12H30M5S"
                   },
                   "regions": {
                     "description": "A list of Region ids representing the Regions in which the Discount can be used.",
@@ -1453,9 +1757,36 @@
           {
             "in": "query",
             "name": "q",
-            "description": "Search query applied on results.",
+            "description": "Search query applied on the code field.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rule",
+            "description": "Discount Rules filters to apply on the search",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "fixed",
+                    "percentage",
+                    "free_shipping"
+                  ],
+                  "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
+                },
+                "allocation": {
+                  "type": "string",
+                  "enum": [
+                    "total",
+                    "item"
+                  ],
+                  "description": "The value that the discount represents; this will depend on the type of the discount"
+                }
+              }
             }
           },
           {
@@ -1514,6 +1845,18 @@
                       "items": {
                         "$ref": "#/components/schemas/discount"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -1565,8 +1908,7 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "code",
-                  "usage_limit"
+                  "code"
                 ],
                 "properties": {
                   "code": {
@@ -1575,7 +1917,8 @@
                   },
                   "usage_limit": {
                     "type": "number",
-                    "description": "amount of times the discount can be applied"
+                    "default": "1",
+                    "description": "amount of times the discount can be applied."
                   },
                   "metadata": {
                     "type": "object",
@@ -1612,10 +1955,26 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Comma separated list of relations to include in the results.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Comma separated list of fields to include in the results.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
-          "Discount"
+          "DiscountCondition"
         ],
         "responses": {
           "200": {
@@ -1633,11 +1992,12 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether the discount condition was deleted successfully or not."
                     },
                     "discount": {
-                      "type": "object",
-                      "description": "The Discount to which the condition used to belong"
+                      "description": "The Discount to which the condition used to belong",
+                      "$ref": "#/components/schemas/discount"
                     }
                   }
                 }
@@ -1752,32 +2112,40 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": [
-                  "id"
-                ],
                 "properties": {
-                  "items": {
-                    "properties": {
-                      "products": {
-                        "type": "array",
-                        "description": "list of products"
-                      },
-                      "product_types": {
-                        "type": "array",
-                        "description": "list of product types"
-                      },
-                      "product_collections": {
-                        "type": "array",
-                        "description": "list of product collections"
-                      },
-                      "product_tags": {
-                        "type": "array",
-                        "description": "list of product tags"
-                      },
-                      "customer_groups": {
-                        "type": "array",
-                        "description": "list of customer_groups"
-                      }
+                  "products": {
+                    "type": "array",
+                    "description": "list of product IDs if the condition is applied on products.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_types": {
+                    "type": "array",
+                    "description": "list of product type IDs if the condition is applied on product types.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_collections": {
+                    "type": "array",
+                    "description": "list of product collection IDs if the condition is applied on product collections.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_tags": {
+                    "type": "array",
+                    "description": "list of product tag IDs if the condition is applied on product tags.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "customer_groups": {
+                    "type": "array",
+                    "description": "list of customer group IDs if the condition is applied on customer groups.",
+                    "items": {
+                      "type": "string"
                     }
                   }
                 }
@@ -1842,7 +2210,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether the discount was deleted successfully or not."
                     }
                   }
                 }
@@ -1930,11 +2299,65 @@
                   },
                   "rule": {
                     "description": "The Discount Rule that defines how Discounts are calculated",
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/discount_rule"
+                    "type": "object",
+                    "required": [
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the Rule"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "A short description of the discount"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
+                        "enum": [
+                          "fixed",
+                          "percentage",
+                          "free_shipping"
+                        ]
+                      },
+                      "value": {
+                        "type": "number",
+                        "description": "The value that the discount represents; this will depend on the type of the discount"
+                      },
+                      "allocation": {
+                        "type": "string",
+                        "description": "The scope that the discount should apply to.",
+                        "enum": [
+                          "total",
+                          "item"
+                        ]
+                      },
+                      "conditions": {
+                        "type": "array",
+                        "description": "A set of conditions that can be used to limit when  the discount can be used",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "operator"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "The ID of the Rule"
+                            },
+                            "operator": {
+                              "type": "string",
+                              "description": "Operator of the condition",
+                              "enum": [
+                                "in",
+                                "not_in"
+                              ]
+                            }
+                          }
+                        }
                       }
-                    ]
+                    }
                   },
                   "is_disabled": {
                     "type": "boolean",
@@ -1949,6 +2372,15 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "The time at which the Discount should no longer be available."
+                  },
+                  "valid_duration": {
+                    "type": "string",
+                    "description": "Duration the discount runs between",
+                    "example": "P3Y6M4DT12H30M5S"
+                  },
+                  "usage_limit": {
+                    "type": "number",
+                    "description": "Maximum times the discount can be used"
                   },
                   "regions": {
                     "description": "A list of Region ids representing the Regions in which the Discount can be used.",
@@ -2049,6 +2481,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Comma separated list of relations to include in the results.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Comma separated list of fields to include in the results.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -2063,452 +2511,6 @@
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers/batch": {
-      "post": {
-        "operationId": "PostCustomerGroupsGroupCustomersBatch",
-        "summary": "Add a list of customers to a customer group ",
-        "description": "Adds a list of customers, represented by id's, to a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to add",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
-        "summary": "Remove a list of customers from a customer group ",
-        "description": "Removes a list of customers, represented by id's, from a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to remove",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups": {
-      "post": {
-        "operationId": "PostCustomerGroups",
-        "summary": "Create a CustomerGroup",
-        "description": "Creates a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve customer groups in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_groups": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/customer_group"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}": {
-      "delete": {
-        "operationId": "DeleteCustomerGroupsCustomerGroup",
-        "summary": "Delete a CustomerGroup",
-        "description": "Deletes a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted customer group."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroupsGroup",
-        "summary": "Retrieve a CustomerGroup",
-        "description": "Retrieves a Customer Group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomerGroupsGroup",
-        "summary": "Update a CustomerGroup",
-        "description": "Update a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers": {
-      "get": {
-        "operationId": "GetCustomerGroupsGroupCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -2537,7 +2539,11 @@
                 "properties": {
                   "status": {
                     "description": "The status of the draft order",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "completed"
+                    ]
                   },
                   "email": {
                     "description": "The email of the customer of the draft order",
@@ -2563,6 +2569,10 @@
                     "description": "The Line Items that have been received.",
                     "type": "array",
                     "items": {
+                      "type": "object",
+                      "required": [
+                        "quantity"
+                      ],
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to generate the Line Item from.",
@@ -2595,6 +2605,10 @@
                     "description": "The discounts to add on the draft order",
                     "type": "array",
                     "items": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
                       "properties": {
                         "code": {
                           "description": "The code of the discount to apply",
@@ -2615,6 +2629,10 @@
                     "description": "The shipping methods for the draft order",
                     "type": "array",
                     "items": {
+                      "type": "object",
+                      "required": [
+                        "option_id"
+                      ],
                       "properties": {
                         "option_id": {
                           "description": "The id of the shipping option in use",
@@ -2665,6 +2683,32 @@
         "summary": "List Draft Orders",
         "description": "Retrieves an list of Draft Orders",
         "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of items to skip.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of items returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "a search term to search emails in carts associated with draft orders and display IDs of draft orders",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Draft Order"
         ],
@@ -2680,6 +2724,18 @@
                       "items": {
                         "$ref": "#/components/schemas/draft-order"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -2796,7 +2852,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether the draft order was deleted successfully or not."
                     }
                   }
                 }
@@ -2960,7 +3017,7 @@
         }
       }
     },
-    "/draft-orders/{id}/register-payment": {
+    "/draft-orders/{id}/pay": {
       "post": {
         "summary": "Registers a payment for a Draft Order",
         "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
@@ -3024,6 +3081,10 @@
                     "type": "string",
                     "description": "The id of the Region to create the Draft Order in."
                   },
+                  "country_code": {
+                    "type": "string",
+                    "description": "The 2 character ISO code for the Country."
+                  },
                   "email": {
                     "type": "string",
                     "description": "An email to be used on the Draft Order."
@@ -3048,6 +3109,10 @@
                     "description": "An array of Discount codes to add to the Draft Order.",
                     "type": "array",
                     "items": {
+                      "type": "object",
+                      "required": [
+                        "code"
+                      ],
                       "properties": {
                         "code": {
                           "description": "The code that a Discount is identifed by.",
@@ -3090,6 +3155,356 @@
         }
       }
     },
+    "/batch-jobs/{id}/cancel": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobCancel",
+        "summary": "Marks a batch job as canceled",
+        "description": "Marks a batch job as canceled",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}/confirm": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
+        "summary": "Confirm a batch job",
+        "description": "Confirms that a previously requested batch job should be executed.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs": {
+      "post": {
+        "operationId": "PostBatchJobs",
+        "summary": "Create a Batch Job",
+        "description": "Creates a Batch Job.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "type",
+                  "context"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The type of batch job to start."
+                  },
+                  "context": {
+                    "type": "object",
+                    "description": "Additional infomration regarding the batch to be used for processing."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetBatchJobs",
+        "summary": "List Batch Jobs",
+        "description": "Retrieve a list of Batch Jobs.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of batch jobs to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of batch jobs to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by the batch type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "confirmed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "pre_processed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "completed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "failed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "Order used when retrieving batch jobs",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_jobs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/batch_job"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}": {
+      "get": {
+        "operationId": "GetBatchJobsBatchJob",
+        "summary": "Retrieve a Batch Job",
+        "description": "Retrieves a Batch Job.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Batch Job",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gift-cards": {
       "post": {
         "operationId": "PostGiftCards",
@@ -3100,6 +3515,10 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "region_id",
+                  "value"
+                ],
                 "properties": {
                   "value": {
                     "type": "integer",
@@ -3116,10 +3535,7 @@
                   },
                   "region_id": {
                     "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                    "type": "string"
                   },
                   "metadata": {
                     "description": "An optional set of key-value pairs to hold additional information.",
@@ -3155,6 +3571,32 @@
         "summary": "List Gift Cards",
         "description": "Retrieves a list of Gift Cards.",
         "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of items to skip.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of items returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "a search term to search by code or display ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Gift Card"
         ],
@@ -3170,6 +3612,18 @@
                       "items": {
                         "$ref": "#/components/schemas/gift_card"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -3215,7 +3669,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether the gift card was deleted successfully or not."
                     }
                   }
                 }
@@ -3296,10 +3751,7 @@
                   },
                   "region_id": {
                     "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                    "type": "string"
                   },
                   "metadata": {
                     "description": "An optional set of key-value pairs to hold additional information.",
@@ -3368,7 +3820,8 @@
                       },
                       "password": {
                         "description": "The desired password for the User",
-                        "type": "string"
+                        "type": "string",
+                        "format": "password"
                       }
                     }
                   }
@@ -3404,11 +3857,17 @@
                 "properties": {
                   "user": {
                     "description": "The email for the user to be created.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                   },
                   "role": {
                     "description": "The role of the user to be created.",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "member",
+                      "developer"
+                    ]
                   }
                 }
               }
@@ -3537,6 +3996,11 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "resource_id",
+                  "resource_type",
+                  "value"
+                ],
                 "properties": {
                   "resource_id": {
                     "type": "string",
@@ -3624,6 +4088,18 @@
                       "items": {
                         "$ref": "#/components/schemas/note"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -3663,6 +4139,10 @@
                     "id": {
                       "type": "string",
                       "description": "The id of the deleted Note."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
                     },
                     "deleted": {
                       "type": "boolean",
@@ -3793,7 +4273,7 @@
           {
             "in": "query",
             "name": "fields",
-            "description": "The fields to include in the result set",
+            "description": "Comma separated fields to include in the result set",
             "schema": {
               "type": "string"
             }
@@ -3801,7 +4281,7 @@
           {
             "in": "query",
             "name": "expand",
-            "description": "The fields to populate",
+            "description": "Comma separated fields to populate",
             "schema": {
               "type": "string"
             }
@@ -3809,6 +4289,7 @@
           {
             "in": "query",
             "name": "event_name",
+            "description": "The name of the event that the notification was sent for.",
             "schema": {
               "type": "string"
             }
@@ -3816,6 +4297,7 @@
           {
             "in": "query",
             "name": "resource_type",
+            "description": "The type of resource that the Notification refers to.",
             "schema": {
               "type": "string"
             }
@@ -3823,6 +4305,7 @@
           {
             "in": "query",
             "name": "resource_id",
+            "description": "The id of the resource that the Notification refers to.",
             "schema": {
               "type": "string"
             }
@@ -3830,6 +4313,7 @@
           {
             "in": "query",
             "name": "to",
+            "description": "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id",
             "schema": {
               "type": "string"
             }
@@ -3890,7 +4374,7 @@
               "schema": {
                 "properties": {
                   "to": {
-                    "description": "The address or user identifier that the Notification was sent to",
+                    "description": "A new address or user identifier that the Notification should be sent to",
                     "type": "string"
                   }
                 }
@@ -3962,8 +4446,7 @@
                 "type": "object",
                 "required": [
                   "price",
-                  "option_id",
-                  "data"
+                  "option_id"
                 ],
                 "properties": {
                   "price": {
@@ -4060,7 +4543,7 @@
                 "schema": {
                   "properties": {
                     "order": {
-                      "$ref": "#/components/schemas/claim_order"
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -4304,7 +4787,7 @@
                 "schema": {
                   "properties": {
                     "order": {
-                      "$ref": "#/components/schemas/swap"
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -4441,7 +4924,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Claim"
         ],
         "responses": {
           "200": {
@@ -4499,6 +4982,10 @@
                     "description": "The Claim Items that the Claim will consist of.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item that will be claimed.",
@@ -4590,7 +5077,12 @@
                   },
                   "shipping_address": {
                     "type": "object",
-                    "description": "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
+                    "description": "An optional shipping address to send the claim to. Defaults to the parent order's shipping address",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
                   },
                   "refund_amount": {
                     "description": "The amount to refund the Customer when the Claim type is `refund`.",
@@ -4610,7 +5102,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Claim"
         ],
         "responses": {
           "200": {
@@ -4630,7 +5122,7 @@
         }
       }
     },
-    "/orders/{id}/fulfillments": {
+    "/orders/{id}/fulfillment": {
       "post": {
         "operationId": "PostOrdersOrderFulfillments",
         "summary": "Create a Fulfillment",
@@ -4659,6 +5151,10 @@
                     "description": "The Line Items to include in the Fulfillment.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of Line Item to fulfill.",
@@ -4685,7 +5181,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Fulfillment"
         ],
         "responses": {
           "200": {
@@ -4728,11 +5224,19 @@
                 "properties": {
                   "status": {
                     "description": "status of the order",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "completed",
+                      "archived",
+                      "canceled",
+                      "requires_action"
+                    ]
                   },
                   "email": {
                     "description": "the email for the order",
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                   },
                   "billing_address": {
                     "description": "Billing address",
@@ -4758,18 +5262,18 @@
                     }
                   },
                   "region": {
-                    "description": "Region where the order belongs",
+                    "description": "ID of Region where the order belongs",
                     "type": "string"
                   },
                   "discounts": {
                     "description": "Discounts applied to the order",
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/line_item"
+                      "$ref": "#/components/schemas/discount"
                     }
                   },
                   "customer_id": {
-                    "description": "id of the customer",
+                    "description": "ID of the customer",
                     "type": "string"
                   },
                   "payment_method": {
@@ -4861,7 +5365,7 @@
           {
             "in": "query",
             "name": "q",
-            "description": "Query used for searching orders.",
+            "description": "Query used for searching orders by shipping address first name, orders' email, and orders' display ID",
             "schema": {
               "type": "string"
             }
@@ -4883,24 +5387,61 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "completed",
+                  "archived",
+                  "canceled",
+                  "requires_action"
+                ]
               }
             }
           },
           {
             "in": "query",
             "name": "fulfillment_status",
+            "style": "form",
+            "explode": false,
             "description": "Fulfillment status to search for.",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not_fulfilled",
+                  "fulfilled",
+                  "partially_fulfilled",
+                  "shipped",
+                  "partially_shipped",
+                  "canceled",
+                  "returned",
+                  "partially_returned",
+                  "requires_action"
+                ]
+              }
             }
           },
           {
             "in": "query",
             "name": "payment_status",
+            "style": "form",
+            "explode": false,
             "description": "Payment status to search for.",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "captured",
+                  "awaiting",
+                  "not_paid",
+                  "refunded",
+                  "partially_refunded",
+                  "canceled",
+                  "requires_action"
+                ]
+              }
             }
           },
           {
@@ -4988,7 +5529,8 @@
             "name": "offset",
             "description": "How many orders to skip in the result.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "default": "0"
             }
           },
           {
@@ -4996,7 +5538,8 @@
             "name": "limit",
             "description": "Limit the number of orders returned.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "default": "50"
             }
           },
           {
@@ -5031,6 +5574,18 @@
                       "items": {
                         "$ref": "#/components/schemas/order"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -5161,7 +5716,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Swap"
         ],
         "responses": {
           "200": {
@@ -5222,6 +5777,14 @@
                         "quantity": {
                           "description": "The number of items that will be returned",
                           "type": "integer"
+                        },
+                        "reason_id": {
+                          "description": "The id of the Return Reason to use.",
+                          "type": "string"
+                        },
+                        "note": {
+                          "description": "An optional note with information about the Return.",
+                          "type": "string"
                         }
                       }
                     }
@@ -5229,6 +5792,9 @@
                   "return_shipping": {
                     "description": "How the Swap will be returned.",
                     "type": "object",
+                    "required": [
+                      "option_id"
+                    ],
                     "properties": {
                       "option_id": {
                         "type": "string",
@@ -5286,7 +5852,8 @@
                   },
                   "allow_backorder": {
                     "description": "If true, swaps can be completed with items out of stock",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": true
                   }
                 }
               }
@@ -5294,7 +5861,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Swap"
         ],
         "responses": {
           "200": {
@@ -5406,7 +5973,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Fulfillment"
         ],
         "responses": {
           "200": {
@@ -5471,7 +6038,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Fulfillment"
         ],
         "responses": {
           "200": {
@@ -5577,14 +6144,14 @@
                     }
                   },
                   "region": {
-                    "description": "Region where the order belongs",
+                    "description": "ID of the region where the order belongs",
                     "type": "string"
                   },
                   "discounts": {
                     "description": "Discounts applied to the order",
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/line_item"
+                      "$ref": "#/components/schemas/discount"
                     }
                   },
                   "customer_id": {
@@ -5691,7 +6258,7 @@
           }
         ],
         "tags": [
-          "Order"
+          "Swap"
         ],
         "responses": {
           "200": {
@@ -5711,7 +6278,7 @@
         }
       }
     },
-    "/orders/{id}/refunds": {
+    "/orders/{id}/refund": {
       "post": {
         "operationId": "PostOrdersOrderRefunds",
         "summary": "Create a Refund",
@@ -5746,7 +6313,7 @@
                     "type": "string"
                   },
                   "note": {
-                    "description": "A not with additional details about the Refund.",
+                    "description": "A note with additional details about the Refund.",
                     "type": "string"
                   },
                   "no_notification": {
@@ -5779,7 +6346,7 @@
         }
       }
     },
-    "/orders/{id}/returns": {
+    "/orders/{id}/return": {
       "post": {
         "operationId": "PostOrdersOrderReturns",
         "summary": "Request a Return",
@@ -5808,6 +6375,10 @@
                     "description": "The Line Items that will be returned.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item.",
@@ -5842,9 +6413,14 @@
                       }
                     }
                   },
+                  "note": {
+                    "description": "An optional note with information about the Return.",
+                    "type": "string"
+                  },
                   "receive_now": {
                     "description": "A flag to indicate if the Return should be registerd as received immediately.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                   },
                   "no_notification": {
                     "description": "A flag to indicate if no notifications should be emitted related to the requested Return.",
@@ -5915,6 +6491,11 @@
                     "description": "The Claim Items that the Claim will consist of.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "id",
+                        "images",
+                        "tags"
+                      ],
                       "properties": {
                         "id": {
                           "description": "The id of the Claim Item.",
@@ -5946,14 +6527,39 @@
                           "description": "A list o tags to add to the Claim Item",
                           "type": "array",
                           "items": {
-                            "type": "string"
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Tag ID"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Tag value"
+                              }
+                            }
                           }
                         },
                         "images": {
                           "description": "A list of image URL's that will be associated with the Claim",
+                          "type": "array",
                           "items": {
-                            "type": "string"
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Image ID"
+                              },
+                              "url": {
+                                "type": "string",
+                                "description": "Image URL"
+                              }
+                            }
                           }
+                        },
+                        "metadata": {
+                          "description": "An optional set of key-value pairs to hold additional information.",
+                          "type": "object"
                         }
                       }
                     }
@@ -5992,7 +6598,7 @@
           }
         },
         "tags": [
-          "Order"
+          "Claim"
         ],
         "responses": {
           "200": {

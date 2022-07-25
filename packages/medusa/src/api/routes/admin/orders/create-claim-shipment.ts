@@ -1,6 +1,7 @@
+import { ClaimService, OrderService } from "../../../../services"
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { ClaimService, OrderService } from "../../../../services"
+
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               type: string
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

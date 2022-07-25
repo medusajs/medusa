@@ -25,6 +25,7 @@ import DiscountService from "../../../../services/discount"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether the discount was deleted successfully or not.
  */
 export default async (req, res) => {
   const { discount_id } = req.params

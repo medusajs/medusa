@@ -17,6 +17,7 @@ import { Type } from "class-transformer"
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) title {string} The title of collections to return.
  *   - (query) handle {string} The handle of collections to return.
+ *   - (query) q {string} a search term to search titles and handles.
  *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
@@ -33,6 +34,15 @@ import { Type } from "class-transformer"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product_collection"
+ *            count:
+ *               type: integer
+ *               description: The total number of items available
+ *            offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *            limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res: Response) => {
   const productCollectionService: ProductCollectionService = req.scope.resolve(

@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         properties:
- *           customers:
+ *           customer_ids:
  *             description: "The ids of the customers to remove"
  *             type: array
  *             items:

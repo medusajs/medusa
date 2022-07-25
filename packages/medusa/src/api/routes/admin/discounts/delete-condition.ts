@@ -17,8 +17,10 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) discount_id=* {string} The id of the Discount
  *   - (path) condition_id=* {string} The id of the DiscountCondition
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
- *   - Discount
+ *   - DiscountCondition
  * responses:
  *   200:
  *     description: OK
@@ -34,9 +36,10 @@ import { validator } from "../../../../utils/validator"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether the discount condition was deleted successfully or not.
  *             discount:
- *               type: object
  *               description: The Discount to which the condition used to belong
+ *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
   const { discount_id, condition_id } = req.params

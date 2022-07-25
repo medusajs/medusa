@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { ClaimReason, ClaimType } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -10,12 +10,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { ClaimTypeValue } from "../../../../types/claim"
-import { ClaimType, ClaimReason } from "../../../../models"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -43,6 +44,9 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *             description: The Claim Items that the Claim will consist of.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of the Line Item that will be claimed.
@@ -108,6 +112,8 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *           shipping_address:
  *              type: object
  *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
+ *              anyOf:
+ *               - $ref: "#/components/schemas/address"
  *           refund_amount:
  *              description: The amount to refund the Customer when the Claim type is `refund`.
  *              type: integer
@@ -118,7 +124,7 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *              description: An optional set of key-value pairs to hold additional information.
  *              type: object
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

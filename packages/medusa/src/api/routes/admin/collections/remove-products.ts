@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
-import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+
+import ProductCollectionService from "../../../../services/product-collection"
 
 /**
  * @oas [delete] /collections/{id}/products/batch
@@ -19,15 +20,29 @@ import { Request, Response } from "express"
  *             description: "An array of Product IDs to remove from the Product Collection."
  *             type: array
  *             items:
- *               properties:
- *                 id:
- *                   description: "The ID of a Product to remove from the Product Collection."
- *                   type: string
+ *               description: "The ID of a Product to add to the Product Collection."
+ *               type: string
  * tags:
  *   - Collection
  * responses:
  *  "200":
  *    description: OK
+ *    content:
+ *      application/json:
+ *        schema:
+ *          properties:
+ *            id:
+ *              type: string
+ *              description: "The ID of the collection"
+ *            object:
+ *              type: string
+ *              description: "The type of object the removal was executed on"
+ *            removed_products:
+ *              description: "The IDs of the products removed from the collection"
+ *              type: array
+ *              items:
+ *                description: "The ID of a Product to add to the Product Collection."
+ *                type: string
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

@@ -1,4 +1,8 @@
-import { Type } from "class-transformer"
+import {
+  EventBusService,
+  OrderService,
+  ReturnService,
+} from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -7,18 +11,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import {
-  EventBusService,
-  OrderService,
-  ReturnService,
-} from "../../../../services"
 import { OrdersReturnItem } from "../../../../types/orders"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/returns
+ * @oas [post] /orders/{id}/return
  * operationId: "PostOrdersOrderReturns"
  * summary: "Request a Return"
  * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
@@ -36,6 +37,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items that will be returned.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of the Line Item.
@@ -59,9 +63,13 @@ import { validator } from "../../../../utils/validator"
  *               price:
  *                 type: integer
  *                 description: The price to charge for the Shipping Method.
+ *           note:
+ *             description: An optional note with information about the Return.
+ *             type: string
  *           receive_now:
  *             description: A flag to indicate if the Return should be registerd as received immediately.
  *             type: boolean
+ *             default: false
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the requested Return.
  *             type: boolean

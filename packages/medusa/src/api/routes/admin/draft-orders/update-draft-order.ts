@@ -1,8 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
-import {
-  defaultAdminDraftOrdersCartFields,
-  defaultAdminDraftOrdersCartRelations,
-} from "."
+import { CartService, DraftOrderService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -11,9 +7,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { CartService, DraftOrderService } from "../../../../services"
-import { Type } from "class-transformer"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+} from "."
+
 import { AddressPayload } from "../../../../types/common"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /admin/draft-orders/{id}
@@ -31,6 +32,9 @@ import { validator } from "../../../../utils/validator"
  *           region_id:
  *             type: string
  *             description: The id of the Region to create the Draft Order in.
+ *           country_code:
+ *             type: string
+ *             description: "The 2 character ISO code for the Country."
  *           email:
  *             type: string
  *             description: "An email to be used on the Draft Order."
@@ -46,6 +50,9 @@ import { validator } from "../../../../utils/validator"
  *             description: "An array of Discount codes to add to the Draft Order."
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: "The code that a Discount is identifed by."

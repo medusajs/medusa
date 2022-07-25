@@ -1,6 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
@@ -21,7 +22,7 @@ import { OrderService, SwapService } from "../../../../services"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/swap"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, swap_id } = req.params

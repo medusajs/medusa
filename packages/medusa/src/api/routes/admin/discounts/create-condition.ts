@@ -1,12 +1,14 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { Discount } from "../../../../models/discount"
 import { DiscountConditionOperator } from "../../../../models/discount-condition"
-import { DiscountService } from "../../../../services"
 import DiscountConditionService from "../../../../services/discount-condition"
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
+import { DiscountService } from "../../../../services"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
@@ -25,25 +27,35 @@ import { validator } from "../../../../utils/validator"
  *           operator:
  *              description: Operator of the condition
  *              type: string
- *           items:
- *              properties:
- *                products:
- *                  type: array
- *                  description: list of products
- *                product_types:
- *                  type: array
- *                  description: list of product types
- *                product_collections:
- *                  type: array
- *                  description: list of product collections
- *                product_tags:
- *                  type: array
- *                  description: list of product tags
- *                customer_groups:
- *                  type: array
- *                  description: list of customer_groups
+ *              enum: [in, not_in]
+ *           products:
+ *              type: array
+ *              description: list of product IDs if the condition is applied on products.
+ *              items:
+ *                type: string
+ *           product_types:
+ *              type: array
+ *              description: list of product type IDs if the condition is applied on product types.
+ *              items:
+ *                type: string
+ *           product_collections:
+ *              type: array
+ *              description: list of product collection IDs if the condition is applied on product collections.
+ *              items:
+ *                type: string
+ *           product_tags:
+ *              type: array
+ *              description: list of product tag IDs if the condition is applied on product tags.
+ *              items:
+ *                type: string
+ *           customer_groups:
+ *              type: array
+ *              description: list of customer group IDs if the condition is applied on customer groups.
+ *              items:
+ *                type: string
+
  * tags:
- *   - Discount
+ *   - DiscountCondition
  * responses:
  *   200:
  *     description: OK

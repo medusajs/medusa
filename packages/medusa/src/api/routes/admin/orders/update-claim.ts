@@ -1,16 +1,17 @@
-import { Type } from "class-transformer"
+import { ClaimService, OrderService } from "../../../../services"
 import {
   IsArray,
-  ValidateNested,
-  IsOptional,
-  IsString,
   IsBoolean,
   IsInt,
   IsNotEmpty,
   IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { ClaimService, OrderService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -31,6 +32,10 @@ import { validator } from "../../../../utils/validator"
  *             description: The Claim Items that the Claim will consist of.
  *             type: array
  *             items:
+ *               required:
+ *                 - id
+ *                 - images
+ *                 - tags
  *               properties:
  *                 id:
  *                   description: The id of the Claim Item.
@@ -56,11 +61,29 @@ import { validator } from "../../../../utils/validator"
  *                   description: A list o tags to add to the Claim Item
  *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Tag ID
+ *                       value:
+ *                         type: string
+ *                         description: Tag value
  *                 images:
  *                   description: A list of image URL's that will be associated with the Claim
+ *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Image ID
+ *                       url:
+ *                         type: string
+ *                         description: Image URL
+ *                 metadata:
+ *                   description: An optional set of key-value pairs to hold additional information.
+ *                   type: object
  *           shipping_methods:
  *             description: The Shipping Methods to send the additional Line Items with.
  *             type: array
@@ -82,7 +105,7 @@ import { validator } from "../../../../utils/validator"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

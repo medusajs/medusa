@@ -6,8 +6,10 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /discounts/{id}/dynamic-codes
  * operationId: "PostDiscountsDiscountDynamicCodes"
@@ -17,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Discount to create the dynamic code from."
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
- *   - (body) usage_limit=* {number} amount of times the discount can be applied
+ *   - (body) usage_limit=1 {number} amount of times the discount can be applied.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
  * tags:
  *   - Discount

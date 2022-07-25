@@ -1,8 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { pick } from "lodash"
-import { OrderService } from "../../../../services"
+
 import { AdminListOrdersSelector } from "../../../../types/orders"
+import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
+import { pick } from "lodash"
 
 /**
  * @oas [get] /orders
@@ -11,7 +12,7 @@ import { Type } from "class-transformer"
  * description: "Retrieves a list of Orders"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching orders.
+ *   - (query) q {string} Query used for searching orders by shipping address first name, orders' email, and orders' display ID
  *   - (query) id {string} Id of the order to search for.
  *   - in: query
  *     name: status
@@ -22,8 +23,27 @@ import { Type } from "class-transformer"
  *       type: array
  *       items:
  *         type: string
- *   - (query) fulfillment_status {string} Fulfillment status to search for.
- *   - (query) payment_status {string} Payment status to search for.
+ *         enum: [pending, completed, archived, canceled, requires_action]
+ *   - in: query
+ *     name: fulfillment_status
+ *     style: form
+ *     explode: false
+ *     description: Fulfillment status to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [not_fulfilled, fulfilled, partially_fulfilled, shipped, partially_shipped, canceled, returned, partially_returned, requires_action]
+ *   - in: query
+ *     name: payment_status
+ *     style: form
+ *     explode: false
+ *     description: Payment status to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [captured, awaiting, not_paid, refunded, partially_refunded, canceled, requires_action]
  *   - (query) display_id {string} Display id to search for.
  *   - (query) cart_id {string} to search for.
  *   - (query) customer_id {string} to search for.
@@ -34,8 +54,8 @@ import { Type } from "class-transformer"
  *   - (query) cancelled_at {object} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
  *   - (query) created_at {object} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many orders to skip in the result.
- *   - (query) limit {string} Limit the number of orders returned.
+ *   - (query) offset=0 {string} How many orders to skip in the result.
+ *   - (query) limit=50 {string} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:
@@ -51,6 +71,15 @@ import { Type } from "class-transformer"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/order"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")

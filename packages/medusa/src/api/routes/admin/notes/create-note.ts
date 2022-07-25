@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
+
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 
@@ -12,6 +13,10 @@ import { validator } from "../../../../utils/validator"
  *  content:
  *    application/json:
  *      schema:
+ *        required:
+ *          - resource_id
+ *          - resource_type
+ *          - value
  *        properties:
  *          resource_id:
  *            type: string

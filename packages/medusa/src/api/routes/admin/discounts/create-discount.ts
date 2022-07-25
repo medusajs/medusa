@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { AllocationType, DiscountRuleType } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -13,16 +13,18 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import { AllocationType, DiscountRuleType } from "../../../../models"
+
+import { AdminPostDiscountsDiscountParams } from "./update-discount"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { Discount } from "../../../../models/discount"
 import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
-import { AdminPostDiscountsDiscountParams } from "./update-discount"
+import { Type } from "class-transformer"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /discounts
  * operationId: "PostDiscounts"
@@ -45,8 +47,38 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
  *             description: Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules.
  *           rule:
  *             description: The Discount Rule that defines how Discounts are calculated
- *             oneOf:
- *               - $ref: "#/components/schemas/discount_rule"
+ *             type: object
+ *             required:
+ *                - type
+ *                - value
+ *                - allocation
+ *             properties:
+ *               description:
+ *                 type: string
+ *                 description: "A short description of the discount"
+ *               type: 
+ *                 type: string
+ *                 description: "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
+ *                 enum: [fixed, percentage, free_shipping]
+ *               value:
+ *                 type: number
+ *                 description: "The value that the discount represents; this will depend on the type of the discount"
+ *               allocation:
+ *                 type: string
+ *                 description: "The scope that the discount should apply to."
+ *                 enum: [total, item]
+ *               conditions:
+ *                 type: array
+ *                 description: "A set of conditions that can be used to limit when  the discount can be used"
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                      - operator
+ *                   properties:
+ *                     operator:
+ *                       type: string
+ *                       description: Operator of the condition
+ *                       enum: [in, not_in]
  *           is_disabled:
  *             type: boolean
  *             description: Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers.
@@ -58,6 +90,10 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
  *             type: string
  *             format: date-time
  *             description: The time at which the Discount should no longer be available.
+ *           valid_duration:
+ *             type: string
+ *             description: Duration the discount runs between
+ *             example: P3Y6M4DT12H30M5S
  *           regions:
  *             description: A list of Region ids representing the Regions in which the Discount can be used.
  *             type: array

@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,11 +8,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { Transform, Type } from "class-transformer"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
- * @oas [post] /orders/{id}/fulfillments
+ * @oas [post] /orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
@@ -31,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items to include in the Fulfillment.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of Line Item to fulfill.
@@ -45,7 +50,7 @@ import { validator } from "../../../../utils/validator"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - Order
+ *   - Fulfillment
  * responses:
  *   200:
  *     description: OK

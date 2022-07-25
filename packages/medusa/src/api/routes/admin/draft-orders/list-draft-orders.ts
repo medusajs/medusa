@@ -17,6 +17,10 @@ import { validator } from "../../../../utils/validator"
  * summary: "List Draft Orders"
  * description: "Retrieves an list of Draft Orders"
  * x-authenticated: true
+ * parameters:
+ *   - (query) offset {number} The number of items to skip.
+ *   - (query) limit {string} Limit the number of items returned.
+ *   - (query) q {string} a search term to search emails in carts associated with draft orders and display IDs of draft orders
  * tags:
  *   - Draft Order
  * responses:
@@ -30,6 +34,15 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/draft-order"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 
 export default async (req, res) => {

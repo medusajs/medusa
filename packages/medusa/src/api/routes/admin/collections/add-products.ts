@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
-import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+
+import ProductCollectionService from "../../../../services/product-collection"
 
 /**
  * @oas [post] /collections/{id}/products/batch
@@ -19,15 +20,19 @@ import { Request, Response } from "express"
  *             description: "An array of Product IDs to add to the Product Collection."
  *             type: array
  *             items:
- *               properties:
- *                 id:
- *                   description: "The ID of a Product to add to the Product Collection."
- *                   type: string
+ *               description: "The ID of a Product to add to the Product Collection."
+ *               type: string
  * tags:
  *   - Collection
  * responses:
  *  "200":
  *    description: OK
+ *    content:
+ *      application/json:
+ *        schema:
+ *          properties:
+ *            collection:
+ *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

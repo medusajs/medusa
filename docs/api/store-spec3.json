@@ -1169,328 +1169,6 @@
         }
       }
     },
-    "/orders/cart/{cart_id}": {
-      "get": {
-        "operationId": "GetOrdersOrderCartId",
-        "summary": "Retrieves Order by Cart id",
-        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The id of Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "summary": "Look Up an Order",
-        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "display_id",
-            "required": true,
-            "description": "The display id given to the Order.",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "required": true,
-            "description": "The email of the Order with the given display_id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "operationId": "GetProductsProduct",
-        "summary": "Retrieves a Product",
-        "description": "Retrieves a Product.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/product"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "GetProducts",
-        "summary": "List Products",
-        "description": "Retrieves a list of Products.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching products.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Id of the product to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "collection_id",
-            "style": "form",
-            "explode": false,
-            "description": "Collection ids to search for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "tags",
-            "style": "form",
-            "explode": false,
-            "description": "Tags to search for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "title",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "description",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "handle",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "is_giftcard",
-            "description": "Search for giftcards using is_giftcard=true.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many products to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of products returned.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of Products to return,",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/customers/me/addresses": {
       "post": {
         "operationId": "PostCustomersCustomerAddresses",
@@ -1985,6 +1663,328 @@
                   "password": {
                     "type": "string",
                     "description": "The new password to set for the Customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/cart/{cart_id}": {
+      "get": {
+        "operationId": "GetOrdersOrderCartId",
+        "summary": "Retrieves Order by Cart id",
+        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "required": true,
+            "description": "The id of Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieves an Order",
+        "description": "Retrieves an Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "summary": "Look Up an Order",
+        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "display_id",
+            "required": true,
+            "description": "The display id given to the Order.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": true,
+            "description": "The email of the Order with the given display_id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "operationId": "GetProductsProduct",
+        "summary": "Retrieves a Product",
+        "description": "Retrieves a Product.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "summary": "List Products",
+        "description": "Retrieves a list of Products.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching products.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the product to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "style": "form",
+            "explode": false,
+            "description": "Collection ids to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "style": "form",
+            "explode": false,
+            "description": "Tags to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_giftcard",
+            "description": "Search for giftcards using is_giftcard=true.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many products to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Products to return,",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
                   }
                 }
               }

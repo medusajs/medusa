@@ -1,11 +1,12 @@
-import { IsString } from "class-validator"
-import { IsOptional } from "class-validator"
 import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "."
-import { validator } from "../../../../utils/validator"
+
+import { IsOptional } from "class-validator"
+import { IsString } from "class-validator"
 import { NotificationService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /notifications/{id}/resend
@@ -21,7 +22,7 @@ import { NotificationService } from "../../../../services"
  *       schema:
  *         properties:
  *           to:
- *             description: "The address or user identifier that the Notification was sent to"
+ *             description: "A new address or user identifier that the Notification should be sent to"
  *             type: string
  * tags:
  *   - Notification

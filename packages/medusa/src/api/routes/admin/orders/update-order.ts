@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -10,8 +9,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { OrderService } from "../../../../services"
+
 import { AddressPayload } from "../../../../types/common"
+import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -44,13 +45,13 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               $ref: "#/components/schemas/line_item"
  *           region:
- *             description: Region where the order belongs
+ *             description: ID of the region where the order belongs
  *             type: string
  *           discounts:
  *             description: Discounts applied to the order
  *             type: array
  *             items:
- *               $ref: "#/components/schemas/line_item"
+ *               $ref: "#/components/schemas/discount"
  *           customer_id:
  *             description: id of the customer
  *             type: string
