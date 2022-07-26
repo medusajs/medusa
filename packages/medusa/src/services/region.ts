@@ -115,6 +115,7 @@ class RegionService extends BaseService {
 
   /**
    * Creates a region.
+   *
    * @param regionObject - the unvalidated region
    * @return the newly created region
    */
@@ -173,6 +174,7 @@ class RegionService extends BaseService {
 
   /**
    * Updates a region
+   *
    * @param regionId - the region to update
    * @param update - the data to update the region with
    * @return the result of the update operation
