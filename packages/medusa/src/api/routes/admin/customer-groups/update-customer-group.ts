@@ -14,8 +14,17 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the customer group.
- *   - (body) name {string} Name of the customer group
- *   - (body) metadata {object} Metadata for the customer.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           name:
+ *             description: "Name of the customer group"
+ *             type: string
+ *           metadata:
+ *             description: "Metadata for the customer."
+ *             type: object
  * tags:
  *   - CustomerGroup
  * responses:

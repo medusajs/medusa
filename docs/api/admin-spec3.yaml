@@ -882,307 +882,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/customer-groups/{id}/customers/batch':
-    post:
-      operationId: PostCustomerGroupsGroupCustomersBatch
-      summary: 'Add a list of customers to a customer group '
-      description: 'Adds a list of customers, represented by id''s, to a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customer_ids:
-                  description: The ids of the customers to add
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    delete:
-      operationId: DeleteCustomerGroupsGroupCustomerBatch
-      summary: 'Remove a list of customers from a customer group '
-      description: 'Removes a list of customers, represented by id''s, from a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customer_ids:
-                  description: The ids of the customers to remove
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-  /customer-groups:
-    post:
-      operationId: PostCustomerGroups
-      summary: Create a CustomerGroup
-      description: Creates a CustomerGroup.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomerGroups
-      summary: Retrieve a list of customer groups
-      description: Retrieve a list of customer groups.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching user group names.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many groups to skip in the result.
-          schema:
-            type: string
-        - in: query
-          name: id
-          description: Ids of the groups to search for.
-          schema:
-            type: string
-        - in: query
-          name: order
-          description: the field used to order the customer groups.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: >-
-            Date comparison for when resulting customer group was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: updated_at
-          description: >-
-            Date comparison for when resulting ustomer group was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: limit
-          description: Limit the number of customer groups returned.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each customer
-            groups of the result.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_groups:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer_group'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customer-groups/{id}':
-    delete:
-      operationId: DeleteCustomerGroupsCustomerGroup
-      summary: Delete a CustomerGroup
-      description: Deletes a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted customer group.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: >-
-                      Whether the customer group was deleted successfully or
-                      not.
-    get:
-      operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
-      description: Retrieves a Customer Group.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    post:
-      operationId: PostCustomerGroupsGroup
-      summary: Update a CustomerGroup
-      description: Update a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required: !<tag:yaml.org,2002:js/undefined> ''
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-  '/customer-groups/{id}/customers':
-    get:
-      operationId: GetCustomerGroupsGroupCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1993,6 +1692,305 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  '/customer-groups/{id}/customers/batch':
+    post:
+      operationId: PostCustomerGroupsGroupCustomersBatch
+      summary: 'Add a list of customers to a customer group '
+      description: 'Adds a list of customers, represented by id''s, to a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer_ids:
+                  description: The ids of the customers to add
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    delete:
+      operationId: DeleteCustomerGroupsGroupCustomerBatch
+      summary: 'Remove a list of customers from a customer group '
+      description: 'Removes a list of customers, represented by id''s, from a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer_ids:
+                  description: The ids of the customers to remove
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  /customer-groups:
+    post:
+      operationId: PostCustomerGroups
+      summary: Create a CustomerGroup
+      description: Creates a CustomerGroup.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the customer group
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomerGroups
+      summary: Retrieve a list of customer groups
+      description: Retrieve a list of customer groups.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching user group names.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many groups to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Ids of the groups to search for.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: the field used to order the customer groups.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting customer group was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting ustomer group was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: limit
+          description: Limit the number of customer groups returned.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each customer
+            groups of the result.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer_group'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customer-groups/{id}':
+    delete:
+      operationId: DeleteCustomerGroupsCustomerGroup
+      summary: Delete a CustomerGroup
+      description: Deletes a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted customer group.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: >-
+                      Whether the customer group was deleted successfully or
+                      not.
+    get:
+      operationId: GetCustomerGroupsGroup
+      summary: Retrieve a CustomerGroup
+      description: Retrieves a Customer Group.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    post:
+      operationId: PostCustomerGroupsGroup
+      summary: Update a CustomerGroup
+      description: Update a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: Name of the customer group
+                  type: string
+                metadata:
+                  description: Metadata for the customer.
+                  type: object
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  '/customer-groups/{id}/customers':
+    get:
+      operationId: GetCustomerGroupsGroupCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -2426,142 +2424,6 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
-  /invites/accept:
-    post:
-      operationId: PostInvitesInviteAccept
-      summary: Accept an Invite
-      description: Accepts an Invite and creates a corresponding user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - token
-                - user
-              properties:
-                token:
-                  description: The invite token provided by the admin.
-                  type: string
-                user:
-                  description: The User to create.
-                  type: object
-                  required:
-                    - first_name
-                    - last_name
-                    - password
-                  properties:
-                    first_name:
-                      type: string
-                      description: the first name of the User
-                    last_name:
-                      type: string
-                      description: the last name of the User
-                    password:
-                      description: The desired password for the User
-                      type: string
-                      format: password
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-  /invites:
-    post:
-      operationId: PostInvites
-      summary: Create an Invite
-      description: Creates an Invite and triggers an 'invite' created event
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - user
-                - role
-              properties:
-                user:
-                  description: The email for the user to be created.
-                  type: string
-                  format: email
-                role:
-                  description: The role of the user to be created.
-                  type: string
-                  enum:
-                    - admin
-                    - member
-                    - developer
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetInvites
-      summary: Lists all Invites
-      description: Lists all Invites
-      x-authenticated: true
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  invites:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/invite'
-  '/invites/{invite_id}':
-    delete:
-      operationId: DeleteInvitesInvite
-      summary: Create an Invite
-      description: Creates an Invite and triggers an 'invite' created event
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: invite_id
-          required: true
-          description: The id of the Invite
-          schema:
-            type: string
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Invite.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: Whether or not the Invite was deleted.
-  '/invites/{invite_id}/resend':
-    post:
-      operationId: PostInvitesInviteResend
-      summary: Resend an Invite
-      description: Resends an Invite by triggering the 'invite' created event again
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: invite_id
-          required: true
-          description: The id of the Invite
-          schema:
-            type: string
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -2764,6 +2626,142 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+  /invites/accept:
+    post:
+      operationId: PostInvitesInviteAccept
+      summary: Accept an Invite
+      description: Accepts an Invite and creates a corresponding user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - token
+                - user
+              properties:
+                token:
+                  description: The invite token provided by the admin.
+                  type: string
+                user:
+                  description: The User to create.
+                  type: object
+                  required:
+                    - first_name
+                    - last_name
+                    - password
+                  properties:
+                    first_name:
+                      type: string
+                      description: the first name of the User
+                    last_name:
+                      type: string
+                      description: the last name of the User
+                    password:
+                      description: The desired password for the User
+                      type: string
+                      format: password
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+  /invites:
+    post:
+      operationId: PostInvites
+      summary: Create an Invite
+      description: Creates an Invite and triggers an 'invite' created event
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - user
+                - role
+              properties:
+                user:
+                  description: The email for the user to be created.
+                  type: string
+                  format: email
+                role:
+                  description: The role of the user to be created.
+                  type: string
+                  enum:
+                    - admin
+                    - member
+                    - developer
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: GetInvites
+      summary: Lists all Invites
+      description: Lists all Invites
+      x-authenticated: true
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  invites:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/invite'
+  '/invites/{invite_id}':
+    delete:
+      operationId: DeleteInvitesInvite
+      summary: Create an Invite
+      description: Creates an Invite and triggers an 'invite' created event
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: invite_id
+          required: true
+          description: The id of the Invite
+          schema:
+            type: string
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Invite.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Invite was deleted.
+  '/invites/{invite_id}/resend':
+    post:
+      operationId: PostInvitesInviteResend
+      summary: Resend an Invite
+      description: Resends an Invite by triggering the 'invite' created event again
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: invite_id
+          required: true
+          description: The id of the Invite
+          schema:
+            type: string
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
   /notes:
     post:
       operationId: PostNotes

@@ -2789,6 +2789,24 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name of the customer group",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "Metadata for the customer.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "CustomerGroup"
         ],
@@ -2802,25 +2820,6 @@
                     "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
                     }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
                   }
                 }
               }
