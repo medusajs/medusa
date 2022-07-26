@@ -1,7 +1,8 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetOrdersParams } from "../../admin/orders"
 
 const route = Router()
 
@@ -11,18 +12,37 @@ export default (app) => {
   /**
    * Lookup
    */
-  route.get("/", middlewares.wrap(require("./lookup-order").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetOrdersParams, {
+      defaultRelations: defaultStoreOrdersRelations,
+      defaultFields: defaultStoreOrdersFields,
+      isList: true,
+    }),
+    middlewares.wrap(require("./lookup-order").default)
+  )
 
   /**
    * Retrieve Order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get(
+    "/:id",
+    transformQuery(AdminGetOrdersParams, {
+      defaultRelations: defaultStoreOrdersRelations,
+      defaultFields: defaultStoreOrdersFields,
+    }),
+    middlewares.wrap(require("./get-order").default)
+  )
 
   /**
    * Retrieve by Cart Id
    */
   route.get(
     "/cart/:cart_id",
+    transformQuery(AdminGetOrdersParams, {
+      defaultRelations: defaultStoreOrdersRelations,
+      defaultFields: defaultStoreOrdersFields,
+    }),
     middlewares.wrap(require("./get-order-by-cart").default)
   )
 

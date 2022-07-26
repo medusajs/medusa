@@ -5,11 +5,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
-
-import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { OrderService } from "../../../../services"
+import { Response } from "express"
+import { ExtendedRequest } from "../../../../types/global"
+import { Order } from "../../../../models"
 
 /**
  * @oas [get] /orders
@@ -77,20 +77,19 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
-  const validated = await validator(StoreGetOrdersParams, req.query)
-
+export default async (
+  req: ExtendedRequest<Order, StoreGetOrdersParams>,
+  res: Response
+) => {
+  const validatedQuery = req.validatedQuery
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const orders = await orderService.list(
     {
-      display_id: validated.display_id,
-      email: validated.email,
+      display_id: validatedQuery.display_id,
+      email: validatedQuery.email,
     },
-    {
-      select: defaultStoreOrdersFields,
-      relations: defaultStoreOrdersRelations,
-    }
+    req.listConfig
   )
 
   if (orders.length !== 1) {
@@ -98,9 +97,7 @@ export default async (req, res) => {
     return
   }
 
-  const order = orders[0]
-
-  res.json({ order })
+  res.json({ order: orders[0] })
 }
 
 export class ShippingAddressPayload {

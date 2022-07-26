@@ -1,6 +1,6 @@
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
-
 import { OrderService } from "../../../../services"
+import { ExtendedRequest } from "../../../../types/global"
+import { Order } from "../../../../models"
 
 /**
  * @oas [get] /orders/{id}
@@ -45,14 +45,11 @@ import { OrderService } from "../../../../services"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: ExtendedRequest<Order>, res) => {
   const { id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const order = await orderService.retrieve(id, {
-    select: defaultStoreOrdersFields,
-    relations: defaultStoreOrdersRelations,
-  })
+  const order = await orderService.retrieve(id, req.retrieveConfig)
 
   res.json({ order })
 }

@@ -21,7 +21,12 @@ declare global {
   }
 }
 
-export type ExtendedRequest<TEntity> = Request & { resource: TEntity }
+export type ExtendedRequest<TEntity, TData = unknown> = Request & {
+  validatedQuery: RequestQueryFields & TData
+  validatedBody: TData
+  listConfig: FindConfig<TEntity>
+  retrieveConfig: FindConfig<TEntity>
+}
 
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T
