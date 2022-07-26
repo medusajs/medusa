@@ -27,7 +27,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 ### 1. Install Medusa CLI
 
    ```bash npm2yarn
-   npm install -g @medusajs/medusa-cli
+   npm install @medusajs/medusa-cli -g
    ```
 
 ### 2. Create a new Medusa project
