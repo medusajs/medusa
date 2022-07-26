@@ -3,10 +3,9 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
-import { countries } from "../utils/countries"
-
 import StoreService from "./store"
 import EventBusService from "./event-bus"
+import { countries } from "../utils/countries"
 import { RegionRepository } from "../repositories/region"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
@@ -15,12 +14,12 @@ import { FulfillmentProviderRepository } from "../repositories/fulfillment-provi
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { Country, Currency, Region } from "../models"
+import { Selector } from "../types/common"
 import {
   CreateRegionInput,
   FindRegionConfig,
   UpdateRegionInput,
 } from "../types/region"
-import { Selector } from "../types/common"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -89,7 +88,7 @@ class RegionService extends BaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
 
-  withTransaction(transactionManager: EntityManager): RegionService {
+  withTransaction(transactionManager?: EntityManager): RegionService {
     if (!transactionManager) {
       return this
     }
