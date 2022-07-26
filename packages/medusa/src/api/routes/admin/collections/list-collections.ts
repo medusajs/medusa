@@ -18,9 +18,72 @@ import { Type } from "class-transformer"
  *   - (query) title {string} The title of collections to return.
  *   - (query) handle {string} The handle of collections to return.
  *   - (query) q {string} a search term to search titles and handles.
- *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting collections were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting collections were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: deleted_at
+ *     description: Date comparison for when resulting collections were deleted.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * tags:
  *   - Collection
  * responses:

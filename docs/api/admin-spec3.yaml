@@ -630,26 +630,71 @@ paths:
           schema:
             type: string
         - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting collections was deleted, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
+          description: Date comparison for when resulting collections were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
+          description: Date comparison for when resulting collections were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       tags:
         - Collection
       responses:
@@ -767,307 +812,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  '/customer-groups/{id}/customers/batch':
-    post:
-      operationId: PostCustomerGroupsGroupCustomersBatch
-      summary: 'Add a list of customers to a customer group '
-      description: 'Adds a list of customers, represented by id''s, to a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customer_ids:
-                  description: The ids of the customers to add
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    delete:
-      operationId: DeleteCustomerGroupsGroupCustomerBatch
-      summary: 'Remove a list of customers from a customer group '
-      description: 'Removes a list of customers, represented by id''s, from a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customer_ids:
-                  description: The ids of the customers to remove
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-  /customer-groups:
-    post:
-      operationId: PostCustomerGroups
-      summary: Create a CustomerGroup
-      description: Creates a CustomerGroup.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomerGroups
-      summary: Retrieve a list of customer groups
-      description: Retrieve a list of customer groups.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching user group names.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many groups to skip in the result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: id
-          description: Ids of the groups to search for.
-          schema:
-            type: string
-        - in: query
-          name: order
-          description: the field used to order the customer groups.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: >-
-            Date comparison for when resulting customer group was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: updated_at
-          description: >-
-            Date comparison for when resulting ustomer group was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: limit
-          description: Limit the number of customer groups returned.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each customer
-            groups of the result.
-          schema:
-            type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_groups:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer_group'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customer-groups/{id}':
-    delete:
-      operationId: DeleteCustomerGroupsCustomerGroup
-      summary: Delete a CustomerGroup
-      description: Deletes a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group
-          schema:
-            type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted customer group.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: >-
-                      Whether the customer group was deleted successfully or
-                      not.
-    get:
-      operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
-      description: Retrieves a Customer Group.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group.
-          schema:
-            type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    post:
-      operationId: PostCustomerGroupsGroup
-      summary: Update a CustomerGroup
-      description: Update a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: Name of the customer group
-                  type: string
-                metadata:
-                  description: Metadata for the customer.
-                  type: object
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-  '/customer-groups/{id}/customers':
-    get:
-      operationId: GetCustomerGroupsGroupCustomers
-      summary: List Customers
-      description: Retrieves a list of customers in a customer group
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
   /customers:
     post:
       operationId: PostCustomers
@@ -1263,6 +1007,337 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+  '/customer-groups/{id}/customers/batch':
+    post:
+      operationId: PostCustomerGroupsGroupCustomersBatch
+      summary: 'Add a list of customers to a customer group '
+      description: 'Adds a list of customers, represented by id''s, to a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer_ids:
+                  description: The ids of the customers to add
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    delete:
+      operationId: DeleteCustomerGroupsGroupCustomerBatch
+      summary: 'Remove a list of customers from a customer group '
+      description: 'Removes a list of customers, represented by id''s, from a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customer_ids:
+                  description: The ids of the customers to remove
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  /customer-groups:
+    post:
+      operationId: PostCustomerGroups
+      summary: Create a CustomerGroup
+      description: Creates a CustomerGroup.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the customer group
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomerGroups
+      summary: Retrieve a list of customer groups
+      description: Retrieve a list of customer groups.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching user group names.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many groups to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: id
+          description: Ids of the groups to search for.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: the field used to order the customer groups.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting customer groups were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting customer groups were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: limit
+          description: Limit the number of customer groups returned.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each customer
+            groups of the result.
+          schema:
+            type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer_group'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customer-groups/{id}':
+    delete:
+      operationId: DeleteCustomerGroupsCustomerGroup
+      summary: Delete a CustomerGroup
+      description: Deletes a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group
+          schema:
+            type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted customer group.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: >-
+                      Whether the customer group was deleted successfully or
+                      not.
+    get:
+      operationId: GetCustomerGroupsGroup
+      summary: Retrieve a CustomerGroup
+      description: Retrieves a Customer Group.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group.
+          schema:
+            type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    post:
+      operationId: PostCustomerGroupsGroup
+      summary: Update a CustomerGroup
+      description: Update a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: Name of the customer group
+                  type: string
+                metadata:
+                  description: Metadata for the customer.
+                  type: object
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  '/customer-groups/{id}/customers':
+    get:
+      operationId: GetCustomerGroupsGroupCustomers
+      summary: List Customers
+      description: Retrieves a list of customers in a customer group
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -3926,26 +4001,71 @@ paths:
           schema:
             type: string
         - in: query
-          name: cancelled_at
-          description: >-
-            Date comparison for when resulting orders was cancelled, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-        - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting orders was created, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting orders were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting orders was updated, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting orders were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: canceled_at
+          description: Date comparison for when resulting orders were canceled.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: offset
           description: How many orders to skip before the results.
@@ -5007,26 +5127,71 @@ paths:
                 - sale
                 - override
         - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting collections was deleted, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
+          description: Date comparison for when resulting price lists were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
+          description: Date comparison for when resulting price lists were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting price lists were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       tags:
         - Price List
       responses:
@@ -5367,26 +5532,71 @@ paths:
           schema:
             type: string
         - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting products was deleted, i.e. less
-            than, greater than etc.
-          schema:
-            type: string
-        - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting products was created, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting products were created.
           schema:
-            type: string
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting products was updated, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting products were updated.
           schema:
-            type: string
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting products were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: offset
           description: How many products to skip in the result.
@@ -5484,18 +5694,48 @@ paths:
               type: string
         - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting tas was created, i.e. less than,
-            greater than etc.
+          description: Date comparison for when resulting product tags were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting tas was updated, i.e. less than,
-            greater than etc.
+          description: Date comparison for when resulting product tags were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       tags:
         - Product Tag
       responses:
@@ -5565,18 +5805,48 @@ paths:
             type: string
         - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting tas was created, i.e. less than,
-            greater than etc.
+          description: Date comparison for when resulting product types were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting tas was updated, i.e. less than,
-            greater than etc.
+          description: Date comparison for when resulting product types were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       tags:
         - Product Type
       responses:
@@ -5960,26 +6230,71 @@ paths:
           schema:
             type: string
         - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting products was deleted, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-        - in: query
           name: created_at
-          description: >-
-            Date comparison for when resulting products was created, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting products were created.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: updated_at
-          description: >-
-            Date comparison for when resulting products was updated, i.e. less
-            than, greater than etc.
+          description: Date comparison for when resulting products were updated.
           schema:
             type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting products were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
         - in: query
           name: offset
           description: How many products to skip in the result.

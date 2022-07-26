@@ -5,7 +5,13 @@ import CustomerService from "../../../../services/customer"
  * summary: "Check if email has account"
  * description: "Checks if a Customer with the given email has signed up."
  * parameters:
- *   - (path) email=* {string} The Customer's email.
+ *   - in: path
+ *     name: email
+ *     schema:
+ *       type: string
+ *       format: email
+ *     required: true
+ *     description: The email to check if exists.
  * tags:
  *   - Auth
  * responses:
@@ -17,6 +23,7 @@ import CustomerService from "../../../../services/customer"
  *          properties:
  *            exists:
  *              type: boolean
+ *              description: Whether email exists or not.
  */
 export default async (req, res) => {
   const { email } = req.params

@@ -51,9 +51,72 @@ import { pick } from "lodash"
  *   - (query) region_id {string} to search for.
  *   - (query) currency_code {string} to search for.
  *   - (query) tax_rate {string} to search for.
- *   - (query) cancelled_at {object} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
- *   - (query) created_at {object} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {object} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting orders were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting orders were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: canceled_at
+ *     description: Date comparison for when resulting orders were canceled.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - (query) offset=0 {integer} How many orders to skip before the results.
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.

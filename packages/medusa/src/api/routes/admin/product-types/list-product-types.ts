@@ -47,8 +47,50 @@ import { validator } from "../../../../utils/validator"
  *       items:
  *         type: string
  *   - (query) q {string} A query string to search values for
- *   - (query) created_at {object} Date comparison for when resulting tas was created, i.e. less than, greater than etc.
- *   - (query) updated_at {object} Date comparison for when resulting tas was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting product types were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting product types were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * tags:
  *   - Product Type
  * responses:

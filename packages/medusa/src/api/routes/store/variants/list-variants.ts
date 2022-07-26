@@ -1,18 +1,19 @@
-import { Type } from "class-transformer"
-import { omit } from "lodash"
-import { IsInt, IsOptional, IsString } from "class-validator"
-import { defaultStoreVariantRelations } from "."
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import {
   CartService,
-  RegionService,
-  ProductVariantService,
   PricingService,
+  ProductVariantService,
+  RegionService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { IsInt, IsOptional, IsString } from "class-validator"
+
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { Type } from "class-transformer"
+import { defaultStoreVariantRelations } from "."
+import { omit } from "lodash"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /variants
@@ -22,8 +23,8 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
  * parameters:
  *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
- *   - (query) offset {number}
- *   - (query) limit {number} Maximum number of Product Variants to return.
+ *   - (query) offset=0 {number} How many product variants to skip in the result.
+ *   - (query) limit=100 {number} Maximum number of Product Variants to return.
  * tags:
  *   - Product Variant
  * responses:

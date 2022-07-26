@@ -59,9 +59,72 @@ import { pickBy } from "lodash"
  *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
  *   - (query) type {string} to search for.
  *   - (query) order {string} field to sort results by.
- *   - (query) deleted_at {string} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {string} Date comparison for when resulting products was created, i.e. less than, greater than etc.
- *   - (query) updated_at {string} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting products were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting products were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: deleted_at
+ *     description: Date comparison for when resulting products were deleted.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
