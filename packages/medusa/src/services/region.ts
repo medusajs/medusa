@@ -1,11 +1,11 @@
 import { EntityManager } from "typeorm"
 
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 
 import StoreService from "./store"
 import EventBusService from "./event-bus"
 import { countries } from "../utils/countries"
+import { TransactionBaseService } from "../interfaces"
 import { RegionRepository } from "../repositories/region"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
@@ -42,7 +42,7 @@ type ValidationPartial<T> = Omit<T, "metadata" | "currency_code">
  * Provides layer to manipulate regions.
  * @extends BaseService
  */
-class RegionService extends BaseService {
+class RegionService extends TransactionBaseService<RegionService> {
   static Events = {
     UPDATED: "region.updated",
     CREATED: "region.created",
@@ -50,17 +50,18 @@ class RegionService extends BaseService {
   }
 
   protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
-  protected readonly regionRepository: RegionRepository
-  protected readonly countryRepository: CountryRepository
-  protected readonly storeService: StoreService
-  protected readonly eventBusService: EventBusService
-  protected readonly currencyRepository: CurrencyRepository
-  protected readonly paymentProviderRepository: PaymentProviderRepository
-  protected readonly fulfillmentProviderRepository: FulfillmentProviderRepository
-  protected readonly taxProviderRepository: TaxProviderRepository
-  protected readonly paymentProviderService: PaymentProviderRepository
-  protected readonly fulfillmentProviderService: typeof FulfillmentProviderService
+  protected readonly eventBus_: EventBusService
+  protected readonly storeService_: StoreService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly regionRepository_: typeof RegionRepository
+  protected readonly countryRepository_: typeof CountryRepository
+  protected readonly currencyRepository_: typeof CurrencyRepository
+  protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
+  protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
+  protected readonly taxProviderRepository_: typeof TaxProviderRepository
+  protected readonly paymentProviderService_: typeof PaymentProviderRepository
 
   constructor({
     manager,
@@ -75,7 +76,19 @@ class RegionService extends BaseService {
     paymentProviderService,
     fulfillmentProviderService,
   }: InjectedDependencies) {
-    super()
+    super({
+      manager,
+      regionRepository,
+      countryRepository,
+      storeService,
+      eventBusService,
+      currencyRepository,
+      paymentProviderRepository,
+      fulfillmentProviderRepository,
+      taxProviderRepository,
+      paymentProviderService,
+      fulfillmentProviderService,
+    })
 
     this.manager_ = manager
     this.regionRepository_ = regionRepository
@@ -88,30 +101,6 @@ class RegionService extends BaseService {
     this.paymentProviderService_ = paymentProviderService
     this.taxProviderRepository_ = taxProviderRepository
     this.fulfillmentProviderService_ = fulfillmentProviderService
-  }
-
-  withTransaction(transactionManager?: EntityManager): RegionService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new RegionService({
-      manager: transactionManager,
-      regionRepository: this.regionRepository_,
-      currencyRepository: this.currencyRepository_,
-      countryRepository: this.countryRepository_,
-      storeService: this.storeService_,
-      eventBusService: this.eventBus_,
-      paymentProviderRepository: this.paymentProviderRepository_,
-      paymentProviderService: this.paymentProviderService_,
-      taxProviderRepository: this.taxProviderRepository_,
-      fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
