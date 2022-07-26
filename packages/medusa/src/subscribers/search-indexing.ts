@@ -2,8 +2,8 @@ import EventBusService from "../services/event-bus"
 import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
-import { SearchService } from "../services"
 import { Product } from "../models"
+import { SearchService } from "medusa-interfaces"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
@@ -29,7 +29,7 @@ class SearchIndexingSubscriber {
   }
 
   indexDocuments = async (): Promise<void> => {
-    const TAKE = 1000
+    const TAKE = this.searchService_?.options?.batch_size ?? 1000
     let hasMore = true
 
     let lastSeenId = ""
