@@ -6,7 +6,7 @@ describe("GET /store/orders", () => {
     beforeAll(async () => {
       await request(
         "GET",
-        `/store/orders/?display_id=67007&email=tester%40medusa-commerce.com&shipping_address[postal_code]=23232`
+        `/store/orders?display_id=67007&email=tester%40medusa-commerce.com&shipping_address[postal_code]=23232`
       )
     })
 

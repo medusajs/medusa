@@ -29,7 +29,7 @@ export function transformQuery<
         config
       )
       req.validatedQuery = validated
-
+      console.log("test")
       req.filterableFields = omit(validated, [
         "limit",
         "offset",

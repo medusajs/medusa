@@ -2,7 +2,9 @@ import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
 import middlewares, { transformQuery } from "../../../middlewares"
-import { AdminGetOrdersParams } from "../../admin/orders"
+import { StoreGetOrdersParams } from "./lookup-order"
+import { EmptyQueryParams, RequestQueryFields } from "../../../../types/common"
+import { ClassConstructor } from "../../../../types/global"
 
 const route = Router()
 
@@ -14,11 +16,14 @@ export default (app) => {
    */
   route.get(
     "/",
-    transformQuery(AdminGetOrdersParams, {
-      defaultRelations: defaultStoreOrdersRelations,
-      defaultFields: defaultStoreOrdersFields,
-      isList: true,
-    }),
+    transformQuery(
+      StoreGetOrdersParams as ClassConstructor<RequestQueryFields>,
+      {
+        defaultRelations: defaultStoreOrdersRelations,
+        defaultFields: defaultStoreOrdersFields,
+        isList: true,
+      }
+    ),
     middlewares.wrap(require("./lookup-order").default)
   )
 
@@ -27,7 +32,7 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    transformQuery(AdminGetOrdersParams, {
+    transformQuery(EmptyQueryParams, {
       defaultRelations: defaultStoreOrdersRelations,
       defaultFields: defaultStoreOrdersFields,
     }),
@@ -39,7 +44,7 @@ export default (app) => {
    */
   route.get(
     "/cart/:cart_id",
-    transformQuery(AdminGetOrdersParams, {
+    transformQuery(EmptyQueryParams, {
       defaultRelations: defaultStoreOrdersRelations,
       defaultFields: defaultStoreOrdersFields,
     }),
