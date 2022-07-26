@@ -1,30 +1,25 @@
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { TransactionBaseService } from "../interfaces"
+import { EntityManager } from "typeorm"
+import ProductVariantService from "./product-variant"
+import { ProductVariant } from "../models"
 
-class InventoryService extends BaseService {
-  constructor({ manager, productVariantService }) {
-    super()
+type InventoryServiceProps = {
+  manager: EntityManager
+  productVariantService: ProductVariantService
+}
+class InventoryService extends TransactionBaseService<InventoryService> {
+  protected productVariantService_: ProductVariantService
 
-    /** @private @const {EntityManager} */
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  constructor({ manager, productVariantService }: InventoryServiceProps) {
+    super(arguments[0])
+
     this.manager_ = manager
-
-    /** @private @const {ProductVariantRepository_} */
     this.productVariantService_ = productVariantService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new InventoryService({
-      manager: transactionManager,
-      productVariantService: this.productVariantService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -33,10 +28,12 @@ class InventoryService extends BaseService {
    * @param {number} adjustment - the number to adjust the inventory quantity by
    * @return {Promise} resolves to the update result.
    */
-  async adjustInventory(variantId, adjustment) {
-    // if variantId is undefined – ergo. a custom item – then do nothing
+  async adjustInventory(
+    variantId: string | undefined | null,
+    adjustment: number
+  ): Promise<ProductVariant | undefined> {
     if (typeof variantId === "undefined" || variantId === null) {
-      return
+      return undefined
     }
 
     return this.atomicPhase_(async (manager) => {
@@ -48,6 +45,8 @@ class InventoryService extends BaseService {
           .update(variant, {
             inventory_quantity: variant.inventory_quantity + adjustment,
           })
+      } else {
+        return variant
       }
     })
   }
@@ -59,7 +58,10 @@ class InventoryService extends BaseService {
    * @param {number} quantity - the number of units to check availability for
    * @return {Promise<boolean>} true if the inventory covers the quantity
    */
-  async confirmInventory(variantId, quantity) {
+  async confirmInventory(
+    variantId: string,
+    quantity: number
+  ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
     // is a custom item that is not managed
     if (typeof variantId === "undefined" || variantId === null) {
