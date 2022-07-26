@@ -22,7 +22,7 @@ import {
 } from "../types/region"
 
 type InjectedDependencies = {
-  manager: EntityManager
+  manager_: EntityManager
   regionRepository: RegionRepository
   countryRepository: CountryRepository
   storeService: StoreService
@@ -48,7 +48,8 @@ class RegionService extends BaseService {
     DELETED: "region.deleted",
   }
 
-  protected readonly manager: EntityManager
+  protected manager_: EntityManager
+
   protected readonly regionRepository: RegionRepository
   protected readonly countryRepository: CountryRepository
   protected readonly storeService: StoreService
@@ -94,7 +95,7 @@ class RegionService extends BaseService {
     }
 
     const cloned = new RegionService({
-      manager: transactionManager,
+      manager_: transactionManager,
       regionRepository: this.regionRepository_,
       currencyRepository: this.currencyRepository_,
       countryRepository: this.countryRepository_,
