@@ -47,9 +47,12 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns Deleted response
    */
-  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsDeleteRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -58,9 +61,12 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns the collection with the given id
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -80,7 +86,7 @@ class AdminCollectionsResource extends BaseResource {
       path = `/admin/collections?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 
