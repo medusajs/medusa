@@ -12,8 +12,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a list of Gift Cards."
  * x-authenticated: true
  * parameters:
- *   - (query) offset {number} The number of items to skip.
- *   - (query) limit {string} Limit the number of items returned.
+ *   - (query) offset=0 {number} The number of items to skip before the results.
+ *   - (query) limit=50 {number} Limit the number of items returned.
  *   - (query) q {string} a search term to search by code or display ID
  * tags:
  *   - Gift Card

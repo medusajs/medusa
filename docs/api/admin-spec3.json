@@ -3,70 +3,165 @@
   "info": {
     "version": "1.0.0",
     "title": "Medusa Admin API",
+    "description": "API reference for Medusa's Admin endpoints",
     "license": {
-      "name": "MIT"
+      "name": "MIT",
+      "url": "https://github.com/medusajs/medusa/blob/master/LICENSE"
     }
   },
   "tags": [
     {
       "name": "Auth",
-      "description": "Auth endpoints allows authorization of admin Users and manages their sessions."
+      "description": "Auth endpoints that allow authorization of admin Users and manages their sessions."
+    },
+    {
+      "name": "App",
+      "description": "App endpoints that allow handling apps in Medusa.",
+      "x-resourceId": "OAuth"
+    },
+    {
+      "name": "Batch Job",
+      "description": "Batch Job endpoints that allow handling batch jobs in Medusa.",
+      "x-resourceId": "batch_job"
+    },
+    {
+      "name": "Claim",
+      "description": "Claim endpoints that allow handling claims in Medusa.",
+      "x-resourceId": "claim_order"
     },
     {
       "name": "Collection",
+      "description": "Collection endpoints that allow handling collections in Medusa.",
       "x-resourceId": "product_collection"
     },
     {
       "name": "Customer",
+      "description": "Customer endpoints that allow handling customers in Medusa.",
       "x-resourceId": "customer"
     },
     {
+      "name": "Customer Group",
+      "description": "Customer Group endpoints that allow handling customer groups in Medusa.",
+      "x-resourceId": "customer_group"
+    },
+    {
       "name": "Discount",
+      "description": "Discount endpoints that allow handling discounts in Medusa.",
       "x-resourceId": "discount"
     },
     {
+      "name": "Discount Condition",
+      "description": "Discount Condition endpoints that allow handling discount conditions in Medusa.",
+      "x-resourceId": "discount_condition"
+    },
+    {
+      "name": "Draft Order",
+      "description": "Draft Order endpoints that allow handling draft orders in Medusa.",
+      "x-resourceId": "draft-order"
+    },
+    {
       "name": "Gift Card",
+      "description": "Gift Card endpoints that allow handling gift cards in Medusa.",
       "x-resourceId": "gift_card"
     },
     {
+      "name": "Invite",
+      "description": "Invite endpoints that allow handling invites in Medusa.",
+      "x-resourceId": "invite"
+    },
+    {
+      "name": "Note",
+      "description": "Note endpoints that allow handling notes in Medusa.",
+      "x-resourceId": "note"
+    },
+    {
       "name": "Notification",
+      "description": "Notification endpoints that allow handling notifications in Medusa.",
       "x-resourceId": "notification"
     },
     {
       "name": "Order",
+      "description": "Order endpoints that allow handling orders in Medusa.",
       "x-resourceId": "order"
     },
     {
+      "name": "Price List",
+      "description": "Price List endpoints that allow handling price lists in Medusa.",
+      "x-resourceId": "price_list"
+    },
+    {
       "name": "Product",
+      "description": "Product endpoints that allow handling products in Medusa.",
       "x-resourceId": "product"
     },
     {
+      "name": "Product Tag",
+      "description": "Product Tag endpoints that allow handling product tags in Medusa.",
+      "x-resourceId": "product_tag"
+    },
+    {
+      "name": "Product Types",
+      "description": "Product Types endpoints that allow handling product types in Medusa.",
+      "x-resourceId": "product_type"
+    },
+    {
+      "name": "Product Variant",
+      "description": "Product Variant endpoints that allow handling product variants in Medusa.",
+      "x-resourceId": "product_variant"
+    },
+    {
       "name": "Region",
+      "description": "Region endpoints that allow handling regions in Medusa.",
       "x-resourceId": "region"
     },
     {
+      "name": "Return Reason",
+      "description": "Return Reason endpoints that allow handling return reasons in Medusa.",
+      "x-resourceId": "return_reason"
+    },
+    {
       "name": "Return",
+      "description": "Return endpoints that allow handling returns in Medusa.",
       "x-resourceId": "return"
     },
     {
+      "name": "Sales Channel",
+      "description": "Sales Channel endpoints that allow handling sales channels in Medusa.",
+      "x-resourceId": "sales_channel"
+    },
+    {
       "name": "Shipping Option",
+      "description": "Shipping Option endpoints that allow handling shipping options in Medusa.",
       "x-resourceId": "shipping_option"
     },
     {
       "name": "Shipping Profile",
+      "description": "Shipping Profile endpoints that allow handling shipping profiles in Medusa.",
       "x-resourceId": "shipping_profile"
     },
     {
+      "name": "Store",
+      "description": "Store endpoints that allow handling stores in Medusa.",
+      "x-resourceId": "store"
+    },
+    {
       "name": "Swap",
+      "description": "Swap endpoints that allow handling swaps in Medusa.",
       "x-resourceId": "swap"
     },
     {
-      "name": "Product Variant",
-      "x-resourceId": "product_variant"
+      "name": "Tax Rate",
+      "description": "Tax Rate endpoints that allow handling tax rates in Medusa.",
+      "x-resourceId": "tax_rate"
     },
     {
-      "name": "OAuth",
-      "x-resourceId": "OAuth"
+      "name": "Upload",
+      "description": "Upload endpoints that allow handling uploads in Medusa."
+    },
+    {
+      "name": "User",
+      "description": "User endpoints that allow handling users in Medusa.",
+      "x-resourceId": "user"
     }
   ],
   "servers": [
@@ -109,7 +204,7 @@
           }
         },
         "tags": [
-          "Apps"
+          "App"
         ],
         "responses": {
           "200": {
@@ -136,7 +231,7 @@
         "description": "Retrieve a list of applications.",
         "x-authenticated": true,
         "tags": [
-          "Apps"
+          "App"
         ],
         "responses": {
           "200": {
@@ -240,356 +335,6 @@
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}/cancel": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobCancel",
-        "summary": "Marks a batch job as canceled",
-        "description": "Marks a batch job as canceled",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}/confirm": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
-        "summary": "Confirm a batch job",
-        "description": "Confirms that a previously requested batch job should be executed.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs": {
-      "post": {
-        "operationId": "PostBatchJobs",
-        "summary": "Create a Batch Job",
-        "description": "Creates a Batch Job.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "type",
-                  "context"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "description": "The type of batch job to start."
-                  },
-                  "context": {
-                    "type": "object",
-                    "description": "Additional infomration regarding the batch to be used for processing."
-                  },
-                  "dry_run": {
-                    "type": "boolean",
-                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetBatchJobs",
-        "summary": "List Batch Jobs",
-        "description": "Retrieve a list of Batch Jobs.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of batch jobs to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset of batch jobs to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "style": "form",
-            "explode": false,
-            "description": "Filter by the batch type",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "confirmed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "pre_processed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "completed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "failed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "Order used when retrieving batch jobs",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "(Comma separated) Which fields should be included in each order of the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_jobs": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/batch_job"
-                      }
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}": {
-      "get": {
-        "operationId": "GetBatchJobsBatchJob",
-        "summary": "Retrieve a Batch Job",
-        "description": "Retrieves a Batch Job.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Batch Job",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
@@ -784,15 +529,17 @@
             "name": "limit",
             "description": "The number of collections to return.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
             "in": "query",
             "name": "offset",
-            "description": "The offset of collections to return.",
+            "description": "The number of collections to skip before the results.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -1093,17 +840,19 @@
           {
             "in": "query",
             "name": "limit",
-            "description": "The number of collections to return.",
+            "description": "The number of items to return.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 50
             }
           },
           {
             "in": "query",
             "name": "offset",
-            "description": "The offset of collections to return.",
+            "description": "The items to skip before result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -1182,6 +931,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in the customer.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "tags": [
@@ -1222,13 +979,17 @@
           {
             "in": "query",
             "name": "expand",
-            "style": "form",
-            "explode": false,
+            "description": "(Comma separated) Which fields should be expanded in each customer.",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be retrieved in each customer.",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1481,7 +1242,7 @@
           }
         },
         "tags": [
-          "DiscountCondition"
+          "Discount Condition"
         ],
         "responses": {
           "200": {
@@ -1507,6 +1268,24 @@
         "summary": "Creates a Discount",
         "x-authenticated": true,
         "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be retrieved in each customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1701,7 +1480,8 @@
             "name": "limit",
             "description": "The number of items in the response",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "20"
             }
           },
           {
@@ -1709,7 +1489,8 @@
             "name": "offset",
             "description": "The offset of items in response",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "0"
             }
           },
           {
@@ -1865,7 +1646,7 @@
           }
         ],
         "tags": [
-          "DiscountCondition"
+          "Discount Condition"
         ],
         "responses": {
           "200": {
@@ -1939,7 +1720,7 @@
         ],
         "description": "Gets a DiscountCondition",
         "tags": [
-          "DiscountCondition"
+          "Discount Condition"
         ],
         "responses": {
           "200": {
@@ -1984,7 +1765,7 @@
           {
             "in": "query",
             "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each product of the result.",
+            "description": "(Comma separated) Which fields should be expanded in each item of the result.",
             "schema": {
               "type": "string"
             }
@@ -1992,7 +1773,7 @@
           {
             "in": "query",
             "name": "fields",
-            "description": "(Comma separated) Which fields should be included in each product of the result.",
+            "description": "(Comma separated) Which fields should be included in each item of the result.",
             "schema": {
               "type": "string"
             }
@@ -2174,6 +1955,22 @@
             "name": "id",
             "required": true,
             "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each item of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each item of the result.",
             "schema": {
               "type": "string"
             }
@@ -2454,7 +2251,7 @@
           }
         },
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2515,7 +2312,7 @@
           }
         },
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2543,7 +2340,7 @@
         "x-authenticated": true,
         "parameters": [],
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2603,7 +2400,8 @@
             "name": "offset",
             "description": "How many groups to skip in the result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -2643,7 +2441,8 @@
             "name": "limit",
             "description": "Limit the number of customer groups returned.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
@@ -2656,7 +2455,7 @@
           }
         ],
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2709,7 +2508,7 @@
           }
         ],
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2754,7 +2553,7 @@
           }
         ],
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2808,7 +2607,7 @@
           }
         },
         "tags": [
-          "CustomerGroup"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2832,7 +2631,7 @@
       "get": {
         "operationId": "GetCustomerGroupsGroupCustomers",
         "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
+        "description": "Retrieves a list of customers in a customer group",
         "x-authenticated": true,
         "parameters": [
           {
@@ -2846,7 +2645,7 @@
           }
         ],
         "tags": [
-          "Customer"
+          "Customer Group"
         ],
         "responses": {
           "200": {
@@ -2860,6 +2659,358 @@
                       "items": {
                         "$ref": "#/components/schemas/customer"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}/cancel": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobCancel",
+        "summary": "Marks a batch job as canceled",
+        "description": "Marks a batch job as canceled",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}/confirm": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
+        "summary": "Confirm a batch job",
+        "description": "Confirms that a previously requested batch job should be executed.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs": {
+      "post": {
+        "operationId": "PostBatchJobs",
+        "summary": "Create a Batch Job",
+        "description": "Creates a Batch Job.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "type",
+                  "context"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The type of batch job to start."
+                  },
+                  "context": {
+                    "type": "object",
+                    "description": "Additional infomration regarding the batch to be used for processing."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetBatchJobs",
+        "summary": "List Batch Jobs",
+        "description": "Retrieve a list of Batch Jobs.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of batch jobs to return.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of batch jobs to skip before results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by the batch type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "confirmed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "pre_processed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "completed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "failed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "Order used when retrieving batch jobs",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_jobs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/batch_job"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}": {
+      "get": {
+        "operationId": "GetBatchJobsBatchJob",
+        "summary": "Retrieve a Batch Job",
+        "description": "Retrieves a Batch Job.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Batch Job",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
@@ -3036,9 +3187,10 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "The number of items to skip.",
+            "description": "The number of items to skip before the results.",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "0"
             }
           },
           {
@@ -3046,7 +3198,8 @@
             "name": "limit",
             "description": "Limit the number of items returned.",
             "schema": {
-              "type": "string"
+              "type": "number",
+              "default": "50"
             }
           },
           {
@@ -3574,9 +3727,10 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "The number of items to skip.",
+            "description": "The number of items to skip before the results.",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "0"
             }
           },
           {
@@ -3584,7 +3738,8 @@
             "name": "limit",
             "description": "Limit the number of items returned.",
             "schema": {
-              "type": "string"
+              "type": "number",
+              "default": "50"
             }
           },
           {
@@ -3836,7 +3991,7 @@
           }
         },
         "tags": [
-          "Invites"
+          "Invite"
         ],
         "responses": {
           "200": {
@@ -3880,7 +4035,7 @@
           }
         },
         "tags": [
-          "Invites"
+          "Invite"
         ],
         "responses": {
           "200": {
@@ -3894,7 +4049,7 @@
         "description": "Lists all Invites",
         "x-authenticated": true,
         "tags": [
-          "Invites"
+          "Invite"
         ],
         "responses": {
           "200": {
@@ -3963,7 +4118,7 @@
           }
         },
         "tags": [
-          "Invites"
+          "Invite"
         ],
         "responses": {
           "200": {
@@ -4038,7 +4193,7 @@
           }
         },
         "tags": [
-          "Invites"
+          "Invite"
         ],
         "responses": {
           "200": {
@@ -4112,7 +4267,7 @@
             "description": "The number of notes to get",
             "schema": {
               "type": "number",
-              "default": ""
+              "default": "50"
             }
           },
           {
@@ -4121,7 +4276,7 @@
             "description": "The offset at which to get notes",
             "schema": {
               "type": "number",
-              "default": ""
+              "default": "0"
             }
           },
           {
@@ -5808,10 +5963,10 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "How many orders to skip in the result.",
+            "description": "How many orders to skip before the results.",
             "schema": {
-              "type": "string",
-              "default": "0"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -5819,8 +5974,8 @@
             "name": "limit",
             "description": "Limit the number of orders returned.",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "default": 50
             }
           },
           {
@@ -6890,6 +7045,7 @@
           }
         },
         "tags": [
+          "Return",
           "Order"
         ],
         "responses": {
@@ -7098,38 +7254,38 @@
                     "description": "The prices to update or add.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "amount",
+                        "variant_id"
+                      ],
                       "properties": {
                         "id": {
                           "description": "The id of the price.",
                           "type": "string"
                         },
-                        "status": {
-                          "description": "The status of the Price List.",
-                          "type": "string",
-                          "enum": [
-                            "active",
-                            "draft"
-                          ]
-                        },
                         "region_id": {
-                          "description": "The id of the Region for which the price is used.",
+                          "description": "The id of the Region for which the price is used. Only required if currecny_code is not provided.",
                           "type": "string"
                         },
                         "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
+                          "type": "string"
+                        },
+                        "variant_id": {
+                          "description": "The id of the Variant for which the price is used.",
                           "type": "string"
                         },
                         "amount": {
-                          "description": "The amount of the price.",
-                          "type": "number"
+                          "description": "The amount to charge for the Product Variant.",
+                          "type": "integer"
                         },
                         "min_quantity": {
                           "description": "The minimum quantity for which the price will be used.",
-                          "type": "number"
+                          "type": "integer"
                         },
                         "max_quantity": {
                           "description": "The maximum quantity for which the price will be used.",
-                          "type": "number"
+                          "type": "integer"
                         }
                       }
                     }
@@ -7165,15 +7321,15 @@
       },
       "delete": {
         "operationId": "DeletePriceListsPriceListPricesBatch",
-        "summary": "Batch delete prices that belongs to a Price List",
-        "description": "Batch delete prices that belongs to a Price List",
+        "summary": "Batch delete prices that belong to a Price List",
+        "description": "Batch delete prices that belong to a Price List",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Price List that the Money Amounts that will be deleted belongs to.",
+            "description": "The id of the Price List that the Money Amounts (Prices) that will be deleted belongs to.",
             "schema": {
               "type": "string"
             }
@@ -7210,7 +7366,7 @@
                       "type": "array",
                       "items": {
                         "type": "string",
-                        "description": "The id of the deleted Money Amount."
+                        "description": "The IDs of the deleted Money Amounts (Prices)."
                       }
                     },
                     "object": {
@@ -7218,7 +7374,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -7228,7 +7385,7 @@
         }
       }
     },
-    "/price_lists": {
+    "/price-lists": {
       "post": {
         "operationId": "PostPriceListsPriceList",
         "summary": "Creates a Price List",
@@ -7238,6 +7395,12 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "name",
+                  "description",
+                  "type",
+                  "prices"
+                ],
                 "properties": {
                   "name": {
                     "description": "The name of the Price List",
@@ -7246,6 +7409,16 @@
                   "description": {
                     "description": "A description of the Price List.",
                     "type": "string"
+                  },
+                  "starts_at": {
+                    "description": "The date with timezone that the Price List starts being valid.",
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "ends_at": {
+                    "description": "The date with timezone that the Price List ends being valid.",
+                    "type": "string",
+                    "format": "date"
                   },
                   "type": {
                     "description": "The type of the Price List.",
@@ -7267,18 +7440,26 @@
                     "description": "The prices of the Price List.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "amount",
+                        "variant_id"
+                      ],
                       "properties": {
                         "region_id": {
-                          "description": "The id of the Region for which the price is used.",
+                          "description": "The id of the Region for which the price is used. Only required if currecny_code is not provided.",
                           "type": "string"
                         },
                         "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
                           "type": "string"
                         },
                         "amount": {
                           "description": "The amount to charge for the Product Variant.",
                           "type": "integer"
+                        },
+                        "variant_id": {
+                          "description": "The id of the Variant for which the price is used.",
+                          "type": "string"
                         },
                         "min_quantity": {
                           "description": "The minimum quantity for which the price will be used.",
@@ -7300,7 +7481,7 @@
                       ],
                       "properties": {
                         "id": {
-                          "description": "The id of a customer group",
+                          "description": "The ID of a customer group",
                           "type": "string"
                         }
                       }
@@ -7323,6 +7504,177 @@
                   "properties": {
                     "price_list": {
                       "$ref": "#/components/schemas/price_list"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetPriceLists",
+        "summary": "List Price Lists",
+        "description": "Retrieves a list of Price Lists.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of items to get",
+            "schema": {
+              "type": "number",
+              "default": "10"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset at which to get items",
+            "schema": {
+              "type": "number",
+              "default": "0"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each item of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "field to order results by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "ID to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "query to search in price list description, price list name, and customer group name fields.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "style": "form",
+            "explode": false,
+            "description": "Status to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "draft"
+                ]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "description": "price list name to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "customer_groups",
+            "style": "form",
+            "explode": false,
+            "description": "Customer Group IDs to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "style": "form",
+            "explode": false,
+            "description": "Type to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "sale",
+                  "override"
+                ]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "price_lists": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/price_list"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -7368,7 +7720,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -7393,6 +7746,141 @@
             }
           }
         ],
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "price_list": {
+                      "$ref": "#/components/schemas/price_list"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostPriceListsPriceListPriceList",
+        "summary": "Update a Price List",
+        "description": "Updates a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Price List",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "A description of the Price List.",
+                    "type": "string"
+                  },
+                  "starts_at": {
+                    "description": "The date with timezone that the Price List starts being valid.",
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "ends_at": {
+                    "description": "The date with timezone that the Price List ends being valid.",
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "type": {
+                    "description": "The type of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "sale",
+                      "override"
+                    ]
+                  },
+                  "status": {
+                    "description": "The status of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "draft"
+                    ]
+                  },
+                  "prices": {
+                    "description": "The prices of the Price List.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "amount",
+                        "variant_id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of the price.",
+                          "type": "string"
+                        },
+                        "region_id": {
+                          "description": "The id of the Region for which the price is used. Only required if currecny_code is not provided.",
+                          "type": "string"
+                        },
+                        "currency_code": {
+                          "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
+                          "type": "string"
+                        },
+                        "variant_id": {
+                          "description": "The id of the Variant for which the price is used.",
+                          "type": "string"
+                        },
+                        "amount": {
+                          "description": "The amount to charge for the Product Variant.",
+                          "type": "integer"
+                        },
+                        "min_quantity": {
+                          "description": "The minimum quantity for which the price will be used.",
+                          "type": "integer"
+                        },
+                        "max_quantity": {
+                          "description": "The maximum quantity for which the price will be used.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "customer_groups": {
+                    "type": "array",
+                    "description": "A list of customer groups that the Price List applies to.",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "Price List"
         ],
@@ -7451,19 +7939,19 @@
                 "schema": {
                   "properties": {
                     "ids": {
-                      "type": "number",
-                      "description": "The price ids that have been deleted."
-                    },
-                    "count": {
-                      "type": "number",
-                      "description": "The number of prices that have been deleted."
+                      "type": "array",
+                      "description": "The price ids that have been deleted.",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "object": {
                       "type": "string",
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -7510,19 +7998,19 @@
                 "schema": {
                   "properties": {
                     "ids": {
-                      "type": "number",
-                      "description": "The price ids that have been deleted."
-                    },
-                    "count": {
-                      "type": "number",
-                      "description": "The number of prices that have been deleted."
+                      "type": "array",
+                      "description": "The price ids that have been deleted.",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "object": {
                       "type": "string",
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -7542,7 +8030,7 @@
           {
             "in": "query",
             "name": "q",
-            "description": "Query used for searching products.",
+            "description": "Query used for searching product title and description, variant title and sku, and collection title.",
             "schema": {
               "type": "string"
             }
@@ -7558,20 +8046,26 @@
           {
             "in": "query",
             "name": "status",
-            "description": "Status to search for",
+            "description": "Product status to search for",
             "style": "form",
             "explode": false,
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "proposed",
+                  "published",
+                  "rejected"
+                ]
               }
             }
           },
           {
             "in": "query",
             "name": "collection_id",
-            "description": "Collection ids to search for",
+            "description": "Collection IDs to search for",
             "style": "form",
             "explode": false,
             "schema": {
@@ -7584,7 +8078,7 @@
           {
             "in": "query",
             "name": "tags",
-            "description": "Tags to search for",
+            "description": "Tag IDs to search for",
             "style": "form",
             "explode": false,
             "schema": {
@@ -7597,7 +8091,7 @@
           {
             "in": "query",
             "name": "title",
-            "description": "to search for.",
+            "description": "product title to search for.",
             "schema": {
               "type": "string"
             }
@@ -7605,7 +8099,7 @@
           {
             "in": "query",
             "name": "description",
-            "description": "to search for.",
+            "description": "product description to search for.",
             "schema": {
               "type": "string"
             }
@@ -7613,7 +8107,7 @@
           {
             "in": "query",
             "name": "handle",
-            "description": "to search for.",
+            "description": "product handle to search for.",
             "schema": {
               "type": "string"
             }
@@ -7637,7 +8131,7 @@
           {
             "in": "query",
             "name": "order",
-            "description": "to retrieve products in.",
+            "description": "field to sort results by.",
             "schema": {
               "type": "string"
             }
@@ -7671,7 +8165,8 @@
             "name": "offset",
             "description": "How many products to skip in the result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -7679,7 +8174,8 @@
             "name": "limit",
             "description": "Limit the number of products returned.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 50
             }
           },
           {
@@ -7709,184 +8205,23 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "count": {
-                      "description": "The number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset of the Product query.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The limit of the Product query.",
-                      "type": "integer"
-                    },
                     "products": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/product"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price-lists": {
-      "get": {
-        "operationId": "GetPriceLists",
-        "summary": "List Price Lists",
-        "description": "Retrieves a list of Price Lists.",
-        "x-authenticated": true,
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "price_lists": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/price_list"
-                      }
                     },
                     "count": {
-                      "description": "The number of Price Lists.",
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "The total number of items available"
                     },
                     "offset": {
-                      "description": "The offset of the Price List query.",
-                      "type": "integer"
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
                     },
                     "limit": {
-                      "description": "The limit of the Price List query.",
-                      "type": "integer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price_lists/{id}": {
-      "post": {
-        "operationId": "PostPriceListsPriceListPriceList",
-        "summary": "Update a Price List",
-        "description": "Updates a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Price List",
-                    "type": "string"
-                  },
-                  "description": {
-                    "description": "A description of the Price List.",
-                    "type": "string"
-                  },
-                  "type": {
-                    "description": "The type of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "sale",
-                      "override"
-                    ]
-                  },
-                  "status": {
-                    "description": "The status of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "active",
-                      "draft"
-                    ]
-                  },
-                  "prices": {
-                    "description": "The prices of the Price List.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of the price.",
-                          "type": "string"
-                        },
-                        "region_id": {
-                          "description": "The id of the Region for which the price is used.",
-                          "type": "string"
-                        },
-                        "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
-                          "type": "string"
-                        },
-                        "amount": {
-                          "description": "The amount to charge for the Product Variant.",
-                          "type": "integer"
-                        },
-                        "min_quantity": {
-                          "description": "The minimum quantity for which the price will be used.",
-                          "type": "integer"
-                        },
-                        "max_quantity": {
-                          "description": "The maximum quantity for which the price will be used.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "customer_groups": {
-                    "type": "array",
-                    "description": "A list of customer groups that the Price List applies to.",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "The id of a customer group",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/price_list"
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -7908,13 +8243,23 @@
             "name": "limit",
             "description": "The number of tags to return.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
             "in": "query",
             "name": "offset",
-            "description": "The offset of tags to return.",
+            "description": "The number of items to skip before the results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "The field to sort items by.",
             "schema": {
               "type": "string"
             }
@@ -7922,7 +8267,20 @@
           {
             "in": "query",
             "name": "value",
-            "description": "The value of tags to return.",
+            "style": "form",
+            "explode": false,
+            "description": "The tag values to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "A query string to search values for",
             "schema": {
               "type": "string"
             }
@@ -7930,9 +8288,14 @@
           {
             "in": "query",
             "name": "id",
-            "description": "The id of tags to return.",
+            "style": "form",
+            "explode": false,
+            "description": "The tag IDs to search for",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -7962,8 +8325,20 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "tags": {
+                    "product_tags": {
                       "$ref": "#/components/schemas/product_tag"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -7985,13 +8360,23 @@
             "name": "limit",
             "description": "The number of types to return.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
             "in": "query",
             "name": "offset",
-            "description": "The offset of types to return.",
+            "description": "The number of items to skip before the results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "The field to sort items by.",
             "schema": {
               "type": "string"
             }
@@ -7999,15 +8384,33 @@
           {
             "in": "query",
             "name": "value",
-            "description": "The value of types to return.",
+            "style": "form",
+            "explode": false,
+            "description": "The type values to search for",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
             "in": "query",
             "name": "id",
-            "description": "The id of types to return.",
+            "style": "form",
+            "explode": false,
+            "description": "The type IDs to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "A query string to search values for",
             "schema": {
               "type": "string"
             }
@@ -8030,7 +8433,7 @@
           }
         ],
         "tags": [
-          "Product Tag"
+          "Product Type"
         ],
         "responses": {
           "200": {
@@ -8039,8 +8442,20 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "types": {
-                      "$ref": "#/components/schemas/product_tag"
+                    "product_types": {
+                      "$ref": "#/components/schemas/product_type"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -8116,9 +8531,7 @@
             "application/json": {
               "schema": {
                 "required": [
-                  "title",
-                  "subtitle",
-                  "description"
+                  "title"
                 ],
                 "properties": {
                   "title": {
@@ -8135,11 +8548,13 @@
                   },
                   "is_giftcard": {
                     "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                   },
                   "discountable": {
                     "description": "A flag to indicate if discounts can be applied to the LineItems generated from this Product",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": true
                   },
                   "images": {
                     "description": "Images of the Product.",
@@ -8156,10 +8571,28 @@
                     "description": "A unique handle to identify the Product by.",
                     "type": "string"
                   },
+                  "status": {
+                    "description": "The status of the product.",
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "proposed",
+                      "published",
+                      "rejected"
+                    ],
+                    "default": "draft"
+                  },
                   "type": {
                     "description": "The Product Type to associate the Product with.",
                     "type": "object",
+                    "required": [
+                      "value"
+                    ],
                     "properties": {
+                      "id": {
+                        "description": "The ID of the Product Type.",
+                        "type": "string"
+                      },
                       "value": {
                         "description": "The value of the Product Type.",
                         "type": "string"
@@ -8174,6 +8607,9 @@
                     "description": "Tags to associate the Product with.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "value"
+                      ],
                       "properties": {
                         "id": {
                           "description": "The id of an existing Tag.",
@@ -8190,6 +8626,9 @@
                     "description": "The Options that the Product should have. These define on which properties the Product's Product Variants will differ.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "title"
+                      ],
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Option by.",
@@ -8202,6 +8641,9 @@
                     "description": "A list of Product Variants to create with the Product.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "title"
+                      ],
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Variant by.",
@@ -8229,7 +8671,8 @@
                         },
                         "inventory_quantity": {
                           "description": "The amount of stock kept for the Product Variant.",
-                          "type": "integer"
+                          "type": "integer",
+                          "default": 0
                         },
                         "allow_backorder": {
                           "description": "Whether the Product Variant can be purchased when out of stock.",
@@ -8241,19 +8684,19 @@
                         },
                         "weight": {
                           "description": "The wieght of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "length": {
                           "description": "The length of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "height": {
                           "description": "The height of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "width": {
                           "description": "The width of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "origin_country": {
                           "description": "The country of origin of the Product Variant.",
@@ -8274,21 +8717,32 @@
                         "prices": {
                           "type": "array",
                           "items": {
+                            "required": [
+                              "amount"
+                            ],
                             "properties": {
+                              "id": {
+                                "description": "The id of the Price.",
+                                "type": "string"
+                              },
                               "region_id": {
-                                "description": "The id of the Region for which the price is used.",
+                                "description": "The id of the Region for which the price is used. Only required if currency_code is not provided.",
                                 "type": "string"
                               },
                               "currency_code": {
-                                "description": "The 3 character ISO currency code for which the price will be used.",
+                                "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
                                 "type": "string"
                               },
                               "amount": {
                                 "description": "The amount to charge for the Product Variant.",
                                 "type": "integer"
                               },
-                              "sale_amount": {
-                                "description": "The sale amount to charge for the Product Variant.",
+                              "min_quantity": {
+                                "description": "The minimum quantity for which the price will be used.",
+                                "type": "integer"
+                              },
+                              "max_quantity": {
+                                "description": "The maximum quantity for which the price will be used.",
                                 "type": "integer"
                               }
                             }
@@ -8310,19 +8764,19 @@
                   },
                   "weight": {
                     "description": "The wieght of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "length": {
                     "description": "The length of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "height": {
                     "description": "The height of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "width": {
                     "description": "The width of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "origin_country": {
                     "description": "The country of origin of the Product.",
@@ -8374,7 +8828,7 @@
           {
             "in": "query",
             "name": "q",
-            "description": "Query used for searching products.",
+            "description": "Query used for searching product title and description, variant title and sku, and collection title.",
             "schema": {
               "type": "string"
             }
@@ -8396,7 +8850,13 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "draft",
+                  "proposed",
+                  "published",
+                  "rejected"
+                ]
               }
             }
           },
@@ -8418,7 +8878,20 @@
             "name": "tags",
             "style": "form",
             "explode": false,
-            "description": "Tags to search for",
+            "description": "Tag IDs to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "price_list_id",
+            "style": "form",
+            "explode": false,
+            "description": "Price List IDs to search for",
             "schema": {
               "type": "array",
               "items": {
@@ -8429,7 +8902,7 @@
           {
             "in": "query",
             "name": "title",
-            "description": "to search for.",
+            "description": "title to search for.",
             "schema": {
               "type": "string"
             }
@@ -8437,7 +8910,7 @@
           {
             "in": "query",
             "name": "description",
-            "description": "to search for.",
+            "description": "description to search for.",
             "schema": {
               "type": "string"
             }
@@ -8445,7 +8918,7 @@
           {
             "in": "query",
             "name": "handle",
-            "description": "to search for.",
+            "description": "handle to search for.",
             "schema": {
               "type": "string"
             }
@@ -8455,21 +8928,13 @@
             "name": "is_giftcard",
             "description": "Search for giftcards using is_giftcard=true.",
             "schema": {
-              "type": "string"
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "type",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve products in.",
+            "description": "type ID to search for.",
             "schema": {
               "type": "string"
             }
@@ -8503,13 +8968,23 @@
             "name": "offset",
             "description": "How many products to skip in the result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
             "in": "query",
             "name": "limit",
             "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "the field to use to sort items by.",
             "schema": {
               "type": "string"
             }
@@ -8541,23 +9016,23 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "count": {
-                      "description": "The number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset of the Product query.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The limit of the Product query.",
-                      "type": "integer"
-                    },
                     "products": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/product"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -8620,7 +9095,8 @@
                   },
                   "inventory_quantity": {
                     "description": "The amount of stock kept for the Product Variant.",
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 0
                   },
                   "allow_backorder": {
                     "description": "Whether the Product Variant can be purchased when out of stock.",
@@ -8632,19 +9108,19 @@
                   },
                   "weight": {
                     "description": "The wieght of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "length": {
                     "description": "The length of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "height": {
                     "description": "The height of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "width": {
                     "description": "The width of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "origin_country": {
                     "description": "The country of origin of the Product Variant.",
@@ -8665,13 +9141,20 @@
                   "prices": {
                     "type": "array",
                     "items": {
+                      "required": [
+                        "amount"
+                      ],
                       "properties": {
+                        "id": {
+                          "description": "The id of the price.",
+                          "type": "string"
+                        },
                         "region_id": {
-                          "description": "The id of the Region for which the price is used.",
+                          "description": "The id of the Region for which the price is used. Only required if currency_code is not provided.",
                           "type": "string"
                         },
                         "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
                           "type": "string"
                         },
                         "amount": {
@@ -8692,6 +9175,10 @@
                   "options": {
                     "type": "array",
                     "items": {
+                      "required": [
+                        "option_id",
+                        "value"
+                      ],
                       "properties": {
                         "option_id": {
                           "description": "The id of the Product Option to set the value for.",
@@ -8763,17 +9250,19 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "How many products to skip in the result.",
+            "description": "How many items to skip before the results.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
             "in": "query",
             "name": "limit",
-            "description": "Limit the number of products returned.",
+            "description": "Limit the number of items returned.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 100
             }
           }
         ],
@@ -8792,6 +9281,18 @@
                       "items": {
                         "$ref": "#/components/schemas/product_variant"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -8837,7 +9338,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "id": {
+                    "option_id": {
                       "type": "string",
                       "description": "The id of the deleted Product Option"
                     },
@@ -8846,7 +9347,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     },
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -8957,7 +9459,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -9058,10 +9561,27 @@
                     "description": "A unique handle to identify the Product by.",
                     "type": "string"
                   },
+                  "status": {
+                    "description": "The status of the product.",
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "proposed",
+                      "published",
+                      "rejected"
+                    ]
+                  },
                   "type": {
                     "description": "The Product Type to associate the Product with.",
                     "type": "object",
+                    "required": [
+                      "value"
+                    ],
                     "properties": {
+                      "id": {
+                        "description": "The ID of the Product Type.",
+                        "type": "string"
+                      },
                       "value": {
                         "description": "The value of the Product Type.",
                         "type": "string"
@@ -9069,13 +9589,16 @@
                     }
                   },
                   "collection_id": {
-                    "description": "The id of the Collection the Product should belong to.",
+                    "description": "The ID of the Collection the Product should belong to.",
                     "type": "string"
                   },
                   "tags": {
                     "description": "Tags to associate the Product with.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "value"
+                      ],
                       "properties": {
                         "id": {
                           "description": "The id of an existing Tag.",
@@ -9105,6 +9628,10 @@
                     "type": "array",
                     "items": {
                       "properties": {
+                        "id": {
+                          "description": "The ID of the Product Variant.",
+                          "type": "string"
+                        },
                         "title": {
                           "description": "The title to identify the Product Variant by.",
                           "type": "string"
@@ -9143,19 +9670,19 @@
                         },
                         "weight": {
                           "description": "The wieght of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "length": {
                           "description": "The length of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "height": {
                           "description": "The height of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "width": {
                           "description": "The width of the Product Variant.",
-                          "type": "string"
+                          "type": "number"
                         },
                         "origin_country": {
                           "description": "The country of origin of the Product Variant.",
@@ -9176,21 +9703,32 @@
                         "prices": {
                           "type": "array",
                           "items": {
+                            "required": [
+                              "amount"
+                            ],
                             "properties": {
+                              "id": {
+                                "description": "The id of the Price.",
+                                "type": "string"
+                              },
                               "region_id": {
-                                "description": "The id of the Region for which the price is used.",
+                                "description": "The id of the Region for which the price is used. Only required if currency_code is not provided.",
                                 "type": "string"
                               },
                               "currency_code": {
-                                "description": "The 3 character ISO currency code for which the price will be used.",
+                                "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
                                 "type": "string"
                               },
                               "amount": {
                                 "description": "The amount to charge for the Product Variant.",
                                 "type": "integer"
                               },
-                              "sale_amount": {
-                                "description": "The sale amount to charge for the Product Variant.",
+                              "min_quantity": {
+                                "description": "The minimum quantity for which the price will be used.",
+                                "type": "integer"
+                              },
+                              "max_quantity": {
+                                "description": "The maximum quantity for which the price will be used.",
                                 "type": "integer"
                               }
                             }
@@ -9199,7 +9737,15 @@
                         "options": {
                           "type": "array",
                           "items": {
+                            "required": [
+                              "option_id",
+                              "value"
+                            ],
                             "properties": {
+                              "option_id": {
+                                "description": "The id of the Option.",
+                                "type": "string"
+                              },
                               "value": {
                                 "description": "The value to give for the Product Option at the same index in the Product's `options` field.",
                                 "type": "string"
@@ -9212,19 +9758,19 @@
                   },
                   "weight": {
                     "description": "The wieght of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "length": {
                     "description": "The length of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "height": {
                     "description": "The height of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "width": {
                     "description": "The width of the Product.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "origin_country": {
                     "description": "The country of origin of the Product.",
@@ -9304,7 +9850,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "id": {
+                    "variant_id": {
                       "type": "string",
                       "description": "The id of the deleted Product Variant."
                     },
@@ -9313,7 +9859,11 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/product"
                     }
                   }
                 }
@@ -9390,19 +9940,19 @@
                   },
                   "weight": {
                     "description": "The wieght of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "length": {
                     "description": "The length of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "height": {
                     "description": "The height of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "width": {
                     "description": "The width of the Product Variant.",
-                    "type": "string"
+                    "type": "number"
                   },
                   "origin_country": {
                     "description": "The country of origin of the Product Variant.",
@@ -9423,17 +9973,20 @@
                   "prices": {
                     "type": "array",
                     "items": {
+                      "required": [
+                        "amount"
+                      ],
                       "properties": {
                         "id": {
                           "description": "The id of the price.",
                           "type": "string"
                         },
                         "region_id": {
-                          "description": "The id of the Region for which the price is used.",
+                          "description": "The id of the Region for which the price is used. Only required if currency_code is not provided.",
                           "type": "string"
                         },
                         "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "description": "The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.",
                           "type": "string"
                         },
                         "amount": {
@@ -9454,6 +10007,10 @@
                   "options": {
                     "type": "array",
                     "items": {
+                      "required": [
+                        "option_id",
+                        "value"
+                      ],
                       "properties": {
                         "option_id": {
                           "description": "The id of the Product Option to set the value for.",
@@ -9483,6 +10040,49 @@
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/tag-usage": {
+      "get": {
+        "operationId": "GetProductsTagUsage",
+        "summary": "List Product Tags Usage Number",
+        "description": "Retrieves a list of Product Tags with how many times each is used.",
+        "x-authenticated": true,
+        "tags": [
+          "Product Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "description": "The ID of the tag.",
+                            "type": "string"
+                          },
+                          "usage_count": {
+                            "description": "The number of products that use this tag.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "The value of the tag.",
+                            "type": "string"
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -9760,7 +10360,10 @@
                 "required": [
                   "name",
                   "currency_code",
-                  "tax_rate"
+                  "tax_rate",
+                  "payment_providers",
+                  "fulfillment_providers",
+                  "countries"
                 ],
                 "properties": {
                   "name": {
@@ -9780,21 +10383,24 @@
                     "type": "number"
                   },
                   "payment_providers": {
-                    "description": "A list of Payment Providers that should be enabled for the Region",
+                    "description": "A list of Payment Provider IDs that should be enabled for the Region",
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
                   "fulfillment_providers": {
-                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
+                    "description": "A list of Fulfillment Provider IDs that should be enabled for the Region",
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
                   "countries": {
-                    "description": "A list of countries that should be included in the Region.",
+                    "description": "A list of countries' 2 ISO Characters that should be included in the Region.",
+                    "example": [
+                      "US"
+                    ],
                     "type": "array",
                     "items": {
                       "type": "string"
@@ -9835,7 +10441,8 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "default": 50
             },
             "required": false,
             "description": "limit the number of regions in response"
@@ -9844,7 +10451,8 @@
             "in": "query",
             "name": "offset",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "default": 0
             },
             "required": false,
             "description": "Offset of regions in response (used for pagination)"
@@ -9892,6 +10500,18 @@
                       "items": {
                         "$ref": "#/components/schemas/region"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -9984,7 +10604,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -10079,21 +10700,21 @@
                     "type": "number"
                   },
                   "payment_providers": {
-                    "description": "A list of Payment Providers that should be enabled for the Region",
+                    "description": "A list of Payment Provider IDs that should be enabled for the Region",
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
                   "fulfillment_providers": {
-                    "description": "A list of Fulfillment Providers that should be enabled for the Region",
+                    "description": "A list of Fulfillment Provider IDs that should be enabled for the Region",
                     "type": "array",
                     "items": {
                       "type": "string"
                     }
                   },
                   "countries": {
-                    "description": "A list of countries that should be included in the Region.",
+                    "description": "A list of countries' 2 ISO Characters that should be included in the Region.",
                     "type": "array",
                     "items": {
                       "type": "string"
@@ -10161,8 +10782,17 @@
                             "description": "id of the fulfillment provider"
                           },
                           "options": {
-                            "type": "object",
-                            "description": "fulfillment provider options"
+                            "type": "array",
+                            "description": "fulfillment provider options",
+                            "example": [
+                              {
+                                "id": "manual-fulfillment"
+                              },
+                              {
+                                "id": "manual-fulfillment-return",
+                                "is_return": true
+                              }
+                            ]
                           }
                         }
                       }
@@ -10502,7 +11132,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -10572,6 +11203,10 @@
                     "description": "The label to display to the Customer.",
                     "type": "string"
                   },
+                  "value": {
+                    "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
                   "description": {
                     "description": "An optional description to for the Reason.",
                     "type": "string"
@@ -10632,7 +11267,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "return": {
+                    "order": {
                       "$ref": "#/components/schemas/order"
                     }
                   }
@@ -10654,7 +11289,8 @@
             "name": "limit",
             "description": "The upper limit for the amount of responses returned.",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "50"
             }
           },
           {
@@ -10662,7 +11298,8 @@
             "name": "offset",
             "description": "The offset of the list returned.",
             "schema": {
-              "type": "number"
+              "type": "number",
+              "default": "0"
             }
           }
         ],
@@ -10681,6 +11318,18 @@
                       "items": {
                         "$ref": "#/components/schemas/return"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -10718,6 +11367,10 @@
                     "description": "The Line Items that have been received.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item.",
@@ -10732,7 +11385,7 @@
                   },
                   "refund": {
                     "description": "The amount to refund.",
-                    "type": "integer"
+                    "type": "number"
                   }
                 }
               }
@@ -10803,6 +11456,10 @@
                   "description": {
                     "type": "string",
                     "description": "Description of the sales channel"
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the sales channel is enabled or not"
                   }
                 }
               }
@@ -10847,7 +11504,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -10961,21 +11619,28 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "name",
+                  "region_id",
+                  "provider_id",
+                  "data",
+                  "price_type"
+                ],
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Option",
                     "type": "string"
                   },
                   "region_id": {
-                    "description": "The id of the Region in which the Shipping Option will be available.",
+                    "description": "The ID of the Region in which the Shipping Option will be available.",
                     "type": "string"
                   },
                   "provider_id": {
-                    "description": "The id of the Fulfillment Provider that handles the Shipping Option.",
+                    "description": "The ID of the Fulfillment Provider that handles the Shipping Option.",
                     "type": "string"
                   },
                   "profile_id": {
-                    "description": "The id of the Shipping Profile to add the Shipping Option to.",
+                    "description": "The ID of the Shipping Profile to add the Shipping Option to.",
                     "type": "number"
                   },
                   "data": {
@@ -10998,6 +11663,10 @@
                     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "type",
+                        "amount"
+                      ],
                       "properties": {
                         "type": {
                           "description": "The type of the requirement",
@@ -11016,11 +11685,13 @@
                   },
                   "is_return": {
                     "description": "Whether the Shipping Option defines a return shipment.",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                   },
                   "admin_only": {
                     "description": "If true, the option can be used for draft orders",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                   },
                   "metadata": {
                     "description": "An optional set of key-value pairs with additional information.",
@@ -11063,7 +11734,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Region to fetch options from"
+            "description": "Region ID to fetch options from"
           },
           {
             "in": "query",
@@ -11071,7 +11742,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Flag for fetching return options"
+            "description": "Flag for fetching return options only"
           },
           {
             "in": "query",
@@ -11097,6 +11768,10 @@
                       "items": {
                         "$ref": "#/components/schemas/shipping_option"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
                     }
                   }
                 }
@@ -11142,7 +11817,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -11207,6 +11883,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "requirements"
+                ],
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Option",
@@ -11228,7 +11907,15 @@
                     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "type",
+                        "amount"
+                      ],
                       "properties": {
+                        "id": {
+                          "description": "The ID of the requirement",
+                          "type": "string"
+                        },
                         "type": {
                           "description": "The type of the requirement",
                           "type": "string",
@@ -11378,7 +12065,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -11462,7 +12150,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "shipping_profiles": {
+                    "shipping_profile": {
                       "$ref": "#/components/schemas/shipping_profile"
                     }
                   }
@@ -11602,6 +12290,17 @@
                   "default_currency_code": {
                     "description": "The default currency code for the Store.",
                     "type": "string"
+                  },
+                  "currencies": {
+                    "description": "Array of currencies in 2 character ISO code format.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
                   }
                 }
               }
@@ -11648,7 +12347,7 @@
                     "payment_providers": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/store"
+                        "$ref": "#/components/schemas/payment_provider"
                       }
                     }
                   }
@@ -11678,7 +12377,7 @@
                     "tax_providers": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/store"
+                        "$ref": "#/components/schemas/tax_provider"
                       }
                     }
                   }
@@ -11732,6 +12431,26 @@
         "operationId": "GetSwaps",
         "summary": "List Swaps",
         "description": "Retrieves a list of Swaps.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The upper limit for the amount of responses returned.",
+            "schema": {
+              "type": "number",
+              "default": "50"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of the list returned.",
+            "schema": {
+              "type": "number",
+              "default": "0"
+            }
+          }
+        ],
         "x-authenticated": true,
         "tags": [
           "Swap"
@@ -11748,6 +12467,18 @@
                       "items": {
                         "$ref": "#/components/schemas/swap"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -11762,9 +12493,57 @@
         "operationId": "PostTaxRatesTaxRateProductTypes",
         "summary": "Add Tax Rate to Product Types",
         "description": "Associates a Tax Rate with a list of Product Types",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "product_types"
+                ],
+                "properties": {
+                  "product_types": {
+                    "type": "array",
+                    "description": "The IDs of the types of products to associate with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11774,10 +12553,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11790,9 +12566,57 @@
         "operationId": "DeleteTaxRatesTaxRateProductTypes",
         "summary": "Remove Tax Rate from Product Types",
         "description": "Removes a Tax Rate from a list of Product Types",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "product_types"
+                ],
+                "properties": {
+                  "product_types": {
+                    "type": "array",
+                    "description": "The IDs of the types of products to remove association with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11802,10 +12626,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11820,9 +12641,57 @@
         "operationId": "PostTaxRatesTaxRateProducts",
         "summary": "Add Tax Rate to Products",
         "description": "Associates a Tax Rate with a list of Products",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "products"
+                ],
+                "properties": {
+                  "products": {
+                    "type": "array",
+                    "description": "The IDs of the products to associate with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11832,10 +12701,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11848,9 +12714,57 @@
         "operationId": "DeleteTaxRatesTaxRateProducts",
         "summary": "Removes Tax Rate from Products",
         "description": "Removes a Tax Rate from a list of Products",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "products"
+                ],
+                "properties": {
+                  "products": {
+                    "type": "array",
+                    "description": "The IDs of the products to remove association with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11860,10 +12774,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11877,10 +12788,58 @@
       "post": {
         "operationId": "PostTaxRatesTaxRateShippingOptions",
         "summary": "Add Tax Rate to Product Types",
-        "description": "Associates a Tax Rate with a list of Product Types",
+        "description": "Associates a Tax Rate with a list of Shipping Options",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "shipping_options"
+                ],
+                "properties": {
+                  "shipping_options": {
+                    "type": "array",
+                    "description": "The IDs of the shipping options to associate with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11890,10 +12849,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11906,9 +12862,57 @@
         "operationId": "DeleteTaxRatesTaxRateShippingOptions",
         "summary": "Removes a Tax Rate from Product Types",
         "description": "Removes a Tax Rate from a list of Product Types",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "shipping_options"
+                ],
+                "properties": {
+                  "shipping_options": {
+                    "type": "array",
+                    "description": "The IDs of the shipping options to remove association with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11918,10 +12922,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11936,9 +12937,89 @@
         "operationId": "PostTaxRates",
         "summary": "Create a Tax Rate",
         "description": "Creates a Tax Rate",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "code",
+                  "name",
+                  "region_id"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "A code to identify the tax type by"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "A human friendly name for the tax"
+                  },
+                  "region_id": {
+                    "type": "string",
+                    "description": "The ID of the Region that the rate belongs to"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "description": "The numeric rate to charge"
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "The IDs of the products associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "shipping_options": {
+                    "type": "array",
+                    "description": "The IDs of the shipping options associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_types": {
+                    "type": "array",
+                    "description": "The IDs of the types of products associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -11948,10 +13029,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -11968,16 +13046,8 @@
         "parameters": [
           {
             "in": "query",
-            "name": "q",
-            "description": "Query used for searching orders.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Id of the order to search for.",
+            "name": "name",
+            "description": "Name of tax rate to retrieve",
             "schema": {
               "type": "string"
             }
@@ -11985,15 +13055,27 @@
           {
             "in": "query",
             "name": "region_id",
-            "description": "to search for.",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by Region ID",
             "schema": {
-              "type": "string"
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
             }
           },
           {
             "in": "query",
             "name": "code",
-            "description": "to search for.",
+            "description": "code to search for.",
             "schema": {
               "type": "string"
             }
@@ -12001,54 +13083,85 @@
           {
             "in": "query",
             "name": "rate",
-            "description": "to search for.",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by Rate",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting orders was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting orders was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "lt": {
+                      "type": "number",
+                      "description": "filter by rates less than this number"
+                    },
+                    "gt": {
+                      "type": "number",
+                      "description": "filter by rates greater than this number"
+                    },
+                    "lte": {
+                      "type": "number",
+                      "description": "filter by rates less than or equal to this number"
+                    },
+                    "gte": {
+                      "type": "number",
+                      "description": "filter by rates greater than or equal to this number"
+                    }
+                  }
+                }
+              ]
             }
           },
           {
             "in": "query",
             "name": "offset",
-            "description": "How many orders to skip in the result.",
+            "description": "How many tax rates to skip before retrieving the result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
             "in": "query",
             "name": "limit",
-            "description": "Limit the number of orders returned.",
+            "description": "Limit the number of tax rates returned.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 50
             }
           },
           {
             "in": "query",
             "name": "fields",
-            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "description": "Which fields should be included in each item.",
+            "style": "form",
+            "explode": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved for each item.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
         "tags": [
-          "Order"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -12057,11 +13170,23 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "orders": {
+                    "tax_rates": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/order"
+                        "$ref": "#/components/schemas/tax_rate"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -12089,7 +13214,7 @@
           }
         ],
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -12107,7 +13232,8 @@
                       "description": "The type of the object that was deleted."
                     },
                     "deleted": {
-                      "type": "boolean"
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
                     }
                   }
                 }
@@ -12122,9 +13248,37 @@
         "operationId": "GetTaxRatesTaxRate",
         "summary": "Get Tax Rate",
         "description": "Retrieves a TaxRate",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -12134,10 +13288,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -12150,9 +13301,84 @@
         "operationId": "PostTaxRatesTaxRate",
         "summary": "Update a Tax Rate",
         "description": "Updates a Tax Rate",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Which fields should be included in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Which fields should be expanded and retrieved in the result.",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "A code to identify the tax type by"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "A human friendly name for the tax"
+                  },
+                  "region_id": {
+                    "type": "string",
+                    "description": "The ID of the Region that the rate belongs to"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "description": "The numeric rate to charge"
+                  },
+                  "products": {
+                    "type": "array",
+                    "description": "The IDs of the products associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "shipping_options": {
+                    "type": "array",
+                    "description": "The IDs of the shipping options associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "product_types": {
+                    "type": "array",
+                    "description": "The IDs of the types of products associated with this tax rate",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Tax Rates"
+          "Tax Rate"
         ],
         "responses": {
           "200": {
@@ -12162,10 +13388,7 @@
                 "schema": {
                   "properties": {
                     "tax_rate": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/tax_rate"
-                      }
+                      "$ref": "#/components/schemas/tax_rate"
                     }
                   }
                 }
@@ -12175,14 +13398,14 @@
         }
       }
     },
-    "/": {
+    "/uploads": {
       "post": {
         "operationId": "PostUploads",
-        "summary": "Uploads an array of files",
-        "description": "Uploads an array of files to the specific fileservice that is installed in medusa.",
+        "summary": "Uploads a file",
+        "description": "Uploads a file to the specific fileservice that is installed in Medusa.",
         "x-authenticated": true,
         "tags": [
-          "Uploads"
+          "Upload"
         ],
         "requestBody": {
           "content": {
@@ -12191,11 +13414,8 @@
                 "type": "object",
                 "properties": {
                   "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -12212,7 +13432,14 @@
                     "uploads": {
                       "type": "array",
                       "items": {
-                        "type": "string"
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The URL of the uploaded file.",
+                            "format": "uri"
+                          }
+                        }
                       }
                     }
                   }
@@ -12240,7 +13467,8 @@
                 "properties": {
                   "email": {
                     "description": "The Users email.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                   },
                   "first_name": {
                     "description": "The name of the User.",
@@ -12252,11 +13480,17 @@
                   },
                   "role": {
                     "description": "Userrole assigned to the user.",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "member",
+                      "developer"
+                    ]
                   },
                   "password": {
                     "description": "The Users password.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "password"
                   }
                 }
               }
@@ -12264,7 +13498,7 @@
           }
         },
         "tags": [
-          "Users"
+          "User"
         ],
         "responses": {
           "200": {
@@ -12289,7 +13523,7 @@
         "description": "Retrieves all users.",
         "x-authenticated": true,
         "tags": [
-          "Users"
+          "User"
         ],
         "responses": {
           "200": {
@@ -12312,126 +13546,11 @@
         }
       }
     },
-    "/users/{user_id}": {
+    "/users/{id}": {
       "delete": {
         "operationId": "DeleteUsersUser",
         "summary": "Delete a User",
         "description": "Deletes a User",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "user_id",
-            "required": true,
-            "description": "The id of the User.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Shipping Profile."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostUsersUser",
-        "summary": "Update a User",
-        "description": "Updates a User",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "user_id",
-            "required": true,
-            "description": "The id of the User.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "first_name",
-                  "last_name",
-                  "role",
-                  "api_token"
-                ],
-                "properties": {
-                  "first_name": {
-                    "type": "string",
-                    "description": "The name of the User."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The name of the User."
-                  },
-                  "role": {
-                    "type": "string",
-                    "description": "The role of the User(admin, member, developer)."
-                  },
-                  "api_token": {
-                    "type": "string",
-                    "description": "The api_token of the User."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "operationId": "GetUsersUser",
-        "summary": "Retrieve a User",
-        "description": "Retrieves a User.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -12454,6 +13573,122 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted user."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetUsersUser",
+        "summary": "Retrieve a User",
+        "description": "Retrieves a User.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the User.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostUsersUser",
+        "summary": "Update a User",
+        "description": "Updates a User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the User.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "first_name": {
+                    "description": "The name of the User.",
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "description": "The name of the User.",
+                    "type": "string"
+                  },
+                  "role": {
+                    "description": "Userrole assigned to the user.",
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "member",
+                      "developer"
+                    ]
+                  },
+                  "api_token": {
+                    "description": "The api token of the User.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
                     }
@@ -12467,6 +13702,40 @@
     },
     "/users/password-token": {
       "post": {
+        "operationId": "PostUsersUserPasswordToken",
+        "summary": "Generate a password token for a User.",
+        "description": "Generates a password token for a User with a given email.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The Users email.",
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/reset-password": {
+      "post": {
         "operationId": "PostUsersUserPassword",
         "summary": "Set the password for a User.",
         "description": "Sets the password for a User given the correct token.",
@@ -12476,14 +13745,14 @@
             "application/json": {
               "schema": {
                 "required": [
-                  "email",
                   "token",
                   "password"
                 ],
                 "properties": {
                   "email": {
                     "description": "The Users email.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "email"
                   },
                   "token": {
                     "description": "The token generated from the 'password-token' endpoint.",
@@ -12491,7 +13760,8 @@
                   },
                   "password": {
                     "description": "The Users new password.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "password"
                   }
                 }
               }
@@ -12499,7 +13769,7 @@
           }
         },
         "tags": [
-          "Users"
+          "User"
         ],
         "responses": {
           "200": {
@@ -12539,7 +13809,8 @@
             "name": "offset",
             "description": "How many variants to skip in the result.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 0
             }
           },
           {
@@ -12547,7 +13818,8 @@
             "name": "limit",
             "description": "Limit the number of variants returned.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 20
             }
           }
         ],
@@ -12566,6 +13838,18 @@
                       "items": {
                         "$ref": "#/components/schemas/product_variant"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
                     }
                   }
                 }

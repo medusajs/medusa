@@ -18,7 +18,7 @@ import { TaxProviderService } from "../../../../services"
  *             tax_providers:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/store"
+ *                 $ref: "#/components/schemas/tax_provider"
  */
 export default async (req, res) => {
   const taxProviderService: TaxProviderService =

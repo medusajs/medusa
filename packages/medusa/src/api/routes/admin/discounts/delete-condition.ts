@@ -20,7 +20,7 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
- *   - DiscountCondition
+ *   - Discount Condition
  * responses:
  *   200:
  *     description: OK

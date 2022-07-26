@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,6 +8,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
+
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -23,6 +24,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - requirements
  *         properties:
  *           name:
  *             description: "The name of the Shipping Option"
@@ -40,7 +43,13 @@ import { validator } from "../../../../utils/validator"
  *             description: "The requirements that must be satisfied for the Shipping Option to be available."
  *             type: array
  *             items:
+ *               required:
+ *                 - type
+ *                 - amount
  *               properties:
+ *                 id:
+ *                   description: The ID of the requirement
+ *                   type: string
  *                 type:
  *                   description: The type of the requirement
  *                   type: string

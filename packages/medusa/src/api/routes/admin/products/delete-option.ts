@@ -1,4 +1,5 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
 import { ProductService } from "../../../../services"
 
 /**
@@ -19,7 +20,7 @@ import { ProductService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             id:
+ *             option_id:
  *               type: string
  *               description: The id of the deleted Product Option
  *             object:
@@ -27,6 +28,7 @@ import { ProductService } from "../../../../services"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  *             product:
  *               $ref: "#/components/schemas/product"
  */

@@ -6,12 +6,12 @@ import CustomerController from "../../../../controllers/customers"
  * @oas [get] /customer-groups/{id}/customers
  * operationId: "GetCustomerGroupsGroupCustomers"
  * summary: "List Customers"
- * description: "Retrieves a list of Customers."
+ * description: "Retrieves a list of customers in a customer group"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the customer group.
  * tags:
- *   - Customer
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

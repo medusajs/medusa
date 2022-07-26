@@ -1,5 +1,3 @@
-import { Type } from "class-transformer"
-import { pickBy } from "lodash"
 import {
   IsArray,
   IsBoolean,
@@ -8,12 +6,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductStatus } from "../../../../models"
+
+import { AdminGetProductsPaginationParams } from "../products"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
-import { AdminGetProductsPaginationParams } from "../products"
 import PriceListService from "../../../../services/price-list"
+import { ProductStatus } from "../../../../models"
 import { Request } from "express"
+import { Type } from "class-transformer"
+import { pickBy } from "lodash"
 
 /**
  * @oas [get] /price-lists/:id/products
@@ -22,20 +23,21 @@ import { Request } from "express"
  * description: "Retrieves a list of Product that are part of a Price List"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching products.
+ *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
  *   - (query) id {string} Id of the product to search for.
  *   - in: query
  *     name: status
- *     description: Status to search for
+ *     description: Product status to search for
  *     style: form
  *     explode: false
  *     schema:
  *       type: array
  *       items:
  *         type: string
+ *         enum: [draft, proposed, published, rejected]
  *   - in: query
  *     name: collection_id
- *     description: Collection ids to search for
+ *     description: Collection IDs to search for
  *     style: form
  *     explode: false
  *     schema:
@@ -44,24 +46,24 @@ import { Request } from "express"
  *         type: string
  *   - in: query
  *     name: tags
- *     description: Tags to search for
+ *     description: Tag IDs to search for
  *     style: form
  *     explode: false
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) title {string} to search for.
- *   - (query) description {string} to search for.
- *   - (query) handle {string} to search for.
+ *   - (query) title {string} product title to search for.
+ *   - (query) description {string} product description to search for.
+ *   - (query) handle {string} product handle to search for.
  *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
  *   - (query) type {string} to search for.
- *   - (query) order {string} to retrieve products in.
+ *   - (query) order {string} field to sort results by.
  *   - (query) deleted_at {string} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {string} Date comparison for when resulting products was created, i.e. less than, greater than etc.
  *   - (query) updated_at {string} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * tags:
@@ -73,19 +75,19 @@ import { Request } from "express"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The number of Products.
- *               type: integer
- *             offset:
- *               description: The offset of the Product query.
- *               type: integer
- *             limit:
- *               description: The limit of the Product query.
- *               type: integer
  *             products:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res) => {
   const { id } = req.params

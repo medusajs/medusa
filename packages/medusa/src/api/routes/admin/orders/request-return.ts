@@ -77,6 +77,7 @@ import { validator } from "../../../../utils/validator"
  *             description: The amount to refund.
  *             type: integer
  * tags:
+ *   - Return
  *   - Order
  * responses:
  *   200:

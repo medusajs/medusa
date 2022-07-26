@@ -1,4 +1,5 @@
-import { IsArray, IsOptional, IsString, IsObject } from "class-validator"
+import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
+
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -28,6 +29,14 @@ import { validator } from "../../../../utils/validator"
  *           default_currency_code:
  *             description: "The default currency code for the Store."
  *             type: string
+ *           currencies:
+ *             description: "Array of currencies in 2 character ISO code format."
+ *             type: array
+ *             items:
+ *               type: string
+ *           metadata:
+ *             description: "An optional set of key-value pairs with additional information."
+ *             type: object
  * tags:
  *   - Store
  * responses:

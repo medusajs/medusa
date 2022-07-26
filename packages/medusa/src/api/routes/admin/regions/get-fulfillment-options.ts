@@ -1,6 +1,6 @@
-import RegionService from "../../../../services/region"
-import FulfillmentProviderService from "../../../../services/fulfillment-provider"
 import { FulfillmentOption } from "."
+import FulfillmentProviderService from "../../../../services/fulfillment-provider"
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
@@ -27,8 +27,12 @@ import { FulfillmentOption } from "."
  *                     type: string
  *                     description: id of the fulfillment provider
  *                   options:
- *                     type: object
+ *                     type: array
  *                     description: fulfillment provider options
+ *                     example:
+ *                       - id: "manual-fulfillment"
+ *                       - id: "manual-fulfillment-return"
+ *                         is_return: true
  */
 export default async (req, res) => {
   const { region_id } = req.params

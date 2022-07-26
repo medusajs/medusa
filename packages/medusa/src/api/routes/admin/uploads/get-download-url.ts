@@ -1,5 +1,5 @@
-import { IsString } from "class-validator"
 import { AbstractFileService } from "../../../../interfaces"
+import { IsString } from "class-validator"
 
 /**
  * [post] /uploads/download-url
@@ -17,12 +17,18 @@ import { AbstractFileService } from "../../../../interfaces"
  *           file_key:
  *             description: "key of the file to obtain the download link for"
  *             type: string
- *   - (path) fileKey=* {string} key of the file to obtain the download link for.
  * tags:
- *   - Uploads
+ *   - Upload
  * responses:
  *   200:
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             download_url:
+ *               type: string
+ *               description: The Download URL of the file
  */
 export default async (req, res) => {
   const fileService: AbstractFileService<any> = req.scope.resolve("fileService")

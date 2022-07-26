@@ -18,8 +18,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves an list of Draft Orders"
  * x-authenticated: true
  * parameters:
- *   - (query) offset {number} The number of items to skip.
- *   - (query) limit {string} Limit the number of items returned.
+ *   - (query) offset=0 {number} The number of items to skip before the results.
+ *   - (query) limit=50 {number} Limit the number of items returned.
  *   - (query) q {string} a search term to search emails in carts associated with draft orders and display IDs of draft orders
  * tags:
  *   - Draft Order

@@ -1,15 +1,16 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
+
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /price-lists/{id}/prices/batch
  * operationId: "DeletePriceListsPriceListPricesBatch"
- * summary: "Batch delete prices that belongs to a Price List"
- * description: "Batch delete prices that belongs to a Price List"
+ * summary: "Batch delete prices that belong to a Price List"
+ * description: "Batch delete prices that belong to a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
+ *   - (path) id=* {string} The id of the Price List that the Money Amounts (Prices) that will be deleted belongs to.
  * requestBody:
  *   content:
  *     application/json:
@@ -33,12 +34,13 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 type: string
- *                 description: The id of the deleted Money Amount.
+ *                 description: The IDs of the deleted Money Amounts (Prices).
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  */
 export default async (req, res) => {
   const { id } = req.params

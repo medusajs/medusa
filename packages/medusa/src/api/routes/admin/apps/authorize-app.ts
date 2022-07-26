@@ -2,6 +2,7 @@ import { IsNotEmpty, IsString } from "class-validator"
 
 import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /apps/authorize-app
  * operationId: "PostApps"
@@ -27,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *             type: string
  *             description: The code for the generated token.
  * tags:
- *   - Apps
+ *   - App
  * responses:
  *  "200":
  *    description: OK

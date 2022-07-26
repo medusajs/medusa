@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Gets a DiscountCondition"
  
  * tags:
- *   - DiscountCondition
+ *   - Discount Condition
  * responses:
  *   200:
  *     description: OK

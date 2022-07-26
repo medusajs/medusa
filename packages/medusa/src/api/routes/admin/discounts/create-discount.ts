@@ -31,6 +31,9 @@ import { validator } from "../../../../utils/validator"
  * summary: "Creates a Discount"
  * x-authenticated: true
  * description: "Creates a Discount with a given set of rules that define how the Discount behaves."
+ * parameters:
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
  * requestBody:
  *   content:
  *     application/json:

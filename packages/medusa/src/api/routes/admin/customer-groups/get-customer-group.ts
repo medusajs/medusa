@@ -1,6 +1,7 @@
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups/{id}
@@ -11,7 +12,7 @@ import { Request, Response } from "express"
  * parameters:
  *   - (path) id=* {string} The id of the Customer Group.
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

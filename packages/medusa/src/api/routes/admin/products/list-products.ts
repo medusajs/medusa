@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,11 +7,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product, ProductStatus } from "../../../../models/product"
-import { DateComparisonOperator } from "../../../../types/common"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { PricedProduct } from "../../../../types/pricing"
 import { PricingService, ProductService } from "../../../../services"
+import { Product, ProductStatus } from "../../../../models/product"
+import { Transform, Type } from "class-transformer"
+
+import { DateComparisonOperator } from "../../../../types/common"
+import { PricedProduct } from "../../../../types/pricing"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /products
@@ -21,7 +22,7 @@ import { PricingService, ProductService } from "../../../../services"
  * description: "Retrieves a list of Product"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching products.
+ *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
  *   - (query) id {string} Id of the product to search for.
  *   - in: query
  *     name: status
@@ -32,6 +33,7 @@ import { PricingService, ProductService } from "../../../../services"
  *       type: array
  *       items:
  *         type: string
+ *         enum: [draft, proposed, published, rejected]
  *   - in: query
  *     name: collection_id
  *     style: form
@@ -45,22 +47,31 @@ import { PricingService, ProductService } from "../../../../services"
  *     name: tags
  *     style: form
  *     explode: false
- *     description: Tags to search for
+ *     description: Tag IDs to search for
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) title {string} to search for.
- *   - (query) description {string} to search for.
- *   - (query) handle {string} to search for.
- *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} to search for.
- *   - (query) order {string} to retrieve products in.
+ *   - in: query
+ *     name: price_list_id
+ *     style: form
+ *     explode: false
+ *     description: Price List IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) title {string} title to search for.
+ *   - (query) description {string} description to search for.
+ *   - (query) handle {string} handle to search for.
+ *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - (query) type {string} type ID to search for.
  *   - (query) deleted_at {object} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {object} Date comparison for when resulting products was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) limit=50 {integer} Limit the number of products returned.
+ *   - (query) order {string} the field to use to sort items by.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * tags:
@@ -72,19 +83,19 @@ import { PricingService, ProductService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The number of Products.
- *               type: integer
- *             offset:
- *               description: The offset of the Product query.
- *               type: integer
- *             limit:
- *               description: The limit of the Product query.
- *               type: integer
  *             products:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")

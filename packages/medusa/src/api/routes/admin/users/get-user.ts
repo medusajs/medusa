@@ -9,7 +9,7 @@ import UserService from "../../../../services/user"
  * parameters:
  *   - (path) id=* {string} The id of the User.
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK

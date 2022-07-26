@@ -1,18 +1,60 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import omit from "lodash/omit"
+
+import { FilterablePriceListProps } from "../../../../types/price-list"
+import { FindConfig } from "../../../../types/common"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { FindConfig } from "../../../../types/common"
-import { FilterablePriceListProps } from "../../../../types/price-list"
-import { validator } from "../../../../utils/validator"
 import { Request } from "express"
+import { Type } from "class-transformer"
+import omit from "lodash/omit"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /price-lists
  * operationId: "GetPriceLists"
  * summary: "List Price Lists"
  * description: "Retrieves a list of Price Lists."
  * x-authenticated: true
+ * parameters:
+ *   - (query) limit=10 {number} The number of items to get
+ *   - (query) offset=0 {number} The offset at which to get items
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
+ *   - (query) order {string} field to order results by.
+ *   - (query) id {string} ID to search for.
+ *   - (query) q {string} query to search in price list description, price list name, and customer group name fields.
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Status to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [active, draft]
+ *   - (query) name {string} price list name to search for.
+ *   - in: query
+ *     name: customer_groups
+ *     style: form
+ *     explode: false
+ *     description: Customer Group IDs to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: type
+ *     style: form
+ *     explode: false
+ *     description: Type to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [sale, override]
+ *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  * tags:
  *   - Price List
  * responses:
@@ -27,14 +69,14 @@ import { Request } from "express"
  *              items:
  *                $ref: "#/components/schemas/price_list"
  *             count:
- *               description: The number of Price Lists.
  *               type: integer
+ *               description: The total number of items available
  *             offset:
- *               description: The offset of the Price List query.
  *               type: integer
+ *               description: The number of items skipped before these items
  *             limit:
- *               description: The limit of the Price List query.
  *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res) => {
   const validated = req.validatedQuery

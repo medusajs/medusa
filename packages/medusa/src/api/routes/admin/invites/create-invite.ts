@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *             type: string
  *             enum: [admin, member, developer]
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

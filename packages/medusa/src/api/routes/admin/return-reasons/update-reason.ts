@@ -3,6 +3,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -21,6 +22,9 @@ import { validator } from "../../../../utils/validator"
  *         properties:
  *           label:
  *             description: "The label to display to the Customer."
+ *             type: string
+ *           value:
+ *             description: "The value that the Return Reason will be identified by. Must be unique."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."

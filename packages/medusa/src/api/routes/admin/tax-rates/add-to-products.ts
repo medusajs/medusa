@@ -1,5 +1,5 @@
-import { pickByConfig, getRetrieveConfig } from "./utils/get-query-config"
 import { IsArray, IsOptional } from "class-validator"
+import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
@@ -10,9 +10,40 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add Tax Rate to Products"
  * description: "Associates a Tax Rate with a list of Products"
+ * parameters:
+ *   - in: query
+ *     name: fields
+ *     description: "Which fields should be included in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: expand
+ *     description: "Which fields should be expanded and retrieved in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - products
+ *         properties:
+ *           products:
+ *             type: array
+ *             description: "The IDs of the products to associate with this tax rate"
+ *             items:
+ *               type: string
  * tags:
- *   - Tax Rates
+ *   - Tax Rate
  * responses:
  *   200:
  *     description: OK
@@ -21,9 +52,7 @@ import { validator } from "../../../../utils/validator"
  *         schema:
  *           properties:
  *             tax_rate:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/tax_rate"
  */
 export default async (req, res) => {
   const value = await validator(AdminPostTaxRatesTaxRateProductsReq, req.body)

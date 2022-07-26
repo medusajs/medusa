@@ -12,6 +12,7 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the customer.
  * tags:
  *   - Customer
  * responses:

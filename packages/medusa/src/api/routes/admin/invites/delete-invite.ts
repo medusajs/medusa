@@ -9,7 +9,7 @@ import InviteService from "../../../../services/invite"
  * parameters:
  *   - (path) invite_id=* {string} The id of the Invite
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

@@ -1,13 +1,13 @@
 import fs from "fs"
 
 /**
- * @oas [post] /
+ * @oas [post] /uploads
  * operationId: "PostUploads"
- * summary: "Uploads an array of files"
- * description: "Uploads an array of files to the specific fileservice that is installed in medusa."
+ * summary: "Uploads a file"
+ * description: "Uploads a file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * tags:
- *   - Uploads
+ *   - Upload
  * requestBody:
  *   content:
  *     multipart/form-data:
@@ -15,10 +15,8 @@ import fs from "fs"
  *         type: object
  *         properties:
  *           files:
- *             type: array
- *             items:
- *               type: string
- *               format: binary
+ *             type: string
+ *             format: binary
  * responses:
  *   200:
  *     description: OK
@@ -29,7 +27,12 @@ import fs from "fs"
  *             uploads:
  *               type: array
  *               items:
- *                 type: string
+ *                 type: object
+ *                 properties:
+ *                   url:
+ *                     type: string
+ *                     description: The URL of the uploaded file.
+ *                     format: uri
  */
 export default async (req, res) => {
   try {

@@ -13,8 +13,8 @@ import { Type } from "class-transformer"
  * description: "Retrieve a list of Product Collection."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {string} The number of collections to return.
- *   - (query) offset {string} The offset of collections to return.
+ *   - (query) limit=10 {integer} The number of collections to return.
+ *   - (query) offset=0 {integer} The number of collections to skip before the results.
  *   - (query) title {string} The title of collections to return.
  *   - (query) handle {string} The handle of collections to return.
  *   - (query) q {string} a search term to search titles and handles.
