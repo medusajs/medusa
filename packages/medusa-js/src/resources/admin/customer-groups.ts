@@ -50,7 +50,7 @@ class AdminCustomerGroupsResource extends BaseResource {
       path += `?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
   /**
    * Updates a customer group
@@ -79,7 +79,7 @@ class AdminCustomerGroupsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomerGroupsDeleteRes> {
     const path = `/admin/customer-groups/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -99,7 +99,7 @@ class AdminCustomerGroupsResource extends BaseResource {
       path = `/admin/customer-groups?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -153,7 +153,7 @@ class AdminCustomerGroupsResource extends BaseResource {
       path += `?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 
