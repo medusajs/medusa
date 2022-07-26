@@ -33,6 +33,7 @@ import { MiddlewareService } from "../services"
 import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
 import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import logger from "./logger"
+import { isSearchService } from "../interfaces/search-service";
 
 type Options = {
   rootDirectory: string
@@ -418,7 +419,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof SearchService) {
+      } else if (isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({
