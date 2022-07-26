@@ -13,6 +13,7 @@ export default class DefaultSearchService extends AbstractSearchService<DefaultS
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly logger_: Logger
+  protected readonly options_: Record<string, unknown>
 
   constructor({ logger, manager }: InjectedDependencies, options) {
     super(
@@ -22,6 +23,7 @@ export default class DefaultSearchService extends AbstractSearchService<DefaultS
       options
     )
 
+    this.options_ = options
     this.logger_ = logger
     this.manager_ = manager
   }

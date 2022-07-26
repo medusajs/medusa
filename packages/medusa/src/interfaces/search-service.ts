@@ -2,6 +2,8 @@ import { TransactionBaseService } from "./transaction-base-service"
 import { SearchService } from "medusa-interfaces"
 
 export interface ISearchService<T extends TransactionBaseService<never>> {
+  options: Record<string, unknown>
+
   /**
    * Used to create an index
    * @param indexName the index name
@@ -77,9 +79,15 @@ export abstract class AbstractSearchService<
   implements ISearchService<T>
 {
   abstract readonly isDefault
+  protected readonly options_: Record<string, unknown>
+
+  get options(): Record<string, unknown> {
+    return this.options_
+  }
 
   protected constructor(container, options) {
     super(container, options)
+    this.options_ = options
   }
 
   abstract createIndex(indexName: string, options: unknown): unknown
