@@ -26,7 +26,7 @@ class AuthResource extends BaseResource {
    */
   getSession(customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -37,7 +37,7 @@ class AuthResource extends BaseResource {
    */
   exists(email: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 
