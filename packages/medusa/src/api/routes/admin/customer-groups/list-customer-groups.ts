@@ -16,8 +16,50 @@ import { Type } from "class-transformer"
  *   - (query) offset=0 {integer} How many groups to skip in the result.
  *   - (query) id {string} Ids of the groups to search for.
  *   - (query) order {string} the field used to order the customer groups.
- *   - (query) created_at {object} Date comparison for when resulting customer group was created, i.e. less than, greater than etc.
- *   - (query) updated_at {object} Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting customer groups were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting customer groups were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - (query) limit=10 {integer} Limit the number of customer groups returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
 
