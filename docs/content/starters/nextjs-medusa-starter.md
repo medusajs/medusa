@@ -4,6 +4,12 @@ This document guides you to install and set up the Next.js Storefront for your M
 
 ![Next.js Storefront Demo](https://i.imgur.com/koJl8uR.gif)
 
+## Instant Deployment to Netlify
+
+Instead of manually following this guide to install then later deploy the Next.js Storefront, you can deploy the Next.js Storefront to Netlify with this button:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa)
+
 ## Prerequisites
 
 This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.md) to learn how to do it.
