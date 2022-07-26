@@ -51,7 +51,7 @@ describe("StripeProviderService", () => {
         totalsService: TotalsServiceMock,
       },
       {
-        api_key: "test",
+        api_key: "test"
       }
     )
 
@@ -77,6 +77,28 @@ describe("StripeProviderService", () => {
         customer: "cus_lebron",
         amount: 100,
         description: 'some description',
+      })
+    })
+
+    it("returns created stripe payment intent for cart with no customer and the options default description", async () => {
+      const localStripeProviderService = new StripeProviderService({
+        customerService: CustomerServiceMock,
+        regionService: RegionServiceMock,
+        totalsService: TotalsServiceMock,
+      },
+      {
+        api_key: "test",
+        payment_description: "test options description"
+      })
+
+      carts.frCart.customer_id = ""
+      carts.frCart.context.payment_description = null
+      result = await localStripeProviderService.createPayment(carts.frCart)
+      expect(result).toEqual({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        amount: 100,
+        description: "test options description",
       })
     })
   })
