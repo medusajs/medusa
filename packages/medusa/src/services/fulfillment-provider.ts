@@ -17,19 +17,19 @@ import { CreateFulfillmentOrder } from "../types/fulfillment"
 import { FulfillmentOptions } from "../types/fulfillment-provider"
 import { MedusaContainer } from "../types/global"
 
-type NotificationProviderKey = `fp_${string}`
+type FulfillmentProviderKey = `fp_${string}`
 
 type FulfillmentProviderContainer = MedusaContainer & {
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
   manager: EntityManager
 } & {
-  [key in `${NotificationProviderKey}`]: BaseFulfillmentService
+  [key in `${FulfillmentProviderKey}`]: BaseFulfillmentService
 }
 
 /**
  * Helps retrive fulfillment providers
  */
-class FulfillmentProviderService extends TransactionBaseService<FulfillmentProviderService> {
+class FulfillmentProviderService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -70,10 +70,10 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   }
 
   async listFulfillmentOptions(
-    provider_ids: string[]
+    providerIds: string[]
   ): Promise<FulfillmentOptions[]> {
     return await Promise.all(
-      provider_ids.map(async (p) => {
+      providerIds.map(async (p) => {
         const provider = await this.retrieveProvider(p)
         return {
           provider_id: p,
@@ -88,16 +88,16 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   }
 
   /**
-   * @param provider_id - the provider id
+   * @param providerId - the provider id
    * @return the payment fulfillment provider
    */
-  retrieveProvider(provider_id: string): BaseFulfillmentService {
+  retrieveProvider(providerId: string): BaseFulfillmentService {
     try {
-      return this.container_[`fp_${provider_id}`]
+      return this.container_[`fp_${providerId}`]
     } catch (err) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Could not find a fulfillment provider with id: ${provider_id}`
+        `Could not find a fulfillment provider with id: ${providerId}`
       )
     }
   }
