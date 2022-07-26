@@ -1,7 +1,5 @@
 const path = require("path")
 
-const { Store, SalesChannel } = require("@medusajs/medusa")
-
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 
@@ -117,7 +115,7 @@ describe("sales channels", () => {
       ).catch(err => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and the cart cannot be assigned to a it.`)
+      expect(err.response.data.message).toBe(`Unable to assign the cart to a disabled Sales Channel "disabled cart sales channel"`)
     })
   })
 
@@ -254,7 +252,7 @@ describe("sales channels", () => {
       ).catch(err => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and the cart cannot be assigned to a it.`)
+      expect(err.response.data.message).toBe("Unable to update Cart with disabled Sales Channel \"disabled cart sales channel\"")
     })
   })
 

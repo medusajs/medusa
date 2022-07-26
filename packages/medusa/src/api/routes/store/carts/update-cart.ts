@@ -7,13 +7,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, SalesChannelService, StoreService } from "../../../../services"
-import { CartUpdateProps } from "../../../../types/cart"
+import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { MedusaError } from "medusa-core-utils";
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 
@@ -89,42 +86,11 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
  */
 export default async (req, res) => {
   const { id } = req.params
-
-  const validated = await validator(StorePostCartsCartReq, req.body)
+  const validated = req.validatedBody as StorePostCartsCartReq
 
   const cartService: CartService = req.scope.resolve("cartService")
+  await cartService.update(id, validated)
 
-  // Update the cart
-  const { shipping_address, billing_address, ...rest } = validated
-
-  const cartDataToUpdate: CartUpdateProps = { ...rest }
-  if (typeof shipping_address === "string") {
-    cartDataToUpdate.shipping_address_id = shipping_address
-  } else {
-    cartDataToUpdate.shipping_address = shipping_address
-  }
-
-  if (typeof billing_address === "string") {
-    cartDataToUpdate.billing_address_id = billing_address
-  } else {
-    cartDataToUpdate.billing_address = billing_address
-  }
-
-  if (typeof validated.sales_channel_id !== "undefined") {
-    const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
-    const salesChannel = await salesChannelService.retrieve(validated.sales_channel_id)
-    if (salesChannel.is_disabled) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Unable to update Cart with disabled Sales Channel "${salesChannel.name}"`
-      )
-    }
-    cartDataToUpdate["sales_channel_id"] = salesChannel.id
-  }
-
-  await cartService.update(id, cartDataToUpdate)
-
-  // If the cart has payment sessions update these
   const updated = await cartService.retrieve(id, {
     relations: ["payment_sessions", "shipping_methods"],
   })
