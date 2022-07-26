@@ -5,12 +5,17 @@ import { SearchService } from "medusa-interfaces"
  * @extends SearchService
  */
 class DefaultSearchService extends SearchService {
-  constructor(container) {
+  constructor(container, options) {
     super()
 
     this.isDefault = true
 
     this.logger_ = container.logger
+    this.options_ = options
+  }
+
+  get options() {
+    return this.options_
   }
 
   createIndex(indexName, options) {

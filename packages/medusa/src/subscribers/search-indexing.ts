@@ -3,7 +3,7 @@ import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
 import { Product } from "../models"
-import { SearchService } from "medusa-interfaces"
+import { SearchService } from "../services"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
