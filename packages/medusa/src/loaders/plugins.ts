@@ -8,7 +8,6 @@ import {
   NotificationService,
   FileService,
   OauthService,
-  SearchService,
 } from "medusa-interfaces"
 import { createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
@@ -21,6 +20,8 @@ import {
   isFileService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
+  isBatchJobStrategy,
+  isSearchService,
 } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import {
@@ -30,10 +31,8 @@ import {
   MedusaContainer,
 } from "../types/global"
 import { MiddlewareService } from "../services"
-import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
 import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import logger from "./logger"
-import { isSearchService } from "../interfaces/search-service";
 
 type Options = {
   rootDirectory: string
