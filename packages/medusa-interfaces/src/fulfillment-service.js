@@ -24,7 +24,9 @@ class BaseFulfillmentService extends BaseService {
    * to create shipping options in Medusa that can be chosen between by the
    * customer.
    */
-  getFulfillmentOptions() {}
+  getFulfillmentOptions() {
+    throw Error("validateFulfillmentData must be overridden by the child class")
+  }
 
   /**
    * Called before a shipping method is set on a cart to ensure that the data
@@ -32,12 +34,13 @@ class BaseFulfillmentService extends BaseService {
    * data about the shipment such as an id of a drop point. It is up to the
    * fulfillment provider to enforce that the correct data is being sent
    * through.
+   * @param {object} optionData - the data to validate
    * @param {object} data - the data to validate
-   * @param {object} cart - the cart to which the shipping method will be applied
+   * @param {object | undefined} cart - the cart to which the shipping method will be applied
    * @return {object} the data to populate `cart.shipping_methods.$.data` this
    *    is usually important for future actions like generating shipping labels
    */
-  validateFulfillmentData(data, cart) {
+  validateFulfillmentData(optionData, data, cart) {
     throw Error("validateFulfillmentData must be overridden by the child class")
   }
 
@@ -56,11 +59,15 @@ class BaseFulfillmentService extends BaseService {
   /**
    * Used to calculate a price for a given shipping option.
    */
-  calculatePrice(data, cart) {
+  calculatePrice(optionData, data, cart) {
     throw Error("calculatePrice must be overridden by the child class")
   }
 
-  createFulfillment() {
+  createFulfillment(data, items, order, fulfillment) {
+    throw Error("createOrder must be overridden by the child class")
+  }
+
+  cancelFulfillment(fulfillment) {
     throw Error("createOrder must be overridden by the child class")
   }
 
@@ -93,6 +100,10 @@ class BaseFulfillmentService extends BaseService {
    */
   getShipmentDocuments(data) {
     return []
+  }
+
+  retrieveDocuments(fulfillmentData, documentType) { 
+    throw Error("retrieveDocuments must be overridden by the child class")
   }
 }
 
