@@ -18,8 +18,9 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             description: "The Users email."
  *             type: string
+ *             format: email
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   204:
  *     description: OK

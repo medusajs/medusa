@@ -5,9 +5,10 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions/{id}
@@ -44,17 +45,17 @@ import RegionService from "../../../../services/region"
  *             description: "The tax rate to use on Orders in the Region."
  *             type: number
  *           payment_providers:
- *             description: "A list of Payment Providers that should be enabled for the Region"
+ *             description: "A list of Payment Provider IDs that should be enabled for the Region"
  *             type: array
  *             items:
  *               type: string
  *           fulfillment_providers:
- *             description: "A list of Fulfillment Providers that should be enabled for the Region"
+ *             description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
  *             type: array
  *             items:
  *               type: string
  *           countries:
- *             description: "A list of countries that should be included in the Region."
+ *             description: "A list of countries' 2 ISO Characters that should be included in the Region."
  *             type: array
  *             items:
  *               type: string

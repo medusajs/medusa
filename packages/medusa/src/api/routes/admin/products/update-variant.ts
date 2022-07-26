@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,14 +7,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
-  ProductService,
   PricingService,
+  ProductService,
   ProductVariantService,
 } from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -61,16 +62,16 @@ import { validator } from "../../../../utils/validator"
  *             type: boolean
  *           weight:
  *             description: The wieght of the Product Variant.
- *             type: string
+ *             type: number
  *           length:
  *             description: The length of the Product Variant.
- *             type: string
+ *             type: number
  *           height:
  *             description: The height of the Product Variant.
- *             type: string
+ *             type: number
  *           width:
  *             description: The width of the Product Variant.
- *             type: string
+ *             type: number
  *           origin_country:
  *             description: The country of origin of the Product Variant.
  *             type: string
@@ -86,15 +87,17 @@ import { validator } from "../../../../utils/validator"
  *           prices:
  *             type: array
  *             items:
+ *               required:
+ *                 - amount
  *               properties:
  *                 id:
  *                   description: The id of the price.
  *                   type: string
  *                 region_id:
- *                   description: The id of the Region for which the price is used.
+ *                   description: The id of the Region for which the price is used. Only required if currency_code is not provided.
  *                   type: string
  *                 currency_code:
- *                   description: The 3 character ISO currency code for which the price will be used.
+ *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                   type: string
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
@@ -108,6 +111,9 @@ import { validator } from "../../../../utils/validator"
  *           options:
  *             type: array
  *             items:
+ *               required:
+ *                 - option_id
+ *                 - value
  *               properties:
  *                 option_id:
  *                   description: The id of the Product Option to set the value for.

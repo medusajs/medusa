@@ -39,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *                 type: string
  *                 format: password
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

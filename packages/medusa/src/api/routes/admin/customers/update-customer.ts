@@ -6,12 +6,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomersRelations } from "."
-import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { defaultAdminCustomersRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/{id}
@@ -21,14 +22,8 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
- *   - in: query
- *     name: expand
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
  * requestBody:
  *   content:
  *     application/json:

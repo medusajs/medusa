@@ -20,7 +20,7 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             return:
+ *             order:
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {

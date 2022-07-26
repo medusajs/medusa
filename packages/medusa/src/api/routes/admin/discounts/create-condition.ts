@@ -55,7 +55,7 @@ import { validator } from "../../../../utils/validator"
  *                type: string
 
  * tags:
- *   - DiscountCondition
+ *   - Discount Condition
  * responses:
  *   200:
  *     description: OK

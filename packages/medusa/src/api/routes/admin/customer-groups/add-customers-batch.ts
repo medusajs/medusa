@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *                   description: Id of the customer
  *                   type: string
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

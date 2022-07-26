@@ -25,6 +25,7 @@ import RegionService from "../../../../services/region"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  */
 export default async (req, res) => {
   const { region_id } = req.params

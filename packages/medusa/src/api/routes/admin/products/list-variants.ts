@@ -1,11 +1,12 @@
-import { Request, Response } from "express"
-import { ProductVariantService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { Type } from "class-transformer"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
+import { Request, Response } from "express"
+
 import { ProductVariant } from "../../../../models"
+import { ProductVariantService } from "../../../../services"
+import { Type } from "class-transformer"
 import { defaultAdminGetProductsVariantsFields } from "./index"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /products/{id}/variants
@@ -17,8 +18,8 @@ import { defaultAdminGetProductsVariantsFields } from "./index"
  *   - (path) id=* {string} Id of the product to search for the variants.
  *   - (query) fields {string} Comma separated string of the column to select.
  *   - (query) expand {string} Comma separated string of the relations to include.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) offset=0 {integer} How many items to skip before the results.
+ *   - (query) limit=100 {integer} Limit the number of items returned.
  * tags:
  *   - Product
  * responses:
@@ -32,6 +33,15 @@ import { defaultAdminGetProductsVariantsFields } from "./index"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product_variant"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

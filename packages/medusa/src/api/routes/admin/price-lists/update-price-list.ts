@@ -1,4 +1,8 @@
-import { Type } from "class-transformer"
+import {
+  AdminPriceListPricesUpdateReq,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 import {
   IsArray,
   IsEnum,
@@ -7,17 +11,14 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /price_lists/{id}
+ * @oas [post] /price-lists/{id}
  * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
  * description: "Updates a Price List"
@@ -35,6 +36,14 @@ import { validator } from "../../../../utils/validator"
  *           description:
  *             description: "A description of the Price List."
  *             type: string
+ *           starts_at:
+ *             description: "The date with timezone that the Price List starts being valid."
+ *             type: string
+ *             format: date
+ *           ends_at:
+ *             description: "The date with timezone that the Price List ends being valid."
+ *             type: string
+ *             format: date
  *           type:
  *             description: The type of the Price List.
  *             type: string
@@ -51,15 +60,21 @@ import { validator } from "../../../../utils/validator"
  *             description: The prices of the Price List.
  *             type: array
  *             items:
+ *               required:
+ *                 - amount
+ *                 - variant_id
  *               properties:
  *                 id:
  *                   description: The id of the price.
  *                   type: string
  *                 region_id:
- *                   description: The id of the Region for which the price is used.
+ *                   description: The id of the Region for which the price is used. Only required if currecny_code is not provided.
  *                   type: string
  *                 currency_code:
- *                   description: The 3 character ISO currency code for which the price will be used.
+ *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                   type: string
+ *                 variant_id:
+ *                   description: The id of the Variant for which the price is used.
  *                   type: string
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
@@ -89,7 +104,7 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             product:
+ *             price_list:
  *               $ref: "#/components/schemas/price_list"
  */
 export default async (req, res) => {

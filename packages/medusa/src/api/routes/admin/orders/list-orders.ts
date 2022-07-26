@@ -54,8 +54,8 @@ import { pick } from "lodash"
  *   - (query) cancelled_at {object} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
  *   - (query) created_at {object} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (query) offset=0 {string} How many orders to skip in the result.
- *   - (query) limit=50 {string} Limit the number of orders returned.
+ *   - (query) offset=0 {integer} How many orders to skip before the results.
+ *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:

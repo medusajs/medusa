@@ -7,7 +7,7 @@ import { OauthService } from "../../../../services"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
  * tags:
- *   - Apps
+ *   - App
  * responses:
  *  "200":
  *    description: OK

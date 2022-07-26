@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+
 import { SalesChannelService } from "../../../../services/"
 
 /**
@@ -26,6 +27,7 @@ import { SalesChannelService } from "../../../../services/"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  */
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params

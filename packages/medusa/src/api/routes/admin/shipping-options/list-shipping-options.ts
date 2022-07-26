@@ -1,9 +1,10 @@
-import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { defaultFields, defaultRelations } from "."
+
 import { PricingService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { Transform } from "class-transformer"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /shipping-options
@@ -16,12 +17,12 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *    name: region_id
  *    schema:
  *      type: string
- *    description: Region to fetch options from
+ *    description: Region ID to fetch options from
  *  - in: query
  *    name: is_return
  *    schema:
  *      type: boolean
- *    description: Flag for fetching return options
+ *    description: Flag for fetching return options only
  *  - in: query
  *    name: admin_only
  *    schema:
@@ -40,6 +41,9 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
  */
 export default async (req, res) => {
   const validatedParams = await validator(

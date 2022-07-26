@@ -25,6 +25,7 @@ import { ShippingProfileService } from "../../../../services"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  */
 export default async (req, res) => {
   const { profile_id } = req.params

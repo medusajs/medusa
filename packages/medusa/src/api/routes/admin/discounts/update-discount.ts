@@ -32,6 +32,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
  * requestBody:
  *   content:
  *     application/json:

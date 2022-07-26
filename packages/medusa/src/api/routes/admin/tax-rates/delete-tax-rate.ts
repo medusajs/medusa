@@ -9,7 +9,7 @@ import { TaxRateService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Shipping Option.
  * tags:
- *   - Tax Rates
+ *   - Tax Rate
  * responses:
  *   200:
  *     description: OK
@@ -25,6 +25,7 @@ import { TaxRateService } from "../../../../services"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
  */
 export default async (req, res) => {
   const { id } = req.params

@@ -1,9 +1,9 @@
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
-  ProductService,
   PricingService,
+  ProductService,
   ProductVariantService,
 } from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 /**
  * @oas [delete] /products/{id}/variants/{variant_id}
@@ -23,7 +23,7 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             id:
+ *             variant_id:
  *               type: string
  *               description: The id of the deleted Product Variant.
  *             object:
@@ -31,6 +31,9 @@ import {
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *             product:
+ *               $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
   const { id, variant_id } = req.params

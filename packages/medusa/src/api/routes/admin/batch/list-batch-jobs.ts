@@ -14,8 +14,8 @@ import { pickBy } from "lodash"
  * description: "Retrieve a list of Batch Jobs."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {string} The number of batch jobs to return.
- *   - (query) offset {string} The offset of batch jobs to return.
+ *   - (query) limit=10 {integer} The number of batch jobs to return.
+ *   - (query) offset=0 {integer} The number of batch jobs to skip before results.
  *   - in: query
  *     name: type
  *     style: form

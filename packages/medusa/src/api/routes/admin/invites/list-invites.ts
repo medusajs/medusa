@@ -7,7 +7,7 @@ import InviteService from "../../../../services/invite"
  * description: "Lists all Invites"
  * x-authenticated: true
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

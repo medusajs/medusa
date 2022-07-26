@@ -1,4 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
+
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -26,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             shipping_profiles:
+ *             shipping_profile:
  *               $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {

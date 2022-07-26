@@ -1,7 +1,8 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
-import _ from "lodash"
+
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
+import _ from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -21,6 +22,7 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             description: "The Users email."
  *             type: string
+ *             format: email
  *           first_name:
  *             description: "The name of the User."
  *             type: string
@@ -30,11 +32,13 @@ import { validator } from "../../../../utils/validator"
  *           role:
  *             description: "Userrole assigned to the user."
  *             type: string
+ *             enum: [admin, member, developer]
  *           password:
  *             description: "The Users password."
  *             type: string
+ *             format: password
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK

@@ -12,8 +12,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * description: "Retrieves a list of notes"
  * parameters:
- *   - (query) limit= {number} The number of notes to get
- *   - (query) offset= {number} The offset at which to get notes
+ *   - (query) limit=50 {number} The number of notes to get
+ *   - (query) offset=0 {number} The offset at which to get notes
  *   - (query) resource_id= {string} The id which the notes belongs to
  * tags:
  *   - Note

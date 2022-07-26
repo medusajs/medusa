@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNumber,
@@ -6,8 +5,10 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -28,6 +29,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items that have been received.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of the Line Item.
@@ -37,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *                   type: integer
  *           refund:
  *             description: The amount to refund.
- *             type: integer
+ *             type: number
  * tags:
  *   - Return
  * responses:

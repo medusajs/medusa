@@ -39,8 +39,8 @@ import { validator } from "../../../../utils/validator"
  *           description: "The value that the discount represents; this will depend on the type of the discount"
  *   - (query) is_dynamic {boolean} Return only dynamic discounts.
  *   - (query) is_disabled {boolean} Return only disabled discounts.
- *   - (query) limit {number} The number of items in the response
- *   - (query) offset {number} The offset of items in response
+ *   - (query) limit=20 {number} The number of items in the response
+ *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  * tags:
  *   - Discount

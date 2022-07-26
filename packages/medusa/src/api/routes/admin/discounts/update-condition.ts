@@ -16,8 +16,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) discount_id=* {string} The id of the Product.
  *   - (path) condition_id=* {string} The id of the DiscountCondition.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
  * description: "Updates a DiscountCondition"
  * requestBody:
  *   content:

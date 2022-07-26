@@ -17,7 +17,7 @@ import { Request } from "express"
 import { Type } from "class-transformer"
 
 /**
- * @oas [post] /price_lists
+ * @oas [post] /price-lists
  * operationId: "PostPriceListsPriceList"
  * summary: "Creates a Price List"
  * description: "Creates a Price List"
@@ -26,6 +26,11 @@ import { Type } from "class-transformer"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - name
+ *           - description
+ *           - type
+ *           - prices
  *         properties:
  *           name:
  *             description: "The name of the Price List"
@@ -33,6 +38,14 @@ import { Type } from "class-transformer"
  *           description:
  *             description: "A description of the Price List."
  *             type: string
+ *           starts_at:
+ *             description: "The date with timezone that the Price List starts being valid."
+ *             type: string
+ *             format: date
+ *           ends_at:
+ *             description: "The date with timezone that the Price List ends being valid."
+ *             type: string
+ *             format: date
  *           type:
  *             description: The type of the Price List.
  *             type: string
@@ -49,16 +62,22 @@ import { Type } from "class-transformer"
  *              description: The prices of the Price List.
  *              type: array
  *              items:
+ *                required:
+ *                  - amount
+ *                  - variant_id
  *                properties:
  *                  region_id:
- *                    description: The id of the Region for which the price is used.
+ *                    description: The id of the Region for which the price is used. Only required if currecny_code is not provided.
  *                    type: string
  *                  currency_code:
- *                    description: The 3 character ISO currency code for which the price will be used.
+ *                    description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                    type: string
  *                  amount:
  *                    description: The amount to charge for the Product Variant.
  *                    type: integer
+ *                  variant_id:
+ *                    description: The id of the Variant for which the price is used.
+ *                    type: string
  *                  min_quantity:
  *                    description: The minimum quantity for which the price will be used.
  *                    type: integer
@@ -73,7 +92,7 @@ import { Type } from "class-transformer"
  *                 - id
  *               properties:
  *                 id:
- *                   description: The id of a customer group
+ *                   description: The ID of a customer group
  *                   type: string
  * tags:
  *   - Price List

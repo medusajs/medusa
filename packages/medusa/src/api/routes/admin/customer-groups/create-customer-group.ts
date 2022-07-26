@@ -1,7 +1,8 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { Request, Response } from "express"
 
 /**
  * @oas [post] /customer-groups
@@ -13,7 +14,7 @@ import { Request, Response } from "express"
  *   - (body) name=* {string} Name of the customer group
  *   - (body) metadata {object} Metadata for the customer.
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

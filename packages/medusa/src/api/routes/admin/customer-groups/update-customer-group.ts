@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *             description: "Metadata for the customer."
  *             type: object
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

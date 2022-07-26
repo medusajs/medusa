@@ -11,7 +11,7 @@ import { CustomerGroupService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Customer Group
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

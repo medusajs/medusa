@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
 import { IsObject, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
-import SalesChannelService from "../../../../services/sales-channel"
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
+import SalesChannelService from "../../../../services/sales-channel"
 
 /**
  * @oas [post] /sales-channels
@@ -13,6 +13,7 @@ import { CreateSalesChannelInput } from "../../../../types/sales-channels"
  * parameters:
  *   - (body) name=* {string} Name of the sales channel
  *   - (body) description=* {string} Description of the sales channel
+ *   - (body) is_disabled {boolean} Whether the sales channel is enabled or not
  * tags:
  *   - Sales Channel
  * responses:

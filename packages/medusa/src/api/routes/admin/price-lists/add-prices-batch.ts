@@ -24,31 +24,31 @@ import { validator } from "../../../../utils/validator"
  *            description: The prices to update or add.
  *            type: array
  *            items:
+ *              required:
+ *                - amount
+ *                - variant_id
  *              properties:
  *                id:
  *                  description: The id of the price.
  *                  type: string
- *                status:
- *                  description: The status of the Price List.
- *                  type: string
- *                  enum:
- *                    - active
- *                    - draft
  *                region_id:
- *                  description: The id of the Region for which the price is used.
+ *                  description: The id of the Region for which the price is used. Only required if currecny_code is not provided.
  *                  type: string
  *                currency_code:
- *                  description: The 3 character ISO currency code for which the price will be used.
+ *                  description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                  type: string
+ *                variant_id:
+ *                  description: The id of the Variant for which the price is used.
  *                  type: string
  *                amount:
- *                  description: The amount of the price.
- *                  type: number
+ *                  description: The amount to charge for the Product Variant.
+ *                  type: integer
  *                min_quantity:
  *                  description: The minimum quantity for which the price will be used.
- *                  type: number
+ *                  type: integer
  *                max_quantity:
- *                 description: The maximum quantity for which the price will be used.
- *                 type: number
+ *                  description: The maximum quantity for which the price will be used.
+ *                  type: integer
  *          override:
  *            description: "If true the prices will replace all existing prices associated with the Price List."
  *            type: boolean

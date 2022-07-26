@@ -19,16 +19,16 @@ import PriceListService from "../../../../services/price-list"
  *         schema:
  *           properties:
  *              ids:
- *               type: number
+ *               type: array
  *               description: The price ids that have been deleted.
- *              count:
- *                type: number
- *                description: The number of prices that have been deleted.
+ *               items:
+ *                 type: string
  *              object:
  *                type: string
  *                description: The type of the object that was deleted.
  *              deleted:
  *                type: boolean
+ *                description: Whether or not the items were deleted.
  */
 export default async (req, res) => {
   const { id, product_id } = req.params

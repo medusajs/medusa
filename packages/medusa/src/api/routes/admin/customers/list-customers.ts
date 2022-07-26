@@ -11,8 +11,8 @@ import customerController from "../../../../controllers/customers"
  * description: "Retrieves a list of Customers."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {string} The number of collections to return.
- *   - (query) offset {string} The offset of collections to return.
+ *   - (query) limit=50 {integer} The number of items to return.
+ *   - (query) offset=0 {integer} The items to skip before result.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
  *   - (query) q {string} a search term to search email, first_name, and last_name.
  *   - (query) groups[] {string} group IDs to search customers by.
