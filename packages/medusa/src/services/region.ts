@@ -22,17 +22,18 @@ import {
 } from "../types/region"
 
 type InjectedDependencies = {
-  manager_: EntityManager
-  regionRepository: RegionRepository
-  countryRepository: CountryRepository
+  manager: EntityManager
   storeService: StoreService
   eventBusService: EventBusService
-  currencyRepository: CurrencyRepository
-  paymentProviderRepository: PaymentProviderRepository
-  fulfillmentProviderRepository: FulfillmentProviderRepository
-  taxProviderRepository: TaxProviderRepository
-  paymentProviderService: PaymentProviderRepository
-  fulfillmentProviderService: typeof FulfillmentProviderService
+  fulfillmentProviderService: FulfillmentProviderService
+
+  regionRepository: typeof RegionRepository
+  countryRepository: typeof CountryRepository
+  currencyRepository: typeof CurrencyRepository
+  taxProviderRepository: typeof TaxProviderRepository
+  paymentProviderService: typeof PaymentProviderRepository
+  paymentProviderRepository: typeof PaymentProviderRepository
+  fulfillmentProviderRepository: typeof FulfillmentProviderRepository
 }
 
 type ValidationPartial<T> = Omit<T, "metadata" | "currency_code">
@@ -95,7 +96,7 @@ class RegionService extends BaseService {
     }
 
     const cloned = new RegionService({
-      manager_: transactionManager,
+      manager: transactionManager,
       regionRepository: this.regionRepository_,
       currencyRepository: this.currencyRepository_,
       countryRepository: this.countryRepository_,
