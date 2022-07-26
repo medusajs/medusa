@@ -11,7 +11,8 @@ import BaseResource from "../base"
 class AdminNotificationsResource extends BaseResource {
   list(
     query?: AdminGetNotificationsParams,
-    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotificationsListRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotificationsListRes> {
     let path = `/admin/notifications`
 
     if (query) {
@@ -19,13 +20,14 @@ class AdminNotificationsResource extends BaseResource {
       path = `/admin/notifications?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   resend(
     id: string,
     payload: AdminPostNotificationsNotificationResendReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotificationsRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotificationsRes> {
     const path = `/admin/notifications/${id}/resend`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
