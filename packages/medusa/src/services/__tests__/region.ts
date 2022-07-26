@@ -1,12 +1,14 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import RegionService from "../region"
+import { EventBusService, StoreService } from "../index"
+import { CreateRegionInput } from "../../types/region"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-}
+} as unknown as EventBusService
 
 describe("RegionService", () => {
   describe("create", () => {
@@ -53,7 +55,7 @@ describe("RegionService", () => {
     })
 
     const storeService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -62,7 +64,7 @@ describe("RegionService", () => {
           currencies: [{ code: "dkk" }, { code: "usd" }, { code: "eur" }],
         }
       },
-    }
+    } as unknown as StoreService
 
     const regionService = new RegionService({
       manager: MockManager,
@@ -73,7 +75,7 @@ describe("RegionService", () => {
       regionRepository,
       countryRepository,
       storeService,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -85,7 +87,7 @@ describe("RegionService", () => {
         currency_code: "USD",
         tax_rate: 0.25,
         countries: ["US"],
-      })
+      } as CreateRegionInput)
 
       expect(regionRepository.create).toHaveBeenCalledTimes(1)
       expect(regionRepository.create).toHaveBeenCalledWith({
@@ -106,7 +108,7 @@ describe("RegionService", () => {
           currency_code: "EUR",
           tax_rate: 0.25,
           countries: ["DK"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe(
           `Denmark already exists in region ${IdMap.getId("dk-reg")}`
@@ -149,7 +151,7 @@ describe("RegionService", () => {
           tax_rate: 0.25,
           countries: ["US"],
           payment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe("Payment provider not found")
       }
@@ -163,7 +165,7 @@ describe("RegionService", () => {
           tax_rate: 0.25,
           countries: ["US"],
           fulfillment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe("Fulfillment provider not found")
       }
@@ -179,7 +181,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -235,7 +237,7 @@ describe("RegionService", () => {
     })
 
     const storeService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -254,7 +256,7 @@ describe("RegionService", () => {
       regionRepository,
       countryRepository,
       storeService,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -262,13 +264,17 @@ describe("RegionService", () => {
 
     it("throws on invalid country code", async () => {
       await expect(
-        regionService.validateFields_({ countries: ["ddd"] })
+        regionService.validateFields_({
+          countries: ["ddd"],
+        } as CreateRegionInput)
       ).rejects.toThrow("Invalid country code")
     })
 
     it("throws on in use country code", async () => {
       await expect(
-        regionService.validateFields_({ countries: ["DK"] })
+        regionService.validateFields_({
+          countries: ["DK"],
+        } as CreateRegionInput)
       ).rejects.toThrow(
         `Denmark already exists in region ${IdMap.getId("dk-reg")}`
       )
@@ -276,7 +282,9 @@ describe("RegionService", () => {
 
     it("throws on unknown payment providers", async () => {
       await expect(
-        regionService.validateFields_({ payment_providers: ["should_fail"] })
+        regionService.validateFields_({
+          payment_providers: ["should_fail"],
+        } as CreateRegionInput)
       ).rejects.toThrow("Payment provider not found")
     })
 
@@ -284,7 +292,7 @@ describe("RegionService", () => {
       await expect(
         regionService.validateFields_({
           fulfillment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       ).rejects.toThrow("Fulfillment provider not found")
     })
   })
@@ -330,7 +338,7 @@ describe("RegionService", () => {
     })
 
     const storeService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -354,7 +362,7 @@ describe("RegionService", () => {
       countryRepository,
       currencyRepository,
       storeService,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -395,7 +403,7 @@ describe("RegionService", () => {
         }),
     })
     const countryRepository = MockRepository({
-      findOne: (query) => Promise.resolve(),
+      findOne: () => Promise.resolve(),
     })
 
     const regionService = new RegionService({
@@ -403,7 +411,7 @@ describe("RegionService", () => {
       eventBusService,
       regionRepository,
       countryRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -455,7 +463,7 @@ describe("RegionService", () => {
       eventBusService,
       regionRepository,
       countryRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -499,7 +507,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -551,7 +559,7 @@ describe("RegionService", () => {
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -611,7 +619,7 @@ describe("RegionService", () => {
       eventBusService,
       fulfillmentProviderRepository: fpRepository,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -660,7 +668,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -695,7 +703,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
