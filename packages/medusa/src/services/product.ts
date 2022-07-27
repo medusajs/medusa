@@ -1,6 +1,6 @@
-import { FlagRouter } from "../utils/flag-router";
+import { FlagRouter } from "../utils/flag-router"
 
-\import { MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { SearchService, ProductVariantService } from "."
 import { TransactionBaseService } from "../interfaces"
@@ -31,7 +31,7 @@ import {
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels";
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -83,7 +83,7 @@ class ProductService extends TransactionBaseService<
     productTagRepository,
     imageRepository,
     searchService,
-    featureFlagRouter
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -360,8 +360,10 @@ class ProductService extends TransactionBaseService<
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-          && typeof salesChannels !== "undefined"
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          typeof salesChannels !== "undefined"
         ) {
           product.sales_channels = []
 
@@ -473,8 +475,8 @@ class ProductService extends TransactionBaseService<
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-        && typeof salesChannels !== "undefined"
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        typeof salesChannels !== "undefined"
       ) {
         product.sales_channels = []
         if (salesChannels?.length) {
