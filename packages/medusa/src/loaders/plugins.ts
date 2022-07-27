@@ -1,37 +1,37 @@
-import glob from "glob"
+import { aliasTo, asClass, asFunction, asValue } from "awilix"
 import { Express } from "express"
-import { EntitySchema } from "typeorm"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
 import {
   BaseService as LegacyBaseService,
-  PaymentService,
-  FulfillmentService,
   FileService,
+  FulfillmentService,
   OauthService,
-  SearchService,
+  PaymentService,
 } from "medusa-interfaces"
-import { createRequireFromPath } from "medusa-core-utils"
-import _ from "lodash"
 import path from "path"
-import fs from "fs"
-import { asValue, asClass, asFunction, aliasTo } from "awilix"
-import { sync as existsSync } from "fs-exists-cached"
+import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
+  isBatchJobStrategy,
   isFileService,
+  isNotificationService,
+  isPriceSelectionStrategy,
+  isSearchService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
-  isNotificationService,
-  isBatchJobStrategy,
-  isPriceSelectionStrategy,
 } from "../interfaces"
-import formatRegistrationName from "../utils/format-registration-name"
+import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
   Logger,
   MedusaContainer,
 } from "../types/global"
-import { MiddlewareService } from "../services"
+import formatRegistrationName from "../utils/format-registration-name"
 import logger from "./logger"
 
 type Options = {
@@ -418,7 +418,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof SearchService) {
+      } else if (isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({
