@@ -252,7 +252,7 @@ describe("sales channels", () => {
       ).catch(err => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe("Unable to update Cart with disabled Sales Channel \"disabled cart sales channel\"")
+      expect(err.response.data.message).toBe("Unable to assign the cart to a disabled Sales Channel \"disabled cart sales channel\"")
     })
   })
 
