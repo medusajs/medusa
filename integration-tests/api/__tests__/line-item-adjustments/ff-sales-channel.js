@@ -3,6 +3,12 @@ const path = require("path")
 const { useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const { useApi } = require("../../../helpers/use-api")
+const {
+  simpleCartFactory,
+  simpleSalesChannelFactory,
+  simpleProductFactory,
+  simpleProductVariantFactory,
+} = require("../../factories")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -42,6 +48,52 @@ describe("Line Item - Sales Channel", () => {
   beforeEach(async () => {
     try {
       await cartSeeder(dbConnection)
+
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-in-sales-channel",
+        title: "test product belonging to a channel",
+        sales_channels: [
+          {
+            id: "main-sales-channel",
+            name: "Main sales channel",
+            description: "Main sales channel",
+            is_disabled: false,
+          },
+        ],
+      })
+
+      await simpleProductVariantFactory(dbConnection, {
+        id: "test-variant-sales-channel",
+        title: "test variant in sales channel",
+        product_id: "test-product-in-sales-channel",
+        inventory_quantity: 1000,
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 59,
+          },
+        ],
+      })
+
+      await simpleCartFactory(dbConnection, {
+        id: "test-cart-with-sales-channel",
+        sales_channel: {
+          id: "main-sales-channel",
+          name: "Main sales channel",
+          description: "Main sales channel",
+          is_disabled: false,
+        },
+        customer_id: "some-customer",
+        email: "some-customer@email.com",
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        items: [],
+      })
     } catch (err) {
       console.log(err)
       throw err

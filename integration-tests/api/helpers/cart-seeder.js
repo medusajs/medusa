@@ -17,7 +17,6 @@ const {
   CustomerGroup,
   PriceList,
 } = require("@medusajs/medusa")
-const { SalesChannel } = require("@medusajs/medusa/dist")
 
 module.exports = async (connection, data = {}) => {
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
@@ -721,54 +720,6 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(cartWithItemPercDiscount)
 
-  const salesChannel = manager.create(SalesChannel, {
-    id: "main-sales-channel",
-    name: "Main sales channel",
-    description: "Main sales channel",
-    is_disabled: false,
-  })
-
-  await manager.save(salesChannel)
-
-  const scProduct = await manager.create(Product, {
-    id: "test-product-in-sales-channel",
-    title: "test product belonging to a channel",
-    profile_id: defaultProfile.id,
-  })
-
-  scProduct.sales_channels = [salesChannel]
-
-  await manager.save(scProduct)
-
-  await manager.insert(ProductVariant, {
-    id: "test-variant-sales-channel",
-    title: "test variant in sales channel",
-    product_id: "test-product-in-sales-channel",
-    inventory_quantity: 1000,
-  })
-
-  const cartWithSalesChannel = manager.create(Cart, {
-    id: "test-cart-with-sales-channel",
-    sales_channel: {
-      id: "main-sales-channel",
-      name: "Main sales channel",
-      description: "Main sales channel",
-      is_disabled: false,
-    },
-    customer_id: "some-customer",
-    email: "some-customer@email.com",
-    shipping_address: {
-      id: "test-shipping-address",
-      first_name: "lebron",
-      country_code: "us",
-    },
-    region_id: "test-region",
-    currency_code: "usd",
-    items: [],
-  })
-
-  await manager.save(cartWithSalesChannel)
-
   const cart2 = manager.create(Cart, {
     id: "test-cart-2",
     customer_id: "some-customer",
@@ -975,16 +926,7 @@ module.exports = async (connection, data = {}) => {
     currency_code: "eur",
     amount: 700,
   })
-
   await manager.save(ma_sale_cg_new_region)
-
-  const ma_sc_variant = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sales-channel",
-    currency_code: "usd",
-    amount: 59,
-  })
-
-  await manager.save(ma_sc_variant)
 
   const li3 = await manager.create(LineItem, {
     id: "test-item3",
