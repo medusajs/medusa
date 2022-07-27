@@ -18,6 +18,7 @@ import {
   LineItemService,
 } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { FlagRouter } from "../../../../utils/flag-router"
 /**
  * @oas [post] /draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
@@ -98,11 +99,7 @@ export default async (req, res) => {
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(
-          draftOrder.cart_id,
-          line,
-          validated.validate_sales_channels
-        )
+        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({
@@ -141,10 +138,6 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
 
   @IsInt()
   quantity: number
-
-  @IsBoolean()
-  @IsOptional()
-  validate_sales_channels = false
 
   @IsObject()
   @IsOptional()
