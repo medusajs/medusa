@@ -6,12 +6,7 @@ const {
   ShippingProfile,
   Product,
   ProductVariant,
-  MoneyAmount,
   LineItem,
-  Payment,
-  Cart,
-  ShippingMethod,
-  Swap,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
