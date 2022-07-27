@@ -404,6 +404,13 @@ describe("CartService", () => {
         })
       },
     })
+
+    const featureFlagRouterMock = {
+      isFeatureEnabled(key) {
+        return false
+      },
+    }
+
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
@@ -414,6 +421,7 @@ describe("CartService", () => {
       shippingOptionService,
       inventoryService,
       productVariantService,
+      featureFlagRouter: featureFlagRouterMock,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       featureFlagRouter: new FlagRouter({}),
     })

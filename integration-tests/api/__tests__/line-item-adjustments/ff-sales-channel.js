@@ -1,14 +1,8 @@
 const path = require("path")
 
 const { useDb } = require("../../../helpers/use-db")
-const cartSeeder = require("../../helpers/cart-seeder")
 const { useApi } = require("../../../helpers/use-api")
-const {
-  simpleCartFactory,
-  simpleSalesChannelFactory,
-  simpleProductFactory,
-  simpleProductVariantFactory,
-} = require("../../factories")
+const { simpleCartFactory, simpleProductFactory } = require("../../factories")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -47,8 +41,6 @@ describe("Line Item - Sales Channel", () => {
 
   beforeEach(async () => {
     try {
-      await cartSeeder(dbConnection)
-
       await simpleProductFactory(dbConnection, {
         id: "test-product-in-sales-channel",
         title: "test product belonging to a channel",
@@ -60,17 +52,27 @@ describe("Line Item - Sales Channel", () => {
             is_disabled: false,
           },
         ],
+        variants: [
+          {
+            id: "test-variant-sales-channel",
+            title: "test variant in sales channel",
+            product_id: "test-product-in-sales-channel",
+            inventory_quantity: 1000,
+            prices: [
+              {
+                currency: "usd",
+                amount: 59,
+              },
+            ],
+          },
+        ],
       })
 
-      await simpleProductVariantFactory(dbConnection, {
-        id: "test-variant-sales-channel",
-        title: "test variant in sales channel",
-        product_id: "test-product-in-sales-channel",
-        inventory_quantity: 1000,
-        prices: [
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-no-sales-channel",
+        variants: [
           {
-            currency_code: "usd",
-            amount: 59,
+            id: "test-variant-no-sales-channel",
           },
         ],
       })
@@ -79,20 +81,7 @@ describe("Line Item - Sales Channel", () => {
         id: "test-cart-with-sales-channel",
         sales_channel: {
           id: "main-sales-channel",
-          name: "Main sales channel",
-          description: "Main sales channel",
-          is_disabled: false,
         },
-        customer_id: "some-customer",
-        email: "some-customer@email.com",
-        shipping_address: {
-          id: "test-shipping-address",
-          first_name: "lebron",
-          country_code: "us",
-        },
-        region_id: "test-region",
-        currency_code: "usd",
-        items: [],
       })
     } catch (err) {
       console.log(err)
@@ -104,7 +93,7 @@ describe("Line Item - Sales Channel", () => {
     await doAfterEach()
   })
 
-  describe("Adding line item with associated sales channel", () => {
+  describe("Adding line item with associated sales channel to a cart", () => {
     it("adding line item to a cart with associated sales channel returns 400", async () => {
       const api = useApi()
 
@@ -112,8 +101,7 @@ describe("Line Item - Sales Channel", () => {
         .post(
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
-            variant_id: "test-variant-quantity", // variant's product doesn't belong to a sales channel
-            validate_sales_channels: true,
+            variant_id: "test-variant-no-sales-channel", // variant's product doesn't belong to a sales channel
             quantity: 1,
           },
           { withCredentials: true }
@@ -132,7 +120,6 @@ describe("Line Item - Sales Channel", () => {
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
             variant_id: "test-variant-sales-channel",
-            validate_sales_channels: true,
             quantity: 1,
           },
           { withCredentials: true }
@@ -140,20 +127,18 @@ describe("Line Item - Sales Channel", () => {
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
-      expect(response.data.cart).toEqual(
-        expect.objectContaining({
-          id: "test-cart-with-sales-channel",
-          items: [
-            expect.objectContaining({
-              cart_id: "test-cart-with-sales-channel",
-              description: "test variant in sales channel",
-              title: "test product belonging to a channel",
-              variant_id: "test-variant-sales-channel",
-            }),
-          ],
-          sales_channel_id: "main-sales-channel",
-        })
-      )
+      expect(response.data.cart).toMatchObject({
+        id: "test-cart-with-sales-channel",
+        items: [
+          expect.objectContaining({
+            cart_id: "test-cart-with-sales-channel",
+            description: "test variant in sales channel",
+            title: "test product belonging to a channel",
+            variant_id: "test-variant-sales-channel",
+          }),
+        ],
+        sales_channel_id: "main-sales-channel",
+      })
     })
   })
 })
