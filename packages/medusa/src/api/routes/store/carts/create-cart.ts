@@ -35,7 +35,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *             description: The id of the Region to create the Cart in.
  *          sales_channel_id:
  *             type: string
- *             description: The id of the Sales channel to create the Cart in.
+ *             description: [EXPERIMENTAL] The id of the Sales channel to create the Cart in.
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."

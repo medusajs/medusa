@@ -359,7 +359,7 @@ class CartService extends TransactionBaseService<CartService> {
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
           rawCart.sales_channel_id = (
-            await this.getValidatedSalesChannelId(data.sales_channel_id)
+            await this.getValidatedSalesChannel(data.sales_channel_id)
           ).id
         }
 
@@ -444,7 +444,7 @@ class CartService extends TransactionBaseService<CartService> {
     )
   }
 
-  protected async getValidatedSalesChannelId(
+  protected async getValidatedSalesChannel(
     salesChannelId?: string
   ): Promise<SalesChannel | never> {
     let salesChannel: SalesChannel
@@ -852,14 +852,15 @@ class CartService extends TransactionBaseService<CartService> {
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          typeof data.sales_channel_id !== "undefined" &&
-          data.sales_channel_id != cart.sales_channel_id
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
-          await this.onSalesChannelChange(cart, data.sales_channel_id)
-          cart.sales_channel_id = data.sales_channel_id
+          if (
+            typeof data.sales_channel_id !== "undefined" &&
+            data.sales_channel_id != cart.sales_channel_id
+          ) {
+            await this.onSalesChannelChange(cart, data.sales_channel_id)
+            cart.sales_channel_id = data.sales_channel_id
+          }
         }
 
         if (typeof data.discounts !== "undefined") {
@@ -949,15 +950,7 @@ class CartService extends TransactionBaseService<CartService> {
     cart: Cart,
     newSalesChannelId: string
   ): Promise<void> {
-    const salesChannel = await this.getValidatedSalesChannelId(
-      newSalesChannelId
-    )
-    if (salesChannel.is_disabled) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Unable to update Cart with disabled Sales Channel "${salesChannel.name}"`
-      )
-    }
+    await this.getValidatedSalesChannel(newSalesChannelId)
 
     const productIds = cart.items.map((item) => item.variant.product_id)
     const productsToKeep = await this.productService_
