@@ -179,7 +179,7 @@ export default async ({
   const searchActivity = Logger.activity("Initializing search engine indexing")
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
-  const searchAct = Logger.success(searchActivity, "Indexing completed") || {}
+  const searchAct = Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
