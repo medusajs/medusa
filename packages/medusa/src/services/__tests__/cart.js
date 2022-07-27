@@ -543,7 +543,7 @@ describe("CartService", () => {
 
     it("validates if cart and variant's product belong to the same sales channel if flag is passed", async () => {
       const validateSpy = jest
-        .spyOn(cartService, "validateLineItemSalesChannel_")
+        .spyOn(cartService, "validateLineItem")
         .mockImplementation(() => Promise.resolve(true))
 
       const lineItem = {
@@ -557,11 +557,11 @@ describe("CartService", () => {
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-      expect(cartService.validateLineItemSalesChannel_).not.toHaveBeenCalled()
+      expect(cartService.validateLineItem).not.toHaveBeenCalled()
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem, true)
 
-      expect(cartService.validateLineItemSalesChannel_).toHaveBeenCalledTimes(1)
+      expect(cartService.validateLineItem).toHaveBeenCalledTimes(1)
 
       validateSpy.mockClear()
     })
