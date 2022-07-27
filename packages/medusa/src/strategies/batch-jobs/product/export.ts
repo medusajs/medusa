@@ -459,6 +459,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
       })
   }
 
+  /**
+   * Return the maximun number of each relation that must appears in the export.
+   * The number of item of a relation can vary between 0-Infinity and therefore the number of columns
+   * that will be added to the export correspond to that number
+   * @param products - The main entity to get the relation shape from
+   * @private
+   */
   private getProductRelationsDynamicColumnsShape(products: Product[]): {
     optionColumnCount: number
     imageColumnCount: number
