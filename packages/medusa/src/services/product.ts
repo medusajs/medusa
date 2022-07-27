@@ -564,39 +564,6 @@ class ProductService extends TransactionBaseService<ProductService> {
     })
   }
 
-  async filterProductsBySalesChannel(
-    productIds: string[],
-    salesChannelId: string,
-    config: FindProductConfig = {
-      skip: 0,
-      take: 50,
-    }
-  ): Promise<Product[]> {
-    const givenRelations = config.relations ?? []
-    const requiredRelations = ["sales_channels"]
-    const relationsSet = new Set([...givenRelations, ...requiredRelations])
-
-    const products = await this.list(
-      {
-        id: productIds,
-      },
-      {
-        ...config,
-        relations: [...relationsSet],
-      }
-    )
-
-    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
-      products.map((product) => [product.id, product.sales_channels])
-    )
-
-    return products.filter((product) => {
-      return productSalesChannelsMap
-        .get(product.id)
-        ?.some((sc) => sc.id === salesChannelId)
-    })
-  }
-
   /**
    * Adds an option to a product. Options can, for example, be "Size", "Color",
    * etc. Will update all the products variants with a dummy value for the newly

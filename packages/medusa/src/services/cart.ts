@@ -12,7 +12,6 @@ import {
   Discount,
   LineItem,
   ShippingMethod,
-  User,
   SalesChannel,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
@@ -45,8 +44,8 @@ import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { FlagRouter } from "../utils/flag-router"
-import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
+import { SalesChannelService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -64,7 +63,6 @@ type InjectedDependencies = {
   featureFlagRouter: FlagRouter
   productVariantService: ProductVariantService
   regionService: RegionService
-  featureFlagRouter: FlagRouter
   lineItemService: LineItemService
   shippingOptionService: ShippingOptionService
   customerService: CustomerService
@@ -102,7 +100,6 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
-  protected readonly featureFlagRouter_: FlagRouter
   protected readonly storeService_: StoreService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly regionService_: RegionService
@@ -137,7 +134,6 @@ class CartService extends TransactionBaseService<CartService> {
     discountService,
     giftCardService,
     totalsService,
-    featureFlagRouter,
     addressRepository,
     paymentSessionRepository,
     inventoryService,
@@ -574,6 +570,7 @@ class CartService extends TransactionBaseService<CartService> {
    *
    * @param cart - the cart for the line item
    * @param lineItem - the line item being added
+   * @return a boolean indicating validation result
    */
   protected async validateLineItem(
     cart: Cart,
@@ -991,8 +988,10 @@ class CartService extends TransactionBaseService<CartService> {
 
   /**
    * Remove the cart line item that does not belongs to the newly assigned sales channel
+   *
    * @param cart - The cart being updated
    * @param newSalesChannelId - The new sales channel being assigned to the cart
+   * @return void
    * @protected
    */
   protected async onSalesChannelChange(
