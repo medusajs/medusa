@@ -99,8 +99,10 @@ export default async (req, res) => {
 
     let cart = await cartService.withTransaction(manager).create({
       ...validated,
-      ...reqContext,
-      ...validated.context,
+      context: {
+        ...reqContext,
+        ...validated.context,
+      },
       region_id: regionId,
     })
 
