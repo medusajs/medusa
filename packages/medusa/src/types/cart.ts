@@ -43,7 +43,7 @@ class Discount {
 }
 
 export type CartCreateProps = {
-  region_id: string
+  region_id?: string
   email?: string
   billing_address_id?: string
   billing_address?: Partial<AddressPayload>
@@ -55,6 +55,8 @@ export type CartCreateProps = {
   type?: CartType
   context?: object
   metadata?: object
+  sales_channel_id?: string
+  country_code?: string
 }
 
 export type CartUpdateProps = {
@@ -63,8 +65,8 @@ export type CartUpdateProps = {
   email?: string
   shipping_address_id?: string
   billing_address_id?: string
-  billing_address?: AddressPayload
-  shipping_address?: AddressPayload
+  billing_address?: AddressPayload | string
+  shipping_address?: AddressPayload | string
   completed_at?: Date
   payment_authorized_at?: Date
   gift_cards?: GiftCard[]
@@ -72,4 +74,5 @@ export type CartUpdateProps = {
   customer_id?: string
   context?: object
   metadata?: Record<string, unknown>
+  sales_channel_id?: string
 }

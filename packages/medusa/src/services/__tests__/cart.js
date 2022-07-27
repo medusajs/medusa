@@ -4,6 +4,7 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { FlagRouter } from "../../utils/flag-router";
 
 const eventBusService = {
   emit: jest.fn(),
@@ -46,6 +47,7 @@ describe("CartService", () => {
         manager: MockManager,
         totalsService,
         cartRepository,
+        featureFlagRouter: new FlagRouter({}),
       })
       result = await cartService.retrieve(IdMap.getId("emptyCart"))
     })
@@ -76,6 +78,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -136,6 +139,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -239,6 +243,7 @@ describe("CartService", () => {
       customerService,
       regionService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -271,6 +276,7 @@ describe("CartService", () => {
         customer_id: IdMap.getId("customer"),
         email: "email@test.com",
         customer: expect.any(Object),
+        context: expect.any(Object),
       })
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
@@ -315,6 +321,7 @@ describe("CartService", () => {
 
       expect(cartRepository.create).toHaveBeenCalledTimes(1)
       expect(cartRepository.create).toHaveBeenCalledWith({
+        context: {},
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
           first_name: "LeBron",
@@ -400,6 +407,7 @@ describe("CartService", () => {
       shippingOptionService,
       inventoryService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -614,6 +622,7 @@ describe("CartService", () => {
       shippingOptionService,
       eventBusService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -719,6 +728,7 @@ describe("CartService", () => {
       cartRepository,
       totalsService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -806,6 +816,7 @@ describe("CartService", () => {
       eventBusService,
       inventoryService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -887,6 +898,7 @@ describe("CartService", () => {
       cartRepository,
       eventBusService,
       customerService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -967,6 +979,7 @@ describe("CartService", () => {
       cartRepository,
       addressRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1028,6 +1041,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1182,6 +1196,7 @@ describe("CartService", () => {
       eventBusService,
       paymentSessionRepository: MockRepository(),
       priceSelectionStrategy: priceSelectionStrat,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1269,6 +1284,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1383,6 +1399,7 @@ describe("CartService", () => {
       cartRepository,
       paymentProviderService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1573,6 +1590,7 @@ describe("CartService", () => {
       lineItemService,
       eventBusService,
       customShippingOptionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -1927,6 +1945,7 @@ describe("CartService", () => {
       discountService,
       eventBusService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -2214,6 +2233,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {

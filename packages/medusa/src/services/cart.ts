@@ -3,14 +3,18 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
-import { DiscountRuleType } from "../models"
-import { Address } from "../models/address"
-import { Cart } from "../models/cart"
-import { CustomShippingOption } from "../models/custom-shipping-option"
-import { Customer } from "../models/customer"
-import { Discount } from "../models/discount"
-import { LineItem } from "../models/line-item"
-import { ShippingMethod } from "../models/shipping-method"
+import {
+  DiscountRuleType,
+  Address,
+  Cart,
+  CustomShippingOption,
+  Customer,
+  Discount,
+  LineItem,
+  ShippingMethod,
+  User,
+  SalesChannel,
+} from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -39,6 +43,10 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { FlagRouter } from "../utils/flag-router"
+import SalesChannelService from "./sales-channel"
+import StoreService from "./store"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -48,9 +56,12 @@ type InjectedDependencies = {
   paymentSessionRepository: typeof PaymentSessionRepository
   lineItemRepository: typeof LineItemRepository
   eventBusService: EventBusService
+  salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
   paymentProviderService: PaymentProviderService
   productService: ProductService
+  storeService: StoreService
+  featureFlagRouter: FlagRouter
   productVariantService: ProductVariantService
   regionService: RegionService
   lineItemService: LineItemService
@@ -90,6 +101,9 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
+  protected readonly featureFlagRouter_: FlagRouter
+  protected readonly storeService_: StoreService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly regionService_: RegionService
   protected readonly lineItemService_: LineItemService
   protected readonly paymentProviderService_: PaymentProviderService
@@ -127,6 +141,9 @@ class CartService extends TransactionBaseService<CartService> {
     customShippingOptionService,
     lineItemAdjustmentService,
     priceSelectionStrategy,
+    salesChannelService,
+    featureFlagRouter,
+    storeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -153,6 +170,9 @@ class CartService extends TransactionBaseService<CartService> {
     this.taxProviderService_ = taxProviderService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.priceSelectionStrategy_ = priceSelectionStrategy
+    this.salesChannelService_ = salesChannelService
+    this.featureFlagRouter_ = featureFlagRouter
+    this.storeService_ = storeService
   }
 
   protected transformQueryForTotals_(
@@ -331,15 +351,17 @@ class CartService extends TransactionBaseService<CartService> {
           this.addressRepository_
         )
 
-        const { region_id } = data
-        if (!region_id) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `A region_id must be provided when creating a cart`
-          )
+        const rawCart: DeepPartial<Cart> = {
+          context: data.context ?? {},
         }
 
-        const rawCart: DeepPartial<Cart> = {}
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        ) {
+          rawCart.sales_channel_id = (
+            await this.getValidatedSalesChannel(data.sales_channel_id)
+          ).id
+        }
 
         if (data.email) {
           const customer = await this.createOrFetchUserFromEmail_(data.email)
@@ -348,14 +370,20 @@ class CartService extends TransactionBaseService<CartService> {
           rawCart.email = customer.email
         }
 
+        if (!data.region_id) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `A region_id must be provided when creating a cart`
+          )
+        }
+
+        rawCart.region_id = data.region_id
         const region = await this.regionService_
           .withTransaction(transactionManager)
-          .retrieve(region_id, {
+          .retrieve(data.region_id, {
             relations: ["countries"],
           })
         const regCountries = region.countries.map(({ iso_2 }) => iso_2)
-
-        rawCart.region_id = region.id
 
         if (!data.shipping_address && !data.shipping_address_id) {
           if (region.countries.length === 1) {
@@ -399,10 +427,8 @@ class CartService extends TransactionBaseService<CartService> {
             typeof data[remainingField] !== "undefined" &&
             remainingField !== "object"
           ) {
-            /* TODO: See how to fix the error TS2590 properly while keeping the DeepPartial type */
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            rawCart[remainingField] = data[remainingField]
+            const key = remainingField as string
+            rawCart[key] = data[remainingField]
           }
         }
 
@@ -416,6 +442,32 @@ class CartService extends TransactionBaseService<CartService> {
         return cart
       }
     )
+  }
+
+  protected async getValidatedSalesChannel(
+    salesChannelId?: string
+  ): Promise<SalesChannel | never> {
+    let salesChannel: SalesChannel
+    if (typeof salesChannelId !== "undefined") {
+      salesChannel = await this.salesChannelService_
+        .withTransaction(this.manager_)
+        .retrieve(salesChannelId)
+    } else {
+      salesChannel = (
+        await this.storeService_.withTransaction(this.manager_).retrieve({
+          relations: ["default_sales_channel"],
+        })
+      ).default_sales_channel
+    }
+
+    if (salesChannel.is_disabled) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Unable to assign the cart to a disabled Sales Channel "${salesChannel.name}"`
+      )
+    }
+
+    return salesChannel
   }
 
   /**
@@ -721,6 +773,30 @@ class CartService extends TransactionBaseService<CartService> {
         const cartRepo = transactionManager.getCustomRepository(
           this.cartRepository_
         )
+        const relations = [
+          "items",
+          "shipping_methods",
+          "shipping_address",
+          "billing_address",
+          "gift_cards",
+          "customer",
+          "region",
+          "payment_sessions",
+          "region.countries",
+          "discounts",
+          "discounts.rule",
+          "discounts.regions",
+        ]
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          data.sales_channel_id
+        ) {
+          relations.push("items.variant", "items.variant.product")
+        }
+
         const cart = await this.retrieve(cartId, {
           select: [
             "subtotal",
@@ -729,20 +805,7 @@ class CartService extends TransactionBaseService<CartService> {
             "discount_total",
             "total",
           ],
-          relations: [
-            "items",
-            "shipping_methods",
-            "shipping_address",
-            "billing_address",
-            "gift_cards",
-            "customer",
-            "region",
-            "payment_sessions",
-            "region.countries",
-            "discounts",
-            "discounts.rule",
-            "discounts.regions",
-          ],
+          relations,
         })
 
         if (data.customer_id) {
@@ -764,8 +827,12 @@ class CartService extends TransactionBaseService<CartService> {
         }
 
         if (typeof data.region_id !== "undefined") {
+          const shippingAddress =
+            typeof data.shipping_address !== "string"
+              ? data.shipping_address
+              : {}
           const countryCode =
-            (data.country_code || data.shipping_address?.country_code) ?? null
+            (data.country_code || shippingAddress?.country_code) ?? null
           await this.setRegion_(cart, data.region_id, countryCode)
         }
 
@@ -782,6 +849,18 @@ class CartService extends TransactionBaseService<CartService> {
           data.shipping_address_id ?? data.shipping_address
         if (shippingAddress !== undefined) {
           await this.updateShippingAddress_(cart, shippingAddress, addrRepo)
+        }
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        ) {
+          if (
+            typeof data.sales_channel_id !== "undefined" &&
+            data.sales_channel_id != cart.sales_channel_id
+          ) {
+            await this.onSalesChannelChange(cart, data.sales_channel_id)
+            cart.sales_channel_id = data.sales_channel_id
+          }
         }
 
         if (typeof data.discounts !== "undefined") {
@@ -859,6 +938,42 @@ class CartService extends TransactionBaseService<CartService> {
         return updatedCart
       }
     )
+  }
+
+  /**
+   * Remove the cart line item that does not belongs to the newly assigned sales channel
+   * @param cart - The cart being updated
+   * @param newSalesChannelId - The new sales channel being assigned to the cart
+   * @protected
+   */
+  protected async onSalesChannelChange(
+    cart: Cart,
+    newSalesChannelId: string
+  ): Promise<void> {
+    await this.getValidatedSalesChannel(newSalesChannelId)
+
+    const productIds = cart.items.map((item) => item.variant.product_id)
+    const productsToKeep = await this.productService_
+      .withTransaction(this.manager_)
+      .filterProductsBySalesChannel(productIds, newSalesChannelId, {
+        select: ["id", "sales_channels"],
+        take: productIds.length,
+      })
+    const productIdsToKeep = new Set<string>(
+      productsToKeep.map((product) => product.id)
+    )
+    const itemsToRemove = cart.items.filter((item) => {
+      return !productIdsToKeep.has(item.variant.product_id)
+    })
+
+    if (itemsToRemove.length) {
+      const results = await Promise.all(
+        itemsToRemove.map((item) => {
+          return this.removeLineItem(cart.id, item.id)
+        })
+      )
+      cart.items = results.pop()?.items ?? []
+    }
   }
 
   /**
