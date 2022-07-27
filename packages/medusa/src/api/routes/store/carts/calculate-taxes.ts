@@ -64,42 +64,46 @@ export default async (req, res) => {
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case "started": {
-        const { key, error } = await idempotencyKeyService.workStage(
-          idempotencyKey.idempotency_key,
-          async (manager: EntityManager) => {
-            const cart = await cartService.withTransaction(manager).retrieve(
-              id,
-              {
-                relations: ["items", "items.adjustments"],
-                select: [
-                  "total",
-                  "subtotal",
-                  "tax_total",
-                  "discount_total",
-                  "shipping_total",
-                  "gift_card_total",
-                ],
-              },
-              { force_taxes: true }
+        await manager.transaction(async (transactionManager) => {
+          const { key, error } = await idempotencyKeyService
+            .withTransaction(transactionManager)
+            .workStage(
+              idempotencyKey.idempotency_key,
+              async (manager: EntityManager) => {
+                const cart = await cartService.withTransaction(manager).retrieve(
+                  id,
+                  {
+                    relations: ["items", "items.adjustments"],
+                    select: [
+                      "total",
+                      "subtotal",
+                      "tax_total",
+                      "discount_total",
+                      "shipping_total",
+                      "gift_card_total",
+                    ],
+                  },
+                  { force_taxes: true }
+                )
+
+                const data = await decorateLineItemsWithTotals(cart, req, {
+                  force_taxes: true,
+                })
+
+                return {
+                  response_code: 200,
+                  response_body: { cart: data },
+                }
+              }
             )
 
-            const data = await decorateLineItemsWithTotals(cart, req, {
-              force_taxes: true,
-            })
-
-            return {
-              response_code: 200,
-              response_body: { cart: data },
-            }
+          if (error) {
+            inProgress = false
+            err = error
+          } else {
+            idempotencyKey = key
           }
-        )
-
-        if (error) {
-          inProgress = false
-          err = error
-        } else {
-          idempotencyKey = key
-        }
+        })
         break
       }
 
