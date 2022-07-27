@@ -1,37 +1,37 @@
-import glob from "glob"
+import { aliasTo, asClass, asFunction, asValue } from "awilix"
 import { Express } from "express"
-import { EntitySchema } from "typeorm"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
 import {
   BaseService as LegacyBaseService,
-  PaymentService,
-  FulfillmentService,
-  NotificationService,
   FileService,
+  FulfillmentService,
   OauthService,
+  PaymentService,
 } from "medusa-interfaces"
-import { createRequireFromPath } from "medusa-core-utils"
-import _ from "lodash"
 import path from "path"
-import fs from "fs"
-import { asValue, asClass, asFunction, aliasTo } from "awilix"
-import { sync as existsSync } from "fs-exists-cached"
+import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
+  isBatchJobStrategy,
   isFileService,
+  isNotificationService,
+  isPriceSelectionStrategy,
+  isSearchService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
-  isBatchJobStrategy,
-  isSearchService,
 } from "../interfaces"
-import formatRegistrationName from "../utils/format-registration-name"
+import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
   Logger,
   MedusaContainer,
 } from "../types/global"
-import { MiddlewareService } from "../services"
-import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import formatRegistrationName from "../utils/format-registration-name"
 import logger from "./logger"
 
 type Options = {
@@ -392,7 +392,7 @@ export async function registerServices(
           ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof NotificationService) {
+      } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(
           "notificationProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options))
