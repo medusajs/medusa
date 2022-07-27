@@ -4,7 +4,7 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { FlagRouter } from "../../utils/flag-router";
+import { FlagRouter } from "../../utils/flag-router"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -405,12 +405,6 @@ describe("CartService", () => {
       },
     })
 
-    const featureFlagRouterMock = {
-      isFeatureEnabled(key) {
-        return true
-      },
-    }
-
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
@@ -421,7 +415,6 @@ describe("CartService", () => {
       shippingOptionService,
       inventoryService,
       productVariantService,
-      featureFlagRouter: featureFlagRouterMock,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       featureFlagRouter: new FlagRouter({}),
     })
@@ -541,6 +534,128 @@ describe("CartService", () => {
       )
     })
 
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        variant_id: IdMap.getId("cannot-cover"),
+      }
+
+      await expect(
+        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      ).rejects.toThrow(
+        `Variant with id: ${IdMap.getId(
+          "cannot-cover"
+        )} does not have the required inventory`
+      )
+    })
+
+    it("throws if inventory isn't covered", async () => {
+      const lineItem = {
+        title: "merge line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        quantity: 1,
+        variant_id: IdMap.getId("cannot-cover"),
+      }
+
+      await expect(
+        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      ).rejects.toThrow(
+        `Variant with id: ${IdMap.getId(
+          "cannot-cover"
+        )} does not have the required inventory`
+      )
+    })
+  })
+
+  describe("addLineItem w. SalesChannel", () => {
+    const lineItemService = {
+      update: jest.fn(),
+      create: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
+    }
+
+    const shippingOptionService = {
+      deleteShippingMethods: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
+    }
+
+    const productVariantService = {
+      retrieve: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
+    }
+
+    const inventoryService = {
+      ...InventoryServiceMock,
+      confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
+        if (variantId !== IdMap.getId("cannot-cover")) {
+          return true
+        } else {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Variant with id: ${variantId} does not have the required inventory`
+          )
+        }
+      }),
+    }
+
+    const cartRepository = MockRepository({
+      findOneWithRelations: (rels, q) => {
+        if (q.where.id === IdMap.getId("cartWithLine")) {
+          return Promise.resolve({
+            id: IdMap.getId("cartWithLine"),
+            items: [
+              {
+                id: IdMap.getId("merger"),
+                title: "will merge",
+                variant_id: IdMap.getId("existing"),
+                should_merge: true,
+                quantity: 1,
+              },
+            ],
+          })
+        }
+        return Promise.resolve({
+          id: IdMap.getId("emptyCart"),
+          shipping_methods: [
+            {
+              shipping_option: {
+                profile_id: IdMap.getId("testProfile"),
+              },
+            },
+          ],
+          items: [],
+        })
+      },
+    })
+
+    const cartService = new CartService({
+      manager: MockManager,
+      totalsService,
+      cartRepository,
+      lineItemService,
+      lineItemRepository: MockRepository(),
+      eventBusService,
+      shippingOptionService,
+      inventoryService,
+      productVariantService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+      featureFlagRouter: new FlagRouter({ sales_channels: true }),
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("validates if cart and variant's product belong to the same sales channel if flag is passed", async () => {
       const validateSpy = jest
         .spyOn(cartService, "validateLineItem")
@@ -566,42 +681,6 @@ describe("CartService", () => {
       expect(cartService.validateLineItem).toHaveBeenCalledTimes(1)
 
       validateSpy.mockClear()
-    })
-
-    it("throws if inventory isn't covered", async () => {
-      const lineItem = {
-        title: "merge line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-        quantity: 1,
-        variant_id: IdMap.getId("cannot-cover"),
-      }
-
-      await expect(
-        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      ).rejects.toThrow(
-        `Variant with id: ${IdMap.getId(
-          "cannot-cover"
-        )} does not have the required inventory`
-      )
-    })
-
-    it("throws if inventory isn't covered", async () => {
-      const lineItem = {
-        title: "merge line",
-        description: "This is a new line",
-        thumbnail: "test-img-yeah.com/thumb",
-        quantity: 1,
-        variant_id: IdMap.getId("cannot-cover"),
-      }
-
-      await expect(
-        cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
-      ).rejects.toThrow(
-        `Variant with id: ${IdMap.getId(
-          "cannot-cover"
-        )} does not have the required inventory`
-      )
     })
   })
 
