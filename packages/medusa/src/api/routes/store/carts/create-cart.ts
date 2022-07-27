@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { CartService, LineItemService } from "../../../../services"
 import {
   IsArray,
   IsInt,
@@ -7,15 +7,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
-import { EntityManager } from "typeorm"
-
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, LineItemService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+
 import { AddressPayload } from "../../../../types/common"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import reqIp from "request-ip"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts
@@ -32,7 +32,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *         properties:
  *           region_id:
  *             type: string
- *             description: The id of the Region to create the Cart in.
+ *             description: The ID of the Region to create the Cart in.
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."
@@ -40,6 +40,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *             description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
  *             type: array
  *             items:
+ *               required:
+ *                 - variant_id
+ *                 - quantity
  *               properties:
  *                 variant_id:
  *                   description: The id of the Product Variant to generate a Line Item from.
@@ -50,6 +53,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *           context:
  *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
  *             type: object
+ *             example:
+ *               ip: "::1"
+ *               user_agent: "Chrome"
  * tags:
  *   - Cart
  * responses:

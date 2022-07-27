@@ -25,6 +25,41 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
  *   - (query) offset=0 {number} How many product variants to skip in the result.
  *   - (query) limit=100 {number} Maximum number of Product Variants to return.
+ *   - in: query
+ *     name: title
+ *     style: form
+ *     explode: false
+ *     description: product variant title to search for.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: a single title to search by
+ *         - type: array
+ *           description: multiple titles to search by
+ *           items:
+ *             type: string
+ *   - in: query
+ *     name: inventory_quantity
+ *     description: Filter by available inventory quantity
+ *     schema:
+ *       oneOf:
+ *         - type: number
+ *           description: a specific number to search by.
+ *         - type: object
+ *           description: search using less and greater than comparisons.
+ *           properties:
+ *             lt:
+ *               type: number
+ *               description: filter by inventory quantity less than this number
+ *             gt:
+ *               type: number
+ *               description: filter by inventory quantity greater than this number
+ *             lte:
+ *               type: number
+ *               description: filter by inventory quantity less than or equal to this number
+ *             gte:
+ *               type: number
+ *               description: filter by inventory quantity greater than or equal to this number
  * tags:
  *   - Product Variant
  * responses:

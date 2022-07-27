@@ -16,7 +16,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /store/carts/{id}
+ * @oas [post] /carts/{id}
  * operationId: PostCartsCart
  * summary: Update a Cart
  * description: "Updates a Cart."
@@ -36,14 +36,21 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             type: string
  *             description: "An email to be used on the Cart."
+ *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: A full billing address object.
+ *               - type: string
+ *                 description: The billing address ID
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: A full shipping address object.
+ *               - type: string
+ *                 description: The shipping address ID
  *           gift_cards:
  *             description: "An array of Gift Card codes to add to the Cart."
  *             type: array
@@ -65,11 +72,14 @@ import { validator } from "../../../../utils/validator"
  *                   description: "The code that a Discount is identifed by."
  *                   type: string
  *           customer_id:
- *             description: "The id of the Customer to associate the Cart with."
+ *             description: "The ID of the Customer to associate the Cart with."
  *             type: string
  *           context:
  *             description: "An optional object to provide context to the Cart."
  *             type: object
+ *             example:
+ *               ip: "::1"
+ *               user_agent: "Chrome"
  * tags:
  *   - Cart
  * responses:
