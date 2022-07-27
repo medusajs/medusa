@@ -1,4 +1,6 @@
-import { MedusaError } from "medusa-core-utils"
+import { FlagRouter } from "../utils/flag-router";
+
+\import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { SearchService, ProductVariantService } from "."
 import { TransactionBaseService } from "../interfaces"
@@ -29,6 +31,7 @@ import {
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels";
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -41,6 +44,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
+  featureFlagRouter: FlagRouter
 }
 
 class ProductService extends TransactionBaseService<
@@ -59,6 +63,7 @@ class ProductService extends TransactionBaseService<
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -78,6 +83,7 @@ class ProductService extends TransactionBaseService<
     productTagRepository,
     imageRepository,
     searchService,
+    featureFlagRouter
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -92,6 +98,7 @@ class ProductService extends TransactionBaseService<
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -383,7 +390,10 @@ class ProductService extends TransactionBaseService<
           product.type_id = (await productTypeRepo.upsertType(type))?.id || null
         }
 
-        if (typeof salesChannels !== "undefined") {
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+          && typeof salesChannels !== "undefined"
+        ) {
           product.sales_channels = []
 
           if (salesChannels?.length) {
@@ -493,7 +503,10 @@ class ProductService extends TransactionBaseService<
         product.tags = await productTagRepo.upsertTags(tags)
       }
 
-      if (typeof salesChannels !== "undefined") {
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        && typeof salesChannels !== "undefined"
+      ) {
         product.sales_channels = []
         if (salesChannels?.length) {
           const salesChannelIds = salesChannels?.map((sc) => sc.id)
