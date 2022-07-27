@@ -122,8 +122,6 @@ export abstract class AbstractSearchService<
   abstract updateSettings(indexName: string, settings: unknown): unknown
 }
 
-export function isSearchService(
-  obj: unknown
-): obj is AbstractSearchService<never> {
+export function isSearchService(obj: unknown): boolean {
   return obj instanceof AbstractSearchService || obj instanceof SearchService
 }
