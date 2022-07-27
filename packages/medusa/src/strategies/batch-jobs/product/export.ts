@@ -13,12 +13,15 @@ import {
   productExportSchemaDescriptors,
 } from "./index"
 import { FindProductConfig } from "../../../types/product"
+import { FlagRouter } from "../../../utils/flag-router"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 
 type InjectedDependencies = {
   manager: EntityManager
   batchJobService: BatchJobService
   productService: ProductService
   fileService: IFileService<never>
+  featureFlagRouter: FlagRouter
 }
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy<
@@ -34,6 +37,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
   protected readonly batchJobService_: BatchJobService
   protected readonly productService_: ProductService
   protected readonly fileService_: IFileService<never>
+  protected readonly featureFlagRouter_: FlagRouter
 
   protected readonly defaultRelations_ = [
     ...defaultAdminProductRelations,
@@ -49,7 +53,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
   protected readonly columnDescriptors: Map<
     string,
     ProductExportColumnSchemaDescriptor
-  > = productExportSchemaDescriptors
+  > = new Map(productExportSchemaDescriptors)
 
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
@@ -60,18 +64,25 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     batchJobService,
     productService,
     fileService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     super({
       manager,
       batchJobService,
       productService,
       fileService,
+      featureFlagRouter,
     })
 
     this.manager_ = manager
     this.batchJobService_ = batchJobService
     this.productService_ = productService
     this.fileService_ = fileService
+    this.featureFlagRouter_ = featureFlagRouter
+
+    if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
+      this.defaultRelations_.push("sales_channels")
+    }
   }
 
   async buildTemplate(): Promise<string> {
@@ -138,8 +149,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
-
-      const pricesData = new Set<string>()
+      let dynamicSalesChannelsColumnCount = 0
+      let pricesData = new Set<string>()
 
       while (offset < productCount) {
         if (!products?.length) {
@@ -152,39 +163,20 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             } as FindProductConfig)
         }
 
-        // Retrieve the highest count of each object to build the dynamic columns later
-        for (const product of products) {
-          const optionsCount = product?.options?.length ?? 0
-          dynamicOptionColumnCount = Math.max(
-            dynamicOptionColumnCount,
-            optionsCount
-          )
-
-          const imageCount = product?.images?.length ?? 0
-          dynamicImageColumnCount = Math.max(
-            dynamicImageColumnCount,
-            imageCount
-          )
-
-          for (const variant of product?.variants ?? []) {
-            if (variant.prices?.length) {
-              variant.prices.forEach((price) => {
-                pricesData.add(
-                  JSON.stringify({
-                    currency_code: price.currency_code,
-                    region: price.region
-                      ? {
-                          currency_code: price.region.currency_code,
-                          name: price.region.name,
-                          id: price.region.id,
-                        }
-                      : null,
-                  })
-                )
-              })
-            }
-          }
-        }
+        const shapeData = this.getProductRelationsDynamicColumnsShape(products)
+        dynamicImageColumnCount = Math.max(
+          shapeData.imageColumnCount,
+          dynamicImageColumnCount
+        )
+        dynamicOptionColumnCount = Math.max(
+          shapeData.optionColumnCount,
+          dynamicOptionColumnCount
+        )
+        dynamicSalesChannelsColumnCount = Math.max(
+          shapeData.salesChannelsColumnCount,
+          dynamicSalesChannelsColumnCount
+        )
+        pricesData = new Set([...pricesData, ...shapeData.pricesData])
 
         offset += products.length
         products = []
@@ -197,6 +189,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             shape: {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
+              dynamicSalesChannelsColumnCount,
               prices: [...pricesData].map((stringifyData) =>
                 JSON.parse(stringifyData)
               ),
@@ -325,11 +318,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
       prices = [],
       dynamicImageColumnCount,
       dynamicOptionColumnCount,
+      dynamicSalesChannelsColumnCount,
     } = batchJob?.context?.shape ?? {}
 
     this.appendMoneyAmountDescriptors(prices)
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
+    this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
 
     return (
       [...this.columnDescriptors.keys()].join(this.DELIMITER_) + this.NEWLINE_
@@ -340,6 +335,20 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     for (let i = 0; i < maxImagesCount; ++i) {
       this.columnDescriptors.set(`Image ${i + 1} Url`, {
         accessor: (product: Product) => product?.images[i]?.url ?? "",
+        entityName: "product",
+      })
+    }
+  }
+
+  private appendSalesChannelsDescriptors(maxScCount: number): void {
+    for (let i = 0; i < maxScCount; ++i) {
+      this.columnDescriptors.set(`Sales channel ${i + 1} Name`, {
+        accessor: (product: Product) => product?.sales_channels[i]?.name ?? "",
+        entityName: "product",
+      })
+      this.columnDescriptors.set(`Sales channel ${i + 1} Description`, {
+        accessor: (product: Product) =>
+          product?.sales_channels[i]?.description ?? "",
         entityName: "product",
       })
     }
@@ -448,5 +457,69 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           file_size: undefined,
         },
       })
+  }
+
+  /**
+   * Return the maximun number of each relation that must appears in the export.
+   * The number of item of a relation can vary between 0-Infinity and therefore the number of columns
+   * that will be added to the export correspond to that number
+   * @param products - The main entity to get the relation shape from
+   * @private
+   */
+  private getProductRelationsDynamicColumnsShape(products: Product[]): {
+    optionColumnCount: number
+    imageColumnCount: number
+    salesChannelsColumnCount: number
+    pricesData: Set<string>
+  } {
+    let optionColumnCount = 0
+    let imageColumnCount = 0
+    let salesChannelsColumnCount = 0
+    const pricesData = new Set<string>()
+
+    // Retrieve the highest count of each object to build the dynamic columns later
+    for (const product of products) {
+      const optionsCount = product?.options?.length ?? 0
+      optionColumnCount = Math.max(optionColumnCount, optionsCount)
+
+      const imageCount = product?.images?.length ?? 0
+      imageColumnCount = Math.max(imageColumnCount, imageCount)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        const salesChannelCount = product?.sales_channels?.length ?? 0
+        salesChannelsColumnCount = Math.max(
+          salesChannelsColumnCount,
+          salesChannelCount
+        )
+      }
+
+      for (const variant of product?.variants ?? []) {
+        if (variant.prices?.length) {
+          variant.prices.forEach((price) => {
+            pricesData.add(
+              JSON.stringify({
+                currency_code: price.currency_code,
+                region: price.region
+                  ? {
+                      currency_code: price.region.currency_code,
+                      name: price.region.name,
+                      id: price.region.id,
+                    }
+                  : null,
+              })
+            )
+          })
+        }
+      }
+    }
+
+    return {
+      optionColumnCount,
+      imageColumnCount,
+      salesChannelsColumnCount,
+      pricesData,
+    }
   }
 }

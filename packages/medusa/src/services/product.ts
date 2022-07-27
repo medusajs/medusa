@@ -2,7 +2,13 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
-import { Product, ProductTag, ProductType, ProductVariant } from "../models"
+import {
+  Product,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+} from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
@@ -282,6 +288,37 @@ class ProductService extends TransactionBaseService<ProductService> {
       relations: [...relationsSet],
     })
     return product.variants
+  }
+
+  async filterProductsBySalesChannel(
+    productIds: string[],
+    salesChannelId: string,
+    config: FindProductConfig = {
+      skip: 0,
+      take: 50,
+    }
+  ): Promise<Product[]> {
+    const givenRelations = config.relations ?? []
+    const requiredRelations = ["sales_channels"]
+    const relationsSet = new Set([...givenRelations, ...requiredRelations])
+
+    const products = await this.list(
+      {
+        id: productIds,
+      },
+      {
+        ...config,
+        relations: [...relationsSet],
+      }
+    )
+    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
+      products.map((product) => [product.id, product.sales_channels])
+    )
+    return products.filter((product) => {
+      return productSalesChannelsMap
+        .get(product.id)
+        ?.some((sc) => sc.id === salesChannelId)
+    })
   }
 
   async listTypes(): Promise<ProductType[]> {
