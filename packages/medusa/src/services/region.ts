@@ -20,6 +20,7 @@ import {
   FindRegionConfig,
   UpdateRegionInput,
 } from "../types/region"
+import { buildQuery, setMetadata, validateId } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -110,7 +111,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @return the newly created region
    */
   async create(regionObject: CreateRegionInput): Promise<Region> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepository = manager.getCustomRepository(
         this.regionRepository_
       )
@@ -142,14 +143,14 @@ class RegionService extends TransactionBaseService<RegionService> {
       }
 
       if (metadata) {
-        regionObject.metadata = this.setMetadata_(regionObject, metadata)
+        regionObject.metadata = setMetadata(regionObject, metadata)
       }
 
       for (const [key, value] of Object.entries(validated)) {
         regionObject[key] = value
       }
 
-      const created = regionRepository.create(regionObject)
+      const created = regionRepository.create(regionObject) as Region
       const result = await regionRepository.save(created)
 
       await this.eventBus_
@@ -202,7 +203,7 @@ class RegionService extends TransactionBaseService<RegionService> {
       }
 
       if (metadata) {
-        region.metadata = this.setMetadata_(region, metadata)
+        region.metadata = setMetadata(region, metadata)
       }
 
       for (const [key, value] of Object.entries(validated)) {
@@ -455,8 +456,8 @@ class RegionService extends TransactionBaseService<RegionService> {
       this.regionRepository_
     )
 
-    const validatedId = this.validateId_(regionId)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const validatedId = validateId(regionId)
+    const query = buildQuery({ id: validatedId }, config)
     const region = await regionRepository.findOne(query)
 
     if (!region) {
@@ -486,7 +487,7 @@ class RegionService extends TransactionBaseService<RegionService> {
   ): Promise<Region[]> {
     const regionRepo = this.manager_.getCustomRepository(this.regionRepository_)
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return regionRepo.find(query)
   }
 
@@ -661,7 +662,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     regionId: string,
     providerId: string
   ): Promise<Region | never> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
       const fpRepo = manager.getCustomRepository(
         this.fulfillmentProviderRepository_
@@ -673,7 +674,7 @@ class RegionService extends TransactionBaseService<RegionService> {
 
       // Check if region already has payment provider
       if (region.fulfillment_providers.find(({ id }) => id === providerId)) {
-        return Promise.resolve()
+        return Promise.resolve(region)
       }
 
       const fp = await fpRepo.findOne({ where: { id: providerId } })
@@ -719,7 +720,7 @@ class RegionService extends TransactionBaseService<RegionService> {
 
       // Check if region already has payment provider
       if (!region.payment_providers.find(({ id }) => id === providerId)) {
-        return Promise.resolve()
+        return Promise.resolve(region)
       }
 
       region.payment_providers = region.payment_providers.filter(
@@ -758,7 +759,7 @@ class RegionService extends TransactionBaseService<RegionService> {
 
       // Check if region already has payment provider
       if (!region.fulfillment_providers.find(({ id }) => id === providerId)) {
-        return Promise.resolve()
+        return Promise.resolve(region)
       }
 
       region.fulfillment_providers = region.fulfillment_providers.filter(
