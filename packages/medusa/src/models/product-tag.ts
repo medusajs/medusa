@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity } from "typeorm"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
@@ -22,26 +23,31 @@ export class ProductTag extends SoftDeletableEntity {
  * title: "Product Tag"
  * description: "Product Tags can be added to Products for easy filtering and grouping."
  * x-resourceId: product_tag
+ * required:
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the Product Tag. This value will be prefixed with `ptag_`."
  *     type: string
+ *     description: The product tag's ID
+ *     example: ptag_01G8K2MTMG9168F2B70S1TAVK3
  *   value:
- *     description: "The value that the Product Tag represents (e.g. \"Pants\")."
+ *     description: "The value that the Product Tag represents"
  *     type: string
+ *     example: Pants
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

@@ -26,30 +26,35 @@ export class SalesChannel extends SoftDeletableEntity {
  * title: "Sales Channel"
  * description: "A Sales Channel"
  * x-resourceId: sales_channel
+ * required:
+ *   - name
  * properties:
  *  id:
- *    description: "The unique identifier for the sales channel."
  *    type: string
+ *    description: The sales channel's ID
+ *    example: sc_01G8X9A7ESKAJXG2H0E6F1MW7A
  *  name:
  *    description: "The name of the sales channel."
  *    type: string
+ *    example: Market
  *  description:
  *    description: "The description of the sales channel."
  *    type: string
+ *    example: Multi-vendor market
  *  is_disabled:
  *    description: "Specify if the sales channel is enabled or disabled."
  *    type: boolean
  *    default: false
  *  created_at:
- *    description: "The date with timezone at which the resource was created."
  *    type: string
+ *    description: "The date with timezone at which the resource was created."
  *    format: date-time
  *  updated_at:
- *    description: "The date with timezone at which the resource was last updated."
  *    type: string
+ *    description: "The date with timezone at which the resource was updated."
  *    format: date-time
  *  deleted_at:
- *    description: "The date with timezone at which the resource was deleted."
  *    type: string
+ *    description: "The date with timezone at which the resource was deleted."
  *    format: date-time
  */
