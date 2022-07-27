@@ -7,6 +7,8 @@ import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
+import { Notification } from "../../../../models"
+import { FindConfig } from "../../../../types/common"
 
 /**
  * @oas [get] /notifications
@@ -91,20 +93,23 @@ export default async (req, res) => {
   }
 
   const listConfig = {
-    select: includeFields.length
+    select: (includeFields.length
       ? includeFields
-      : defaultAdminNotificationsFields,
+      : defaultAdminNotificationsFields) as (keyof Notification)[],
     relations: expandFields.length
       ? expandFields
       : defaultAdminNotificationsRelations,
     skip: offset,
     take: limit,
     order: { created_at: "DESC" },
-  }
+  } as FindConfig<Notification>
 
   const notifications = await notificationService.list(selector, listConfig)
 
-  const resultFields = [...listConfig.select, ...listConfig.relations]
+  const resultFields = [
+    ...(listConfig.select ?? []),
+    ...(listConfig.relations ?? []),
+  ]
   const data = notifications.map((o) => pick(o, resultFields))
 
   res.json({ notifications: data })
