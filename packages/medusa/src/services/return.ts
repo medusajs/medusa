@@ -1,11 +1,63 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import TotalsService from "./totals"
+import LineItemService from "./line-item"
+import { ReturnRepository } from "../repositories/return"
+import { ReturnItemRepository } from "../repositories/return-item"
+import ShippingOptionService from "./shipping-option"
+import ReturnReasonService from "./return-reason"
+import TaxProviderService from "./tax-provider"
+import FulfillmentProviderService from "./fulfillment-provider"
+import InventoryService from "./inventory"
+import OrderService from "./order"
+import Order from "./order"
+import { TransactionBaseService } from "../interfaces"
+import {
+  FulfillmentStatus,
+  LineItem,
+  PaymentStatus,
+  Return,
+  ReturnStatus,
+} from "../models"
+import { FindConfig, Selector } from "../types/common"
+import { buildQuery } from "../utils"
 
-/**
- * Handles Returns
- * @extends BaseService
- */
-class ReturnService extends BaseService {
+type InjectedDependencies = {
+  manager: EntityManager
+  totalsService: TotalsService
+  lineItemService: LineItemService
+  returnRepository: typeof ReturnRepository
+  returnItemRepository: typeof ReturnItemRepository
+  shippingOptionService: ShippingOptionService
+  returnReasonService: ReturnReasonService
+  taxProviderService: TaxProviderService
+  fulfillmentProviderService: FulfillmentProviderService
+  inventoryService: InventoryService
+  orderService: OrderService
+}
+
+type PartialItem = { item_id: string; quantity: number }
+type Transformer = (
+  item: PartialItem,
+  quantity: number,
+  data: Record<string, unknown>
+) => LineItem
+
+class ReturnService extends TransactionBaseService<ReturnService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly totalsService_: TotalsService
+  protected readonly returnRepository_: typeof ReturnRepository
+  protected readonly returnItemRepository_: typeof ReturnItemRepository
+  protected readonly lineItemService_: LineItemService
+  protected readonly taxProviderService_: TaxProviderService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly returnReasonService_: ReturnReasonService
+  protected readonly inventoryService_: InventoryService
+  protected readonly orderService_: OrderService
+
   constructor({
     manager,
     totalsService,
@@ -18,75 +70,49 @@ class ReturnService extends BaseService {
     fulfillmentProviderService,
     inventoryService,
     orderService,
-  }) {
-    super()
-
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
-
-    /** @private @const {ReturnRepository} */
-    this.returnRepository_ = returnRepository
-
-    /** @private @const {ReturnItemRepository} */
-    this.returnItemRepository_ = returnItemRepository
-
-    /** @private @const {ReturnItemRepository} */
-    this.lineItemService_ = lineItemService
-
-    this.taxProviderService_ = taxProviderService
-
-    /** @private @const {ShippingOptionService} */
-    this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {FulfillmentProviderService} */
-    this.fulfillmentProviderService_ = fulfillmentProviderService
-
-    this.returnReasonService_ = returnReasonService
-
-    this.inventoryService_ = inventoryService
-
-    /** @private @const {OrderService} */
-    this.orderService_ = orderService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new ReturnService({
-      manager: transactionManager,
-      totalsService: this.totalsService_,
-      lineItemService: this.lineItemService_,
-      returnRepository: this.returnRepository_,
-      taxProviderService: this.taxProviderService_,
-      returnItemRepository: this.returnItemRepository_,
-      shippingOptionService: this.shippingOptionService_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-      returnReasonService: this.returnReasonService_,
-      inventoryService: this.inventoryService_,
-      orderService: this.orderService_,
+  }: InjectedDependencies) {
+    super({
+      manager,
+      totalsService,
+      lineItemService,
+      returnRepository,
+      returnItemRepository,
+      shippingOptionService,
+      returnReasonService,
+      taxProviderService,
+      fulfillmentProviderService,
+      inventoryService,
+      orderService,
     })
 
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.manager_ = manager
+    this.totalsService_ = totalsService
+    this.returnRepository_ = returnRepository
+    this.returnItemRepository_ = returnItemRepository
+    this.lineItemService_ = lineItemService
+    this.taxProviderService_ = taxProviderService
+    this.shippingOptionService_ = shippingOptionService
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.returnReasonService_ = returnReasonService
+    this.inventoryService_ = inventoryService
+    this.orderService_ = orderService
   }
 
   /**
    * Retrieves the order line items, given an array of items
-   * @param {Order} order - the order to get line items from
-   * @param {{ item_id: string, quantity: number }} items - the items to get
-   * @param {function} transformer - a function to apply to each of the items
+   * @param order - the order to get line items from
+   * @param items - the items to get
+   * @param transformer - a function to apply to each of the items
    *    retrieved from the order, should return a line item. If the transformer
    *    returns an undefined value the line item will be filtered from the
    *    returned array.
-   * @return {Promise<Array<LineItem>>} the line items generated by the transformer.
+   * @return the line items generated by the transformer.
    */
-  async getFulfillmentItems_(order, items, transformer) {
+  protected async getFulfillmentItems_(
+    order: Order,
+    items: PartialItem[],
+    transformer: Transformer
+  ): Promise<LineItem[]> {
     let merged = [...order.items]
 
     // merge items from order with items from order swaps
@@ -113,29 +139,33 @@ class ReturnService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {object} config - the config object for find
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
    */
   list(
-    selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    selector: Selector<Return>,
+    config: FindConfig<Return> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<Return[]> {
     const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return returnRepo.find(query)
   }
 
   /**
    * Cancels a return if possible. Returns can be canceled if it has not been received.
-   * @param {string} returnId - the id of the return to cancel.
-   * @return {Promise<Return>} the updated Return
+   * @param returnId - the id of the return to cancel.
+   * @return the updated Return
    */
-  async cancel(returnId) {
-    return this.atomicPhase_(async (manager) => {
+  async cancel(returnId: string): Promise<Return | never> {
+    return await this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
-      if (ret.status === "received") {
+      if (ret.status === ReturnStatus.RECEIVED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Can't cancel a return which has been returned"
@@ -144,10 +174,9 @@ class ReturnService extends BaseService {
 
       const retRepo = manager.getCustomRepository(this.returnRepository_)
 
-      ret.status = "canceled"
+      ret.status = ReturnStatus.CANCELED
 
-      const result = retRepo.save(ret)
-      return result
+      return await retRepo.save(ret)
     })
   }
 
@@ -155,13 +184,13 @@ class ReturnService extends BaseService {
    * Checks that an order has the statuses necessary to complete a return.
    * fulfillment_status cannot be not_fulfilled or returned.
    * payment_status must be captured.
-   * @param {Order} order - the order to check statuses on
+   * @param order - the order to check statuses on
    * @throws when statuses are not sufficient for returns.
    */
-  validateReturnStatuses_(order) {
+  protected validateReturnStatuses_(order: Order): void | never {
     if (
-      order.fulfillment_status === "not_fulfilled" ||
-      order.fulfillment_status === "returned"
+      order.fulfillment_status === FulfillmentStatus.NOT_FULFILLED ||
+      order.fulfillment_status === FulfillmentStatus.RETURNED
     ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -169,7 +198,7 @@ class ReturnService extends BaseService {
       )
     }
 
-    if (order.payment_status !== "captured") {
+    if (order.payment_status !== PaymentStatus.CAPTURED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Can't return an order with payment unprocessed"
@@ -188,7 +217,7 @@ class ReturnService extends BaseService {
    * @return {LineItem} a line item where the quantity is set to the requested
    *   return quantity.
    */
-  validateReturnLineItem_(item, quantity, additional) {
+  protected validateReturnLineItem_(item, quantity, additional) {
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -232,7 +261,7 @@ class ReturnService extends BaseService {
     )
 
     const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id: validatedId }, config)
 
     const returnObj = await returnRepository.findOne(query)
 
