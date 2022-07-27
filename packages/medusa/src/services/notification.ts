@@ -151,7 +151,7 @@ class NotificationService extends TransactionBaseService<NotificationService> {
    * @param id - the id of the provider
    * @return the notification provider
    */
-  retrieveProvider_(id: string): AbstractNotificationService<never> {
+  protected retrieveProvider_(id: string): AbstractNotificationService<never> {
     try {
       return this.container_[`noti_${id}`]
     } catch (err) {
