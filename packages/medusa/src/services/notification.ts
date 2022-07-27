@@ -106,7 +106,7 @@ class NotificationService extends TransactionBaseService<NotificationService> {
   async retrieve(
     id: string,
     config: FindConfig<Notification> = {}
-  ): Promise<Notification> {
+  ): Promise<Notification | never> {
     const notiRepository = this.manager_.getCustomRepository(
       this.notificationRepository_
     )
