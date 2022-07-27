@@ -90,21 +90,24 @@ export default async (req, res) => {
 
   const headerKey = req.get("Idempotency-Key") || ""
 
+  let idempotencyKey
+  try {
+    idempotencyKey = await idempotencyKeyService.initializeRequest(
+      headerKey,
+      req.method,
+      req.params,
+      req.path
+    )
+  } catch (error) {
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
+
+  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
+  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    let idempotencyKey
-    try {
-      idempotencyKey = await idempotencyKeyService
-        .withTransaction(transactionManager)
-        .initializeRequest(headerKey, req.method, req.params, req.path)
-    } catch (error) {
-      res.status(409).send("Failed to create idempotency key")
-      return
-    }
-
-    res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
-    res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
-
     try {
       const orderService: OrderService = req.scope.resolve("orderService")
       const returnService: ReturnService = req.scope.resolve("returnService")
