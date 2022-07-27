@@ -1,13 +1,11 @@
 const path = require("path")
 const { Region, ShippingProfile, ShippingOption } = require("@medusajs/medusa")
 
+const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
-
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 
@@ -17,13 +15,8 @@ describe("/store/shipping-options", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
-      cwd,
-      env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
-    })
-    dbConnection = connection
-    medusaProcess = process
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
