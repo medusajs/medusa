@@ -609,7 +609,7 @@ class CartService extends TransactionBaseService<CartService> {
   async addLineItem(
     cartId: string,
     lineItem: LineItem,
-    config = { validateSalesChannels: false }
+    config = { validateSalesChannels: true }
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {

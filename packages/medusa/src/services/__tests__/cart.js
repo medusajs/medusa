@@ -407,7 +407,7 @@ describe("CartService", () => {
 
     const featureFlagRouterMock = {
       isFeatureEnabled(key) {
-        return false
+        return true
       },
     }
 
@@ -555,11 +555,13 @@ describe("CartService", () => {
         quantity: 10,
       }
 
-      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem, {
+        validateSalesChannels: false,
+      })
 
       expect(cartService.validateLineItem).not.toHaveBeenCalled()
 
-      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem, true)
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
       expect(cartService.validateLineItem).toHaveBeenCalledTimes(1)
 
