@@ -575,7 +575,7 @@ class CartService extends TransactionBaseService<CartService> {
    * @param cart - the cart for the line item
    * @param lineItem - the line item being added
    */
-  protected async validateLineItemSalesChannel(
+  protected async validateLineItem(
     cart: Cart,
     lineItem: LineItem
   ): Promise<boolean> {
@@ -628,7 +628,7 @@ class CartService extends TransactionBaseService<CartService> {
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
-            if (!(await this.validateLineItemSalesChannel(cart, lineItem))) {
+            if (!(await this.validateLineItem(cart, lineItem))) {
               throw new MedusaError(
                 MedusaError.Types.INVALID_DATA,
                 `The product "${lineItem.title}" must belongs to the sales channel on which the cart has been created.`
