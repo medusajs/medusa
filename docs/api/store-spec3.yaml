@@ -2,41 +2,51 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Storefront API
+  description: API reference for Medusa's Storefront endpoints
   license:
     name: MIT
+    url: 'https://github.com/medusajs/medusa/blob/master/LICENSE'
 tags:
   - name: Auth
     description: >-
-      Auth endpoints allows authorization of admin Users and manages their
+      Auth endpoints that allow authorization of customers and manages their
       sessions.
   - name: Cart
+    description: Cart endpoints that allow handling carts in Medusa.
     x-resourceId: cart
   - name: Collection
+    description: Collection endpoints that allow handling collections in Medusa.
     x-resourceId: product_collection
   - name: Customer
+    description: Customer endpoints that allow handling customers in Medusa.
     x-resourceId: customer
-  - name: Discount
-    x-resourceId: discount
   - name: Gift Card
+    description: Gift Card endpoints that allow handling gift cards in Medusa.
     x-resourceId: gift_card
-  - name: Notification
-    x-resourceId: notification
   - name: Order
+    description: Order endpoints that allow handling orders in Medusa.
     x-resourceId: order
   - name: Product
+    description: Product endpoints that allow handling products in Medusa.
     x-resourceId: product
+  - name: Product Variant
+    description: Product Variant endpoints that allow handling product variants in Medusa.
+    x-resourceId: product_variant
   - name: Region
+    description: Region endpoints that allow handling regions in Medusa.
     x-resourceId: region
+  - name: Return Reason
+    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    x-resourceId: return_reason
   - name: Return
+    description: Return endpoints that allow handling returns in Medusa.
     x-resourceId: return
   - name: Shipping Option
+    description: Shipping Option endpoints that allow handling shipping options in Medusa.
     x-resourceId: shipping_option
-  - name: Shipping Profile
-    x-resourceId: shipping_profile
   - name: Swap
+    description: Swap endpoints that allow handling swaps in Medusa.
     x-resourceId: swap
-  - name: Product Variant
-    x-resourceId: product_variant
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
@@ -126,115 +136,6 @@ paths:
                   exists:
                     type: boolean
                     description: Whether email exists or not.
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -251,7 +152,7 @@ paths:
             type: string
       responses:
         '200':
-          description: A successful response
+          description: OK
           content:
             application/json:
               schema:
@@ -294,15 +195,13 @@ paths:
         - Cart
       responses:
         '200':
-          description: A cart object with the tax_total field populated
+          description: OK
           content:
             application/json:
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: '#/components/schemas/cart'
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
   '/carts/{id}/complete':
     post:
       summary: Complete a Cart
@@ -333,19 +232,41 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      order:
-                        $ref: '#/components/schemas/order'
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: '#/components/schemas/cart'
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: '#/components/schemas/swap'
+                properties:
+                  type:
+                    type: string
+                    description: The type of the data property.
+                    enum:
+                      - order
+                      - cart
+                      - swap
+                  data:
+                    type: object
+                    description: >-
+                      The data of the result object. Its type depends on the
+                      type field.
+                    oneOf:
+                      - type: object
+                        description: >-
+                          Cart was successfully authorized and order was placed
+                          successfully.
+                        properties:
+                          order:
+                            $ref: '#/components/schemas/order'
+                      - type: object
+                        description: >-
+                          Cart was successfully authorized but requires further
+                          actions.
+                        properties:
+                          cart:
+                            $ref: '#/components/schemas/cart'
+                      - type: object
+                        description: >-
+                          When cart is used for a swap and it has been completed
+                          successfully.
+                        properties:
+                          cart:
+                            $ref: '#/components/schemas/swap'
   /carts:
     post:
       summary: Create a Cart
@@ -363,7 +284,7 @@ paths:
               properties:
                 region_id:
                   type: string
-                  description: The id of the Region to create the Cart in.
+                  description: The ID of the Region to create the Cart in.
                 country_code:
                   type: string
                   description: The 2 character ISO country code to create the Cart in.
@@ -373,6 +294,9 @@ paths:
                     generate Line Items from.
                   type: array
                   items:
+                    required:
+                      - variant_id
+                      - quantity
                     properties:
                       variant_id:
                         description: >-
@@ -388,6 +312,9 @@ paths:
                     `context` field is automatically populated with `ip` and
                     `user_agent`
                   type: object
+                  example:
+                    ip: '::1'
+                    user_agent: Chrome
       tags:
         - Cart
       responses:
@@ -663,6 +590,86 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+    post:
+      operationId: PostCartsCart
+      summary: Update a Cart
+      description: Updates a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                email:
+                  type: string
+                  description: An email to be used on the Cart.
+                  format: email
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                      description: A full billing address object.
+                    - type: string
+                      description: The billing address ID
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                      description: A full shipping address object.
+                    - type: string
+                      description: The shipping address ID
+                gift_cards:
+                  description: An array of Gift Card codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Gift Card is identified by.
+                        type: string
+                discounts:
+                  description: An array of Discount codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                customer_id:
+                  description: The ID of the Customer to associate the Cart with.
+                  type: string
+                context:
+                  description: An optional object to provide context to the Cart.
+                  type: object
+                  example:
+                    ip: '::1'
+                    user_agent: Chrome
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
   '/carts/{id}/payment-sessions/{provider_id}/refresh':
     post:
       operationId: PostCartsCartPaymentSessionsSession
@@ -707,7 +714,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Cart.
+          description: The ID of the Cart.
           schema:
             type: string
       tags:
@@ -731,69 +738,21 @@ paths:
               properties:
                 provider_id:
                   type: string
-                  description: The id of the Payment Provider.
-  '/store/carts/{id}':
-    post:
-      operationId: PostCartsCart
-      summary: Update a Cart
-      description: Updates a Cart.
+                  description: The ID of the Payment Provider.
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Cart.
+          description: The id of the Product Collection
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The id of the Region to create the Cart in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO country code to create the Cart in.
-                email:
-                  type: string
-                  description: An email to be used on the Cart.
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                gift_cards:
-                  description: An array of Gift Card codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Gift Card is identified by.
-                        type: string
-                discounts:
-                  description: An array of Discount codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Discount is identifed by.
-                        type: string
-                customer_id:
-                  description: The id of the Customer to associate the Cart with.
-                  type: string
-                context:
-                  description: An optional object to provide context to the Cart.
-                  type: object
       tags:
-        - Cart
+        - Collection
       responses:
         '200':
           description: OK
@@ -801,8 +760,94 @@ paths:
             application/json:
               schema:
                 properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -836,7 +881,33 @@ paths:
       operationId: PostCustomers
       summary: Create a Customer
       description: Creates a Customer account.
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - first_name
+                - last_name
+                - email
+                - password
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
+                password:
+                  description: The Customer's password.
+                  type: string
+                  format: password
+                phone:
+                  description: The Customer's phone number.
+                  type: string
       tags:
         - Customer
       responses:
@@ -848,32 +919,27 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                password:
-                  type: string
-                  description: The Customer's password for login.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
+        '422':
+          description: A customer with the same email exists
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                    description: The error code
+                  type:
+                    type: string
+                    description: The type of error
+                  message:
+                    type: string
+                    description: Human-readable message with details about the error
+              example:
+                code: invalid_request_error
+                type: duplicate_error
+                message: >-
+                  A customer with the given email already has an account. Log in
+                  instead
   '/customers/me/addresses/{address_id}':
     delete:
       operationId: DeleteCustomersCustomerAddressesAddress
@@ -914,11 +980,8 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                address:
-                  description: The updated Address.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
+              anyOf:
+                - $ref: '#/components/schemas/address'
       tags:
         - Customer
       responses:
@@ -969,6 +1032,9 @@ paths:
                   description: The Address to be used for billing purposes.
                   anyOf:
                     - $ref: '#/components/schemas/address'
+                      description: The full billing address object
+                    - type: string
+                      description: The ID of an existing billing address
                 password:
                   description: The Customer's password.
                   type: string
@@ -1033,26 +1099,28 @@ paths:
       parameters:
         - in: query
           name: limit
-          description: How many addresses to return.
+          description: How many orders to return.
           schema:
             type: integer
+            default: 10
         - in: query
           name: offset
-          description: The offset in the resulting addresses.
+          description: The offset in the resulting orders.
           schema:
             type: integer
+            default: 0
         - in: query
           name: fields
           description: >-
             (Comma separated string) Which fields should be included in the
-            resulting addresses.
+            resulting orders.
           schema:
             type: string
         - in: query
           name: expand
           description: >-
             (Comma separated string) Which relations should be expanded in the
-            resulting addresses.
+            resulting orders.
           schema:
             type: string
       tags:
@@ -1064,19 +1132,19 @@ paths:
             application/json:
               schema:
                 properties:
-                  count:
-                    description: The total number of Orders.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Orders to return,'
-                    type: integer
                   orders:
                     type: array
                     items:
                       $ref: '#/components/schemas/order'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
@@ -1085,31 +1153,49 @@ paths:
         Creates a reset password token to be used in a subsequent
         /reset-password request. The password token should be sent out of band
         e.g. via email and will not be returned.
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+              properties:
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
       tags:
         - Customer
       responses:
         '204':
           description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  description: Email of the user whose password should be reset.
-  /customers/reset-password:
+  /customers/password-reset:
     post:
       operationId: PostCustomersResetPassword
       summary: Resets Customer password
       description: >-
         Resets a Customer's password using a password token created by a
         previous /password-token request.
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+                - token
+              properties:
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
+                password:
+                  description: The Customer's password.
+                  type: string
+                  format: password
+                token:
+                  description: The reset password token
+                  type: string
       tags:
         - Customer
       responses:
@@ -1121,25 +1207,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - token
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                token:
-                  type: string
-                  description: The password token created by a /password-token request.
-                password:
-                  type: string
-                  description: The new password to set for the Customer.
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
@@ -1174,7 +1241,7 @@ paths:
         - in: path
           name: cart_id
           required: true
-          description: The id of Cart.
+          description: The ID of Cart.
           schema:
             type: string
       tags:
@@ -1209,16 +1276,13 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  order:
+                    $ref: '#/components/schemas/order'
   /orders:
     get:
       operationId: GetOrders
       summary: Look Up an Order
-      description: >-
-        Looks for an Order with a given `display_id`, `email` pair. The
-        `display_id`, `email` pair must match in order for the Order to be
-        returned.
+      description: Look up an order using filters.
       parameters:
         - in: query
           name: display_id
@@ -1228,10 +1292,24 @@ paths:
             type: number
         - in: query
           name: email
+          style: form
+          explode: false
+          description: The email associated with this order.
           required: true
-          description: The email of the Order with the given display_id.
           schema:
             type: string
+            format: email
+        - in: query
+          name: shipping_address
+          style: form
+          explode: false
+          description: The shipping address associated with this order.
+          schema:
+            type: object
+            properties:
+              postal_code:
+                type: string
+                description: The postal code of the shipping address
       tags:
         - Order
       responses:
@@ -1561,6 +1639,67 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+  /returns:
+    post:
+      operationId: PostReturns
+      summary: Create Return
+      description: Creates a Return for an Order.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - order_id
+                - items
+              properties:
+                order_id:
+                  type: string
+                  description: The ID of the Order to create the Return from.
+                items:
+                  description: The items to include in the Return.
+                  type: array
+                  items:
+                    required:
+                      - item_id
+                      - quantity
+                    properties:
+                      item_id:
+                        description: The ID of the Line Item from the Order.
+                        type: string
+                      quantity:
+                        description: The quantity to return.
+                        type: integer
+                      reason_id:
+                        description: The ID of the return reason.
+                        type: string
+                      note:
+                        description: A note to add to the item returned.
+                        type: string
+                return_shipping:
+                  description: >-
+                    If the Return is to be handled by the store operator the
+                    Customer can choose a Return Shipping Method. Alternatvely
+                    the Customer can handle the Return themselves.
+                  type: object
+                  required:
+                    - option_id
+                  properties:
+                    option_id:
+                      type: string
+                      description: >-
+                        The ID of the Shipping Option to create the Shipping
+                        Method from.
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
@@ -1602,61 +1741,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/return_reason'
-  /returns:
-    post:
-      operationId: PostReturns
-      summary: Create Return
-      description: Creates a Return for an Order.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                order_id:
-                  type: string
-                  description: The id of the Order to create the Return from.
-                items:
-                  description: The items to include in the Return.
-                  type: array
-                  items:
-                    properties:
-                      item_id:
-                        description: The id of the Line Item from the Order.
-                        type: string
-                      quantity:
-                        description: The quantity to return.
-                        type: integer
-                    required:
-                      - item_id
-                      - quantity
-                return_shipping:
-                  description: >-
-                    If the Return is to be handled by the store operator the
-                    Customer can choose a Return Shipping Method. Alternatvely
-                    the Customer can handle the Return themselves.
-                  type: object
-                  properties:
-                    option_id:
-                      type: string
-                      description: >-
-                        The id of the Shipping Option to create the Shipping
-                        Method from.
-                  required:
-                    - option_id
-              required:
-                - order_id
-                - items
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return:
-                    $ref: '#/components/schemas/return'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -1736,7 +1820,7 @@ paths:
               properties:
                 order_id:
                   type: string
-                  description: The id of the Order to create the Swap for.
+                  description: The ID of the Order to create the Swap for.
                 return_items:
                   description: The items to include in the Return.
                   type: array
@@ -1746,21 +1830,21 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of the Line Item from the Order.
+                        description: The ID of the Line Item from the Order.
                         type: string
                       quantity:
-                        description: The quantity to return.
+                        description: The quantity to swap.
                         type: integer
                       reason_id:
-                        description: The id of the reason of this return
+                        description: The ID of the reason of this return.
                         type: string
-                      note_id:
-                        description: The id of the note
+                      note:
+                        description: The note to add to the item being swapped.
                         type: string
                 return_shipping_option:
                   type: string
                   description: >-
-                    The id of the Shipping Option to create the Shipping Method
+                    The ID of the Shipping Option to create the Shipping Method
                     from.
                 additional_items:
                   description: The items to exchange the returned items to.
@@ -1771,7 +1855,7 @@ paths:
                       - quantity
                     properties:
                       variant_id:
-                        description: The id of the Product Variant to send.
+                        description: The ID of the Product Variant to send.
                         type: string
                       quantity:
                         description: The quantity to send of the variant.
@@ -1876,6 +1960,45 @@ paths:
           schema:
             type: number
             default: '100'
+        - in: query
+          name: title
+          style: form
+          explode: false
+          description: product variant title to search for.
+          schema:
+            oneOf:
+              - type: string
+                description: a single title to search by
+              - type: array
+                description: multiple titles to search by
+                items:
+                  type: string
+        - in: query
+          name: inventory_quantity
+          description: Filter by available inventory quantity
+          schema:
+            oneOf:
+              - type: number
+                description: a specific number to search by.
+              - type: object
+                description: search using less and greater than comparisons.
+                properties:
+                  lt:
+                    type: number
+                    description: filter by inventory quantity less than this number
+                  gt:
+                    type: number
+                    description: filter by inventory quantity greater than this number
+                  lte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity less than or equal to this
+                      number
+                  gte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity greater than or equal to this
+                      number
       tags:
         - Product Variant
       responses:

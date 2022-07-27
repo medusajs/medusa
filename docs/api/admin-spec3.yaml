@@ -220,264 +220,6 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
-  '/batch-jobs/{id}/cancel':
-    post:
-      operationId: PostBatchJobsBatchJobCancel
-      summary: Marks a batch job as canceled
-      description: Marks a batch job as canceled
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the batch job.
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-  '/batch-jobs/{id}/confirm':
-    post:
-      operationId: PostBatchJobsBatchJobConfirmProcessing
-      summary: Confirm a batch job
-      description: Confirms that a previously requested batch job should be executed.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the batch job.
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-  /batch-jobs:
-    post:
-      operationId: PostBatchJobs
-      summary: Create a Batch Job
-      description: Creates a Batch Job.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - type
-                - context
-              properties:
-                type:
-                  type: string
-                  description: The type of batch job to start.
-                context:
-                  type: object
-                  description: >-
-                    Additional infomration regarding the batch to be used for
-                    processing.
-                dry_run:
-                  type: boolean
-                  description: >-
-                    Set a batch job in dry_run mode to get some information on
-                    what will be done without applying any modifications.
-      tags:
-        - Batch Job
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-    get:
-      operationId: GetBatchJobs
-      summary: List Batch Jobs
-      description: Retrieve a list of Batch Jobs.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of batch jobs to return.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          description: The number of batch jobs to skip before results.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: type
-          style: form
-          explode: false
-          description: Filter by the batch type
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: confirmed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was confirmed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: pre_processed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was pre processed,
-            i.e. less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: completed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was completed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: failed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was failed, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: canceled_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was canceled, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: order
-          description: Order used when retrieving batch jobs
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: deleted_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was deleted, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: created_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: updated_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_jobs:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/batch_job'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/batch-jobs/{id}':
-    get:
-      operationId: GetBatchJobsBatchJob
-      summary: Retrieve a Batch Job
-      description: Retrieves a Batch Job.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Batch Job
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
@@ -812,201 +554,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of items to return.
-          schema:
-            type: integer
-            default: 50
-        - in: query
-          name: offset
-          description: The items to skip before result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'a search term to search email, first_name, and last_name.'
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in the customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be included in the customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be retrieved in each customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -1338,6 +885,459 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/customer'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of items to return.
+          schema:
+            type: integer
+            default: 50
+        - in: query
+          name: offset
+          description: The items to skip before result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'a search term to search email, first_name, and last_name.'
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be included in the customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be retrieved in each customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: >-
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/batch-jobs/{id}/cancel':
+    post:
+      operationId: PostBatchJobsBatchJobCancel
+      summary: Marks a batch job as canceled
+      description: Marks a batch job as canceled
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  '/batch-jobs/{id}/confirm':
+    post:
+      operationId: PostBatchJobsBatchJobConfirmProcessing
+      summary: Confirm a batch job
+      description: Confirms that a previously requested batch job should be executed.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  /batch-jobs:
+    post:
+      operationId: PostBatchJobs
+      summary: Create a Batch Job
+      description: Creates a Batch Job.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - type
+                - context
+              properties:
+                type:
+                  type: string
+                  description: The type of batch job to start.
+                context:
+                  type: object
+                  description: >-
+                    Additional infomration regarding the batch to be used for
+                    processing.
+                dry_run:
+                  type: boolean
+                  description: >-
+                    Set a batch job in dry_run mode to get some information on
+                    what will be done without applying any modifications.
+      tags:
+        - Batch Job
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+    get:
+      operationId: GetBatchJobs
+      summary: List Batch Jobs
+      description: Retrieve a list of Batch Jobs.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of batch jobs to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of batch jobs to skip before results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: type
+          style: form
+          explode: false
+          description: Filter by the batch type
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: confirmed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was confirmed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: pre_processed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was pre processed,
+            i.e. less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: completed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was completed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: failed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was failed, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: canceled_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was canceled, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: order
+          description: Order used when retrieving batch jobs
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: deleted_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was deleted, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: created_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: updated_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/batch_job'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/batch-jobs/{id}':
+    get:
+      operationId: GetBatchJobsBatchJob
+      summary: Retrieve a Batch Job
+      description: Retrieves a Batch Job.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Batch Job
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -8013,133 +8013,6 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
-  /sales-channels:
-    post:
-      operationId: PostSalesChannels
-      summary: Create a sales channel
-      description: Creates a sales channel.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/sales_channel'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-                - description
-              properties:
-                name:
-                  type: string
-                  description: Name of the sales channel
-                description:
-                  type: string
-                  description: Description of the sales channel
-                is_disabled:
-                  type: boolean
-                  description: Whether the sales channel is enabled or not
-  '/sales-channels/{id}':
-    delete:
-      operationId: DeleteSalesChannelsSalesChannel
-      summary: Delete a sales channel
-      description: Deletes the sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Sales channel.
-          schema:
-            type: string
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Sales Channel.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-    get:
-      operationId: GetSalesChannelsSalesChannel
-      summary: Retrieve a sales channel
-      description: Retrieves the sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Sales channel.
-          schema:
-            type: string
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/sales_channel'
-    post:
-      operationId: PostSalesChannelsSalesChannel
-      summary: Update a Sales Channel
-      description: Updates a Sales Channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Sales Channel.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  type: string
-                  description: Name of the sales channel.
-                description:
-                  type: string
-                  description: Sales Channel description.
-                is_disabled:
-                  type: boolean
-                  description: Indication of if the sales channel is active.
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/sales_channel'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -8672,6 +8545,133 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/tax_provider'
+  /sales-channels:
+    post:
+      operationId: PostSalesChannels
+      summary: Create a sales channel
+      description: Creates a sales channel.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  description: Name of the sales channel
+                description:
+                  type: string
+                  description: Description of the sales channel
+                is_disabled:
+                  type: boolean
+                  description: Whether the sales channel is enabled or not
+  '/sales-channels/{id}':
+    delete:
+      operationId: DeleteSalesChannelsSalesChannel
+      summary: Delete a sales channel
+      description: Deletes the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales channel.
+          schema:
+            type: string
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Sales Channel.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+    get:
+      operationId: GetSalesChannelsSalesChannel
+      summary: Retrieve a sales channel
+      description: Retrieves the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales channel.
+          schema:
+            type: string
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
+    post:
+      operationId: PostSalesChannelsSalesChannel
+      summary: Update a Sales Channel
+      description: Updates a Sales Channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales Channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Name of the sales channel.
+                description:
+                  type: string
+                  description: Sales Channel description.
+                is_disabled:
+                  type: boolean
+                  description: Indication of if the sales channel is active.
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
   '/swaps/{id}':
     get:
       operationId: GetSwapsSwap
