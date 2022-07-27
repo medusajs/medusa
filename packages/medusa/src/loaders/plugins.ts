@@ -5,7 +5,6 @@ import {
   BaseService as LegacyBaseService,
   PaymentService,
   FulfillmentService,
-  NotificationService,
   FileService,
   OauthService,
   SearchService,
@@ -21,6 +20,9 @@ import {
   isFileService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
+  isNotificationService,
+  isBatchJobStrategy,
+  isPriceSelectionStrategy,
 } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import {
@@ -30,8 +32,6 @@ import {
   MedusaContainer,
 } from "../types/global"
 import { MiddlewareService } from "../services"
-import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
-import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import logger from "./logger"
 
 type Options = {
@@ -392,7 +392,7 @@ export async function registerServices(
           ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof NotificationService) {
+      } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(
           "notificationProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options))
