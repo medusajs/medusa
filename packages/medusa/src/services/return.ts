@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import TotalsService from "./totals"
 import LineItemService from "./line-item"
 import { ReturnRepository } from "../repositories/return"
@@ -17,10 +17,11 @@ import {
   LineItem,
   PaymentStatus,
   Return,
+  ReturnItem,
   ReturnStatus,
 } from "../models"
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -41,7 +42,7 @@ type Transformer = (
   item: PartialItem,
   quantity: number,
   data: Record<string, unknown>
-) => LineItem
+) => ReturnItem
 
 class ReturnService extends TransactionBaseService<ReturnService> {
   protected manager_: EntityManager
@@ -112,7 +113,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
     order: Order,
     items: PartialItem[],
     transformer: Transformer
-  ): Promise<LineItem[]> {
+  ): Promise<ReturnItem[]> {
     let merged = [...order.items]
 
     // merge items from order with items from order swaps
@@ -210,14 +211,18 @@ class ReturnService extends TransactionBaseService<ReturnService> {
    * Checks that a given quantity of a line item can be returned. Fails if the
    * item is undefined or if the returnable quantity of the item is lower, than
    * the quantity that is requested to be returned.
-   * @param {LineItem?} item - the line item to check has sufficient returnable
+   * @param item - the line item to check has sufficient returnable
    *   quantity.
-   * @param {number} quantity - the quantity that is requested to be returned.
-   * @param {object} additional - the quantity that is requested to be returned.
-   * @return {LineItem} a line item where the quantity is set to the requested
+   * @param quantity - the quantity that is requested to be returned.
+   * @param additional - the quantity that is requested to be returned.
+   * @return a line item where the quantity is set to the requested
    *   return quantity.
    */
-  protected validateReturnLineItem_(item, quantity, additional) {
+  protected validateReturnLineItem_(
+    item: LineItem,
+    quantity: number,
+    additional: { reason_id?: string; note?: string } = {}
+  ): DeepPartial<ReturnItem> {
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -233,13 +238,13 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       )
     }
 
-    const toReturn = {
+    const toReturn: DeepPartial<ReturnItem> = {
       ...item,
       quantity,
     }
 
     if ("reason_id" in additional) {
-      toReturn.reason_id = additional.reason_id
+      toReturn.reason_id = additional.reason_id as string
     }
 
     if ("note" in additional) {
@@ -251,17 +256,19 @@ class ReturnService extends TransactionBaseService<ReturnService> {
 
   /**
    * Retrieves a return by its id.
-   * @param {string} id - the id of the return to retrieve
-   * @param {object} config - the config object
-   * @return {Return} the return
+   * @param id - the id of the return to retrieve
+   * @param config - the config object
+   * @return the return
    */
-  async retrieve(id, config = {}) {
+  async retrieve(
+    id: string,
+    config: FindConfig<Return> = {}
+  ): Promise<Return | never> {
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )
 
-    const validatedId = this.validateId_(id)
-    const query = buildQuery({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
 
     const returnObj = await returnRepository.findOne(query)
 
@@ -274,16 +281,17 @@ class ReturnService extends TransactionBaseService<ReturnService> {
     return returnObj
   }
 
-  async retrieveBySwap(swapId, relations = []) {
+  async retrieveBySwap(
+    swapId: string,
+    relations: string[] = []
+  ): Promise<Return | never> {
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )
 
-    const validatedId = this.validateId_(swapId)
-
     const returnObj = await returnRepository.findOne({
       where: {
-        swap_id: validatedId,
+        swap_id: swapId,
       },
       relations,
     })
@@ -294,10 +302,11 @@ class ReturnService extends TransactionBaseService<ReturnService> {
         `Return with swa_id: ${swapId} was not found`
       )
     }
+
     return returnObj
   }
 
-  async update(returnId, update) {
+  async update(returnId: string, update) {
     return this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
@@ -311,7 +320,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       const { metadata, ...rest } = update
 
       if (metadata) {
-        ret.metadata = this.setMetadata_(ret, metadata)
+        ret.metadata = setMetadata(ret, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
