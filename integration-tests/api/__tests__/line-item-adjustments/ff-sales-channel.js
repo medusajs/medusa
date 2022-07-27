@@ -1,8 +1,8 @@
 const path = require("path")
+
 const { useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
-const { simpleCartFactory } = require("../../factories")
-const {} = require("../../factories/simple-discount-factory")
+const { useApi } = require("../../../helpers/use-api")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -39,8 +39,13 @@ describe("Line Item - Sales Channel", () => {
     medusaProcess.kill()
   })
 
-  afterEach(async () => {
-    await doAfterEach()
+  beforeEach(async () => {
+    try {
+      await cartSeeder(dbConnection)
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
   })
 
   afterEach(async () => {
