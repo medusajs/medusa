@@ -118,17 +118,23 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
   const returnService: ReturnService = req.scope.resolve("returnService")
+  const manager: EntityManager = req.scope.resolve("manager")
+
 
   const headerKey = req.get("Idempotency-Key") || ""
 
   let idempotencyKey
   try {
-    idempotencyKey = await idempotencyKeyService.initializeRequest(
-      headerKey,
-      req.method,
-      req.params,
-      req.path
-    )
+    await manager.transaction(async (transactionManager) => {
+      idempotencyKey = await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .initializeRequest(
+          headerKey,
+          req.method,
+          req.params,
+          req.path
+        )
+    })
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
     return
@@ -137,8 +143,6 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
     let inProgress = true
     let err = false
 
@@ -146,7 +150,6 @@ export default async (req, res) => {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           const { key, error } = await idempotencyKeyService
-            .withTransaction(transactionManager)
             .workStage(idempotencyKey.idempotency_key, async (manager) => {
               const order = await orderService
                 .withTransaction(manager)
@@ -203,7 +206,6 @@ export default async (req, res) => {
 
         case "swap_created": {
           const { key, error } = await idempotencyKeyService
-            .withTransaction(transactionManager)
             .workStage(
               idempotencyKey.idempotency_key,
               async (transactionManager: EntityManager) => {
@@ -249,13 +251,15 @@ export default async (req, res) => {
         }
 
         default:
-          idempotencyKey = await idempotencyKeyService
-            .withTransaction(transactionManager)
-            .update(idempotencyKey.idempotency_key, {
-              recovery_point: "finished",
-              response_code: 500,
-              response_body: { message: "Unknown recovery point" },
-            })
+          await manager.transaction(async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .update(idempotencyKey.idempotency_key, {
+                recovery_point: "finished",
+                response_code: 500,
+                response_body: { message: "Unknown recovery point" },
+              })
+          })
           break
       }
     }
