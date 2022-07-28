@@ -1,13 +1,15 @@
 import { Brackets, DeleteResult, EntityRepository, In } from "typeorm"
-import { Product, SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common";
-import { BaseRepository } from "../interfaces";
+import { BaseRepository } from "../interfaces"
+import { SalesChannel } from "../models"
+import { ExtendedFindConfig, Selector } from "../types/common"
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends BaseRepository<SalesChannel> {
-    public async getFreeTextSearchResultsAndCount(
+  public async getFreeTextSearchResultsAndCount(
     q: string,
-    options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = { where: {} },
+    options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
+      where: {},
+    }
   ): Promise<[SalesChannel[], number]> {
     const options_ = { ...options }
     delete options_?.where?.name
@@ -18,8 +20,9 @@ export class SalesChannelRepository extends BaseRepository<SalesChannel> {
       .where(options_.where)
       .andWhere(
         new Brackets((qb) => {
-          qb.where(`sales_channel.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
+          qb.where(`sales_channel.description ILIKE :q`, {
+            q: `%${q}%`,
+          }).orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
         })
       )
       .skip(options.skip)
@@ -50,7 +53,6 @@ export class SalesChannelRepository extends BaseRepository<SalesChannel> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<void> {
-    await this.validateAllItemExistsOrThrow(Product, productIds)
     await this.createQueryBuilder()
       .insert()
       .into("product_sales_channel")

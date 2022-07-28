@@ -5,7 +5,6 @@ import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
 import { PricedProduct } from "../../../../types/pricing"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { checkErrorsOrContinue } from "../../../middlewares/check-errors"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 import { AdminGetProductsParams } from "./list-products"
 
@@ -21,13 +20,11 @@ export default (app, featureFlagRouter: FlagRouter) => {
   route.post(
     "/",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
-    checkErrorsOrContinue,
     middlewares.wrap(require("./create-product").default)
   )
   route.post(
     "/:id",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
-    checkErrorsOrContinue,
     middlewares.wrap(require("./update-product").default)
   )
   route.get("/types", middlewares.wrap(require("./list-types").default))
