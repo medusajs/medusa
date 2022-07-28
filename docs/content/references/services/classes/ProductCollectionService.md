@@ -1,7 +1,5 @@
 # Class: ProductCollectionService
 
-Provides layer to manipulate product collections.
-
 ## Hierarchy
 
 - `"medusa-interfaces"`
@@ -26,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:11](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L11)
+[services/product-collection.js:11](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L11)
 
 ## Methods
 
@@ -47,7 +45,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:170](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L170)
+[services/product-collection.js:170](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L170)
 
 ___
 
@@ -55,23 +53,19 @@ ___
 
 ▸ **create**(`collection`): `Promise`<`ProductCollection`\>
 
-Creates a product collection
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `collection` | `any` | the collection to create |
+| `collection` | `any` |  |
 
 #### Returns
 
 `Promise`<`ProductCollection`\>
 
-created collection
-
 #### Defined in
 
-[services/product-collection.js:104](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L104)
+[services/product-collection.js:104](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L104)
 
 ___
 
@@ -79,23 +73,19 @@ ___
 
 ▸ **delete**(`collectionId`): `Promise`<`any`\>
 
-Deletes a product collection idempotently
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `collectionId` | `string` | id of collection to delete |
+| `collectionId` | `string` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-empty promise
-
 #### Defined in
 
-[services/product-collection.js:152](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L152)
+[services/product-collection.js:152](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L152)
 
 ___
 
@@ -103,24 +93,20 @@ ___
 
 ▸ **list**(`selector?`, `config?`): `Promise`<`any`\>
 
-Lists product collections
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the config to be used for find |
+| `selector` | `any` |  |
+| `config` | `any` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-the result of the find operation
-
 #### Defined in
 
-[services/product-collection.js:206](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L206)
+[services/product-collection.js:206](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L206)
 
 ___
 
@@ -128,24 +114,20 @@ ___
 
 ▸ **listAndCount**(`selector?`, `config?`): `Promise`<`any`\>
 
-Lists product collections and add count.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the config to be used for find |
+| `selector` | `any` |  |
+| `config` | `any` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-the result of the find operation
-
 #### Defined in
 
-[services/product-collection.js:221](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L221)
+[services/product-collection.js:221](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L221)
 
 ___
 
@@ -166,7 +148,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:188](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L188)
+[services/product-collection.js:188](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L188)
 
 ___
 
@@ -174,24 +156,20 @@ ___
 
 ▸ **retrieve**(`collectionId`, `config?`): `Promise`<`ProductCollection`\>
 
-Retrieves a product collection by id.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `collectionId` | `string` | the id of the collection to retrieve. |
-| `config` | `any` | the config of the collection to retrieve. |
+| `collectionId` | `string` |  |
+| `config` | `any` |  |
 
 #### Returns
 
 `Promise`<`ProductCollection`\>
 
-the collection.
-
 #### Defined in
 
-[services/product-collection.js:55](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L55)
+[services/product-collection.js:55](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L55)
 
 ___
 
@@ -199,24 +177,20 @@ ___
 
 ▸ **retrieveByHandle**(`collectionHandle`, `config?`): `Promise`<`ProductCollection`\>
 
-Retrieves a product collection by id.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `collectionHandle` | `string` | the handle of the collection to retrieve. |
-| `config` | `any` | query config for request |
+| `collectionHandle` | `string` |  |
+| `config` | `any` |  |
 
 #### Returns
 
 `Promise`<`ProductCollection`\>
 
-the collection.
-
 #### Defined in
 
-[services/product-collection.js:81](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L81)
+[services/product-collection.js:81](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L81)
 
 ___
 
@@ -224,24 +198,20 @@ ___
 
 ▸ **update**(`collectionId`, `update`): `Promise`<`ProductCollection`\>
 
-Updates a product collection
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `collectionId` | `string` | id of collection to update |
-| `update` | `any` | update object |
+| `collectionId` | `string` |  |
+| `update` | `any` |  |
 
 #### Returns
 
 `Promise`<`ProductCollection`\>
 
-update collection
-
 #### Defined in
 
-[services/product-collection.js:125](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L125)
+[services/product-collection.js:125](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L125)
 
 ___
 
@@ -261,4 +231,4 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:32](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L32)
+[services/product-collection.js:32](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L32)

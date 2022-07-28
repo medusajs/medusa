@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/query-builder.js:25](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/query-builder.js#L25)
+[services/query-builder.js:25](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/query-builder.js#L25)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[services/query-builder.js:5](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/query-builder.js#L5)
+[services/query-builder.js:5](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/query-builder.js#L5)
 
 ___
 
@@ -76,4 +76,4 @@ ___
 
 #### Defined in
 
-[services/query-builder.js:39](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/query-builder.js#L39)
+[services/query-builder.js:39](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/query-builder.js#L39)
