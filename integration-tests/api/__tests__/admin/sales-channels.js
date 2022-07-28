@@ -270,6 +270,31 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
+    it("successfully creates a disabled sales channel", async () => {
+      const api = useApi()
+
+      const newSalesChannel = {
+        name: "sales channel name",
+        is_disabled: true,
+      }
+
+      const response = await api
+        .post("/admin/sales-channels", newSalesChannel, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channel).toBeTruthy()
+
+      expect(response.data).toMatchSnapshot({
+        sales_channel: expect.objectContaining({
+          name: newSalesChannel.name,
+          is_disabled: true,
+        }),
+      })
+    }))
+
     it("successfully creates a sales channel", async () => {
       const api = useApi()
 
