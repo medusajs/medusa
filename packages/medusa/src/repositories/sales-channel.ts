@@ -1,16 +1,11 @@
-import {
-  Brackets,
-  DeleteResult,
-  EntityRepository,
-  In,
-} from "typeorm"
-import { Product, SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common";
-import { BaseRepository } from "../interfaces";
+import { Brackets, DeleteResult, EntityRepository, In } from "typeorm"
+import { BaseRepository } from "../interfaces"
+import { SalesChannel } from "../models"
+import { ExtendedFindConfig, Selector } from "../types/common"
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends BaseRepository<SalesChannel> {
-    public async getFreeTextSearchResultsAndCount(
+  public async getFreeTextSearchResultsAndCount(
     q: string,
     options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
       where: {},
@@ -58,7 +53,6 @@ export class SalesChannelRepository extends BaseRepository<SalesChannel> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<void> {
-    await this.validateAllItemExistsOrThrow(Product, productIds)
     await this.createQueryBuilder()
       .insert()
       .into("product_sales_channel")

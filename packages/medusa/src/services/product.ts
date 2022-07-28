@@ -2,8 +2,9 @@ import { FlagRouter } from "../utils/flag-router"
 
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { SearchService, ProductVariantService } from "."
+import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
   ProductTag,
@@ -31,7 +32,6 @@ import {
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -400,10 +400,6 @@ class ProductService extends TransactionBaseService<
 
           if (salesChannels?.length) {
             const salesChannelIds = salesChannels?.map((sc) => sc.id)
-            await productRepo.validateAllItemExistsOrThrow(
-              SalesChannel,
-              salesChannelIds
-            )
             product.sales_channels = salesChannelIds?.map(
               (id) => ({ id } as SalesChannel)
             )
@@ -523,10 +519,6 @@ class ProductService extends TransactionBaseService<
           product.sales_channels = []
           if (salesChannels?.length) {
             const salesChannelIds = salesChannels?.map((sc) => sc.id)
-            await productRepo.validateAllItemExistsOrThrow(
-              SalesChannel,
-              salesChannelIds
-            )
             product.sales_channels = salesChannelIds?.map(
               (id) => ({ id } as SalesChannel)
             )
