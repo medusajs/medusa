@@ -13,12 +13,12 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductStatus } from "../../../../models"
-import { ProductService, PricingService } from "../../../../services"
-import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
+import { PricingService, ProductService } from "../../../../services"
+import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}
@@ -248,7 +248,7 @@ class ProductTagReq {
   value: string
 }
 
-class ProductSalesChannelReq {
+export class ProductSalesChannelReq {
   @IsString()
   id: string
 }

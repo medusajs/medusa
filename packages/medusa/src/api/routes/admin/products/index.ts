@@ -1,11 +1,13 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
 import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
-import { AdminGetProductsParams } from "./list-products"
+import { PricedProduct } from "../../../../types/pricing"
 import { FlagRouter } from "../../../../utils/flag-router"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { checkErrorsOrContinue } from "../../../middlewares/check-errors"
+import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { AdminGetProductsParams } from "./list-products"
 
 const route = Router()
 
@@ -16,8 +18,18 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultAdminProductRelations.push("sales_channels")
   }
 
-  route.post("/", middlewares.wrap(require("./create-product").default))
-  route.post("/:id", middlewares.wrap(require("./update-product").default))
+  route.post(
+    "/",
+    validateSalesChannelsExist((req) => req.body?.sales_channels),
+    checkErrorsOrContinue,
+    middlewares.wrap(require("./create-product").default)
+  )
+  route.post(
+    "/:id",
+    validateSalesChannelsExist((req) => req.body?.sales_channels),
+    checkErrorsOrContinue,
+    middlewares.wrap(require("./update-product").default)
+  )
   route.get("/types", middlewares.wrap(require("./list-types").default))
   route.get(
     "/tag-usage",
@@ -207,10 +219,10 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"
+export * from "./list-variants"
 export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"
