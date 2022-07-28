@@ -1,14 +1,44 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Any } from "typeorm"
+import { Any, EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import { ShippingOption, ShippingProfile, ShippingProfileType } from "../models"
+import { ProductRepository } from "../repositories/product"
+import { ShippingProfileRepository } from "../repositories/shipping-profile"
+import { FindConfig, Selector } from "../types/common"
+import {
+  CreateShippingProfile,
+  UpdateShippingProfile,
+} from "../types/shipping-profile"
+import { buildQuery, setMetadata } from "../utils"
+import CustomShippingOptionService from "./custom-shipping-option"
+import ProductService from "./product"
+import ShippingOptionService from "./shipping-option"
 
+type InjectedDependencies = {
+  manager: EntityManager
+  productService: ProductService
+  shippingOptionService: ShippingOptionService
+  customShippingOptionService: CustomShippingOptionService
+  shippingProfileRepository: typeof ShippingProfileRepository
+  productRepository: typeof ProductRepository
+}
 /**
  * Provides layer to manipulate profiles.
- * @class
+ * @constructor
  * @implements {BaseService}
  */
-class ShippingProfileService extends BaseService {
+class ShippingProfileService extends TransactionBaseService<ShippingProfileService> {
+  protected readonly productService_: ProductService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly customShippingOptionService_: CustomShippingOptionService
+  protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
+  protected readonly productRepository_: typeof ProductRepository
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   constructor({
     manager,
     shippingProfileRepository,
@@ -16,44 +46,16 @@ class ShippingProfileService extends BaseService {
     productRepository,
     shippingOptionService,
     customShippingOptionService,
-  }) {
-    super()
+  }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
-
-    /** @private @const {ShippingProfileRepository} */
     this.shippingProfileRepository_ = shippingProfileRepository
-
-    /** @private @const {ProductService} */
     this.productService_ = productService
-
-    /** @private @const {ProductReppsitory} */
     this.productRepository_ = productRepository
-
-    /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {CustomShippingOptionService} */
     this.customShippingOptionService_ = customShippingOptionService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new ShippingProfileService({
-      manager: transactionManager,
-      shippingProfileRepository: this.shippingProfileRepository_,
-      productService: this.productService_,
-      shippingOptionService: this.shippingOptionService_,
-      customShippingOptionService: this.customShippingOptionService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -61,19 +63,25 @@ class ShippingProfileService extends BaseService {
    * @param {Object} config - the config object for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
+  async list(
+    selector: Selector<ShippingProfile> = {},
+    config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
+  ): Promise<ShippingProfile[]> {
     const shippingProfileRepo = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return shippingProfileRepo.find(query)
   }
 
-  async fetchOptionsByProductIds(productIds, filter) {
+  async fetchOptionsByProductIds(
+    productIds: string[],
+    filter: Selector<ShippingOption>
+  ): Promise<ShippingOption[]> {
     const products = await this.productService_.list(
       {
-        id: Any(productIds),
+        id: productIds,
       },
       {
         relations: [
@@ -86,13 +94,14 @@ class ShippingProfileService extends BaseService {
 
     const profiles = products.map((p) => p.profile)
 
-    const optionIds = profiles.reduce(
-      (acc, next) => acc.concat(next.shipping_options),
+    const shippingOptions = profiles.reduce(
+      (acc: ShippingOption[], next: ShippingProfile) =>
+        acc.concat(next.shipping_options),
       []
     )
 
     const options = await Promise.all(
-      optionIds.map(async (option) => {
+      shippingOptions.map(async (option) => {
         let canSend = true
         if (filter.region_id) {
           if (filter.region_id !== option.region_id) {
@@ -108,7 +117,7 @@ class ShippingProfileService extends BaseService {
       })
     )
 
-    return options.filter((o) => !!o)
+    return options.filter(Boolean) as ShippingOption[]
   }
 
   /**
@@ -118,23 +127,15 @@ class ShippingProfileService extends BaseService {
    * @param {Object} options - options opf the query.
    * @return {Promise<Product>} the profile document.
    */
-  async retrieve(profileId, options = {}) {
+  async retrieve(
+    profileId: string,
+    options: FindConfig<ShippingProfile> = {}
+  ): Promise<ShippingProfile> {
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
-    const validatedId = this.validateId_(profileId)
 
-    const query = {
-      where: { id: validatedId },
-    }
-
-    if (options.select) {
-      query.select = options.select
-    }
-
-    if (options.relations) {
-      query.relations = options.relations
-    }
+    const query = buildQuery({ id: profileId }, options)
 
     const profile = await profileRepository.findOne(query)
 
@@ -148,7 +149,7 @@ class ShippingProfileService extends BaseService {
     return profile
   }
 
-  async retrieveDefault() {
+  async retrieveDefault(): Promise<ShippingProfile> {
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
@@ -157,6 +158,13 @@ class ShippingProfileService extends BaseService {
       where: { type: "default" },
     })
 
+    if (!profile) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Defualt Shipping Profile not found`
+      )
+    }
+
     return profile
   }
 
@@ -164,7 +172,7 @@ class ShippingProfileService extends BaseService {
    * Creates a default shipping profile, if this does not already exist.
    * @return {Promise<ShippingProfile>} the shipping profile
    */
-  async createDefault() {
+  async createDefault(): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveDefault()
 
@@ -173,12 +181,14 @@ class ShippingProfileService extends BaseService {
           this.shippingProfileRepository_
         )
 
-        const p = await profileRepository.create({
-          type: "default",
+        const toCreate = {
+          type: ShippingProfileType.DEFAULT,
           name: "Default Shipping Profile",
-        })
+        }
 
-        profile = await profileRepository.save(p)
+        const created = await profileRepository.create(toCreate)
+
+        profile = await profileRepository.save(created)
       }
 
       return profile
@@ -189,7 +199,7 @@ class ShippingProfileService extends BaseService {
    * Retrieves the default gift card profile
    * @return {Object} the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault() {
+  async retrieveGiftCardDefault(): Promise<ShippingProfile> {
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
@@ -197,6 +207,13 @@ class ShippingProfileService extends BaseService {
     const giftCardProfile = await profileRepository.findOne({
       where: { type: "gift_card" },
     })
+
+    if (!giftCardProfile) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Gift Card Shipping Profile not found`
+      )
+    }
 
     return giftCardProfile
   }
@@ -206,7 +223,7 @@ class ShippingProfileService extends BaseService {
    * exists.
    * @return {Promise<ShippingProfile>} the shipping profile
    */
-  async createGiftCardDefault() {
+  async createGiftCardDefault(): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveGiftCardDefault()
 
@@ -215,12 +232,12 @@ class ShippingProfileService extends BaseService {
           this.shippingProfileRepository_
         )
 
-        const p = await profileRepository.create({
-          type: "gift_card",
+        const created = await profileRepository.create({
+          type: ShippingProfileType.GIFT_CARD,
           name: "Gift Card Profile",
         })
 
-        profile = await profileRepository.save(p)
+        profile = await profileRepository.save(created)
       }
 
       return profile
@@ -229,21 +246,14 @@ class ShippingProfileService extends BaseService {
 
   /**
    * Creates a new shipping profile.
-   * @param {ShippingProfile} profile - the shipping profile to create from
+   * @param {CreateShippingProfile} profile - the shipping profile to create from
    * @return {Promise} the result of the create operation
    */
-  async create(profile) {
-    return this.atomicPhase_(async (manager) => {
+  async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
+    return await this.atomicPhase_(async (manager) => {
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
-
-      if (profile.products || profile.shipping_options) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Please add products and shipping_options after creating Shipping Profiles"
-        )
-      }
 
       const created = profileRepository.create(profile)
       const result = await profileRepository.save(created)
@@ -260,7 +270,10 @@ class ShippingProfileService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(profileId, update) {
+  async update(
+    profileId: string,
+    update: UpdateShippingProfile
+  ): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
@@ -278,7 +291,7 @@ class ShippingProfileService extends BaseService {
       const { metadata, products, shipping_options, ...rest } = update
 
       if (metadata) {
-        profile.metadata = this.setMetadata_(profile, metadata)
+        profile.metadata = setMetadata(profile, metadata)
       }
 
       if (products) {
@@ -303,8 +316,7 @@ class ShippingProfileService extends BaseService {
         profile[key] = value
       }
 
-      const result = await profileRepository.save(profile)
-      return result
+      return await profileRepository.save(profile)
     })
   }
 
@@ -314,7 +326,7 @@ class ShippingProfileService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(profileId) {
+  async delete(profileId: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const profileRepo = manager.getCustomRepository(
         this.shippingProfileRepository_
@@ -340,14 +352,16 @@ class ShippingProfileService extends BaseService {
    * @param {string} productId - the product to add.
    * @return {Promise} the result of update
    */
-  async addProduct(profileId, productId) {
+  async addProduct(
+    profileId: string,
+    productId: string
+  ): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
       await this.productService_
         .withTransaction(manager)
         .update(productId, { profile_id: profileId })
 
-      const updated = await this.retrieve(profileId)
-      return updated
+      return await this.retrieve(profileId)
     })
   }
 
@@ -358,7 +372,10 @@ class ShippingProfileService extends BaseService {
    * @param {string} optionId - the option to add to the profile
    * @return {Promise} the result of the model update operation
    */
-  async addShippingOption(profileId, optionId) {
+  async addShippingOption(
+    profileId: string,
+    optionId: string
+  ): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
       await this.shippingOptionService_
         .withTransaction(manager)
@@ -376,7 +393,11 @@ class ShippingProfileService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {Profile} return the decorated profile.
    */
-  async decorate(profile, fields, expandFields = []) {
+  async decorate(
+    profile: ShippingProfile,
+    fields,
+    expandFields = []
+  ): Promise<ShippingProfile> {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(profile, fields.concat(requiredFields))
 
