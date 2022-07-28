@@ -209,7 +209,6 @@ describe("OrderService", () => {
           "discounts.rule",
           "gift_cards",
           "shipping_methods",
-          "payment_sessions",
         ],
       })
 
