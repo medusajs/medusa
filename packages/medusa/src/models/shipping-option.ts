@@ -106,21 +106,21 @@ export class ShippingOption extends SoftDeletableEntity {
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation "region" is expanded.
+ *     description: A region object. Available if the relation `region` is expanded.
  *     type: object
  *   profile_id:
  *     description: "The ID of the Shipping Profile that the shipping option belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products."
  *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
- *     description: Available if the relation "profile" is expanded.
+ *     description: Available if the relation `profile` is expanded.
  *     $ref: "#/components/schemas/shipping_profile"
  *   provider_id:
  *     description: "The id of the Fulfillment Provider, that will be used to process Fulfillments from the Shipping Option."
  *     type: string
  *     example: manual
  *   provider:
- *     description: Available if the relation "provider" is expanded.
+ *     description: Available if the relation `provider` is expanded.
  *     $ref: "#/components/schemas/fulfillment_provider"
  *   price_type:
  *     description: "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations."
@@ -138,7 +138,7 @@ export class ShippingOption extends SoftDeletableEntity {
  *     type: boolean
  *     default: false
  *   requirements:
- *     description: The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation "requirements" is expanded.
+ *     description: The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation `requirements` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/shipping_option_requirement"

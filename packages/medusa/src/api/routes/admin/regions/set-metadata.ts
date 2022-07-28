@@ -1,7 +1,8 @@
-import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
-import RegionService from "../../../../services/region"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
+import { IsString } from "class-validator"
+import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions/{id}/metadata
@@ -10,7 +11,7 @@ import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
  * description: "Sets the metadata of a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  *   - (body) key=* {string} Key for the metadata value.
  *   - (body) value=* {string} The value that the key relates to.
  * tags:

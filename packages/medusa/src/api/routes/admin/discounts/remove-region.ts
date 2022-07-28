@@ -1,5 +1,7 @@
-import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
+import DiscountService from "../../../../services/discount"
+
 /**
  * @oas [delete] /discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
@@ -7,8 +9,8 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
  * x-authenticated: true
  * description: "Removes a Region from the list of Regions that a Discount can be used in."
  * parameters:
- *   - (path) id=* {string} The id of the Discount.
- *   - (path) region_id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Discount.
+ *   - (path) region_id=* {string} The ID of the Region.
  * tags:
  *   - Discount
  * responses:

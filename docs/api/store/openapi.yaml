@@ -2,7 +2,9 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Storefront API
-  description: API reference for Medusa's Storefront endpoints
+  description: >-
+    API reference for Medusa's Storefront endpoints. All endpoints are prefixed
+    with `/store`.
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
@@ -54,6 +56,10 @@ paths:
     $ref: paths/auth.yaml
   /auth/{email}:
     $ref: paths/auth_{email}.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -78,18 +84,8 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
   /gift-cards/{code}:
     $ref: paths/gift-cards_{code}.yaml
-  /orders/cart/{cart_id}:
-    $ref: paths/orders_cart_{cart_id}.yaml
-  /orders/{id}:
-    $ref: paths/orders_{id}.yaml
-  /orders:
-    $ref: paths/orders.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
@@ -106,16 +102,22 @@ paths:
     $ref: paths/customers_password-token.yaml
   /customers/password-reset:
     $ref: paths/customers_password-reset.yaml
+  /orders/cart/{cart_id}:
+    $ref: paths/orders_cart_{cart_id}.yaml
+  /orders/{id}:
+    $ref: paths/orders_{id}.yaml
+  /orders:
+    $ref: paths/orders.yaml
+  /regions/{id}:
+    $ref: paths/regions_{id}.yaml
+  /regions:
+    $ref: paths/regions.yaml
   /products/{id}:
     $ref: paths/products_{id}.yaml
   /products:
     $ref: paths/products.yaml
   /products/search:
     $ref: paths/products_search.yaml
-  /regions/{id}:
-    $ref: paths/regions_{id}.yaml
-  /regions:
-    $ref: paths/regions.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
   /return-reasons:

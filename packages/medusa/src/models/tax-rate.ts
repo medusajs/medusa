@@ -120,23 +120,23 @@ export class TaxRate extends BaseEntity {
  *     description: "The id of the Region that the rate belongs to"
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation "region" is expanded.
+ *     description: A region object. Available if the relation `region` is expanded.
  *     type: object
  *   products:
  *     type: array
- *     description: The products that belong to this tax rate. Available if the relation "products" is expanded.
+ *     description: The products that belong to this tax rate. Available if the relation `products` is expanded.
  *     items:
  *       type: object
  *       description: A product object.
  *   product_types:
  *     type: array
- *     description: The product types that belong to this tax rate. Available if the relation "product_types" is expanded.
+ *     description: The product types that belong to this tax rate. Available if the relation `product_types` is expanded.
  *     items:
  *       type: object
  *       description: A product type object.
  *   shipping_options:
  *     type: array
- *     description: The shipping options that belong to this tax rate. Available if the relation "shipping_options" is expanded.
+ *     description: The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.
  *     items:
  *       type: object
  *       description: A shipping option object.

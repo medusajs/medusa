@@ -7,7 +7,7 @@ import { ProductService } from "../../../../services"
  * description: "Deletes a Product and it's associated Product Variants."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * tags:
  *   - Product
  * responses:
@@ -19,7 +19,7 @@ import { ProductService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Product.
+ *               description: The ID of the deleted Product.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

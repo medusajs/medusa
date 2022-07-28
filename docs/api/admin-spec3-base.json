@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Medusa Admin API",
-    "description": "API reference for Medusa's Admin endpoints",
+    "description": "API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.",
     "license": {
       "name": "MIT",
       "url": "https://github.com/medusajs/medusa/blob/master/LICENSE"

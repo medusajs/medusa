@@ -10,8 +10,8 @@ import { MedusaError } from "medusa-core-utils"
  * description: "Cancels a Swap"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * tags:
  *   - Swap
  * responses:

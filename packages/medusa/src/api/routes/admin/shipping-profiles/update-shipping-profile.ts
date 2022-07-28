@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Update a Shipping Profiles"
  * description: "Updates a Shipping Profile"
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
+ *   - (path) id=* {string} The ID of the Shipping Profile.
  * requestBody:
  *   content:
  *     application/json:

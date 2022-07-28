@@ -29,7 +29,7 @@ properties:
     description: The region's ID
     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
   region:
-    description: A region object. Available if the relation "region" is expanded.
+    description: A region object. Available if the relation `region` is expanded.
     type: object
   profile_id:
     description: >-
@@ -39,7 +39,7 @@ properties:
     type: string
     example: sp_01G1G5V239ENSZ5MV4JAR737BM
   profile:
-    description: Available if the relation "profile" is expanded.
+    description: Available if the relation `profile` is expanded.
     $ref: ./shipping_profile.yaml
   provider_id:
     description: >-
@@ -48,7 +48,7 @@ properties:
     type: string
     example: manual
   provider:
-    description: Available if the relation "provider" is expanded.
+    description: Available if the relation `provider` is expanded.
     $ref: ./fulfillment_provider.yaml
   price_type:
     description: >-
@@ -73,7 +73,7 @@ properties:
   requirements:
     description: >-
       The requirements that must be satisfied for the Shipping Option to be
-      available for a Cart. Available if the relation "requirements" is
+      available for a Cart. Available if the relation `requirements` is
       expanded.
     type: array
     items:

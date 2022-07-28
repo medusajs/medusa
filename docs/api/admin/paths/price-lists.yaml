@@ -49,7 +49,7 @@ post:
                 properties:
                   region_id:
                     description: >-
-                      The id of the Region for which the price is used. Only
+                      The ID of the Region for which the price is used. Only
                       required if currecny_code is not provided.
                     type: string
                   currency_code:
@@ -57,11 +57,14 @@ post:
                       The 3 character ISO currency code for which the price will
                       be used. Only required if region_id is not provided.
                     type: string
+                    externalDocs:
+                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                      description: See a list of codes.
                   amount:
                     description: The amount to charge for the Product Variant.
                     type: integer
                   variant_id:
-                    description: The id of the Variant for which the price is used.
+                    description: The ID of the Variant for which the price is used.
                     type: string
                   min_quantity:
                     description: The minimum quantity for which the price will be used.

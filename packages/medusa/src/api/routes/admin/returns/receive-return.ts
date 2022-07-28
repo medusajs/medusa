@@ -17,7 +17,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Receive a Return"
  * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
  * parameters:
- *   - (path) id=* {string} The id of the Return.
+ *   - (path) id=* {string} The ID of the Return.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item.
+ *                   description: The ID of the Line Item.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item.

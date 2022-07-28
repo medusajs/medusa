@@ -21,7 +21,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Customer."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ *   - (path) id=* {string} The ID of the Customer.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
  *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
  * requestBody:
@@ -51,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *                 - id
  *               properties:
  *                 id:
- *                   description: The id of a customer group
+ *                   description: The ID of a customer group
  *                   type: string
  *             description: A list of customer groups to which the customer belongs.
  *           metadata:

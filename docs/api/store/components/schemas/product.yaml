@@ -44,7 +44,7 @@ properties:
       - rejected
     default: draft
   images:
-    description: Images of the Product. Available if the relation "images" is expanded.
+    description: Images of the Product. Available if the relation `images` is expanded.
     type: array
     items:
       $ref: ./image.yaml
@@ -56,14 +56,14 @@ properties:
     description: >-
       The Product Options that are defined for the Product. Product Variants of
       the Product will have a unique combination of Product Option Values.
-      Available if the relation "options" is expanded.
+      Available if the relation `options` is expanded.
     type: array
     items:
       $ref: ./product_option.yaml
   variants:
     description: >-
       The Product Variants that belong to the Product. Each will have a unique
-      combination of Product Option Values. Available if the relation "variants"
+      combination of Product Option Values. Available if the relation `variants`
       is expanded.
     type: array
     items:
@@ -76,7 +76,7 @@ properties:
     type: string
     example: sp_01G1G5V239ENSZ5MV4JAR737BM
   profile:
-    description: Available if the relation "profile" is expanded.
+    description: Available if the relation `profile` is expanded.
     $ref: ./shipping_profile.yaml
   weight:
     description: >-
@@ -134,7 +134,7 @@ properties:
     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
   collection:
     description: >-
-      A product collection object. Available if the relation "collection" is
+      A product collection object. Available if the relation `collection` is
       expanded.
     type: object
   type_id:
@@ -142,11 +142,11 @@ properties:
     description: The Product type that the Product belongs to
     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
   type:
-    description: Available if the relation "type" is expanded.
+    description: Available if the relation `type` is expanded.
     $ref: ./product_type.yaml
   tags:
     description: >-
-      The Product Tags assigned to the Product. Available if the relation "tags"
+      The Product Tags assigned to the Product. Available if the relation `tags`
       is expanded.
     type: array
     items:
@@ -164,7 +164,7 @@ properties:
   sales_channels:
     description: >-
       The sales channels the product is associated with. Available if the
-      relation "sales_channels" is expanded.
+      relation `sales_channels` is expanded.
     type: array
     items:
       type: object

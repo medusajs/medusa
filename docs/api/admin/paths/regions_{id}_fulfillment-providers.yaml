@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   requestBody:
@@ -18,7 +18,7 @@ post:
             - provider_id
           properties:
             provider_id:
-              description: The id of the Fulfillment Provider to add.
+              description: The ID of the Fulfillment Provider to add.
               type: string
   tags:
     - Region

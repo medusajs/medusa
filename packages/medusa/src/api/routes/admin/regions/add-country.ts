@@ -1,8 +1,10 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import { IsString } from "class-validator"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
@@ -10,7 +12,7 @@ import RegionService from "../../../../services/region"
  * description: "Adds a Country to the list of Countries in a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,6 +23,9 @@ import RegionService from "../../../../services/region"
  *           country_code:
  *             description: "The 2 character ISO code for the Country."
  *             type: string
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *               description: See a list of codes.
  * tags:
  *   - Region
  * responses:

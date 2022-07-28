@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Resends a previously sent notifications, with the same data but optionally to a different address"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Notification
+ *   - (path) id=* {string} The ID of the Notification
  * requestBody:
  *   content:
  *     application/json:

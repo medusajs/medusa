@@ -9,7 +9,7 @@ import { CustomerGroupService } from "../../../../services"
  * description: "Deletes a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group
+ *   - (path) id=* {string} The ID of the Customer Group
  * tags:
  *   - Customer Group
  * responses:
@@ -21,7 +21,7 @@ import { CustomerGroupService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted customer group.
+ *               description: The ID of the deleted customer group.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

@@ -8,7 +8,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Return.
+      description: The ID of the Return.
       schema:
         type: string
   requestBody:
@@ -27,7 +27,7 @@ post:
                   - quantity
                 properties:
                   item_id:
-                    description: The id of the Line Item.
+                    description: The ID of the Line Item.
                     type: string
                   quantity:
                     description: The quantity of the Line Item.

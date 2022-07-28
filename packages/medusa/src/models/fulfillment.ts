@@ -107,36 +107,36 @@ export class Fulfillment extends BaseEntity {
  *     type: string
  *     example: null
  *   claim_order:
- *     description: A claim order object. Available if the relation "claim_order" is expanded.
+ *     description: A claim order object. Available if the relation `claim_order` is expanded.
  *     type: object
  *   swap_id:
  *     description: "The id of the Swap that the Fulfillment belongs to."
  *     type: string
  *     example: null
  *   swap:
- *     description: A swap object. Available if the relation "swap" is expanded.
+ *     description: A swap object. Available if the relation `swap` is expanded.
  *     type: object
  *   order_id:
  *     description: "The id of the Order that the Fulfillment belongs to."
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation "order" is expanded.
+ *     description: An order object. Available if the relation `order` is expanded.
  *     type: object
  *   provider_id:
  *     description: "The id of the Fulfillment Provider responsible for handling the fulfillment"
  *     type: string
  *     example: manual
  *   provider:
- *     description: Available if the relation "provider" is expanded.
+ *     description: Available if the relation `provider` is expanded.
  *     $ref: "#/components/schemas/fulfillment_provider"
  *   items:
- *     description: The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation "items" is expanded.
+ *     description: The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation `items` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/fulfillment_item"
  *   tracking_links:
- *     description: The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation "tracking_links" is expanded.
+ *     description: The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation `tracking_links` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/tracking_link"

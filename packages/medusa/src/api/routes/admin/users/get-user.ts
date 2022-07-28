@@ -7,7 +7,7 @@ import UserService from "../../../../services/user"
  * description: "Retrieves a User."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the User.
+ *   - (path) id=* {string} The ID of the User.
  * tags:
  *   - User
  * responses:

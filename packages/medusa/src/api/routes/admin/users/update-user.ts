@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Update a User"
  * description: "Updates a User"
  * parameters:
- *   - (path) id=* {string} The id of the User.
+ *   - (path) id=* {string} The ID of the User.
  * x-authenticated: true
  * requestBody:
  *   content:

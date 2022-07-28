@@ -86,7 +86,7 @@ export class DiscountRule extends SoftDeletableEntity {
  *       - item
  *     example: total
  *   conditions:
- *     description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation "conditions" is expanded.
+ *     description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.
  *     type: array
  *     items:
  *       type: object

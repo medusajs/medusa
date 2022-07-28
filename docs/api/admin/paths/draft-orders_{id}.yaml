@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Draft Order.
+                description: The ID of the deleted Draft Order.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
   tags:

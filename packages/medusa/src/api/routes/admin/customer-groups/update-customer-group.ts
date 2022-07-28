@@ -13,7 +13,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
+ *   - (path) id=* {string} The ID of the customer group.
  * requestBody:
  *   content:
  *     application/json:

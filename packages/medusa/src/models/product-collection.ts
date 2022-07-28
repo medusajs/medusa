@@ -53,7 +53,7 @@ export class ProductCollection extends SoftDeletableEntity {
  *     type: string
  *     example: summer-collection
  *   products:
- *     description: The Products contained in the Product Collection. Available if the relation "products" is expanded.
+ *     description: The Products contained in the Product Collection. Available if the relation `products` is expanded.
  *     type: array
  *     items:
  *       type: object

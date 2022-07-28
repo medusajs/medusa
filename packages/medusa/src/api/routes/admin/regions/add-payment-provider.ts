@@ -1,8 +1,9 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import { IsString } from "class-validator"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions/{id}/payment-providers
@@ -11,7 +12,7 @@ import RegionService from "../../../../services/region"
  * description: "Adds a Payment Provider to a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * requestBody:
  *   content:
  *     application/json:
@@ -20,7 +21,7 @@ import RegionService from "../../../../services/region"
  *           - provider_id
  *         properties:
  *           provider_id:
- *             description: "The id of the Payment Provider to add."
+ *             description: "The ID of the Payment Provider to add."
  *             type: string
  * tags:
  *   - Region

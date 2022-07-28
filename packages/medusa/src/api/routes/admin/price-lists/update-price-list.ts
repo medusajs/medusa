@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List.
+ *   - (path) id=* {string} The ID of the Price List.
  * requestBody:
  *   content:
  *     application/json:
@@ -65,16 +65,19 @@ import { validator } from "../../../../utils/validator"
  *                 - variant_id
  *               properties:
  *                 id:
- *                   description: The id of the price.
+ *                   description: The ID of the price.
  *                   type: string
  *                 region_id:
- *                   description: The id of the Region for which the price is used. Only required if currecny_code is not provided.
+ *                   description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
  *                   type: string
  *                 currency_code:
  *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                   type: string
+ *                   externalDocs:
+ *                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                      description: See a list of codes.
  *                 variant_id:
- *                   description: The id of the Variant for which the price is used.
+ *                   description: The ID of the Variant for which the price is used.
  *                   type: string
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
@@ -93,7 +96,7 @@ import { validator } from "../../../../utils/validator"
  *                 - id
  *               properties:
  *                 id:
- *                   description: The id of a customer group
+ *                   description: The ID of a customer group
  *                   type: string
  * tags:
  *   - Price List

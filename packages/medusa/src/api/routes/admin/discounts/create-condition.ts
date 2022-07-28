@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Creates a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The id of the Product.
+ *   - (path) discount_id=* {string} The ID of the Product.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * description: "Creates a DiscountCondition"

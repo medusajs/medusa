@@ -8,7 +8,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The cart id.
+      description: The cart ID.
       schema:
         type: string
   responses:
@@ -30,7 +30,7 @@ post:
           properties:
             option_id:
               type: string
-              description: id of the shipping option to create the method from
+              description: ID of the shipping option to create the method from
             data:
               type: object
               description: >-

@@ -13,7 +13,7 @@ get:
         type: string
     - in: query
       name: id
-      description: Id of the product to search for.
+      description: ID of the product to search for.
       schema:
         type: string
     - in: query

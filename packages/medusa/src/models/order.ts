@@ -326,14 +326,14 @@ export class Order extends BaseEntity {
  *     description: The ID of the cart associated with the order
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation "cart" is expanded.
+ *     description: A cart object. Available if the relation `cart` is expanded.
  *     type: object
  *   customer_id:
  *     type: string
  *     description: The ID of the customer associated with the order
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation "customer" is expanded.
+ *     description: A customer object. Available if the relation `customer` is expanded.
  *     type: object
  *   email:
  *     description: The email associated with the order
@@ -344,21 +344,21 @@ export class Order extends BaseEntity {
  *     description: The ID of the billing address associated with the order
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation "billing_address" is expanded.
+ *     description: Available if the relation `billing_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_address_id:
  *     type: string
  *     description: The ID of the shipping address associated with the order
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation "shipping_address" is expanded.
+ *     description: Available if the relation `shipping_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   region_id:
  *     type: string
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation "region" is expanded.
+ *     description: A region object. Available if the relation `region` is expanded.
  *     type: object
  *   currency_code:
  *     description: "The 3 character currency code that is used in the order"
@@ -368,7 +368,7 @@ export class Order extends BaseEntity {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation "currency" is expanded.
+ *     description: Available if the relation `currency` is expanded.
  *     $ref: "#/components/schemas/currency"
  *   tax_rate:
  *     description: The order's tax rate
@@ -376,50 +376,52 @@ export class Order extends BaseEntity {
  *     example: 0
  *   discounts:
  *     type: array
- *     description: The discounts used in the order. Available if the relation "discounts" is expanded.
+ *     description: The discounts used in the order. Available if the relation `discounts` is expanded.
  *     items:
- *       $ref: "#/components/schemas/discount"
+ *       type: object
+ *       description: A discount object.
  *   gift_cards:
  *     type: array
- *     description: The gift cards used in the order. Available if the relation "gift_cards" is expanded.
+ *     description: The gift cards used in the order. Available if the relation `gift_cards` is expanded.
  *     items:
- *       $ref: "#/components/schemas/gift_card"
+ *       type: object
+ *       description: A gift card object.
  *   shipping_methods:
  *     type: array
- *     description: The shipping methods used in the order. Available if the relation "shipping_methods" is expanded.
+ *     description: The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
  *     items:
  *       $ref: "#/components/schemas/shipping_method"
  *   payments:
  *     type: array
- *     description: The payments used in the order. Available if the relation "payments" is expanded.
+ *     description: The payments used in the order. Available if the relation `payments` is expanded.
  *     items:
  *       $ref: "#/components/schemas/payment"
  *   fulfillments:
  *     type: array
- *     description: The fulfillments used in the order. Available if the relation "fulfillments" is expanded.
+ *     description: The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
  *     items:
  *       $ref: "#/components/schemas/fulfillment"
  *   returns:
  *     type: array
- *     description: The returns associated with the order. Available if the relation "returns" is expanded.
+ *     description: The returns associated with the order. Available if the relation `returns` is expanded.
  *     items:
  *       type: object
  *       description: A return object. 
  *   claims:
  *     type: array
- *     description: The claims associated with the order. Available if the relation "claims" is expanded.
+ *     description: The claims associated with the order. Available if the relation `claims` is expanded.
  *     items:
  *       type: object
  *       description: A claim order object. 
  *   refunds:
  *     type: array
- *     description: The refunds associated with the order. Available if the relation "refunds" is expanded.
+ *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
  *     items:
  *       type: object
  *       description: A refund object. 
  *   swaps:
  *     type: array
- *     description: The swaps associated with the order. Available if the relation "swaps" is expanded.
+ *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
  *     items:
  *       type: object
  *       description: A swap object. 
@@ -428,16 +430,16 @@ export class Order extends BaseEntity {
  *     description: The ID of the draft order this order is associated with.
  *     example: null
  *   draft_order:
- *     description: A draft order object. Available if the relation "draft_order" is expanded.
+ *     description: A draft order object. Available if the relation `draft_order` is expanded.
  *     type: object
  *   items:
  *     type: array
- *     description: The line items that belong to the order. Available if the relation "items" is expanded.
+ *     description: The line items that belong to the order. Available if the relation `items` is expanded.
  *     items:
  *       $ref: "#/components/schemas/line_item"
  *   gift_card_transactions:
  *     type: array
- *     description: The gift card transactions used in the order. Available if the relation "gift_card_transactions" is expanded.
+ *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
  *     items:
  *       $ref: "#/components/schemas/gift_card_transaction"
  *   canceled_at:
@@ -463,7 +465,7 @@ export class Order extends BaseEntity {
  *     description: The ID of the sales channel this order is associated with.
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation "sales_channel" is expanded.
+ *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
  *     type: object
  *   shipping_total:
  *     type: integer

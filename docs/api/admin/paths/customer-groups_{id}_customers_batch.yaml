@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the customer group.
+      description: The ID of the customer group.
       schema:
         type: string
   requestBody:
@@ -23,7 +23,7 @@ post:
                   - id
                 properties:
                   id:
-                    description: Id of the customer
+                    description: ID of the customer
                     type: string
   tags:
     - Customer Group
@@ -45,7 +45,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the customer group.
+      description: The ID of the customer group.
       schema:
         type: string
   requestBody:
@@ -61,7 +61,7 @@ delete:
                   - id
                 properties:
                   id:
-                    description: Id of the customer
+                    description: ID of the customer
                     type: string
   tags:
     - Customer Group

@@ -14,7 +14,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Return Reason"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Return Reason.
+ *   - (path) id=* {string} The ID of the Return Reason.
  * requestBody:
  *   content:
  *     application/json:

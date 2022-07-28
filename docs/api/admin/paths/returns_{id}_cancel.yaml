@@ -6,7 +6,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Return.
+      description: The ID of the Return.
       schema:
         type: string
   tags:

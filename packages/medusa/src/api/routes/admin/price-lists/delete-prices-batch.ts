@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Batch delete prices that belong to a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List that the Money Amounts (Prices) that will be deleted belongs to.
+ *   - (path) id=* {string} The ID of the Price List that the Money Amounts (Prices) that will be deleted belongs to.
  * requestBody:
  *   content:
  *     application/json:

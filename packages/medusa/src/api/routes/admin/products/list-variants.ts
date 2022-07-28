@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a list of the Product Variants associated with a Product."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} Id of the product to search for the variants.
+ *   - (path) id=* {string} ID of the product to search for the variants.
  *   - (query) fields {string} Comma separated string of the column to select.
  *   - (query) expand {string} Comma separated string of the relations to include.
  *   - (query) offset=0 {integer} How many items to skip before the results.

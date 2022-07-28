@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} Comma separated fields to populate
  *   - (query) event_name {string} The name of the event that the notification was sent for.
  *   - (query) resource_type {string} The type of resource that the Notification refers to.
- *   - (query) resource_id {string} The id of the resource that the Notification refers to.
+ *   - (query) resource_id {string} The ID of the resource that the Notification refers to.
  *   - (query) to {string} The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
  *   - (query) include_resends {boolean} Whether the result set should include resent notifications or not
  * tags:

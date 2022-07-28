@@ -9,7 +9,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
   requestBody:
@@ -28,7 +28,7 @@ post:
                   - quantity
                 properties:
                   item_id:
-                    description: The id of Line Item to fulfill.
+                    description: The ID of Line Item to fulfill.
                     type: string
                   quantity:
                     description: The quantity of the Line Item to fulfill.

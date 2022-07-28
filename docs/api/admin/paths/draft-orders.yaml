@@ -40,7 +40,7 @@ post:
                 properties:
                   variant_id:
                     description: >-
-                      The id of the Product Variant to generate the Line Item
+                      The ID of the Product Variant to generate the Line Item
                       from.
                     type: string
                   unit_price:
@@ -58,7 +58,7 @@ post:
                       the Line Item.
                     type: object
             region_id:
-              description: The id of the region for the draft order
+              description: The ID of the region for the draft order
               type: string
             discounts:
               description: The discounts to add on the draft order
@@ -72,7 +72,7 @@ post:
                     description: The code of the discount to apply
                     type: string
             customer_id:
-              description: The id of the customer to add on the draft order
+              description: The ID of the customer to add on the draft order
               type: string
             no_notification_order:
               description: >-
@@ -88,7 +88,7 @@ post:
                   - option_id
                 properties:
                   option_id:
-                    description: The id of the shipping option in use
+                    description: The ID of the shipping option in use
                     type: string
                   data:
                     description: >-

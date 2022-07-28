@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Discount
+      description: The ID of the Discount
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Discount
+                description: The ID of the deleted Discount
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Discount
+      description: The ID of the Discount
       schema:
         type: string
     - in: query
@@ -72,7 +72,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Discount.
+      description: The ID of the Discount.
       schema:
         type: string
     - in: query

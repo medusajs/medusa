@@ -21,8 +21,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Claim."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * requestBody:
  *   content:
  *     application/json:
@@ -38,10 +38,10 @@ import { validator } from "../../../../utils/validator"
  *                 - tags
  *               properties:
  *                 id:
- *                   description: The id of the Claim Item.
+ *                   description: The ID of the Claim Item.
  *                   type: string
  *                 item_id:
- *                   description: The id of the Line Item that will be claimed.
+ *                   description: The ID of the Line Item that will be claimed.
  *                   type: string
  *                 quantity:
  *                   description: The number of items that will be returned
@@ -90,10 +90,10 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *                properties:
  *                  id:
- *                    description: The id of an existing Shipping Method
+ *                    description: The ID of an existing Shipping Method
  *                    type: string
  *                  option_id:
- *                    description: The id of the Shipping Option to create a Shipping Method from
+ *                    description: The ID of the Shipping Option to create a Shipping Method from
  *                    type: string
  *                  price:
  *                    description: The price to charge for the Shipping Method

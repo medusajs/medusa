@@ -2,7 +2,9 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Admin API
-  description: API reference for Medusa's Admin endpoints
+  description: >-
+    API reference for Medusa's Admin endpoints. All endpoints are prefixed with
+    `/admin`.
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
@@ -107,12 +109,18 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
-  /apps/authorize-app:
-    $ref: paths/apps_authorize-app.yaml
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
   /apps:
     $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
+  /collections/{id}/products/batch:
+    $ref: paths/collections_{id}_products_batch.yaml
+  /collections:
+    $ref: paths/collections.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -121,12 +129,10 @@ paths:
     $ref: paths/batch-jobs.yaml
   /batch-jobs/{id}:
     $ref: paths/batch-jobs_{id}.yaml
-  /collections/{id}/products/batch:
-    $ref: paths/collections_{id}_products_batch.yaml
-  /collections:
-    $ref: paths/collections.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/{id}:
+    $ref: paths/customers_{id}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -151,10 +157,6 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
   /draft-orders:
     $ref: paths/draft-orders.yaml
   /draft-orders/{id}/line-items:

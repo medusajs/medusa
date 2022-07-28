@@ -2,7 +2,9 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Admin API
-  description: API reference for Medusa's Admin endpoints
+  description: >-
+    API reference for Medusa's Admin endpoints. All endpoints are prefixed with
+    `/admin`.
   license:
     name: MIT
     url: 'https://github.com/medusajs/medusa/blob/master/LICENSE'
@@ -107,7 +109,7 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /apps/authorize-app:
+  /apps/authorizations:
     post:
       operationId: PostApps
       summary: Generates a token for an application.
@@ -220,6 +222,340 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+  '/collections/{id}/products/batch':
+    post:
+      operationId: PostProductsToCollection
+      summary: Updates products associated with a Product Collection
+      description: Updates products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                product_ids:
+                  description: An array of Product IDs to add to the Product Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+    delete:
+      operationId: DeleteProductsFromCollection
+      summary: Removes products associated with a Product Collection
+      description: Removes products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                product_ids:
+                  description: >-
+                    An array of Product IDs to remove from the Product
+                    Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the collection
+                  object:
+                    type: string
+                    description: The type of object the removal was executed on
+                  removed_products:
+                    description: The IDs of the products removed from the collection
+                    type: array
+                    items:
+                      description: The ID of a Product to add to the Product Collection.
+                      type: string
+  /collections:
+    post:
+      operationId: PostCollections
+      summary: Create a Product Collection
+      description: Creates a Product Collection.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of collections to skip before the results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: title
+          description: The title of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: The handle of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: a search term to search titles and handles.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/collections/{id}':
+    delete:
+      operationId: DeleteCollectionsCollection
+      summary: Delete a Product Collection
+      description: Deletes a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Collection
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: Whether the collection was deleted successfully or not.
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+    post:
+      operationId: PostCollectionsCollection
+      summary: Update a Product Collection
+      description: Updates a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
@@ -230,7 +566,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the batch job.
+          description: The ID of the batch job.
           schema:
             type: string
       tags:
@@ -254,7 +590,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the batch job.
+          description: The ID of the batch job.
           schema:
             type: string
       tags:
@@ -464,7 +800,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Batch Job
+          description: The ID of the Batch Job
           schema:
             type: string
       tags:
@@ -478,32 +814,15 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
-  '/collections/{id}/products/batch':
+  /customers:
     post:
-      operationId: PostProductsToCollection
-      summary: Updates products associated with a Product Collection
-      description: Updates products associated with a Product Collection
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
       x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                product_ids:
-                  description: An array of Product IDs to add to the Product Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
+      parameters: []
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -511,192 +830,63 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-    delete:
-      operationId: DeleteProductsFromCollection
-      summary: Removes products associated with a Product Collection
-      description: Removes products associated with a Product Collection
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Collection.
-          schema:
-            type: string
+                  customer:
+                    $ref: '#/components/schemas/customer'
       requestBody:
         content:
           application/json:
             schema:
-              properties:
-                product_ids:
-                  description: >-
-                    An array of Product IDs to remove from the Product
-                    Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the collection
-                  object:
-                    type: string
-                    description: The type of object the removal was executed on
-                  removed_products:
-                    description: The IDs of the products removed from the collection
-                    type: array
-                    items:
-                      description: The ID of a Product to add to the Product Collection.
-                      type: string
-  /collections:
-    post:
-      operationId: PostCollections
-      summary: Create a Product Collection
-      description: Creates a Product Collection.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
+              type: object
               required:
-                - title
+                - email
+                - first_name
+                - last_name
               properties:
-                title:
+                email:
                   type: string
-                  description: The title to identify the Collection by.
-                handle:
+                  description: The Customer's email address.
+                first_name:
                   type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
                 metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
                   type: object
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  description: Metadata for the customer.
     get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       x-authenticated: true
       parameters:
         - in: query
           name: limit
-          description: The number of collections to return.
+          description: The number of items to return.
           schema:
             type: integer
-            default: 10
+            default: 50
         - in: query
           name: offset
-          description: The number of collections to skip before the results.
+          description: The items to skip before result.
           schema:
             type: integer
             default: 0
         - in: query
-          name: title
-          description: The title of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: handle
-          description: The handle of collections to return.
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
           schema:
             type: string
         - in: query
           name: q
-          description: a search term to search titles and handles.
+          description: 'a search term to search email, first_name, and last_name.'
           schema:
             type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: deleted_at
-          description: Date comparison for when resulting collections were deleted.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -704,10 +894,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  collections:
+                  customers:
                     type: array
                     items:
-                      $ref: '#/components/schemas/product_collection'
+                      $ref: '#/components/schemas/customer'
                   count:
                     type: integer
                     description: The total number of items available
@@ -717,51 +907,31 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  '/collections/{id}':
-    delete:
-      operationId: DeleteCollectionsCollection
-      summary: Delete a Product Collection
-      description: Deletes a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Collection.
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Collection
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: Whether the collection was deleted successfully or not.
+  '/customers/{id}':
     get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Product Collection
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be included in the customer.
           schema:
             type: string
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -769,18 +939,28 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  customer:
+                    $ref: '#/components/schemas/customer'
     post:
-      operationId: PostCollectionsCollection
-      summary: Update a Product Collection
-      description: Updates a Product Collection.
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Collection.
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be retrieved in each customer.
           schema:
             type: string
       requestBody:
@@ -788,21 +968,38 @@ paths:
           application/json:
             schema:
               properties:
-                title:
-                  type: string
-                  description: The title to identify the Collection by.
-                handle:
+                email:
                   type: string
                   description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The ID of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
                 metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
                   type: object
+                  description: Metadata for the customer.
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -810,8 +1007,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  customer:
+                    $ref: '#/components/schemas/customer'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -822,7 +1019,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the customer group.
+          description: The ID of the customer group.
           schema:
             type: string
       requestBody:
@@ -838,7 +1035,7 @@ paths:
                       - id
                     properties:
                       id:
-                        description: Id of the customer
+                        description: ID of the customer
                         type: string
       tags:
         - Customer Group
@@ -860,7 +1057,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the customer group.
+          description: The ID of the customer group.
           schema:
             type: string
       requestBody:
@@ -876,7 +1073,7 @@ paths:
                       - id
                     properties:
                       id:
-                        description: Id of the customer
+                        description: ID of the customer
                         type: string
       tags:
         - Customer Group
@@ -1037,7 +1234,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Customer Group
+          description: The ID of the Customer Group
           schema:
             type: string
       tags:
@@ -1051,7 +1248,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted customer group.
+                    description: The ID of the deleted customer group.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -1069,7 +1266,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Customer Group.
+          description: The ID of the Customer Group.
           schema:
             type: string
       tags:
@@ -1092,7 +1289,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the customer group.
+          description: The ID of the customer group.
           schema:
             type: string
       requestBody:
@@ -1127,7 +1324,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the customer group.
+          description: The ID of the customer group.
           schema:
             type: string
       tags:
@@ -1153,13 +1350,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount.
+          description: The ID of the Discount.
           schema:
             type: string
         - in: path
           name: region_id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -1184,13 +1381,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount.
+          description: The ID of the Discount.
           schema:
             type: string
         - in: path
           name: region_id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -1213,7 +1410,7 @@ paths:
         - in: path
           name: discount_id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: query
@@ -1514,7 +1711,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount to create the dynamic code from."
+          description: The ID of the Discount to create the dynamic code from."
           schema:
             type: string
       tags:
@@ -1558,13 +1755,13 @@ paths:
         - in: path
           name: discount_id
           required: true
-          description: The id of the Discount
+          description: The ID of the Discount
           schema:
             type: string
         - in: path
           name: condition_id
           required: true
-          description: The id of the DiscountCondition
+          description: The ID of the DiscountCondition
           schema:
             type: string
         - in: query
@@ -1588,7 +1785,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted DiscountCondition
+                    description: The ID of the deleted DiscountCondition
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -1608,13 +1805,13 @@ paths:
         - in: path
           name: discount_id
           required: true
-          description: The id of the Discount.
+          description: The ID of the Discount.
           schema:
             type: string
         - in: path
           name: condition_id
           required: true
-          description: The id of the DiscountCondition.
+          description: The ID of the DiscountCondition.
           schema:
             type: string
         - in: query
@@ -1647,13 +1844,13 @@ paths:
         - in: path
           name: discount_id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: path
           name: condition_id
           required: true
-          description: The id of the DiscountCondition.
+          description: The ID of the DiscountCondition.
           schema:
             type: string
         - in: query
@@ -1730,7 +1927,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount
+          description: The ID of the Discount
           schema:
             type: string
       tags:
@@ -1744,7 +1941,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Discount
+                    description: The ID of the deleted Discount
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -1760,7 +1957,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount
+          description: The ID of the Discount
           schema:
             type: string
         - in: query
@@ -1795,7 +1992,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount.
+          description: The ID of the Discount.
           schema:
             type: string
         - in: query
@@ -1926,13 +2123,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Discount
+          description: The ID of the Discount
           schema:
             type: string
         - in: path
           name: code
           required: true
-          description: The id of the Discount
+          description: The ID of the Discount
           schema:
             type: string
       tags:
@@ -1980,201 +2177,6 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of items to return.
-          schema:
-            type: integer
-            default: 50
-        - in: query
-          name: offset
-          description: The items to skip before result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'a search term to search email, first_name, and last_name.'
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in the customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be included in the customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be retrieved in each customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -2218,7 +2220,7 @@ paths:
                     properties:
                       variant_id:
                         description: >-
-                          The id of the Product Variant to generate the Line
+                          The ID of the Product Variant to generate the Line
                           Item from.
                         type: string
                       unit_price:
@@ -2236,7 +2238,7 @@ paths:
                           about the Line Item.
                         type: object
                 region_id:
-                  description: The id of the region for the draft order
+                  description: The ID of the region for the draft order
                   type: string
                 discounts:
                   description: The discounts to add on the draft order
@@ -2250,7 +2252,7 @@ paths:
                         description: The code of the discount to apply
                         type: string
                 customer_id:
-                  description: The id of the customer to add on the draft order
+                  description: The ID of the customer to add on the draft order
                   type: string
                 no_notification_order:
                   description: >-
@@ -2266,7 +2268,7 @@ paths:
                       - option_id
                     properties:
                       option_id:
-                        description: The id of the shipping option in use
+                        description: The ID of the shipping option in use
                         type: string
                       data:
                         description: >-
@@ -2349,7 +2351,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
       requestBody:
@@ -2361,7 +2363,7 @@ paths:
               properties:
                 variant_id:
                   description: >-
-                    The id of the Product Variant to generate the Line Item
+                    The ID of the Product Variant to generate the Line Item
                     from.
                   type: string
                 unit_price:
@@ -2399,7 +2401,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
       tags:
@@ -2413,7 +2415,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Draft Order.
+                    description: The ID of the deleted Draft Order.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -2429,7 +2431,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
       tags:
@@ -2453,13 +2455,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
         - in: path
           name: line_id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
       tags:
@@ -2482,13 +2484,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
         - in: path
           name: line_id
           required: true
-          description: The id of the Line Item.
+          description: The ID of the Line Item.
           schema:
             type: string
       requestBody:
@@ -2555,7 +2557,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Draft Order.
+          description: The ID of the Draft Order.
           schema:
             type: string
       requestBody:
@@ -2565,10 +2567,14 @@ paths:
               properties:
                 region_id:
                   type: string
-                  description: The id of the Region to create the Draft Order in.
+                  description: The ID of the Region to create the Draft Order in.
                 country_code:
                   type: string
                   description: The 2 character ISO code for the Country.
+                  externalDocs:
+                    url: >-
+                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+                    description: See a list of codes.
                 email:
                   type: string
                   description: An email to be used on the Draft Order.
@@ -2597,7 +2603,7 @@ paths:
                     use of notifications.
                   type: boolean
                 customer_id:
-                  description: The id of the Customer to associate the Draft Order with.
+                  description: The ID of the Customer to associate the Draft Order with.
                   type: string
       tags:
         - Draft Order
@@ -2643,7 +2649,7 @@ paths:
                     The time at which the Gift Card should no longer be
                     available.
                 region_id:
-                  description: The id of the Region in which the Gift Card can be used.
+                  description: The ID of the Region in which the Gift Card can be used.
                   type: string
                 metadata:
                   description: >-
@@ -2716,7 +2722,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Gift Card to delete.
+          description: The ID of the Gift Card to delete.
           schema:
             type: string
       tags:
@@ -2730,7 +2736,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Gift Card
+                    description: The ID of the deleted Gift Card
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -2746,7 +2752,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Gift Card.
+          description: The ID of the Gift Card.
           schema:
             type: string
       tags:
@@ -2771,7 +2777,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Gift Card.
+          description: The ID of the Gift Card.
           schema:
             type: string
       requestBody:
@@ -2796,7 +2802,7 @@ paths:
                     The time at which the Gift Card should no longer be
                     available.
                 region_id:
-                  description: The id of the Region in which the Gift Card can be used.
+                  description: The ID of the Region in which the Gift Card can be used.
                   type: string
                 metadata:
                   description: >-
@@ -2911,7 +2917,7 @@ paths:
         - in: path
           name: invite_id
           required: true
-          description: The id of the Invite
+          description: The ID of the Invite
           schema:
             type: string
       tags:
@@ -2925,7 +2931,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Invite.
+                    description: The ID of the deleted Invite.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -2942,7 +2948,7 @@ paths:
         - in: path
           name: invite_id
           required: true
-          description: The id of the Invite
+          description: The ID of the Invite
           schema:
             type: string
       tags:
@@ -2967,7 +2973,7 @@ paths:
               properties:
                 resource_id:
                   type: string
-                  description: The id of the resource which the Note relates to.
+                  description: The ID of the resource which the Note relates to.
                 resource_type:
                   type: string
                   description: The type of resource which the Note relates to.
@@ -3005,7 +3011,7 @@ paths:
             default: '0'
         - in: query
           name: resource_id
-          description: The id which the notes belongs to
+          description: The ID which the notes belongs to
           schema:
             type: string
             default: ''
@@ -3041,7 +3047,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Note to delete.
+          description: The ID of the Note to delete.
           schema:
             type: string
       tags:
@@ -3055,7 +3061,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Note.
+                    description: The ID of the deleted Note.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -3071,7 +3077,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the note to retrieve.
+          description: The ID of the note to retrieve.
           schema:
             type: string
       tags:
@@ -3094,7 +3100,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Note to update
+          description: The ID of the Note to update
           schema:
             type: string
       requestBody:
@@ -3161,7 +3167,7 @@ paths:
             type: string
         - in: query
           name: resource_id
-          description: The id of the resource that the Notification refers to.
+          description: The ID of the resource that the Notification refers to.
           schema:
             type: string
         - in: query
@@ -3202,7 +3208,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Notification
+          description: The ID of the Notification
           schema:
             type: string
       requestBody:
@@ -3239,7 +3245,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -3270,7 +3276,7 @@ paths:
                 option_id:
                   type: string
                   description: >-
-                    The id of the Shipping Option to create the Shipping Method
+                    The ID of the Shipping Option to create the Shipping Method
                     from.
                 data:
                   type: object
@@ -3288,7 +3294,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -3312,13 +3318,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: claim_id
           required: true
-          description: The id of the Claim.
+          description: The ID of the Claim.
           schema:
             type: string
       tags:
@@ -3342,19 +3348,19 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order which the Claim relates to.
+          description: The ID of the Order which the Claim relates to.
           schema:
             type: string
         - in: path
           name: claim_id
           required: true
-          description: The id of the Claim which the Fulfillment relates to.
+          description: The ID of the Claim which the Fulfillment relates to.
           schema:
             type: string
         - in: path
           name: fulfillment_id
           required: true
-          description: The id of the Fulfillment.
+          description: The ID of the Fulfillment.
           schema:
             type: string
       tags:
@@ -3378,19 +3384,19 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order which the Swap relates to.
+          description: The ID of the Order which the Swap relates to.
           schema:
             type: string
         - in: path
           name: swap_id
           required: true
-          description: The id of the Swap which the Fulfillment relates to.
+          description: The ID of the Swap which the Fulfillment relates to.
           schema:
             type: string
         - in: path
           name: fulfillment_id
           required: true
-          description: The id of the Fulfillment.
+          description: The ID of the Fulfillment.
           schema:
             type: string
       tags:
@@ -3414,13 +3420,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order which the Fulfillment relates to.
+          description: The ID of the Order which the Fulfillment relates to.
           schema:
             type: string
         - in: path
           name: fulfillment_id
           required: true
-          description: The id of the Fulfillment
+          description: The ID of the Fulfillment
           schema:
             type: string
       tags:
@@ -3447,7 +3453,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -3471,13 +3477,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: swap_id
           required: true
-          description: The id of the Swap.
+          description: The ID of the Swap.
           schema:
             type: string
       tags:
@@ -3501,7 +3507,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -3525,7 +3531,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -3549,13 +3555,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: claim_id
           required: true
-          description: The id of the Claim.
+          description: The ID of the Claim.
           schema:
             type: string
       requestBody:
@@ -3566,7 +3572,7 @@ paths:
                 - fulfillment_id
               properties:
                 fulfillment_id:
-                  description: The id of the Fulfillment.
+                  description: The ID of the Fulfillment.
                   type: string
                 tracking_numbers:
                   description: The tracking numbers for the shipment.
@@ -3594,7 +3600,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -3624,7 +3630,7 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of the Line Item that will be claimed.
+                        description: The ID of the Line Item that will be claimed.
                         type: string
                       quantity:
                         description: The number of items that will be returned
@@ -3662,7 +3668,7 @@ paths:
                     option_id:
                       type: string
                       description: >-
-                        The id of the Shipping Option to create the Shipping
+                        The ID of the Shipping Option to create the Shipping
                         Method from.
                     price:
                       type: integer
@@ -3675,7 +3681,7 @@ paths:
                   items:
                     properties:
                       variant_id:
-                        description: The id of the Product Variant to ship.
+                        description: The ID of the Product Variant to ship.
                         type: string
                       quantity:
                         description: The quantity of the Product Variant to ship.
@@ -3686,11 +3692,11 @@ paths:
                   items:
                     properties:
                       id:
-                        description: The id of an existing Shipping Method
+                        description: The ID of an existing Shipping Method
                         type: string
                       option_id:
                         description: >-
-                          The id of the Shipping Option to create a Shipping
+                          The ID of the Shipping Option to create a Shipping
                           Method from
                         type: string
                       price:
@@ -3741,7 +3747,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -3760,7 +3766,7 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of Line Item to fulfill.
+                        description: The ID of Line Item to fulfill.
                         type: string
                       quantity:
                         description: The quantity of the Line Item to fulfill.
@@ -3851,7 +3857,7 @@ paths:
                   properties:
                     provider_id:
                       type: string
-                      description: id of the payment provider
+                      description: ID of the payment provider
                     data:
                       description: Data relevant for the given payment method
                       type: object
@@ -3865,10 +3871,10 @@ paths:
                   properties:
                     provider_id:
                       type: string
-                      description: The id of the shipping provider.
+                      description: The ID of the shipping provider.
                     profile_id:
                       type: string
-                      description: The id of the shipping profile.
+                      description: The ID of the shipping profile.
                     price:
                       type: integer
                       description: The price of the shipping.
@@ -3911,7 +3917,7 @@ paths:
             type: string
         - in: query
           name: id
-          description: Id of the order to search for.
+          description: ID of the order to search for.
           schema:
             type: string
         - in: query
@@ -3967,7 +3973,7 @@ paths:
                 - requires_action
         - in: query
           name: display_id
-          description: Display id to search for.
+          description: Display ID to search for.
           schema:
             type: string
         - in: query
@@ -3992,9 +3998,14 @@ paths:
             type: string
         - in: query
           name: currency_code
-          description: to search for.
+          style: form
+          explode: false
+          description: Currency code to search for
           schema:
             type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
         - in: query
           name: tax_rate
           description: to search for.
@@ -4124,7 +4135,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -4135,7 +4146,7 @@ paths:
                 - fulfillment_id
               properties:
                 fulfillment_id:
-                  description: The id of the Fulfillment.
+                  description: The ID of the Fulfillment.
                   type: string
                 tracking_numbers:
                   description: The tracking numbers for the shipment.
@@ -4168,13 +4179,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: swap_id
           required: true
-          description: The id of the Swap.
+          description: The ID of the Swap.
           schema:
             type: string
       requestBody:
@@ -4185,7 +4196,7 @@ paths:
                 - fulfillment_id
               properties:
                 fulfillment_id:
-                  description: The id of the Fulfillment.
+                  description: The ID of the Fulfillment.
                   type: string
                 tracking_numbers:
                   description: The tracking numbers for the shipment.
@@ -4220,7 +4231,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -4239,13 +4250,13 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of the Line Item that will be claimed.
+                        description: The ID of the Line Item that will be claimed.
                         type: string
                       quantity:
                         description: The number of items that will be returned
                         type: integer
                       reason_id:
-                        description: The id of the Return Reason to use.
+                        description: The ID of the Return Reason to use.
                         type: string
                       note:
                         description: An optional note with information about the Return.
@@ -4259,7 +4270,7 @@ paths:
                     option_id:
                       type: string
                       description: >-
-                        The id of the Shipping Option to create the Shipping
+                        The ID of the Shipping Option to create the Shipping
                         Method from.
                     price:
                       type: integer
@@ -4273,7 +4284,7 @@ paths:
                       - quantity
                     properties:
                       variant_id:
-                        description: The id of the Product Variant to ship.
+                        description: The ID of the Product Variant to ship.
                         type: string
                       quantity:
                         description: The quantity of the Product Variant to ship.
@@ -4290,7 +4301,7 @@ paths:
                     properties:
                       option_id:
                         description: >-
-                          The id of the Shipping Option to override with a
+                          The ID of the Shipping Option to override with a
                           custom price.
                         type: string
                       price:
@@ -4326,7 +4337,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
@@ -4356,13 +4367,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: claim_id
           required: true
-          description: The id of the Claim.
+          description: The ID of the Claim.
           schema:
             type: string
       requestBody:
@@ -4401,13 +4412,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: swap_id
           required: true
-          description: The id of the Swap.
+          description: The ID of the Swap.
           schema:
             type: string
       requestBody:
@@ -4446,7 +4457,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       tags:
@@ -4469,7 +4480,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -4502,7 +4513,7 @@ paths:
                   items:
                     $ref: '#/components/schemas/discount'
                 customer_id:
-                  description: id of the customer
+                  description: ID of the customer
                   type: string
                 payment_method:
                   description: payment method chosen for the order
@@ -4510,7 +4521,7 @@ paths:
                   properties:
                     provider_id:
                       type: string
-                      description: id of the payment provider
+                      description: ID of the payment provider
                     data:
                       description: Data relevant for the given payment method
                       type: object
@@ -4520,10 +4531,10 @@ paths:
                   properties:
                     provider_id:
                       type: string
-                      description: The id of the shipping provider.
+                      description: The ID of the shipping provider.
                     profile_id:
                       type: string
-                      description: The id of the shipping profile.
+                      description: The ID of the shipping profile.
                     price:
                       type: integer
                       description: The price of the shipping.
@@ -4564,13 +4575,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: swap_id
           required: true
-          description: The id of the Swap.
+          description: The ID of the Swap.
           schema:
             type: string
       tags:
@@ -4594,7 +4605,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -4642,7 +4653,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
       requestBody:
@@ -4661,10 +4672,10 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of the Line Item.
+                        description: The ID of the Line Item.
                         type: string
                       reason_id:
-                        description: The id of the Return Reason to use.
+                        description: The ID of the Return Reason to use.
                         type: string
                       note:
                         description: An optional note with information about the Return.
@@ -4681,7 +4692,7 @@ paths:
                     option_id:
                       type: string
                       description: >-
-                        The id of the Shipping Option to create the Shipping
+                        The ID of the Shipping Option to create the Shipping
                         Method from.
                     price:
                       type: integer
@@ -4725,13 +4736,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Order.
+          description: The ID of the Order.
           schema:
             type: string
         - in: path
           name: claim_id
           required: true
-          description: The id of the Claim.
+          description: The ID of the Claim.
           schema:
             type: string
       requestBody:
@@ -4749,10 +4760,10 @@ paths:
                       - tags
                     properties:
                       id:
-                        description: The id of the Claim Item.
+                        description: The ID of the Claim Item.
                         type: string
                       item_id:
-                        description: The id of the Line Item that will be claimed.
+                        description: The ID of the Line Item that will be claimed.
                         type: string
                       quantity:
                         description: The number of items that will be returned
@@ -4807,11 +4818,11 @@ paths:
                   items:
                     properties:
                       id:
-                        description: The id of an existing Shipping Method
+                        description: The ID of an existing Shipping Method
                         type: string
                       option_id:
                         description: >-
-                          The id of the Shipping Option to create a Shipping
+                          The ID of the Shipping Option to create a Shipping
                           Method from
                         type: string
                       price:
@@ -4848,7 +4859,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Price List to update prices for.
+          description: The ID of the Price List to update prices for.
           schema:
             type: string
       requestBody:
@@ -4865,11 +4876,11 @@ paths:
                       - variant_id
                     properties:
                       id:
-                        description: The id of the price.
+                        description: The ID of the price.
                         type: string
                       region_id:
                         description: >-
-                          The id of the Region for which the price is used. Only
+                          The ID of the Region for which the price is used. Only
                           required if currecny_code is not provided.
                         type: string
                       currency_code:
@@ -4878,8 +4889,11 @@ paths:
                           will be used. Only required if region_id is not
                           provided.
                         type: string
+                        externalDocs:
+                          url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                          description: See a list of codes.
                       variant_id:
-                        description: The id of the Variant for which the price is used.
+                        description: The ID of the Variant for which the price is used.
                         type: string
                       amount:
                         description: The amount to charge for the Product Variant.
@@ -4916,7 +4930,7 @@ paths:
           name: id
           required: true
           description: >-
-            The id of the Price List that the Money Amounts (Prices) that will
+            The ID of the Price List that the Money Amounts (Prices) that will
             be deleted belongs to.
           schema:
             type: string
@@ -5004,7 +5018,7 @@ paths:
                     properties:
                       region_id:
                         description: >-
-                          The id of the Region for which the price is used. Only
+                          The ID of the Region for which the price is used. Only
                           required if currecny_code is not provided.
                         type: string
                       currency_code:
@@ -5013,11 +5027,14 @@ paths:
                           will be used. Only required if region_id is not
                           provided.
                         type: string
+                        externalDocs:
+                          url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                          description: See a list of codes.
                       amount:
                         description: The amount to charge for the Product Variant.
                         type: integer
                       variant_id:
-                        description: The id of the Variant for which the price is used.
+                        description: The ID of the Variant for which the price is used.
                         type: string
                       min_quantity:
                         description: The minimum quantity for which the price will be used.
@@ -5224,7 +5241,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Price List to delete.
+          description: The ID of the Price List to delete.
           schema:
             type: string
       tags:
@@ -5238,7 +5255,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Price List.
+                    description: The ID of the deleted Price List.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -5254,7 +5271,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Price List.
+          description: The ID of the Price List.
           schema:
             type: string
       tags:
@@ -5277,7 +5294,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Price List.
+          description: The ID of the Price List.
           schema:
             type: string
       requestBody:
@@ -5322,11 +5339,11 @@ paths:
                       - variant_id
                     properties:
                       id:
-                        description: The id of the price.
+                        description: The ID of the price.
                         type: string
                       region_id:
                         description: >-
-                          The id of the Region for which the price is used. Only
+                          The ID of the Region for which the price is used. Only
                           required if currecny_code is not provided.
                         type: string
                       currency_code:
@@ -5335,8 +5352,11 @@ paths:
                           will be used. Only required if region_id is not
                           provided.
                         type: string
+                        externalDocs:
+                          url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                          description: See a list of codes.
                       variant_id:
-                        description: The id of the Variant for which the price is used.
+                        description: The ID of the Variant for which the price is used.
                         type: string
                       amount:
                         description: The amount to charge for the Product Variant.
@@ -5355,7 +5375,7 @@ paths:
                       - id
                     properties:
                       id:
-                        description: The id of a customer group
+                        description: The ID of a customer group
                         type: string
       tags:
         - Price List
@@ -5379,14 +5399,14 @@ paths:
           name: id
           required: true
           description: >-
-            The id of the Price List that the Money Amounts that will be deleted
+            The ID of the Price List that the Money Amounts that will be deleted
             belongs to.
           schema:
             type: string
         - in: path
           name: product_id
           required: true
-          description: The id of the product from which the money amount will be deleted.
+          description: The ID of the product from which the money amount will be deleted.
           schema:
             type: string
       tags:
@@ -5420,14 +5440,14 @@ paths:
           name: id
           required: true
           description: >-
-            The id of the Price List that the Money Amounts that will be deleted
+            The ID of the Price List that the Money Amounts that will be deleted
             belongs to.
           schema:
             type: string
         - in: path
           name: variant_id
           required: true
-          description: The id of the variant from which the money amount will be deleted.
+          description: The ID of the variant from which the money amount will be deleted.
           schema:
             type: string
       tags:
@@ -5466,7 +5486,7 @@ paths:
             type: string
         - in: query
           name: id
-          description: Id of the product to search for.
+          description: ID of the product to search for.
           schema:
             type: string
         - in: query
@@ -5877,7 +5897,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       requestBody:
@@ -5971,7 +5991,7 @@ paths:
                       description: The value of the Product Type.
                       type: string
                 collection_id:
-                  description: The id of the Collection the Product should belong to.
+                  description: The ID of the Collection the Product should belong to.
                   type: string
                 tags:
                   description: Tags to associate the Product with.
@@ -5981,7 +6001,7 @@ paths:
                       - value
                     properties:
                       id:
-                        description: The id of an existing Tag.
+                        description: The ID of an existing Tag.
                         type: string
                       value:
                         description: 'The value of the Tag, these will be upserted.'
@@ -6072,11 +6092,11 @@ paths:
                             - amount
                           properties:
                             id:
-                              description: The id of the Price.
+                              description: The ID of the Price.
                               type: string
                             region_id:
                               description: >-
-                                The id of the Region for which the price is
+                                The ID of the Region for which the price is
                                 used. Only required if currency_code is not
                                 provided.
                               type: string
@@ -6086,6 +6106,10 @@ paths:
                                 price will be used. Only required if region_id
                                 is not provided.
                               type: string
+                              externalDocs:
+                                url: >-
+                                  https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                                description: See a list of codes.
                             amount:
                               description: The amount to charge for the Product Variant.
                               type: integer
@@ -6160,7 +6184,7 @@ paths:
             type: string
         - in: query
           name: id
-          description: Id of the product to search for.
+          description: ID of the product to search for.
           schema:
             type: string
         - in: query
@@ -6360,7 +6384,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       requestBody:
@@ -6439,11 +6463,11 @@ paths:
                       - amount
                     properties:
                       id:
-                        description: The id of the price.
+                        description: The ID of the price.
                         type: string
                       region_id:
                         description: >-
-                          The id of the Region for which the price is used. Only
+                          The ID of the Region for which the price is used. Only
                           required if currency_code is not provided.
                         type: string
                       currency_code:
@@ -6452,6 +6476,9 @@ paths:
                           will be used. Only required if region_id is not
                           provided.
                         type: string
+                        externalDocs:
+                          url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                          description: See a list of codes.
                       amount:
                         description: The amount to charge for the Product Variant.
                         type: integer
@@ -6469,7 +6496,7 @@ paths:
                       - value
                     properties:
                       option_id:
-                        description: The id of the Product Option to set the value for.
+                        description: The ID of the Product Option to set the value for.
                         type: string
                       value:
                         description: The value to give for the Product Option.
@@ -6494,7 +6521,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: Id of the product to search for the variants.
+          description: ID of the product to search for the variants.
           schema:
             type: string
         - in: query
@@ -6555,13 +6582,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: path
           name: option_id
           required: true
-          description: The id of the Product Option.
+          description: The ID of the Product Option.
           schema:
             type: string
       tags:
@@ -6575,7 +6602,7 @@ paths:
                 properties:
                   option_id:
                     type: string
-                    description: The id of the deleted Product Option
+                    description: The ID of the deleted Product Option
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -6593,13 +6620,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: path
           name: option_id
           required: true
-          description: The id of the Product Option.
+          description: The ID of the Product Option.
           schema:
             type: string
       requestBody:
@@ -6633,7 +6660,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       tags:
@@ -6647,7 +6674,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Product.
+                    description: The ID of the deleted Product.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -6663,7 +6690,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       tags:
@@ -6686,7 +6713,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       requestBody:
@@ -6756,7 +6783,7 @@ paths:
                       - value
                     properties:
                       id:
-                        description: The id of an existing Tag.
+                        description: The ID of an existing Tag.
                         type: string
                       value:
                         description: 'The value of the Tag, these will be upserted.'
@@ -6845,11 +6872,11 @@ paths:
                             - amount
                           properties:
                             id:
-                              description: The id of the Price.
+                              description: The ID of the Price.
                               type: string
                             region_id:
                               description: >-
-                                The id of the Region for which the price is
+                                The ID of the Region for which the price is
                                 used. Only required if currency_code is not
                                 provided.
                               type: string
@@ -6859,6 +6886,10 @@ paths:
                                 price will be used. Only required if region_id
                                 is not provided.
                               type: string
+                              externalDocs:
+                                url: >-
+                                  https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                                description: See a list of codes.
                             amount:
                               description: The amount to charge for the Product Variant.
                               type: integer
@@ -6880,7 +6911,7 @@ paths:
                             - value
                           properties:
                             option_id:
-                              description: The id of the Option.
+                              description: The ID of the Option.
                               type: string
                             value:
                               description: >-
@@ -6934,13 +6965,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: path
           name: variant_id
           required: true
-          description: The id of the Product Variant.
+          description: The ID of the Product Variant.
           schema:
             type: string
       tags:
@@ -6954,7 +6985,7 @@ paths:
                 properties:
                   variant_id:
                     type: string
-                    description: The id of the deleted Product Variant.
+                    description: The ID of the deleted Product Variant.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -6972,13 +7003,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
         - in: path
           name: variant_id
           required: true
-          description: The id of the Product Variant.
+          description: The ID of the Product Variant.
           schema:
             type: string
       requestBody:
@@ -7052,11 +7083,11 @@ paths:
                       - amount
                     properties:
                       id:
-                        description: The id of the price.
+                        description: The ID of the price.
                         type: string
                       region_id:
                         description: >-
-                          The id of the Region for which the price is used. Only
+                          The ID of the Region for which the price is used. Only
                           required if currency_code is not provided.
                         type: string
                       currency_code:
@@ -7065,6 +7096,9 @@ paths:
                           will be used. Only required if region_id is not
                           provided.
                         type: string
+                        externalDocs:
+                          url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                          description: See a list of codes.
                       amount:
                         description: The amount to charge for the Product Variant.
                         type: integer
@@ -7082,7 +7116,7 @@ paths:
                       - value
                     properties:
                       option_id:
-                        description: The id of the Product Option to set the value for.
+                        description: The ID of the Product Option to set the value for.
                         type: string
                       value:
                         description: The value to give for the Product Option.
@@ -7155,7 +7189,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: The ID of the Product.
           schema:
             type: string
       requestBody:
@@ -7193,7 +7227,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       requestBody:
@@ -7206,6 +7240,10 @@ paths:
                 country_code:
                   description: The 2 character ISO code for the Country.
                   type: string
+                  externalDocs:
+                    url: >-
+                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+                    description: See a list of codes.
       tags:
         - Region
       responses:
@@ -7227,7 +7265,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       requestBody:
@@ -7238,7 +7276,7 @@ paths:
                 - provider_id
               properties:
                 provider_id:
-                  description: The id of the Fulfillment Provider to add.
+                  description: The ID of the Fulfillment Provider to add.
                   type: string
       tags:
         - Region
@@ -7261,7 +7299,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       requestBody:
@@ -7272,7 +7310,7 @@ paths:
                 - provider_id
               properties:
                 provider_id:
-                  description: The id of the Payment Provider to add.
+                  description: The ID of the Payment Provider to add.
                   type: string
       tags:
         - Region
@@ -7309,6 +7347,9 @@ paths:
                 currency_code:
                   description: The 3 character ISO currency code to use for the Region.
                   type: string
+                  externalDocs:
+                    url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                    description: See a list of codes.
                 tax_code:
                   description: An optional tax code the Region.
                   type: string
@@ -7425,7 +7466,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
         - in: path
@@ -7455,7 +7496,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -7469,7 +7510,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Region.
+                    description: The ID of the deleted Region.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -7485,7 +7526,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -7508,7 +7549,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       requestBody:
@@ -7522,6 +7563,9 @@ paths:
                 currency_code:
                   description: The 3 character ISO currency code to use for the Region.
                   type: string
+                  externalDocs:
+                    url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                    description: See a list of codes.
                 automatic_taxes:
                   description: >-
                     If true Medusa will automatically calculate taxes for carts
@@ -7535,7 +7579,7 @@ paths:
                   type: boolean
                 tax_provider_id:
                   description: >-
-                    The id of the tax provider to use; if null the system tax
+                    The ID of the tax provider to use; if null the system tax
                     provider is used
                   type: string
                 tax_code:
@@ -7586,7 +7630,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -7604,7 +7648,7 @@ paths:
                       properties:
                         provider_id:
                           type: string
-                          description: id of the fulfillment provider
+                          description: ID of the fulfillment provider
                         options:
                           type: array
                           description: fulfillment provider options
@@ -7622,15 +7666,18 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
         - in: path
           name: country_code
-          required: true
           description: The 2 character ISO code for the Country.
+          required: true
           schema:
             type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
       tags:
         - Region
       responses:
@@ -7652,13 +7699,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
         - in: path
           name: provider_id
           required: true
-          description: The id of the Fulfillment Provider.
+          description: The ID of the Fulfillment Provider.
           schema:
             type: string
       tags:
@@ -7682,13 +7729,13 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
         - in: path
           name: provider_id
           required: true
-          description: The id of the Payment Provider.
+          description: The ID of the Payment Provider.
           schema:
             type: string
       tags:
@@ -7712,7 +7759,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Region.
+          description: The ID of the Region.
           schema:
             type: string
       tags:
@@ -7764,7 +7811,7 @@ paths:
                     be unique.
                   type: string
                 parent_return_reason_id:
-                  description: The id of the parent return reason.
+                  description: The ID of the parent return reason.
                   type: string
                 description:
                   description: An optional description to for the Reason.
@@ -7813,7 +7860,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the return reason
+          description: The ID of the return reason
           schema:
             type: string
       tags:
@@ -7827,7 +7874,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted return reason
+                    description: The ID of the deleted return reason
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -7843,7 +7890,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Return Reason.
+          description: The ID of the Return Reason.
           schema:
             type: string
       tags:
@@ -7866,7 +7913,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Return Reason.
+          description: The ID of the Return Reason.
           schema:
             type: string
       requestBody:
@@ -7910,7 +7957,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Return.
+          description: The ID of the Return.
           schema:
             type: string
       tags:
@@ -7975,7 +8022,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Return.
+          description: The ID of the Return.
           schema:
             type: string
       requestBody:
@@ -7994,7 +8041,7 @@ paths:
                       - quantity
                     properties:
                       item_id:
-                        description: The id of the Line Item.
+                        description: The ID of the Line Item.
                         type: string
                       quantity:
                         description: The quantity of the Line Item.
@@ -8059,7 +8106,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Sales channel.
+          description: The ID of the Sales channel.
           schema:
             type: string
       tags:
@@ -8073,7 +8120,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Sales Channel.
+                    description: The ID of the deleted Sales Channel.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -8089,7 +8136,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Sales channel.
+          description: The ID of the Sales channel.
           schema:
             type: string
       tags:
@@ -8112,7 +8159,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Sales Channel.
+          description: The ID of the Sales Channel.
           schema:
             type: string
       requestBody:
@@ -8279,7 +8326,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Option.
+          description: The ID of the Shipping Option.
           schema:
             type: string
       tags:
@@ -8293,7 +8340,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Shipping Option.
+                    description: The ID of the deleted Shipping Option.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -8309,7 +8356,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Option.
+          description: The ID of the Shipping Option.
           schema:
             type: string
       tags:
@@ -8332,7 +8379,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Option.
+          description: The ID of the Shipping Option.
           schema:
             type: string
       requestBody:
@@ -8444,7 +8491,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Profile.
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       tags:
@@ -8458,7 +8505,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Shipping Profile.
+                    description: The ID of the deleted Shipping Profile.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -8474,7 +8521,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Profile.
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       tags:
@@ -8496,7 +8543,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Profile.
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       requestBody:
@@ -8531,6 +8578,9 @@ paths:
           description: The 3 character ISO currency code.
           schema:
             type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
       tags:
         - Store
       responses:
@@ -8554,6 +8604,9 @@ paths:
           description: The 3 character ISO currency code.
           schema:
             type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
       tags:
         - Store
       responses:
@@ -8613,6 +8666,9 @@ paths:
                 default_currency_code:
                   description: The default currency code for the Store.
                   type: string
+                  externalDocs:
+                    url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                    description: See a list of codes.
                 currencies:
                   description: Array of currencies in 2 character ISO code format.
                   type: array
@@ -8682,7 +8738,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Swap.
+          description: The ID of the Swap.
           schema:
             type: string
       tags:
@@ -9219,7 +9275,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Shipping Option.
+          description: The ID of the Shipping Option.
           schema:
             type: string
       tags:
@@ -9233,7 +9289,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted Shipping Option.
+                    description: The ID of the deleted Shipping Option.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -9454,7 +9510,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the User.
+          description: The ID of the User.
           schema:
             type: string
       tags:
@@ -9468,7 +9524,7 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The id of the deleted user.
+                    description: The ID of the deleted user.
                   object:
                     type: string
                     description: The type of the object that was deleted.
@@ -9484,7 +9540,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the User.
+          description: The ID of the User.
           schema:
             type: string
       tags:
@@ -9506,7 +9562,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the User.
+          description: The ID of the User.
           schema:
             type: string
       x-authenticated: true
@@ -9667,7 +9723,7 @@ components:
           description: ID of the customer this address belongs to
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: Available if the relation "customer" is expanded.
+          description: Available if the relation `customer` is expanded.
           type: array
           items:
             type: object
@@ -9705,7 +9761,7 @@ components:
             description: See a list of codes.
           example: st
         country:
-          description: A country object. Available if the relation "country" is expanded.
+          description: A country object. Available if the relation `country` is expanded.
           type: object
         province:
           type: string
@@ -9771,7 +9827,7 @@ components:
           example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         created_by_user:
           description: >-
-            A user object. Available if the relation "created_by_user" is
+            A user object. Available if the relation `created_by_user` is
             expanded.
           type: object
         context:
@@ -9896,17 +9952,17 @@ components:
           description: The billing address's ID
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
-          description: Available if the relation "billing_address" is expanded.
+          description: Available if the relation `billing_address` is expanded.
           $ref: '#/components/schemas/address'
         shipping_address_id:
           type: string
           description: The shipping address's ID
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
-          description: Available if the relation "shipping_address" is expanded.
+          description: Available if the relation `shipping_address` is expanded.
           $ref: '#/components/schemas/address'
         items:
-          description: Available if the relation "items" is expanded.
+          description: Available if the relation `items` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/line_item'
@@ -9915,17 +9971,17 @@ components:
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         discounts:
           type: array
-          description: Available if the relation "discounts" is expanded.
+          description: Available if the relation `discounts` is expanded.
           items:
             type: object
             description: A discount object.
         gift_cards:
           type: array
-          description: Available if the relation "gift_cards" is expanded.
+          description: Available if the relation `gift_cards` is expanded.
           items:
             type: object
             description: A gift card object.
@@ -9934,7 +9990,7 @@ components:
           description: The customer's ID
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: A customer object. Available if the relation "customer" is expanded.
+          description: A customer object. Available if the relation `customer` is expanded.
           type: object
         payment_session:
           description: The selected payment session in the cart.
@@ -9949,7 +10005,7 @@ components:
           description: The payment's ID if available
           example: pay_01G8ZCC5W42ZNY842124G7P5R9
         payment:
-          description: Available if the relation "payment" is expanded.
+          description: Available if the relation `payment` is expanded.
           $ref: '#/components/schemas/payment'
         shipping_methods:
           type: array
@@ -9997,7 +10053,7 @@ components:
           example: null
         sales_channel:
           description: >-
-            A sales channel object. Available if the relation "sales_channel" is
+            A sales channel object. Available if the relation `sales_channel` is
             expanded.
           type: object
         created_at:
@@ -10072,7 +10128,7 @@ components:
           description: The ID of the claim item associated with the image
         claim_item:
           description: >-
-            A claim item object. Available if the relation "claim_item" is
+            A claim item object. Available if the relation `claim_item` is
             expanded.
           type: object
         url:
@@ -10115,7 +10171,7 @@ components:
           example: citm_01G8ZH853Y6TFXWPG5EYE81X63
         images:
           type: array
-          description: Available if the relation "images" is expanded.
+          description: Available if the relation `images` is expanded.
           items:
             $ref: '#/components/schemas/claim_image'
         claim_order_id:
@@ -10123,7 +10179,7 @@ components:
           type: string
         claim_order:
           description: >-
-            A claim order object. Available if the relation "claim_order" is
+            A claim order object. Available if the relation `claim_order` is
             expanded.
           type: object
         item_id:
@@ -10131,14 +10187,14 @@ components:
           type: string
           example: item_01G8ZM25TN49YV9EQBE2NC27KC
         item:
-          description: Available if the relation "item" is expanded.
+          description: Available if the relation `item` is expanded.
           $ref: '#/components/schemas/line_item'
         variant_id:
           description: The ID of the product variant that is claimed.
           type: string
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
-          description: A variant object. Available if the relation "variant" is expanded.
+          description: A variant object. Available if the relation `variant` is expanded.
           type: object
         reason:
           description: The reason for the claim
@@ -10240,19 +10296,19 @@ components:
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         return_order:
           description: >-
-            Holds information about the return if the claim is to be returned.
-            Available if the relation 'return_order' is expanded
-          $ref: '#/components/schemas/return'
+            A return object. Holds information about the return if the claim is
+            to be returned. Available if the relation 'return_order' is expanded
+          type: object
         shipping_address_id:
           description: The ID of the address that the new items should be shipped to
           type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
-          description: Available if the relation "shipping_address" is expanded.
+          description: Available if the relation `shipping_address` is expanded.
           $ref: '#/components/schemas/address'
         shipping_methods:
           description: The shipping methods that the claim order will be shipped with.
@@ -10390,7 +10446,7 @@ components:
           description: The region ID this country is associated with.
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
     currency:
       title: Currency
@@ -10451,14 +10507,14 @@ components:
         shipping_option:
           description: >-
             A shipping option object. Available if the relation
-            "shipping_option" is expanded.
+            `shipping_option` is expanded.
           type: object
         cart_id:
           description: The ID of the Cart that the custom shipping option is attached to
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         created_at:
           type: string
@@ -10496,7 +10552,7 @@ components:
           type: array
           description: >-
             The customers that belong to the customer group. Available if the
-            relation "customers" is expanded.
+            relation `customers` is expanded.
           items:
             type: object
             description: A customer object.
@@ -10504,7 +10560,7 @@ components:
           type: array
           description: >-
             The price lists that are associated with the customer group.
-            Available if the relation "price_lists" is expanded.
+            Available if the relation `price_lists` is expanded.
           items:
             $ref: '#/components/schemas/price_list'
         created_at:
@@ -10552,10 +10608,10 @@ components:
           description: The customer's billing address ID
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
-          description: Available if the relation "billing_address" is expanded.
+          description: Available if the relation `billing_address` is expanded.
           $ref: '#/components/schemas/address'
         shipping_addresses:
-          description: Available if the relation "shipping_addresses" is expanded.
+          description: Available if the relation `shipping_addresses` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/address'
@@ -10568,7 +10624,7 @@ components:
           description: Whether the customer has an account or not
           default: false
         orders:
-          description: Available if the relation "orders" is expanded.
+          description: Available if the relation `orders` is expanded.
           type: array
           items:
             type: object
@@ -10576,7 +10632,7 @@ components:
         groups:
           description: >-
             The customer groups the customer belongs to. Available if the
-            relation "groups" is expanded.
+            relation `groups` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/customer_group'
@@ -10614,10 +10670,10 @@ components:
           type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         customer_group:
-          description: Available if the relation "customer_group" is expanded.
+          description: Available if the relation `customer_group` is expanded.
           $ref: '#/components/schemas/customer_group'
         discount_condition:
-          description: Available if the relation "discount_condition" is expanded.
+          description: Available if the relation `discount_condition` is expanded.
           $ref: '#/components/schemas/discount_condition'
         created_at:
           type: string
@@ -10649,10 +10705,10 @@ components:
           type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_collection:
-          description: Available if the relation "product_collection" is expanded.
+          description: Available if the relation `product_collection` is expanded.
           $ref: '#/components/schemas/product_collection'
         discount_condition:
-          description: Available if the relation "discount_condition" is expanded.
+          description: Available if the relation `discount_condition` is expanded.
           $ref: '#/components/schemas/discount_condition'
         created_at:
           type: string
@@ -10684,10 +10740,10 @@ components:
           type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_tag:
-          description: Available if the relation "product_tag" is expanded.
+          description: Available if the relation `product_tag` is expanded.
           $ref: '#/components/schemas/product_tag'
         discount_condition:
-          description: Available if the relation "discount_condition" is expanded.
+          description: Available if the relation `discount_condition` is expanded.
           $ref: '#/components/schemas/discount_condition'
         created_at:
           type: string
@@ -10719,10 +10775,10 @@ components:
           type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_type:
-          description: Available if the relation "product_type" is expanded.
+          description: Available if the relation `product_type` is expanded.
           $ref: '#/components/schemas/product_type'
         discount_condition:
-          description: Available if the relation "discount_condition" is expanded.
+          description: Available if the relation `discount_condition` is expanded.
           $ref: '#/components/schemas/discount_condition'
         created_at:
           type: string
@@ -10754,10 +10810,10 @@ components:
           type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product:
-          description: Available if the relation "product" is expanded.
+          description: Available if the relation `product` is expanded.
           $ref: '#/components/schemas/product'
         discount_condition:
-          description: Available if the relation "discount_condition" is expanded.
+          description: Available if the relation `discount_condition` is expanded.
           $ref: '#/components/schemas/discount_condition'
         created_at:
           type: string
@@ -10805,12 +10861,12 @@ components:
           description: The ID of the discount rule associated with the condition
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         discount_rule:
-          description: Available if the relation "discount_rule" is expanded.
+          description: Available if the relation `discount_rule` is expanded.
           $ref: '#/components/schemas/discount_rule'
         products:
           description: >-
             products associated with this condition if type = products.
-            Available if the relation "products" is expanded.
+            Available if the relation `products` is expanded.
           type: array
           items:
             type: object
@@ -10818,7 +10874,7 @@ components:
         product_types:
           description: >-
             product types associated with this condition if type =
-            product_types. Available if the relation "product_types" is
+            product_types. Available if the relation `product_types` is
             expanded.
           type: array
           items:
@@ -10827,7 +10883,7 @@ components:
         product_tags:
           description: >-
             product tags associated with this condition if type = product_tags.
-            Available if the relation "product_tags" is expanded.
+            Available if the relation `product_tags` is expanded.
           type: array
           items:
             type: object
@@ -10835,7 +10891,7 @@ components:
         product_collections:
           description: >-
             product collections associated with this condition if type =
-            product_collections. Available if the relation "product_collections"
+            product_collections. Available if the relation `product_collections`
             is expanded.
           type: array
           items:
@@ -10844,7 +10900,7 @@ components:
         customer_groups:
           description: >-
             customer groups associated with this condition if type =
-            customer_groups. Available if the relation "customer_groups" is
+            customer_groups. Available if the relation `customer_groups` is
             expanded.
           type: array
           items:
@@ -10912,7 +10968,7 @@ components:
         conditions:
           description: >-
             A set of conditions that can be used to limit when  the discount can
-            be used. Available if the relation "conditions" is expanded.
+            be used. Available if the relation `conditions` is expanded.
           type: array
           items:
             type: object
@@ -10965,7 +11021,7 @@ components:
           description: The Discount Rule that governs the behaviour of the Discount
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         rule:
-          description: Available if the relation "rule" is expanded.
+          description: Available if the relation `rule` is expanded.
           $ref: '#/components/schemas/discount_rule'
         is_disabled:
           description: >-
@@ -10980,7 +11036,7 @@ components:
             a dynamic discount
           example: disc_01G8ZH853YPY9B94857DY91YGW
         parent_discount:
-          description: Available if the relation "parent_discount" is expanded.
+          description: Available if the relation `parent_discount` is expanded.
           $ref: '#/components/schemas/discount'
         starts_at:
           description: The time at which the discount can be used.
@@ -10997,7 +11053,7 @@ components:
         regions:
           description: >-
             The Regions in which the Discount can be used. Available if the
-            relation "regions" is expanded.
+            relation `regions` is expanded.
           type: array
           items:
             type: object
@@ -11053,14 +11109,14 @@ components:
           description: The ID of the cart associated with the draft order.
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         order_id:
           type: string
           description: The ID of the order associated with the draft order.
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         canceled_at:
           type: string
@@ -11121,11 +11177,11 @@ components:
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         fulfillment:
           description: >-
-            A fulfillment object. Available if the relation "fulfillment" is
+            A fulfillment object. Available if the relation `fulfillment` is
             expanded.
           type: object
         item:
-          description: Available if the relation "item" is expanded.
+          description: Available if the relation `item` is expanded.
           $ref: '#/components/schemas/line_item'
         quantity:
           description: The quantity of the Line Item that is included in the Fulfillment.
@@ -11173,7 +11229,7 @@ components:
           example: null
         claim_order:
           description: >-
-            A claim order object. Available if the relation "claim_order" is
+            A claim order object. Available if the relation `claim_order` is
             expanded.
           type: object
         swap_id:
@@ -11181,14 +11237,14 @@ components:
           type: string
           example: null
         swap:
-          description: A swap object. Available if the relation "swap" is expanded.
+          description: A swap object. Available if the relation `swap` is expanded.
           type: object
         order_id:
           description: The id of the Order that the Fulfillment belongs to.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         provider_id:
           description: >-
@@ -11197,13 +11253,13 @@ components:
           type: string
           example: manual
         provider:
-          description: Available if the relation "provider" is expanded.
+          description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/fulfillment_provider'
         items:
           description: >-
             The Fulfillment Items in the Fulfillment - these hold information
             about how many of each Line Item has been fulfilled. Available if
-            the relation "items" is expanded.
+            the relation `items` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/fulfillment_item'
@@ -11211,7 +11267,7 @@ components:
           description: >-
             The Tracking Links that can be used to track the status of the
             Fulfillment, these will usually be provided by the Fulfillment
-            Provider. Available if the relation "tracking_links" is expanded.
+            Provider. Available if the relation `tracking_links` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/tracking_link'
@@ -11289,7 +11345,7 @@ components:
           example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
         gift_card:
           description: >-
-            A gift card object. Available if the relation "gift_card" is
+            A gift card object. Available if the relation `gift_card` is
             expanded.
           type: object
         order_id:
@@ -11297,7 +11353,7 @@ components:
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         amount:
           description: The amount that was used from the Gift Card.
@@ -11350,14 +11406,14 @@ components:
           description: The id of the Region in which the Gift Card is available.
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         order_id:
           type: string
           description: The id of the Order that the Gift Card was purchased in.
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         is_disabled:
           description: >-
@@ -11543,7 +11599,7 @@ components:
           description: The ID of the line item
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
-          description: Available if the relation "item" is expanded.
+          description: Available if the relation `item` is expanded.
           $ref: '#/components/schemas/line_item'
         description:
           type: string
@@ -11554,7 +11610,7 @@ components:
           description: The ID of the discount associated with the adjustment
           example: disc_01F0YESMW10MGHWJKZSDDMN0VN
         discount:
-          description: Available if the relation "discount" is expanded.
+          description: Available if the relation `discount` is expanded.
           $ref: '#/components/schemas/discount'
         amount:
           type: number
@@ -11583,7 +11639,7 @@ components:
           description: The ID of the line item
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
-          description: Available if the relation "item" is expanded.
+          description: Available if the relation `item` is expanded.
           $ref: '#/components/schemas/line_item'
         code:
           description: A code to identify the tax type by
@@ -11633,21 +11689,21 @@ components:
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         order_id:
           description: The ID of the Order that the Line Item belongs to.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         swap_id:
           description: The id of the Swap that the Line Item belongs to.
           type: string
           example: null
         swap:
-          description: A swap object. Available if the relation "swap" is expanded.
+          description: A swap object. Available if the relation `swap` is expanded.
           type: object
         claim_order_id:
           description: The id of the Claim that the Line Item belongs to.
@@ -11655,16 +11711,16 @@ components:
           example: null
         claim_order:
           description: >-
-            A claim order object. Available if the relation "claim_order" is
+            A claim order object. Available if the relation `claim_order` is
             expanded.
           type: object
         tax_lines:
-          description: Available if the relation "tax_lines" is expanded.
+          description: Available if the relation `tax_lines` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/line_item_tax_line'
         adjustments:
-          description: Available if the relation "adjustments" is expanded.
+          description: Available if the relation `adjustments` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/line_item_adjustment'
@@ -11724,7 +11780,7 @@ components:
         variant:
           description: >-
             A product variant object. The Product Variant contained in the Line
-            Item. Available if the relation "variant" is expanded.
+            Item. Available if the relation `variant` is expanded.
           type: object
         quantity:
           description: The quantity of the content in the Line Item.
@@ -11815,7 +11871,7 @@ components:
             url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
             description: See a list of codes.
         currency:
-          description: Available if the relation "currency" is expanded.
+          description: Available if the relation `currency` is expanded.
           $ref: '#/components/schemas/currency'
         amount:
           description: >-
@@ -11840,7 +11896,7 @@ components:
           description: The ID of the price list associated with the money amount
           example: pl_01G8X3CKJXCG5VXVZ87H9KC09W
         price_list:
-          description: Available if the relation "price_list" is expanded.
+          description: Available if the relation `price_list` is expanded.
           $ref: '#/components/schemas/price_list'
         variant_id:
           description: The id of the Product Variant contained in the Line Item.
@@ -11849,14 +11905,14 @@ components:
         variant:
           description: >-
             The Product Variant contained in the Line Item. Available if the
-            relation "variant" is expanded.
+            relation `variant` is expanded.
           type: object
         region_id:
           type: string
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         created_at:
           type: string
@@ -11908,7 +11964,7 @@ components:
           description: The ID of the author (user)
           example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         author:
-          description: Available if the relation "author" is expanded.
+          description: Available if the relation `author` is expanded.
           $ref: '#/components/schemas/user'
         created_at:
           type: string
@@ -11981,7 +12037,7 @@ components:
           type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: A customer object. Available if the relation "customer" is expanded.
+          description: A customer object. Available if the relation `customer` is expanded.
           type: object
         to:
           description: >-
@@ -12008,7 +12064,7 @@ components:
           type: string
           example: sengrid
         provider:
-          description: Available if the relation "provider" is expanded.
+          description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/notification_provider'
         created_at:
           type: string
@@ -12044,7 +12100,7 @@ components:
           type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: A customer object. Available if the relation "customer" is expanded.
+          description: A customer object. Available if the relation `customer` is expanded.
           type: object
         to:
           description: >-
@@ -12064,14 +12120,14 @@ components:
           type: string
           example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
         parent_notification:
-          description: Available if the relation "parent_notification" is expanded.
+          description: Available if the relation `parent_notification` is expanded.
           $ref: '#/components/schemas/notification'
         provider_id:
           description: The ID of the Notification Provider that handles the Notification.
           type: string
           example: sengrid
         provider:
-          description: Available if the relation "provider" is expanded.
+          description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/notification_provider'
         created_at:
           type: string
@@ -12173,14 +12229,14 @@ components:
           description: The ID of the cart associated with the order
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         customer_id:
           type: string
           description: The ID of the customer associated with the order
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: A customer object. Available if the relation "customer" is expanded.
+          description: A customer object. Available if the relation `customer` is expanded.
           type: object
         email:
           description: The email associated with the order
@@ -12191,21 +12247,21 @@ components:
           description: The ID of the billing address associated with the order
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
-          description: Available if the relation "billing_address" is expanded.
+          description: Available if the relation `billing_address` is expanded.
           $ref: '#/components/schemas/address'
         shipping_address_id:
           type: string
           description: The ID of the shipping address associated with the order
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
-          description: Available if the relation "shipping_address" is expanded.
+          description: Available if the relation `shipping_address` is expanded.
           $ref: '#/components/schemas/address'
         region_id:
           type: string
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         currency_code:
           description: The 3 character currency code that is used in the order
@@ -12215,7 +12271,7 @@ components:
             url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
             description: See a list of codes.
         currency:
-          description: Available if the relation "currency" is expanded.
+          description: Available if the relation `currency` is expanded.
           $ref: '#/components/schemas/currency'
         tax_rate:
           description: The order's tax rate
@@ -12225,27 +12281,29 @@ components:
           type: array
           description: >-
             The discounts used in the order. Available if the relation
-            "discounts" is expanded.
+            `discounts` is expanded.
           items:
-            $ref: '#/components/schemas/discount'
+            type: object
+            description: A discount object.
         gift_cards:
           type: array
           description: >-
             The gift cards used in the order. Available if the relation
-            "gift_cards" is expanded.
+            `gift_cards` is expanded.
           items:
-            $ref: '#/components/schemas/gift_card'
+            type: object
+            description: A gift card object.
         shipping_methods:
           type: array
           description: >-
             The shipping methods used in the order. Available if the relation
-            "shipping_methods" is expanded.
+            `shipping_methods` is expanded.
           items:
             $ref: '#/components/schemas/shipping_method'
         payments:
           type: array
           description: >-
-            The payments used in the order. Available if the relation "payments"
+            The payments used in the order. Available if the relation `payments`
             is expanded.
           items:
             $ref: '#/components/schemas/payment'
@@ -12253,14 +12311,14 @@ components:
           type: array
           description: >-
             The fulfillments used in the order. Available if the relation
-            "fulfillments" is expanded.
+            `fulfillments` is expanded.
           items:
             $ref: '#/components/schemas/fulfillment'
         returns:
           type: array
           description: >-
             The returns associated with the order. Available if the relation
-            "returns" is expanded.
+            `returns` is expanded.
           items:
             type: object
             description: A return object.
@@ -12268,7 +12326,7 @@ components:
           type: array
           description: >-
             The claims associated with the order. Available if the relation
-            "claims" is expanded.
+            `claims` is expanded.
           items:
             type: object
             description: A claim order object.
@@ -12276,7 +12334,7 @@ components:
           type: array
           description: >-
             The refunds associated with the order. Available if the relation
-            "refunds" is expanded.
+            `refunds` is expanded.
           items:
             type: object
             description: A refund object.
@@ -12284,7 +12342,7 @@ components:
           type: array
           description: >-
             The swaps associated with the order. Available if the relation
-            "swaps" is expanded.
+            `swaps` is expanded.
           items:
             type: object
             description: A swap object.
@@ -12294,21 +12352,21 @@ components:
           example: null
         draft_order:
           description: >-
-            A draft order object. Available if the relation "draft_order" is
+            A draft order object. Available if the relation `draft_order` is
             expanded.
           type: object
         items:
           type: array
           description: >-
             The line items that belong to the order. Available if the relation
-            "items" is expanded.
+            `items` is expanded.
           items:
             $ref: '#/components/schemas/line_item'
         gift_card_transactions:
           type: array
           description: >-
             The gift card transactions used in the order. Available if the
-            relation "gift_card_transactions" is expanded.
+            relation `gift_card_transactions` is expanded.
           items:
             $ref: '#/components/schemas/gift_card_transaction'
         canceled_at:
@@ -12340,7 +12398,7 @@ components:
           example: null
         sales_channel:
           description: >-
-            A sales channel object. Available if the relation "sales_channel" is
+            A sales channel object. Available if the relation `sales_channel` is
             expanded.
           type: object
         shipping_total:
@@ -12425,7 +12483,7 @@ components:
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         provider_id:
           description: >-
@@ -12498,20 +12556,20 @@ components:
           type: string
           example: null
         swap:
-          description: A swap object. Available if the relation "swap" is expanded.
+          description: A swap object. Available if the relation `swap` is expanded.
           type: object
         cart_id:
           description: The id of the Cart that the Payment Session is created for.
           type: string
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         order_id:
           description: The ID of the Order that the Payment is used for.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         amount:
           description: The amount that the Payment has been authorized for.
@@ -12525,7 +12583,7 @@ components:
             url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
             description: See a list of codes.
         currency:
-          description: Available if the relation "currency" is expanded.
+          description: Available if the relation `currency` is expanded.
           $ref: '#/components/schemas/currency'
         amount_refunded:
           description: >-
@@ -12624,7 +12682,7 @@ components:
         customer_groups:
           description: >-
             The Customer Groups that the Price List applies to. Available if the
-            relation "customer_groups" is expanded.
+            relation `customer_groups` is expanded.
           type: array
           items:
             type: object
@@ -12632,7 +12690,7 @@ components:
         prices:
           description: >-
             The Money Amounts that are associated with the Price List. Available
-            if the relation "prices" is expanded.
+            if the relation `prices` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/money_amount'
@@ -12672,7 +12730,7 @@ components:
         products:
           description: >-
             The Products contained in the Product Collection. Available if the
-            relation "products" is expanded.
+            relation `products` is expanded.
           type: array
           items:
             type: object
@@ -12724,7 +12782,7 @@ components:
           type: string
           example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
         option:
-          description: Available if the relation "option" is expanded.
+          description: Available if the relation `option` is expanded.
           $ref: '#/components/schemas/product_option'
         variant_id:
           description: >-
@@ -12733,7 +12791,7 @@ components:
           type: string
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
-          description: Available if the relation "variant" is expanded.
+          description: Available if the relation `variant` is expanded.
           $ref: '#/components/schemas/product_variant'
         created_at:
           type: string
@@ -12774,7 +12832,7 @@ components:
         values:
           description: >-
             The Product Option Values that are defined for the Product Option.
-            Available if the relation "values" is expanded.
+            Available if the relation `values` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/product_option_value'
@@ -12783,7 +12841,7 @@ components:
           type: string
           example: prod_01G1G5V2MBA328390B5AXJ610F
         product:
-          description: A product object. Available if the relation "product" is expanded.
+          description: A product object. Available if the relation `product` is expanded.
           type: object
         created_at:
           type: string
@@ -12849,14 +12907,14 @@ components:
           type: string
           example: prod_01G1G5V2MBA328390B5AXJ610F
         product:
-          description: Available if the relation "product" is expanded.
+          description: Available if the relation `product` is expanded.
           $ref: '#/components/schemas/product'
         rate_id:
           description: The ID of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
-          description: Available if the relation "tax_rate" is expanded.
+          description: Available if the relation `tax_rate` is expanded.
           $ref: '#/components/schemas/tax_rate'
         created_at:
           type: string
@@ -12886,14 +12944,14 @@ components:
           type: string
           example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_type:
-          description: Available if the relation "product_type" is expanded.
+          description: Available if the relation `product_type` is expanded.
           $ref: '#/components/schemas/product_type'
         rate_id:
           description: The id of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
-          description: Available if the relation "tax_rate" is expanded.
+          description: Available if the relation `tax_rate` is expanded.
           $ref: '#/components/schemas/tax_rate'
         created_at:
           type: string
@@ -12970,13 +13028,13 @@ components:
           type: string
           example: prod_01G1G5V2MBA328390B5AXJ610F
         product:
-          description: A product object. Available if the relation "product" is expanded.
+          description: A product object. Available if the relation `product` is expanded.
           type: object
         prices:
           description: >-
             The Money Amounts defined for the Product Variant. Each Money Amount
             represents a price in a given currency or a price in a specific
-            Region. Available if the relation "prices" is expanded.
+            Region. Available if the relation `prices` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/money_amount'
@@ -13078,7 +13136,7 @@ components:
         options:
           description: >-
             The Product Option Values specified for the Product Variant.
-            Available if the relation "options" is expanded.
+            Available if the relation `options` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/product_option_value'
@@ -13151,7 +13209,7 @@ components:
           default: draft
         images:
           description: >-
-            Images of the Product. Available if the relation "images" is
+            Images of the Product. Available if the relation `images` is
             expanded.
           type: array
           items:
@@ -13164,7 +13222,7 @@ components:
           description: >-
             The Product Options that are defined for the Product. Product
             Variants of the Product will have a unique combination of Product
-            Option Values. Available if the relation "options" is expanded.
+            Option Values. Available if the relation `options` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/product_option'
@@ -13172,7 +13230,7 @@ components:
           description: >-
             The Product Variants that belong to the Product. Each will have a
             unique combination of Product Option Values. Available if the
-            relation "variants" is expanded.
+            relation `variants` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/product_variant'
@@ -13184,7 +13242,7 @@ components:
           type: string
           example: sp_01G1G5V239ENSZ5MV4JAR737BM
         profile:
-          description: Available if the relation "profile" is expanded.
+          description: Available if the relation `profile` is expanded.
           $ref: '#/components/schemas/shipping_profile'
         weight:
           description: >-
@@ -13244,7 +13302,7 @@ components:
           example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
         collection:
           description: >-
-            A product collection object. Available if the relation "collection"
+            A product collection object. Available if the relation `collection`
             is expanded.
           type: object
         type_id:
@@ -13252,12 +13310,12 @@ components:
           description: The Product type that the Product belongs to
           example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
         type:
-          description: Available if the relation "type" is expanded.
+          description: Available if the relation `type` is expanded.
           $ref: '#/components/schemas/product_type'
         tags:
           description: >-
             The Product Tags assigned to the Product. Available if the relation
-            "tags" is expanded.
+            `tags` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/product_tag'
@@ -13274,7 +13332,7 @@ components:
         sales_channels:
           description: >-
             The sales channels the product is associated with. Available if the
-            relation "sales_channels" is expanded.
+            relation `sales_channels` is expanded.
           type: array
           items:
             type: object
@@ -13392,7 +13450,7 @@ components:
             url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
             description: See a list of codes.
         currency:
-          description: Available if the relation "currency" is expanded.
+          description: Available if the relation `currency` is expanded.
           $ref: '#/components/schemas/currency'
         tax_rate:
           description: The tax rate that should be charged on purchases in the Region.
@@ -13401,7 +13459,7 @@ components:
         tax_rates:
           description: >-
             The tax rates that are included in the Region. Available if the
-            relation "tax_rates" is expanded.
+            relation `tax_rates` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/tax_rate'
@@ -13422,7 +13480,7 @@ components:
         countries:
           description: >-
             The countries that are included in the Region. Available if the
-            relation "countries" is expanded.
+            relation `countries` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/country'
@@ -13431,19 +13489,19 @@ components:
           description: The ID of the tax provider used in this region
           example: null
         tax_provider:
-          description: Available if the relation "tax_provider" is expanded.
+          description: Available if the relation `tax_provider` is expanded.
           $ref: '#/components/schemas/tax_provider'
         payment_providers:
           description: >-
             The Payment Providers that can be used to process Payments in the
-            Region. Available if the relation "payment_providers" is expanded.
+            Region. Available if the relation `payment_providers` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/payment_provider'
         fulfillment_providers:
           description: >-
             The Fulfillment Providers that can be used to fulfill orders in the
-            Region. Available if the relation "payment_providers" is expanded.
+            Region. Available if the relation `payment_providers` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/fulfillment_provider'
@@ -13479,14 +13537,14 @@ components:
           type: string
           example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
         return_order:
-          description: Available if the relation "return_order" is expanded.
+          description: Available if the relation `return_order` is expanded.
           $ref: '#/components/schemas/return'
         item_id:
           description: The id of the Line Item that the Return Item references.
           type: string
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
-          description: Available if the relation "item" is expanded.
+          description: Available if the relation `item` is expanded.
           $ref: '#/components/schemas/line_item'
         quantity:
           description: The quantity of the Line Item that is included in the Return.
@@ -13511,7 +13569,7 @@ components:
           type: string
           example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
         reason:
-          description: Available if the relation "reason" is expanded.
+          description: Available if the relation `reason` is expanded.
           $ref: '#/components/schemas/return_reason'
         note:
           description: An optional note with additional details about the Return.
@@ -13553,10 +13611,10 @@ components:
           description: The ID of the parent reason.
           example: null
         parent_return_reason:
-          description: Available if the relation "parent_return_reason" is expanded.
+          description: Available if the relation `parent_return_reason` is expanded.
           $ref: '#/components/schemas/return_reason'
         return_reason_children:
-          description: Available if the relation "return_reason_children" is expanded.
+          description: Available if the relation `return_reason_children` is expanded.
           $ref: '#/components/schemas/return_reason'
         created_at:
           type: string
@@ -13601,7 +13659,7 @@ components:
         items:
           description: >-
             The Return Items that will be shipped back to the warehouse.
-            Available if the relation "items" is expanded.
+            Available if the relation `items` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/return_item'
@@ -13610,14 +13668,14 @@ components:
           type: string
           example: null
         swap:
-          description: A swap object. Available if the relation "swap" is expanded.
+          description: A swap object. Available if the relation `swap` is expanded.
           type: object
         order_id:
           description: The ID of the Order that the Return is made from.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         claim_order_id:
           description: The ID of the Claim that the Return is a part of.
@@ -13625,14 +13683,14 @@ components:
           example: null
         claim_order:
           description: >-
-            A claim order object. Available if the relation "claim_order" is
+            A claim order object. Available if the relation `claim_order` is
             expanded.
           type: object
         shipping_method:
           description: >-
             The Shipping Method that will be used to send the Return back. Can
             be null if the Customer facilitates the return shipment themselves.
-            Available if the relation "shipping_method" is expanded.
+            Available if the relation `shipping_method` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/shipping_method'
@@ -13731,7 +13789,7 @@ components:
           description: The ID of the line item
           example: sm_01F0YET7DR2E7CYVSDHM593QG2
         shipping_method:
-          description: Available if the relation "shipping_method" is expanded.
+          description: Available if the relation `shipping_method` is expanded.
           $ref: '#/components/schemas/shipping_method'
         code:
           description: A code to identify the tax type by
@@ -13781,14 +13839,14 @@ components:
           type: string
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
-          description: Available if the relation "shipping_option" is expanded.
+          description: Available if the relation `shipping_option` is expanded.
           $ref: '#/components/schemas/shipping_option'
         order_id:
           description: The id of the Order that the Shipping Method is used on.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         return_id:
           description: The id of the Return that the Shipping Method is used on.
@@ -13796,7 +13854,7 @@ components:
           example: null
         return_order:
           description: >-
-            A return object. Available if the relation "return_order" is
+            A return object. Available if the relation `return_order` is
             expanded.
           type: object
         swap_id:
@@ -13804,14 +13862,14 @@ components:
           type: string
           example: null
         swap:
-          description: A swap object. Available if the relation "swap" is expanded.
+          description: A swap object. Available if the relation `swap` is expanded.
           type: object
         cart_id:
           description: The id of the Cart that the Shipping Method is used on.
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         claim_order_id:
           description: The id of the Claim that the Shipping Method is used on.
@@ -13819,12 +13877,12 @@ components:
           example: null
         claim_order:
           description: >-
-            A claim order object. Available if the relation "claim_order" is
+            A claim order object. Available if the relation `claim_order` is
             expanded.
           type: object
         tax_lines:
           type: array
-          description: Available if the relation "tax_lines" is expanded.
+          description: Available if the relation `tax_lines` is expanded.
           items:
             $ref: '#/components/schemas/tax_line'
         price:
@@ -13863,7 +13921,7 @@ components:
           type: string
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
-          description: Available if the relation "shipping_option" is expanded.
+          description: Available if the relation `shipping_option` is expanded.
           $ref: '#/components/schemas/shipping_option'
         type:
           description: >-
@@ -13917,7 +13975,7 @@ components:
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         profile_id:
           description: >-
@@ -13927,7 +13985,7 @@ components:
           type: string
           example: sp_01G1G5V239ENSZ5MV4JAR737BM
         profile:
-          description: Available if the relation "profile" is expanded.
+          description: Available if the relation `profile` is expanded.
           $ref: '#/components/schemas/shipping_profile'
         provider_id:
           description: >-
@@ -13936,7 +13994,7 @@ components:
           type: string
           example: manual
         provider:
-          description: Available if the relation "provider" is expanded.
+          description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/fulfillment_provider'
         price_type:
           description: >-
@@ -13964,7 +14022,7 @@ components:
         requirements:
           description: >-
             The requirements that must be satisfied for the Shipping Option to
-            be available for a Cart. Available if the relation "requirements" is
+            be available for a Cart. Available if the relation `requirements` is
             expanded.
           type: array
           items:
@@ -14025,7 +14083,7 @@ components:
         products:
           description: >-
             The Products that the Shipping Profile defines Shipping Options for.
-            Available if the relation "products" is expanded.
+            Available if the relation `products` is expanded.
           type: array
           items:
             type: object
@@ -14033,7 +14091,7 @@ components:
         shipping_options:
           description: >-
             The Shipping Options that can be used to fulfill the Products in the
-            Shipping Profile. Available if the relation "shipping_options" is
+            Shipping Profile. Available if the relation `shipping_options` is
             expanded.
           type: array
           items:
@@ -14070,14 +14128,14 @@ components:
           type: string
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
-          description: Available if the relation "shipping_option" is expanded.
+          description: Available if the relation `shipping_option` is expanded.
           $ref: '#/components/schemas/shipping_option'
         rate_id:
           description: The ID of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
-          description: Available if the relation "tax_rate" is expanded.
+          description: Available if the relation `tax_rate` is expanded.
           $ref: '#/components/schemas/tax_rate'
         created_at:
           type: string
@@ -14132,12 +14190,12 @@ components:
             url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
             description: See a list of codes.
         default_currency:
-          description: Available if the relation "default_currency" is expanded.
+          description: Available if the relation `default_currency` is expanded.
           $ref: '#/components/schemas/currency'
         currencies:
           description: >-
             The currencies that are enabled for the Store. Available if the
-            relation "currencies" is expanded.
+            relation `currencies` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/currency'
@@ -14164,7 +14222,7 @@ components:
         default_sales_channel:
           description: >-
             A sales channel object. Available if the relation
-            "default_sales_channel" is expanded.
+            `default_sales_channel` is expanded.
           type: object
         metadata:
           type: object
@@ -14224,31 +14282,31 @@ components:
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: An order object. Available if the relation "order" is expanded.
+          description: An order object. Available if the relation `order` is expanded.
           type: object
         additional_items:
           description: >-
             The new Line Items to ship to the Customer. Available if the
-            relation "additional_items" is expanded.
+            relation `additional_items` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/line_item'
         return_order:
           description: >-
             A return order object. The Return that is issued for the return part
-            of the Swap. Available if the relation "return_order" is expanded.
+            of the Swap. Available if the relation `return_order` is expanded.
           type: object
         fulfillments:
           description: >-
             The Fulfillments used to send the new Line Items. Available if the
-            relation "fulfillments" is expanded.
+            relation `fulfillments` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/fulfillment'
         payment:
           description: >-
             The Payment authorized when the Swap requires an additional amount
-            to be charged from the Customer. Available if the relation "payment"
+            to be charged from the Customer. Available if the relation `payment`
             is expanded.
           $ref: '#/components/schemas/payment'
         difference_due:
@@ -14265,12 +14323,12 @@ components:
           type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
-          description: Available if the relation "shipping_address" is expanded.
+          description: Available if the relation `shipping_address` is expanded.
           $ref: '#/components/schemas/address'
         shipping_methods:
           description: >-
             The Shipping Methods used to fulfill the addtional items purchased.
-            Available if the relation "shipping_methods" is expanded.
+            Available if the relation `shipping_methods` is expanded.
           type: array
           items:
             $ref: '#/components/schemas/shipping_method'
@@ -14279,7 +14337,7 @@ components:
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: A cart object. Available if the relation "cart" is expanded.
+          description: A cart object. Available if the relation `cart` is expanded.
           type: object
         allow_backorder:
           description: 'If true, swaps can be completed with items out of stock'
@@ -14409,13 +14467,13 @@ components:
           description: The id of the Region that the rate belongs to
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: A region object. Available if the relation "region" is expanded.
+          description: A region object. Available if the relation `region` is expanded.
           type: object
         products:
           type: array
           description: >-
             The products that belong to this tax rate. Available if the relation
-            "products" is expanded.
+            `products` is expanded.
           items:
             type: object
             description: A product object.
@@ -14423,7 +14481,7 @@ components:
           type: array
           description: >-
             The product types that belong to this tax rate. Available if the
-            relation "product_types" is expanded.
+            relation `product_types` is expanded.
           items:
             type: object
             description: A product type object.
@@ -14431,7 +14489,7 @@ components:
           type: array
           description: >-
             The shipping options that belong to this tax rate. Available if the
-            relation "shipping_options" is expanded.
+            relation `shipping_options` is expanded.
           items:
             type: object
             description: A shipping option object.
@@ -14488,7 +14546,7 @@ components:
           description: The id of the Fulfillment that the Tracking Link references.
           example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
         fulfillment:
-          description: Available if the relation "fulfillment" is expanded.
+          description: Available if the relation `fulfillment` is expanded.
           $ref: '#/components/schemas/fulfillment'
         idempotency_key:
           type: string

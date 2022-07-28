@@ -14,7 +14,7 @@ post:
           properties:
             resource_id:
               type: string
-              description: The id of the resource which the Note relates to.
+              description: The ID of the resource which the Note relates to.
             resource_type:
               type: string
               description: The type of resource which the Note relates to.
@@ -52,7 +52,7 @@ get:
         default: '0'
     - in: query
       name: resource_id
-      description: The id which the notes belongs to
+      description: The ID which the notes belongs to
       schema:
         type: string
         default: ''

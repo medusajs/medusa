@@ -107,28 +107,28 @@ export class ClaimItem extends SoftDeletableEntity {
  *     example: citm_01G8ZH853Y6TFXWPG5EYE81X63
  *   images:
  *     type: array
- *     description: Available if the relation "images" is expanded.
+ *     description: Available if the relation `images` is expanded.
  *     items:
  *       $ref: "#/components/schemas/claim_image"
  *   claim_order_id:
  *     description: The ID of the claim this item is associated with.
  *     type: string
  *   claim_order:
- *     description: A claim order object. Available if the relation "claim_order" is expanded.
+ *     description: A claim order object. Available if the relation `claim_order` is expanded.
  *     type: object
  *   item_id:
  *     description: The ID of the line item that the claim item refers to.
  *     type: string
  *     example: item_01G8ZM25TN49YV9EQBE2NC27KC
  *   item:
- *     description: Available if the relation "item" is expanded.
+ *     description: Available if the relation `item` is expanded.
  *     $ref: "#/components/schemas/line_item"
  *   variant_id:
  *     description: "The ID of the product variant that is claimed."
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: A variant object. Available if the relation "variant" is expanded.
+ *     description: A variant object. Available if the relation `variant` is expanded.
  *     type: object
  *   reason:
  *     description: "The reason for the claim"

@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *             format: date-time
  *             description: The time at which the Gift Card should no longer be available.
  *           region_id:
- *             description: The id of the Region in which the Gift Card can be used.
+ *             description: The ID of the Region in which the Gift Card can be used.
  *             type: string
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.

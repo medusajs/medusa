@@ -55,7 +55,7 @@ export class ProductOption extends SoftDeletableEntity {
  *     type: string
  *     example: Size
  *   values:
- *     description: The Product Option Values that are defined for the Product Option. Available if the relation "values" is expanded.
+ *     description: The Product Option Values that are defined for the Product Option. Available if the relation `values` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/product_option_value"
@@ -64,7 +64,7 @@ export class ProductOption extends SoftDeletableEntity {
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
- *     description: A product object. Available if the relation "product" is expanded.
+ *     description: A product object. Available if the relation `product` is expanded.
  *     type: object
  *   created_at:
  *     type: string

@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
     - in: path

@@ -7,19 +7,19 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order which the Claim relates to.
+      description: The ID of the Order which the Claim relates to.
       schema:
         type: string
     - in: path
       name: claim_id
       required: true
-      description: The id of the Claim which the Fulfillment relates to.
+      description: The ID of the Claim which the Fulfillment relates to.
       schema:
         type: string
     - in: path
       name: fulfillment_id
       required: true
-      description: The id of the Fulfillment.
+      description: The ID of the Fulfillment.
       schema:
         type: string
   tags:

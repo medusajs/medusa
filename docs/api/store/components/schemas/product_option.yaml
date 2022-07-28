@@ -19,7 +19,7 @@ properties:
   values:
     description: >-
       The Product Option Values that are defined for the Product Option.
-      Available if the relation "values" is expanded.
+      Available if the relation `values` is expanded.
     type: array
     items:
       $ref: ./product_option_value.yaml
@@ -28,7 +28,7 @@ properties:
     type: string
     example: prod_01G1G5V2MBA328390B5AXJ610F
   product:
-    description: A product object. Available if the relation "product" is expanded.
+    description: A product object. Available if the relation `product` is expanded.
     type: object
   created_at:
     type: string

@@ -9,7 +9,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Notification
+      description: The ID of the Notification
       schema:
         type: string
   requestBody:

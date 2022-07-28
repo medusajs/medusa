@@ -51,14 +51,14 @@ export class ProductTypeTaxRate {
  *     type: string
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_type:
- *     description: Available if the relation "product_type" is expanded.
+ *     description: Available if the relation `product_type` is expanded.
  *     $ref: "#/components/schemas/product_type"
  *   rate_id:
  *     description: "The id of the Tax Rate"
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
- *     description: Available if the relation "tax_rate" is expanded.
+ *     description: Available if the relation `tax_rate` is expanded.
  *     $ref: "#/components/schemas/tax_rate"
  *   created_at:
  *     type: string

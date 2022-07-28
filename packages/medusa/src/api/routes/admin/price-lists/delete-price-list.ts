@@ -7,7 +7,7 @@ import PriceListService from "../../../../services/price-list"
  * description: "Deletes a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List to delete.
+ *   - (path) id=* {string} The ID of the Price List to delete.
  * tags:
  *   - Price List
  * responses:
@@ -19,7 +19,7 @@ import PriceListService from "../../../../services/price-list"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Price List.
+ *               description: The ID of the deleted Price List.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

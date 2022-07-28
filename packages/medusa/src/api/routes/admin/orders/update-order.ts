@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates and order"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -53,7 +53,7 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               $ref: "#/components/schemas/discount"
  *           customer_id:
- *             description: id of the customer
+ *             description: ID of the customer
  *             type: string
  *           payment_method:
  *             description: payment method chosen for the order
@@ -61,7 +61,7 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: id of the payment provider
+ *                 description: ID of the payment provider
  *               data:
  *                 description: Data relevant for the given payment method
  *                 type: object
@@ -71,10 +71,10 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: The id of the shipping provider.
+ *                 description: The ID of the shipping provider.
  *               profile_id:
  *                 type: string
- *                 description: The id of the shipping profile.
+ *                 description: The ID of the shipping profile.
  *               price:
  *                 type: integer
  *                 description: The price of the shipping.

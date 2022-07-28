@@ -15,7 +15,7 @@ properties:
     description: The ID of the line item
     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
   item:
-    description: Available if the relation "item" is expanded.
+    description: Available if the relation `item` is expanded.
     $ref: ./line_item.yaml
   code:
     description: A code to identify the tax type by

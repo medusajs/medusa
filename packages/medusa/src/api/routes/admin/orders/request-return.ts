@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -42,10 +42,10 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item.
+ *                   description: The ID of the Line Item.
  *                   type: string
  *                 reason_id:
- *                   description: The id of the Return Reason to use.
+ *                   description: The ID of the Return Reason to use.
  *                   type: string
  *                 note:
  *                   description: An optional note with information about the Return.
@@ -59,7 +59,7 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  *               price:
  *                 type: integer
  *                 description: The price to charge for the Shipping Method.

@@ -21,7 +21,7 @@ properties:
   products:
     description: >-
       The Products contained in the Product Collection. Available if the
-      relation "products" is expanded.
+      relation `products` is expanded.
     type: array
     items:
       type: object

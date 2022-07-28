@@ -1,4 +1,5 @@
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 
 /**
@@ -8,7 +9,7 @@ import { OrderService } from "../../../../services"
  * description: "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * tags:
  *   - Order
  * responses:

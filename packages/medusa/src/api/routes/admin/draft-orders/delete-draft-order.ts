@@ -6,7 +6,7 @@ import { DraftOrderService } from "../../../../services"
  * description: "Deletes a Draft Order"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * tags:
  *   - Draft Order
  * responses:
@@ -18,7 +18,7 @@ import { DraftOrderService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Draft Order.
+ *               description: The ID of the deleted Draft Order.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

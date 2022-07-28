@@ -17,7 +17,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,6 +29,9 @@ import { validator } from "../../../../utils/validator"
  *           currency_code:
  *             description: "The 3 character ISO currency code to use for the Region."
  *             type: string
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *               description: See a list of codes.
  *           automatic_taxes:
  *             description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
  *             type: boolean
@@ -36,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *             description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"
  *             type: boolean
  *           tax_provider_id:
- *             description: "The id of the tax provider to use; if null the system tax provider is used"
+ *             description: "The ID of the tax provider to use; if null the system tax provider is used"
  *             type: string
  *           tax_code:
  *             description: "An optional tax code the Region."

@@ -7,13 +7,13 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
     - in: path
       name: line_id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
   tags:
@@ -36,13 +36,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
     - in: path
       name: line_id
       required: true
-      description: The id of the Line Item.
+      description: The ID of the Line Item.
       schema:
         type: string
   requestBody:

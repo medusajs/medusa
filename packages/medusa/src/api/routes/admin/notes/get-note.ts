@@ -7,7 +7,7 @@ import NoteService from "../../../../services/note"
  * description: "Retrieves a single note using its id"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the note to retrieve.
+ *   - (path) id=* {string} The ID of the note to retrieve.
  * tags:
  *   - Note
  * responses:

@@ -17,17 +17,17 @@
  *     description: The billing address's ID
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation "billing_address" is expanded.
+ *     description: Available if the relation `billing_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_address_id:
  *     type: string
  *     description: The shipping address's ID
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation "shipping_address" is expanded.
+ *     description: Available if the relation `shipping_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   items:
- *     description: Available if the relation "items" is expanded.
+ *     description: Available if the relation `items` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/line_item"
@@ -36,17 +36,17 @@
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation "region" is expanded.
+ *     description: A region object. Available if the relation `region` is expanded.
  *     type: object
  *   discounts:
  *     type: array
- *     description: Available if the relation "discounts" is expanded.
+ *     description: Available if the relation `discounts` is expanded.
  *     items:
  *       type: object
  *       description: A discount object.
  *   gift_cards:
  *     type: array
- *     description: Available if the relation "gift_cards" is expanded.
+ *     description: Available if the relation `gift_cards` is expanded.
  *     items:
  *       type: object
  *       description: A gift card object.
@@ -55,7 +55,7 @@
  *     description: The customer's ID
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation "customer" is expanded.
+ *     description: A customer object. Available if the relation `customer` is expanded.
  *     type: object
  *   payment_session:
  *     description: The selected payment session in the cart.
@@ -70,7 +70,7 @@
  *     description: The payment's ID if available
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
- *     description: Available if the relation "payment" is expanded.
+ *     description: Available if the relation `payment` is expanded.
  *     $ref: "#/components/schemas/payment"
  *   shipping_methods:
  *     type: array
@@ -112,7 +112,7 @@
  *     description: The sales channel ID the cart is associated with.
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation "sales_channel" is expanded.
+ *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
  *     type: object
  *   created_at:
  *     type: string

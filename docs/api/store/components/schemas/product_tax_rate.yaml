@@ -12,14 +12,14 @@ properties:
     type: string
     example: prod_01G1G5V2MBA328390B5AXJ610F
   product:
-    description: Available if the relation "product" is expanded.
+    description: Available if the relation `product` is expanded.
     $ref: ./product.yaml
   rate_id:
     description: The ID of the Tax Rate
     type: string
     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
   tax_rate:
-    description: Available if the relation "tax_rate" is expanded.
+    description: Available if the relation `tax_rate` is expanded.
     $ref: ./tax_rate.yaml
   created_at:
     type: string

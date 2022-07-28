@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Medusa Storefront API",
-    "description": "API reference for Medusa's Storefront endpoints",
+    "description": "API reference for Medusa's Storefront endpoints. All endpoints are prefixed with `/store`.",
     "license": {
       "name": "MIT",
       "url": "https://github.com/medusajs/medusa/blob/master/LICENSE"

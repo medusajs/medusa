@@ -7,7 +7,7 @@ delete:
     - in: path
       name: invite_id
       required: true
-      description: The id of the Invite
+      description: The ID of the Invite
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Invite.
+                description: The ID of the deleted Invite.
               object:
                 type: string
                 description: The type of the object that was deleted.

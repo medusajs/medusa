@@ -19,7 +19,7 @@ properties:
     type: string
     example: so_01G1G5V27GYX4QXNARRQCW1N8T
   shipping_option:
-    description: Available if the relation "shipping_option" is expanded.
+    description: Available if the relation `shipping_option` is expanded.
     $ref: ./shipping_option.yaml
   type:
     description: >-

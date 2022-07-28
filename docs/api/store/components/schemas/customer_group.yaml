@@ -16,7 +16,7 @@ properties:
     type: array
     description: >-
       The customers that belong to the customer group. Available if the relation
-      "customers" is expanded.
+      `customers` is expanded.
     items:
       type: object
       description: A customer object.
@@ -24,7 +24,7 @@ properties:
     type: array
     description: >-
       The price lists that are associated with the customer group. Available if
-      the relation "price_lists" is expanded.
+      the relation `price_lists` is expanded.
     items:
       $ref: ./price_list.yaml
   created_at:

@@ -169,34 +169,34 @@ export class DiscountCondition extends SoftDeletableEntity {
  *     description: The ID of the discount rule associated with the condition
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   discount_rule:
- *     description: Available if the relation "discount_rule" is expanded.
+ *     description: Available if the relation `discount_rule` is expanded.
  *     $ref: "#/components/schemas/discount_rule"
  *   products:
- *     description: products associated with this condition if type = products. Available if the relation "products" is expanded.
+ *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A product object.
  *   product_types:
- *     description: product types associated with this condition if type = product_types. Available if the relation "product_types" is expanded.
+ *     description: product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A product type object.
  *   product_tags:
- *     description: product tags associated with this condition if type = product_tags. Available if the relation "product_tags" is expanded.
+ *     description: product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A product tag object.
  *   product_collections:
- *     description: product collections associated with this condition if type = product_collections. Available if the relation "product_collections" is expanded.
+ *     description: product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A product collection object.
  *   customer_groups:
- *     description: customer groups associated with this condition if type = customer_groups. Available if the relation "customer_groups" is expanded.
+ *     description: customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
  *     type: array
  *     items:
  *       type: object

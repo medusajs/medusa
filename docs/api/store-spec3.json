@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Medusa Storefront API",
-    "description": "API reference for Medusa's Storefront endpoints",
+    "description": "API reference for Medusa's Storefront endpoints. All endpoints are prefixed with `/store`.",
     "license": {
       "name": "MIT",
       "url": "https://github.com/medusajs/medusa/blob/master/LICENSE"
@@ -224,7 +224,7 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The cart id.",
+            "description": "The cart ID.",
             "schema": {
               "type": "string"
             }
@@ -257,7 +257,7 @@
                 "properties": {
                   "option_id": {
                     "type": "string",
-                    "description": "id of the shipping option to create the method from"
+                    "description": "ID of the shipping option to create the method from"
                   },
                   "data": {
                     "type": "object",
@@ -280,7 +280,7 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The Cart id.",
+            "description": "The Cart ID.",
             "schema": {
               "type": "string"
             }
@@ -399,7 +399,11 @@
                   },
                   "country_code": {
                     "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in."
+                    "description": "The 2 character ISO country code to create the Cart in.",
+                    "externalDocs": {
+                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+                      "description": "See a list of codes."
+                    }
                   },
                   "items": {
                     "description": "An optional array of `variant_id`, `quantity` pairs to generate Line Items from.",
@@ -880,7 +884,11 @@
                   },
                   "country_code": {
                     "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in."
+                    "description": "The 2 character ISO country code to create the Cart in.",
+                    "externalDocs": {
+                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+                      "description": "See a list of codes."
+                    }
                   },
                   "email": {
                     "type": "string",
@@ -1074,6 +1082,164 @@
                   "provider_id": {
                     "type": "string",
                     "description": "The ID of the Payment Provider."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections": {
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of collections to skip before starting to collect the collections set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting collections were created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections were updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collections": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product_collection"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
                   }
                 }
               }
@@ -1641,164 +1807,6 @@
                   "properties": {
                     "gift_card": {
                       "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections/{id}": {
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of collections to skip before starting to collect the collections set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting collections were created.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting collections were updated.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collections": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product_collection"
-                      }
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
                     }
                   }
                 }
@@ -2829,9 +2837,15 @@
           {
             "in": "query",
             "name": "currency_code",
+            "style": "form",
+            "explode": false,
             "description": "The 3 character ISO currency code to set prices based on.",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "externalDocs": {
+                "url": "https://en.wikipedia.org/wiki/ISO_4217#Active_codes",
+                "description": "See a list of codes."
+              }
             }
           }
         ],
@@ -2997,7 +3011,7 @@
             "example": "cus_01G2SG30J8C85S4A5CHM2S1NS2"
           },
           "customer": {
-            "description": "Available if the relation \"customer\" is expanded.",
+            "description": "Available if the relation `customer` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -3044,7 +3058,7 @@
             "example": "st"
           },
           "country": {
-            "description": "A country object. Available if the relation \"country\" is expanded.",
+            "description": "A country object. Available if the relation `country` is expanded.",
             "type": "object"
           },
           "province": {
@@ -3127,7 +3141,7 @@
             "example": "usr_01G1G5V26F5TB3GPAPNJ8X1S3V"
           },
           "created_by_user": {
-            "description": "A user object. Available if the relation \"created_by_user\" is expanded.",
+            "description": "A user object. Available if the relation `created_by_user` is expanded.",
             "type": "object"
           },
           "context": {
@@ -3303,7 +3317,7 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "billing_address": {
-            "description": "Available if the relation \"billing_address\" is expanded.",
+            "description": "Available if the relation `billing_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "shipping_address_id": {
@@ -3312,11 +3326,11 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "shipping_address": {
-            "description": "Available if the relation \"shipping_address\" is expanded.",
+            "description": "Available if the relation `shipping_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "items": {
-            "description": "Available if the relation \"items\" is expanded.",
+            "description": "Available if the relation `items` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/line_item"
@@ -3328,12 +3342,12 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "discounts": {
             "type": "array",
-            "description": "Available if the relation \"discounts\" is expanded.",
+            "description": "Available if the relation `discounts` is expanded.",
             "items": {
               "type": "object",
               "description": "A discount object."
@@ -3341,7 +3355,7 @@
           },
           "gift_cards": {
             "type": "array",
-            "description": "Available if the relation \"gift_cards\" is expanded.",
+            "description": "Available if the relation `gift_cards` is expanded.",
             "items": {
               "type": "object",
               "description": "A gift card object."
@@ -3353,7 +3367,7 @@
             "example": "cus_01G2SG30J8C85S4A5CHM2S1NS2"
           },
           "customer": {
-            "description": "A customer object. Available if the relation \"customer\" is expanded.",
+            "description": "A customer object. Available if the relation `customer` is expanded.",
             "type": "object"
           },
           "payment_session": {
@@ -3373,7 +3387,7 @@
             "example": "pay_01G8ZCC5W42ZNY842124G7P5R9"
           },
           "payment": {
-            "description": "Available if the relation \"payment\" is expanded.",
+            "description": "Available if the relation `payment` is expanded.",
             "$ref": "#/components/schemas/payment"
           },
           "shipping_methods": {
@@ -3427,7 +3441,7 @@
             "example": null
           },
           "sales_channel": {
-            "description": "A sales channel object. Available if the relation \"sales_channel\" is expanded.",
+            "description": "A sales channel object. Available if the relation `sales_channel` is expanded.",
             "type": "object"
           },
           "created_at": {
@@ -3518,7 +3532,7 @@
             "description": "The ID of the claim item associated with the image"
           },
           "claim_item": {
-            "description": "A claim item object. Available if the relation \"claim_item\" is expanded.",
+            "description": "A claim item object. Available if the relation `claim_item` is expanded.",
             "type": "object"
           },
           "url": {
@@ -3569,7 +3583,7 @@
           },
           "images": {
             "type": "array",
-            "description": "Available if the relation \"images\" is expanded.",
+            "description": "Available if the relation `images` is expanded.",
             "items": {
               "$ref": "#/components/schemas/claim_image"
             }
@@ -3579,7 +3593,7 @@
             "type": "string"
           },
           "claim_order": {
-            "description": "A claim order object. Available if the relation \"claim_order\" is expanded.",
+            "description": "A claim order object. Available if the relation `claim_order` is expanded.",
             "type": "object"
           },
           "item_id": {
@@ -3588,7 +3602,7 @@
             "example": "item_01G8ZM25TN49YV9EQBE2NC27KC"
           },
           "item": {
-            "description": "Available if the relation \"item\" is expanded.",
+            "description": "Available if the relation `item` is expanded.",
             "$ref": "#/components/schemas/line_item"
           },
           "variant_id": {
@@ -3597,7 +3611,7 @@
             "example": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6"
           },
           "variant": {
-            "description": "A variant object. Available if the relation \"variant\" is expanded.",
+            "description": "A variant object. Available if the relation `variant` is expanded.",
             "type": "object"
           },
           "reason": {
@@ -3717,12 +3731,12 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "return_order": {
-            "description": "Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded",
-            "$ref": "#/components/schemas/return"
+            "description": "A return object. Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded",
+            "type": "object"
           },
           "shipping_address_id": {
             "description": "The ID of the address that the new items should be shipped to",
@@ -3730,7 +3744,7 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "shipping_address": {
-            "description": "Available if the relation \"shipping_address\" is expanded.",
+            "description": "Available if the relation `shipping_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "shipping_methods": {
@@ -3896,7 +3910,7 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           }
         }
@@ -3963,7 +3977,7 @@
             "example": "so_01G1G5V27GYX4QXNARRQCW1N8T"
           },
           "shipping_option": {
-            "description": "A shipping option object. Available if the relation \"shipping_option\" is expanded.",
+            "description": "A shipping option object. Available if the relation `shipping_option` is expanded.",
             "type": "object"
           },
           "cart_id": {
@@ -3972,7 +3986,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "created_at": {
@@ -4019,7 +4033,7 @@
           },
           "customers": {
             "type": "array",
-            "description": "The customers that belong to the customer group. Available if the relation \"customers\" is expanded.",
+            "description": "The customers that belong to the customer group. Available if the relation `customers` is expanded.",
             "items": {
               "type": "object",
               "description": "A customer object."
@@ -4027,7 +4041,7 @@
           },
           "price_lists": {
             "type": "array",
-            "description": "The price lists that are associated with the customer group. Available if the relation \"price_lists\" is expanded.",
+            "description": "The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.",
             "items": {
               "$ref": "#/components/schemas/price_list"
             }
@@ -4090,11 +4104,11 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "billing_address": {
-            "description": "Available if the relation \"billing_address\" is expanded.",
+            "description": "Available if the relation `billing_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "shipping_addresses": {
-            "description": "Available if the relation \"shipping_addresses\" is expanded.",
+            "description": "Available if the relation `shipping_addresses` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/address"
@@ -4111,7 +4125,7 @@
             "default": false
           },
           "orders": {
-            "description": "Available if the relation \"orders\" is expanded.",
+            "description": "Available if the relation `orders` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4119,7 +4133,7 @@
             }
           },
           "groups": {
-            "description": "The customer groups the customer belongs to. Available if the relation \"groups\" is expanded.",
+            "description": "The customer groups the customer belongs to. Available if the relation `groups` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/customer_group"
@@ -4169,11 +4183,11 @@
             "example": "discon_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "customer_group": {
-            "description": "Available if the relation \"customer_group\" is expanded.",
+            "description": "Available if the relation `customer_group` is expanded.",
             "$ref": "#/components/schemas/customer_group"
           },
           "discount_condition": {
-            "description": "Available if the relation \"discount_condition\" is expanded.",
+            "description": "Available if the relation `discount_condition` is expanded.",
             "$ref": "#/components/schemas/discount_condition"
           },
           "created_at": {
@@ -4215,11 +4229,11 @@
             "example": "discon_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "product_collection": {
-            "description": "Available if the relation \"product_collection\" is expanded.",
+            "description": "Available if the relation `product_collection` is expanded.",
             "$ref": "#/components/schemas/product_collection"
           },
           "discount_condition": {
-            "description": "Available if the relation \"discount_condition\" is expanded.",
+            "description": "Available if the relation `discount_condition` is expanded.",
             "$ref": "#/components/schemas/discount_condition"
           },
           "created_at": {
@@ -4261,11 +4275,11 @@
             "example": "discon_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "product_tag": {
-            "description": "Available if the relation \"product_tag\" is expanded.",
+            "description": "Available if the relation `product_tag` is expanded.",
             "$ref": "#/components/schemas/product_tag"
           },
           "discount_condition": {
-            "description": "Available if the relation \"discount_condition\" is expanded.",
+            "description": "Available if the relation `discount_condition` is expanded.",
             "$ref": "#/components/schemas/discount_condition"
           },
           "created_at": {
@@ -4307,11 +4321,11 @@
             "example": "discon_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "product_type": {
-            "description": "Available if the relation \"product_type\" is expanded.",
+            "description": "Available if the relation `product_type` is expanded.",
             "$ref": "#/components/schemas/product_type"
           },
           "discount_condition": {
-            "description": "Available if the relation \"discount_condition\" is expanded.",
+            "description": "Available if the relation `discount_condition` is expanded.",
             "$ref": "#/components/schemas/discount_condition"
           },
           "created_at": {
@@ -4353,11 +4367,11 @@
             "example": "discon_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "product": {
-            "description": "Available if the relation \"product\" is expanded.",
+            "description": "Available if the relation `product` is expanded.",
             "$ref": "#/components/schemas/product"
           },
           "discount_condition": {
-            "description": "Available if the relation \"discount_condition\" is expanded.",
+            "description": "Available if the relation `discount_condition` is expanded.",
             "$ref": "#/components/schemas/discount_condition"
           },
           "created_at": {
@@ -4419,11 +4433,11 @@
             "example": "dru_01F0YESMVK96HVX7N419E3CJ7C"
           },
           "discount_rule": {
-            "description": "Available if the relation \"discount_rule\" is expanded.",
+            "description": "Available if the relation `discount_rule` is expanded.",
             "$ref": "#/components/schemas/discount_rule"
           },
           "products": {
-            "description": "products associated with this condition if type = products. Available if the relation \"products\" is expanded.",
+            "description": "products associated with this condition if type = products. Available if the relation `products` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4431,7 +4445,7 @@
             }
           },
           "product_types": {
-            "description": "product types associated with this condition if type = product_types. Available if the relation \"product_types\" is expanded.",
+            "description": "product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4439,7 +4453,7 @@
             }
           },
           "product_tags": {
-            "description": "product tags associated with this condition if type = product_tags. Available if the relation \"product_tags\" is expanded.",
+            "description": "product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4447,7 +4461,7 @@
             }
           },
           "product_collections": {
-            "description": "product collections associated with this condition if type = product_collections. Available if the relation \"product_collections\" is expanded.",
+            "description": "product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4455,7 +4469,7 @@
             }
           },
           "customer_groups": {
-            "description": "customer groups associated with this condition if type = customer_groups. Available if the relation \"customer_groups\" is expanded.",
+            "description": "customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4530,7 +4544,7 @@
             "example": "total"
           },
           "conditions": {
-            "description": "A set of conditions that can be used to limit when  the discount can be used. Available if the relation \"conditions\" is expanded.",
+            "description": "A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4591,7 +4605,7 @@
             "example": "dru_01F0YESMVK96HVX7N419E3CJ7C"
           },
           "rule": {
-            "description": "Available if the relation \"rule\" is expanded.",
+            "description": "Available if the relation `rule` is expanded.",
             "$ref": "#/components/schemas/discount_rule"
           },
           "is_disabled": {
@@ -4605,7 +4619,7 @@
             "example": "disc_01G8ZH853YPY9B94857DY91YGW"
           },
           "parent_discount": {
-            "description": "Available if the relation \"parent_discount\" is expanded.",
+            "description": "Available if the relation `parent_discount` is expanded.",
             "$ref": "#/components/schemas/discount"
           },
           "starts_at": {
@@ -4624,7 +4638,7 @@
             "example": "P3Y6M4DT12H30M5S"
           },
           "regions": {
-            "description": "The Regions in which the Discount can be used. Available if the relation \"regions\" is expanded.",
+            "description": "The Regions in which the Discount can be used. Available if the relation `regions` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -4696,7 +4710,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -4705,7 +4719,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "canceled_at": {
@@ -4776,11 +4790,11 @@
             "example": "item_01G8ZC9GWT6B2GP5FSXRXNFNGN"
           },
           "fulfillment": {
-            "description": "A fulfillment object. Available if the relation \"fulfillment\" is expanded.",
+            "description": "A fulfillment object. Available if the relation `fulfillment` is expanded.",
             "type": "object"
           },
           "item": {
-            "description": "Available if the relation \"item\" is expanded.",
+            "description": "Available if the relation `item` is expanded.",
             "$ref": "#/components/schemas/line_item"
           },
           "quantity": {
@@ -4826,7 +4840,7 @@
             "example": null
           },
           "claim_order": {
-            "description": "A claim order object. Available if the relation \"claim_order\" is expanded.",
+            "description": "A claim order object. Available if the relation `claim_order` is expanded.",
             "type": "object"
           },
           "swap_id": {
@@ -4835,7 +4849,7 @@
             "example": null
           },
           "swap": {
-            "description": "A swap object. Available if the relation \"swap\" is expanded.",
+            "description": "A swap object. Available if the relation `swap` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -4844,7 +4858,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "provider_id": {
@@ -4853,18 +4867,18 @@
             "example": "manual"
           },
           "provider": {
-            "description": "Available if the relation \"provider\" is expanded.",
+            "description": "Available if the relation `provider` is expanded.",
             "$ref": "#/components/schemas/fulfillment_provider"
           },
           "items": {
-            "description": "The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation \"items\" is expanded.",
+            "description": "The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation `items` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/fulfillment_item"
             }
           },
           "tracking_links": {
-            "description": "The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation \"tracking_links\" is expanded.",
+            "description": "The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation `tracking_links` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/tracking_link"
@@ -4950,7 +4964,7 @@
             "example": "gift_01G8XKBPBQY2R7RBET4J7E0XQZ"
           },
           "gift_card": {
-            "description": "A gift card object. Available if the relation \"gift_card\" is expanded.",
+            "description": "A gift card object. Available if the relation `gift_card` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -4959,7 +4973,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "amount": {
@@ -5021,7 +5035,7 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -5030,7 +5044,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "is_disabled": {
@@ -5263,7 +5277,7 @@
             "example": "item_01G8ZC9GWT6B2GP5FSXRXNFNGN"
           },
           "item": {
-            "description": "Available if the relation \"item\" is expanded.",
+            "description": "Available if the relation `item` is expanded.",
             "$ref": "#/components/schemas/line_item"
           },
           "description": {
@@ -5277,7 +5291,7 @@
             "example": "disc_01F0YESMW10MGHWJKZSDDMN0VN"
           },
           "discount": {
-            "description": "Available if the relation \"discount\" is expanded.",
+            "description": "Available if the relation `discount` is expanded.",
             "$ref": "#/components/schemas/discount"
           },
           "amount": {
@@ -5315,7 +5329,7 @@
             "example": "item_01G8ZC9GWT6B2GP5FSXRXNFNGN"
           },
           "item": {
-            "description": "Available if the relation \"item\" is expanded.",
+            "description": "Available if the relation `item` is expanded.",
             "$ref": "#/components/schemas/line_item"
           },
           "code": {
@@ -5373,7 +5387,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -5382,7 +5396,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "swap_id": {
@@ -5391,7 +5405,7 @@
             "example": null
           },
           "swap": {
-            "description": "A swap object. Available if the relation \"swap\" is expanded.",
+            "description": "A swap object. Available if the relation `swap` is expanded.",
             "type": "object"
           },
           "claim_order_id": {
@@ -5400,18 +5414,18 @@
             "example": null
           },
           "claim_order": {
-            "description": "A claim order object. Available if the relation \"claim_order\" is expanded.",
+            "description": "A claim order object. Available if the relation `claim_order` is expanded.",
             "type": "object"
           },
           "tax_lines": {
-            "description": "Available if the relation \"tax_lines\" is expanded.",
+            "description": "Available if the relation `tax_lines` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/line_item_tax_line"
             }
           },
           "adjustments": {
-            "description": "Available if the relation \"adjustments\" is expanded.",
+            "description": "Available if the relation `adjustments` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/line_item_adjustment"
@@ -5469,7 +5483,7 @@
             "example": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6"
           },
           "variant": {
-            "description": "A product variant object. The Product Variant contained in the Line Item. Available if the relation \"variant\" is expanded.",
+            "description": "A product variant object. The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.",
             "type": "object"
           },
           "quantity": {
@@ -5575,7 +5589,7 @@
             }
           },
           "currency": {
-            "description": "Available if the relation \"currency\" is expanded.",
+            "description": "Available if the relation `currency` is expanded.",
             "$ref": "#/components/schemas/currency"
           },
           "amount": {
@@ -5599,7 +5613,7 @@
             "example": "pl_01G8X3CKJXCG5VXVZ87H9KC09W"
           },
           "price_list": {
-            "description": "Available if the relation \"price_list\" is expanded.",
+            "description": "Available if the relation `price_list` is expanded.",
             "$ref": "#/components/schemas/price_list"
           },
           "variant_id": {
@@ -5608,7 +5622,7 @@
             "example": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6"
           },
           "variant": {
-            "description": "The Product Variant contained in the Line Item. Available if the relation \"variant\" is expanded.",
+            "description": "The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.",
             "type": "object"
           },
           "region_id": {
@@ -5617,7 +5631,7 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "created_at": {
@@ -5680,7 +5694,7 @@
             "example": "usr_01G1G5V26F5TB3GPAPNJ8X1S3V"
           },
           "author": {
-            "description": "Available if the relation \"author\" is expanded.",
+            "description": "Available if the relation `author` is expanded.",
             "$ref": "#/components/schemas/user"
           },
           "created_at": {
@@ -5763,7 +5777,7 @@
             "example": "cus_01G2SG30J8C85S4A5CHM2S1NS2"
           },
           "customer": {
-            "description": "A customer object. Available if the relation \"customer\" is expanded.",
+            "description": "A customer object. Available if the relation `customer` is expanded.",
             "type": "object"
           },
           "to": {
@@ -5789,7 +5803,7 @@
             "example": "sengrid"
           },
           "provider": {
-            "description": "Available if the relation \"provider\" is expanded.",
+            "description": "Available if the relation `provider` is expanded.",
             "$ref": "#/components/schemas/notification_provider"
           },
           "created_at": {
@@ -5835,7 +5849,7 @@
             "example": "cus_01G2SG30J8C85S4A5CHM2S1NS2"
           },
           "customer": {
-            "description": "A customer object. Available if the relation \"customer\" is expanded.",
+            "description": "A customer object. Available if the relation `customer` is expanded.",
             "type": "object"
           },
           "to": {
@@ -5854,7 +5868,7 @@
             "example": "noti_01G53V9Y6CKMCGBM1P0X7C28RX"
           },
           "parent_notification": {
-            "description": "Available if the relation \"parent_notification\" is expanded.",
+            "description": "Available if the relation `parent_notification` is expanded.",
             "$ref": "#/components/schemas/notification"
           },
           "provider_id": {
@@ -5863,7 +5877,7 @@
             "example": "sengrid"
           },
           "provider": {
-            "description": "Available if the relation \"provider\" is expanded.",
+            "description": "Available if the relation `provider` is expanded.",
             "$ref": "#/components/schemas/notification_provider"
           },
           "created_at": {
@@ -5989,7 +6003,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "customer_id": {
@@ -5998,7 +6012,7 @@
             "example": "cus_01G2SG30J8C85S4A5CHM2S1NS2"
           },
           "customer": {
-            "description": "A customer object. Available if the relation \"customer\" is expanded.",
+            "description": "A customer object. Available if the relation `customer` is expanded.",
             "type": "object"
           },
           "email": {
@@ -6012,7 +6026,7 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "billing_address": {
-            "description": "Available if the relation \"billing_address\" is expanded.",
+            "description": "Available if the relation `billing_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "shipping_address_id": {
@@ -6021,7 +6035,7 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "shipping_address": {
-            "description": "Available if the relation \"shipping_address\" is expanded.",
+            "description": "Available if the relation `shipping_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "region_id": {
@@ -6030,7 +6044,7 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "currency_code": {
@@ -6043,7 +6057,7 @@
             }
           },
           "currency": {
-            "description": "Available if the relation \"currency\" is expanded.",
+            "description": "Available if the relation `currency` is expanded.",
             "$ref": "#/components/schemas/currency"
           },
           "tax_rate": {
@@ -6053,42 +6067,44 @@
           },
           "discounts": {
             "type": "array",
-            "description": "The discounts used in the order. Available if the relation \"discounts\" is expanded.",
+            "description": "The discounts used in the order. Available if the relation `discounts` is expanded.",
             "items": {
-              "$ref": "#/components/schemas/discount"
+              "type": "object",
+              "description": "A discount object."
             }
           },
           "gift_cards": {
             "type": "array",
-            "description": "The gift cards used in the order. Available if the relation \"gift_cards\" is expanded.",
+            "description": "The gift cards used in the order. Available if the relation `gift_cards` is expanded.",
             "items": {
-              "$ref": "#/components/schemas/gift_card"
+              "type": "object",
+              "description": "A gift card object."
             }
           },
           "shipping_methods": {
             "type": "array",
-            "description": "The shipping methods used in the order. Available if the relation \"shipping_methods\" is expanded.",
+            "description": "The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.",
             "items": {
               "$ref": "#/components/schemas/shipping_method"
             }
           },
           "payments": {
             "type": "array",
-            "description": "The payments used in the order. Available if the relation \"payments\" is expanded.",
+            "description": "The payments used in the order. Available if the relation `payments` is expanded.",
             "items": {
               "$ref": "#/components/schemas/payment"
             }
           },
           "fulfillments": {
             "type": "array",
-            "description": "The fulfillments used in the order. Available if the relation \"fulfillments\" is expanded.",
+            "description": "The fulfillments used in the order. Available if the relation `fulfillments` is expanded.",
             "items": {
               "$ref": "#/components/schemas/fulfillment"
             }
           },
           "returns": {
             "type": "array",
-            "description": "The returns associated with the order. Available if the relation \"returns\" is expanded.",
+            "description": "The returns associated with the order. Available if the relation `returns` is expanded.",
             "items": {
               "type": "object",
               "description": "A return object."
@@ -6096,7 +6112,7 @@
           },
           "claims": {
             "type": "array",
-            "description": "The claims associated with the order. Available if the relation \"claims\" is expanded.",
+            "description": "The claims associated with the order. Available if the relation `claims` is expanded.",
             "items": {
               "type": "object",
               "description": "A claim order object."
@@ -6104,7 +6120,7 @@
           },
           "refunds": {
             "type": "array",
-            "description": "The refunds associated with the order. Available if the relation \"refunds\" is expanded.",
+            "description": "The refunds associated with the order. Available if the relation `refunds` is expanded.",
             "items": {
               "type": "object",
               "description": "A refund object."
@@ -6112,7 +6128,7 @@
           },
           "swaps": {
             "type": "array",
-            "description": "The swaps associated with the order. Available if the relation \"swaps\" is expanded.",
+            "description": "The swaps associated with the order. Available if the relation `swaps` is expanded.",
             "items": {
               "type": "object",
               "description": "A swap object."
@@ -6124,19 +6140,19 @@
             "example": null
           },
           "draft_order": {
-            "description": "A draft order object. Available if the relation \"draft_order\" is expanded.",
+            "description": "A draft order object. Available if the relation `draft_order` is expanded.",
             "type": "object"
           },
           "items": {
             "type": "array",
-            "description": "The line items that belong to the order. Available if the relation \"items\" is expanded.",
+            "description": "The line items that belong to the order. Available if the relation `items` is expanded.",
             "items": {
               "$ref": "#/components/schemas/line_item"
             }
           },
           "gift_card_transactions": {
             "type": "array",
-            "description": "The gift card transactions used in the order. Available if the relation \"gift_card_transactions\" is expanded.",
+            "description": "The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.",
             "items": {
               "$ref": "#/components/schemas/gift_card_transaction"
             }
@@ -6170,7 +6186,7 @@
             "example": null
           },
           "sales_channel": {
-            "description": "A sales channel object. Available if the relation \"sales_channel\" is expanded.",
+            "description": "A sales channel object. Available if the relation `sales_channel` is expanded.",
             "type": "object"
           },
           "shipping_total": {
@@ -6266,7 +6282,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "provider_id": {
@@ -6337,7 +6353,7 @@
             "example": null
           },
           "swap": {
-            "description": "A swap object. Available if the relation \"swap\" is expanded.",
+            "description": "A swap object. Available if the relation `swap` is expanded.",
             "type": "object"
           },
           "cart_id": {
@@ -6345,7 +6361,7 @@
             "type": "string"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -6354,7 +6370,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "amount": {
@@ -6372,7 +6388,7 @@
             }
           },
           "currency": {
-            "description": "Available if the relation \"currency\" is expanded.",
+            "description": "Available if the relation `currency` is expanded.",
             "$ref": "#/components/schemas/currency"
           },
           "amount_refunded": {
@@ -6480,7 +6496,7 @@
             "format": "date-time"
           },
           "customer_groups": {
-            "description": "The Customer Groups that the Price List applies to. Available if the relation \"customer_groups\" is expanded.",
+            "description": "The Customer Groups that the Price List applies to. Available if the relation `customer_groups` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -6488,7 +6504,7 @@
             }
           },
           "prices": {
-            "description": "The Money Amounts that are associated with the Price List. Available if the relation \"prices\" is expanded.",
+            "description": "The Money Amounts that are associated with the Price List. Available if the relation `prices` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/money_amount"
@@ -6535,7 +6551,7 @@
             "example": "summer-collection"
           },
           "products": {
-            "description": "The Products contained in the Product Collection. Available if the relation \"products\" is expanded.",
+            "description": "The Products contained in the Product Collection. Available if the relation `products` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -6592,7 +6608,7 @@
             "example": "opt_01F0YESHQBZVKCEXJ24BS6PCX3"
           },
           "option": {
-            "description": "Available if the relation \"option\" is expanded.",
+            "description": "Available if the relation `option` is expanded.",
             "$ref": "#/components/schemas/product_option"
           },
           "variant_id": {
@@ -6601,7 +6617,7 @@
             "example": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6"
           },
           "variant": {
-            "description": "Available if the relation \"variant\" is expanded.",
+            "description": "Available if the relation `variant` is expanded.",
             "$ref": "#/components/schemas/product_variant"
           },
           "created_at": {
@@ -6648,7 +6664,7 @@
             "example": "Size"
           },
           "values": {
-            "description": "The Product Option Values that are defined for the Product Option. Available if the relation \"values\" is expanded.",
+            "description": "The Product Option Values that are defined for the Product Option. Available if the relation `values` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/product_option_value"
@@ -6660,7 +6676,7 @@
             "example": "prod_01G1G5V2MBA328390B5AXJ610F"
           },
           "product": {
-            "description": "A product object. Available if the relation \"product\" is expanded.",
+            "description": "A product object. Available if the relation `product` is expanded.",
             "type": "object"
           },
           "created_at": {
@@ -6744,7 +6760,7 @@
             "example": "prod_01G1G5V2MBA328390B5AXJ610F"
           },
           "product": {
-            "description": "Available if the relation \"product\" is expanded.",
+            "description": "Available if the relation `product` is expanded.",
             "$ref": "#/components/schemas/product"
           },
           "rate_id": {
@@ -6753,7 +6769,7 @@
             "example": "txr_01G8XDBAWKBHHJRKH0AV02KXBR"
           },
           "tax_rate": {
-            "description": "Available if the relation \"tax_rate\" is expanded.",
+            "description": "Available if the relation `tax_rate` is expanded.",
             "$ref": "#/components/schemas/tax_rate"
           },
           "created_at": {
@@ -6790,7 +6806,7 @@
             "example": "ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "product_type": {
-            "description": "Available if the relation \"product_type\" is expanded.",
+            "description": "Available if the relation `product_type` is expanded.",
             "$ref": "#/components/schemas/product_type"
           },
           "rate_id": {
@@ -6799,7 +6815,7 @@
             "example": "txr_01G8XDBAWKBHHJRKH0AV02KXBR"
           },
           "tax_rate": {
-            "description": "Available if the relation \"tax_rate\" is expanded.",
+            "description": "Available if the relation `tax_rate` is expanded.",
             "$ref": "#/components/schemas/tax_rate"
           },
           "created_at": {
@@ -6889,11 +6905,11 @@
             "example": "prod_01G1G5V2MBA328390B5AXJ610F"
           },
           "product": {
-            "description": "A product object. Available if the relation \"product\" is expanded.",
+            "description": "A product object. Available if the relation `product` is expanded.",
             "type": "object"
           },
           "prices": {
-            "description": "The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation \"prices\" is expanded.",
+            "description": "The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/money_amount"
@@ -6980,7 +6996,7 @@
             "example": null
           },
           "options": {
-            "description": "The Product Option Values specified for the Product Variant. Available if the relation \"options\" is expanded.",
+            "description": "The Product Option Values specified for the Product Variant. Available if the relation `options` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/product_option_value"
@@ -7060,7 +7076,7 @@
             "default": "draft"
           },
           "images": {
-            "description": "Images of the Product. Available if the relation \"images\" is expanded.",
+            "description": "Images of the Product. Available if the relation `images` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/image"
@@ -7072,14 +7088,14 @@
             "format": "uri"
           },
           "options": {
-            "description": "The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation \"options\" is expanded.",
+            "description": "The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation `options` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/product_option"
             }
           },
           "variants": {
-            "description": "The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation \"variants\" is expanded.",
+            "description": "The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation `variants` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/product_variant"
@@ -7091,7 +7107,7 @@
             "example": "sp_01G1G5V239ENSZ5MV4JAR737BM"
           },
           "profile": {
-            "description": "Available if the relation \"profile\" is expanded.",
+            "description": "Available if the relation `profile` is expanded.",
             "$ref": "#/components/schemas/shipping_profile"
           },
           "weight": {
@@ -7140,7 +7156,7 @@
             "example": "pcol_01F0YESBFAZ0DV6V831JXWH0BG"
           },
           "collection": {
-            "description": "A product collection object. Available if the relation \"collection\" is expanded.",
+            "description": "A product collection object. Available if the relation `collection` is expanded.",
             "type": "object"
           },
           "type_id": {
@@ -7149,11 +7165,11 @@
             "example": "ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A"
           },
           "type": {
-            "description": "Available if the relation \"type\" is expanded.",
+            "description": "Available if the relation `type` is expanded.",
             "$ref": "#/components/schemas/product_type"
           },
           "tags": {
-            "description": "The Product Tags assigned to the Product. Available if the relation \"tags\" is expanded.",
+            "description": "The Product Tags assigned to the Product. Available if the relation `tags` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/product_tag"
@@ -7170,7 +7186,7 @@
             "example": null
           },
           "sales_channels": {
-            "description": "The sales channels the product is associated with. Available if the relation \"sales_channels\" is expanded.",
+            "description": "The sales channels the product is associated with. Available if the relation `sales_channels` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -7304,7 +7320,7 @@
             }
           },
           "currency": {
-            "description": "Available if the relation \"currency\" is expanded.",
+            "description": "Available if the relation `currency` is expanded.",
             "$ref": "#/components/schemas/currency"
           },
           "tax_rate": {
@@ -7313,7 +7329,7 @@
             "example": 0
           },
           "tax_rates": {
-            "description": "The tax rates that are included in the Region. Available if the relation \"tax_rates\" is expanded.",
+            "description": "The tax rates that are included in the Region. Available if the relation `tax_rates` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/tax_rate"
@@ -7335,7 +7351,7 @@
             "default": true
           },
           "countries": {
-            "description": "The countries that are included in the Region. Available if the relation \"countries\" is expanded.",
+            "description": "The countries that are included in the Region. Available if the relation `countries` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/country"
@@ -7347,18 +7363,18 @@
             "example": null
           },
           "tax_provider": {
-            "description": "Available if the relation \"tax_provider\" is expanded.",
+            "description": "Available if the relation `tax_provider` is expanded.",
             "$ref": "#/components/schemas/tax_provider"
           },
           "payment_providers": {
-            "description": "The Payment Providers that can be used to process Payments in the Region. Available if the relation \"payment_providers\" is expanded.",
+            "description": "The Payment Providers that can be used to process Payments in the Region. Available if the relation `payment_providers` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/payment_provider"
             }
           },
           "fulfillment_providers": {
-            "description": "The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation \"payment_providers\" is expanded.",
+            "description": "The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `payment_providers` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/fulfillment_provider"
@@ -7403,7 +7419,7 @@
             "example": "ret_01F0YET7XPCMF8RZ0Y151NZV2V"
           },
           "return_order": {
-            "description": "Available if the relation \"return_order\" is expanded.",
+            "description": "Available if the relation `return_order` is expanded.",
             "$ref": "#/components/schemas/return"
           },
           "item_id": {
@@ -7412,7 +7428,7 @@
             "example": "item_01G8ZC9GWT6B2GP5FSXRXNFNGN"
           },
           "item": {
-            "description": "Available if the relation \"item\" is expanded.",
+            "description": "Available if the relation `item` is expanded.",
             "$ref": "#/components/schemas/line_item"
           },
           "quantity": {
@@ -7441,7 +7457,7 @@
             "example": "rr_01G8X82GCCV2KSQHDBHSSAH5TQ"
           },
           "reason": {
-            "description": "Available if the relation \"reason\" is expanded.",
+            "description": "Available if the relation `reason` is expanded.",
             "$ref": "#/components/schemas/return_reason"
           },
           "note": {
@@ -7493,11 +7509,11 @@
             "example": null
           },
           "parent_return_reason": {
-            "description": "Available if the relation \"parent_return_reason\" is expanded.",
+            "description": "Available if the relation `parent_return_reason` is expanded.",
             "$ref": "#/components/schemas/return_reason"
           },
           "return_reason_children": {
-            "description": "Available if the relation \"return_reason_children\" is expanded.",
+            "description": "Available if the relation `return_reason_children` is expanded.",
             "$ref": "#/components/schemas/return_reason"
           },
           "created_at": {
@@ -7549,7 +7565,7 @@
             "default": "requested"
           },
           "items": {
-            "description": "The Return Items that will be shipped back to the warehouse. Available if the relation \"items\" is expanded.",
+            "description": "The Return Items that will be shipped back to the warehouse. Available if the relation `items` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/return_item"
@@ -7561,7 +7577,7 @@
             "example": null
           },
           "swap": {
-            "description": "A swap object. Available if the relation \"swap\" is expanded.",
+            "description": "A swap object. Available if the relation `swap` is expanded.",
             "type": "object"
           },
           "order_id": {
@@ -7570,7 +7586,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "claim_order_id": {
@@ -7579,11 +7595,11 @@
             "example": null
           },
           "claim_order": {
-            "description": "A claim order object. Available if the relation \"claim_order\" is expanded.",
+            "description": "A claim order object. Available if the relation `claim_order` is expanded.",
             "type": "object"
           },
           "shipping_method": {
-            "description": "The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation \"shipping_method\" is expanded.",
+            "description": "The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation `shipping_method` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/shipping_method"
@@ -7702,7 +7718,7 @@
             "example": "sm_01F0YET7DR2E7CYVSDHM593QG2"
           },
           "shipping_method": {
-            "description": "Available if the relation \"shipping_method\" is expanded.",
+            "description": "Available if the relation `shipping_method` is expanded.",
             "$ref": "#/components/schemas/shipping_method"
           },
           "code": {
@@ -7759,7 +7775,7 @@
             "example": "so_01G1G5V27GYX4QXNARRQCW1N8T"
           },
           "shipping_option": {
-            "description": "Available if the relation \"shipping_option\" is expanded.",
+            "description": "Available if the relation `shipping_option` is expanded.",
             "$ref": "#/components/schemas/shipping_option"
           },
           "order_id": {
@@ -7768,7 +7784,7 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "return_id": {
@@ -7777,7 +7793,7 @@
             "example": null
           },
           "return_order": {
-            "description": "A return object. Available if the relation \"return_order\" is expanded.",
+            "description": "A return object. Available if the relation `return_order` is expanded.",
             "type": "object"
           },
           "swap_id": {
@@ -7786,7 +7802,7 @@
             "example": null
           },
           "swap": {
-            "description": "A swap object. Available if the relation \"swap\" is expanded.",
+            "description": "A swap object. Available if the relation `swap` is expanded.",
             "type": "object"
           },
           "cart_id": {
@@ -7795,7 +7811,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "claim_order_id": {
@@ -7804,12 +7820,12 @@
             "example": null
           },
           "claim_order": {
-            "description": "A claim order object. Available if the relation \"claim_order\" is expanded.",
+            "description": "A claim order object. Available if the relation `claim_order` is expanded.",
             "type": "object"
           },
           "tax_lines": {
             "type": "array",
-            "description": "Available if the relation \"tax_lines\" is expanded.",
+            "description": "Available if the relation `tax_lines` is expanded.",
             "items": {
               "$ref": "#/components/schemas/tax_line"
             }
@@ -7847,7 +7863,7 @@
             "example": "so_01G1G5V27GYX4QXNARRQCW1N8T"
           },
           "shipping_option": {
-            "description": "Available if the relation \"shipping_option\" is expanded.",
+            "description": "Available if the relation `shipping_option` is expanded.",
             "$ref": "#/components/schemas/shipping_option"
           },
           "type": {
@@ -7899,7 +7915,7 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "profile_id": {
@@ -7908,7 +7924,7 @@
             "example": "sp_01G1G5V239ENSZ5MV4JAR737BM"
           },
           "profile": {
-            "description": "Available if the relation \"profile\" is expanded.",
+            "description": "Available if the relation `profile` is expanded.",
             "$ref": "#/components/schemas/shipping_profile"
           },
           "provider_id": {
@@ -7917,7 +7933,7 @@
             "example": "manual"
           },
           "provider": {
-            "description": "Available if the relation \"provider\" is expanded.",
+            "description": "Available if the relation `provider` is expanded.",
             "$ref": "#/components/schemas/fulfillment_provider"
           },
           "price_type": {
@@ -7940,7 +7956,7 @@
             "default": false
           },
           "requirements": {
-            "description": "The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation \"requirements\" is expanded.",
+            "description": "The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation `requirements` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/shipping_option_requirement"
@@ -8005,7 +8021,7 @@
             "example": "default"
           },
           "products": {
-            "description": "The Products that the Shipping Profile defines Shipping Options for. Available if the relation \"products\" is expanded.",
+            "description": "The Products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
             "type": "array",
             "items": {
               "type": "object",
@@ -8013,7 +8029,7 @@
             }
           },
           "shipping_options": {
-            "description": "The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation \"shipping_options\" is expanded.",
+            "description": "The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation `shipping_options` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/shipping_option"
@@ -8058,7 +8074,7 @@
             "example": "so_01G1G5V27GYX4QXNARRQCW1N8T"
           },
           "shipping_option": {
-            "description": "Available if the relation \"shipping_option\" is expanded.",
+            "description": "Available if the relation `shipping_option` is expanded.",
             "$ref": "#/components/schemas/shipping_option"
           },
           "rate_id": {
@@ -8067,7 +8083,7 @@
             "example": "txr_01G8XDBAWKBHHJRKH0AV02KXBR"
           },
           "tax_rate": {
-            "description": "Available if the relation \"tax_rate\" is expanded.",
+            "description": "Available if the relation `tax_rate` is expanded.",
             "$ref": "#/components/schemas/tax_rate"
           },
           "created_at": {
@@ -8139,11 +8155,11 @@
             }
           },
           "default_currency": {
-            "description": "Available if the relation \"default_currency\" is expanded.",
+            "description": "Available if the relation `default_currency` is expanded.",
             "$ref": "#/components/schemas/currency"
           },
           "currencies": {
-            "description": "The currencies that are enabled for the Store. Available if the relation \"currencies\" is expanded.",
+            "description": "The currencies that are enabled for the Store. Available if the relation `currencies` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/currency"
@@ -8170,7 +8186,7 @@
             "example": null
           },
           "default_sales_channel": {
-            "description": "A sales channel object. Available if the relation \"default_sales_channel\" is expanded.",
+            "description": "A sales channel object. Available if the relation `default_sales_channel` is expanded.",
             "type": "object"
           },
           "metadata": {
@@ -8231,29 +8247,29 @@
             "example": "order_01G8TJSYT9M6AVS5N4EMNFS1EK"
           },
           "order": {
-            "description": "An order object. Available if the relation \"order\" is expanded.",
+            "description": "An order object. Available if the relation `order` is expanded.",
             "type": "object"
           },
           "additional_items": {
-            "description": "The new Line Items to ship to the Customer. Available if the relation \"additional_items\" is expanded.",
+            "description": "The new Line Items to ship to the Customer. Available if the relation `additional_items` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/line_item"
             }
           },
           "return_order": {
-            "description": "A return order object. The Return that is issued for the return part of the Swap. Available if the relation \"return_order\" is expanded.",
+            "description": "A return order object. The Return that is issued for the return part of the Swap. Available if the relation `return_order` is expanded.",
             "type": "object"
           },
           "fulfillments": {
-            "description": "The Fulfillments used to send the new Line Items. Available if the relation \"fulfillments\" is expanded.",
+            "description": "The Fulfillments used to send the new Line Items. Available if the relation `fulfillments` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/fulfillment"
             }
           },
           "payment": {
-            "description": "The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation \"payment\" is expanded.",
+            "description": "The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation `payment` is expanded.",
             "$ref": "#/components/schemas/payment"
           },
           "difference_due": {
@@ -8267,11 +8283,11 @@
             "example": "addr_01G8ZH853YPY9B94857DY91YGW"
           },
           "shipping_address": {
-            "description": "Available if the relation \"shipping_address\" is expanded.",
+            "description": "Available if the relation `shipping_address` is expanded.",
             "$ref": "#/components/schemas/address"
           },
           "shipping_methods": {
-            "description": "The Shipping Methods used to fulfill the addtional items purchased. Available if the relation \"shipping_methods\" is expanded.",
+            "description": "The Shipping Methods used to fulfill the addtional items purchased. Available if the relation `shipping_methods` is expanded.",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/shipping_method"
@@ -8283,7 +8299,7 @@
             "example": "cart_01G8ZH853Y6TFXWPG5EYE81X63"
           },
           "cart": {
-            "description": "A cart object. Available if the relation \"cart\" is expanded.",
+            "description": "A cart object. Available if the relation `cart` is expanded.",
             "type": "object"
           },
           "allow_backorder": {
@@ -8438,12 +8454,12 @@
             "example": "reg_01G1G5V26T9H8Y0M4JNE3YGA4G"
           },
           "region": {
-            "description": "A region object. Available if the relation \"region\" is expanded.",
+            "description": "A region object. Available if the relation `region` is expanded.",
             "type": "object"
           },
           "products": {
             "type": "array",
-            "description": "The products that belong to this tax rate. Available if the relation \"products\" is expanded.",
+            "description": "The products that belong to this tax rate. Available if the relation `products` is expanded.",
             "items": {
               "type": "object",
               "description": "A product object."
@@ -8451,7 +8467,7 @@
           },
           "product_types": {
             "type": "array",
-            "description": "The product types that belong to this tax rate. Available if the relation \"product_types\" is expanded.",
+            "description": "The product types that belong to this tax rate. Available if the relation `product_types` is expanded.",
             "items": {
               "type": "object",
               "description": "A product type object."
@@ -8459,7 +8475,7 @@
           },
           "shipping_options": {
             "type": "array",
-            "description": "The shipping options that belong to this tax rate. Available if the relation \"shipping_options\" is expanded.",
+            "description": "The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.",
             "items": {
               "type": "object",
               "description": "A shipping option object."
@@ -8529,7 +8545,7 @@
             "example": "ful_01G8ZRTMQCA76TXNAT81KPJZRF"
           },
           "fulfillment": {
-            "description": "Available if the relation \"fulfillment\" is expanded.",
+            "description": "Available if the relation `fulfillment` is expanded.",
             "$ref": "#/components/schemas/fulfillment"
           },
           "idempotency_key": {

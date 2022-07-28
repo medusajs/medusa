@@ -1,6 +1,8 @@
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
+
 /**
  * @oas [post] /discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
@@ -8,8 +10,8 @@ import DiscountService from "../../../../services/discount"
  * description: "Adds a Region to the list of Regions that a Discount can be used in."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount.
- *   - (path) region_id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Discount.
+ *   - (path) region_id=* {string} The ID of the Region.
  * tags:
  *   - Discount
  * responses:

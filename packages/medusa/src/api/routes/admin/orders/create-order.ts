@@ -75,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: id of the payment provider
+ *                 description: ID of the payment provider
  *               data:
  *                 description: Data relevant for the given payment method
  *                 type: object
@@ -89,10 +89,10 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: The id of the shipping provider.
+ *                 description: The ID of the shipping provider.
  *               profile_id:
  *                 type: string
- *                 description: The id of the shipping profile.
+ *                 description: The ID of the shipping profile.
  *               price:
  *                 type: integer
  *                 description: The price of the shipping.

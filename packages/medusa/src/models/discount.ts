@@ -112,7 +112,7 @@ export class Discount extends SoftDeletableEntity {
  *     description: "The Discount Rule that governs the behaviour of the Discount"
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   rule:
- *     description: Available if the relation "rule" is expanded.
+ *     description: Available if the relation `rule` is expanded.
  *     $ref: "#/components/schemas/discount_rule"
  *   is_disabled:
  *     description: "Whether the Discount has been disabled. Disabled discounts cannot be applied to carts"
@@ -123,7 +123,7 @@ export class Discount extends SoftDeletableEntity {
  *     description: "The Discount that the discount was created from. This will always be a dynamic discount"
  *     example: disc_01G8ZH853YPY9B94857DY91YGW
  *   parent_discount:
- *     description: Available if the relation "parent_discount" is expanded.
+ *     description: Available if the relation `parent_discount` is expanded.
  *     $ref: "#/components/schemas/discount"
  *   starts_at:
  *     description: "The time at which the discount can be used."
@@ -138,7 +138,7 @@ export class Discount extends SoftDeletableEntity {
  *     description: Duration the discount runs between
  *     example: P3Y6M4DT12H30M5S
  *   regions:
- *     description: The Regions in which the Discount can be used. Available if the relation "regions" is expanded.
+ *     description: The Regions in which the Discount can be used. Available if the relation `regions` is expanded.
  *     type: array
  *     items:
  *       type: object

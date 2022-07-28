@@ -17,8 +17,8 @@ import { validator } from "../../../../utils/validator"
  * summary: "Gets a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The id of the Discount.
- *   - (path) condition_id=* {string} The id of the DiscountCondition.
+ *   - (path) discount_id=* {string} The ID of the Discount.
+ *   - (path) condition_id=* {string} The ID of the DiscountCondition.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * description: "Gets a DiscountCondition"

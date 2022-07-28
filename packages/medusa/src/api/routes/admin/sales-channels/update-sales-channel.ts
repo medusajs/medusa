@@ -10,7 +10,7 @@ import { SalesChannelService } from "../../../../services"
  * description: "Updates a Sales Channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales Channel.
+ *   - (path) id=* {string} The ID of the Sales Channel.
  * requestBody:
  *   content:
  *     application/json:

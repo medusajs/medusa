@@ -8,14 +8,14 @@ delete:
       name: id
       required: true
       description: >-
-        The id of the Price List that the Money Amounts that will be deleted
+        The ID of the Price List that the Money Amounts that will be deleted
         belongs to.
       schema:
         type: string
     - in: path
       name: product_id
       required: true
-      description: The id of the product from which the money amount will be deleted.
+      description: The ID of the product from which the money amount will be deleted.
       schema:
         type: string
   tags:

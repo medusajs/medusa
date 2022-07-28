@@ -7,8 +7,8 @@ import PriceListService from "../../../../services/price-list"
  * description: "Delete all the prices related to a specific product in a price list"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) product_id=* {string} The id of the product from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
+ *   - (path) product_id=* {string} The ID of the product from which the money amount will be deleted.
  * tags:
  *   - Price List
  * responses:

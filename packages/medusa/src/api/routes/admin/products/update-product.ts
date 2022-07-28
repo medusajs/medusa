@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Product"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:
@@ -85,7 +85,7 @@ import { validator } from "../../../../utils/validator"
  *                 - value
  *               properties:
  *                 id:
- *                   description: The id of an existing Tag.
+ *                   description: The ID of an existing Tag.
  *                   type: string
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
@@ -164,14 +164,17 @@ import { validator } from "../../../../utils/validator"
  *                       - amount
  *                     properties:
  *                       id:
- *                         description: The id of the Price.
+ *                         description: The ID of the Price.
  *                         type: string
  *                       region_id:
- *                         description: The id of the Region for which the price is used. Only required if currency_code is not provided.
+ *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                         type: string
  *                       currency_code:
  *                         description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                         type: string
+ *                         externalDocs:
+ *                           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                           description: See a list of codes.
  *                       amount:
  *                         description: The amount to charge for the Product Variant.
  *                         type: integer
@@ -189,7 +192,7 @@ import { validator } from "../../../../utils/validator"
  *                       - value
  *                     properties:
  *                       option_id:
- *                         description: The id of the Option.
+ *                         description: The ID of the Option.
  *                         type: string
  *                       value:
  *                         description: The value to give for the Product Option at the same index in the Product's `options` field.

@@ -6,7 +6,7 @@ post:
     - in: path
       name: discount_id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: query

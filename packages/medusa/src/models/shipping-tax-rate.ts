@@ -51,14 +51,14 @@ export class ShippingTaxRate {
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
- *     description: Available if the relation "shipping_option" is expanded.
+ *     description: Available if the relation `shipping_option` is expanded.
  *     $ref: "#/components/schemas/shipping_option"
  *   rate_id:
  *     description: "The ID of the Tax Rate"
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
- *     description: Available if the relation "tax_rate" is expanded.
+ *     description: Available if the relation `tax_rate` is expanded.
  *     $ref: "#/components/schemas/tax_rate"
  *   created_at:
  *     type: string

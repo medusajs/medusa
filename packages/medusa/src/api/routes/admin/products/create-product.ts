@@ -81,7 +81,7 @@ import { validator } from "../../../../utils/validator"
  *                 description: The value of the Product Type.
  *                 type: string
  *           collection_id:
- *             description: The id of the Collection the Product should belong to.
+ *             description: The ID of the Collection the Product should belong to.
  *             type: string
  *           tags:
  *             description: Tags to associate the Product with.
@@ -91,7 +91,7 @@ import { validator } from "../../../../utils/validator"
  *                 - value
  *               properties:
  *                 id:
- *                   description: The id of an existing Tag.
+ *                   description: The ID of an existing Tag.
  *                   type: string
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
@@ -172,14 +172,17 @@ import { validator } from "../../../../utils/validator"
  *                       - amount
  *                     properties:
  *                       id:
- *                         description: The id of the Price.
+ *                         description: The ID of the Price.
  *                         type: string
  *                       region_id:
- *                         description: The id of the Region for which the price is used. Only required if currency_code is not provided.
+ *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                         type: string
  *                       currency_code:
  *                         description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                         type: string
+ *                         externalDocs:
+ *                           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                           description: See a list of codes.
  *                       amount:
  *                         description: The amount to charge for the Product Variant.
  *                         type: integer

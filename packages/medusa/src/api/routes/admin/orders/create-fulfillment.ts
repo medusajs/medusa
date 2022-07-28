@@ -21,7 +21,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -38,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of Line Item to fulfill.
+ *                   description: The ID of Line Item to fulfill.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item to fulfill.

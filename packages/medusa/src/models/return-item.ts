@@ -61,14 +61,14 @@ export class ReturnItem {
  *     type: string
  *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
  *   return_order:
- *     description: Available if the relation "return_order" is expanded.
+ *     description: Available if the relation `return_order` is expanded.
  *     $ref: "#/components/schemas/return"
  *   item_id:
  *     description: "The id of the Line Item that the Return Item references."
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation "item" is expanded.
+ *     description: Available if the relation `item` is expanded.
  *     $ref: "#/components/schemas/line_item"
  *   quantity:
  *     description: "The quantity of the Line Item that is included in the Return."
@@ -91,7 +91,7 @@ export class ReturnItem {
  *     type: string
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
  *   reason:
- *     description: Available if the relation "reason" is expanded.
+ *     description: Available if the relation `reason` is expanded.
  *     $ref: "#/components/schemas/return_reason"
  *   note:
  *     description: "An optional note with additional details about the Return."

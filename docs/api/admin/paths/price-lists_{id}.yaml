@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Price List to delete.
+      description: The ID of the Price List to delete.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Price List.
+                description: The ID of the deleted Price List.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Price List.
+      description: The ID of the Price List.
       schema:
         type: string
   tags:
@@ -60,7 +60,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Price List.
+      description: The ID of the Price List.
       schema:
         type: string
   requestBody:
@@ -103,11 +103,11 @@ post:
                   - variant_id
                 properties:
                   id:
-                    description: The id of the price.
+                    description: The ID of the price.
                     type: string
                   region_id:
                     description: >-
-                      The id of the Region for which the price is used. Only
+                      The ID of the Region for which the price is used. Only
                       required if currecny_code is not provided.
                     type: string
                   currency_code:
@@ -115,8 +115,11 @@ post:
                       The 3 character ISO currency code for which the price will
                       be used. Only required if region_id is not provided.
                     type: string
+                    externalDocs:
+                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                      description: See a list of codes.
                   variant_id:
-                    description: The id of the Variant for which the price is used.
+                    description: The ID of the Variant for which the price is used.
                     type: string
                   amount:
                     description: The amount to charge for the Product Variant.
@@ -135,7 +138,7 @@ post:
                   - id
                 properties:
                   id:
-                    description: The id of a customer group
+                    description: The ID of a customer group
                     type: string
   tags:
     - Price List
