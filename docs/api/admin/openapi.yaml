@@ -115,12 +115,6 @@ paths:
     $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
-  /collections/{id}/products/batch:
-    $ref: paths/collections_{id}_products_batch.yaml
-  /collections:
-    $ref: paths/collections.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -129,10 +123,12 @@ paths:
     $ref: paths/batch-jobs.yaml
   /batch-jobs/{id}:
     $ref: paths/batch-jobs_{id}.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
+  /collections/{id}/products/batch:
+    $ref: paths/collections_{id}_products_batch.yaml
+  /collections:
+    $ref: paths/collections.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -141,6 +137,10 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/{id}:
+    $ref: paths/customers_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions:
@@ -345,6 +345,8 @@ paths:
     $ref: paths/tax-rates_:id.yaml
   /uploads:
     $ref: paths/uploads.yaml
+  /variants:
+    $ref: paths/variants.yaml
   /users:
     $ref: paths/users.yaml
   /users/{id}:
@@ -353,5 +355,3 @@ paths:
     $ref: paths/users_password-token.yaml
   /users/reset-password:
     $ref: paths/users_reset-password.yaml
-  /variants:
-    $ref: paths/variants.yaml

@@ -45,14 +45,13 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             description: "The email of the customer of the draft order"
  *             type: string
+ *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           items:
  *             description: The Line Items that have been received.
  *             type: array

@@ -21,12 +21,30 @@ import { validator } from "../../../../utils/validator"
  *          type:
  *            type: string
  *            description: The type of batch job to start.
+ *            example: product-export
  *          context:
  *            type: object
  *            description: Additional infomration regarding the batch to be used for processing.
+ *            example:
+ *              shape:
+ *                prices:
+ *                  - region: null
+ *                    currency_code: "eur"
+ *                dynamicImageColumnCount: 4
+ *                dynamicOptionColumnCount: 2
+ *              list_config:
+ *                skip: 0
+ *                take: 50
+ *                order:
+ *                  created_at: "DESC"
+ *                relations:
+ *                  - variants
+ *                  - variant.prices
+ *                  - images
  *          dry_run:
  *            type: boolean
  *            description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ *            default: false
  * tags:
  *   - Batch Job
  * responses:

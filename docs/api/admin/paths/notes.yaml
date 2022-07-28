@@ -55,7 +55,6 @@ get:
       description: The ID which the notes belongs to
       schema:
         type: string
-        default: ''
   tags:
     - Note
   responses:

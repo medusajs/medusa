@@ -17,6 +17,19 @@ import { pickBy } from "lodash"
  *   - (query) limit=10 {integer} The number of batch jobs to return.
  *   - (query) offset=0 {integer} The number of batch jobs to skip before results.
  *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by the batch ID
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: batch job ID
+ *         - type: array
+ *           description: multiple batch job IDs
+ *           items:
+ *             type: string
+ *   - in: query
  *     name: type
  *     style: form
  *     explode: false
@@ -32,7 +45,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - in: query
  *     name: pre_processed_at
  *     style: form
@@ -40,7 +69,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - in: query
  *     name: completed_at
  *     style: form
@@ -48,7 +93,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - in: query
  *     name: failed_at
  *     style: form
@@ -56,7 +117,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - in: query
  *     name: canceled_at
  *     style: form
@@ -64,18 +141,26 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
- *   - (query) order {string} Order used when retrieving batch jobs
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) order {string} Field used to order retrieved batch jobs
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
- *   - in: query
- *     name: deleted_at
- *     style: form
- *     explode: false
- *     description: Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *     schema:
- *       type: object
- *       nullable: true
  *   - in: query
  *     name: created_at
  *     style: form
@@ -83,7 +168,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - in: query
  *     name: updated_at
  *     style: form
@@ -91,7 +192,23 @@ import { pickBy } from "lodash"
  *     description: Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  *     schema:
  *       type: object
- *       nullable: true
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * tags:
  *   - Batch Job
  * responses:

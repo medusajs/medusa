@@ -28,14 +28,13 @@ post:
             email:
               type: string
               description: An email to be used on the Draft Order.
+              format: email
             billing_address:
               description: The Address to be used for billing purposes.
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
+              $ref: ../components/schemas/address.yaml
             shipping_address:
               description: The Address to be used for shipping.
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
+              $ref: ../components/schemas/address.yaml
             discounts:
               description: An array of Discount codes to add to the Draft Order.
               type: array

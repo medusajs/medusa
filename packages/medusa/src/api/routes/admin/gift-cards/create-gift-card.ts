@@ -17,7 +17,6 @@ import { validator } from "../../../../utils/validator"
  *       schema:
  *         required:
  *           - region_id
- *           - value
  *         properties:
  *           value:
  *             type: integer

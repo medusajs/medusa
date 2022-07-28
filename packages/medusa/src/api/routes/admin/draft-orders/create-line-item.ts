@@ -38,6 +38,7 @@ import { validator } from "../../../../utils/validator"
  *           title:
  *             description: The potential custom title of the item.
  *             type: string
+ *             default: "Custom item"
  *           quantity:
  *             description: The quantity of the Line Item.
  *             type: integer

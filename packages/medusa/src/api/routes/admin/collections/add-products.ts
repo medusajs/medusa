@@ -15,6 +15,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - product_ids
  *         properties:
  *           product_ids:
  *             description: "An array of Product IDs to add to the Product Collection."

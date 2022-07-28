@@ -52,9 +52,11 @@ get:
         type: string
     - in: query
       name: include_resends
-      description: Whether the result set should include resent notifications or not
+      description: >-
+        A boolean indicating whether the result set should include resent
+        notifications or not
       schema:
-        type: boolean
+        type: string
   tags:
     - Notification
   responses:

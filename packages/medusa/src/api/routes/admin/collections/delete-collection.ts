@@ -25,6 +25,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *            object:
  *              type: string
  *              description: The type of the object that was deleted.
+ *              default: product-collection
  *            deleted:
  *              type: boolean
  *              description: Whether the collection was deleted successfully or not.

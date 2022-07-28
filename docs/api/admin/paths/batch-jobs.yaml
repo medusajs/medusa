@@ -14,16 +14,34 @@ post:
             type:
               type: string
               description: The type of batch job to start.
+              example: product-export
             context:
               type: object
               description: >-
                 Additional infomration regarding the batch to be used for
                 processing.
+              example:
+                shape:
+                  prices:
+                    - region: null
+                      currency_code: eur
+                  dynamicImageColumnCount: 4
+                  dynamicOptionColumnCount: 2
+                list_config:
+                  skip: 0
+                  take: 50
+                  order:
+                    created_at: DESC
+                  relations:
+                    - variants
+                    - variant.prices
+                    - images
             dry_run:
               type: boolean
               description: >-
                 Set a batch job in dry_run mode to get some information on what
                 will be done without applying any modifications.
+              default: false
   tags:
     - Batch Job
   responses:
@@ -54,6 +72,19 @@ get:
         type: integer
         default: 0
     - in: query
+      name: id
+      style: form
+      explode: false
+      description: Filter by the batch ID
+      schema:
+        oneOf:
+          - type: string
+            description: batch job ID
+          - type: array
+            description: multiple batch job IDs
+            items:
+              type: string
+    - in: query
       name: type
       style: form
       explode: false
@@ -71,7 +102,23 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: pre_processed_at
       style: form
@@ -81,7 +128,23 @@ get:
         less than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: completed_at
       style: form
@@ -91,7 +154,23 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: failed_at
       style: form
@@ -101,7 +180,23 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: canceled_at
       style: form
@@ -111,10 +206,26 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: order
-      description: Order used when retrieving batch jobs
+      description: Field used to order retrieved batch jobs
       schema:
         type: string
     - in: query
@@ -132,16 +243,6 @@ get:
       schema:
         type: string
     - in: query
-      name: deleted_at
-      style: form
-      explode: false
-      description: >-
-        Date comparison for when resulting collections was deleted, i.e. less
-        than, greater than etc.
-      schema:
-        type: object
-        nullable: true
-    - in: query
       name: created_at
       style: form
       explode: false
@@ -150,7 +251,23 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
     - in: query
       name: updated_at
       style: form
@@ -160,7 +277,23 @@ get:
         than, greater than etc.
       schema:
         type: object
-        nullable: true
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
   tags:
     - Batch Job
   responses:

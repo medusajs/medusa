@@ -88,6 +88,9 @@ import { validator } from "../../../../utils/validator"
  *              description: The new items to send to the Customer when the Claim type is Replace.
  *              type: array
  *              items:
+ *                required:
+ *                  - variant_id
+ *                  - quantity
  *                properties:
  *                  variant_id:
  *                    description: The ID of the Product Variant to ship.
@@ -112,8 +115,7 @@ import { validator } from "../../../../utils/validator"
  *           shipping_address:
  *              type: object
  *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *              anyOf:
- *               - $ref: "#/components/schemas/address"
+ *              $ref: "#/components/schemas/address"
  *           refund_amount:
  *              description: The amount to refund the Customer when the Claim type is `refund`.
  *              type: integer

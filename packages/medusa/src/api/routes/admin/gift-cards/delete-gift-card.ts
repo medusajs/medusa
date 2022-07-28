@@ -21,6 +21,7 @@
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: gift-card
  *             deleted:
  *               type: boolean
  *               description: Whether the gift card was deleted successfully or not.

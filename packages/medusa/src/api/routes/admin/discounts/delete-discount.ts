@@ -23,6 +23,7 @@ import DiscountService from "../../../../services/discount"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: discount
  *             deleted:
  *               type: boolean
  *               description: Whether the discount was deleted successfully or not.

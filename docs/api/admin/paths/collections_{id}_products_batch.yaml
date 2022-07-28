@@ -14,6 +14,8 @@ post:
     content:
       application/json:
         schema:
+          required:
+            - product_ids
           properties:
             product_ids:
               description: An array of Product IDs to add to the Product Collection.
@@ -48,6 +50,8 @@ delete:
     content:
       application/json:
         schema:
+          required:
+            - product_ids
           properties:
             product_ids:
               description: An array of Product IDs to remove from the Product Collection.
@@ -70,6 +74,7 @@ delete:
               object:
                 type: string
                 description: The type of object the removal was executed on
+                default: product-collection
               removed_products:
                 description: The IDs of the products removed from the collection
                 type: array
