@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 
 import SalesChannelService from "../../../../services/sales-channel"
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
@@ -44,4 +44,8 @@ export class AdminPostSalesChannelsReq {
   @IsString()
   @IsOptional()
   description: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_disabled?: boolean
 }
