@@ -4,7 +4,7 @@ import {
   IsEmail,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
@@ -39,10 +39,12 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *               - type: string
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *               - type: string
  *           gift_cards:
  *             description: "An array of Gift Card codes to add to the Cart."
  *             type: array

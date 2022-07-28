@@ -47,10 +47,12 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *               - type: string
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *               - type: string
  *           items:
  *             description: The Line Items that have been received.
  *             type: array
@@ -123,23 +125,24 @@ export default async (req, res) => {
 
   const { shipping_address, billing_address, ...rest } = validated
 
-  const draftOrderDataToUpdate: DraftOrderCreateProps = { ...rest }
+  const draftOrderDataToCreate: DraftOrderCreateProps = { ...rest }
+
   if (typeof shipping_address === "string") {
-    draftOrderDataToUpdate.shipping_address_id = shipping_address
+    draftOrderDataToCreate.shipping_address_id = shipping_address
   } else {
-    draftOrderDataToUpdate.shipping_address = shipping_address
+    draftOrderDataToCreate.shipping_address = shipping_address
   }
 
   if (typeof billing_address === "string") {
-    draftOrderDataToUpdate.billing_address_id = billing_address
+    draftOrderDataToCreate.billing_address_id = billing_address
   } else {
-    draftOrderDataToUpdate.billing_address = billing_address
+    draftOrderDataToCreate.billing_address = billing_address
   }
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
   let draftOrder: DraftOrder = await draftOrderService.create(
-    draftOrderDataToUpdate
+    draftOrderDataToCreate
   )
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {

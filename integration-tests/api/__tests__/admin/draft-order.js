@@ -76,6 +76,47 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order cart with a mix of addresses as AddressPayload and strings", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: {
+          first_name: "kap",
+          last_name: "test",
+          country_code: "us",
+        },
+        billing_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.draft_order.cart.shipping_address.id).toBeDefined()
+      expect(response.data.draft_order.cart.billing_address.id).toBeDefined()
+    })
+
     it("creates a draft order cart and creates new user", async () => {
       const api = useApi()
 
@@ -359,7 +400,7 @@ describe("/admin/draft-orders", () => {
       const payload = {
         email: "oli@test.dk",
         shipping_address: "oli-shipping",
-        discounts: [{ code: "TEST" }, { code: "free-shipping"}],
+        discounts: [{ code: "TEST" }, { code: "free-shipping" }],
         items: [
           {
             variant_id: "test-variant",
@@ -426,7 +467,7 @@ describe("/admin/draft-orders", () => {
           }),
           expect.objectContaining({
             code: "free-shipping",
-          })
+          }),
         ])
       )
     })
