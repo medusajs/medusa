@@ -95,7 +95,7 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await cartService.withTransaction(transactionManager).update(id, validated)
 
-    const updated = await cartService.retrieve(id, {
+    const updated = await cartService.withTransaction(transactionManager).retrieve(id, {
       relations: ["payment_sessions", "shipping_methods"],
     })
 
