@@ -3,9 +3,13 @@ import {
   Brackets,
   EntityRepository,
   FindOperator,
-  In, Repository,
+  In,
+  Repository,
 } from "typeorm"
-import { PriceList, Product, SalesChannel } from "../models"
+import { PriceList,
+  Product,
+  SalesChannel
+} from "../models"
 import {
   ExtendedFindConfig,
   Selector,

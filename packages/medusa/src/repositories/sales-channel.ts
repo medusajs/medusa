@@ -2,9 +2,10 @@ import {
   Brackets,
   DeleteResult,
   EntityRepository,
-  In, Repository,
+  In,
+  Repository,
 } from "typeorm"
-import { Product, SalesChannel } from "../models"
+import { SalesChannel } from "../models"
 import { ExtendedFindConfig, Selector } from "../types/common";
 
 @EntityRepository(SalesChannel)

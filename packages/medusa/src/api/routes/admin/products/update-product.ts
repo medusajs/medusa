@@ -86,7 +86,7 @@ import { validator } from "../../../../utils/validator"
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
  *         sales_channels:
- *             description: Sales channels to associate the Product with.
+ *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
  *             type: array
  *             items:
  *               properties:
