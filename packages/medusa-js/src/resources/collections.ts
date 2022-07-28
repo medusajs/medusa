@@ -16,7 +16,7 @@ class CollectionsResource extends BaseResource {
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsRes> {
     const path = `/store/collections/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -35,7 +35,7 @@ class CollectionsResource extends BaseResource {
       path = `/store/collections?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

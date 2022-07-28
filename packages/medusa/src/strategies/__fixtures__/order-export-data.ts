@@ -1,4 +1,5 @@
 import { DeepPartial } from "typeorm"
+import { IdMap } from "medusa-test-utils"
 import {
   FulfillmentStatus,
   Order,
@@ -39,6 +40,11 @@ export const ordersToExport: DeepPartial<Order>[] = [
       last_name: "Doe",
       email: "John@Doe.com",
     },
+    sales_channel: {
+      id: IdMap.getId("sc_1"),
+      name: "SC 1",
+      description: "SC 1",
+    },
   },
   {
     id: "order_2",
@@ -69,6 +75,11 @@ export const ordersToExport: DeepPartial<Order>[] = [
       first_name: "Jane",
       last_name: "Doe",
       email: "Jane@Doe.com",
+    },
+    sales_channel: {
+      id: IdMap.getId("sc_2"),
+      name: "SC 2",
+      description: "SC 2",
     },
   },
 ]
