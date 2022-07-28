@@ -3,6 +3,7 @@ import bodyParser from "body-parser"
 import middlewares from "../middleware"
 import { getConfigFile } from "medusa-core-utils"
 import cors from "cors"
+import { parseCorsOrigins } from "@medusajs/medusa/dist/utils"
 
 const route = Router()
 
@@ -14,7 +15,7 @@ export default (app, rootDirectory) => {
 
   route.use(
     cors({
-      origin: storeCors.split(","),
+      origin: parseCorsOrigins(storeCors),
       credentials: true,
     })
   )
