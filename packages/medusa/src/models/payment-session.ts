@@ -14,7 +14,6 @@ import { generateEntityId } from "../utils"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
-  SUCCEEDED = "succeeded",
   PENDING = "pending",
   REQUIRES_MORE = "requires_more",
   ERROR = "error",

@@ -164,7 +164,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     const query = buildQuery(selector, config)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -177,7 +177,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     const raw = await orderRepo.find(query)
 
     return await Promise.all(
-      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
   }
 
@@ -228,7 +228,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     }
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -240,13 +240,13 @@ class OrderService extends TransactionBaseService<OrderService> {
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
     const orders = await Promise.all(
-      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
     return [orders, count]
   }
 
-  protected transformQueryForTotals_(config: FindConfig<Order>): {
+  protected transformQueryForTotals(config: FindConfig<Order>): {
     relations: string[] | undefined
     select: FindConfig<Order>["select"]
     totalsToSelect: FindConfig<Order>["select"]
@@ -328,7 +328,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { id: orderId },
@@ -352,7 +352,7 @@ class OrderService extends TransactionBaseService<OrderService> {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
@@ -368,7 +368,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { cart_id: cartId },
@@ -391,7 +391,7 @@ class OrderService extends TransactionBaseService<OrderService> {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
@@ -407,7 +407,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { external_id: externalId },
@@ -431,7 +431,7 @@ class OrderService extends TransactionBaseService<OrderService> {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
@@ -748,7 +748,7 @@ class OrderService extends TransactionBaseService<OrderService> {
    * @param address - the value to set the billing address to
    * @return the result of the update operation
    */
-  protected async updateBillingAddress_(
+  protected async updateBillingAddress(
     order: Order,
     address: Address
   ): Promise<void> {
@@ -788,7 +788,7 @@ class OrderService extends TransactionBaseService<OrderService> {
    * @param address - the value to set the shipping address to
    * @return the result of the update operation
    */
-  protected async updateShippingAddress_(
+  protected async updateShippingAddress(
     order: Order,
     address: Address
   ): Promise<void> {
@@ -927,11 +927,11 @@ class OrderService extends TransactionBaseService<OrderService> {
       }
 
       if (update.shipping_address) {
-        await this.updateShippingAddress_(order, shipping_address as Address)
+        await this.updateShippingAddress(order, shipping_address as Address)
       }
 
       if (update.billing_address) {
-        await this.updateBillingAddress_(order, billing_address as Address)
+        await this.updateBillingAddress(order, billing_address as Address)
       }
 
       if (update.no_notification) {
@@ -1120,7 +1120,7 @@ class OrderService extends TransactionBaseService<OrderService> {
    * @return a line item that has the requested fulfillment quantity
    *   set.
    */
-  protected validateFulfillmentLineItem_(
+  protected validateFulfillmentLineItem(
     item: LineItem,
     quantity: number
   ): LineItem | null {
@@ -1323,7 +1323,7 @@ class OrderService extends TransactionBaseService<OrderService> {
    *    returned array.
    * @return the line items generated by the transformer.
    */
-  protected async getFulfillmentItems_(
+  protected async getFulfillmentItems(
     order: Order,
     items: FulFillmentItemType[],
     transformer: (item: LineItem | undefined, quantity: number) => unknown
@@ -1419,7 +1419,7 @@ class OrderService extends TransactionBaseService<OrderService> {
     })
   }
 
-  protected async decorateTotals_(
+  protected async decorateTotals(
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
@@ -1440,9 +1440,7 @@ class OrderService extends TransactionBaseService<OrderService> {
           break
         }
         case "tax_total": {
-          order.tax_total = await this.totalsService_
-            .withTransaction(this.manager_)
-            .getTaxTotal(order)
+          order.tax_total = await this.totalsService_.getTaxTotal(order)
           break
         }
         case "subtotal": {
