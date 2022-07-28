@@ -326,15 +326,15 @@ export class Order extends BaseEntity {
  *     description: The ID of the cart associated with the order
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: Available if the relation "cart" is expanded.
- *     $ref: "#/components/schemas/cart"
+ *     description: A cart object. Available if the relation "cart" is expanded.
+ *     type: object
  *   customer_id:
  *     type: string
  *     description: The ID of the customer associated with the order
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: Available if the relation "customer" is expanded.
- *     $ref: "#/components/schemas/customer"
+ *     description: A customer object. Available if the relation "customer" is expanded.
+ *     type: object
  *   email:
  *     description: The email associated with the order
  *     type: string
@@ -358,8 +358,8 @@ export class Order extends BaseEntity {
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: Available if the relation "region" is expanded.
- *     $ref: "#/components/schemas/region"
+ *     description: A region object. Available if the relation "region" is expanded.
+ *     type: object
  *   currency_code:
  *     description: "The 3 character currency code that is used in the order"
  *     type: string
@@ -403,29 +403,33 @@ export class Order extends BaseEntity {
  *     type: array
  *     description: The returns associated with the order. Available if the relation "returns" is expanded.
  *     items:
- *       $ref: "#/components/schemas/return"
+ *       type: object
+ *       description: A return object. 
  *   claims:
  *     type: array
  *     description: The claims associated with the order. Available if the relation "claims" is expanded.
  *     items:
- *       $ref: "#/components/schemas/claim_order"
+ *       type: object
+ *       description: A claim order object. 
  *   refunds:
  *     type: array
  *     description: The refunds associated with the order. Available if the relation "refunds" is expanded.
  *     items:
- *       $ref: "#/components/schemas/refund"
+ *       type: object
+ *       description: A refund object. 
  *   swaps:
  *     type: array
  *     description: The swaps associated with the order. Available if the relation "swaps" is expanded.
  *     items:
- *       $ref: "#/components/schemas/swap"
+ *       type: object
+ *       description: A swap object. 
  *   draft_order_id:
  *     type: string
  *     description: The ID of the draft order this order is associated with.
  *     example: null
  *   draft_order:
- *     description: Available if the relation "draft_order" is expanded.
- *     $ref: "#/components/schemas/draft-order"
+ *     description: A draft order object. Available if the relation "draft_order" is expanded.
+ *     type: object
  *   items:
  *     type: array
  *     description: The line items that belong to the order. Available if the relation "items" is expanded.
@@ -459,8 +463,8 @@ export class Order extends BaseEntity {
  *     description: The ID of the sales channel this order is associated with.
  *     example: null
  *   sales_channel:
- *     description: Available if the relation "sales_channel" is expanded.
- *     $ref: "#/components/schemas/sales_channel"
+ *     description: A sales channel object. Available if the relation "sales_channel" is expanded.
+ *     type: object
  *   shipping_total:
  *     type: integer
  *     description: The total of shipping

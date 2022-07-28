@@ -1,0 +1,64 @@
+post:
+  operationId: PostDraftOrdersDraftOrder
+  summary: Update a Draft Order"
+  description: Updates a Draft Order.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Draft Order.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            region_id:
+              type: string
+              description: The id of the Region to create the Draft Order in.
+            country_code:
+              type: string
+              description: The 2 character ISO code for the Country.
+            email:
+              type: string
+              description: An email to be used on the Draft Order.
+            billing_address:
+              description: The Address to be used for billing purposes.
+              anyOf:
+                - $ref: ../components/schemas/address.yaml
+            shipping_address:
+              description: The Address to be used for shipping.
+              anyOf:
+                - $ref: ../components/schemas/address.yaml
+            discounts:
+              description: An array of Discount codes to add to the Draft Order.
+              type: array
+              items:
+                type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    description: The code that a Discount is identifed by.
+                    type: string
+            no_notification_order:
+              description: >-
+                An optional flag passed to the resulting order to determine use
+                of notifications.
+              type: boolean
+            customer_id:
+              description: The id of the Customer to associate the Draft Order with.
+              type: string
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              draft_order:
+                $ref: ../components/schemas/draft-order.yaml

@@ -1,0 +1,44 @@
+post:
+  operationId: PostShippingProfiles
+  summary: Create a Shipping Profile
+  description: Creates a Shipping Profile
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - name
+          properties:
+            name:
+              description: The name of the Shipping Profile
+              type: string
+  tags:
+    - Shipping Profile
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              shipping_profile:
+                $ref: ../components/schemas/shipping_profile.yaml
+get:
+  operationId: GetShippingProfiles
+  summary: List Shipping Profiles
+  description: Retrieves a list of Shipping Profile.
+  x-authenticated: true
+  tags:
+    - Shipping Profile
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              shipping_profiles:
+                type: array
+                items:
+                  $ref: ../components/schemas/shipping_profile.yaml

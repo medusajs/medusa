@@ -1,0 +1,35 @@
+post:
+  operationId: PostCartsCartPaymentSession
+  summary: Select a Payment Session
+  description: >-
+    Selects a Payment Session as the session intended to be used towards the
+    completion of the Cart.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - provider_id
+          properties:
+            provider_id:
+              type: string
+              description: The ID of the Payment Provider.

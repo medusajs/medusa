@@ -178,16 +178,19 @@ module.exports = {
         // Plugin Options for loading OpenAPI files
         specs: [
           {
-            spec: path.join(apisPath, 'store-spec3.yaml'),
+            spec: path.join(apisPath, 'store/openapi.yaml'),
             route: '/api/store',
             layout: {
               noFooter: true
             }
           },
           {
-            spec: path.join(apisPath, 'admin-spec3.yaml'),
+            spec: path.join(apisPath, 'admin/openapi.yaml'),
             route: '/api/admin',
-          },
+            layout: {
+              noFooter: true
+            }
+          }
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
@@ -195,7 +198,10 @@ module.exports = {
             disableSearch: true,
             nativeScrollbars: true,
             sortTagsAlphabetically: true,
-            hideDownloadButton: true
+            hideDownloadButton: true,
+            expandResponses: "200,204",
+            generatedPayloadSamplesMaxDepth: 2,
+            onlyRequiredInSamples: true
           }
         }
       },

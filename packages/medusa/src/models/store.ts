@@ -118,8 +118,8 @@ export class Store extends BaseEntity {
  *     description: The sales channel ID the cart is associated with.
  *     example: null
  *   default_sales_channel:
- *     description: Available if the relation "default_sales_channel" is expanded.
- *     $ref: "#/components/schemas/sales_channel"
+ *     description: A sales channel object. Available if the relation "default_sales_channel" is expanded.
+ *     type: object
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details

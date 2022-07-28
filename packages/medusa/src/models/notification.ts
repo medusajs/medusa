@@ -95,8 +95,8 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: Available if the relation "customer" is expanded.
- *     $ref: "#/components/schemas/customer"
+ *     description: A customer object. Available if the relation "customer" is expanded.
+ *     type: object
  *   to:
  *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
  *     type: string
@@ -105,13 +105,6 @@ export class Notification extends BaseEntity {
  *     description: "The data that the Notification was sent with. This contains all the data necessary for the Notification Provider to initiate a resend."
  *     type: object
  *     example: {}
- *   parent_id:
- *     description: "The id of the Notification that was originally sent."
- *     type: string
- *     example: null
- *   parent_notification:
- *     description: Available if the relation "parent_notification" is expanded.
- *     $ref: "#/components/schemas/notification"
  *   resends:
  *     description: "The resends that have been completed after the original Notification."
  *     type: array
@@ -161,8 +154,8 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: Available if the relation "customer" is expanded.
- *     $ref: "#/components/schemas/customer"
+ *     description: A customer object. Available if the relation "customer" is expanded.
+ *     type: object
  *   to:
  *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
  *     type: string

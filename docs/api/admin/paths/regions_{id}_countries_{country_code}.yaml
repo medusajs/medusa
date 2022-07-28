@@ -1,0 +1,29 @@
+delete:
+  operationId: PostRegionsRegionCountriesCountry
+  summary: Remove Country
+  x-authenticated: true
+  description: Removes a Country from the list of Countries in a Region
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Region.
+      schema:
+        type: string
+    - in: path
+      name: country_code
+      required: true
+      description: The 2 character ISO code for the Country.
+      schema:
+        type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml

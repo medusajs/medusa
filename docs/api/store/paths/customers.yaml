@@ -1,0 +1,63 @@
+post:
+  operationId: PostCustomers
+  summary: Create a Customer
+  description: Creates a Customer account.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - first_name
+            - last_name
+            - email
+            - password
+          properties:
+            first_name:
+              description: The Customer's first name.
+              type: string
+            last_name:
+              description: The Customer's last name.
+              type: string
+            email:
+              description: The email of the customer.
+              type: string
+              format: email
+            password:
+              description: The Customer's password.
+              type: string
+              format: password
+            phone:
+              description: The Customer's phone number.
+              type: string
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+    '422':
+      description: A customer with the same email exists
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: string
+                description: The error code
+              type:
+                type: string
+                description: The type of error
+              message:
+                type: string
+                description: Human-readable message with details about the error
+          example:
+            code: invalid_request_error
+            type: duplicate_error
+            message: >-
+              A customer with the given email already has an account. Log in
+              instead

@@ -106,8 +106,8 @@ export class ShippingOption extends SoftDeletableEntity {
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: Available if the relation "region" is expanded.
- *     $ref: "#/components/schemas/region"
+ *     description: A region object. Available if the relation "region" is expanded.
+ *     type: object
  *   profile_id:
  *     description: "The ID of the Shipping Profile that the shipping option belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products."
  *     type: string

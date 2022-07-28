@@ -17,6 +17,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
+    "@redocly/cli": "latest",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "axios": "^0.21.1",
@@ -36,12 +37,6 @@
     "lerna": "^3.22.1",
     "lint-staged": "^11.2.3",
     "microbundle": "^0.13.3",
-<<<<<<< HEAD
-=======
-    "mongoose": "^5.10.15",
-    "openapi-typescript": "^5.2.0",
-    "orval": "^6.6.4",
->>>>>>> cbfad8549 (chore: fix oas comments (#1440))
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
@@ -73,6 +68,7 @@
     "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
+    "openapi:generate": "node ./scripts/build-openapi.js && rm -rf docs/api/admin/ docs/api/store/ && redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/ && redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"

@@ -36,25 +36,27 @@
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: Available if the relation "region" is expanded.
- *     $ref: "#/components/schemas/region"
+ *     description: A region object. Available if the relation "region" is expanded.
+ *     type: object
  *   discounts:
  *     type: array
  *     description: Available if the relation "discounts" is expanded.
  *     items:
- *       $ref: "#/components/schemas/discount"
+ *       type: object
+ *       description: A discount object.
  *   gift_cards:
  *     type: array
  *     description: Available if the relation "gift_cards" is expanded.
  *     items:
- *       $ref: "#/components/schemas/gift_card"
+ *       type: object
+ *       description: A gift card object.
  *   customer_id:
  *     type: string
  *     description: The customer's ID
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: Available if the relation "customer" is expanded.
- *     $ref: "#/components/schemas/customer"
+ *     description: A customer object. Available if the relation "customer" is expanded.
+ *     type: object
  *   payment_session:
  *     description: The selected payment session in the cart.
  *     $ref: "#/components/schemas/payment_session"
@@ -110,8 +112,8 @@
  *     description: The sales channel ID the cart is associated with.
  *     example: null
  *   sales_channel:
- *     description: Available if the relation "sales_channel" is expanded.
- *     $ref: "#/components/schemas/sales_channel"
+ *     description: A sales channel object. Available if the relation "sales_channel" is expanded.
+ *     type: object
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
