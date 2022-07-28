@@ -391,18 +391,16 @@ class ProductService extends TransactionBaseService<
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          typeof salesChannels !== "undefined"
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
-          product.sales_channels = []
-
-          if (salesChannels?.length) {
-            const salesChannelIds = salesChannels?.map((sc) => sc.id)
-            product.sales_channels = salesChannelIds?.map(
-              (id) => ({ id } as SalesChannel)
-            )
+          if (typeof salesChannels !== "undefined") {
+            product.sales_channels = []
+            if (salesChannels?.length) {
+              const salesChannelIds = salesChannels?.map((sc) => sc.id)
+              product.sales_channels = salesChannelIds?.map(
+                (id) => ({ id } as SalesChannel)
+              )
+            }
           }
         }
 

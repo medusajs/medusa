@@ -1,11 +1,15 @@
-import { Brackets, DeleteResult, EntityRepository, In } from "typeorm"
-import { BaseRepository } from "../interfaces"
-import { SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import {
+  Brackets,
+  DeleteResult,
+  EntityRepository,
+  In, Repository,
+} from "typeorm"
+import { Product, SalesChannel } from "../models"
+import { ExtendedFindConfig, Selector } from "../types/common";
 
 @EntityRepository(SalesChannel)
-export class SalesChannelRepository extends BaseRepository<SalesChannel> {
-  public async getFreeTextSearchResultsAndCount(
+export class SalesChannelRepository extends Repository<SalesChannel> {
+    public async getFreeTextSearchResultsAndCount(
     q: string,
     options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
       where: {},

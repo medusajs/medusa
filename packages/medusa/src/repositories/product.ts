@@ -3,7 +3,7 @@ import {
   Brackets,
   EntityRepository,
   FindOperator,
-  In,
+  In, Repository,
 } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
 import {
@@ -11,7 +11,6 @@ import {
   Selector,
   WithRequiredProperty,
 } from "../types/common"
-import { BaseRepository } from "../interfaces";
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
@@ -30,7 +29,7 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
 }
 
 @EntityRepository(Product)
-export class ProductRepository extends BaseRepository<Product> {
+export class ProductRepository extends Repository<Product> {
   private mergeEntitiesWithRelations(
     entitiesAndRelations: Array<Partial<Product>>
   ): Product[] {
