@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -16,6 +17,7 @@ import { CartService, LineItemService, RegionService } from "../../../../service
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /carts
@@ -77,6 +79,7 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   await entityManager.transaction(async (manager) => {
     let regionId: string
@@ -116,7 +119,10 @@ export default async (req, res) => {
             })
           await cartService
             .withTransaction(manager)
-            .addLineItem(cart.id, lineItem)
+            .addLineItem(cart.id, lineItem, {
+              validateSalesChannels:
+                featureFlagRouter.isFeatureEnabled("sales_channels"),
+            })
         })
       )
     }

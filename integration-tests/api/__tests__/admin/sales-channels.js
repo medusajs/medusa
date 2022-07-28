@@ -12,8 +12,8 @@ const {
   simpleCartFactory,
 } = require("../../factories")
 const { simpleOrderFactory } = require("../../factories")
-const orderSeeder = require("../../helpers/order-seeder");
-const productSeeder = require("../../helpers/product-seeder");
+const orderSeeder = require("../../helpers/order-seeder")
+const productSeeder = require("../../helpers/product-seeder")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -88,7 +88,8 @@ describe("sales channels", () => {
   })
 
   describe("GET /admin/sales-channels", () => {
-    let salesChannel1, salesChannel2
+    let salesChannel1
+    let salesChannel2
 
     beforeEach(async () => {
       try {
@@ -113,10 +114,7 @@ describe("sales channels", () => {
 
     it("should list the sales channel", async () => {
       const api = useApi()
-      const response = await api.get(
-        `/admin/sales-channels/`,
-        adminReqConfig
-      )
+      const response = await api.get(`/admin/sales-channels/`, adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
@@ -144,7 +142,7 @@ describe("sales channels", () => {
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
-        ])
+        ]),
       })
     })
 
@@ -172,7 +170,7 @@ describe("sales channels", () => {
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
-        ])
+        ]),
       })
     })
 
@@ -200,7 +198,7 @@ describe("sales channels", () => {
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
-        ])
+        ]),
       })
     })
   })
@@ -268,6 +266,31 @@ describe("sales channels", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("successfully creates a disabled sales channel", async () => {
+      const api = useApi()
+
+      const newSalesChannel = {
+        name: "sales channel name",
+        is_disabled: true,
+      }
+
+      const response = await api
+        .post("/admin/sales-channels", newSalesChannel, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channel).toBeTruthy()
+
+      expect(response.data).toMatchSnapshot({
+        sales_channel: expect.objectContaining({
+          name: newSalesChannel.name,
+          is_disabled: true,
+        }),
+      })
     })
 
     it("successfully creates a sales channel", async () => {
@@ -621,7 +644,7 @@ describe("sales channels", () => {
     let salesChannel
     let product
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
         product = await simpleProductFactory(dbConnection, {
@@ -631,7 +654,7 @@ describe("sales channels", () => {
         salesChannel = await simpleSalesChannelFactory(dbConnection, {
           name: "test name",
           description: "test description",
-          products: [product]
+          products: [product],
         })
       } catch (e) {
         console.error(e)
@@ -643,12 +666,12 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it("should remove products from a sales channel", async() => {
+    it("should remove products from a sales channel", async () => {
       const api = useApi()
 
       let attachedProduct = await dbConnection.manager.findOne(Product, {
         where: { id: product.id },
-        relations: ["sales_channels"]
+        relations: ["sales_channels"],
       })
 
       expect(attachedProduct.sales_channels.length).toBe(1)
@@ -659,28 +682,28 @@ describe("sales channels", () => {
             name: "test name",
             description: "test description",
             is_disabled: false,
-          })
+          }),
         ])
       )
 
       const payload = {
-        product_ids: [{ id: product.id }]
+        product_ids: [{ id: product.id }],
       }
 
       await api.delete(
         `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          {
-            ...adminReqConfig,
-            data: payload,
-          },
+        {
+          ...adminReqConfig,
+          data: payload,
+        }
       )
       // Validate idempotency
       const response = await api.delete(
         `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          {
-            ...adminReqConfig,
-            data: payload,
-          },
+        {
+          ...adminReqConfig,
+          data: payload,
+        }
       )
 
       expect(response.status).toEqual(200)
@@ -695,7 +718,7 @@ describe("sales channels", () => {
 
       attachedProduct = await dbConnection.manager.findOne(Product, {
         where: { id: product.id },
-        relations: ["sales_channels"]
+        relations: ["sales_channels"],
       })
 
       expect(attachedProduct.sales_channels.length).toBe(0)
@@ -706,7 +729,7 @@ describe("sales channels", () => {
     let salesChannel
     let product
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
         salesChannel = await simpleSalesChannelFactory(dbConnection, {
@@ -727,17 +750,17 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it("should add products to a sales channel", async() => {
+    it("should add products to a sales channel", async () => {
       const api = useApi()
 
       const payload = {
-        product_ids: [{ id: product.id }]
+        product_ids: [{ id: product.id }],
       }
 
-      let response = await api.post(
-          `/admin/sales-channels/${salesChannel.id}/products/batch`,
-          payload,
-          adminReqConfig
+      const response = await api.post(
+        `/admin/sales-channels/${salesChannel.id}/products/batch`,
+        payload,
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -751,9 +774,9 @@ describe("sales channels", () => {
         deleted_at: null,
       })
 
-      let attachedProduct = await dbConnection.manager.findOne(Product, {
+      const attachedProduct = await dbConnection.manager.findOne(Product, {
         where: { id: product.id },
-        relations: ["sales_channels"]
+        relations: ["sales_channels"],
       })
 
       expect(attachedProduct.sales_channels.length).toBe(1)
@@ -764,7 +787,7 @@ describe("sales channels", () => {
             name: "test name",
             description: "test description",
             is_disabled: false,
-          })
+          }),
         ])
       )
     })
@@ -774,7 +797,7 @@ describe("sales channels", () => {
     describe("GET /admin/orders", () => {
       let order
 
-      beforeEach(async() => {
+      beforeEach(async () => {
         try {
           await adminSeeder(dbConnection)
           order = await simpleOrderFactory(dbConnection, {
@@ -790,21 +813,21 @@ describe("sales channels", () => {
         }
       })
 
-      afterEach(async() => {
+      afterEach(async () => {
         const db = useDb()
         await db.teardown()
       })
 
-      it("should successfully lists orders that belongs to the requested sales channels", async() => {
+      it("should successfully lists orders that belongs to the requested sales channels", async () => {
         const api = useApi()
 
         const response = await api.get(
-            `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
-            {
-              headers: {
-                authorization: "Bearer test_token",
-              },
-            }
+          `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
         )
 
         expect(response.status).toEqual(200)
@@ -834,7 +857,7 @@ describe("sales channels", () => {
           salesChannel = await simpleSalesChannelFactory(dbConnection, {
             name: "test name",
             description: "test description",
-            products: [product]
+            products: [product],
           })
         } catch (err) {
           console.log(err)
@@ -842,33 +865,33 @@ describe("sales channels", () => {
         }
       })
 
-      afterEach(async() => {
+      afterEach(async () => {
         const db = useDb()
         await db.teardown()
       })
 
-      it("should returns a list of products that belongs to the requested sales channels", async() => {
+      it("should returns a list of products that belongs to the requested sales channels", async () => {
         const api = useApi()
 
         const response = await api
-            .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
-              headers: {
-                Authorization: "Bearer test_token",
-              },
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+          .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          })
+          .catch((err) => {
+            console.log(err)
+          })
 
         expect(response.status).toEqual(200)
         expect(response.data.products.length).toEqual(1)
         expect(response.data.products).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                id: productData.id,
-                title: productData.title
-              }),
-            ])
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: productData.id,
+              title: productData.title,
+            }),
+          ])
         )
       })
     })

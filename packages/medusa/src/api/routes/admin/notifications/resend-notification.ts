@@ -6,6 +6,7 @@ import {
 } from "."
 import { validator } from "../../../../utils/validator"
 import { NotificationService } from "../../../../services"
+import { Notification } from "../../../../models"
 
 /**
  * @oas [post] /notifications/{id}/resend
@@ -56,7 +57,7 @@ export default async (req, res) => {
   await notificationService.resend(id, config)
 
   const notification = await notificationService.retrieve(id, {
-    select: defaultAdminNotificationsFields,
+    select: defaultAdminNotificationsFields as (keyof Notification)[],
     relations: defaultAdminNotificationsRelations,
   })
 

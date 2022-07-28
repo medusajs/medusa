@@ -12,7 +12,6 @@ import {
   Discount,
   LineItem,
   ShippingMethod,
-  User,
   SalesChannel,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
@@ -45,8 +44,8 @@ import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { FlagRouter } from "../utils/flag-router"
-import SalesChannelService from "./sales-channel"
 import StoreService from "./store"
+import { SalesChannelService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -101,7 +100,6 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
-  protected readonly featureFlagRouter_: FlagRouter
   protected readonly storeService_: StoreService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly regionService_: RegionService
@@ -117,6 +115,7 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly customShippingOptionService_: CustomShippingOptionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -540,7 +539,7 @@ class CartService extends TransactionBaseService<CartService> {
    * shipping methods.
    * @param shippingMethods - the set of shipping methods to check from
    * @param lineItem - the line item
-   * @return boolean representing wheter shipping method is validated
+   * @return boolean representing whether shipping method is validated
    */
   protected validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
@@ -567,12 +566,48 @@ class CartService extends TransactionBaseService<CartService> {
   }
 
   /**
+   * Check if line item's variant belongs to the cart's sales channel.
+   *
+   * @param cart - the cart for the line item
+   * @param lineItem - the line item being added
+   * @return a boolean indicating validation result
+   */
+  protected async validateLineItem(
+    cart: Cart,
+    lineItem: LineItem
+  ): Promise<boolean> {
+    if (!cart.sales_channel_id) {
+      return true
+    }
+
+    const lineItemVariant = await this.productVariantService_
+      .withTransaction(this.manager_)
+      .retrieve(lineItem.variant_id)
+
+    return !!(
+      await this.productService_
+        .withTransaction(this.manager_)
+        .filterProductsBySalesChannel(
+          [lineItemVariant.product_id],
+          cart.sales_channel_id
+        )
+    ).length
+  }
+
+  /**
    * Adds a line item to the cart.
    * @param cartId - the id of the cart that we will add to
    * @param lineItem - the line item to add.
+   * @param config
+   *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
+   *                            (if cart has associated sales channel)
    * @return the result of the update operation
    */
-  async addLineItem(cartId: string, lineItem: LineItem): Promise<Cart> {
+  async addLineItem(
+    cartId: string,
+    lineItem: LineItem,
+    config = { validateSalesChannels: true }
+  ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -587,6 +622,17 @@ class CartService extends TransactionBaseService<CartService> {
             "discounts.rule",
           ],
         })
+
+        if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
+          if (config.validateSalesChannels) {
+            if (!(await this.validateLineItem(cart, lineItem))) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `The product "${lineItem.title}" must belongs to the sales channel on which the cart has been created.`
+              )
+            }
+          }
+        }
 
         let currentItem: LineItem | undefined
         if (lineItem.should_merge) {
@@ -942,8 +988,10 @@ class CartService extends TransactionBaseService<CartService> {
 
   /**
    * Remove the cart line item that does not belongs to the newly assigned sales channel
+   *
    * @param cart - The cart being updated
    * @param newSalesChannelId - The new sales channel being assigned to the cart
+   * @return void
    * @protected
    */
   protected async onSalesChannelChange(

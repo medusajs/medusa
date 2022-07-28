@@ -1,7 +1,7 @@
 import { MedusaContainer } from "../types/global"
-import DefaultSearchService from "../services/search"
 import { Logger } from "../types/global"
 import { EventBusService } from "../services"
+import { AbstractSearchService } from "../interfaces"
 
 export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
 
@@ -21,7 +21,8 @@ export default async ({
 }: {
   container: MedusaContainer
 }): Promise<void> => {
-  const searchService = container.resolve<DefaultSearchService>("searchService")
+  const searchService =
+    container.resolve<AbstractSearchService<never>>("searchService")
   const logger = container.resolve<Logger>("logger")
   if (searchService.isDefault) {
     logger.warn(

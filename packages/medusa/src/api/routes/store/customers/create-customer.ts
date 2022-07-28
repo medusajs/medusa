@@ -4,6 +4,7 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers
@@ -32,7 +33,14 @@ export default async (req, res) => {
   const validated = await validator(StorePostCustomersReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  let customer: Customer = await customerService.create(validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  let customer: Customer = await manager.transaction(
+    async (transactionManager) => {
+      return await customerService
+        .withTransaction(transactionManager)
+        .create(validated)
+    }
+  )
 
   // Add JWT to cookie
   const {

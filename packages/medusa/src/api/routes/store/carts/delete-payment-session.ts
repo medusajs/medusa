@@ -1,6 +1,7 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { EntityManager } from "typeorm";
 
 /**
  * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
@@ -27,7 +28,11 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
 
-  await cartService.deletePaymentSession(id, provider_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await cartService.withTransaction(transactionManager).deletePaymentSession(id, provider_id)
+  })
+
   const cart = await cartService.retrieve(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
