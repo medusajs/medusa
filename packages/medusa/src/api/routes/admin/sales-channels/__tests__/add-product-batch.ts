@@ -9,7 +9,9 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/sales-channels/${IdMap.getId("sales_channel_1")}/products/batch`,
+        `/admin/sales-channels/${IdMap.getId(
+          "sales_channel_1"
+        )}/products/batch`,
         {
           adminSession: {
             jwt: {
@@ -17,7 +19,7 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
             },
           },
           payload: {
-            product_ids: [{ id: IdMap.getId("sales_channel_1_product_1") }]
+            product_ids: [{ id: "sales_channel_1_product_1" }],
           },
           flags: ["sales_channels"],
         }
@@ -32,7 +34,7 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
       expect(SalesChannelServiceMock.addProducts).toHaveBeenCalledTimes(1)
       expect(SalesChannelServiceMock.addProducts).toHaveBeenCalledWith(
         IdMap.getId("sales_channel_1"),
-        [IdMap.getId("sales_channel_1_product_1")]
+        ["sales_channel_1_product_1"]
       )
     })
   })

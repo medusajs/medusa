@@ -1,9 +1,9 @@
 import { AwilixContainer } from "awilix"
-import { Logger as _Logger } from "winston"
+import { Request } from "express"
 import { LoggerOptions } from "typeorm"
+import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
 import { FindConfig, RequestQueryFields } from "./common"
-import { Request } from "express"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -16,6 +16,7 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
+      errors: string[]
     }
   }
 }
