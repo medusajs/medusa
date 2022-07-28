@@ -33,7 +33,7 @@ class AdminTaxRatesResource extends BaseResource {
       path = `/admin/tax-rates/${id}?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   list(
@@ -47,7 +47,7 @@ class AdminTaxRatesResource extends BaseResource {
       path = `/admin/tax-rates?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   create(
@@ -182,7 +182,7 @@ class AdminTaxRatesResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesDeleteRes> {
     const path = `/admin/tax-rates/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 

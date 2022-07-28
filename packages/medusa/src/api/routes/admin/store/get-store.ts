@@ -36,8 +36,13 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
+  const relations = ["currencies", "default_currency"]
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    relations.push("default_sales_channel")
+  }
+
   const data = (await storeService.retrieve({
-    relations: ["currencies", "default_currency"],
+    relations,
   })) as Store & {
     payment_providers: PaymentProvider[]
     fulfillment_providers: FulfillmentProvider[]
