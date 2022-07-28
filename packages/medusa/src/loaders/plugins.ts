@@ -339,6 +339,10 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
+      if (loaded === undefined) {
+        return
+      }
+
       if (
         !(loaded.prototype instanceof LegacyBaseService) &&
         !(loaded.prototype instanceof BaseService)
