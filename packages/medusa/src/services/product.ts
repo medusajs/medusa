@@ -467,8 +467,19 @@ class ProductService extends TransactionBaseService<
 
       const relations = ["variants", "tags", "images"]
 
-      if (typeof update.sales_channels !== "undefined") {
-        relations.push("sales_channels")
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (typeof update.sales_channels !== "undefined") {
+          relations.push("sales_channels")
+        }
+      } else {
+        if (typeof update.sales_channels !== "undefined") {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "the property sales_channels should no appears as part of the payload"
+          )
+        }
       }
 
       const product = await this.retrieve(productId, {
@@ -506,19 +517,20 @@ class ProductService extends TransactionBaseService<
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-        typeof salesChannels !== "undefined"
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        product.sales_channels = []
-        if (salesChannels?.length) {
-          const salesChannelIds = salesChannels?.map((sc) => sc.id)
-          await productRepo.validateAllItemExistsOrThrow(
-            SalesChannel,
-            salesChannelIds
-          )
-          product.sales_channels = salesChannelIds?.map(
-            (id) => ({ id } as SalesChannel)
-          )
+        if (typeof salesChannels !== "undefined") {
+          product.sales_channels = []
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            await productRepo.validateAllItemExistsOrThrow(
+              SalesChannel,
+              salesChannelIds
+            )
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
+          }
         }
       }
 
