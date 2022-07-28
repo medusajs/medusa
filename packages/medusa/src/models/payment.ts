@@ -99,21 +99,21 @@ export class Payment extends BaseEntity {
  *     type: string
  *     example: null
  *   swap:
- *     description: Available if the relation "swap" is expanded.
- *     $ref: "#/components/schemas/swap"
+ *     description: A swap object. Available if the relation "swap" is expanded.
+ *     type: object
  *   cart_id:
  *     description: "The id of the Cart that the Payment Session is created for."
  *     type: string
  *   cart:
- *     description: Available if the relation "cart" is expanded.
- *     $ref: "#/components/schemas/cart"
+ *     description: A cart object. Available if the relation "cart" is expanded.
+ *     type: object
  *   order_id:
  *     description: "The ID of the Order that the Payment is used for."
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: Available if the relation "order" is expanded.
- *     $ref: "#/components/schemas/order"
+ *     description: An order object. Available if the relation "order" is expanded.
+ *     type: object
  *   amount:
  *     description: "The amount that the Payment has been authorized for."
  *     type: integer

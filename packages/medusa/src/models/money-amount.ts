@@ -114,14 +114,14 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
  *     description: The Product Variant contained in the Line Item. Available if the relation "variant" is expanded.
- *     $ref: "#/components/schemas/product_variant"
+ *     type: object
  *   region_id:
  *     type: string
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: Available if the relation "region" is expanded.
- *     $ref: "#/components/schemas/region"
+ *     description: A region object. Available if the relation "region" is expanded.
+ *     type: object
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

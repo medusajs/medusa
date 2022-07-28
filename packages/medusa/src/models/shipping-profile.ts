@@ -64,7 +64,8 @@ export class ShippingProfile extends SoftDeletableEntity {
  *     description: The Products that the Shipping Profile defines Shipping Options for. Available if the relation "products" is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product"
+ *       type: object
+ *       description: A product object.
  *   shipping_options:
  *     description: The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation "shipping_options" is expanded.
  *     type: array

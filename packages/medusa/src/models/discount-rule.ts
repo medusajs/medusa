@@ -89,7 +89,8 @@ export class DiscountRule extends SoftDeletableEntity {
  *     description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation "conditions" is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/discount_condition"
+ *       type: object
+ *       description: A discount condition object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

@@ -56,7 +56,8 @@ export class ProductCollection extends SoftDeletableEntity {
  *     description: The Products contained in the Product Collection. Available if the relation "products" is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product"
+ *       type: object
+ *       description: A product collection object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

@@ -136,115 +136,6 @@ paths:
                   exists:
                     type: boolean
                     description: Whether email exists or not.
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -848,6 +739,229 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The ID of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: Look up an order using filters.
+      parameters:
+        - in: query
+          name: display_id
+          required: true
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          style: form
+          explode: false
+          description: The email associated with this order.
+          required: true
+          schema:
+            type: string
+            format: email
+        - in: query
+          name: shipping_address
+          style: form
+          explode: false
+          description: The shipping address associated with this order.
+          schema:
+            type: object
+            properties:
+              postal_code:
+                type: string
+                description: The postal code of the shipping address
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -1207,120 +1321,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
-  '/orders/cart/{cart_id}':
-    get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The ID of Cart.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  /orders:
-    get:
-      operationId: GetOrders
-      summary: Look Up an Order
-      description: Look up an order using filters.
-      parameters:
-        - in: query
-          name: display_id
-          required: true
-          description: The display id given to the Order.
-          schema:
-            type: number
-        - in: query
-          name: email
-          style: form
-          explode: false
-          description: The email associated with this order.
-          required: true
-          schema:
-            type: string
-            format: email
-        - in: query
-          name: shipping_address
-          style: form
-          explode: false
-          description: The shipping address associated with this order.
-          schema:
-            type: object
-            properties:
-              postal_code:
-                type: string
-                description: The postal code of the shipping address
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -2029,7 +2029,10 @@ components:
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
           description: Available if the relation "customer" is expanded.
-          $ref: '#/components/schemas/customer'
+          type: array
+          items:
+            type: object
+            description: A customer object.
         company:
           type: string
           description: Company name
@@ -2063,8 +2066,8 @@ components:
             description: See a list of codes.
           example: st
         country:
-          description: Available if the relation "country" is expanded.
-          $ref: '#/components/schemas/country'
+          description: A country object. Available if the relation "country" is expanded.
+          type: object
         province:
           type: string
           description: Province
@@ -2128,8 +2131,10 @@ components:
           description: The unique identifier of the user that created the batch job.
           example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         created_by_user:
-          description: Available if the relation "created_by_user" is expanded.
-          $ref: '#/components/schemas/user'
+          description: >-
+            A user object. Available if the relation "created_by_user" is
+            expanded.
+          type: object
         context:
           type: object
           description: >-
@@ -2271,25 +2276,27 @@ components:
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
         discounts:
           type: array
           description: Available if the relation "discounts" is expanded.
           items:
-            $ref: '#/components/schemas/discount'
+            type: object
+            description: A discount object.
         gift_cards:
           type: array
           description: Available if the relation "gift_cards" is expanded.
           items:
-            $ref: '#/components/schemas/gift_card'
+            type: object
+            description: A gift card object.
         customer_id:
           type: string
           description: The customer's ID
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: Available if the relation "customer" is expanded.
-          $ref: '#/components/schemas/customer'
+          description: A customer object. Available if the relation "customer" is expanded.
+          type: object
         payment_session:
           description: The selected payment session in the cart.
           $ref: '#/components/schemas/payment_session'
@@ -2350,8 +2357,10 @@ components:
           description: The sales channel ID the cart is associated with.
           example: null
         sales_channel:
-          description: Available if the relation "sales_channel" is expanded.
-          $ref: '#/components/schemas/sales_channel'
+          description: >-
+            A sales channel object. Available if the relation "sales_channel" is
+            expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -2423,8 +2432,10 @@ components:
           type: string
           description: The ID of the claim item associated with the image
         claim_item:
-          description: Available if the relation "claim_item" is expanded.
-          $ref: '#/components/schemas/claim_item'
+          description: >-
+            A claim item object. Available if the relation "claim_item" is
+            expanded.
+          type: object
         url:
           type: string
           description: The URL of the image
@@ -2472,8 +2483,10 @@ components:
           description: The ID of the claim this item is associated with.
           type: string
         claim_order:
-          description: Available if the relation "claim_order" is expanded.
-          $ref: '#/components/schemas/claim_order'
+          description: >-
+            A claim order object. Available if the relation "claim_order" is
+            expanded.
+          type: object
         item_id:
           description: The ID of the line item that the claim item refers to.
           type: string
@@ -2486,8 +2499,8 @@ components:
           type: string
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
-          description: Available if the relation "variant" is expanded.
-          $ref: '#/components/schemas/product_variant'
+          description: A variant object. Available if the relation "variant" is expanded.
+          type: object
         reason:
           description: The reason for the claim
           type: string
@@ -2588,8 +2601,8 @@ components:
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         return_order:
           description: >-
             Holds information about the return if the claim is to be returned.
@@ -2738,8 +2751,8 @@ components:
           description: The region ID this country is associated with.
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
     currency:
       title: Currency
       description: Currency
@@ -2797,15 +2810,17 @@ components:
           type: string
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
-          description: Available if the relation "shipping_option" is expanded.
-          $ref: '#/components/schemas/shipping_option'
+          description: >-
+            A shipping option object. Available if the relation
+            "shipping_option" is expanded.
+          type: object
         cart_id:
           description: The ID of the Cart that the custom shipping option is attached to
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -2844,7 +2859,8 @@ components:
             The customers that belong to the customer group. Available if the
             relation "customers" is expanded.
           items:
-            $ref: '#/components/schemas/customer'
+            type: object
+            description: A customer object.
         price_lists:
           type: array
           description: >-
@@ -2916,7 +2932,8 @@ components:
           description: Available if the relation "orders" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/order'
+            type: object
+            description: An order object.
         groups:
           description: >-
             The customer groups the customer belongs to. Available if the
@@ -3157,7 +3174,8 @@ components:
             Available if the relation "products" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product'
+            type: object
+            description: A product object.
         product_types:
           description: >-
             product types associated with this condition if type =
@@ -3165,14 +3183,16 @@ components:
             expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_type'
+            type: object
+            description: A product type object.
         product_tags:
           description: >-
             product tags associated with this condition if type = product_tags.
             Available if the relation "product_tags" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_tag'
+            type: object
+            description: A product tag object.
         product_collections:
           description: >-
             product collections associated with this condition if type =
@@ -3180,7 +3200,8 @@ components:
             is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_collection'
+            type: object
+            description: A product collection object.
         customer_groups:
           description: >-
             customer groups associated with this condition if type =
@@ -3188,7 +3209,8 @@ components:
             expanded.
           type: array
           items:
-            $ref: '#/components/schemas/customer_group'
+            type: object
+            description: A customer group object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -3254,7 +3276,8 @@ components:
             be used. Available if the relation "conditions" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/discount_condition'
+            type: object
+            description: A discount condition object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -3338,7 +3361,8 @@ components:
             relation "regions" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/region'
+            type: object
+            description: A region object.
         usage_limit:
           description: The maximum number of times that a discount can be used.
           type: integer
@@ -3390,15 +3414,15 @@ components:
           description: The ID of the cart associated with the draft order.
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         order_id:
           type: string
           description: The ID of the order associated with the draft order.
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         canceled_at:
           type: string
           description: The date the draft order was canceled at.
@@ -3457,8 +3481,10 @@ components:
           type: string
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         fulfillment:
-          description: Available if the relation "fulfillment" is expanded.
-          $ref: '#/components/schemas/fulfillment'
+          description: >-
+            A fulfillment object. Available if the relation "fulfillment" is
+            expanded.
+          type: object
         item:
           description: Available if the relation "item" is expanded.
           $ref: '#/components/schemas/line_item'
@@ -3505,24 +3531,26 @@ components:
         claim_order_id:
           description: The id of the Claim that the Fulfillment belongs to.
           type: string
-          example: claim_01G8ZH853Y6TFXWPG5EYE81X63
+          example: null
         claim_order:
-          description: Available if the relation "claim_order" is expanded.
-          $ref: '#/components/schemas/claim_order'
+          description: >-
+            A claim order object. Available if the relation "claim_order" is
+            expanded.
+          type: object
         swap_id:
           description: The id of the Swap that the Fulfillment belongs to.
           type: string
-          example: swap_01F0YET86Y9G92D3YDR9Y6V676
+          example: null
         swap:
-          description: Available if the relation "swap" is expanded.
-          $ref: '#/components/schemas/swap'
+          description: A swap object. Available if the relation "swap" is expanded.
+          type: object
         order_id:
           description: The id of the Order that the Fulfillment belongs to.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         provider_id:
           description: >-
             The id of the Fulfillment Provider responsible for handling the
@@ -3621,15 +3649,17 @@ components:
           type: string
           example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
         gift_card:
-          description: Available if the relation "gift_card" is expanded.
-          $ref: '#/components/schemas/gift_card'
+          description: >-
+            A gift card object. Available if the relation "gift_card" is
+            expanded.
+          type: object
         order_id:
           description: The ID of the Order that the Gift Card was used to pay for.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         amount:
           description: The amount that was used from the Gift Card.
           type: integer
@@ -3681,15 +3711,15 @@ components:
           description: The id of the Region in which the Gift Card is available.
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
         order_id:
           type: string
           description: The id of the Order that the Gift Card was purchased in.
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         is_disabled:
           description: >-
             Whether the Gift Card has been disabled. Disabled Gift Cards cannot
@@ -3964,29 +3994,31 @@ components:
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         order_id:
           description: The ID of the Order that the Line Item belongs to.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         swap_id:
           description: The id of the Swap that the Line Item belongs to.
           type: string
-          example: swap_01F0YET86Y9G92D3YDR9Y6V676
+          example: null
         swap:
-          description: Available if the relation "swap" is expanded.
-          $ref: '#/components/schemas/swap'
+          description: A swap object. Available if the relation "swap" is expanded.
+          type: object
         claim_order_id:
           description: The id of the Claim that the Line Item belongs to.
           type: string
           example: null
         claim_order:
-          description: Available if the relation "claim_order" is expanded.
-          $ref: '#/components/schemas/claim_order'
+          description: >-
+            A claim order object. Available if the relation "claim_order" is
+            expanded.
+          type: object
         tax_lines:
           description: Available if the relation "tax_lines" is expanded.
           type: array
@@ -4052,9 +4084,9 @@ components:
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
           description: >-
-            The Product Variant contained in the Line Item. Available if the
-            relation "variant" is expanded.
-          $ref: '#/components/schemas/product_variant'
+            A product variant object. The Product Variant contained in the Line
+            Item. Available if the relation "variant" is expanded.
+          type: object
         quantity:
           description: The quantity of the content in the Line Item.
           type: integer
@@ -4179,14 +4211,14 @@ components:
           description: >-
             The Product Variant contained in the Line Item. Available if the
             relation "variant" is expanded.
-          $ref: '#/components/schemas/product_variant'
+          type: object
         region_id:
           type: string
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -4310,8 +4342,8 @@ components:
           type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: Available if the relation "customer" is expanded.
-          $ref: '#/components/schemas/customer'
+          description: A customer object. Available if the relation "customer" is expanded.
+          type: object
         to:
           description: >-
             The address that the Notification was sent to. This will usually be
@@ -4325,13 +4357,6 @@ components:
             data necessary for the Notification Provider to initiate a resend.
           type: object
           example: {}
-        parent_id:
-          description: The id of the Notification that was originally sent.
-          type: string
-          example: null
-        parent_notification:
-          description: Available if the relation "parent_notification" is expanded.
-          $ref: '#/components/schemas/notification'
         resends:
           description: >-
             The resends that have been completed after the original
@@ -4380,8 +4405,8 @@ components:
           type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: Available if the relation "customer" is expanded.
-          $ref: '#/components/schemas/customer'
+          description: A customer object. Available if the relation "customer" is expanded.
+          type: object
         to:
           description: >-
             The address that the Notification was sent to. This will usually be
@@ -4509,15 +4534,15 @@ components:
           description: The ID of the cart associated with the order
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         customer_id:
           type: string
           description: The ID of the customer associated with the order
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
-          description: Available if the relation "customer" is expanded.
-          $ref: '#/components/schemas/customer'
+          description: A customer object. Available if the relation "customer" is expanded.
+          type: object
         email:
           description: The email associated with the order
           type: string
@@ -4541,8 +4566,8 @@ components:
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
         currency_code:
           description: The 3 character currency code that is used in the order
           type: string
@@ -4598,35 +4623,41 @@ components:
             The returns associated with the order. Available if the relation
             "returns" is expanded.
           items:
-            $ref: '#/components/schemas/return'
+            type: object
+            description: A return object.
         claims:
           type: array
           description: >-
             The claims associated with the order. Available if the relation
             "claims" is expanded.
           items:
-            $ref: '#/components/schemas/claim_order'
+            type: object
+            description: A claim order object.
         refunds:
           type: array
           description: >-
             The refunds associated with the order. Available if the relation
             "refunds" is expanded.
           items:
-            $ref: '#/components/schemas/refund'
+            type: object
+            description: A refund object.
         swaps:
           type: array
           description: >-
             The swaps associated with the order. Available if the relation
             "swaps" is expanded.
           items:
-            $ref: '#/components/schemas/swap'
+            type: object
+            description: A swap object.
         draft_order_id:
           type: string
           description: The ID of the draft order this order is associated with.
           example: null
         draft_order:
-          description: Available if the relation "draft_order" is expanded.
-          $ref: '#/components/schemas/draft-order'
+          description: >-
+            A draft order object. Available if the relation "draft_order" is
+            expanded.
+          type: object
         items:
           type: array
           description: >-
@@ -4669,8 +4700,10 @@ components:
           description: The ID of the sales channel this order is associated with.
           example: null
         sales_channel:
-          description: Available if the relation "sales_channel" is expanded.
-          $ref: '#/components/schemas/sales_channel'
+          description: >-
+            A sales channel object. Available if the relation "sales_channel" is
+            expanded.
+          type: object
         shipping_total:
           type: integer
           description: The total of shipping
@@ -4753,8 +4786,8 @@ components:
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         provider_id:
           description: >-
             The id of the Payment Provider that is responsible for the Payment
@@ -4826,21 +4859,21 @@ components:
           type: string
           example: null
         swap:
-          description: Available if the relation "swap" is expanded.
-          $ref: '#/components/schemas/swap'
+          description: A swap object. Available if the relation "swap" is expanded.
+          type: object
         cart_id:
           description: The id of the Cart that the Payment Session is created for.
           type: string
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         order_id:
           description: The ID of the Order that the Payment is used for.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         amount:
           description: The amount that the Payment has been authorized for.
           type: integer
@@ -4955,7 +4988,8 @@ components:
             relation "customer_groups" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/customer_group'
+            type: object
+            description: A customer group object.
         prices:
           description: >-
             The Money Amounts that are associated with the Price List. Available
@@ -5002,7 +5036,8 @@ components:
             relation "products" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product'
+            type: object
+            description: A product collection object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5109,8 +5144,8 @@ components:
           type: string
           example: prod_01G1G5V2MBA328390B5AXJ610F
         product:
-          description: Available if the relation "product" is expanded.
-          $ref: '#/components/schemas/product'
+          description: A product object. Available if the relation "product" is expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5295,6 +5330,9 @@ components:
           description: The ID of the Product that the Product Variant belongs to.
           type: string
           example: prod_01G1G5V2MBA328390B5AXJ610F
+        product:
+          description: A product object. Available if the relation "product" is expanded.
+          type: object
         prices:
           description: >-
             The Money Amounts defined for the Product Variant. Each Money Amount
@@ -5566,8 +5604,10 @@ components:
           description: The Product Collection that the Product belongs to
           example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
         collection:
-          description: Available if the relation "collection" is expanded.
-          $ref: '#/components/schemas/product_collection'
+          description: >-
+            A product collection object. Available if the relation "collection"
+            is expanded.
+          type: object
         type_id:
           type: string
           description: The Product type that the Product belongs to
@@ -5598,7 +5638,8 @@ components:
             relation "sales_channels" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_tag'
+            type: object
+            description: A sales channel object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5930,22 +5971,24 @@ components:
           type: string
           example: null
         swap:
-          description: Available if the relation "swap" is expanded.
-          $ref: '#/components/schemas/swap'
+          description: A swap object. Available if the relation "swap" is expanded.
+          type: object
         order_id:
           description: The ID of the Order that the Return is made from.
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         claim_order_id:
           description: The ID of the Claim that the Return is a part of.
           type: string
           example: null
         claim_order:
-          description: Available if the relation "claim_order" is expanded.
-          $ref: '#/components/schemas/claim_order'
+          description: >-
+            A claim order object. Available if the relation "claim_order" is
+            expanded.
+          type: object
         shipping_method:
           description: >-
             The Shipping Method that will be used to send the Return back. Can
@@ -6106,36 +6149,40 @@ components:
           type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
-          description: Available if the relation "order" is expanded.
-          $ref: '#/components/schemas/order'
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         return_id:
           description: The id of the Return that the Shipping Method is used on.
           type: string
           example: null
         return_order:
-          description: Available if the relation "return" is expanded.
-          $ref: '#/components/schemas/return'
+          description: >-
+            A return object. Available if the relation "return_order" is
+            expanded.
+          type: object
         swap_id:
           description: The id of the Swap that the Shipping Method is used on.
           type: string
           example: null
         swap:
-          description: Available if the relation "swap" is expanded.
-          $ref: '#/components/schemas/swap'
+          description: A swap object. Available if the relation "swap" is expanded.
+          type: object
         cart_id:
           description: The id of the Cart that the Shipping Method is used on.
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
-          description: Available if the relation "cart" is expanded.
-          $ref: '#/components/schemas/cart'
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         claim_order_id:
           description: The id of the Claim that the Shipping Method is used on.
           type: string
           example: null
         claim_order:
-          description: Available if the relation "claim_order" is expanded.
-          $ref: '#/components/schemas/claim_order'
+          description: >-
+            A claim order object. Available if the relation "claim_order" is
+            expanded.
+          type: object
         tax_lines:
           type: array
           description: Available if the relation "tax_lines" is expanded.
@@ -6231,8 +6278,8 @@ components:
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
-          description: Available if the relation "region" is expanded.
-          $ref: '#/components/schemas/region'
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
         profile_id:
           description: >-
             The ID of the Shipping Profile that the shipping option belongs to.
@@ -6342,7 +6389,8 @@ components:
             Available if the relation "products" is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product'
+            type: object
+            description: A product object.
         shipping_options:
           description: >-
             The Shipping Options that can be used to fulfill the Products in the
@@ -6475,8 +6523,10 @@ components:
           description: The sales channel ID the cart is associated with.
           example: null
         default_sales_channel:
-          description: Available if the relation "default_sales_channel" is expanded.
-          $ref: '#/components/schemas/sales_channel'
+          description: >-
+            A sales channel object. Available if the relation
+            "default_sales_channel" is expanded.
+          type: object
         metadata:
           type: object
           description: An optional key-value map with additional details
@@ -6493,23 +6543,25 @@ components:
         Products being returned exceed the amount to be paid for the new
         Products, a Refund will be issued for the difference.
       x-resourceId: swap
+      required:
+        - fulfillment_status
+        - payment_status
+        - order_id
       properties:
         id:
-          description: The id of the Swap. This value will be prefixed with `swap_`.
           type: string
+          description: The swap's ID
+          example: swap_01F0YET86Y9G92D3YDR9Y6V676
         fulfillment_status:
           description: The status of the Fulfillment of the Swap.
           type: string
           enum:
             - not_fulfilled
-            - partially_fulfilled
             - fulfilled
-            - partially_shipped
             - shipped
-            - partially_returned
-            - returned
             - canceled
             - requires_action
+          example: not_fulfilled
         payment_status:
           description: >-
             The status of the Payment of the Swap. The payment may either refer
@@ -6519,69 +6571,94 @@ components:
             - not_paid
             - awaiting
             - captured
+            - confirmed
             - canceled
             - difference_refunded
+            - partially_refunded
+            - refunded
             - requires_action
+          example: not_paid
         order_id:
           description: >-
-            The id of the Order where the Line Items to be returned where
+            The ID of the Order where the Line Items to be returned where
             purchased.
           type: string
+          example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
+        order:
+          description: An order object. Available if the relation "order" is expanded.
+          type: object
         additional_items:
-          description: The new Line Items to ship to the Customer.
+          description: >-
+            The new Line Items to ship to the Customer. Available if the
+            relation "additional_items" is expanded.
           type: array
           items:
             $ref: '#/components/schemas/line_item'
         return_order:
-          description: The Return that is issued for the return part of the Swap.
-          anyOf:
-            - $ref: '#/components/schemas/return'
+          description: >-
+            A return order object. The Return that is issued for the return part
+            of the Swap. Available if the relation "return_order" is expanded.
+          type: object
         fulfillments:
-          description: The Fulfillments used to send the new Line Items.
+          description: >-
+            The Fulfillments used to send the new Line Items. Available if the
+            relation "fulfillments" is expanded.
           type: array
           items:
             $ref: '#/components/schemas/fulfillment'
         payment:
           description: >-
             The Payment authorized when the Swap requires an additional amount
-            to be charged from the Customer.
-          anyOf:
-            - $ref: '#/components/schemas/payment'
+            to be charged from the Customer. Available if the relation "payment"
+            is expanded.
+          $ref: '#/components/schemas/payment'
         difference_due:
           description: >-
             The difference that is paid or refunded as a result of the Swap. May
             be negative when the amount paid for the returned items exceed the
             total of the new Products.
           type: integer
-        shipping_address:
+          example: 0
+        shipping_address_id:
           description: >-
             The Address to send the new Line Items to - in most cases this will
             be the same as the shipping address on the Order.
-          anyOf:
-            - $ref: '#/components/schemas/address'
+          type: string
+          example: addr_01G8ZH853YPY9B94857DY91YGW
+        shipping_address:
+          description: Available if the relation "shipping_address" is expanded.
+          $ref: '#/components/schemas/address'
         shipping_methods:
-          description: The Shipping Methods used to fulfill the addtional items purchased.
+          description: >-
+            The Shipping Methods used to fulfill the addtional items purchased.
+            Available if the relation "shipping_methods" is expanded.
           type: array
           items:
             $ref: '#/components/schemas/shipping_method'
         cart_id:
           description: The id of the Cart that the Customer will use to confirm the Swap.
           type: string
+          example: cart_01G8ZH853Y6TFXWPG5EYE81X63
+        cart:
+          description: A cart object. Available if the relation "cart" is expanded.
+          type: object
         allow_backorder:
           description: 'If true, swaps can be completed with items out of stock'
           type: boolean
+          default: false
+        idempotency_key:
+          type: string
+          description: >-
+            Randomly generated key used to continue the completion of the swap
+            in case of failure.
+          externalDocs:
+            url: >-
+              https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+            description: Learn more how to use the idempotency key.
         confirmed_at:
           description: >-
             The date with timezone at which the Swap was confirmed by the
             Customer.
-          type: string
-          format: date-time
-        created_at:
-          description: The date with timezone at which the resource was created.
-          type: string
-          format: date-time
-        updated_at:
-          description: The date with timezone at which the resource was last updated.
           type: string
           format: date-time
         canceled_at:
@@ -6591,37 +6668,61 @@ components:
         no_notification:
           description: 'If set to true, no notification will be sent related to this swap'
           type: boolean
+          example: false
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
         metadata:
-          description: An optional key-value map with additional information.
           type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     tax_line:
       title: Tax Line
       description: Line item that specifies an amount of tax to add to a line item.
       x-resourceId: tax_line
+      required:
+        - rate
+        - name
       properties:
         id:
-          description: The id of the Tax Line. This value will be prefixed by `tl_`.
           type: string
+          description: The tax line's ID
+          example: tl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
         code:
           description: A code to identify the tax type by
           type: string
+          example: tax01
         name:
           description: A human friendly name for the tax
           type: string
+          example: Tax Example
         rate:
           description: The numeric rate to charge tax by
           type: number
+          example: 10
         created_at:
-          description: The date with timezone at which the resource was created.
           type: string
+          description: The date with timezone at which the resource was created.
           format: date-time
         updated_at:
-          description: The date with timezone at which the resource was last updated.
           type: string
+          description: The date with timezone at which the resource was updated.
           format: date-time
         metadata:
-          description: An optional key-value map with additional information.
           type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     tax_provider:
       title: Tax Provider
       description: The tax service used to calculate taxes
@@ -6630,50 +6731,96 @@ components:
         id:
           description: The id of the tax provider as given by the plugin.
           type: string
+          example: manual
         is_installed:
           description: >-
             Whether the plugin is installed in the current version. Plugins that
             are no longer installed are not deleted by will have this field set
             to `false`.
           type: boolean
+          default: true
     tax_rate:
       title: Tax Rate
       description: >-
         A Tax Rate can be used to associate a certain rate to charge on products
         within a given Region
       x-resourceId: line_item
+      required:
+        - name
+        - region_id
       properties:
         id:
-          description: The id of the Tax Rate. This value will be prefixed by `txr_`.
           type: string
+          description: The tax rate's ID
+          example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         rate:
           description: The numeric rate to charge
           type: number
+          example: 10
         code:
           description: A code to identify the tax type by
           type: string
+          example: tax01
         name:
           description: A human friendly name for the tax
           type: string
+          example: Tax Example
         region_id:
+          type: string
           description: The id of the Region that the rate belongs to
-          type: string
+          example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
+        region:
+          description: A region object. Available if the relation "region" is expanded.
+          type: object
+        products:
+          type: array
+          description: >-
+            The products that belong to this tax rate. Available if the relation
+            "products" is expanded.
+          items:
+            type: object
+            description: A product object.
+        product_types:
+          type: array
+          description: >-
+            The product types that belong to this tax rate. Available if the
+            relation "product_types" is expanded.
+          items:
+            type: object
+            description: A product type object.
+        shipping_options:
+          type: array
+          description: >-
+            The shipping options that belong to this tax rate. Available if the
+            relation "shipping_options" is expanded.
+          items:
+            type: object
+            description: A shipping option object.
+        product_count:
+          description: The count of products
+          type: integer
+          example: null
+        product_type_count:
+          description: The count of product types
+          type: integer
+          example: null
+        shipping_option_count:
+          description: The count of shipping options
+          type: integer
+          example: null
         created_at:
-          description: The date with timezone at which the resource was created.
           type: string
+          description: The date with timezone at which the resource was created.
           format: date-time
         updated_at:
-          description: The date with timezone at which the resource was last updated.
           type: string
+          description: The date with timezone at which the resource was updated.
           format: date-time
         metadata:
-          description: An optional key-value map with additional information.
           type: object
-        refundable:
-          description: >-
-            The amount that can be refunded from the given Line Item. Takes
-            taxes and discounts into consideration.
-          type: integer
+          description: An optional key-value map with additional details
+          example:
+            car: white
     tracking_link:
       title: Tracking Link
       description: >-
@@ -6681,61 +6828,96 @@ components:
         Fulfillment. Tracking Links can optionally contain a URL that can be
         visited to see the status of the shipment.
       x-resourceId: tracking_link
+      required:
+        - tracking_number
+        - fulfillment_id
       properties:
         id:
-          description: >-
-            The id of the Tracking Link. This value will be prefixed with
-            `tlink_`.
           type: string
+          description: The tracking link's ID
+          example: tlink_01G8ZH853Y6TFXWPG5EYE81X63
         url:
           description: The URL at which the status of the shipment can be tracked.
           type: string
+          format: uri
         tracking_number:
           description: The tracking number given by the shipping carrier.
           type: string
+          format: RH370168054CN
         fulfillment_id:
+          type: string
           description: The id of the Fulfillment that the Tracking Link references.
+          example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
+        fulfillment:
+          description: Available if the relation "fulfillment" is expanded.
+          $ref: '#/components/schemas/fulfillment'
+        idempotency_key:
           type: string
+          description: >-
+            Randomly generated key used to continue the completion of a process
+            in case of failure.
+          externalDocs:
+            url: >-
+              https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+            description: Learn more how to use the idempotency key.
         created_at:
-          description: The date with timezone at which the resource was created.
           type: string
+          description: The date with timezone at which the resource was created.
           format: date-time
         updated_at:
-          description: The date with timezone at which the resource was last updated.
           type: string
+          description: The date with timezone at which the resource was updated.
           format: date-time
         deleted_at:
-          description: The date with timezone at which the resource was deleted.
           type: string
+          description: The date with timezone at which the resource was deleted.
           format: date-time
         metadata:
-          description: An optional key-value map with additional information.
           type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     user:
       title: User
       description: Represents a User who can manage store settings.
       x-resourceId: user
+      required:
+        - email
       properties:
         id:
-          description: The unique id of the User. This will be prefixed with `usr_`
           type: string
+          description: The user's ID
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         email:
           description: The email of the User
           type: string
+          format: email
         first_name:
+          description: The first name of the User
           type: string
+          example: Levi
         last_name:
-          description: The Customer's billing address.
-          anyOf:
-            - $ref: '#/components/schemas/address'
+          description: The last name of the User
+          type: string
+          example: Bogan
+        api_token:
+          description: An API token associated with the user.
+          type: string
+          example: null
         created_at:
           type: string
+          description: The date with timezone at which the resource was created.
           format: date-time
         updated_at:
           type: string
+          description: The date with timezone at which the resource was updated.
           format: date-time
         deleted_at:
           type: string
+          description: The date with timezone at which the resource was deleted.
           format: date-time
         metadata:
           type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white

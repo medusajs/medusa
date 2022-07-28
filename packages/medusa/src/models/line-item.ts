@@ -150,29 +150,29 @@ export class LineItem extends BaseEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: Available if the relation "cart" is expanded.
- *     $ref: "#/components/schemas/cart"
+ *     description: A cart object. Available if the relation "cart" is expanded.
+ *     type: object
  *   order_id:
  *     description: "The ID of the Order that the Line Item belongs to."
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: Available if the relation "order" is expanded.
- *     $ref: "#/components/schemas/order"
+ *     description: An order object. Available if the relation "order" is expanded.
+ *     type: object
  *   swap_id:
  *     description: "The id of the Swap that the Line Item belongs to."
  *     type: string
- *     example: swap_01F0YET86Y9G92D3YDR9Y6V676
+ *     example: null
  *   swap:
- *     description: Available if the relation "swap" is expanded.
- *     $ref: "#/components/schemas/swap"
+ *     description: A swap object. Available if the relation "swap" is expanded.
+ *     type: object
  *   claim_order_id:
  *     description: "The id of the Claim that the Line Item belongs to."
  *     type: string
  *     example: null
  *   claim_order:
- *     description: Available if the relation "claim_order" is expanded.
- *     $ref: "#/components/schemas/claim_order"
+ *     description: A claim order object. Available if the relation "claim_order" is expanded.
+ *     type: object
  *   tax_lines:
  *     description: Available if the relation "tax_lines" is expanded.
  *     type: array
@@ -225,8 +225,8 @@ export class LineItem extends BaseEntity {
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: The Product Variant contained in the Line Item. Available if the relation "variant" is expanded.
- *     $ref: "#/components/schemas/product_variant"
+ *     description: A product variant object. The Product Variant contained in the Line Item. Available if the relation "variant" is expanded.
+ *     type: object
  *   quantity:
  *     description: "The quantity of the content in the Line Item."
  *     type: integer

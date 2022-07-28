@@ -105,24 +105,24 @@ export class Fulfillment extends BaseEntity {
  *   claim_order_id:
  *     description: "The id of the Claim that the Fulfillment belongs to."
  *     type: string
- *     example: claim_01G8ZH853Y6TFXWPG5EYE81X63
+ *     example: null
  *   claim_order:
- *     description: Available if the relation "claim_order" is expanded.
- *     $ref: "#/components/schemas/claim_order"
+ *     description: A claim order object. Available if the relation "claim_order" is expanded.
+ *     type: object
  *   swap_id:
  *     description: "The id of the Swap that the Fulfillment belongs to."
  *     type: string
- *     example: swap_01F0YET86Y9G92D3YDR9Y6V676
+ *     example: null
  *   swap:
- *     description: Available if the relation "swap" is expanded.
- *     $ref: "#/components/schemas/swap"
+ *     description: A swap object. Available if the relation "swap" is expanded.
+ *     type: object
  *   order_id:
  *     description: "The id of the Order that the Fulfillment belongs to."
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: Available if the relation "order" is expanded.
- *     $ref: "#/components/schemas/order"
+ *     description: An order object. Available if the relation "order" is expanded.
+ *     type: object
  *   provider_id:
  *     description: "The id of the Fulfillment Provider responsible for handling the fulfillment"
  *     type: string

@@ -1,0 +1,99 @@
+get:
+  operationId: GetCustomersCustomer
+  summary: Retrieve a Customer
+  description: Retrieves a Customer.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Customer.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in the customer.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: (Comma separated) Which fields should be included in the customer.
+      schema:
+        type: string
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+post:
+  operationId: PostCustomersCustomer
+  summary: Update a Customer
+  description: Updates a Customer.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Customer.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in each customer.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: (Comma separated) Which fields should be retrieved in each customer.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            email:
+              type: string
+              description: The Customer's email. Only providable if user not registered.
+            first_name:
+              type: string
+              description: The Customer's first name.
+            last_name:
+              type: string
+              description: The Customer's last name.
+            phone:
+              type: string
+              description: The Customer's phone number.
+            password:
+              type: string
+              description: The Customer's password.
+            groups:
+              type: array
+              items:
+                required:
+                  - id
+                properties:
+                  id:
+                    description: The id of a customer group
+                    type: string
+              description: A list of customer groups to which the customer belongs.
+            metadata:
+              type: object
+              description: Metadata for the customer.
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml

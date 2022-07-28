@@ -120,36 +120,36 @@ export class ShippingMethod {
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: Available if the relation "order" is expanded.
- *     $ref: "#/components/schemas/order"
+ *     description: An order object. Available if the relation "order" is expanded.
+ *     type: object
  *   return_id:
  *     description: "The id of the Return that the Shipping Method is used on."
  *     type: string
  *     example: null
  *   return_order:
- *     description: Available if the relation "return" is expanded.
- *     $ref: "#/components/schemas/return"
+ *     description: A return object. Available if the relation "return_order" is expanded.
+ *     type: object
  *   swap_id:
  *     description: "The id of the Swap that the Shipping Method is used on."
  *     type: string
  *     example: null
  *   swap:
- *     description: Available if the relation "swap" is expanded.
- *     $ref: "#/components/schemas/swap"
+ *     description: A swap object. Available if the relation "swap" is expanded.
+ *     type: object
  *   cart_id:
  *     description: "The id of the Cart that the Shipping Method is used on."
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: Available if the relation "cart" is expanded.
- *     $ref: "#/components/schemas/cart"
+ *     description: A cart object. Available if the relation "cart" is expanded.
+ *     type: object
  *   claim_order_id:
  *     description: "The id of the Claim that the Shipping Method is used on."
  *     type: string
  *     example: null
  *   claim_order:
- *     description: Available if the relation "claim_order" is expanded.
- *     $ref: "#/components/schemas/claim_order"
+ *     description: A claim order object. Available if the relation "claim_order" is expanded.
+ *     type: object
  *   tax_lines:
  *     type: array
  *     description: Available if the relation "tax_lines" is expanded.

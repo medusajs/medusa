@@ -42,8 +42,8 @@ export class FulfillmentItem {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   fulfillment:
- *     description: Available if the relation "fulfillment" is expanded.
- *     $ref: "#/components/schemas/fulfillment"
+ *     description: A fulfillment object. Available if the relation "fulfillment" is expanded.
+ *     type: object
  *   item:
  *     description: Available if the relation "item" is expanded.
  *     $ref: "#/components/schemas/line_item"

@@ -14,7 +14,10 @@
  *    example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *  customer:
  *    description: Available if the relation "customer" is expanded.
- *    $ref: "#/components/schemas/customer"
+ *    type: array
+ *    items:
+ *      type: object
+ *      description: A customer object.
  *  company:
  *    type: string
  *    description: Company name
@@ -47,8 +50,8 @@
  *      description: See a list of codes.
  *    example: st
  *  country:
- *    description: Available if the relation "country" is expanded.
- *    $ref: "#/components/schemas/country"
+ *    description: A country object. Available if the relation "country" is expanded.
+ *    type: object
  *  province:
  *    type: string
  *    description: Province

@@ -1,0 +1,29 @@
+delete:
+  operationId: DeleteOrdersOrderMetadataKey
+  summary: Delete Metadata
+  description: Deletes a metadata key.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Order.
+      schema:
+        type: string
+    - in: path
+      name: key
+      required: true
+      description: The metadata key.
+      schema:
+        type: string
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

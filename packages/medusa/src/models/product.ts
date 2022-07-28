@@ -277,8 +277,8 @@ export class Product extends SoftDeletableEntity {
  *     description: The Product Collection that the Product belongs to
  *     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
  *   collection:
- *     description: Available if the relation "collection" is expanded.
- *     $ref: "#/components/schemas/product_collection"
+ *     description: A product collection object. Available if the relation "collection" is expanded.
+ *     type: object
  *   type_id:
  *     type: string
  *     description: The Product type that the Product belongs to
@@ -303,7 +303,8 @@ export class Product extends SoftDeletableEntity {
  *     description: The sales channels the product is associated with. Available if the relation "sales_channels" is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_tag"
+ *       type: object
+ *       description: A sales channel object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

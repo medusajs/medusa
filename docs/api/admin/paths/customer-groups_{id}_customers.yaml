@@ -1,0 +1,25 @@
+get:
+  operationId: GetCustomerGroupsGroupCustomers
+  summary: List Customers
+  description: Retrieves a list of customers in a customer group
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the customer group.
+      schema:
+        type: string
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customers:
+                type: array
+                items:
+                  $ref: ../components/schemas/customer.yaml

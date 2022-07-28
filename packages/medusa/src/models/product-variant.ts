@@ -122,6 +122,9 @@ export class ProductVariant extends SoftDeletableEntity {
  *     description: "The ID of the Product that the Product Variant belongs to."
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
+ *   product:
+ *     description: A product object. Available if the relation "product" is expanded.
+ *     type: object
  *   prices:
  *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation "prices" is expanded.
  *     type: array

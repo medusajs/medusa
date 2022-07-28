@@ -125,7 +125,8 @@ export class Customer extends SoftDeletableEntity {
  *     description: Available if the relation "orders" is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/order"
+ *       type: object
+ *       description: An order object.
  *   groups:
  *     description: The customer groups the customer belongs to. Available if the relation "groups" is expanded.
  *     type: array

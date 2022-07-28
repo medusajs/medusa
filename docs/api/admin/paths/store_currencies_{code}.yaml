@@ -1,0 +1,46 @@
+post:
+  operationId: PostStoreCurrenciesCode
+  summary: Add a Currency Code
+  description: Adds a Currency Code to the available currencies.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: code
+      required: true
+      description: The 3 character ISO currency code.
+      schema:
+        type: string
+  tags:
+    - Store
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              store:
+                $ref: ../components/schemas/store.yaml
+delete:
+  operationId: DeleteStoreCurrenciesCode
+  summary: Remove a Currency Code
+  description: Removes a Currency Code from the available currencies.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: code
+      required: true
+      description: The 3 character ISO currency code.
+      schema:
+        type: string
+  tags:
+    - Store
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              store:
+                $ref: ../components/schemas/store.yaml

@@ -1,0 +1,35 @@
+post:
+  operationId: PostSalesChannels
+  summary: Create a sales channel
+  description: Creates a sales channel.
+  x-authenticated: true
+  parameters: []
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              sales_channel:
+                $ref: ../components/schemas/sales_channel.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - description
+          properties:
+            name:
+              type: string
+              description: Name of the sales channel
+            description:
+              type: string
+              description: Description of the sales channel
+            is_disabled:
+              type: boolean
+              description: Whether the sales channel is enabled or not
