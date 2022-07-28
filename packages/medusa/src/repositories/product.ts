@@ -6,14 +6,15 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { PriceList } from "../models/price-list"
-import { Product } from "../models/product"
+import { PriceList,
+  Product,
+  SalesChannel
+} from "../models"
 import {
   ExtendedFindConfig,
   Selector,
   WithRequiredProperty,
 } from "../types/common"
-import { SalesChannel } from "../models";
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
