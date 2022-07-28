@@ -895,5 +895,223 @@ describe("sales channels", () => {
         )
       })
     })
+
+    describe("POST /admin/products", () => {
+      let salesChannel
+
+      beforeEach(async () => {
+        try {
+          await productSeeder(dbConnection)
+          await adminSeeder(dbConnection)
+          salesChannel = await simpleSalesChannelFactory(dbConnection, {
+            name: "test name",
+            description: "test description",
+          })
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("should creates a product that is assigned to a sales_channel", async () => {
+        const api = useApi()
+
+        const payload = {
+          title: "Test",
+          description: "test-product-description",
+          type: { value: "test-type" },
+          options: [{ title: "size" }, { title: "color" }],
+          variants: [
+            {
+              title: "Test variant",
+              inventory_quantity: 10,
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: [{ value: "large" }, { value: "green" }],
+            },
+          ],
+          sales_channels: [{ id: salesChannel.id }],
+        }
+
+        const response = await api
+          .post("/admin/products", payload, {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [
+              expect.objectContaining({
+                id: salesChannel.id,
+                name: salesChannel.name,
+              }),
+            ],
+          })
+        )
+      })
+    })
+
+    describe("POST /admin/products/:id", () => {
+      let salesChannel
+
+      beforeEach(async () => {
+        try {
+          await productSeeder(dbConnection)
+          await adminSeeder(dbConnection)
+          salesChannel = await simpleSalesChannelFactory(dbConnection, {
+            name: "test name",
+            description: "test description",
+          })
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("should update a product sales channels assignation with either a sales channel, null, [] or undefined", async () => {
+        const api = useApi()
+
+        let response = await api
+          .post(
+            "/admin/products/test-product",
+            {
+              sales_channels: null,
+            },
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [],
+          })
+        )
+
+        response = await api
+          .post(
+            "/admin/products/test-product",
+            {
+              sales_channels: [{ id: salesChannel.id }],
+            },
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [
+              expect.objectContaining({
+                id: salesChannel.id,
+                name: salesChannel.name,
+              }),
+            ],
+          })
+        )
+
+        response = await api
+          .post(
+            "/admin/products/test-product",
+            {},
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [
+              expect.objectContaining({
+                id: salesChannel.id,
+                name: salesChannel.name,
+              }),
+            ],
+          })
+        )
+
+        response = await api
+          .post(
+            "/admin/products/test-product",
+            {
+              sales_channels: [],
+            },
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => {
+            console.log(err)
+          })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            sales_channels: [],
+          })
+        )
+      })
+
+      it("should throw on update if the sales channels does not exists", async () => {
+        const api = useApi()
+
+        const err = await api
+          .post(
+            "/admin/products/test-product",
+            {
+              sales_channels: [{ id: "fake_id" }, { id: "fake_id_2" }],
+            },
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err)
+
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toBe(
+          "Provided request body contains errors. Please check the data and retry the request"
+        )
+        expect(err.response.data.errors).toEqual([
+          "Sales Channels fake_id, fake_id_2 do not exist",
+        ])
+      })
+    })
   })
 })

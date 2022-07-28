@@ -12,15 +12,12 @@ import {
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 import StoreService from "./store"
-import { formatException, PostgresError } from "../utils/exception-formatter"
-import ProductService from "./product"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
-  productService: ProductService
 }
 
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
@@ -36,23 +33,25 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
-  protected readonly productService_: ProductService
 
   constructor({
     salesChannelRepository,
     eventBusService,
     manager,
     storeService,
-    productService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({
+      salesChannelRepository,
+      eventBusService,
+      manager,
+      storeService,
+    })
 
     this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
-    this.productService_ = productService
   }
 
   /**
@@ -280,36 +279,15 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(
-      async (transactionManager) => {
-        const salesChannelRepo = transactionManager.getCustomRepository(
-          this.salesChannelRepository_
-        )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
 
-        await salesChannelRepo.addProducts(salesChannelId, productIds)
+      await salesChannelRepo.addProducts(salesChannelId, productIds)
 
-        return await this.retrieve(salesChannelId)
-      },
-      async (error: { code: string }) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          const existingProducts = await this.productService_.list({
-            id: productIds,
-          })
-
-          const nonExistingProducts = productIds.filter(
-            (cId) => existingProducts.findIndex((el) => el.id === cId) === -1
-          )
-
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following product ids do not exist: ${JSON.stringify(
-              nonExistingProducts.join(", ")
-            )}`
-          )
-        }
-        throw formatException(error)
-      }
-    )
+      return await this.retrieve(salesChannelId)
+    })
   }
 }
 
