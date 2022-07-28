@@ -385,9 +385,11 @@ class TaxProviderService extends BaseService {
     }
 
     let toReturn: TaxServiceRate[] = []
-    const productRates = await this.taxRateService_.listByProduct(productId, {
-      region_id: region.id,
-    })
+    const productRates = await this.taxRateService_
+      .withTransaction(this.manager_)
+      .listByProduct(productId, {
+        region_id: region.id,
+      })
 
     if (productRates.length > 0) {
       toReturn = productRates.map((pr) => {

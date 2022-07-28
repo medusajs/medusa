@@ -1,5 +1,6 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /customers/me/addresses/{address_id}
@@ -28,7 +29,12 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
-  await customerService.removeAddress(id, address_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .removeAddress(id, address_id)
+  })
 
   const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,

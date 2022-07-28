@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm"
+ import { EntityRepository, Repository } from "typeorm"
 import { ClaimOrder } from "../models/claim-order"
 
 @EntityRepository(ClaimOrder)

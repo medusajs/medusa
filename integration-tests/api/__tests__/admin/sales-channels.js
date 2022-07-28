@@ -311,11 +311,8 @@ describe("sales channels", () => {
         await simpleSalesChannelFactory(dbConnection, {
           name: "Default channel",
           id: "test-channel",
+          is_default: true,
         })
-
-        await dbConnection.manager.query(
-          `UPDATE store SET default_sales_channel_id = 'test-channel'`
-        )
       } catch (e) {
         console.error(e)
       }
@@ -617,45 +614,6 @@ describe("sales channels", () => {
           }),
         ])
       )
-    })
-  })
-
-  describe("GET /store/cart/:id with saleschannel", () => {
-    let cart
-    beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-
-        cart = await simpleCartFactory(dbConnection, {
-          sales_channel: {
-            name: "test name",
-            description: "test description",
-          },
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("returns cart with sales channel for single cart", async () => {
-      const api = useApi()
-
-      const response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
-
-      expect(response.data.cart.sales_channel).toBeTruthy()
-      expect(response.data.cart.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
     })
   })
 

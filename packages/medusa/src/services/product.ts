@@ -289,6 +289,37 @@ class ProductService extends TransactionBaseService<
     return product.variants
   }
 
+  async filterProductsBySalesChannel(
+    productIds: string[],
+    salesChannelId: string,
+    config: FindProductConfig = {
+      skip: 0,
+      take: 50,
+    }
+  ): Promise<Product[]> {
+    const givenRelations = config.relations ?? []
+    const requiredRelations = ["sales_channels"]
+    const relationsSet = new Set([...givenRelations, ...requiredRelations])
+
+    const products = await this.list(
+      {
+        id: productIds,
+      },
+      {
+        ...config,
+        relations: [...relationsSet],
+      }
+    )
+    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
+      products.map((product) => [product.id, product.sales_channels])
+    )
+    return products.filter((product) => {
+      return productSalesChannelsMap
+        .get(product.id)
+        ?.some((sc) => sc.id === salesChannelId)
+    })
+  }
+
   async listTypes(): Promise<ProductType[]> {
     const manager = this.manager_
     const productTypeRepository = manager.getCustomRepository(
@@ -432,8 +463,19 @@ class ProductService extends TransactionBaseService<
 
       const relations = ["variants", "tags", "images"]
 
-      if (typeof update.sales_channels !== "undefined") {
-        relations.push("sales_channels")
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (typeof update.sales_channels !== "undefined") {
+          relations.push("sales_channels")
+        }
+      } else {
+        if (typeof update.sales_channels !== "undefined") {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "the property sales_channels should no appears as part of the payload"
+          )
+        }
       }
 
       const product = await this.retrieve(productId, {
@@ -471,15 +513,16 @@ class ProductService extends TransactionBaseService<
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-        typeof salesChannels !== "undefined"
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        product.sales_channels = []
-        if (salesChannels?.length) {
-          const salesChannelIds = salesChannels?.map((sc) => sc.id)
-          product.sales_channels = salesChannelIds?.map(
-            (id) => ({ id } as SalesChannel)
-          )
+        if (typeof salesChannels !== "undefined") {
+          product.sales_channels = []
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
+          }
         }
       }
 

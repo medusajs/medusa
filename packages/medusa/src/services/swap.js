@@ -197,10 +197,12 @@ class SwapService extends BaseService {
     }
 
     if (cartRelations || cartSelects) {
-      const cart = await this.cartService_.retrieve(swap.cart_id, {
-        select: cartSelects,
-        relations: cartRelations,
-      })
+      const cart = await this.cartService_
+        .withTransaction(this.manager_)
+        .retrieve(swap.cart_id, {
+          select: cartSelects,
+          relations: cartRelations,
+        })
       swap.cart = cart
     }
 

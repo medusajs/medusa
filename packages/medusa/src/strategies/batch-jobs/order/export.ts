@@ -5,20 +5,23 @@ import {
   OrderExportBatchJobContext,
   orderExportPropertiesDescriptors,
 } from "."
-import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
+import { AdminPostBatchesReq } from "../../../api"
 import { IFileService } from "../../../interfaces"
-import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
+import { AbstractBatchJobStrategy } from "../../../interfaces"
 import { Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
 import { prepareListQuery } from "../../../utils/get-query-config"
+import { FlagRouter } from "../../../utils/flag-router"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 
 type InjectedDependencies = {
-  fileService: IFileService<any>
+  fileService: IFileService<never>
   orderService: OrderService
   batchJobService: BatchJobService
   manager: EntityManager
+  featureFlagRouter: FlagRouter
 }
 
 class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
@@ -36,6 +39,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   protected readonly fileService_: IFileService<any>
   protected readonly batchJobService_: BatchJobService
   protected readonly orderService_: OrderService
+  protected readonly featureFlagRouter_: FlagRouter
+
+  protected readonly orderExportPropertiesDescriptors = [
+    ...orderExportPropertiesDescriptors,
+  ]
 
   protected readonly defaultRelations_ = ["customer", "shipping_address"]
   protected readonly defaultFields_ = [
@@ -61,6 +69,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     batchJobService,
     orderService,
     manager,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -69,6 +78,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.orderService_ = orderService
+    this.featureFlagRouter_ = featureFlagRouter
+
+    if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
+      this.defaultRelations_.push("sales_channel")
+      this.addSalesChannelColumns()
+    }
   }
 
   async prepareBatchJobForProcessing(
@@ -253,13 +268,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         await promise
       },
       "REPEATABLE READ",
-      async (err: Error) => {
+      async (err: Error) =>
         this.handleProcessingError(batchJobId, err, {
           offset,
           count: orderCount,
           progress: offset / orderCount,
         })
-      }
     )
   }
 
@@ -270,7 +284,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   private buildHeader(
-    lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
+    lineDescriptor: OrderDescriptor[] = this.orderExportPropertiesDescriptors
   ): string {
     return (
       [...lineDescriptor.map(({ title }) => title)].join(this.DELIMITER) +
@@ -293,10 +307,19 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     fields: string[],
     relations: string[]
   ): OrderDescriptor[] {
-    return orderExportPropertiesDescriptors.filter(
+    return this.orderExportPropertiesDescriptors.filter(
       ({ fieldName }) =>
         fields.indexOf(fieldName) !== -1 || relations.indexOf(fieldName) !== -1
     )
+  }
+
+  private addSalesChannelColumns(): void {
+    this.orderExportPropertiesDescriptors.push({
+      fieldName: "sales_channel",
+      title: ["Sales channel name", "Sales channel description"].join(";"),
+      accessor: (order: Order): string =>
+        [order.sales_channel.name, order.sales_channel.description].join(";"),
+    })
   }
 }
 

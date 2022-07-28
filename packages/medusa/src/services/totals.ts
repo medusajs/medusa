@@ -1,6 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
+import {
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+  TransactionBaseService,
+} from "../interfaces"
 import { Cart } from "../models/cart"
 import { Discount } from "../models/discount"
 import { DiscountRuleType } from "../models/discount-rule"
@@ -18,6 +22,7 @@ import {
   SubtotalOptions,
 } from "../types/totals"
 import TaxProviderService from "./tax-provider"
+import { EntityManager } from "typeorm"
 
 type ShippingMethodTotals = {
   price: number
@@ -60,6 +65,7 @@ type GetLineItemTotalOptions = {
 type TotalsServiceProps = {
   taxProviderService: TaxProviderService
   taxCalculationStrategy: ITaxCalculationStrategy
+  manager: EntityManager
 }
 
 type GetTotalsOptions = {
@@ -83,18 +89,27 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends BaseService {
+class TotalsService extends TransactionBaseService<TotalsService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+
   private taxProviderService_: TaxProviderService
   private taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
     taxProviderService,
     taxCalculationStrategy,
+    manager,
   }: TotalsServiceProps) {
-    super()
+    super({
+      taxProviderService,
+      taxCalculationStrategy,
+      manager,
+    })
 
     this.taxProviderService_ = taxProviderService
     this.taxCalculationStrategy_ = taxCalculationStrategy
+    this.manager_ = manager
   }
 
   /**
@@ -757,10 +772,9 @@ class TotalsService extends BaseService {
             }
             taxLines = lineItem.tax_lines
           } else {
-            const orderLines = await this.taxProviderService_.getTaxLines(
-              cartOrOrder.items,
-              calculationContext
-            )
+            const orderLines = await this.taxProviderService_
+              .withTransaction(this.manager_)
+              .getTaxLines(cartOrOrder.items, calculationContext)
 
             taxLines = orderLines.filter((ol) => {
               if ("item_id" in ol) {
