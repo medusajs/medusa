@@ -22,14 +22,13 @@ post:
             email:
               description: The email of the customer of the draft order
               type: string
+              format: email
             billing_address:
               description: The Address to be used for billing purposes.
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
+              $ref: ../components/schemas/address.yaml
             shipping_address:
               description: The Address to be used for shipping.
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
+              $ref: ../components/schemas/address.yaml
             items:
               description: The Line Items that have been received.
               type: array

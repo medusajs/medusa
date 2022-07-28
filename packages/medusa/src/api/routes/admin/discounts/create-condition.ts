@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
- * summary: "Creates a DiscountCondition"
+ * summary: "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
@@ -23,6 +23,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - operator
  *         properties:
  *           operator:
  *              description: Operator of the condition

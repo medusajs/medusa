@@ -23,6 +23,7 @@ import InviteService from "../../../../services/invite"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               format: invite
  *             deleted:
  *               type: boolean
  *               description: Whether or not the Invite was deleted.

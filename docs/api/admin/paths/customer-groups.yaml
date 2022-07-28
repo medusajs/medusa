@@ -37,7 +37,7 @@ get:
   parameters:
     - in: query
       name: q
-      description: Query used for searching user group names.
+      description: Query used for searching customer group names.
       schema:
         type: string
     - in: query
@@ -47,15 +47,48 @@ get:
         type: integer
         default: 0
     - in: query
-      name: id
-      description: Ids of the groups to search for.
-      schema:
-        type: string
-    - in: query
       name: order
       description: the field used to order the customer groups.
       schema:
         type: string
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: Filter by the customer group ID
+      schema:
+        oneOf:
+          - type: string
+            description: customer group ID
+          - type: array
+            description: multiple customer group IDs
+            items:
+              type: string
+          - type: object
+            properties:
+              lt:
+                type: string
+                description: filter by IDs less than this ID
+              gt:
+                type: string
+                description: filter by IDs greater than this ID
+              lte:
+                type: string
+                description: filter by IDs less than or equal to this ID
+              gte:
+                type: string
+                description: filter by IDs greater than or equal to this ID
+    - in: query
+      name: name
+      style: form
+      explode: false
+      description: Filter by the customer group name
+      schema:
+        type: array
+        description: multiple customer group names
+        items:
+          type: string
+          description: customer group name
     - in: query
       name: created_at
       description: Date comparison for when resulting customer groups were created.

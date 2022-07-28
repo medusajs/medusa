@@ -81,29 +81,31 @@ import { validator } from "../../../../utils/validator"
  *                 type: object
  *           shipping_method:
  *             description: The Shipping Method used for shipping the order.
- *             type: object
- *             required:
- *               - provider_id
- *               - profile_id
- *               - price
- *             properties:
- *               provider_id:
- *                 type: string
- *                 description: The ID of the shipping provider.
- *               profile_id:
- *                 type: string
- *                 description: The ID of the shipping profile.
- *               price:
- *                 type: integer
- *                 description: The price of the shipping.
- *               data:
- *                 type: object
- *                 description: Data relevant to the specific shipping method.
- *               items:
- *                 type: array
+ *             type: array
+ *             items:
+ *               type: object
+ *               required:
+ *                 - provider_id
+ *                 - profile_id
+ *                 - price
+ *               properties:
+ *                 provider_id:
+ *                   type: string
+ *                   description: The ID of the shipping provider.
+ *                 profile_id:
+ *                   type: string
+ *                   description: The ID of the shipping profile.
+ *                 price:
+ *                   type: integer
+ *                   description: The price of the shipping.
+ *                 data:
+ *                   type: object
+ *                   description: Data relevant to the specific shipping method.
  *                 items:
- *                   $ref: "#/components/schemas/line_item"
- *                 description: Items to ship
+ *                   type: array
+ *                   items:
+ *                     $ref: "#/components/schemas/line_item"
+ *                     description: Items to ship
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the updated order.
  *             type: boolean

@@ -23,6 +23,15 @@ import CustomerController from "../../../../controllers/customers"
  *               type: array
  *               items:
  *                  $ref: "#/components/schemas/customer"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

@@ -41,6 +41,7 @@ delete:
               object:
                 type: string
                 description: The type of the object that was deleted.
+                default: discount-condition
               deleted:
                 type: boolean
                 description: >-
@@ -90,7 +91,10 @@ get:
                 $ref: ../components/schemas/discount_condition.yaml
 post:
   operationId: PostDiscountsDiscountConditionsCondition
-  summary: Updates a DiscountCondition
+  summary: >-
+    Updates a DiscountCondition. Only one of `products`, `product_types`,
+    `product_collections`, `product_tags`, and `customer_groups` should be
+    provided.
   x-authenticated: true
   parameters:
     - in: path

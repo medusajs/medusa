@@ -25,6 +25,7 @@ import { CustomerGroupService } from "../../../../services"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: customer_group
  *             deleted:
  *               type: boolean
  *               description: Whether the customer group was deleted successfully or not.

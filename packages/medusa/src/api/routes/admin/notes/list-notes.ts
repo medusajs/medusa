@@ -14,7 +14,7 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (query) limit=50 {number} The number of notes to get
  *   - (query) offset=0 {number} The offset at which to get notes
- *   - (query) resource_id= {string} The ID which the notes belongs to
+ *   - (query) resource_id {string} The ID which the notes belongs to
  * tags:
  *   - Note
  * responses:

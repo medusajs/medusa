@@ -54,10 +54,6 @@ import { validator } from "../../../../utils/validator"
  *               description:
  *                 type: string
  *                 description: "A short description of the discount"
- *               type: 
- *                 type: string
- *                 description: "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
- *                 enum: [fixed, percentage, free_shipping]
  *               value:
  *                 type: number
  *                 description: "The value that the discount represents; this will depend on the type of the discount"
@@ -67,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  *                 enum: [total, item]
  *               conditions:
  *                 type: array
- *                 description: "A set of conditions that can be used to limit when  the discount can be used"
+ *                 description: "A set of conditions that can be used to limit when the discount can be used. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
  *                 items:
  *                   type: object
  *                   required:
@@ -80,6 +76,31 @@ import { validator } from "../../../../utils/validator"
  *                       type: string
  *                       description: Operator of the condition
  *                       enum: [in, not_in]
+ *                     products:
+ *                       type: array
+ *                       description: list of product IDs if the condition is applied on products.
+ *                       items:
+ *                         type: string
+ *                     product_types:
+ *                       type: array
+ *                       description: list of product type IDs if the condition is applied on product types.
+ *                       items:
+ *                         type: string
+ *                     product_collections:
+ *                       type: array
+ *                       description: list of product collection IDs if the condition is applied on product collections.
+ *                       items:
+ *                         type: string
+ *                     product_tags:
+ *                       type: array
+ *                       description: list of product tag IDs if the condition is applied on product tags.
+ *                       items:
+ *                         type: string
+ *                     customer_groups:
+ *                       type: array
+ *                       description: list of customer group IDs if the condition is applied on customer groups.
+ *                       items:
+ *                         type: string
  *           is_disabled:
  *             type: boolean
  *             description: Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers.

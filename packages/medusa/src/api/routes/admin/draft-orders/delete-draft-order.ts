@@ -22,6 +22,7 @@ import { DraftOrderService } from "../../../../services"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: draft-order
  *             deleted:
  *               type: boolean
  *               description: Whether the draft order was deleted successfully or not.

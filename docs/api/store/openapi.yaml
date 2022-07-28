@@ -84,8 +84,6 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
-  /gift-cards/{code}:
-    $ref: paths/gift-cards_{code}.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
@@ -102,22 +100,24 @@ paths:
     $ref: paths/customers_password-token.yaml
   /customers/password-reset:
     $ref: paths/customers_password-reset.yaml
+  /gift-cards/{code}:
+    $ref: paths/gift-cards_{code}.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
   /orders:
     $ref: paths/orders.yaml
-  /regions/{id}:
-    $ref: paths/regions_{id}.yaml
-  /regions:
-    $ref: paths/regions.yaml
   /products/{id}:
     $ref: paths/products_{id}.yaml
   /products:
     $ref: paths/products.yaml
   /products/search:
     $ref: paths/products_search.yaml
+  /regions/{id}:
+    $ref: paths/regions_{id}.yaml
+  /regions:
+    $ref: paths/regions.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
   /return-reasons:

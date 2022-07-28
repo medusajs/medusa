@@ -15,6 +15,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - product_ids
  *         properties:
  *           product_ids:
  *             description: "An array of Product IDs to remove from the Product Collection."
@@ -37,6 +39,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *            object:
  *              type: string
  *              description: "The type of object the removal was executed on"
+ *              default: product-collection
  *            removed_products:
  *              description: "The IDs of the products removed from the collection"
  *              type: array

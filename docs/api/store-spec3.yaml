@@ -858,29 +858,6 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -1240,6 +1217,29 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -1331,104 +1331,6 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  '/regions/{id}':
-    get:
-      operationId: GetRegionsRegion
-      summary: Retrieves a Region
-      description: Retrieves a Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Region.
-          schema:
-            type: string
-      tags:
-        - Region
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  region:
-                    $ref: '#/components/schemas/region'
-  /regions:
-    get:
-      operationId: GetRegions
-      summary: List Regions
-      description: Retrieves a list of Regions.
-      parameters:
-        - in: query
-          name: offset
-          description: How many regions to skip in the result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: Limit the number of regions returned.
-          schema:
-            type: integer
-            default: 100
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting regions were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting regions were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      tags:
-        - Region
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  regions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/region'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -1649,6 +1551,104 @@ paths:
                     description: >-
                       Array of results. The format of the items depends on the
                       search engine installed on the server.
+  '/regions/{id}':
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      parameters:
+        - in: query
+          name: offset
+          description: How many regions to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of regions returned.
+          schema:
+            type: integer
+            default: 100
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting regions were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting regions were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason

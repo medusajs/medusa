@@ -31,7 +31,8 @@ import { validator } from "../../../../utils/validator"
  *         properties:
  *           email:
  *             type: string
- *             description: The Customer's email. Only providable if user not registered.
+ *             description: The Customer's email.
+ *             format: email
  *           first_name:
  *             type: string
  *             description:  The Customer's first name.
@@ -44,6 +45,7 @@ import { validator } from "../../../../utils/validator"
  *           password:
  *             type: string
  *             description: The Customer's password.
+ *             format: password
  *           groups:
  *             type: array
  *             items:
@@ -55,8 +57,8 @@ import { validator } from "../../../../utils/validator"
  *                   type: string
  *             description: A list of customer groups to which the customer belongs.
  *           metadata:
+ *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
- *             description: Metadata for the customer.
  * tags:
  *   - Customer
  * responses:
