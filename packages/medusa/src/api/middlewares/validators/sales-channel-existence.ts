@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { SalesChannelService } from "../../../services"
-import { ProductSalesChannelReq } from "../../routes/admin/products"
+import { ProductSalesChannelReq } from "../../../types/product"
 
 export function validateSalesChannelsExist(
   getSalesChannels: (req) => ProductSalesChannelReq[] | undefined

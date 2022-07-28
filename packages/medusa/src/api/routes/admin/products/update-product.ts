@@ -16,6 +16,11 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { PricingService, ProductService } from "../../../../services"
+import {
+  ProductSalesChannelReq,
+  ProductTagReq,
+  ProductTypeReq,
+} from "../../../../types/product"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
@@ -228,29 +233,6 @@ export default async (req, res) => {
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
-}
-
-class ProductTypeReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
-}
-
-class ProductTagReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
-}
-
-export class ProductSalesChannelReq {
-  @IsString()
-  id: string
 }
 
 class ProductVariantOptionReq {

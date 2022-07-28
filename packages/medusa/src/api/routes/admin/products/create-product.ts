@@ -11,17 +11,22 @@ import {
 } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
 import {
-  ProductService,
   PricingService,
+  ProductService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
-import { ProductStatus } from "../../../../models"
+import {
+  ProductSalesChannelReq,
+  ProductTagReq,
+  ProductTypeReq,
+} from "../../../../types/product"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products
@@ -290,29 +295,6 @@ export default async (req, res) => {
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
-}
-
-class ProductTypeReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
-}
-
-class ProductTagReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
-}
-
-class ProductSalesChannelReq {
-  @IsString()
-  id: string
 }
 
 class ProductVariantOptionReq {
