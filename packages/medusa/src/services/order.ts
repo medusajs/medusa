@@ -459,16 +459,10 @@ class OrderService extends TransactionBaseService<OrderService> {
         )
       }
 
-      // Run all other registered events
       await this.eventBus_.emit(OrderService.Events.COMPLETED, {
         id: orderId,
         no_notification: order.no_notification,
       })
-
-      // TODO: This does not exists and can't work that way. Something seams off here
-      /* await completeOrderJob.finished().catch((error) => {
-        throw error
-      })*/
 
       order.status = OrderStatus.COMPLETED
 
@@ -497,7 +491,6 @@ class OrderService extends TransactionBaseService<OrderService> {
           "discounts.rule",
           "gift_cards",
           "shipping_methods",
-          "payment_sessions",
         ],
       })
 
@@ -546,15 +539,12 @@ class OrderService extends TransactionBaseService<OrderService> {
           )
         }
 
-        const paymentSession = cart.payment_sessions?.find(
-          ({ provider_id }) => provider_id === payment.provider_id
-        )
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
-          .getStatus(paymentSession ?? {})
+          .getStatus(payment)
 
         // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+        if (paymentStatus !== "authorized") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
             "Payment method is not authorized"
