@@ -11,8 +11,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Registers a Claim Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,7 +21,7 @@ import { validator } from "../../../../utils/validator"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.

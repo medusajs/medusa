@@ -160,23 +160,23 @@ export class Swap extends SoftDeletableEntity {
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation "order" is expanded.
+ *     description: An order object. Available if the relation `order` is expanded.
  *     type: object
  *   additional_items:
- *     description: The new Line Items to ship to the Customer. Available if the relation "additional_items" is expanded.
+ *     description: The new Line Items to ship to the Customer. Available if the relation `additional_items` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/line_item"
  *   return_order:
- *     description: A return order object. The Return that is issued for the return part of the Swap. Available if the relation "return_order" is expanded.
+ *     description: A return order object. The Return that is issued for the return part of the Swap. Available if the relation `return_order` is expanded.
  *     type: object
  *   fulfillments:
- *     description: The Fulfillments used to send the new Line Items. Available if the relation "fulfillments" is expanded.
+ *     description: The Fulfillments used to send the new Line Items. Available if the relation `fulfillments` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/fulfillment"
  *   payment:
- *     description: The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation "payment" is expanded.
+ *     description: The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation `payment` is expanded.
  *     $ref: "#/components/schemas/payment"
  *   difference_due:
  *     description: "The difference that is paid or refunded as a result of the Swap. May be negative when the amount paid for the returned items exceed the total of the new Products."
@@ -187,10 +187,10 @@ export class Swap extends SoftDeletableEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation "shipping_address" is expanded.
+ *     description: Available if the relation `shipping_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_methods:
- *     description: The Shipping Methods used to fulfill the addtional items purchased. Available if the relation "shipping_methods" is expanded.
+ *     description: The Shipping Methods used to fulfill the addtional items purchased. Available if the relation `shipping_methods` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/shipping_method"
@@ -199,7 +199,7 @@ export class Swap extends SoftDeletableEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation "cart" is expanded.
+ *     description: A cart object. Available if the relation `cart` is expanded.
  *     type: object
  *   allow_backorder:
  *     description: "If true, swaps can be completed with items out of stock"

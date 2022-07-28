@@ -9,11 +9,11 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import {
   isRegexpStringMatch,
-  useDynamicCallback,
+  useEvent,
   usePluralForm,
   useSearchPage,
   useTitleFormatter,
-} from '@docusaurus/theme-common';
+} from '@docusaurus/theme-common/internal';
 
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Head from '@docusaurus/Head';
@@ -255,7 +255,7 @@ export default function SearchPage() {
           message: 'Search the documentation',
           description: 'The search page title for empty query',
         });
-  const makeSearch = useDynamicCallback((page = 0) => {
+  const makeSearch = useEvent((page = 0) => {
     algoliaHelper.setQuery(searchQuery).setPage(page).search();
   });
   useEffect(() => {

@@ -9,7 +9,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
   tags:
@@ -40,7 +40,7 @@ post:
             option_id:
               type: string
               description: >-
-                The id of the Shipping Option to create the Shipping Method
+                The ID of the Shipping Option to create the Shipping Method
                 from.
             data:
               type: object

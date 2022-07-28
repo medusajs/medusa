@@ -7,13 +7,13 @@ delete:
     - in: path
       name: discount_id
       required: true
-      description: The id of the Discount
+      description: The ID of the Discount
       schema:
         type: string
     - in: path
       name: condition_id
       required: true
-      description: The id of the DiscountCondition
+      description: The ID of the DiscountCondition
       schema:
         type: string
     - in: query
@@ -37,7 +37,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted DiscountCondition
+                description: The ID of the deleted DiscountCondition
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -57,13 +57,13 @@ get:
     - in: path
       name: discount_id
       required: true
-      description: The id of the Discount.
+      description: The ID of the Discount.
       schema:
         type: string
     - in: path
       name: condition_id
       required: true
-      description: The id of the DiscountCondition.
+      description: The ID of the DiscountCondition.
       schema:
         type: string
     - in: query
@@ -96,13 +96,13 @@ post:
     - in: path
       name: discount_id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: path
       name: condition_id
       required: true
-      description: The id of the DiscountCondition.
+      description: The ID of the DiscountCondition.
       schema:
         type: string
     - in: query

@@ -48,7 +48,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     description: The ID of the line item
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_method:
- *     description: Available if the relation "shipping_method" is expanded.
+ *     description: Available if the relation `shipping_method` is expanded.
  *     $ref: "#/components/schemas/shipping_method"
  *   code:
  *     description: "A code to identify the tax type by"

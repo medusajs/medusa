@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Region.
+                description: The ID of the deleted Region.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   tags:
@@ -60,7 +60,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   requestBody:
@@ -74,6 +74,9 @@ post:
             currency_code:
               description: The 3 character ISO currency code to use for the Region.
               type: string
+              externalDocs:
+                url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                description: See a list of codes.
             automatic_taxes:
               description: >-
                 If true Medusa will automatically calculate taxes for carts in
@@ -87,7 +90,7 @@ post:
               type: boolean
             tax_provider_id:
               description: >-
-                The id of the tax provider to use; if null the system tax
+                The ID of the tax provider to use; if null the system tax
                 provider is used
               type: string
             tax_code:

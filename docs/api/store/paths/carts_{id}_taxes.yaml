@@ -8,7 +8,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The Cart id.
+      description: The Cart ID.
       schema:
         type: string
   tags:

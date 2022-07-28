@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the batch job.
+      description: The ID of the batch job.
       schema:
         type: string
   tags:

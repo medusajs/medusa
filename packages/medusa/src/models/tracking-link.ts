@@ -58,7 +58,7 @@ export class TrackingLink extends SoftDeletableEntity {
  *     description: "The id of the Fulfillment that the Tracking Link references."
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   fulfillment:
- *     description: Available if the relation "fulfillment" is expanded.
+ *     description: Available if the relation `fulfillment` is expanded.
  *     $ref: "#/components/schemas/fulfillment"
  *   idempotency_key:
  *     type: string

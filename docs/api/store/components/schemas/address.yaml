@@ -11,7 +11,7 @@ properties:
     description: ID of the customer this address belongs to
     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
   customer:
-    description: Available if the relation "customer" is expanded.
+    description: Available if the relation `customer` is expanded.
     type: array
     items:
       type: object
@@ -49,7 +49,7 @@ properties:
       description: See a list of codes.
     example: st
   country:
-    description: A country object. Available if the relation "country" is expanded.
+    description: A country object. Available if the relation `country` is expanded.
     type: object
   province:
     type: string

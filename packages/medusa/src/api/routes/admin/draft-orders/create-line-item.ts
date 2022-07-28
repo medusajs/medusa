@@ -1,17 +1,19 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import {
-  defaultAdminDraftOrdersCartFields,
-  defaultAdminDraftOrdersCartRelations,
-  defaultAdminDraftOrdersFields,
-} from "."
 import {
   CartService,
   DraftOrderService,
   LineItemService,
 } from "../../../../services"
+import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+} from "."
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
@@ -19,7 +21,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Creates a Line Item for the Draft Order"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -28,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *           - quantity
  *         properties:
  *           variant_id:
- *             description: The id of the Product Variant to generate the Line Item from.
+ *             description: The ID of the Product Variant to generate the Line Item from.
  *             type: string
  *           unit_price:
  *             description: The potential custom price of the item.

@@ -105,14 +105,14 @@ export class DraftOrder extends BaseEntity {
  *     description: "The ID of the cart associated with the draft order."
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation "cart" is expanded.
+ *     description: A cart object. Available if the relation `cart` is expanded.
  *     type: object
  *   order_id:
  *     type: string
  *     description: "The ID of the order associated with the draft order."
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation "order" is expanded.
+ *     description: An order object. Available if the relation `order` is expanded.
  *     type: object
  *   canceled_at:
  *     type: string

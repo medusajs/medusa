@@ -10,7 +10,7 @@ import { FindParams } from "../../../../types/common"
  * description: "Retrieves a Customer Group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group.
+ *   - (path) id=* {string} The ID of the Customer Group.
  * tags:
  *   - Customer Group
  * responses:

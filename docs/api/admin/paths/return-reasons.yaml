@@ -20,7 +20,7 @@ post:
                 unique.
               type: string
             parent_return_reason_id:
-              description: The id of the parent return reason.
+              description: The ID of the parent return reason.
               type: string
             description:
               description: An optional description to for the Reason.

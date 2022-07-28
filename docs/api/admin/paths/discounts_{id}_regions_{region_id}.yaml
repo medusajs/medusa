@@ -7,13 +7,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Discount.
+      description: The ID of the Discount.
       schema:
         type: string
     - in: path
       name: region_id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   tags:
@@ -36,13 +36,13 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Discount.
+      description: The ID of the Discount.
       schema:
         type: string
     - in: path
       name: region_id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   tags:

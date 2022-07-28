@@ -13,7 +13,7 @@ import { pick } from "lodash"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching orders by shipping address first name, orders' email, and orders' display ID
- *   - (query) id {string} Id of the order to search for.
+ *   - (query) id {string} ID of the order to search for.
  *   - in: query
  *     name: status
  *     style: form
@@ -44,12 +44,21 @@ import { pick } from "lodash"
  *       items:
  *         type: string
  *         enum: [captured, awaiting, not_paid, refunded, partially_refunded, canceled, requires_action]
- *   - (query) display_id {string} Display id to search for.
+ *   - (query) display_id {string} Display ID to search for.
  *   - (query) cart_id {string} to search for.
  *   - (query) customer_id {string} to search for.
  *   - (query) email {string} to search for.
  *   - (query) region_id {string} to search for.
- *   - (query) currency_code {string} to search for.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: Currency code to search for
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  *   - (query) tax_rate {string} to search for.
  *   - in: query
  *     name: created_at

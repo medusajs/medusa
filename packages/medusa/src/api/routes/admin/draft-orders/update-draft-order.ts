@@ -16,6 +16,7 @@ import { AddressPayload } from "../../../../types/common"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
@@ -23,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Draft Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,10 +32,13 @@ import { validator } from "../../../../utils/validator"
  *         properties:
  *           region_id:
  *             type: string
- *             description: The id of the Region to create the Draft Order in.
+ *             description: The ID of the Region to create the Draft Order in.
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO code for the Country."
+ *             externalDocs:
+ *                url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *                description: See a list of codes.
  *           email:
  *             type: string
  *             description: "An email to be used on the Draft Order."
@@ -61,7 +65,7 @@ import { validator } from "../../../../utils/validator"
  *             description: "An optional flag passed to the resulting order to determine use of notifications."
  *             type: boolean
  *           customer_id:
- *             description: "The id of the Customer to associate the Draft Order with."
+ *             description: "The ID of the Customer to associate the Draft Order with."
  *             type: string
  * tags:
  *   - Draft Order

@@ -5,9 +5,11 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
@@ -15,7 +17,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Registers a Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.

@@ -7,7 +7,7 @@ import { OrderService } from "../../../../services"
  * description: "Deletes a metadata key."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  *   - (path) key=* {string} The metadata key.
  * tags:
  *   - Order

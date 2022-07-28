@@ -1,4 +1,4 @@
-import { ProductService, PricingService } from "../../../../services"
+import { PricingService, ProductService } from "../../../../services"
 
 /**
  * @oas [get] /products/{id}
@@ -7,7 +7,7 @@ import { ProductService, PricingService } from "../../../../services"
  * description: "Retrieves a Product."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * tags:
  *   - Product
  * responses:

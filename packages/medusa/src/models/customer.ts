@@ -106,10 +106,10 @@ export class Customer extends SoftDeletableEntity {
  *     description: The customer's billing address ID
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation "billing_address" is expanded.
+ *     description: Available if the relation `billing_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_addresses:
- *     description: Available if the relation "shipping_addresses" is expanded.
+ *     description: Available if the relation `shipping_addresses` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/address"
@@ -122,13 +122,13 @@ export class Customer extends SoftDeletableEntity {
  *     description: Whether the customer has an account or not
  *     default: false
  *   orders:
- *     description: Available if the relation "orders" is expanded.
+ *     description: Available if the relation `orders` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: An order object.
  *   groups:
- *     description: The customer groups the customer belongs to. Available if the relation "groups" is expanded.
+ *     description: The customer groups the customer belongs to. Available if the relation `groups` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/customer_group"

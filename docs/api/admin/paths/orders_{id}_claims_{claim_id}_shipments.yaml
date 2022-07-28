@@ -7,13 +7,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
     - in: path
       name: claim_id
       required: true
-      description: The id of the Claim.
+      description: The ID of the Claim.
       schema:
         type: string
   requestBody:
@@ -24,7 +24,7 @@ post:
             - fulfillment_id
           properties:
             fulfillment_id:
-              description: The id of the Fulfillment.
+              description: The ID of the Fulfillment.
               type: string
             tracking_numbers:
               description: The tracking numbers for the shipment.

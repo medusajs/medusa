@@ -68,14 +68,14 @@ export class ProductOptionValue extends SoftDeletableEntity {
  *     type: string
  *     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
  *   option:
- *     description: Available if the relation "option" is expanded.
+ *     description: Available if the relation `option` is expanded.
  *     $ref: "#/components/schemas/product_option"
  *   variant_id:
  *     description: "The ID of the Product Variant that the Product Option Value is defined for."
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: Available if the relation "variant" is expanded.
+ *     description: Available if the relation `variant` is expanded.
  *     $ref: "#/components/schemas/product_variant"
  *   created_at:
  *     type: string

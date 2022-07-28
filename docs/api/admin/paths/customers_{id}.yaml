@@ -7,7 +7,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Customer.
+      description: The ID of the Customer.
       schema:
         type: string
     - in: query
@@ -40,7 +40,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Customer.
+      description: The ID of the Customer.
       schema:
         type: string
     - in: query
@@ -80,7 +80,7 @@ post:
                   - id
                 properties:
                   id:
-                    description: The id of a customer group
+                    description: The ID of a customer group
                     type: string
               description: A list of customer groups to which the customer belongs.
             metadata:

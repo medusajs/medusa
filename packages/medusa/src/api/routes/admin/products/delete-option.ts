@@ -9,8 +9,8 @@ import { ProductService } from "../../../../services"
  * description: "Deletes a Product Option. Before a Product Option can be deleted all Option Values for the Product Option must be the same. You may, for example, have to delete some of your variants prior to deleting the Product Option"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) option_id=* {string} The id of the Product Option.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) option_id=* {string} The ID of the Product Option.
  * tags:
  *   - Product
  * responses:
@@ -22,7 +22,7 @@ import { ProductService } from "../../../../services"
  *           properties:
  *             option_id:
  *               type: string
- *               description: The id of the deleted Product Option
+ *               description: The ID of the deleted Product Option
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

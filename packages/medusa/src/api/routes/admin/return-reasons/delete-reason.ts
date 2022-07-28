@@ -7,7 +7,7 @@ import { ReturnReasonService } from "../../../../services"
  * description: "Deletes a return reason."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the return reason
+ *   - (path) id=* {string} The ID of the return reason
  * tags:
  *   - Return Reason
  * responses:
@@ -19,7 +19,7 @@ import { ReturnReasonService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted return reason
+ *               description: The ID of the deleted return reason
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

@@ -7,8 +7,8 @@ import PriceListService from "../../../../services/price-list"
  * description: "Delete all the prices related to a specific variant in a price list"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) variant_id=* {string} The id of the variant from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
+ *   - (path) variant_id=* {string} The ID of the variant from which the money amount will be deleted.
  * tags:
  *   - Price List
  * responses:

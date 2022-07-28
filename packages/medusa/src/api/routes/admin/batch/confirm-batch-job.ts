@@ -7,7 +7,7 @@ import { BatchJobService } from "../../../../services"
  * description: "Confirms that a previously requested batch job should be executed."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the batch job.
+ *   - (path) id=* {string} The ID of the batch job.
  * tags:
  *   - Batch Job
  * responses:

@@ -29,6 +29,9 @@ import { validator } from "../../../../utils/validator"
  *           currency_code:
  *             description: "The 3 character ISO currency code to use for the Region."
  *             type: string
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *               description: See a list of codes.
  *           tax_code:
  *             description: "An optional tax code the Region."
  *             type: string

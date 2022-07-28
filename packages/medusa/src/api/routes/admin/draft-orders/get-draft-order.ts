@@ -1,11 +1,12 @@
-import {
-  defaultAdminDraftOrdersRelations,
-  defaultAdminDraftOrdersFields,
-  defaultAdminDraftOrdersCartRelations,
-  defaultAdminDraftOrdersCartFields,
-} from "."
-import { DraftOrder } from "../../../.."
 import { CartService, DraftOrderService } from "../../../../services"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+  defaultAdminDraftOrdersRelations,
+} from "."
+
+import { DraftOrder } from "../../../.."
 
 /**
  * @oas [get] /draft-orders/{id}
@@ -14,7 +15,7 @@ import { CartService, DraftOrderService } from "../../../../services"
  * description: "Retrieves a Draft Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * tags:
  *   - Draft Order
  * responses:

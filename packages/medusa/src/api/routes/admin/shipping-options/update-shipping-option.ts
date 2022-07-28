@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Shipping Option"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * requestBody:
  *   content:
  *     application/json:

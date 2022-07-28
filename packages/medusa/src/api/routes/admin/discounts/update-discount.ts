@@ -31,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Discount with a given set of rules that define how the Discount behaves."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount.
+ *   - (path) id=* {string} The ID of the Discount.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
  * requestBody:

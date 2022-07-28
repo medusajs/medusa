@@ -15,7 +15,7 @@ properties:
     description: The ID of the line item
     example: sm_01F0YET7DR2E7CYVSDHM593QG2
   shipping_method:
-    description: Available if the relation "shipping_method" is expanded.
+    description: Available if the relation `shipping_method` is expanded.
     $ref: ./shipping_method.yaml
   code:
     description: A code to identify the tax type by

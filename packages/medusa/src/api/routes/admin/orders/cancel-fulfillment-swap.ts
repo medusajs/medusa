@@ -14,9 +14,9 @@ import { MedusaError } from "medusa-core-utils"
  * description: "Registers a Fulfillment as canceled."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order which the Swap relates to.
- *   - (path) swap_id=* {string} The id of the Swap which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The id of the Fulfillment.
+ *   - (path) id=* {string} The ID of the Order which the Swap relates to.
+ *   - (path) swap_id=* {string} The ID of the Swap which the Fulfillment relates to.
+ *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
  * tags:
  *   - Fulfillment
  * responses:

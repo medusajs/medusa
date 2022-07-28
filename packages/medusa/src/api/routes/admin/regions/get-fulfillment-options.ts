@@ -9,7 +9,7 @@ import RegionService from "../../../../services/region"
  * description: "Gathers all the fulfillment options available to in the Region."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * tags:
  *   - Region
  * responses:
@@ -25,7 +25,7 @@ import RegionService from "../../../../services/region"
  *                 properties:
  *                   provider_id:
  *                     type: string
- *                     description: id of the fulfillment provider
+ *                     description: ID of the fulfillment provider
  *                   options:
  *                     type: array
  *                     description: fulfillment provider options

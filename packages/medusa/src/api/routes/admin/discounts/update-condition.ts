@@ -14,8 +14,8 @@ import { validator } from "../../../../utils/validator"
  * summary: "Updates a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The id of the Product.
- *   - (path) condition_id=* {string} The id of the DiscountCondition.
+ *   - (path) discount_id=* {string} The ID of the Product.
+ *   - (path) condition_id=* {string} The ID of the DiscountCondition.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
  * description: "Updates a DiscountCondition"

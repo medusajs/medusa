@@ -7,7 +7,7 @@ import { ShippingProfileService } from "../../../../services"
  * description: "Deletes a Shipping Profile."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
+ *   - (path) id=* {string} The ID of the Shipping Profile.
  * tags:
  *   - Shipping Profile
  * responses:
@@ -19,7 +19,7 @@ import { ShippingProfileService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Shipping Profile.
+ *               description: The ID of the deleted Shipping Profile.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

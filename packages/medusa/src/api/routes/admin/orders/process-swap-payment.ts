@@ -10,8 +10,8 @@ import { EntityManager } from "typeorm"
  * description: "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * tags:
  *   - Swap
  * responses:

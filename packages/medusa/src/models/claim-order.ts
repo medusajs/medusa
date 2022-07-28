@@ -184,17 +184,17 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation "order" is expanded.
+ *     description: An order object. Available if the relation `order` is expanded.
  *     type: object
  *   return_order:
- *     description: "Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded"
- *     $ref: "#/components/schemas/return"
+ *     description: "A return object. Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded"
+ *     type: object
  *   shipping_address_id:
  *     description: "The ID of the address that the new items should be shipped to"
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation "shipping_address" is expanded.
+ *     description: Available if the relation `shipping_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_methods:
  *     description: "The shipping methods that the claim order will be shipped with."

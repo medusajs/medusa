@@ -5,7 +5,7 @@
  * description: "Deletes a Gift Card"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Gift Card to delete.
+ *   - (path) id=* {string} The ID of the Gift Card to delete.
  * tags:
  *   - Gift Card
  * responses:
@@ -17,7 +17,7 @@
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Gift Card
+ *               description: The ID of the deleted Gift Card
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

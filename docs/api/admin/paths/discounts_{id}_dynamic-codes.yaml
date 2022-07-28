@@ -9,7 +9,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Discount to create the dynamic code from."
+      description: The ID of the Discount to create the dynamic code from."
       schema:
         type: string
   tags:

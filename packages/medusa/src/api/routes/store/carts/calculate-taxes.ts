@@ -11,7 +11,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  * description: "Calculates taxes for a cart. Depending on the cart's region
  *   this may involve making 3rd party API calls to a Tax Provider service."
  * parameters:
- *   - (path) id=* {String} The Cart id.
+ *   - (path) id=* {String} The Cart ID.
  * tags:
  *   - Cart
  * responses:

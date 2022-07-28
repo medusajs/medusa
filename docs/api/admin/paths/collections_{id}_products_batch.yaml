@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Collection.
+      description: The ID of the Collection.
       schema:
         type: string
   requestBody:
@@ -41,7 +41,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Collection.
+      description: The ID of the Collection.
       schema:
         type: string
   requestBody:

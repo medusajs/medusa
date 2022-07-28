@@ -24,7 +24,7 @@ properties:
     type: string
     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
   option:
-    description: Available if the relation "option" is expanded.
+    description: Available if the relation `option` is expanded.
     $ref: ./product_option.yaml
   variant_id:
     description: >-
@@ -33,7 +33,7 @@ properties:
     type: string
     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
   variant:
-    description: Available if the relation "variant" is expanded.
+    description: Available if the relation `variant` is expanded.
     $ref: ./product_variant.yaml
   created_at:
     type: string

@@ -24,7 +24,7 @@ import { pickBy } from "lodash"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
- *   - (query) id {string} Id of the product to search for.
+ *   - (query) id {string} ID of the product to search for.
  *   - in: query
  *     name: status
  *     description: Product status to search for

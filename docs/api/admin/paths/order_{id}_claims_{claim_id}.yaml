@@ -7,13 +7,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
     - in: path
       name: claim_id
       required: true
-      description: The id of the Claim.
+      description: The ID of the Claim.
       schema:
         type: string
   requestBody:
@@ -31,10 +31,10 @@ post:
                   - tags
                 properties:
                   id:
-                    description: The id of the Claim Item.
+                    description: The ID of the Claim Item.
                     type: string
                   item_id:
-                    description: The id of the Line Item that will be claimed.
+                    description: The ID of the Line Item that will be claimed.
                     type: string
                   quantity:
                     description: The number of items that will be returned
@@ -87,11 +87,11 @@ post:
               items:
                 properties:
                   id:
-                    description: The id of an existing Shipping Method
+                    description: The ID of an existing Shipping Method
                     type: string
                   option_id:
                     description: >-
-                      The id of the Shipping Option to create a Shipping Method
+                      The ID of the Shipping Option to create a Shipping Method
                       from
                     type: string
                   price:

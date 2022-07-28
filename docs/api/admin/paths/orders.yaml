@@ -62,7 +62,7 @@ post:
               properties:
                 provider_id:
                   type: string
-                  description: id of the payment provider
+                  description: ID of the payment provider
                 data:
                   description: Data relevant for the given payment method
                   type: object
@@ -76,10 +76,10 @@ post:
               properties:
                 provider_id:
                   type: string
-                  description: The id of the shipping provider.
+                  description: The ID of the shipping provider.
                 profile_id:
                   type: string
-                  description: The id of the shipping profile.
+                  description: The ID of the shipping profile.
                 price:
                   type: integer
                   description: The price of the shipping.
@@ -122,7 +122,7 @@ get:
         type: string
     - in: query
       name: id
-      description: Id of the order to search for.
+      description: ID of the order to search for.
       schema:
         type: string
     - in: query
@@ -178,7 +178,7 @@ get:
             - requires_action
     - in: query
       name: display_id
-      description: Display id to search for.
+      description: Display ID to search for.
       schema:
         type: string
     - in: query
@@ -203,9 +203,14 @@ get:
         type: string
     - in: query
       name: currency_code
-      description: to search for.
+      style: form
+      explode: false
+      description: Currency code to search for
       schema:
         type: string
+        externalDocs:
+          url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+          description: See a list of codes.
     - in: query
       name: tax_rate
       description: to search for.

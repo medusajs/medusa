@@ -18,7 +18,16 @@ import { validator } from "../../../../utils/validator"
  *   - (path) variant_id=* {string} The id of the Product Variant.
  *   - (query) cart_id {string} The id of the Cart to set prices based on.
  *   - (query) region_id {string} The id of the Region to set prices based on.
- *   - (query) currency_code {string} The 3 character ISO currency code to set prices based on.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to set prices based on.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  * tags:
  *   - Product Variant
  * responses:

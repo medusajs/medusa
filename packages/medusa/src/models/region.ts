@@ -125,14 +125,14 @@ export class Region extends SoftDeletableEntity {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation "currency" is expanded.
+ *     description: Available if the relation `currency` is expanded.
  *     $ref: "#/components/schemas/currency"
  *   tax_rate:
  *     description: "The tax rate that should be charged on purchases in the Region."
  *     type: number
  *     example: 0
  *   tax_rates:
- *     description: The tax rates that are included in the Region. Available if the relation "tax_rates" is expanded.
+ *     description: The tax rates that are included in the Region. Available if the relation `tax_rates` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/tax_rate"
@@ -149,7 +149,7 @@ export class Region extends SoftDeletableEntity {
  *     type: boolean
  *     default: true
  *   countries:
- *     description: The countries that are included in the Region. Available if the relation "countries" is expanded.
+ *     description: The countries that are included in the Region. Available if the relation `countries` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/country"
@@ -158,15 +158,15 @@ export class Region extends SoftDeletableEntity {
  *     description: The ID of the tax provider used in this region
  *     example: null
  *   tax_provider:
- *     description: Available if the relation "tax_provider" is expanded.
+ *     description: Available if the relation `tax_provider` is expanded.
  *     $ref: "#/components/schemas/tax_provider"
  *   payment_providers:
- *     description: The Payment Providers that can be used to process Payments in the Region. Available if the relation "payment_providers" is expanded.
+ *     description: The Payment Providers that can be used to process Payments in the Region. Available if the relation `payment_providers` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/payment_provider"
  *   fulfillment_providers:
- *     description: The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation "payment_providers" is expanded.
+ *     description: The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `payment_providers` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/fulfillment_provider"

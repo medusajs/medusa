@@ -29,6 +29,9 @@ import { validator } from "../../../../utils/validator"
  *           default_currency_code:
  *             description: "The default currency code for the Store."
  *             type: string
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *               description: See a list of codes.
  *           currencies:
  *             description: "Array of currencies in 2 character ISO code format."
  *             type: array

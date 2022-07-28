@@ -7,7 +7,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Swap.
+      description: The ID of the Swap.
       schema:
         type: string
   tags:

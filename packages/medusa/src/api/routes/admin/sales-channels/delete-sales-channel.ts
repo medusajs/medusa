@@ -9,7 +9,7 @@ import { SalesChannelService } from "../../../../services/"
  * description: "Deletes the sales channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales channel.
+ *   - (path) id=* {string} The ID of the Sales channel.
  * tags:
  *   - Sales Channel
  * responses:
@@ -21,7 +21,7 @@ import { SalesChannelService } from "../../../../services/"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Sales Channel.
+ *               description: The ID of the deleted Sales Channel.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

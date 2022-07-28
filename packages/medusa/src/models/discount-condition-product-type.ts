@@ -55,10 +55,10 @@ export class DiscountConditionProductType {
  *     type: string
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_type:
- *     description: Available if the relation "product_type" is expanded.
+ *     description: Available if the relation `product_type` is expanded.
  *     $ref: "#/components/schemas/product_type"
  *   discount_condition:
- *     description: Available if the relation "discount_condition" is expanded.
+ *     description: Available if the relation `discount_condition` is expanded.
  *     $ref: "#/components/schemas/discount_condition"
  *   created_at:
  *     type: string

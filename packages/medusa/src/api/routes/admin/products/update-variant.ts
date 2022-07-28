@@ -26,8 +26,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Update a Product Variant."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) variant_id=* {string} The id of the Product Variant.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) variant_id=* {string} The ID of the Product Variant.
  * requestBody:
  *   content:
  *     application/json:
@@ -91,14 +91,17 @@ import { validator } from "../../../../utils/validator"
  *                 - amount
  *               properties:
  *                 id:
- *                   description: The id of the price.
+ *                   description: The ID of the price.
  *                   type: string
  *                 region_id:
- *                   description: The id of the Region for which the price is used. Only required if currency_code is not provided.
+ *                   description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                   type: string
  *                 currency_code:
  *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                   type: string
+ *                   externalDocs:
+ *                     url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                     description: See a list of codes.
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
@@ -116,7 +119,7 @@ import { validator } from "../../../../utils/validator"
  *                 - value
  *               properties:
  *                 option_id:
- *                   description: The id of the Product Option to set the value for.
+ *                   description: The ID of the Product Option to set the value for.
  *                   type: string
  *                 value:
  *                   description: The value to give for the Product Option.

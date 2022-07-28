@@ -1,4 +1,5 @@
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 
@@ -9,7 +10,7 @@ import RegionService from "../../../../services/region"
  * description: "Deletes a metadata key."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  *   - (path) key=* {string} The metadata key.
  * tags:
  *   - Region

@@ -7,7 +7,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the customer group.
+      description: The ID of the customer group.
       schema:
         type: string
   tags:

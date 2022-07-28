@@ -40,7 +40,7 @@ get:
         type: string
     - in: query
       name: resource_id
-      description: The id of the resource that the Notification refers to.
+      description: The ID of the resource that the Notification refers to.
       schema:
         type: string
     - in: query

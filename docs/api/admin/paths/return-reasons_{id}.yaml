@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the return reason
+      description: The ID of the return reason
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted return reason
+                description: The ID of the deleted return reason
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Return Reason.
+      description: The ID of the Return Reason.
       schema:
         type: string
   tags:
@@ -60,7 +60,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Return Reason.
+      description: The ID of the Return Reason.
       schema:
         type: string
   requestBody:

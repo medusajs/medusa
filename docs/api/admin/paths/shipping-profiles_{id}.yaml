@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Shipping Profile.
+      description: The ID of the Shipping Profile.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Shipping Profile.
+                description: The ID of the deleted Shipping Profile.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Shipping Profile.
+      description: The ID of the Shipping Profile.
       schema:
         type: string
   tags:
@@ -59,7 +59,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Shipping Profile.
+      description: The ID of the Shipping Profile.
       schema:
         type: string
   requestBody:

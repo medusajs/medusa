@@ -7,7 +7,7 @@ import UserService from "../../../../services/user"
  * description: "Deletes a User"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the User.
+ *   - (path) id=* {string} The ID of the User.
  * tags:
  *   - Users
  * responses:
@@ -19,7 +19,7 @@ import UserService from "../../../../services/user"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted user.
+ *               description: The ID of the deleted user.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

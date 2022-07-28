@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Draft Order.
+      description: The ID of the Draft Order.
       schema:
         type: string
   requestBody:
@@ -18,7 +18,7 @@ post:
             - quantity
           properties:
             variant_id:
-              description: The id of the Product Variant to generate the Line Item from.
+              description: The ID of the Product Variant to generate the Line Item from.
               type: string
             unit_price:
               description: The potential custom price of the item.

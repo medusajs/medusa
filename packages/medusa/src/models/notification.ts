@@ -95,7 +95,7 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation "customer" is expanded.
+ *     description: A customer object. Available if the relation `customer` is expanded.
  *     type: object
  *   to:
  *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
@@ -115,7 +115,7 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: sengrid
  *   provider:
- *     description: Available if the relation "provider" is expanded.
+ *     description: Available if the relation `provider` is expanded.
  *     $ref: "#/components/schemas/notification_provider"
  *   created_at:
  *     type: string
@@ -154,7 +154,7 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation "customer" is expanded.
+ *     description: A customer object. Available if the relation `customer` is expanded.
  *     type: object
  *   to:
  *     description: "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id"
@@ -169,14 +169,14 @@ export class Notification extends BaseEntity {
  *     type: string
  *     example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
  *   parent_notification:
- *     description: Available if the relation "parent_notification" is expanded.
+ *     description: Available if the relation `parent_notification` is expanded.
  *     $ref: "#/components/schemas/notification"
  *   provider_id:
  *     description: "The ID of the Notification Provider that handles the Notification."
  *     type: string
  *     example: sengrid
  *   provider:
- *     description: Available if the relation "provider" is expanded.
+ *     description: Available if the relation `provider` is expanded.
  *     $ref: "#/components/schemas/notification_provider"
  *   created_at:
  *     type: string

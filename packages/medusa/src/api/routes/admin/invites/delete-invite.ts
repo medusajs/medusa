@@ -7,7 +7,7 @@ import InviteService from "../../../../services/invite"
  * description: "Creates an Invite and triggers an 'invite' created event"
  * x-authenticated: true
  * parameters:
- *   - (path) invite_id=* {string} The id of the Invite
+ *   - (path) invite_id=* {string} The ID of the Invite
  * tags:
  *   - Invite
  * responses:
@@ -19,7 +19,7 @@ import InviteService from "../../../../services/invite"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Invite.
+ *               description: The ID of the deleted Invite.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

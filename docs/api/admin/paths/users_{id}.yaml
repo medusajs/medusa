@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the User.
+      description: The ID of the User.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted user.
+                description: The ID of the deleted user.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the User.
+      description: The ID of the User.
       schema:
         type: string
   tags:
@@ -59,7 +59,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the User.
+      description: The ID of the User.
       schema:
         type: string
   x-authenticated: true

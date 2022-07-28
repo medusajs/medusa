@@ -87,7 +87,7 @@ export class MoneyAmount extends SoftDeletableEntity {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation "currency" is expanded.
+ *     description: Available if the relation `currency` is expanded.
  *     $ref: "#/components/schemas/currency"
  *   amount:
  *     description: "The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost."
@@ -106,21 +106,21 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     description: The ID of the price list associated with the money amount
  *     example: pl_01G8X3CKJXCG5VXVZ87H9KC09W
  *   price_list:
- *     description: Available if the relation "price_list" is expanded.
+ *     description: Available if the relation `price_list` is expanded.
  *     $ref: "#/components/schemas/price_list"
  *   variant_id:
  *     description: "The id of the Product Variant contained in the Line Item."
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
- *     description: The Product Variant contained in the Line Item. Available if the relation "variant" is expanded.
+ *     description: The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
  *     type: object
  *   region_id:
  *     type: string
  *     description: The region's ID
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation "region" is expanded.
+ *     description: A region object. Available if the relation `region` is expanded.
  *     type: object
  *   created_at:
  *     type: string

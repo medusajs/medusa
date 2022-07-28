@@ -51,7 +51,7 @@ export class ClaimImage extends SoftDeletableEntity {
  *     type: string
  *     description: The ID of the claim item associated with the image
  *   claim_item:
- *     description: A claim item object. Available if the relation "claim_item" is expanded.
+ *     description: A claim item object. Available if the relation `claim_item` is expanded.
  *     type: object
  *   url:
  *     type: string

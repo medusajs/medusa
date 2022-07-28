@@ -7,13 +7,13 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
     - in: path
       name: provider_id
       required: true
-      description: The id of the Fulfillment Provider.
+      description: The ID of the Fulfillment Provider.
       schema:
         type: string
   tags:

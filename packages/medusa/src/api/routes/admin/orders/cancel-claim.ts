@@ -10,8 +10,8 @@ import { MedusaError } from "medusa-core-utils"
  * description: "Cancels a Claim"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * tags:
  *   - Claim
  * responses:

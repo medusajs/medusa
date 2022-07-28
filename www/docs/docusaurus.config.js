@@ -202,14 +202,16 @@ module.exports = {
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
+          primaryColorDark: '#242526',
           options: {
             disableSearch: true,
             nativeScrollbars: true,
             sortTagsAlphabetically: true,
             hideDownloadButton: true,
             expandResponses: "200,204",
-            generatedPayloadSamplesMaxDepth: 2,
-            onlyRequiredInSamples: true
+            generatedPayloadSamplesMaxDepth: 4,
+            showObjectSchemaExamples: true,
+            requiredPropsFirst: true
           }
         }
       },

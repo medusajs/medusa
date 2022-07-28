@@ -10,13 +10,13 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: path
       name: option_id
       required: true
-      description: The id of the Product Option.
+      description: The ID of the Product Option.
       schema:
         type: string
   tags:
@@ -30,7 +30,7 @@ delete:
             properties:
               option_id:
                 type: string
-                description: The id of the deleted Product Option
+                description: The ID of the deleted Product Option
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -48,13 +48,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: path
       name: option_id
       required: true
-      description: The id of the Product Option.
+      description: The ID of the Product Option.
       schema:
         type: string
   requestBody:

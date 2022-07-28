@@ -72,7 +72,7 @@ export class Note extends SoftDeletableEntity {
  *     description: The ID of the author (user)
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   author:
- *     description: Available if the relation "author" is expanded.
+ *     description: Available if the relation `author` is expanded.
  *     $ref: "#/components/schemas/user"
  *   created_at:
  *     type: string

@@ -21,6 +21,7 @@ import { DraftOrderService } from "../../../../services"
 import { Type } from "class-transformer"
 import { transformIdableFields } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
@@ -61,7 +62,7 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 variant_id:
- *                   description: The id of the Product Variant to generate the Line Item from.
+ *                   description: The ID of the Product Variant to generate the Line Item from.
  *                   type: string
  *                 unit_price:
  *                   description: The potential custom price of the item.
@@ -76,7 +77,7 @@ import { validator } from "../../../../utils/validator"
  *                   description: The optional key-value map with additional details about the Line Item.
  *                   type: object
  *           region_id:
- *             description: The id of the region for the draft order
+ *             description: The ID of the region for the draft order
  *             type: string
  *           discounts:
  *             description: The discounts to add on the draft order
@@ -90,7 +91,7 @@ import { validator } from "../../../../utils/validator"
  *                   description: The code of the discount to apply
  *                   type: string
  *           customer_id:
- *             description: The id of the customer to add on the draft order
+ *             description: The ID of the customer to add on the draft order
  *             type: string
  *           no_notification_order:
  *             description: An optional flag passed to the resulting order to determine use of notifications.
@@ -104,7 +105,7 @@ import { validator } from "../../../../utils/validator"
  *                  - option_id
  *               properties:
  *                 option_id:
- *                   description: The id of the shipping option in use
+ *                   description: The ID of the shipping option in use
  *                   type: string
  *                 data:
  *                   description: The optional additional data needed for the shipping method

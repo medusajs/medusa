@@ -9,7 +9,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * description: "Deletes a Product Collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Collection.
+ *   - (path) id=* {string} The ID of the Collection.
  * tags:
  *   - Collection
  * responses:
@@ -21,7 +21,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *          properties:
  *            id:
  *              type: string
- *              description: The id of the deleted Collection
+ *              description: The ID of the deleted Collection
  *            object:
  *              type: string
  *              description: The type of the object that was deleted.

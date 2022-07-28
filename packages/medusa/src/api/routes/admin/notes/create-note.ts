@@ -20,7 +20,7 @@ import { validator } from "../../../../utils/validator"
  *        properties:
  *          resource_id:
  *            type: string
- *            description: The id of the resource which the Note relates to.
+ *            description: The ID of the resource which the Note relates to.
  *          resource_type:
  *            type: string
  *            description: The type of resource which the Note relates to.

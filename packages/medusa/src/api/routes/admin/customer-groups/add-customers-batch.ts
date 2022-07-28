@@ -13,7 +13,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Adds a list of customers, represented by id's, to a customer group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
+ *   - (path) id=* {string} The ID of the customer group.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *                 - id
  *               properties:
  *                 id:
- *                   description: Id of the customer
+ *                   description: ID of the customer
  *                   type: string
  * tags:
  *   - Customer Group

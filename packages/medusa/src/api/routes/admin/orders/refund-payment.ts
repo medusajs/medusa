@@ -17,7 +17,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Issues a Refund."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:

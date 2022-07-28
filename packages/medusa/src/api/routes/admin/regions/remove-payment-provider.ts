@@ -1,5 +1,6 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [delete] /regions/{id}/payment-providers/{provider_id}
@@ -8,8 +9,8 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  * description: "Removes a Payment Provider."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
- *   - (path) provider_id=* {string} The id of the Payment Provider.
+ *   - (path) id=* {string} The ID of the Region.
+ *   - (path) provider_id=* {string} The ID of the Payment Provider.
  * tags:
  *   - Region
  * responses:

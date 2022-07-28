@@ -7,7 +7,7 @@ import { TaxRateService } from "../../../../services"
  * description: "Deletes a Tax Rate"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * tags:
  *   - Tax Rate
  * responses:
@@ -19,7 +19,7 @@ import { TaxRateService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Shipping Option.
+ *               description: The ID of the deleted Shipping Option.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

@@ -49,5 +49,5 @@ properties:
     description: The region ID this country is associated with.
     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
   region:
-    description: A region object. Available if the relation "region" is expanded.
+    description: A region object. Available if the relation `region` is expanded.
     type: object

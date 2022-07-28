@@ -7,7 +7,7 @@ post:
     - in: path
       name: invite_id
       required: true
-      description: The id of the Invite
+      description: The ID of the Invite
       schema:
         type: string
   tags:

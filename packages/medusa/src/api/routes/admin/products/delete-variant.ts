@@ -12,8 +12,8 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
  * description: "Deletes a Product Variant."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) variant_id=* {string} The id of the Product Variant.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) variant_id=* {string} The ID of the Product Variant.
  * tags:
  *   - Product
  * responses:
@@ -25,7 +25,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
  *           properties:
  *             variant_id:
  *               type: string
- *               description: The id of the deleted Product Variant.
+ *               description: The ID of the deleted Product Variant.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

@@ -10,7 +10,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * description: "Removes products associated with a Product Collection"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Collection.
+ *   - (path) id=* {string} The ID of the Collection.
  * requestBody:
  *   content:
  *     application/json:

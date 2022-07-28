@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -47,13 +47,13 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item that will be claimed.
+ *                   description: The ID of the Line Item that will be claimed.
  *                   type: string
  *                 quantity:
  *                   description: The number of items that will be returned
  *                   type: integer
  *                 reason_id:
- *                   description: The id of the Return Reason to use.
+ *                   description: The ID of the Return Reason to use.
  *                   type: string
  *                 note:
  *                   description: An optional note with information about the Return.
@@ -66,7 +66,7 @@ import { validator } from "../../../../utils/validator"
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  *               price:
  *                 type: integer
  *                 description: The price to charge for the Shipping Method.
@@ -79,7 +79,7 @@ import { validator } from "../../../../utils/validator"
  *                 - quantity
  *               properties:
  *                 variant_id:
- *                   description: The id of the Product Variant to ship.
+ *                   description: The ID of the Product Variant to ship.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Product Variant to ship.
@@ -93,7 +93,7 @@ import { validator } from "../../../../utils/validator"
  *                 - price
  *               properties:
  *                 option_id:
- *                   description: The id of the Shipping Option to override with a custom price.
+ *                   description: The ID of the Shipping Option to override with a custom price.
  *                   type: string
  *                 price:
  *                   description: The custom price of the Shipping Option.

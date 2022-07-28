@@ -7,7 +7,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Region.
+      description: The ID of the Region.
       schema:
         type: string
   tags:
@@ -25,7 +25,7 @@ get:
                   properties:
                     provider_id:
                       type: string
-                      description: id of the fulfillment provider
+                      description: ID of the fulfillment provider
                     options:
                       type: array
                       description: fulfillment provider options

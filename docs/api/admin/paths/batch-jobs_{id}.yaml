@@ -7,7 +7,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Batch Job
+      description: The ID of the Batch Job
       schema:
         type: string
   tags:

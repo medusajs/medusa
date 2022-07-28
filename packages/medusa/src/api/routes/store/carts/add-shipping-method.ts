@@ -14,8 +14,8 @@ import { validator } from "../../../../utils/validator"
  * tags:
  *   - Cart
  * parameters:
- *   - (path) id=* {string} The cart id.
- *   - (body) option_id=* {string} id of the shipping option to create the method from
+ *   - (path) id=* {string} The cart ID.
+ *   - (body) option_id=* {string} ID of the shipping option to create the method from
  *   - (body) data {Object} Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
  * responses:
  *  "200":

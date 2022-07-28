@@ -1,4 +1,4 @@
-import {findFirstCategoryLink, useDocById} from '@docusaurus/theme-common';
+import {findFirstCategoryLink, useDocById} from '@docusaurus/theme-common/internal';
 
 import Link from '@docusaurus/Link';
 /**

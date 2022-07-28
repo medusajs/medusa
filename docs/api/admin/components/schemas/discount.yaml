@@ -26,7 +26,7 @@ properties:
     description: The Discount Rule that governs the behaviour of the Discount
     example: dru_01F0YESMVK96HVX7N419E3CJ7C
   rule:
-    description: Available if the relation "rule" is expanded.
+    description: Available if the relation `rule` is expanded.
     $ref: ./discount_rule.yaml
   is_disabled:
     description: >-
@@ -41,7 +41,7 @@ properties:
       dynamic discount
     example: disc_01G8ZH853YPY9B94857DY91YGW
   parent_discount:
-    description: Available if the relation "parent_discount" is expanded.
+    description: Available if the relation `parent_discount` is expanded.
     $ref: ./discount.yaml
   starts_at:
     description: The time at which the discount can be used.
@@ -58,7 +58,7 @@ properties:
   regions:
     description: >-
       The Regions in which the Discount can be used. Available if the relation
-      "regions" is expanded.
+      `regions` is expanded.
     type: array
     items:
       type: object

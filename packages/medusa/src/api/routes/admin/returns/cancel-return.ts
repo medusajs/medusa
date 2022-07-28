@@ -10,7 +10,7 @@ import {
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
  * parameters:
- *   - (path) id=* {string} The id of the Return.
+ *   - (path) id=* {string} The ID of the Return.
  * tags:
  *   - Return
  * responses:

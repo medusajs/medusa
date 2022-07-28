@@ -7,13 +7,13 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: path
       name: variant_id
       required: true
-      description: The id of the Product Variant.
+      description: The ID of the Product Variant.
       schema:
         type: string
   tags:
@@ -27,7 +27,7 @@ delete:
             properties:
               variant_id:
                 type: string
-                description: The id of the deleted Product Variant.
+                description: The ID of the deleted Product Variant.
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -45,13 +45,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: path
       name: variant_id
       required: true
-      description: The id of the Product Variant.
+      description: The ID of the Product Variant.
       schema:
         type: string
   requestBody:
@@ -119,11 +119,11 @@ post:
                   - amount
                 properties:
                   id:
-                    description: The id of the price.
+                    description: The ID of the price.
                     type: string
                   region_id:
                     description: >-
-                      The id of the Region for which the price is used. Only
+                      The ID of the Region for which the price is used. Only
                       required if currency_code is not provided.
                     type: string
                   currency_code:
@@ -131,6 +131,9 @@ post:
                       The 3 character ISO currency code for which the price will
                       be used. Only required if region_id is not provided.
                     type: string
+                    externalDocs:
+                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                      description: See a list of codes.
                   amount:
                     description: The amount to charge for the Product Variant.
                     type: integer
@@ -148,7 +151,7 @@ post:
                   - value
                 properties:
                   option_id:
-                    description: The id of the Product Option to set the value for.
+                    description: The ID of the Product Option to set the value for.
                     type: string
                   value:
                     description: The value to give for the Product Option.

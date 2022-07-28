@@ -7,7 +7,7 @@ delete:
     - in: path
       name: id
       required: true
-      description: The id of the Gift Card to delete.
+      description: The ID of the Gift Card to delete.
       schema:
         type: string
   tags:
@@ -21,7 +21,7 @@ delete:
             properties:
               id:
                 type: string
-                description: The id of the deleted Gift Card
+                description: The ID of the deleted Gift Card
               object:
                 type: string
                 description: The type of the object that was deleted.
@@ -37,7 +37,7 @@ get:
     - in: path
       name: id
       required: true
-      description: The id of the Gift Card.
+      description: The ID of the Gift Card.
       schema:
         type: string
   tags:
@@ -62,7 +62,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Gift Card.
+      description: The ID of the Gift Card.
       schema:
         type: string
   requestBody:
@@ -83,7 +83,7 @@ post:
               format: date-time
               description: The time at which the Gift Card should no longer be available.
             region_id:
-              description: The id of the Region in which the Gift Card can be used.
+              description: The ID of the Region in which the Gift Card can be used.
               type: string
             metadata:
               description: >-

@@ -7,13 +7,13 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
     - in: path
       name: swap_id
       required: true
-      description: The id of the Swap.
+      description: The ID of the Swap.
       schema:
         type: string
   requestBody:

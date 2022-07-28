@@ -33,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *               description: See a list of codes.
  *           email:
  *             type: string
  *             description: "An email to be used on the Cart."

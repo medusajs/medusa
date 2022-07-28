@@ -31,7 +31,7 @@ properties:
     type: string
     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
   customer:
-    description: A customer object. Available if the relation "customer" is expanded.
+    description: A customer object. Available if the relation `customer` is expanded.
     type: object
   to:
     description: >-
@@ -55,7 +55,7 @@ properties:
     type: string
     example: sengrid
   provider:
-    description: Available if the relation "provider" is expanded.
+    description: Available if the relation `provider` is expanded.
     $ref: ./notification_provider.yaml
   created_at:
     type: string

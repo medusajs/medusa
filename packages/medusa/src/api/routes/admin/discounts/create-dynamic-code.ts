@@ -17,7 +17,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount to create the dynamic code from."
+ *   - (path) id=* {string} The ID of the Discount to create the dynamic code from."
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
  *   - (body) usage_limit=1 {number} amount of times the discount can be applied.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.

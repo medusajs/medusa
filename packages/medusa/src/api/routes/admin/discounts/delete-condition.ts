@@ -15,8 +15,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Deletes a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The id of the Discount
- *   - (path) condition_id=* {string} The id of the DiscountCondition
+ *   - (path) discount_id=* {string} The ID of the Discount
+ *   - (path) condition_id=* {string} The ID of the DiscountCondition
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted DiscountCondition
+ *               description: The ID of the deleted DiscountCondition
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.

@@ -7,7 +7,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
   requestBody:

@@ -1,4 +1,5 @@
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 
 /**
@@ -8,7 +9,7 @@ import { OrderService } from "../../../../services"
  * description: "Captures all the Payments associated with an Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * tags:
  *   - Order
  * responses:

@@ -108,13 +108,13 @@ export class PriceList extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   customer_groups:
- *     description: The Customer Groups that the Price List applies to. Available if the relation "customer_groups" is expanded.
+ *     description: The Customer Groups that the Price List applies to. Available if the relation `customer_groups` is expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A customer group object. 
  *   prices:
- *     description: The Money Amounts that are associated with the Price List. Available if the relation "prices" is expanded.
+ *     description: The Money Amounts that are associated with the Price List. Available if the relation `prices` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/money_amount"

@@ -1,4 +1,5 @@
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import DiscountService from "../../../../services/discount"
 
 /**
@@ -8,8 +9,8 @@ import DiscountService from "../../../../services/discount"
  * description: "Deletes a dynamic code from a Discount."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount
- *   - (path) code=* {string} The id of the Discount
+ *   - (path) id=* {string} The ID of the Discount
+ *   - (path) code=* {string} The ID of the Discount
  * tags:
  *   - Discount
  * responses:

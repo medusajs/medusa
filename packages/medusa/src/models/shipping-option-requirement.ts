@@ -65,7 +65,7 @@ export class ShippingOptionRequirement {
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
- *     description: Available if the relation "shipping_option" is expanded.
+ *     description: Available if the relation `shipping_option` is expanded.
  *     $ref: "#/components/schemas/shipping_option"
  *   type:
  *     description: "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available."

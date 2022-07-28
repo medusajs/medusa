@@ -215,7 +215,7 @@ export class Product extends SoftDeletableEntity {
  *       - rejected
  *     default: draft
  *   images:
- *     description: Images of the Product. Available if the relation "images" is expanded.
+ *     description: Images of the Product. Available if the relation `images` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/image"
@@ -224,12 +224,12 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     format: uri
  *   options:
- *     description: The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation "options" is expanded.
+ *     description: The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation `options` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/product_option"
  *   variants:
- *     description: The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation "variants" is expanded.
+ *     description: The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation `variants` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/product_variant"
@@ -238,7 +238,7 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
- *     description: Available if the relation "profile" is expanded.
+ *     description: Available if the relation `profile` is expanded.
  *     $ref: "#/components/schemas/shipping_profile"
  *   weight:
  *     description: "The weight of the Product Variant. May be used in shipping rate calculations."
@@ -277,17 +277,17 @@ export class Product extends SoftDeletableEntity {
  *     description: The Product Collection that the Product belongs to
  *     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
  *   collection:
- *     description: A product collection object. Available if the relation "collection" is expanded.
+ *     description: A product collection object. Available if the relation `collection` is expanded.
  *     type: object
  *   type_id:
  *     type: string
  *     description: The Product type that the Product belongs to
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
- *     description: Available if the relation "type" is expanded.
+ *     description: Available if the relation `type` is expanded.
  *     $ref: "#/components/schemas/product_type"
  *   tags:
- *     description: The Product Tags assigned to the Product. Available if the relation "tags" is expanded.
+ *     description: The Product Tags assigned to the Product. Available if the relation `tags` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/product_tag"
@@ -300,7 +300,7 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     example: null
  *   sales_channels:
- *     description: The sales channels the product is associated with. Available if the relation "sales_channels" is expanded.
+ *     description: The sales channels the product is associated with. Available if the relation `sales_channels` is expanded.
  *     type: array
  *     items:
  *       type: object

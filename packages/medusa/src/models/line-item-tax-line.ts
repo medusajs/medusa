@@ -48,7 +48,7 @@ export class LineItemTaxLine extends TaxLine {
  *     description: The ID of the line item
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation "item" is expanded.
+ *     description: Available if the relation `item` is expanded.
  *     $ref: "#/components/schemas/line_item"
  *   code:
  *     description: "A code to identify the tax type by"

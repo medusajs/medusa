@@ -28,7 +28,7 @@ properties:
       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
       description: See a list of codes.
   currency:
-    description: Available if the relation "currency" is expanded.
+    description: Available if the relation `currency` is expanded.
     $ref: ./currency.yaml
   tax_rate:
     description: The tax rate that should be charged on purchases in the Region.
@@ -37,7 +37,7 @@ properties:
   tax_rates:
     description: >-
       The tax rates that are included in the Region. Available if the relation
-      "tax_rates" is expanded.
+      `tax_rates` is expanded.
     type: array
     items:
       $ref: ./tax_rate.yaml
@@ -58,7 +58,7 @@ properties:
   countries:
     description: >-
       The countries that are included in the Region. Available if the relation
-      "countries" is expanded.
+      `countries` is expanded.
     type: array
     items:
       $ref: ./country.yaml
@@ -67,19 +67,19 @@ properties:
     description: The ID of the tax provider used in this region
     example: null
   tax_provider:
-    description: Available if the relation "tax_provider" is expanded.
+    description: Available if the relation `tax_provider` is expanded.
     $ref: ./tax_provider.yaml
   payment_providers:
     description: >-
       The Payment Providers that can be used to process Payments in the Region.
-      Available if the relation "payment_providers" is expanded.
+      Available if the relation `payment_providers` is expanded.
     type: array
     items:
       $ref: ./payment_provider.yaml
   fulfillment_providers:
     description: >-
       The Fulfillment Providers that can be used to fulfill orders in the
-      Region. Available if the relation "payment_providers" is expanded.
+      Region. Available if the relation `payment_providers` is expanded.
     type: array
     items:
       $ref: ./fulfillment_provider.yaml
