@@ -44,6 +44,7 @@ async function retrieveAnalytics () {
         properties: {
           title: path.title,
           path: path.path,
+          url: `https://github.com/medusajs/medusa${path.path}`,
           count: path.uniques
         },
         timestamp: date
