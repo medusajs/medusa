@@ -15,7 +15,7 @@ class MiddlewareService {
   protected readonly preCartCreation_: RequestHandler[]
   protected readonly routers: Record<string, Router[]>
 
-  constructor(container) {
+  constructor({}) {
     this.postAuthentication_ = []
     this.preAuthentication_ = []
     this.preCartCreation_ = []
