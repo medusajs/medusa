@@ -3,8 +3,8 @@ import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
 import { transformBody, transformQuery } from "../../../middlewares"
-import { StorePostCartsCartReq } from "./update-cart";
-import { StorePostCartReq } from "./create-cart";
+import { StorePostCartsCartReq } from "./update-cart"
+import { StorePostCartReq } from "./create-cart"
 const route = Router()
 
 export default (app, container) => {
@@ -46,35 +46,20 @@ export default (app, container) => {
     require("./update-cart").default
   )
 
-  route.post(
-    "/:id/complete",
-    require("./complete-cart").default
-  )
+  route.post("/:id/complete", require("./complete-cart").default)
 
   // DEPRECATION
-  route.post(
-    "/:id/complete-cart",
-    require("./complete-cart").default
-  )
+  route.post("/:id/complete-cart", require("./complete-cart").default)
 
   // Line items
-  route.post(
-    "/:id/line-items",
-    require("./create-line-item").default
-  )
-  route.post(
-    "/:id/line-items/:line_id",
-    require("./update-line-item").default
-  )
+  route.post("/:id/line-items", require("./create-line-item").default)
+  route.post("/:id/line-items/:line_id", require("./update-line-item").default)
   route.delete(
     "/:id/line-items/:line_id",
     require("./delete-line-item").default
   )
 
-  route.delete(
-    "/:id/discounts/:code",
-    require("./delete-discount").default
-  )
+  route.delete("/:id/discounts/:code", require("./delete-discount").default)
 
   // Payment sessions
   route.post(
@@ -97,22 +82,13 @@ export default (app, container) => {
     require("./refresh-payment-session").default
   )
 
-  route.post(
-    "/:id/payment-session",
-    require("./set-payment-session").default
-  )
+  route.post("/:id/payment-session", require("./set-payment-session").default)
 
   // Shipping Options
-  route.post(
-    "/:id/shipping-methods",
-    require("./add-shipping-method").default
-  )
+  route.post("/:id/shipping-methods", require("./add-shipping-method").default)
 
   // Taxes
-  route.post(
-    "/:id/taxes",
-    require("./calculate-taxes").default
-  )
+  route.post("/:id/taxes", require("./calculate-taxes").default)
 
   return app
 }

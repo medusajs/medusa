@@ -20,14 +20,11 @@ export default (app) => {
   )
   route.get(
     "/",
-    transformQuery(
-      AdminGetCollectionsParams,
-      {
-        defaultRelations: defaultAdminCollectionsRelations,
-        defaultFields: defaultAdminCollectionsFields,
-        isList: true,
-      }
-    ),
+    transformQuery(AdminGetCollectionsParams, {
+      defaultRelations: defaultAdminCollectionsRelations,
+      defaultFields: defaultAdminCollectionsFields,
+      isList: true,
+    }),
     require("./list-collections").default
   )
 
@@ -38,14 +35,8 @@ export default (app) => {
     transformBody(AdminPostCollectionsCollectionReq),
     require("./update-collection").default
   )
-  collectionRouter.get(
-    "/",
-    require("./get-collection").default
-  )
-  collectionRouter.delete(
-    "/",
-    require("./delete-collection").default
-  )
+  collectionRouter.get("/", require("./get-collection").default)
+  collectionRouter.delete("/", require("./delete-collection").default)
   collectionRouter.post(
     "/products/batch",
     transformBody(AdminPostProductsToCollectionReq),

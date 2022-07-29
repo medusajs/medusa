@@ -4,10 +4,8 @@ import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
 
 describe("POST /admin/orders/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel", () => {
   describe("successfully cancels a fulfillment", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/swaps/${IdMap.getId(
           "test-swap"

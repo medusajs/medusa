@@ -217,7 +217,7 @@ describe("POST /admin/orders/:id/return", () => {
   describe("the api call overrides notification settings of order", () => {
     it("eventBus is called with the proper no notification feature", async () => {
       jest.clearAllMocks()
-      const subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/return`,
         {

@@ -1,6 +1,6 @@
 import { CartService } from "../../../../services"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
@@ -29,7 +29,9 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await cartService.withTransaction(transactionManager).refreshPaymentSession(id, provider_id)
+    return await cartService
+      .withTransaction(transactionManager)
+      .refreshPaymentSession(id, provider_id)
   })
   const cart = await cartService.retrieve(id, {
     select: [

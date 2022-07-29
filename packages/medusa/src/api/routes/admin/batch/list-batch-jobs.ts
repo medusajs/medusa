@@ -1,6 +1,5 @@
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { Transform, Type } from "class-transformer"
-
 import BatchJobService from "../../../../services/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"

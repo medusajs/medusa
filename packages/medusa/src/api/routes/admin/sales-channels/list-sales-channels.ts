@@ -1,13 +1,11 @@
+import { Request, Response } from "express"
+import { IsOptional, IsString, ValidateNested } from "class-validator"
+import { Type } from "class-transformer"
+import { SalesChannelService } from "../../../../services"
 import {
   DateComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
-import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
-import { Request, Response } from "express"
-
-import { SalesChannelService } from "../../../../services"
-import { Type } from "class-transformer"
-import { removeUndefinedProperties } from "../../../../utils"
 
 /**
  * @oas [get] /sales-channels

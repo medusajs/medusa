@@ -5,10 +5,8 @@ import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales
 
 describe("POST /admin/sales-channels", () => {
   describe("successfully get a sales channel", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request("POST", `/admin/sales-channels`, {
+      await request("POST", `/admin/sales-channels`, {
         adminSession: {
           jwt: {
             userId: IdMap.getId("admin_user"),

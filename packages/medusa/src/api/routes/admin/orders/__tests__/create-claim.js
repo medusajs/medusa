@@ -4,10 +4,8 @@ import { ClaimServiceMock } from "../../../../../services/__mocks__/claim"
 
 describe("POST /admin/order/:id/claims", () => {
   describe("successfully creates a claim", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/claims`,
         {
@@ -86,10 +84,8 @@ describe("POST /admin/order/:id/claims", () => {
   })
 
   describe("successfully creates a claim with a reason", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/claims`,
         {

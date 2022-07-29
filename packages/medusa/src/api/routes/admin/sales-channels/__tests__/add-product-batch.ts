@@ -4,10 +4,8 @@ import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales
 
 describe("POST /admin/sales-channels/:id/products/batch", () => {
   describe("add product to a sales channel", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/sales-channels/${IdMap.getId(
           "sales_channel_1"
@@ -19,7 +17,7 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
             },
           },
           payload: {
-            product_ids: [{ id: "sales_channel_1_product_1" }],
+            product_ids: [{ id: IdMap.getId("sales_channel_1_product_1") }],
           },
           flags: ["sales_channels"],
         }

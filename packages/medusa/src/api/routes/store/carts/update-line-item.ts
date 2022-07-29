@@ -43,7 +43,9 @@ export default async (req, res) => {
     if (validated.quantity === 0) {
       await cartService.withTransaction(m).removeLineItem(id, line_id)
     } else {
-      const cart = await cartService.withTransaction(m).retrieve(id, { relations: ["items"] })
+      const cart = await cartService
+        .withTransaction(m)
+        .retrieve(id, { relations: ["items"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {

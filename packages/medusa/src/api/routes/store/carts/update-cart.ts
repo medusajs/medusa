@@ -109,12 +109,16 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await cartService.withTransaction(transactionManager).update(id, validated)
 
-    const updated = await cartService.withTransaction(transactionManager).retrieve(id, {
-      relations: ["payment_sessions", "shipping_methods"],
-    })
+    const updated = await cartService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["payment_sessions", "shipping_methods"],
+      })
 
     if (updated.payment_sessions?.length && !validated.region_id) {
-      await cartService.withTransaction(transactionManager).setPaymentSessions(id)
+      await cartService
+        .withTransaction(transactionManager)
+        .setPaymentSessions(id)
     }
   })
 

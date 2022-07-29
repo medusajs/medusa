@@ -34,17 +34,19 @@ describe("GET /admin/products/:id/variants", () => {
           relations: [],
           select: ["id", "product_id"],
           skip: 0,
-          take: 100
+          take: 100,
         }
       )
     })
 
     it("should returns product decorated", () => {
       expect(subject.body.variants.length).toEqual(2)
-      expect(subject.body.variants).toEqual(expect.arrayContaining([
-        expect.objectContaining({ product_id: IdMap.getId("product1") }),
-        expect.objectContaining({ product_id: IdMap.getId("product1") }),
-      ]))
+      expect(subject.body.variants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ product_id: IdMap.getId("product1") }),
+          expect.objectContaining({ product_id: IdMap.getId("product1") }),
+        ])
+      )
     })
 
     it("should call the get product from productService with the expected parameters including the config that has been given", async () => {
@@ -61,7 +63,7 @@ describe("GET /admin/products/:id/variants", () => {
             expand: "variants.options",
             fields: "id, variants.id",
             limit: 10,
-          }
+          },
         }
       )
 
@@ -74,7 +76,7 @@ describe("GET /admin/products/:id/variants", () => {
           relations: ["variants.options"],
           select: ["id", "product_id", "variants.id"],
           skip: 0,
-          take: 10
+          take: 10,
         }
       )
     })

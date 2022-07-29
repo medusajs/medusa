@@ -31,9 +31,10 @@ describe("DELETE /admin/collections/:id/products/batch", () => {
       expect(ProductCollectionServiceMock.removeProducts).toHaveBeenCalledTimes(
         1
       )
-      expect(
-        ProductCollectionServiceMock.removeProducts
-      ).toHaveBeenCalledWith(IdMap.getId("col"), ["prod_1", "prod_2"])
+      expect(ProductCollectionServiceMock.removeProducts).toHaveBeenCalledWith(
+        IdMap.getId("col"),
+        ["prod_1", "prod_2"]
+      )
     })
   })
 

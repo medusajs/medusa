@@ -1,7 +1,6 @@
 import { CartService, LineItemService, RegionService } from "../../../../services"
 import {
   IsArray,
-  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsOptional,

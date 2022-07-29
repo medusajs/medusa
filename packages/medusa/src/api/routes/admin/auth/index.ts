@@ -7,11 +7,7 @@ const route = Router()
 export default (app) => {
   app.use("/auth", route)
 
-  route.get(
-    "/",
-    middlewares.authenticate(),
-    require("./get-session").default
-  )
+  route.get("/", middlewares.authenticate(), require("./get-session").default)
   route.post("/", require("./create-session").default)
 
   route.delete(

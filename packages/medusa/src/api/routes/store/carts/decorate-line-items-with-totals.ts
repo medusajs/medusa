@@ -1,7 +1,7 @@
 import { Request } from "express"
 import { TotalsService } from "../../../../services"
 import { Cart, LineItem } from "../../../../models"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 
 export const decorateLineItemsWithTotals = async (
   cart: Cart,

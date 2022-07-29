@@ -4,10 +4,8 @@ import { ClaimServiceMock } from "../../../../../services/__mocks__/claim"
 
 describe("POST /admin/orders/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel", () => {
   describe("successfully cancels a fulfillment", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/claims/${IdMap.getId(
           "test-claim"

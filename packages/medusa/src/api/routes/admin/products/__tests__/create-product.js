@@ -126,11 +126,9 @@ describe("POST /admin/products", () => {
   })
 
   describe("successful creation of gift card product", () => {
-    let subject
-
     beforeAll(async () => {
       jest.clearAllMocks()
-      subject = await request("POST", "/admin/products", {
+      await request("POST", "/admin/products", {
         payload: {
           title: "Gift Card",
           description: "make someone happy",

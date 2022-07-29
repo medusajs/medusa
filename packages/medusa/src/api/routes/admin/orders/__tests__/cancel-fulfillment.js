@@ -4,10 +4,8 @@ import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
 describe("POST /admin/orders/:id/fulfillments/:fulfillment_id/cancel", () => {
   describe("successfully cancels a fulfillment", () => {
-    let subject
-
     beforeAll(async () => {
-      subject = await request(
+      await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}/fulfillments/${IdMap.getId(
           "order-fulfillment"

@@ -1,7 +1,6 @@
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
-import StoreService from "../../../../services/store"
 import { PaymentProvider } from "../../../../models"
 
 /**

@@ -28,7 +28,7 @@ describe("GET /admin/sales-channels/:id", () => {
     it("calls the retrieve method from the sales channel service", () => {
       expect(SalesChannelServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(SalesChannelServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("sales_channel_1"),
+        IdMap.getId("sales_channel_1")
       )
     })
 

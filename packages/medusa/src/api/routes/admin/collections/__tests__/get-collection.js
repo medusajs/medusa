@@ -28,7 +28,7 @@ describe("GET /admin/categories/:id", () => {
       expect(ProductCollectionServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("col"),
-        {relations: defaultAdminCollectionsRelations}
+        { relations: defaultAdminCollectionsRelations }
       )
     })
 

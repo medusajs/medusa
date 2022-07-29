@@ -15,6 +15,7 @@ export default () => {
     err: MedusaError,
     req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
   ) => {
     const logger: Logger = req.scope.resolve("logger")
