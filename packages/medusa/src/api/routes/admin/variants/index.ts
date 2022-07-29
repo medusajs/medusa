@@ -2,14 +2,13 @@ import { Router } from "express"
 
 import { PaginatedResponse } from "../../../../types/common"
 import { ProductVariant } from "../../../../models/product-variant"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
 export default (app) => {
   app.use("/variants", route)
 
-  route.get("/", middlewares.wrap(require("./list-variants").default))
+  route.get("/", require("./list-variants").default)
 
   return app
 }

@@ -20,54 +20,33 @@ export default (app, featureFlagRouter: FlagRouter) => {
   route.post(
     "/",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
-    middlewares.wrap(require("./create-product").default)
+    require("./create-product").default
   )
   route.post(
     "/:id",
     validateSalesChannelsExist((req) => req.body?.sales_channels),
-    middlewares.wrap(require("./update-product").default)
+    require("./update-product").default
   )
-  route.get("/types", middlewares.wrap(require("./list-types").default))
-  route.get(
-    "/tag-usage",
-    middlewares.wrap(require("./list-tag-usage-count").default)
-  )
+  route.get("/types", require("./list-types").default)
+  route.get("/tag-usage", require("./list-tag-usage-count").default)
 
   route.get(
     "/:id/variants",
     middlewares.normalizeQuery(),
-    middlewares.wrap(require("./list-variants").default)
+    require("./list-variants").default
   )
-  route.post(
-    "/:id/variants",
-    middlewares.wrap(require("./create-variant").default)
-  )
+  route.post("/:id/variants", require("./create-variant").default)
 
-  route.post(
-    "/:id/variants/:variant_id",
-    middlewares.wrap(require("./update-variant").default)
-  )
+  route.post("/:id/variants/:variant_id", require("./update-variant").default)
 
-  route.post(
-    "/:id/options/:option_id",
-    middlewares.wrap(require("./update-option").default)
-  )
-  route.post("/:id/options", middlewares.wrap(require("./add-option").default))
+  route.post("/:id/options/:option_id", require("./update-option").default)
+  route.post("/:id/options", require("./add-option").default)
 
-  route.delete(
-    "/:id/variants/:variant_id",
-    middlewares.wrap(require("./delete-variant").default)
-  )
-  route.delete("/:id", middlewares.wrap(require("./delete-product").default))
-  route.delete(
-    "/:id/options/:option_id",
-    middlewares.wrap(require("./delete-option").default)
-  )
+  route.delete("/:id/variants/:variant_id", require("./delete-variant").default)
+  route.delete("/:id", require("./delete-product").default)
+  route.delete("/:id/options/:option_id", require("./delete-option").default)
 
-  route.post(
-    "/:id/metadata",
-    middlewares.wrap(require("./set-metadata").default)
-  )
+  route.post("/:id/metadata", require("./set-metadata").default)
   route.get(
     "/:id",
     transformQuery(EmptyQueryParams, {
@@ -76,7 +55,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedFields: allowedAdminProductFields,
       isList: false,
     }),
-    middlewares.wrap(require("./get-product").default)
+    require("./get-product").default
   )
 
   route.get(
@@ -87,7 +66,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedFields: allowedAdminProductFields,
       isList: true,
     }),
-    middlewares.wrap(require("./list-products").default)
+    require("./list-products").default
   )
 
   return app

@@ -1,36 +1,29 @@
 import { Router } from "express"
 import { User } from "../../../.."
 import { DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 export const unauthenticatedUserRoutes = (app) => {
   const route = Router()
   app.use("/users", route)
 
-  route.post(
-    "/password-token",
-    middlewares.wrap(require("./reset-password-token").default)
-  )
+  route.post("/password-token", require("./reset-password-token").default)
 
-  route.post(
-    "/reset-password",
-    middlewares.wrap(require("./reset-password").default)
-  )
+  route.post("/reset-password", require("./reset-password").default)
 }
 
 export default (app) => {
   const route = Router()
   app.use("/users", route)
 
-  route.get("/:user_id", middlewares.wrap(require("./get-user").default))
+  route.get("/:user_id", require("./get-user").default)
 
-  route.post("/", middlewares.wrap(require("./create-user").default))
+  route.post("/", require("./create-user").default)
 
-  route.post("/:user_id", middlewares.wrap(require("./update-user").default))
+  route.post("/:user_id", require("./update-user").default)
 
-  route.delete("/:user_id", middlewares.wrap(require("./delete-user").default))
+  route.delete("/:user_id", require("./delete-user").default)
 
-  route.get("/", middlewares.wrap(require("./list-users").default))
+  route.get("/", require("./list-users").default)
 
   return app
 }

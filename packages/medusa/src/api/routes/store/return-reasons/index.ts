@@ -1,6 +1,5 @@
 import { ReturnReason } from "./../../../../"
 import { Router } from "express"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -10,12 +9,12 @@ export default (app) => {
   /**
    * List reasons
    */
-  route.get("/", middlewares.wrap(require("./list-reasons").default))
+  route.get("/", require("./list-reasons").default)
 
   /**
    * Retrieve reason
    */
-  route.get("/:id", middlewares.wrap(require("./get-reason").default))
+  route.get("/:id", require("./get-reason").default)
 
   return app
 }

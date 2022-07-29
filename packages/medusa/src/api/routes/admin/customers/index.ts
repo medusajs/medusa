@@ -11,12 +11,12 @@ export default (app) => {
   route.get(
     "/",
     middlewares.normalizeQuery(),
-    middlewares.wrap(require("./list-customers").default)
+    require("./list-customers").default
   )
-  route.get("/:id", middlewares.wrap(require("./get-customer").default))
+  route.get("/:id", require("./get-customer").default)
 
-  route.post("/", middlewares.wrap(require("./create-customer").default))
-  route.post("/:id", middlewares.wrap(require("./update-customer").default))
+  route.post("/", require("./create-customer").default)
+  route.post("/:id", require("./update-customer").default)
   return app
 }
 

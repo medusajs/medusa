@@ -1,7 +1,6 @@
 import { Router } from "express"
 import { ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
 
 const route = Router()
@@ -9,7 +8,7 @@ const route = Router()
 export default (app) => {
   app.use("/product-types", route)
 
-  route.get("/", middlewares.wrap(require("./list-product-types").default))
+  route.get("/", require("./list-product-types").default)
 
   return app
 }

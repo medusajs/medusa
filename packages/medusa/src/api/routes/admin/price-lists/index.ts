@@ -2,10 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import { PriceList } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
-  transformQuery,
-  transformBody,
-} from "../../../middlewares"
+import { transformQuery, transformBody } from "../../../middlewares"
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
@@ -20,12 +17,12 @@ const route = Router()
 export default (app) => {
   app.use("/price-lists", route)
 
-  route.get("/:id", middlewares.wrap(require("./get-price-list").default))
+  route.get("/:id", require("./get-price-list").default)
 
   route.get(
     "/",
     transformQuery(AdminGetPriceListPaginationParams, { isList: true }),
-    middlewares.wrap(require("./list-price-lists").default)
+    require("./list-price-lists").default
   )
 
   route.get(
@@ -39,37 +36,31 @@ export default (app) => {
       defaultLimit: 50,
       isList: true,
     }),
-    middlewares.wrap(require("./list-price-list-products").default)
+    require("./list-price-list-products").default
   )
 
   route.delete(
     "/:id/products/:product_id/prices",
-    middlewares.wrap(require("./delete-product-prices").default)
+    require("./delete-product-prices").default
   )
   route.delete(
     "/:id/variants/:variant_id/prices",
-    middlewares.wrap(require("./delete-variant-prices").default)
+    require("./delete-variant-prices").default
   )
 
   route.post(
     "/",
     transformBody(AdminPostPriceListsPriceListReq),
-    middlewares.wrap(require("./create-price-list").default)
+    require("./create-price-list").default
   )
 
-  route.post("/:id", middlewares.wrap(require("./update-price-list").default))
+  route.post("/:id", require("./update-price-list").default)
 
-  route.delete("/:id", middlewares.wrap(require("./delete-price-list").default))
+  route.delete("/:id", require("./delete-price-list").default)
 
-  route.delete(
-    "/:id/prices/batch",
-    middlewares.wrap(require("./delete-prices-batch").default)
-  )
+  route.delete("/:id/prices/batch", require("./delete-prices-batch").default)
 
-  route.post(
-    "/:id/prices/batch",
-    middlewares.wrap(require("./add-prices-batch").default)
-  )
+  route.post("/:id/prices/batch", require("./add-prices-batch").default)
 
   return app
 }

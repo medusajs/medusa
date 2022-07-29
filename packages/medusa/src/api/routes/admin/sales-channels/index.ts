@@ -24,46 +24,40 @@ export default (app) => {
     transformQuery(AdminGetSalesChannelsParams, {
       isList: true,
     }),
-    middlewares.wrap(require("./list-sales-channels").default)
+    require("./list-sales-channels").default
   )
 
   const salesChannelRouter = Router({ mergeParams: true })
   route.use("/:id", salesChannelRouter)
 
-  salesChannelRouter.get(
-    "/",
-    middlewares.wrap(require("./get-sales-channel").default)
-  )
+  salesChannelRouter.get("/", require("./get-sales-channel").default)
   salesChannelRouter.post(
     "/",
     transformBody(AdminPostSalesChannelsSalesChannelReq),
-    middlewares.wrap(require("./update-sales-channel").default)
+    require("./update-sales-channel").default
   )
-  salesChannelRouter.delete(
-    "/",
-    middlewares.wrap(require("./delete-sales-channel").default)
-  )
+  salesChannelRouter.delete("/", require("./delete-sales-channel").default)
   salesChannelRouter.post(
     "/",
     transformBody(AdminPostSalesChannelsSalesChannelReq),
-    middlewares.wrap(require("./update-sales-channel").default)
+    require("./update-sales-channel").default
   )
   salesChannelRouter.delete(
     "/products/batch",
     transformBody(AdminDeleteSalesChannelsChannelProductsBatchReq),
-    middlewares.wrap(require("./delete-products-batch").default)
+    require("./delete-products-batch").default
   )
   salesChannelRouter.post(
     "/products/batch",
     transformBody(AdminPostSalesChannelsChannelProductsBatchReq),
     validateProductsExist((req) => req.body.product_ids),
-    middlewares.wrap(require("./add-product-batch").default)
+    require("./add-product-batch").default
   )
 
   route.post(
     "/",
     transformBody(AdminPostSalesChannelsReq),
-    middlewares.wrap(require("./create-sales-channel").default)
+    require("./create-sales-channel").default
   )
 
   return app

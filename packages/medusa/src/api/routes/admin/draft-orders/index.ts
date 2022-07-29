@@ -1,47 +1,34 @@
 import { Router } from "express"
 import { Cart, DraftOrder, Order } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
 export default (app) => {
   app.use("/draft-orders", route)
 
-  route.get("/", middlewares.wrap(require("./list-draft-orders").default))
+  route.get("/", require("./list-draft-orders").default)
 
-  route.get("/:id", middlewares.wrap(require("./get-draft-order").default))
+  route.get("/:id", require("./get-draft-order").default)
 
-  route.post("/", middlewares.wrap(require("./create-draft-order").default))
+  route.post("/", require("./create-draft-order").default)
 
-  route.post("/:id", middlewares.wrap(require("./update-draft-order").default))
+  route.post("/:id", require("./update-draft-order").default)
 
-  route.delete(
-    "/:id",
-    middlewares.wrap(require("./delete-draft-order").default)
-  )
+  route.delete("/:id", require("./delete-draft-order").default)
 
   route.delete(
     "/:id/line-items/:line_id",
-    middlewares.wrap(require("./delete-line-item").default)
+    require("./delete-line-item").default
   )
 
-  route.post(
-    "/:id/line-items",
-    middlewares.wrap(require("./create-line-item").default)
-  )
+  route.post("/:id/line-items", require("./create-line-item").default)
 
-  route.post(
-    "/:id/line-items/:line_id",
-    middlewares.wrap(require("./update-line-item").default)
-  )
+  route.post("/:id/line-items/:line_id", require("./update-line-item").default)
 
-  route.post("/", middlewares.wrap(require("./create-draft-order").default))
+  route.post("/", require("./create-draft-order").default)
 
-  route.post(
-    "/:id/pay",
-    middlewares.wrap(require("./register-payment").default)
-  )
+  route.post("/:id/pay", require("./register-payment").default)
 
   return app
 }

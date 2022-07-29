@@ -1,5 +1,4 @@
 import { Router } from "express"
-import middlewares from "../../../middlewares"
 import { GiftCard } from "./../../../../"
 
 const route = Router()
@@ -7,7 +6,7 @@ const route = Router()
 export default (app) => {
   app.use("/gift-cards", route)
 
-  route.get("/:code", middlewares.wrap(require("./get-gift-card").default))
+  route.get("/:code", require("./get-gift-card").default)
 
   return app
 }

@@ -1,6 +1,5 @@
 import { Router } from "express"
 import { Notification } from "./../../../../"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -10,15 +9,12 @@ export default (app) => {
   /**
    * List notifications
    */
-  route.get("/", middlewares.wrap(require("./list-notifications").default))
+  route.get("/", require("./list-notifications").default)
 
   /**
    * Resend a notification
    */
-  route.post(
-    "/:id/resend",
-    middlewares.wrap(require("./resend-notification").default)
-  )
+  route.post("/:id/resend", require("./resend-notification").default)
 
   return app
 }

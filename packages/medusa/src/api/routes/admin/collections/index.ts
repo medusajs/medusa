@@ -2,7 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import { ProductCollection } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformBody, transformQuery } from "../../../middlewares"
+import { transformBody, transformQuery } from "../../../middlewares"
 import { AdminGetCollectionsParams } from "./list-collections"
 import { AdminPostCollectionsReq } from "./create-collection"
 import { AdminPostCollectionsCollectionReq } from "./update-collection"
@@ -16,7 +16,7 @@ export default (app) => {
   route.post(
     "/",
     transformBody(AdminPostCollectionsReq),
-    middlewares.wrap(require("./create-collection").default)
+    require("./create-collection").default
   )
   route.get(
     "/",
@@ -28,7 +28,7 @@ export default (app) => {
         isList: true,
       }
     ),
-    middlewares.wrap(require("./list-collections").default)
+    require("./list-collections").default
   )
 
   const collectionRouter = Router({ mergeParams: true })
@@ -36,25 +36,25 @@ export default (app) => {
   collectionRouter.post(
     "/",
     transformBody(AdminPostCollectionsCollectionReq),
-    middlewares.wrap(require("./update-collection").default)
+    require("./update-collection").default
   )
   collectionRouter.get(
     "/",
-    middlewares.wrap(require("./get-collection").default)
+    require("./get-collection").default
   )
   collectionRouter.delete(
     "/",
-    middlewares.wrap(require("./delete-collection").default)
+    require("./delete-collection").default
   )
   collectionRouter.post(
     "/products/batch",
     transformBody(AdminPostProductsToCollectionReq),
-    middlewares.wrap(require("./add-products").default)
+    require("./add-products").default
   )
   collectionRouter.delete(
     "/products/batch",
     transformBody(AdminDeleteProductsFromCollectionReq),
-    middlewares.wrap(require("./remove-products").default)
+    require("./remove-products").default
   )
 
   return app

@@ -6,7 +6,7 @@ import {
   EmptyQueryParams,
   PaginatedResponse,
 } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
+import { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
 import { FlagRouter } from "../../../../utils/flag-router"
 
@@ -31,7 +31,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedFields: allowedAdminOrdersFields,
       isList: true,
     }),
-    middlewares.wrap(require("./list-orders").default)
+    require("./list-orders").default
   )
 
   /**
@@ -45,52 +45,45 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedFields: allowedAdminOrdersFields,
       isList: false,
     }),
-    middlewares.wrap(require("./get-order").default)
+    require("./get-order").default
   )
+
+  /**
+   * Create a new order
+   */
+  route.post("/", require("./create-order").default)
 
   /**
    * Update an order
    */
-  route.post("/:id", middlewares.wrap(require("./update-order").default))
+  route.post("/:id", require("./update-order").default)
 
   /**
    * Mark an order as completed
    */
-  route.post(
-    "/:id/complete",
-    middlewares.wrap(require("./complete-order").default)
-  )
+  route.post("/:id/complete", require("./complete-order").default)
 
   /**
    * Refund an amount to the customer's card.
    */
-  route.post(
-    "/:id/refund",
-    middlewares.wrap(require("./refund-payment").default)
-  )
+  route.post("/:id/refund", require("./refund-payment").default)
 
   /**
    * Capture the authorized amount on the customer's card.
    */
-  route.post(
-    "/:id/capture",
-    middlewares.wrap(require("./capture-payment").default)
-  )
+  route.post("/:id/capture", require("./capture-payment").default)
 
   /**
    * Create a fulfillment.
    */
-  route.post(
-    "/:id/fulfillment",
-    middlewares.wrap(require("./create-fulfillment").default)
-  )
+  route.post("/:id/fulfillment", require("./create-fulfillment").default)
 
   /**
    * Cancel a fulfillment related to an order.
    */
   route.post(
     "/:id/fulfillments/:fulfillment_id/cancel",
-    middlewares.wrap(require("./cancel-fulfillment").default)
+    require("./cancel-fulfillment").default
   )
 
   /**
@@ -98,7 +91,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
-    middlewares.wrap(require("./cancel-fulfillment-swap").default)
+    require("./cancel-fulfillment-swap").default
   )
 
   /**
@@ -106,65 +99,50 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
-    middlewares.wrap(require("./cancel-fulfillment-claim").default)
+    require("./cancel-fulfillment-claim").default
   )
 
   /**
    * Create a shipment.
    */
-  route.post(
-    "/:id/shipment",
-    middlewares.wrap(require("./create-shipment").default)
-  )
+  route.post("/:id/shipment", require("./create-shipment").default)
 
   /**
    * Request a return.
    */
-  route.post(
-    "/:id/return",
-    middlewares.wrap(require("./request-return").default)
-  )
+  route.post("/:id/return", require("./request-return").default)
 
   /**
    * Cancel an order.
    */
-  route.post("/:id/cancel", middlewares.wrap(require("./cancel-order").default))
+  route.post("/:id/cancel", require("./cancel-order").default)
 
   /**
    * Add a shipping method
    */
-  route.post(
-    "/:id/shipping-methods",
-    middlewares.wrap(require("./add-shipping-method").default)
-  )
+  route.post("/:id/shipping-methods", require("./add-shipping-method").default)
 
   /**
    * Archive an order.
    */
-  route.post(
-    "/:id/archive",
-    middlewares.wrap(require("./archive-order").default)
-  )
+  route.post("/:id/archive", require("./archive-order").default)
 
   /**
    * Creates a swap, requests a return and prepares a cart for payment.
    */
-  route.post("/:id/swaps", middlewares.wrap(require("./create-swap").default))
+  route.post("/:id/swaps", require("./create-swap").default)
 
   /**
    * Cancels a swap.
    */
-  route.post(
-    "/:id/swaps/:swap_id/cancel",
-    middlewares.wrap(require("./cancel-swap").default)
-  )
+  route.post("/:id/swaps/:swap_id/cancel", require("./cancel-swap").default)
 
   /**
    * Fulfills a swap.
    */
   route.post(
     "/:id/swaps/:swap_id/fulfillments",
-    middlewares.wrap(require("./fulfill-swap").default)
+    require("./fulfill-swap").default
   )
 
   /**
@@ -172,7 +150,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/shipments",
-    middlewares.wrap(require("./create-swap-shipment").default)
+    require("./create-swap-shipment").default
   )
 
   /**
@@ -180,36 +158,30 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/swaps/:swap_id/process-payment",
-    middlewares.wrap(require("./process-swap-payment").default)
+    require("./process-swap-payment").default
   )
 
   /**
    * Creates a claim
    */
-  route.post("/:id/claims", middlewares.wrap(require("./create-claim").default))
+  route.post("/:id/claims", require("./create-claim").default)
 
   /**
    * Cancels a claim
    */
-  route.post(
-    "/:id/claims/:claim_id/cancel",
-    middlewares.wrap(require("./cancel-claim").default)
-  )
+  route.post("/:id/claims/:claim_id/cancel", require("./cancel-claim").default)
 
   /**
    * Updates a claim
    */
-  route.post(
-    "/:id/claims/:claim_id",
-    middlewares.wrap(require("./update-claim").default)
-  )
+  route.post("/:id/claims/:claim_id", require("./update-claim").default)
 
   /**
    * Creates claim fulfillment
    */
   route.post(
     "/:id/claims/:claim_id/fulfillments",
-    middlewares.wrap(require("./fulfill-claim").default)
+    require("./fulfill-claim").default
   )
 
   /**
@@ -217,7 +189,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.post(
     "/:id/claims/:claim_id/shipments",
-    middlewares.wrap(require("./create-claim-shipment").default)
+    require("./create-claim-shipment").default
   )
 
   return app

@@ -5,8 +5,6 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
-import { ClassOrFunctionReturning } from "awilix/lib/container"
-import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import "reflect-metadata"
 import requestIp from "request-ip"
@@ -28,6 +26,8 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { Express, NextFunction, Request, Response } from "express"
 
 type Options = {
   directory: string

@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { BatchJob } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
+import {
   canAccessBatchJob,
   getRequestedBatchJob,
   transformQuery,
@@ -19,25 +19,19 @@ export default (app) => {
       defaultFields: defaultAdminBatchFields,
       isList: true,
     }),
-    middlewares.wrap(require("./list-batch-jobs").default)
+    require("./list-batch-jobs").default
   )
-  route.post("/", middlewares.wrap(require("./create-batch-job").default))
+  route.post("/", require("./create-batch-job").default)
 
   const batchJobRouter = Router({ mergeParams: true })
 
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, batchJobRouter)
 
-  batchJobRouter.get("/", middlewares.wrap(require("./get-batch-job").default))
+  batchJobRouter.get("/", require("./get-batch-job").default)
 
-  batchJobRouter.post(
-    "/confirm",
-    middlewares.wrap(require("./confirm-batch-job").default)
-  )
+  batchJobRouter.post("/confirm", require("./confirm-batch-job").default)
 
-  batchJobRouter.post(
-    "/cancel",
-    middlewares.wrap(require("./cancel-batch-job").default)
-  )
+  batchJobRouter.post("/cancel", require("./cancel-batch-job").default)
 
   return app
 }

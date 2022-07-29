@@ -1,7 +1,6 @@
 import { Router } from "express"
 import { Swap } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -11,12 +10,12 @@ export default (app) => {
   /**
    * List swaps
    */
-  route.get("/", middlewares.wrap(require("./list-swaps").default))
+  route.get("/", require("./list-swaps").default)
 
   /**
    * Get a swap
    */
-  route.get("/:id", middlewares.wrap(require("./get-swap").default))
+  route.get("/:id", require("./get-swap").default)
 
   return app
 }

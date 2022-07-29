@@ -2,7 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
-import middlewares, { transformBody, transformQuery } from "../../../middlewares"
+import { transformBody, transformQuery } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart";
 import { StorePostCartReq } from "./create-cart";
 const route = Router()
@@ -30,88 +30,88 @@ export default (app, container) => {
       defaultFields: defaultStoreCartFields,
       isList: false,
     }),
-    middlewares.wrap(require("./get-cart").default)
+    require("./get-cart").default
   )
 
   route.post(
     "/",
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
-    middlewares.wrap(require("./create-cart").default)
+    require("./create-cart").default
   )
 
   route.post(
     "/:id",
     transformBody(StorePostCartsCartReq),
-    middlewares.wrap(require("./update-cart").default)
+    require("./update-cart").default
   )
 
   route.post(
     "/:id/complete",
-    middlewares.wrap(require("./complete-cart").default)
+    require("./complete-cart").default
   )
 
   // DEPRECATION
   route.post(
     "/:id/complete-cart",
-    middlewares.wrap(require("./complete-cart").default)
+    require("./complete-cart").default
   )
 
   // Line items
   route.post(
     "/:id/line-items",
-    middlewares.wrap(require("./create-line-item").default)
+    require("./create-line-item").default
   )
   route.post(
     "/:id/line-items/:line_id",
-    middlewares.wrap(require("./update-line-item").default)
+    require("./update-line-item").default
   )
   route.delete(
     "/:id/line-items/:line_id",
-    middlewares.wrap(require("./delete-line-item").default)
+    require("./delete-line-item").default
   )
 
   route.delete(
     "/:id/discounts/:code",
-    middlewares.wrap(require("./delete-discount").default)
+    require("./delete-discount").default
   )
 
   // Payment sessions
   route.post(
     "/:id/payment-sessions",
-    middlewares.wrap(require("./create-payment-sessions").default)
+    require("./create-payment-sessions").default
   )
 
   route.post(
     "/:id/payment-sessions/:provider_id",
-    middlewares.wrap(require("./update-payment-session").default)
+    require("./update-payment-session").default
   )
 
   route.delete(
     "/:id/payment-sessions/:provider_id",
-    middlewares.wrap(require("./delete-payment-session").default)
+    require("./delete-payment-session").default
   )
 
   route.post(
     "/:id/payment-sessions/:provider_id/refresh",
-    middlewares.wrap(require("./refresh-payment-session").default)
+    require("./refresh-payment-session").default
   )
 
   route.post(
     "/:id/payment-session",
-    middlewares.wrap(require("./set-payment-session").default)
+    require("./set-payment-session").default
   )
 
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
-    middlewares.wrap(require("./add-shipping-method").default)
+    require("./add-shipping-method").default
   )
 
   // Taxes
   route.post(
     "/:id/taxes",
-    middlewares.wrap(require("./calculate-taxes").default)
+    require("./calculate-taxes").default
   )
 
   return app

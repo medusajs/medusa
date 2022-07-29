@@ -16,45 +16,27 @@ export default (app, container) => {
     route.use("/", router)
   }
 
-  route.post("/", middlewares.wrap(require("./create-customer").default))
+  route.post("/", require("./create-customer").default)
 
-  route.post(
-    "/password-reset",
-    middlewares.wrap(require("./reset-password").default)
-  )
+  route.post("/password-reset", require("./reset-password").default)
 
-  route.post(
-    "/password-token",
-    middlewares.wrap(require("./reset-password-token").default)
-  )
+  route.post("/password-token", require("./reset-password-token").default)
 
   // Authenticated endpoints
   route.use(middlewares.authenticate())
 
-  route.get("/me", middlewares.wrap(require("./get-customer").default))
-  route.post("/me", middlewares.wrap(require("./update-customer").default))
+  route.get("/me", require("./get-customer").default)
+  route.post("/me", require("./update-customer").default)
 
-  route.get("/me/orders", middlewares.wrap(require("./list-orders").default))
+  route.get("/me/orders", require("./list-orders").default)
 
-  route.post(
-    "/me/addresses",
-    middlewares.wrap(require("./create-address").default)
-  )
+  route.post("/me/addresses", require("./create-address").default)
 
-  route.post(
-    "/me/addresses/:address_id",
-    middlewares.wrap(require("./update-address").default)
-  )
+  route.post("/me/addresses/:address_id", require("./update-address").default)
 
-  route.delete(
-    "/me/addresses/:address_id",
-    middlewares.wrap(require("./delete-address").default)
-  )
+  route.delete("/me/addresses/:address_id", require("./delete-address").default)
 
-  route.get(
-    "/me/payment-methods",
-    middlewares.wrap(require("./get-payment-methods").default)
-  )
+  route.get("/me/payment-methods", require("./get-payment-methods").default)
 
   return app
 }

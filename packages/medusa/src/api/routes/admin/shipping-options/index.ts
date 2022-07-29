@@ -1,28 +1,18 @@
 import { Router } from "express"
 import { ShippingOption } from "../../../.."
 import { PaginatedResponse, DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
 export default (app) => {
   app.use("/shipping-options", route)
 
-  route.get("/", middlewares.wrap(require("./list-shipping-options").default))
-  route.post("/", middlewares.wrap(require("./create-shipping-option").default))
+  route.get("/", require("./list-shipping-options").default)
+  route.post("/", require("./create-shipping-option").default)
 
-  route.get(
-    "/:option_id",
-    middlewares.wrap(require("./get-shipping-option").default)
-  )
-  route.post(
-    "/:option_id",
-    middlewares.wrap(require("./update-shipping-option").default)
-  )
-  route.delete(
-    "/:option_id",
-    middlewares.wrap(require("./delete-shipping-option").default)
-  )
+  route.get("/:option_id", require("./get-shipping-option").default)
+  route.post("/:option_id", require("./update-shipping-option").default)
+  route.delete("/:option_id", require("./delete-shipping-option").default)
 
   return app
 }

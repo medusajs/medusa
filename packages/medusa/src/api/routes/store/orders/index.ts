@@ -1,7 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -11,20 +10,17 @@ export default (app) => {
   /**
    * Lookup
    */
-  route.get("/", middlewares.wrap(require("./lookup-order").default))
+  route.get("/", require("./lookup-order").default)
 
   /**
    * Retrieve Order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get("/:id", require("./get-order").default)
 
   /**
    * Retrieve by Cart Id
    */
-  route.get(
-    "/cart/:cart_id",
-    middlewares.wrap(require("./get-order-by-cart").default)
-  )
+  route.get("/cart/:cart_id", require("./get-order-by-cart").default)
 
   return app
 }

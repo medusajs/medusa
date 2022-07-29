@@ -1,7 +1,6 @@
 import { Router } from "express"
 import { ReturnReason } from "../../../.."
 import { DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -11,27 +10,27 @@ export default (app) => {
   /**
    * List reasons
    */
-  route.get("/", middlewares.wrap(require("./list-reasons").default))
+  route.get("/", require("./list-reasons").default)
 
   /**
    * Retrieve reason
    */
-  route.get("/:id", middlewares.wrap(require("./get-reason").default))
+  route.get("/:id", require("./get-reason").default)
 
   /**
    * Create a reason
    */
-  route.post("/", middlewares.wrap(require("./create-reason").default))
+  route.post("/", require("./create-reason").default)
 
   /**
    * Update a reason
    */
-  route.post("/:id", middlewares.wrap(require("./update-reason").default))
+  route.post("/:id", require("./update-reason").default)
 
   /**
    * Delete a reason
    */
-  route.delete("/:id", middlewares.wrap(require("./delete-reason").default))
+  route.delete("/:id", require("./delete-reason").default)
 
   return app
 }

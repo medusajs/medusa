@@ -1,33 +1,26 @@
 import { Router } from "express"
 import { Invite } from "../../../../models/invite"
 import { DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
 
 export const unauthenticatedInviteRoutes = (app) => {
   const route = Router()
   app.use("/invites", route)
 
-  route.post("/accept", middlewares.wrap(require("./accept-invite").default))
+  route.post("/accept", require("./accept-invite").default)
 }
 
 export default (app) => {
   const route = Router()
   app.use("/invites", route)
 
-  route.get("/", middlewares.wrap(require("./list-invites").default))
+  route.get("/", require("./list-invites").default)
 
-  route.post("/", middlewares.wrap(require("./create-invite").default))
+  route.post("/", require("./create-invite").default)
 
-  route.post(
-    "/:invite_id/resend",
-    middlewares.wrap(require("./resend-invite").default)
-  )
+  route.post("/:invite_id/resend", require("./resend-invite").default)
 
-  route.delete(
-    "/:invite_id",
-    middlewares.wrap(require("./delete-invite").default)
-  )
+  route.delete("/:invite_id", require("./delete-invite").default)
 
   return app
 }

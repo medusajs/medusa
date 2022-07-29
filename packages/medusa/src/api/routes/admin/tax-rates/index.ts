@@ -1,7 +1,6 @@
 import { Router } from "express"
 import { TaxRate } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -11,37 +10,34 @@ export default (app) => {
   /**
    * List tax rates
    */
-  route.get("/", middlewares.wrap(require("./list-tax-rates").default))
+  route.get("/", require("./list-tax-rates").default)
 
   /**
    * Get a tax rate
    */
-  route.get("/:id", middlewares.wrap(require("./get-tax-rate").default))
+  route.get("/:id", require("./get-tax-rate").default)
 
   /**
    * Create a tax rate
    */
-  route.post("/", middlewares.wrap(require("./create-tax-rate").default))
+  route.post("/", require("./create-tax-rate").default)
 
   /**
    * Update a tax rate
    */
-  route.post("/:id", middlewares.wrap(require("./update-tax-rate").default))
+  route.post("/:id", require("./update-tax-rate").default)
 
   /**
    * Remove products from tax rate
    */
-  route.delete(
-    "/:id/products/batch",
-    middlewares.wrap(require("./remove-from-products").default)
-  )
+  route.delete("/:id/products/batch", require("./remove-from-products").default)
 
   /**
    * Remove product types from tax rate
    */
   route.delete(
     "/:id/product-types/batch",
-    middlewares.wrap(require("./remove-from-product-types").default)
+    require("./remove-from-product-types").default
   )
 
   /**
@@ -49,23 +45,20 @@ export default (app) => {
    */
   route.delete(
     "/:id/shipping-options/batch",
-    middlewares.wrap(require("./remove-from-shipping-options").default)
+    require("./remove-from-shipping-options").default
   )
 
   /**
    * Add products to tax rate
    */
-  route.post(
-    "/:id/products/batch",
-    middlewares.wrap(require("./add-to-products").default)
-  )
+  route.post("/:id/products/batch", require("./add-to-products").default)
 
   /**
    * Add product types to tax rate
    */
   route.post(
     "/:id/product-types/batch",
-    middlewares.wrap(require("./add-to-product-types").default)
+    require("./add-to-product-types").default
   )
 
   /**
@@ -73,13 +66,13 @@ export default (app) => {
    */
   route.post(
     "/:id/shipping-options/batch",
-    middlewares.wrap(require("./add-to-shipping-options").default)
+    require("./add-to-shipping-options").default
   )
 
   /**
    * Delete a tax rate
    */
-  route.delete("/:id", middlewares.wrap(require("./delete-tax-rate").default))
+  route.delete("/:id", require("./delete-tax-rate").default)
 
   return app
 }

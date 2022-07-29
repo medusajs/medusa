@@ -2,16 +2,15 @@ import { Router } from "express"
 import "reflect-metadata"
 import { Product } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 
 const route = Router()
 
 export default (app) => {
   app.use("/products", route)
 
-  route.get("/", middlewares.wrap(require("./list-products").default))
-  route.post("/search", middlewares.wrap(require("./search").default))
-  route.get("/:id", middlewares.wrap(require("./get-product").default))
+  route.get("/", require("./list-products").default)
+  route.post("/search", require("./search").default)
+  route.get("/:id", require("./get-product").default)
 
   return app
 }

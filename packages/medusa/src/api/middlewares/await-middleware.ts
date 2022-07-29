@@ -1,8 +1,11 @@
-import { NextFunction, Request, RequestHandler, Response } from "express"
+import { NextFunction, Request, Response, RequestHandler } from "express"
 
-type handler = (req: Request, res: Response) => Promise<void>
+export type PartialRequestHandler = (
+  req: Request,
+  res: Response
+) => Promise<void>
 
-export default (fn: handler): RequestHandler => {
+export default (fn: PartialRequestHandler): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (req?.errors?.length) {
       return res.status(400).json({

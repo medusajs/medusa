@@ -10,14 +10,14 @@ export default (app) => {
   route.get(
     "/",
     middlewares.authenticate(),
-    middlewares.wrap(require("./get-session").default)
+    require("./get-session").default
   )
-  route.post("/", middlewares.wrap(require("./create-session").default))
+  route.post("/", require("./create-session").default)
 
   route.delete(
     "/",
     middlewares.authenticate(),
-    middlewares.wrap(require("./delete-session").default)
+    require("./delete-session").default
   )
 
   return app

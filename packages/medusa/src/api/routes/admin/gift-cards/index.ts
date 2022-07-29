@@ -2,7 +2,7 @@ import { Router } from "express"
 import "reflect-metadata"
 import { GiftCard } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
+import { transformQuery } from "../../../middlewares"
 import { AdminGetGiftCardsParams } from "./list-gift-cards"
 
 const route = Router()
@@ -17,16 +17,16 @@ export default (app) => {
       defaultRelations: defaultAdminGiftCardRelations,
       isList: true,
     }),
-    middlewares.wrap(require("./list-gift-cards").default)
+    require("./list-gift-cards").default
   )
 
-  route.post("/", middlewares.wrap(require("./create-gift-card").default))
+  route.post("/", require("./create-gift-card").default)
 
-  route.get("/:id", middlewares.wrap(require("./get-gift-card").default))
+  route.get("/:id", require("./get-gift-card").default)
 
-  route.post("/:id", middlewares.wrap(require("./update-gift-card").default))
+  route.post("/:id", require("./update-gift-card").default)
 
-  route.delete("/:id", middlewares.wrap(require("./delete-gift-card").default))
+  route.delete("/:id", require("./delete-gift-card").default)
 
   return app
 }
