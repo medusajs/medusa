@@ -145,27 +145,22 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const product = await manager.transaction(async (transactionManager) => {
+  await manager.transaction(async (transactionManager) => {
     await productVariantService
       .withTransaction(transactionManager)
       .update(variant_id, {
         product_id: id,
         ...validated,
       })
-
-    const rawProduct = await productService
-      .withTransaction(transactionManager)
-      .retrieve(id, {
-        select: defaultAdminProductFields,
-        relations: defaultAdminProductRelations,
-        ...validatedQueryParams,
-      })
-
-    const [product] = await pricingService
-      .withTransaction(transactionManager)
-      .setProductPrices([rawProduct])
-    return product
   })
+
+  const rawProduct = await productService.retrieve(id, {
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
+    ...validatedQueryParams,
+  })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

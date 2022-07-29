@@ -240,7 +240,7 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  const product = await entityManager.transaction(async (manager) => {
+  const newProduct = await entityManager.transaction(async (manager) => {
     const { variants } = validated
     delete validated.variants
 
@@ -292,18 +292,15 @@ export default async (req, res) => {
       )
     }
 
-    const rawProduct = await productService
-      .withTransaction(manager)
-      .retrieve(newProduct.id, {
-        select: defaultAdminProductFields,
-        relations: defaultAdminProductRelations,
-      })
-
-    const [product] = await pricingService
-      .withTransaction(manager)
-      .setProductPrices([rawProduct])
-    return product
+    return newProduct
   })
+
+  const rawProduct = await productService.retrieve(newProduct.id, {
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
+  })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }
