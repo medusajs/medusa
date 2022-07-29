@@ -1,5 +1,7 @@
 import { RequestHandler, Router } from "express"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 
 type middlewareType = {
   middleware: (options: Record<string, unknown>) => RequestHandler
@@ -9,13 +11,20 @@ type middlewareType = {
 /**
  * Orchestrates dynamic middleware registered through the Medusa Middleware API
  */
-class MiddlewareService {
+class MiddlewareService extends TransactionBaseService<MiddlewareService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly postAuthentication_: middlewareType[]
   protected readonly preAuthentication_: middlewareType[]
   protected readonly preCartCreation_: RequestHandler[]
   protected readonly routers: Record<string, Router[]>
 
-  constructor({}) {
+  constructor({ manager }) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+    this.manager_ = manager
+
     this.postAuthentication_ = []
     this.preAuthentication_ = []
     this.preCartCreation_ = []
