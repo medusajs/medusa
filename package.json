@@ -17,8 +17,10 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
+    "@octokit/core": "^4.0.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "analytics-node": "^6.1.0",
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.19.0",
     "babel-jest": "^26.6.3",
@@ -47,7 +49,8 @@
     "typedoc-plugin-markdown": "^3.12.1",
     "typedoc-plugin-merge-modules": "^3.1.0",
     "typedoc-plugin-reference-excluder": "^1.0.0",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.31",
+    "uniqid": "^5.4.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --ext .js,.jsx,.ts,.tsx --fix",

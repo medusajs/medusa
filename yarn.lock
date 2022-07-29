@@ -5582,6 +5582,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/auth-token@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@octokit/auth-token@npm:3.0.0"
+  dependencies:
+    "@octokit/types": ^6.0.3
+  checksum: 8d2ce60dd6629e3335c89baf1b0e5df3e32f4fe77046caa5fb9148a0257a9292eac801a5d42fa03f67e3b2362dab6f08d1cd1d0e05a546b1dbd02c0efb9f3b8e
+  languageName: node
+  linkType: hard
+
+"@octokit/core@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "@octokit/core@npm:4.0.4"
+  dependencies:
+    "@octokit/auth-token": ^3.0.0
+    "@octokit/graphql": ^5.0.0
+    "@octokit/request": ^6.0.0
+    "@octokit/request-error": ^3.0.0
+    "@octokit/types": ^6.0.3
+    before-after-hook: ^2.2.0
+    universal-user-agent: ^6.0.0
+  checksum: c761f93998d1e717d034e94032d039aba87046ed0d185b50487e8e964cc8710796704aeb8f1ae6b4cc55a134709f3449c1e8b612770a3e73daf2ca1e26f7bcd9
+  languageName: node
+  linkType: hard
+
 "@octokit/endpoint@npm:^6.0.1":
   version: 6.0.12
   resolution: "@octokit/endpoint@npm:6.0.12"
@@ -5590,6 +5614,28 @@ __metadata:
     is-plain-object: ^5.0.0
     universal-user-agent: ^6.0.0
   checksum: b2d9c91f00ab7c997338d08a06bfd12a67d86060bc40471f921ba424e4de4e5a0a1117631f2a8a8787107d89d631172dd157cb5e2633674b1ae3a0e2b0dcfa3e
+  languageName: node
+  linkType: hard
+
+"@octokit/endpoint@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@octokit/endpoint@npm:7.0.0"
+  dependencies:
+    "@octokit/types": ^6.0.3
+    is-plain-object: ^5.0.0
+    universal-user-agent: ^6.0.0
+  checksum: 33c7e23bf7f1330a6d6075f86c43492734a5de35ee4d50c22f94b3c4728140935277d331213ae7f77d9eb9ad087ee6d270f7fb6b73b1a8c6348faa166f53c09e
+  languageName: node
+  linkType: hard
+
+"@octokit/graphql@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@octokit/graphql@npm:5.0.0"
+  dependencies:
+    "@octokit/request": ^6.0.0
+    "@octokit/types": ^6.0.3
+    universal-user-agent: ^6.0.0
+  checksum: 0d0695917f909c21730551019bc8584ebcc88a3f7cc6afa00a7636f7d0054ce1252263103c156f3f8267b3ffc8b7f817b0f8de4cc2a4d1de3cc47d93170812ba
   languageName: node
   linkType: hard
 
@@ -5657,6 +5703,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/request-error@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@octokit/request-error@npm:3.0.0"
+  dependencies:
+    "@octokit/types": ^6.0.3
+    deprecation: ^2.0.0
+    once: ^1.4.0
+  checksum: af6da1b5d832539b46bdd3de024923f54e92afe724a81ed73bfc3d07d596d3fdf3930ed104701f508d6200fe0c36c273c356f2679e4fa7471aba2de89aaddf9f
+  languageName: node
+  linkType: hard
+
 "@octokit/request@npm:^5.2.0":
   version: 5.6.3
   resolution: "@octokit/request@npm:5.6.3"
@@ -5668,6 +5725,20 @@ __metadata:
     node-fetch: ^2.6.7
     universal-user-agent: ^6.0.0
   checksum: a546dc05665c6cf8184ae7c4ac3ed4f0c339c2170dd7e2beeb31a6e0a9dd968ca8ad960edbd2af745e585276e692c9eb9c6dbf1a8c9d815eb7b7fd282f3e67fc
+  languageName: node
+  linkType: hard
+
+"@octokit/request@npm:^6.0.0":
+  version: 6.2.0
+  resolution: "@octokit/request@npm:6.2.0"
+  dependencies:
+    "@octokit/endpoint": ^7.0.0
+    "@octokit/request-error": ^3.0.0
+    "@octokit/types": ^6.16.1
+    is-plain-object: ^5.0.0
+    node-fetch: ^2.6.7
+    universal-user-agent: ^6.0.0
+  checksum: 3cd2d061a4cd8ceb057e95b217cb04422d358644ef713aef6b29484ac8d60ecef83dd587bffef4a329ef4dec3e961270b9c12972df9820baaf2b44cfabd161b8
   languageName: node
   linkType: hard
 
@@ -10237,6 +10308,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"analytics-node@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "analytics-node@npm:6.1.0"
+  dependencies:
+    "@segment/loosely-validate-event": ^2.0.0
+    axios: ^0.27.2
+    axios-retry: 3.2.0
+    lodash.isstring: ^4.0.1
+    md5: ^2.2.1
+    ms: ^2.0.0
+    remove-trailing-slash: ^0.1.0
+    uuid: ^8.3.2
+  checksum: 5740adcbb85c979bdecd7eaffbf7317e2ba840a61745db51534a98eda676d8d26348e17254986e9c3cc9a52d2c48acd2f77ebfc3fdbd24ecc7d026650929712d
+  languageName: node
+  linkType: hard
+
 "anser@npm:^2.1.0":
   version: 2.1.1
   resolution: "anser@npm:2.1.1"
@@ -11010,6 +11097,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios-retry@npm:3.2.0":
+  version: 3.2.0
+  resolution: "axios-retry@npm:3.2.0"
+  dependencies:
+    is-retry-allowed: ^1.1.0
+  checksum: 2d0cde156270739e87577e3a7673fcc139db48447b843cf23b735108ef8323bd78de2695637848182cc014edecb66e7a8ea00fd605dc08a32d5f47c67a64404c
+  languageName: node
+  linkType: hard
+
 "axios-retry@npm:^3.0.2, axios-retry@npm:^3.1.9":
   version: 3.3.1
   resolution: "axios-retry@npm:3.3.1"
@@ -11062,6 +11158,16 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.8
   checksum: 77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.27.2":
+  version: 0.27.2
+  resolution: "axios@npm:0.27.2"
+  dependencies:
+    follow-redirects: ^1.14.9
+    form-data: ^4.0.0
+  checksum: 76d673d2a90629944b44d6f345f01e58e9174690f635115d5ffd4aca495d99bcd8f95c590d5ccb473513f5ebc1d1a6e8934580d0c57cdd0498c3a101313ef771
   languageName: node
   linkType: hard
 
@@ -11719,7 +11825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"before-after-hook@npm:^2.0.0":
+"before-after-hook@npm:^2.0.0, before-after-hook@npm:^2.2.0":
   version: 2.2.2
   resolution: "before-after-hook@npm:2.2.2"
   checksum: 7457bfb8f40e8cbce943ea6e6531261925c6c8a451fea540762367a3e2e52b5979978963a7ec65f232a4f5b87310930bf152c9a055608c64ecee5115bad60b9a
@@ -17731,7 +17837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.10.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4, follow-redirects@npm:^1.14.8":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.10.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9":
   version: 1.15.1
   resolution: "follow-redirects@npm:1.15.1"
   peerDependenciesMeta:
@@ -21214,6 +21320,13 @@ __metadata:
   dependencies:
     is-unc-path: ^1.0.0
   checksum: 61157c4be8594dd25ac6f0ef29b1218c36667259ea26698367a4d9f39ff9018368bc365c490b3c79be92dfb1e389e43c4b865c95709e7b3bc72c5932f751fb60
+  languageName: node
+  linkType: hard
+
+"is-retry-allowed@npm:^1.1.0":
+  version: 1.2.0
+  resolution: "is-retry-allowed@npm:1.2.0"
+  checksum: a80f14e1e11c27a58f268f2927b883b635703e23a853cb7b8436e3456bf2ea3efd5082a4e920093eec7bd372c1ce6ea7cea78a9376929c211039d0cc4a393a44
   languageName: node
   linkType: hard
 
@@ -31889,8 +32002,10 @@ __metadata:
     "@babel/runtime": ^7.11.2
     "@changesets/changelog-github": ^0.4.5
     "@changesets/cli": ^2.23.0
+    "@octokit/core": ^4.0.4
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
+    analytics-node: ^6.1.0
     axios: ^0.21.1
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
@@ -31923,6 +32038,7 @@ __metadata:
     typedoc-plugin-merge-modules: ^3.1.0
     typedoc-plugin-reference-excluder: ^1.0.0
     typeorm: ^0.2.31
+    uniqid: ^5.4.0
   languageName: unknown
   linkType: soft
 
@@ -35681,6 +35797,13 @@ __metadata:
     is-extendable: ^0.1.1
     set-value: ^2.0.1
   checksum: 8758d880cb9545f62ce9cfb9b791b2b7a206e0ff5cc4b9d7cd6581da2c6839837fbb45e639cf1fd8eef3cae08c0201b614b7c06dd9f5f70d9dbe7c5fe2fbf592
+  languageName: node
+  linkType: hard
+
+"uniqid@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "uniqid@npm:5.4.0"
+  checksum: ef0d7c7ae26d5d7eb632ec9a1548575c855edfa422fd1ade1ee82d7d60bddef24574a53a5ec716db887ec763e4f5dea6dae4dfc1918e2ee5fda35dc43a6c0b7a
   languageName: node
   linkType: hard
 
