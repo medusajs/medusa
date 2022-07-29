@@ -20,10 +20,9 @@ class MiddlewareService extends TransactionBaseService<MiddlewareService> {
   protected readonly preCartCreation_: RequestHandler[]
   protected readonly routers: Record<string, Router[]>
 
-  constructor({ manager }) {
+  constructor() {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
 
     this.postAuthentication_ = []
     this.preAuthentication_ = []
