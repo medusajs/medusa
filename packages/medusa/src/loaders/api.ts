@@ -12,10 +12,12 @@ import { PartialRequestHandler } from '../api/middlewares/await-middleware'
   Router[method] = function (path: string, ...handlers: RequestHandler[]) {
     const route = (this as unknown as Router).route(path)
     const finalHandler = handlers.pop() as RequestHandler
-    handlers = [
-      ...handlers,
-      awaitMiddleware(finalHandler as PartialRequestHandler),
-    ]
+    if (finalHandler) {
+      handlers = [
+        ...handlers,
+        awaitMiddleware(finalHandler as PartialRequestHandler),
+      ]
+    }
     route[method].apply(route, handlers)
     return this
   }

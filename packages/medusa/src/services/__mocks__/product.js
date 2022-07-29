@@ -141,8 +141,8 @@ export const ProductServiceMock = {
     return Promise.resolve(products.product1)
   }),
   listAndCount: jest.fn().mockImplementation((data) => {
-    if (data?.id?.includes("sales_channel_1_product_1")) {
-      return Promise.resolve([[{ id: "sales_channel_1_product_1" }], 1])
+    if (data?.id?.includes(IdMap.getId("sales_channel_1_product_1"))) {
+      return Promise.resolve([[{ id: IdMap.getId("sales_channel_1_product_1") }], 1])
     }
     return Promise.resolve([[products.product1, products.product2], 2])
   }),

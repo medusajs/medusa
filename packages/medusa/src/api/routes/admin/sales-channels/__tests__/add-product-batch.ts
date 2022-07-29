@@ -24,7 +24,7 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
       )
     })
 
-    afterAll(() => {
+    afterAll( () => {
       jest.clearAllMocks()
     })
 
@@ -32,7 +32,7 @@ describe("POST /admin/sales-channels/:id/products/batch", () => {
       expect(SalesChannelServiceMock.addProducts).toHaveBeenCalledTimes(1)
       expect(SalesChannelServiceMock.addProducts).toHaveBeenCalledWith(
         IdMap.getId("sales_channel_1"),
-        ["sales_channel_1_product_1"]
+        [IdMap.getId("sales_channel_1_product_1")]
       )
     })
   })
