@@ -7,6 +7,7 @@ export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { transformQuery } from "./transform-query"
 export { transformBody } from "./transform-body"
+export { checkCustomErrors } from "./check-custom-errors"
 export { default as awaitMiddleware } from "./await-middleware"
 
 export default {

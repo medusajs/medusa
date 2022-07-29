@@ -4,7 +4,7 @@ import routes from "../api"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 
-import { awaitMiddleware } from "../api/middlewares";
+import { awaitMiddleware, checkCustomErrors } from "../api/middlewares";
 import { RequestHandler } from "express-serve-static-core";
 import { PartialRequestHandler } from '../api/middlewares/await-middleware'
 
@@ -12,12 +12,11 @@ import { PartialRequestHandler } from '../api/middlewares/await-middleware'
   Router[method] = function (path: string, ...handlers: RequestHandler[]) {
     const route = (this as unknown as Router).route(path)
     const finalHandler = handlers.pop() as RequestHandler
-    if (finalHandler) {
-      handlers = [
-        ...handlers,
-        awaitMiddleware(finalHandler as PartialRequestHandler),
-      ]
-    }
+    handlers = [
+      ...handlers,
+      checkCustomErrors,
+      awaitMiddleware(finalHandler as PartialRequestHandler),
+    ]
     route[method].apply(route, handlers)
     return this
   }
