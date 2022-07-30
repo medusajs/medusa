@@ -648,6 +648,15 @@ export const currencies: Record<string, Currency> = {
     code: "MMK",
     name_plural: "Myanma kyats",
   },
+  MNT: {
+    symbol: "₮",
+    name: "Mongolian Tugrik",
+    symbol_native: "₮",
+    decimal_digits: 0,
+    rounding: 0,
+    code: "MNT",
+    name_plural: "Mongolian Tugriks",
+  },
   MOP: {
     symbol: "MOP$",
     name: "Macanese Pataca",
