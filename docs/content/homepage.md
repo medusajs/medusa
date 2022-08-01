@@ -6,7 +6,7 @@ slug: /
 hide_table_of_contents: true
 ---
 
-Welcome to Medusa, the open-source Shopify alternative!
+Welcome to Medusa, the open source Shopify alternative!
 
 Medusa is an open-source headless commerce engine that enables developers to create amazing digital commerce experiences.
 
