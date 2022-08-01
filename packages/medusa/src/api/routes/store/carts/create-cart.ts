@@ -81,26 +81,24 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  await entityManager.transaction(async (manager) => {
-    let regionId: string
-    if (typeof validated.region_id !== "undefined") {
-      regionId = validated.region_id
-    } else {
-      const regions = await regionService
-        .withTransaction(manager)
-        .list({})
+  let regionId: string
+  if (typeof validated.region_id !== "undefined") {
+    regionId = validated.region_id
+  } else {
+    const regions = await regionService.list({})
 
-      if (!regions?.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `A region is required to create a cart`
-        )
-      }
-
-      regionId = regions[0].id
+    if (!regions?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region is required to create a cart`
+      )
     }
 
-    let cart = await cartService.withTransaction(manager).create({
+    regionId = regions[0].id
+  }
+
+  let cart = await entityManager.transaction(async (manager) => {
+    const createdCart = await cartService.withTransaction(manager).create({
       ...validated,
       context: {
         ...reqContext,
@@ -127,15 +125,17 @@ export default async (req, res) => {
       )
     }
 
-    cart = await cartService.withTransaction(manager).retrieve(cart.id, {
-      select: defaultStoreCartFields,
-      relations: defaultStoreCartRelations,
-    })
-
-    const data = await decorateLineItemsWithTotals(cart, req)
-
-    res.status(200).json({ cart: data })
+    return createdCart
   })
+
+  cart = await cartService.retrieve(cart.id, {
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
+  })
+
+  const data = await decorateLineItemsWithTotals(cart, req)
+
+  res.status(200).json({ cart: data })
 }
 
 export class Item {
