@@ -95,7 +95,7 @@ export const useAdminAddProductsToCollection = (
 }
 
 /**
- * Hook returns function for removal of multiple products from a colleaction.
+ * Hook returns function for removal of multiple products from a collection.
  *
  * @param id - id of the collection from which products will be removed
  * @param options
