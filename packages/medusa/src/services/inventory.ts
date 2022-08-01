@@ -25,9 +25,9 @@ class InventoryService extends TransactionBaseService<InventoryService> {
 
   /**
    * Updates the inventory of a variant based on a given adjustment.
-   * @param {string} variantId - the id of the variant to update
-   * @param {number} adjustment - the number to adjust the inventory quantity by
-   * @return {Promise} resolves to the update result.
+   * @param variantId - the id of the variant to update
+   * @param adjustment - the number to adjust the inventory quantity by
+   * @return resolves to the update result.
    */
   async adjustInventory(
     variantId: string | undefined | null,
@@ -55,9 +55,9 @@ class InventoryService extends TransactionBaseService<InventoryService> {
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant
    * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @param {string} variantId - the id of the variant to check
-   * @param {number} quantity - the number of units to check availability for
-   * @return {Promise<boolean>} true if the inventory covers the quantity
+   * @param variantId - the id of the variant to check
+   * @param quantity - the number of units to check availability for
+   * @return true if the inventory covers the quantity
    */
   async confirmInventory(
     variantId: string,
