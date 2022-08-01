@@ -115,7 +115,7 @@ export default async (req, res) => {
             .generate(i.variant_id, regionId, i.quantity, {
               customer_id: req.user?.customer_id,
             })
-          await cartService
+          return await cartService
             .withTransaction(manager)
             .addLineItem(createdCart.id, lineItem, {
               validateSalesChannels:
