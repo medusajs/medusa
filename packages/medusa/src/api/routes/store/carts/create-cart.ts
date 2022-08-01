@@ -105,7 +105,7 @@ export default async (req, res) => {
         ...validated.context,
       },
       region_id: regionId,
-    })
+     })
 
     if (validated.items) {
       await Promise.all(
@@ -117,7 +117,7 @@ export default async (req, res) => {
             })
           await cartService
             .withTransaction(manager)
-            .addLineItem(cart.id, lineItem, {
+            .addLineItem(createdCart.id, lineItem, {
               validateSalesChannels:
                 featureFlagRouter.isFeatureEnabled("sales_channels"),
             })
