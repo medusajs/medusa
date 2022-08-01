@@ -18,6 +18,8 @@ import { OrdersReturnItem } from "../../../../types/orders"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { Return } from "../../../../models"
+import { Order } from "../../../../models"
 
 /**
  * @oas [post] /orders/{id}/return
@@ -196,7 +198,7 @@ export default async (req, res) => {
             const { key, error } = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                let order = await orderService
+                let order: Order | Return = await orderService
                   .withTransaction(manager)
                   .retrieve(id, { relations: ["returns"] })
 
@@ -205,22 +207,24 @@ export default async (req, res) => {
                  * and register it as received.
                  */
                 if (value.receive_now) {
-                  let ret = await returnService.withTransaction(manager).list({
-                    idempotency_key: idempotencyKey.idempotency_key,
-                  })
+                  const returns = await returnService
+                    .withTransaction(manager)
+                    .list({
+                      idempotency_key: idempotencyKey.idempotency_key,
+                    })
 
-                  if (!ret.length) {
+                  if (!returns.length) {
                     throw new MedusaError(
                       MedusaError.Types.INVALID_DATA,
                       `Return not found`
                     )
                   }
 
-                  ret = ret[0]
+                  const returnOrder = returns[0]
 
                   order = await returnService
                     .withTransaction(manager)
-                    .receive(ret.id, value.items, value.refund)
+                    .receive(returnOrder.id, value.items, value.refund)
                 }
 
                 order = await orderService
@@ -277,7 +281,7 @@ export default async (req, res) => {
 }
 
 type ReturnObj = {
-  order_id?: string
+  order_id: string
   idempotency_key?: string
   items?: OrdersReturnItem[]
   shipping_method?: ReturnShipping
