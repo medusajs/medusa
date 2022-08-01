@@ -306,7 +306,7 @@ cd <SERVER_PATH>
 npm start
 ```
 
-Where <SERVER_PATH> is the path to your Medusa server, <PLUGIN_PATH> is the path to your plugin and <PLUGIN_NAME> is the name of your plugin as it is in your plugin `package.json` file.
+Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
 
 :::note
 
