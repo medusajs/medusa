@@ -66,7 +66,9 @@ class InventoryService extends BaseService {
       return true
     }
 
-    const variant = await this.productVariantService_.retrieve(variantId)
+    const variant = await this.productVariantService_
+      .withTransaction(this.manager_)
+      .retrieve(variantId)
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
       !manage_inventory || allow_backorder || inventory_quantity >= quantity

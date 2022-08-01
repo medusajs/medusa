@@ -18,6 +18,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
 import { FlagRouter } from "../../../../utils/flag-router"
+import { Cart } from "../../../../models";
 
 /**
  * @oas [post] /carts
@@ -97,8 +98,9 @@ export default async (req, res) => {
     regionId = regions[0].id
   }
 
-  let cart = await entityManager.transaction(async (manager) => {
-    const createdCart = await cartService.withTransaction(manager).create({
+  let cart: Cart
+  await entityManager.transaction(async (manager) => {
+    cart = await cartService.withTransaction(manager).create({
       ...validated,
       context: {
         ...reqContext,
@@ -117,18 +119,16 @@ export default async (req, res) => {
             })
           return await cartService
             .withTransaction(manager)
-            .addLineItem(createdCart.id, lineItem, {
+            .addLineItem(cart.id, lineItem, {
               validateSalesChannels:
                 featureFlagRouter.isFeatureEnabled("sales_channels"),
             })
         })
       )
     }
-
-    return createdCart
   })
 
-  cart = await cartService.retrieve(cart.id, {
+  cart = await cartService.retrieve(cart!.id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })

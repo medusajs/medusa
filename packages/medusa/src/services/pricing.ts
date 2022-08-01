@@ -63,32 +63,30 @@ class PricingService extends TransactionBaseService<PricingService> {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      let automaticTaxes = false
-      let taxRate = null
-      let currencyCode = context.currency_code
+    let automaticTaxes = false
+    let taxRate = null
+    let currencyCode = context.currency_code
 
-      if (context.region_id) {
-        const region = await this.regionService
-          .withTransaction(manager)
-          .retrieve(context.region_id, {
-            select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
-          })
+    if (context.region_id) {
+      const region = await this.regionService
+        .withTransaction(this.manager_)
+        .retrieve(context.region_id, {
+          select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
+        })
 
-        currencyCode = region.currency_code
-        automaticTaxes = region.automatic_taxes
-        taxRate = region.tax_rate
-      }
+      currencyCode = region.currency_code
+      automaticTaxes = region.automatic_taxes
+      taxRate = region.tax_rate
+    }
 
-      return {
-        price_selection: {
-          ...context,
-          currency_code: currencyCode,
-        },
-        automatic_taxes: automaticTaxes,
-        tax_rate: taxRate,
-      }
-    })
+    return {
+      price_selection: {
+        ...context,
+        currency_code: currencyCode,
+      },
+      automatic_taxes: automaticTaxes,
+      tax_rate: taxRate,
+    }
   }
 
   /**
@@ -229,17 +227,15 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      const { product_id } = await this.productVariantService.retrieve(
-        variantId,
-        { select: ["id", "product_id"] }
-      )
-      productRates = await this.taxProviderService.getRegionRatesForProduct(
-        product_id,
-        {
+      const { product_id } = await this.productVariantService
+        .withTransaction(this.manager_)
+        .retrieve(variantId, { select: ["id", "product_id"] })
+      productRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForProduct(product_id, {
           id: pricingContext.price_selection.region_id,
           tax_rate: pricingContext.tax_rate,
-        }
-      )
+        })
     }
 
     return await this.getProductVariantPricing_(
