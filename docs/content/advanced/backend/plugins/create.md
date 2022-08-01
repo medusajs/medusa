@@ -274,7 +274,7 @@ npm run start
 
 #### Error: The class must be a valid service implementation
 
-Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix.
+Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix:
 
 ```bash npm2yarn
 cd <SERVER_PATH>/node_modules/medusa-interfaces
