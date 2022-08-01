@@ -106,15 +106,6 @@ module.exports = {
     footer: {
       links: [
         {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/tutorial/set-up-your-development-environment",
-            },
-          ],
-        },
-        {
           title: "Community",
           items: [
             {
