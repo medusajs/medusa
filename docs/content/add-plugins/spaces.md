@@ -53,6 +53,12 @@ Make sure to use an environment variable for the secret key in a live environmen
 
 :::
 
+:::caution
+
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
+
+:::
+
 ### Try it out!
 
 Finally, run your Medusa server alongside our admin system to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in DigitalOcean Spaces.
