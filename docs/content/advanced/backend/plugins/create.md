@@ -266,6 +266,29 @@ Finally, start your server and test your plugin’s functionalities:
 npm run start
 ```
 
+### Testing Troubleshooting
+
+ If you are certain your plugin is structured correctly and you encounter `error: The class must be a valid service implementation` then you can try the following:
+
+```bash npm2yarn
+cd /your/medusa-backend/node_modules/medusa-interfaces
+npm link
+cd /your/plugin/directory
+rm -rf node_modules/medusa-interfaces
+npm link medusa-interfaces
+npm link
+cd /your/medusa-backend
+npm link your-plugin
+```
+
+ This will link the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then link your plugin to your `medusa-backend` and should fix the error.
+
+:::note
+
+You can now run `npm run watch` in your plugin directory and `npm run develop` in your `medusa-backend` directory. When changes are made to the plugin they will be detected and the plugin rebuilt. The updates will reflect in the `medusa-backend` as soon as the backend reloads. The backend reload can be triggered by saving any file in the `medusa-backend` project.
+
+:::
+ 
 ## NPM Ignore File
 
 Not all files that you use while developing your plugin are necessary to be published.
