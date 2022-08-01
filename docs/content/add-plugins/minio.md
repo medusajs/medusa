@@ -107,7 +107,7 @@ Finally, configure your `medusa-config.js` to include the plugin with the requ
 
 :::caution
 
-When you have multiple storage plugins configured, the one declared last in the `medusa-config.js` file will be used.
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 
 :::
 
