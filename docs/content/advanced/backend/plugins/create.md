@@ -289,7 +289,7 @@ npm link your-plugin
 
 Where `<SERVER_PATH>` is the path to your Medusa server and `<PLUGIN_PATH>` is the path to your plugin.
 
-This will link the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then link your plugin to your `medusa-backend` and should fix the error.
+This links the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
 
 #### APIs not loading
 
