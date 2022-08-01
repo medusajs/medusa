@@ -1,11 +1,12 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+
 import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [delete] /customers/me/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
  * summary: Delete an Address
- * description: "Removes an Address from the Customer's saved addresse."
+ * description: "Removes an Address from the Customer's saved addresses."
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
