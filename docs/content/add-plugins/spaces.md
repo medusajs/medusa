@@ -55,7 +55,7 @@ Make sure to use an environment variable for the secret key in a live environmen
 
 :::caution
 
- When you have multiple storage plugins configured, the one declared last in the `medusa-config.js` file will be used.
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 
 :::
 
