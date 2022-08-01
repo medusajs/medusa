@@ -22,6 +22,10 @@ Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Med
 
 By convention, all plugin names start with `medusa` followed by a descriptive name of what the plugin does. For example, the Stripe plugin is named `medusa-payment-stripe`.
 
+### Rename Project Name
+
+Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
+
 ### Project Structure
 
 The command above creates a new directory `medusa-plugin-custom` that holds essentially the same codebase you would have for a Medusa server. This is because a plugin has the same directory structure as a Medusa server.
@@ -266,29 +270,50 @@ Finally, start your server and test your plugin’s functionalities:
 npm run start
 ```
 
-### Testing Troubleshooting
+### Troubleshoot Errors
 
- If you are certain your plugin is structured correctly and you encounter `error: The class must be a valid service implementation` then you can try the following:
+#### Error: The class must be a valid service implementation
+
+Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix.
 
 ```bash npm2yarn
-cd /your/medusa-backend/node_modules/medusa-interfaces
+cd <SERVER_PATH>/node_modules/medusa-interfaces
 npm link
-cd /your/plugin/directory
+cd <PLUGIN_PATH>
 rm -rf node_modules/medusa-interfaces
 npm link medusa-interfaces
 npm link
-cd /your/medusa-backend
+cd <SERVER_PATH>
 npm link your-plugin
 ```
 
- This will link the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then link your plugin to your `medusa-backend` and should fix the error.
+Where <SERVER_PATH> is the path to your Medusa server and <PLUGIN_PATH> is the path to your plugin.
+
+This will link the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then link your plugin to your `medusa-backend` and should fix the error.
+
+#### APIs not loading
+
+If the APIs you added to your Medussa server are not loading then please try the following steps:
+
+```bash npm2yarn
+cd <PLUGIN_PATH>
+rm -rf node_modules
+cd <SERVER_PATH>/node_modules/<PLUGIN_NAME>
+npm install
+cd <PLUGIN_PATH>
+npm build
+cd <SERVER_PATH>
+npm start
+```
+
+Where <SERVER_PATH> is the path to your Medusa server, <PLUGIN_PATH> is the path to your plugin and <PLUGIN_NAME> is the name of your plugin as it is in your plugin `package.json` file.
 
 :::note
 
-You can now run `npm run watch` in your plugin directory and `npm run develop` in your `medusa-backend` directory. When changes are made to the plugin they will be detected and the plugin rebuilt. The updates will reflect in the `medusa-backend` as soon as the backend reloads. The backend reload can be triggered by saving any file in the `medusa-backend` project.
+It is safe to ignore any `cross-env: command not found` error you may receive.
 
 :::
- 
+
 ## NPM Ignore File
 
 Not all files that you use while developing your plugin are necessary to be published.
