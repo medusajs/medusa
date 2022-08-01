@@ -94,7 +94,7 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * @description Updates products associated with a Product Collection
    * @param id the id of the Collection
-   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param payload an object which contains an array of Product IDs to add to the Product Collection
    * @param customHeaders
    */
   addProducts(
@@ -108,8 +108,8 @@ class AdminCollectionsResource extends BaseResource {
 
   /**
    * @description Removes products associated with a Product Collection
-   * @param id - the id of the Collection
-   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param id the id of the Collection
+   * @param payload an object which contains an array of Product IDs to add to the Product Collection
    * @param customHeaders
    */
   removeProducts(
