@@ -97,6 +97,12 @@ Where `database_type` is `sqlite` and `database_database` is the location you wa
 
 ### PostgreSQL Configurations
 
+:::note
+
+Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+
+:::
+
 For PostgreSQL you mainly need 2 configurations:
 
 ```jsx
