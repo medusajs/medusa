@@ -333,7 +333,9 @@ export async function registerServices(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
+  const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {
+    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+  })
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
