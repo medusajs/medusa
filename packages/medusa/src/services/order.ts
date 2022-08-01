@@ -1,9 +1,70 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
+import { Brackets, EntityManager } from "typeorm"
+import CustomerService from "./customer"
+import { OrderRepository } from "../repositories/order"
+import PaymentProviderService from "./payment-provider"
+import ShippingOptionService from "./shipping-option"
+import ShippingProfileService from "./shipping-profile"
+import DiscountService from "./discount"
+import FulfillmentProviderService from "./fulfillment-provider"
+import FulfillmentService from "./fulfillment"
+import LineItemService from "./line-item"
+import TotalsService from "./totals"
+import RegionService from "./region"
+import CartService from "./cart"
+import { AddressRepository } from "../repositories/address"
+import GiftCardService from "./gift-card"
+import DraftOrderService from "./draft-order"
+import InventoryService from "./inventory"
+import EventBusService from "./event-bus"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata } from "../utils"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
+import {
+  Address,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
+} from "../models"
+import { UpdateOrderInput } from "../types/orders"
+import { CreateShippingMethodDto } from "../types/shipping-options"
+import {
+  CreateFulfillmentOrder,
+  FulFillmentItemType,
+} from "../types/fulfillment"
 
-class OrderService extends BaseService {
-  static Events = {
+type InjectedDependencies = {
+  manager: EntityManager
+  orderRepository: typeof OrderRepository
+  customerService: CustomerService
+  paymentProviderService: PaymentProviderService
+  shippingOptionService: ShippingOptionService
+  shippingProfileService: ShippingProfileService
+  discountService: DiscountService
+  fulfillmentProviderService: FulfillmentProviderService
+  fulfillmentService: FulfillmentService
+  lineItemService: LineItemService
+  totalsService: TotalsService
+  regionService: RegionService
+  cartService: CartService
+  addressRepository: typeof AddressRepository
+  giftCardService: GiftCardService
+  draftOrderService: DraftOrderService
+  inventoryService: InventoryService
+  eventBusService: EventBusService
+}
+
+class OrderService extends TransactionBaseService<OrderService> {
+  static readonly Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
     PAYMENT_CAPTURE_FAILED: "order.payment_capture_failed",
@@ -21,6 +82,27 @@ class OrderService extends BaseService {
     CANCELED: "order.canceled",
     COMPLETED: "order.completed",
   }
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+
+  protected readonly orderRepository_: typeof OrderRepository
+  protected readonly customerService_: CustomerService
+  protected readonly paymentProviderService_: PaymentProviderService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly discountService_: DiscountService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly fulfillmentService_: FulfillmentService
+  protected readonly lineItemService_: LineItemService
+  protected readonly totalsService_: TotalsService
+  protected readonly regionService_: RegionService
+  protected readonly cartService_: CartService
+  protected readonly addressRepository_: typeof AddressRepository
+  protected readonly giftCardService_: GiftCardService
+  protected readonly draftOrderService_: DraftOrderService
+  protected readonly inventoryService_: InventoryService
+  protected readonly eventBus_: EventBusService
 
   constructor({
     manager,
@@ -41,119 +123,48 @@ class OrderService extends BaseService {
     draftOrderService,
     inventoryService,
     eventBusService,
-  }) {
-    super()
+  }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @constant {EntityManager} */
     this.manager_ = manager
-
-    /** @private @constant {OrderRepository} */
     this.orderRepository_ = orderRepository
-
-    /** @private @constant {CustomerService} */
     this.customerService_ = customerService
-
-    /** @private @constant {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
-
-    /** @private @constant {ShippingProvileService} */
     this.shippingProfileService_ = shippingProfileService
-
-    /** @private @constant {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
-
-    /** @private @constant {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @constant {TotalsService} */
     this.totalsService_ = totalsService
-
-    /** @private @constant {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @constant {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
-
-    /** @private @constant {DiscountService} */
     this.discountService_ = discountService
-
-    /** @private @constant {DiscountService} */
     this.giftCardService_ = giftCardService
-
-    /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @constant {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @constant {CartService} */
     this.cartService_ = cartService
-
-    /** @private @constant {AddressRepository} */
     this.addressRepository_ = addressRepository
-
-    /** @private @constant {DraftOrderService} */
     this.draftOrderService_ = draftOrderService
-
-    /** @private @constant {InventoryService} */
     this.inventoryService_ = inventoryService
   }
 
-  withTransaction(manager) {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new OrderService({
-      manager,
-      orderRepository: this.orderRepository_,
-      eventBusService: this.eventBus_,
-      paymentProviderService: this.paymentProviderService_,
-      regionService: this.regionService_,
-      lineItemService: this.lineItemService_,
-      shippingOptionService: this.shippingOptionService_,
-      shippingProfileService: this.shippingProfileService_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-      fulfillmentService: this.fulfillmentService_,
-      customerService: this.customerService_,
-      discountService: this.discountService_,
-      totalsService: this.totalsService_,
-      cartService: this.cartService_,
-      giftCardService: this.giftCardService_,
-      addressRepository: this.addressRepository_,
-      draftOrderService: this.draftOrderService_,
-      inventoryService: this.inventoryService_,
-    })
-
-    cloned.transactionManager_ = manager
-    cloned.manager_ = manager
-
-    return cloned
-  }
-
   /**
-   * Used to validate order ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw order id to validate.
-   * @return {string} the validated id
-   */
-  validateId_(rawId) {
-    return rawId
-  }
-
-  /**
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config to be used for find
-   * @return {Promise} the result of the find operation
+   * @param selector the query object for find
+   * @param config the config to be used for find
+   * @return the result of the find operation
    */
   async list(
-    selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    selector: Selector<Order>,
+    config: FindConfig<Order> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<Order[]> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -166,14 +177,18 @@ class OrderService extends BaseService {
     const raw = await orderRepo.find(query)
 
     return await Promise.all(
-      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
   }
 
   async listAndCount(
-    selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    selector: QuerySelector<Order>,
+    config: FindConfig<Order> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Order[], number]> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     let q
@@ -182,7 +197,7 @@ class OrderService extends BaseService {
       delete selector.q
     }
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     if (q) {
       const where = query.where
@@ -197,7 +212,7 @@ class OrderService extends BaseService {
         },
       }
 
-      query.where = (qb) => {
+      query.where = (qb): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -213,7 +228,7 @@ class OrderService extends BaseService {
     }
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -225,13 +240,17 @@ class OrderService extends BaseService {
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
     const orders = await Promise.all(
-      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
     return [orders, count]
   }
 
-  transformQueryForTotals_(config) {
+  protected transformQueryForTotals(config: FindConfig<Order>): {
+    relations: string[] | undefined
+    select: FindConfig<Order>["select"]
+    totalsToSelect: FindConfig<Order>["select"]
+  } {
     let { select, relations } = config
 
     if (!select) {
@@ -298,20 +317,22 @@ class OrderService extends BaseService {
 
   /**
    * Gets an order by id.
-   * @param {string} orderId - id of order to retrieve
-   * @param {Object} config - config of order to retrieve
-   * @return {Promise<Order>} the order document
+   * @param orderId - id of order to retrieve
+   * @param config - config of order to retrieve
+   * @return the order document
    */
-  async retrieve(orderId, config = {}) {
+  async retrieve(
+    orderId: string,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-    const validatedId = this.validateId_(orderId)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
-      where: { id: validatedId },
-    }
+      where: { id: orderId },
+    } as FindConfig<Order>
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -331,24 +352,27 @@ class OrderService extends BaseService {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
    * Gets an order by cart id.
-   * @param {string} cartId - cart id to find order
-   * @param {Object} config - the config to be used to find order
-   * @return {Promise<Order>} the order document
+   * @param cartId - cart id to find order
+   * @param config - the config to be used to find order
+   * @return the order document
    */
-  async retrieveByCartId(cartId, config = {}) {
+  async retrieveByCartId(
+    cartId: string,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { cart_id: cartId },
-    }
+    } as FindConfig<Order>
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -367,25 +391,27 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = await this.decorateTotals_(raw, totalsToSelect)
-    return order
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
    * Gets an order by id.
-   * @param {string} externalId - id of order to retrieve
-   * @param {object} config - query config to get order by
-   * @return {Promise<Order>} the order document
+   * @param externalId - id of order to retrieve
+   * @param config - query config to get order by
+   * @return the order document
    */
-  async retrieveByExternalId(externalId, config = {}) {
+  async retrieveByExternalId(
+    externalId: string,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { external_id: externalId },
-    }
+    } as FindConfig<Order>
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -405,29 +431,25 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = await this.decorateTotals_(raw, totalsToSelect)
-    return order
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   /**
    * Checks the existence of an order by cart id.
-   * @param {string} cartId - cart id to find order
-   * @return {Promise<Order>} the order document
+   * @param cartId - cart id to find order
+   * @return the order document
    */
-  async existsByCartId(cartId) {
-    const order = await this.retrieveByCartId(cartId).catch((_) => undefined)
-    if (!order) {
-      return false
-    }
-    return true
+  async existsByCartId(cartId: string): Promise<boolean> {
+    const order = await this.retrieveByCartId(cartId).catch(() => undefined)
+    return !!order
   }
 
   /**
-   * @param {string} orderId - id of the order to complete
-   * @return {Promise} the result of the find operation
+   * @param orderId - id of the order to complete
+   * @return the result of the find operation
    */
-  async completeOrder(orderId) {
-    return this.atomicPhase_(async (manager) => {
+  async completeOrder(orderId: string): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status === "canceled") {
@@ -437,20 +459,12 @@ class OrderService extends BaseService {
         )
       }
 
-      // Run all other registered events
-      const completeOrderJob = await this.eventBus_.emit(
-        OrderService.Events.COMPLETED,
-        {
-          id: orderId,
-          no_notification: order.no_notification,
-        }
-      )
-
-      await completeOrderJob.finished().catch((error) => {
-        throw error
+      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
+        id: orderId,
+        no_notification: order.no_notification,
       })
 
-      order.status = "completed"
+      order.status = OrderStatus.COMPLETED
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       return orderRepo.save(order)
@@ -459,11 +473,11 @@ class OrderService extends BaseService {
 
   /**
    * Creates an order from a cart
-   * @param {string} cartId - id of the cart to create an order from
-   * @return {Promise} resolves to the creation result.
+   * @param cartId - id of the cart to create an order from
+   * @return resolves to the creation result.
    */
-  async createFromCart(cartId) {
-    return this.atomicPhase_(async (manager) => {
+  async createFromCart(cartId: string): Promise<Order | never> {
+    return await this.atomicPhase_(async (manager) => {
       const cartService = this.cartService_.withTransaction(manager)
       const inventoryService = this.inventoryService_.withTransaction(manager)
 
@@ -530,7 +544,7 @@ class OrderService extends BaseService {
           .getStatus(payment)
 
         // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+        if (paymentStatus !== "authorized") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
             "Payment method is not authorized"
@@ -553,7 +567,7 @@ class OrderService extends BaseService {
         cart_id: cart.id,
         currency_code: region.currency_code,
         metadata: cart.metadata || {},
-      }
+      } as Partial<Order>
 
       if (cart.type === "draft_order") {
         const draft = await this.draftOrderService_
@@ -567,7 +581,7 @@ class OrderService extends BaseService {
       const o = orderRepo.create(toCreate)
       const result = await orderRepo.save(o)
 
-      if (total !== 0) {
+      if (total !== 0 && payment) {
         await this.paymentProviderService_
           .withTransaction(manager)
           .updatePayment(payment.id, {
@@ -583,7 +597,7 @@ class OrderService extends BaseService {
         const usage = g.balance - newBalance
         await gcService.update(g.id, {
           balance: newBalance,
-          disabled: newBalance === 0,
+          is_disabled: newBalance === 0,
         })
 
         await gcService.createTransaction({
@@ -631,29 +645,32 @@ class OrderService extends BaseService {
    * Adds a shipment to the order to indicate that an order has left the
    * warehouse. Will ask the fulfillment provider for any documents that may
    * have been created in regards to the shipment.
-   * @param {string} orderId - the id of the order that has been shipped
-   * @param {string} fulfillmentId - the fulfillment that has now been shipped
-   * @param {TrackingLink[] | undefined} trackingLinks - array of tracking numebers
+   * @param orderId - the id of the order that has been shipped
+   * @param fulfillmentId - the fulfillment that has now been shipped
+   * @param trackingLinks - array of tracking numebers
    *   associated with the shipment
-   * @param {Object} config - the config of the order that has been shipped
-   * @param {Dictionary<String, String>} metadata - optional metadata to add to
-   *   the fulfillment
-   * @return {order} the resulting order following the update.
+   * @param config - the config of the order that has been shipped
+   * @return the resulting order following the update.
    */
   async createShipment(
-    orderId,
-    fulfillmentId,
-    trackingLinks,
-    config = {
+    orderId: string,
+    fulfillmentId: string,
+    trackingLinks?: TrackingLink[],
+    config: {
+      no_notification?: boolean
+      metadata: Record<string, unknown>
+    } = {
       metadata: {},
       no_notification: undefined,
     }
-  ) {
+  ): Promise<Order> {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, { relations: ["items"] })
-      const shipment = await this.fulfillmentService_.retrieve(fulfillmentId)
+      const shipment = await this.fulfillmentService_
+        .withTransaction(manager)
+        .retrieve(fulfillmentId)
 
       if (order.status === "canceled") {
         throw new MedusaError(
@@ -681,13 +698,13 @@ class OrderService extends BaseService {
           no_notification: evaluatedNoNotification,
         })
 
-      order.fulfillment_status = "shipped"
+      order.fulfillment_status = FulfillmentStatus.SHIPPED
       for (const item of order.items) {
         const shipped = shipmentRes.items.find((si) => si.item_id === item.id)
         if (shipped) {
           const shippedQty = (item.shipped_quantity || 0) + shipped.quantity
           if (shippedQty !== item.quantity) {
-            order.fulfillment_status = "partially_shipped"
+            order.fulfillment_status = FulfillmentStatus.PARTIALLY_SHIPPED
           }
 
           await this.lineItemService_.withTransaction(manager).update(item.id, {
@@ -695,7 +712,7 @@ class OrderService extends BaseService {
           })
         } else {
           if (item.shipped_quantity !== item.quantity) {
-            order.fulfillment_status = "partially_shipped"
+            order.fulfillment_status = FulfillmentStatus.PARTIALLY_SHIPPED
           }
         }
       }
@@ -716,38 +733,23 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Creates an order
-   * @param {object} data - the data to create an order
-   * @return {Promise} resolves to the creation result.
-   */
-  async create(data) {
-    return this.atomicPhase_(async (manager) => {
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const order = orderRepo.create(data)
-      const result = await orderRepo.save(order)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderService.Events.PLACED, {
-          id: result.id,
-          no_notification: order.no_notification,
-        })
-      return result
-    })
-  }
-
-  /**
    * Updates the order's billing address.
-   * @param {object} order - the order to update
-   * @param {object} address - the value to set the billing address to
-   * @return {Promise} the result of the update operation
+   * @param order - the order to update
+   * @param address - the value to set the billing address to
+   * @return the result of the update operation
    */
-  async updateBillingAddress_(order, address) {
+  protected async updateBillingAddress(
+    order: Order,
+    address: Address
+  ): Promise<void> {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
-    address.country_code = address.country_code.toLowerCase()
+    address.country_code = address.country_code?.toLowerCase() ?? null
 
-    const region = await this.regionService_.retrieve(order.region_id, {
-      relations: ["countries"],
-    })
+    const region = await this.regionService_
+      .withTransaction(this.manager_)
+      .retrieve(order.region_id, {
+        relations: ["countries"],
+      })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -756,7 +758,7 @@ class OrderService extends BaseService {
       )
     }
 
-    address.country_code = address.country_code.toLowerCase()
+    address.country_code = address.country_code?.toLowerCase() ?? null
 
     if (order.billing_address_id) {
       const addr = await addrRepo.findOne({
@@ -772,17 +774,22 @@ class OrderService extends BaseService {
 
   /**
    * Updates the order's shipping address.
-   * @param {object} order - the order to update
-   * @param {object} address - the value to set the shipping address to
-   * @return {Promise} the result of the update operation
+   * @param order - the order to update
+   * @param address - the value to set the shipping address to
+   * @return the result of the update operation
    */
-  async updateShippingAddress_(order, address) {
+  protected async updateShippingAddress(
+    order: Order,
+    address: Address
+  ): Promise<void> {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
-    address.country_code = address.country_code.toLowerCase()
+    address.country_code = address.country_code?.toLowerCase() ?? null
 
-    const region = await this.regionService_.retrieve(order.region_id, {
-      relations: ["countries"],
-    })
+    const region = await this.regionService_
+      .withTransaction(this.manager_)
+      .retrieve(order.region_id, {
+        relations: ["countries"],
+      })
 
     if (!region.countries.find(({ iso_2 }) => address.country_code === iso_2)) {
       throw new MedusaError(
@@ -803,8 +810,13 @@ class OrderService extends BaseService {
     }
   }
 
-  async addShippingMethod(orderId, optionId, data, config = {}) {
-    return this.atomicPhase_(async (manager) => {
+  async addShippingMethod(
+    orderId: string,
+    optionId: string,
+    data?: Record<string, unknown>,
+    config: CreateShippingMethodDto = {}
+  ): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["subtotal"],
         relations: [
@@ -826,7 +838,7 @@ class OrderService extends BaseService {
 
       const newMethod = await this.shippingOptionService_
         .withTransaction(manager)
-        .createShippingMethod(optionId, data, { order, ...config })
+        .createShippingMethod(optionId, data ?? {}, { order, ...config })
 
       const methods = [newMethod]
       if (shipping_methods.length) {
@@ -856,13 +868,13 @@ class OrderService extends BaseService {
    * Updates an order. Metadata updates should
    * use dedicated method, e.g. `setMetadata` etc. The function
    * will throw errors if metadata updates are attempted.
-   * @param {string} orderId - the id of the order. Must be a string that
+   * @param orderId - the id of the order. Must be a string that
    *   can be casted to an ObjectId
-   * @param {object} update - an object with the update values.
-   * @return {Promise} resolves to the update result.
+   * @param update - an object with the update values.
+   * @return resolves to the update result.
    */
-  async update(orderId, update) {
-    return this.atomicPhase_(async (manager) => {
+  async update(orderId: string, update: UpdateOrderInput): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status === "canceled") {
@@ -901,23 +913,23 @@ class OrderService extends BaseService {
       } = update
 
       if (update.metadata) {
-        order.metadata = this.setMetadata_(order, metadata)
+        order.metadata = setMetadata(order, metadata ?? {})
       }
 
       if (update.shipping_address) {
-        await this.updateShippingAddress_(order, shipping_address)
+        await this.updateShippingAddress(order, shipping_address as Address)
       }
 
       if (update.billing_address) {
-        await this.updateBillingAddress_(order, billing_address)
+        await this.updateBillingAddress(order, billing_address as Address)
       }
 
       if (update.no_notification) {
-        order.no_notification = no_notification
+        order.no_notification = no_notification ?? false
       }
 
       if (update.items) {
-        for (const item of items) {
+        for (const item of items as LineItem[]) {
           await this.lineItemService_.withTransaction(manager).create({
             ...item,
             order_id: orderId,
@@ -946,11 +958,11 @@ class OrderService extends BaseService {
    * Cancels an order.
    * Throws if fulfillment process has been initiated.
    * Throws if payment process has been initiated.
-   * @param {string} orderId - id of order to cancel.
-   * @return {Promise} result of the update operation.
+   * @param orderId - id of order to cancel.
+   * @return result of the update operation.
    */
-  async cancel(orderId) {
-    return this.atomicPhase_(async (manager) => {
+  async cancel(orderId: string): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
           "fulfillments",
@@ -969,17 +981,27 @@ class OrderService extends BaseService {
         )
       }
 
-      const throwErrorIf = (arr, pred, type) =>
-        arr?.filter(pred).find((_) => {
+      const throwErrorIf = (
+        arr: (Fulfillment | Return | Swap | ClaimOrder)[],
+        pred: (obj: Fulfillment | Return | Swap | ClaimOrder) => boolean,
+        type: string
+      ): void | never => {
+        if (arr?.filter(pred).length) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `All ${type} must be canceled before canceling an order`
           )
-        })
-      const notCanceled = (o) => !o.canceled_at
+        }
+      }
+
+      const notCanceled = (o): boolean => !o.canceled_at
 
       throwErrorIf(order.fulfillments, notCanceled, "fulfillments")
-      throwErrorIf(order.returns, (r) => r.status !== "canceled", "returns")
+      throwErrorIf(
+        order.returns,
+        (r) => (r as Return).status !== "canceled",
+        "returns"
+      )
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
@@ -995,9 +1017,9 @@ class OrderService extends BaseService {
           .cancelPayment(p)
       }
 
-      order.status = "canceled"
-      order.fulfillment_status = "canceled"
-      order.payment_status = "canceled"
+      order.status = OrderStatus.CANCELED
+      order.fulfillment_status = FulfillmentStatus.CANCELED
+      order.payment_status = PaymentStatus.CANCELED
       order.canceled_at = new Date()
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
@@ -1015,11 +1037,11 @@ class OrderService extends BaseService {
 
   /**
    * Captures payment for an order.
-   * @param {string} orderId - id of order to capture payment for.
-   * @return {Promise} result of the update operation.
+   * @param orderId - id of order to capture payment for.
+   * @return result of the update operation.
    */
-  async capturePayment(orderId) {
-    return this.atomicPhase_(async (manager) => {
+  async capturePayment(orderId: string): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
@@ -1030,7 +1052,7 @@ class OrderService extends BaseService {
         )
       }
 
-      const payments = []
+      const payments: Payment[] = []
       for (const p of order.payments) {
         if (p.captured_at === null) {
           const result = await this.paymentProviderService_
@@ -1059,12 +1081,12 @@ class OrderService extends BaseService {
 
       order.payments = payments
       order.payment_status = payments.every((p) => p.captured_at !== null)
-        ? "captured"
-        : "requires_action"
+        ? PaymentStatus.CAPTURED
+        : PaymentStatus.REQUIRES_ACTION
 
       const result = await orderRepo.save(order)
 
-      if (order.payment_status === "captured") {
+      if (order.payment_status === PaymentStatus.CAPTURED) {
         this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
@@ -1082,13 +1104,16 @@ class OrderService extends BaseService {
    * fulfillable quantity is lower than the requested fulfillment quantity.
    * Fulfillable quantity is calculated by subtracting the already fulfilled
    * quantity from the quantity that was originally purchased.
-   * @param {LineItem} item - the line item to check has sufficient fulfillable
+   * @param item - the line item to check has sufficient fulfillable
    *   quantity.
-   * @param {number} quantity - the quantity that is requested to be fulfilled.
-   * @return {LineItem} a line item that has the requested fulfillment quantity
+   * @param quantity - the quantity that is requested to be fulfilled.
+   * @return a line item that has the requested fulfillment quantity
    *   set.
    */
-  validateFulfillmentLineItem_(item, quantity) {
+  protected validateFulfillmentLineItem(
+    item: LineItem,
+    quantity: number
+  ): LineItem | null {
     if (!item) {
       // This will in most cases be called by a webhook so to ensure that
       // things go through smoothly in instances where extra items outside
@@ -1105,7 +1130,7 @@ class OrderService extends BaseService {
     return {
       ...item,
       quantity,
-    }
+    } as LineItem
   }
 
   /**
@@ -1113,22 +1138,25 @@ class OrderService extends BaseService {
    * In a situation where the order has more than one shipping method,
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
-   * @param {string} orderId - id of order to cancel.
-   * @param {Object} itemsToFulfill - items to fulfil.
-   * @param {Object} config - the config to cancel.
-   * @return {Promise} result of the update operation.
+   * @param orderId - id of order to cancel.
+   * @param itemsToFulfill - items to fulfil.
+   * @param config - the config to cancel.
+   * @return result of the update operation.
    */
   async createFulfillment(
-    orderId,
-    itemsToFulfill,
-    config = {
+    orderId: string,
+    itemsToFulfill: FulFillmentItemType[],
+    config: {
+      no_notification?: boolean
+      metadata?: Record<string, unknown>
+    } = {
       no_notification: undefined,
       metadata: {},
     }
-  ) {
+  ): Promise<Order> {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
       // will add to what is fetched from the database. We want this to happen
       // so that we get all order details. These will thereafter be forwarded
@@ -1159,7 +1187,7 @@ class OrderService extends BaseService {
         ],
       })
 
-      if (order.status === "canceled") {
+      if (order.status === OrderStatus.CANCELED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "A canceled order cannot be fulfilled"
@@ -1175,17 +1203,21 @@ class OrderService extends BaseService {
 
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
-        .createFulfillment(order, itemsToFulfill, {
-          metadata,
-          no_notification: no_notification,
-          order_id: orderId,
-        })
-      let successfullyFulfilled = []
+        .createFulfillment(
+          order as unknown as CreateFulfillmentOrder,
+          itemsToFulfill,
+          {
+            metadata,
+            no_notification: no_notification,
+            order_id: orderId,
+          }
+        )
+      let successfullyFulfilled: FulfillmentItem[] = []
       for (const f of fulfillments) {
         successfullyFulfilled = [...successfullyFulfilled, ...f.items]
       }
 
-      order.fulfillment_status = "fulfilled"
+      order.fulfillment_status = FulfillmentStatus.FULFILLED
 
       // Update all line items to reflect fulfillment
       for (const item of order.items) {
@@ -1203,15 +1235,14 @@ class OrderService extends BaseService {
           })
 
           if (item.quantity !== fulfilledQuantity) {
-            order.fulfillment_status = "partially_fulfilled"
+            order.fulfillment_status = FulfillmentStatus.PARTIALLY_FULFILLED
           }
         } else {
           if (item.quantity !== item.fulfilled_quantity) {
-            order.fulfillment_status = "partially_fulfilled"
+            order.fulfillment_status = FulfillmentStatus.PARTIALLY_FULFILLED
           }
         }
       }
-
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
       order.fulfillments = [...order.fulfillments, ...fulfillments]
@@ -1237,11 +1268,11 @@ class OrderService extends BaseService {
 
   /**
    * Cancels a fulfillment (if related to an order)
-   * @param {string} fulfillmentId - the ID of the fulfillment to cancel
-   * @return {Promise} updated order
+   * @param fulfillmentId - the ID of the fulfillment to cancel
+   * @return updated order
    */
-  async cancelFulfillment(fulfillmentId) {
-    return this.atomicPhase_(async (manager) => {
+  async cancelFulfillment(fulfillmentId: string): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const canceled = await this.fulfillmentService_
         .withTransaction(manager)
         .cancelFulfillment(fulfillmentId)
@@ -1255,7 +1286,7 @@ class OrderService extends BaseService {
 
       const order = await this.retrieve(canceled.order_id)
 
-      order.fulfillment_status = "canceled"
+      order.fulfillment_status = FulfillmentStatus.CANCELED
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const updated = await orderRepo.save(order)
@@ -1274,33 +1305,37 @@ class OrderService extends BaseService {
 
   /**
    * Retrieves the order line items, given an array of items.
-   * @param {Order} order - the order to get line items from
-   * @param {{ item_id: string, quantity: number }} items - the items to get
-   * @param {function} transformer - a function to apply to each of the items
+   * @param order - the order to get line items from
+   * @param items - the items to get
+   * @param transformer - a function to apply to each of the items
    *    retrieved from the order, should return a line item. If the transformer
    *    returns an undefined value the line item will be filtered from the
    *    returned array.
-   * @return {Promise<Array<LineItem>>} the line items generated by the transformer.
+   * @return the line items generated by the transformer.
    */
-  async getFulfillmentItems_(order, items, transformer) {
-    const toReturn = await Promise.all(
-      items.map(async ({ item_id, quantity }) => {
-        const item = order.items.find((i) => i.id.equals(item_id))
-        return transformer(item, quantity)
-      })
-    )
-
-    return toReturn.filter((i) => !!i)
+  protected async getFulfillmentItems(
+    order: Order,
+    items: FulFillmentItemType[],
+    transformer: (item: LineItem | undefined, quantity: number) => unknown
+  ): Promise<LineItem[]> {
+    return (
+      await Promise.all(
+        items.map(async ({ item_id, quantity }) => {
+          const item = order.items.find((i) => i.id === item_id)
+          return transformer(item, quantity)
+        })
+      )
+    ).filter((i) => !!i) as LineItem[]
   }
 
   /**
    * Archives an order. It only alloved, if the order has been fulfilled
    * and payment has been captured.
-   * @param {string} orderId - the order to archive
-   * @return {Promise} the result of the update operation
+   * @param orderId - the order to archive
+   * @return the result of the update operation
    */
-  async archive(orderId) {
-    return this.atomicPhase_(async (manager) => {
+  async archive(orderId: string): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId)
 
       if (order.status !== ("completed" || "refunded")) {
@@ -1310,34 +1345,33 @@ class OrderService extends BaseService {
         )
       }
 
-      order.status = "archived"
+      order.status = OrderStatus.ARCHIVED
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const result = await orderRepo.save(order)
-      return result
+      return await orderRepo.save(order)
     })
   }
 
   /**
    * Refunds a given amount back to the customer.
-   * @param {string} orderId - id of the order to refund.
-   * @param {float} refundAmount - the amount to refund.
-   * @param {string} reason - the reason to refund.
-   * @param {string | undefined} note - note for refund.
-   * @param {Object} config - the config for refund.
-   * @return {Promise} the result of the refund operation.
+   * @param orderId - id of the order to refund.
+   * @param refundAmount - the amount to refund.
+   * @param reason - the reason to refund.
+   * @param note - note for refund.
+   * @param config - the config for refund.
+   * @return the result of the refund operation.
    */
   async createRefund(
-    orderId,
-    refundAmount,
-    reason,
-    note,
-    config = {
+    orderId: string,
+    refundAmount: number,
+    reason: string,
+    note?: string,
+    config: { no_notification?: boolean } = {
       no_notification: undefined,
     }
-  ) {
+  ): Promise<Order> {
     const { no_notification } = config
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
@@ -1375,7 +1409,10 @@ class OrderService extends BaseService {
     })
   }
 
-  async decorateTotals_(order, totalsFields = []) {
+  protected async decorateTotals(
+    order: Order,
+    totalsFields: string[] = []
+  ): Promise<Order> {
     for (const totalField of totalsFields) {
       switch (totalField) {
         case "shipping_total": {
@@ -1401,7 +1438,9 @@ class OrderService extends BaseService {
           break
         }
         case "total": {
-          order.total = await this.totalsService_.getTotal(order)
+          order.total = await this.totalsService_
+            .withTransaction(this.manager_)
+            .getTotal(order)
           break
         }
         case "refunded_total": {
@@ -1424,8 +1463,8 @@ class OrderService extends BaseService {
             refundable: this.totalsService_.getLineItemRefund(order, {
               ...i,
               quantity: i.quantity - (i.returned_quantity || 0),
-            }),
-          }))
+            } as LineItem),
+          })) as LineItem[]
           break
         }
         case "swaps.additional_items.refundable": {
@@ -1435,8 +1474,8 @@ class OrderService extends BaseService {
               refundable: this.totalsService_.getLineItemRefund(order, {
                 ...i,
                 quantity: i.quantity - (i.returned_quantity || 0),
-              }),
-            }))
+              } as LineItem),
+            })) as LineItem[]
           }
           break
         }
@@ -1447,8 +1486,8 @@ class OrderService extends BaseService {
               refundable: this.totalsService_.getLineItemRefund(order, {
                 ...i,
                 quantity: i.quantity - (i.returned_quantity || 0),
-              }),
-            }))
+              } as LineItem),
+            })) as LineItem[]
           }
           break
         }
@@ -1468,13 +1507,17 @@ class OrderService extends BaseService {
    * retuned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
-   * @param {string} orderId - the order to return.
-   * @param {object} receivedReturn - the received return
-   * @param {float} customRefundAmount - the custom refund amount return
-   * @return {Promise} the result of the update operation
+   * @param orderId - the order to return.
+   * @param receivedReturn - the received return
+   * @param customRefundAmount - the custom refund amount return
+   * @return the result of the update operation
    */
-  async registerReturnReceived(orderId, receivedReturn, customRefundAmount) {
-    return this.atomicPhase_(async (manager) => {
+  async registerReturnReceived(
+    orderId: string,
+    receivedReturn: Return,
+    customRefundAmount?: number
+  ): Promise<Order> {
+    return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         select: ["total", "refunded_total", "refundable_amount"],
         relations: ["items", "returns", "payments"],
@@ -1499,7 +1542,7 @@ class OrderService extends BaseService {
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
       if (refundAmount > order.refundable_amount) {
-        order.fulfillment_status = "requires_action"
+        order.fulfillment_status = FulfillmentStatus.REQUIRES_ACTION
         const result = await orderRepo.save(order)
         this.eventBus_
           .withTransaction(manager)
@@ -1527,9 +1570,9 @@ class OrderService extends BaseService {
       }
 
       if (isFullReturn) {
-        order.fulfillment_status = "returned"
+        order.fulfillment_status = FulfillmentStatus.RETURNED
       } else {
-        order.fulfillment_status = "partially_returned"
+        order.fulfillment_status = FulfillmentStatus.PARTIALLY_RETURNED
       }
 
       const result = await orderRepo.save(order)
@@ -1542,30 +1585,6 @@ class OrderService extends BaseService {
         })
       return result
     })
-  }
-
-  /**
-   * Dedicated method to delete metadata for an order.
-   * @param {string} orderId - the order to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(orderId, key) {
-    const validatedId = this.validateId_(orderId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.orderModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch((err) => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

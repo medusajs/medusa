@@ -15,6 +15,9 @@ const eventBusService = {
 
 describe("CartService", () => {
   const totalsService = {
+    withTransaction: function () {
+      return this
+    },
     getTotal: (o) => {
       return o.total || 0
     },

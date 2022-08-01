@@ -1,7 +1,5 @@
 import {
-  useAdminCreateOrder,
   useAdminUpdateOrder,
-  useAdminDeleteOrderMetadata,
   useAdminCompleteOrder,
   useAdminCapturePayment,
   useAdminRefundPayment,
@@ -15,67 +13,6 @@ import {
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
-
-describe("useAdminCreateOrder hook", () => {
-  test("creates a order and returns it", async () => {
-    const order = {
-      email: "lebron@james.com",
-      billing_address: {
-        company: "medusa",
-        first_name: "Jane",
-        last_name: "Medusan",
-        address_1: "jane street",
-        address_2: "2nd floor",
-        city: "copenhagen",
-        country_code: "dk",
-        province: "copenhagen",
-        postal_code: "382793",
-        phone: "4897394",
-        metadata: null,
-      },
-      shipping_address: {
-        company: "medusa",
-        first_name: "Jane",
-        last_name: "Medusan",
-        address_1: "jane street",
-        address_2: "2nd floor",
-        city: "copenhagen",
-        country_code: "dk",
-        province: "copenhagen",
-        postal_code: "382793",
-        phone: "4897394",
-        metadata: null,
-      },
-      items: [
-        {
-          variant_id: "test-variant",
-          quantity: 1,
-        },
-      ],
-      region: "test-region",
-      customer_id: "cus_test",
-      payment_method: {
-        provider_id: "test-pay",
-      },
-    }
-
-    const { result, waitFor } = renderHook(() => useAdminCreateOrder(), {
-      wrapper: createWrapper(),
-    })
-
-    result.current.mutate(order)
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.order).toEqual(
-      expect.objectContaining({
-        ...fixtures.get("order"),
-        ...order,
-      })
-    )
-  })
-})
 
 describe("useAdminUpdateOrder hook", () => {
   test("updates a order and returns it", async () => {
@@ -283,26 +220,6 @@ describe("useAdminCancelFulfillment hook", () => {
     )
 
     result.current.mutate(fulfillmentId)
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.order).toEqual(fixtures.get("order"))
-  })
-})
-
-describe("useAdminDeleteOrderMetadata hook", () => {
-  test("remove metadata field on order", async () => {
-    const id = fixtures.get("order").id
-
-    const { result, waitFor } = renderHook(
-      () => useAdminDeleteOrderMetadata(id),
-      {
-        wrapper: createWrapper(),
-      }
-    )
-
-    result.current.mutate("some_key")
 
     await waitFor(() => result.current.isSuccess)
 

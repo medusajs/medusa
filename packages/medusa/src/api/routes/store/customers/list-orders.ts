@@ -6,6 +6,8 @@ import {
   allowedStoreOrdersFields,
   allowedStoreOrdersRelations,
 } from "../orders"
+import { FindConfig } from "../../../../types/common"
+import { Order } from "../../../../models"
 
 /**
  * @oas [get] /customers/me/orders
@@ -77,7 +79,7 @@ export default async (req, res) => {
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },
-  }
+  } as FindConfig<Order>
 
   const [orders, count] = await orderService.listAndCount(selector, listConfig)
 

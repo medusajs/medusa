@@ -407,14 +407,12 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      shippingOptionRates =
-        await this.taxProviderService.getRegionRatesForShipping(
-          shippingOption.id,
-          {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          }
-        )
+      shippingOptionRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForShipping(shippingOption.id, {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        })
     }
 
     const price = shippingOption.amount || 0

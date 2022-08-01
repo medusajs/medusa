@@ -49,11 +49,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
 
   /**
-   * Create a new order
-   */
-  route.post("/", middlewares.wrap(require("./create-order").default))
-
-  /**
    * Update an order
    */
   route.post("/:id", middlewares.wrap(require("./update-order").default))
@@ -225,14 +220,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     middlewares.wrap(require("./create-claim-shipment").default)
   )
 
-  /**
-   * Delete metadata key / value pair.
-   */
-  route.delete(
-    "/:id/metadata/:key",
-    middlewares.wrap(require("./delete-metadata").default)
-  )
-
   return app
 }
 
@@ -314,7 +301,7 @@ export const defaultAdminOrdersFields = [
   "paid_total",
   "refundable_amount",
   "no_notification",
-]
+] as (keyof Order)[]
 
 export const allowedAdminOrdersFields = [
   "id",
@@ -393,11 +380,9 @@ export * from "./complete-order"
 export * from "./create-claim"
 export * from "./create-claim-shipment"
 export * from "./create-fulfillment"
-export * from "./create-order"
 export * from "./create-shipment"
 export * from "./create-swap"
 export * from "./create-swap-shipment"
-export * from "./delete-metadata"
 export * from "./fulfill-claim"
 export * from "./fulfill-swap"
 export * from "./get-order"
