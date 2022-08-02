@@ -5,6 +5,7 @@ import {
   OrderService,
   SwapService,
 } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
@@ -54,7 +55,12 @@ export default async (req, res) => {
     )
   }
 
-  await swapService.cancelFulfillment(fulfillment_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await swapService
+      .withTransaction(transactionManager)
+      .cancelFulfillment(fulfillment_id)
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

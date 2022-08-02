@@ -1,4 +1,5 @@
 import { BatchJobService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /batch-jobs/{id}/cancel
@@ -24,7 +25,12 @@ export default async (req, res) => {
   let batch_job = req.batch_job
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  batch_job = await batchJobService.cancel(batch_job)
+  const manager: EntityManager = req.scope.resolve("manager")
+  batch_job = await manager.transaction(async (transactionManager) => {
+    return await batchJobService
+      .withTransaction(transactionManager)
+      .cancel(batch_job)
+  })
 
   res.json({ batch_job })
 }
