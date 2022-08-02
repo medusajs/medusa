@@ -28,7 +28,7 @@ medusa new medusa-server
 2. Once cloned, you will jump into the project directory and get started with our configuration.
 
 ```bash
-cd my-medusa-starter
+cd medusa-server
 ```
 
 3. Get your environment variables ready using our template
