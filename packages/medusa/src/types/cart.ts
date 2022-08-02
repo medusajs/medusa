@@ -68,7 +68,7 @@ export type CartUpdateProps = {
   billing_address?: AddressPayload | string
   shipping_address?: AddressPayload | string
   completed_at?: Date
-  payment_authorized_at?: Date
+  payment_authorized_at?: Date | null
   gift_cards?: GiftCard[]
   discounts?: Discount[]
   customer_id?: string

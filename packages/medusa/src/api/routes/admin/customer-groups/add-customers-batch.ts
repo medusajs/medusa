@@ -4,6 +4,7 @@ import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customer-groups/{id}/customers/batch
@@ -38,10 +39,18 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.addCustomers(
-    id,
-    validated.customer_ids.map(({ id }) => id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const customer_group = await manager.transaction(
+    async (transactionManager) => {
+      return await customerGroupService
+        .withTransaction(transactionManager)
+        .addCustomers(
+          id,
+          validated.customer_ids.map(({ id }) => id)
+        )
+    }
   )
+
   res.status(200).json({ customer_group })
 }
 

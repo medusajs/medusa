@@ -4,6 +4,9 @@ import { InventoryServiceMock } from "../__mocks__/inventory"
 
 describe("OrderService", () => {
   const totalsService = {
+    withTransaction: function () {
+      return this
+    },
     getLineItemRefund: () => {},
     getTotal: (o) => {
       return o.total || 0
@@ -44,35 +47,6 @@ describe("OrderService", () => {
   const inventoryService = {
     ...InventoryServiceMock,
   }
-
-  describe("create", () => {
-    const orderRepo = MockRepository({ create: (f) => f })
-    const orderService = new OrderService({
-      manager: MockManager,
-      orderRepository: orderRepo,
-      totalsService,
-      eventBusService,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("calls order model functions", async () => {
-      await orderService.create({
-        email: "oliver@test.dk",
-      })
-
-      expect(orderRepo.create).toHaveBeenCalledTimes(1)
-      expect(orderRepo.create).toHaveBeenCalledWith({
-        email: "oliver@test.dk",
-      })
-
-      expect(orderRepo.save).toHaveBeenCalledWith({
-        email: "oliver@test.dk",
-      })
-    })
-  })
 
   describe("createFromCart", () => {
     const orderRepo = MockRepository({
@@ -336,7 +310,7 @@ describe("OrderService", () => {
       expect(giftCardService.update).toHaveBeenCalledTimes(1)
       expect(giftCardService.update).toHaveBeenCalledWith("gid", {
         balance: 0,
-        disabled: true,
+        is_disabled: true,
       })
 
       expect(giftCardService.createTransaction).toHaveBeenCalledTimes(1)

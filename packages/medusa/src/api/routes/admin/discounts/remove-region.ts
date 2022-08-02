@@ -1,5 +1,6 @@
 import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { EntityManager } from "typeorm"
 /**
  * @oas [delete] /discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
@@ -25,7 +26,12 @@ export default async (req, res) => {
   const { discount_id, region_id } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  await discountService.removeRegion(discount_id, region_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .removeRegion(discount_id, region_id)
+  })
 
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,

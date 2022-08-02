@@ -301,7 +301,7 @@ export const defaultAdminOrdersFields = [
   "paid_total",
   "refundable_amount",
   "no_notification",
-]
+] as (keyof Order)[]
 
 export const allowedAdminOrdersFields = [
   "id",

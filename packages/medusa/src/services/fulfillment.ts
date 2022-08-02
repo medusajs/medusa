@@ -302,7 +302,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
    */
   async createShipment(
     fulfillmentId: string,
-    trackingLinks: { tracking_number: string }[],
+    trackingLinks?: { tracking_number: string }[],
     config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,

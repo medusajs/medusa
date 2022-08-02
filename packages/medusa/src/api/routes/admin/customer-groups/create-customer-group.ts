@@ -2,6 +2,7 @@ import { IsObject, IsOptional, IsString } from "class-validator"
 import { CustomerGroupService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customer-groups
@@ -32,7 +33,15 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  const customerGroup = await customerGroupService.create(validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const customerGroup = await manager.transaction(
+    async (transactionManager) => {
+      return await customerGroupService
+        .withTransaction(transactionManager)
+        .create(validated)
+    }
+  )
+
   res.status(200).json({ customer_group: customerGroup })
 }
 

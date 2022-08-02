@@ -1,12 +1,12 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import { Discount } from "../../../../models/discount"
-import { DiscountConditionOperator } from "../../../../models/discount-condition"
+import { Discount, DiscountConditionOperator } from "../../../../models"
 import { DiscountService } from "../../../../services"
 import DiscountConditionService from "../../../../services/discount-condition"
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 /**
  * @oas [post] /discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
@@ -74,9 +74,14 @@ export default async (req, res) => {
 
   let discount = await discountService.retrieve(discount_id)
 
-  await conditionService.upsertCondition({
-    ...validatedCondition,
-    rule_id: discount.rule_id,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await conditionService
+      .withTransaction(transactionManager)
+      .upsertCondition({
+        ...validatedCondition,
+        rule_id: discount.rule_id,
+      })
   })
 
   const config = getRetrieveConfig<Discount>(

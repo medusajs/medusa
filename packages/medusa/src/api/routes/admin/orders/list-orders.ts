@@ -3,6 +3,7 @@ import { pick } from "lodash"
 import { OrderService } from "../../../../services"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { Type } from "class-transformer"
+import { Order } from "../../../../models"
 
 /**
  * @oas [get] /orders
@@ -55,7 +56,7 @@ export default async (req, res) => {
     req.listConfig
   )
 
-  let data = orders
+  let data: Partial<Order>[] = orders
 
   const fields = [...select, ...relations]
   if (fields.length) {

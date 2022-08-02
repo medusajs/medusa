@@ -227,17 +227,15 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      const { product_id } = await this.productVariantService.retrieve(
-        variantId,
-        { select: ["id", "product_id"] }
-      )
-      productRates = await this.taxProviderService.getRegionRatesForProduct(
-        product_id,
-        {
+      const { product_id } = await this.productVariantService
+        .withTransaction(this.manager_)
+        .retrieve(variantId, { select: ["id", "product_id"] })
+      productRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForProduct(product_id, {
           id: pricingContext.price_selection.region_id,
           tax_rate: pricingContext.tax_rate,
-        }
-      )
+        })
     }
 
     return await this.getProductVariantPricing_(
@@ -405,14 +403,12 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      shippingOptionRates =
-        await this.taxProviderService.getRegionRatesForShipping(
-          shippingOption.id,
-          {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          }
-        )
+      shippingOptionRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForShipping(shippingOption.id, {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        })
     }
 
     const price = shippingOption.amount || 0
