@@ -13,7 +13,7 @@ export default async function ({ port, directory }) {
 
   const babelPath = path.join(directory, "node_modules", ".bin", "babel")
 
-  execSync(`"${babelPath}" src -d dist --extensions \".ts,.js\"`, {
+  execSync(`"${babelPath}" src --delete-dir-on-start -d dist --extensions \".ts,.js\"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -30,7 +30,7 @@ export default async function ({ port, directory }) {
     Logger.info(`${f} changed: restarting...`)
     child.kill("SIGINT")
 
-    execSync(`${babelPath} src -d dist --extensions \".ts,.js\"`, {
+    execSync(`${babelPath} src --delete-dir-on-start -d dist --extensions \".ts,.js\"`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })
