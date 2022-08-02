@@ -1,7 +1,8 @@
-# Quickstart w. Docker
+# Quickstart with Docker
 In this document you will learn how to deploy Medusa server on Docker. Docker is an open-source project for automating the deployment of applications as portable, self-sufficient containers that can run on the cloud or on-premises.
+Alternatively, you can use this link to deploy the Medusa server to Docker directly[Deploy to Docker](https://hub.docker.com/)
 
-#Prerequisites
+##Prerequisites
 This quick start is intended for developers, that have already configured their local development environment and familiarised them selves with all the technologies and frameworks used throughout the Medusa eco-system.
 
 If this is not the case, please head over to our [Getting Started](https://docs.medusajs.com/quickstart/quick-start) tutorial for a thorough walkthrough.
