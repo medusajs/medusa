@@ -1,26 +1,24 @@
 # Change Log
 
+## 2.0.0-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b)]:
+  - medusa-interfaces@1.4.0-next.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-ip-lookup@1.2.0...medusa-plugin-ip-lookup@1.2.1) (2022-07-05)
 
-
 ### Bug Fixes
 
-* **medusa:** Remove deps `mongoose` + `mongodb`  ([#1218](https://github.com/medusajs/medusa/issues/1218)) ([c76e23e](https://github.com/medusajs/medusa/commit/c76e23e84dd8cb08c3c709f9f95c4c17b9685439))
-
-
-
-
+- **medusa:** Remove deps `mongoose` + `mongodb` ([#1218](https://github.com/medusajs/medusa/issues/1218)) ([c76e23e](https://github.com/medusajs/medusa/commit/c76e23e84dd8cb08c3c709f9f95c4c17b9685439))
 
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-ip-lookup@1.1.19...medusa-plugin-ip-lookup@1.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-plugin-ip-lookup
-
-
-
-
 
 ## [1.1.19](https://github.com/medusajs/medusa/compare/medusa-plugin-ip-lookup@1.1.18...medusa-plugin-ip-lookup@1.1.19) (2021-10-18)
 
