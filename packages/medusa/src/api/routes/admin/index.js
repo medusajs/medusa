@@ -6,6 +6,7 @@ import authRoutes from "./auth"
 import collectionRoutes from "./collections"
 import customerGroupRoutes from "./customer-groups"
 import customerRoutes from "./customers"
+import currencyRoutes from "./currency"
 import discountRoutes from "./discounts"
 import draftOrderRoutes from "./draft-orders"
 import giftCardRoutes from "./gift-cards"
@@ -70,6 +71,7 @@ export default (app, container, config) => {
   collectionRoutes(route)
   customerGroupRoutes(route)
   customerRoutes(route)
+  currencyRoutes(route)
   discountRoutes(route)
   draftOrderRoutes(route)
   giftCardRoutes(route)
@@ -77,11 +79,11 @@ export default (app, container, config) => {
   noteRoutes(route)
   notificationRoutes(route)
   orderRoutes(route, featureFlagRouter)
-  priceListRoutes(route)
+  priceListRoutes(route, featureFlagRouter)
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
-  regionRoutes(route)
+  regionRoutes(route, featureFlagRouter)
   returnReasonRoutes(route)
   returnRoutes(route)
   salesChannelRoutes(route)

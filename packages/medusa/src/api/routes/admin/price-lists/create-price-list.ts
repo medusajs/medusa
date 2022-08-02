@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
@@ -15,6 +16,8 @@ import {
 } from "../../../../types/price-list"
 import { Request } from "express"
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 
 /**
  * @oas [post] /price_lists
@@ -39,6 +42,9 @@ import { EntityManager } from "typeorm"
  *             enum:
  *              - sale
  *              - override
+ *        includes_tax:
+ *             description: "[EXPERIMENTAL] Is the price list tax inclusive or not"
+ *             type: boolean
  *          status:
  *            description: The status of the Price List.
  *            type: string
@@ -136,4 +142,10 @@ export class AdminPostPriceListsPriceListReq {
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
   customer_groups?: CustomerGroup[]
+
+  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

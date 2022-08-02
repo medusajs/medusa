@@ -1,7 +1,7 @@
-const { PriceList, CustomerGroup } = require("@medusajs/medusa")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
@@ -9,13 +9,16 @@ const {
   simpleProductFactory,
   simplePriceListFactory,
 } = require("../../factories")
-const {
-  simpleCustomerGroupFactory,
-} = require("../../factories/simple-customer-group-factory")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -1418,5 +1421,114 @@ describe("/admin/price-lists", () => {
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(2)
     })
+  })
+})
+
+describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const [process, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_TAX_INCLUSIVE: true },
+      verbose: false,
+    })
+    dbConnection = connection
+    medusaProcess = process
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  describe("POST /admin/price-lists/:id", () => {
+    const priceList1TaxInclusiveId = "price-list-1-tax-inclusive"
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+        await productSeeder(dbConnection)
+        await simplePriceListFactory(dbConnection, {
+          id: priceList1TaxInclusiveId,
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should allow to create a price list that includes_tax", async function () {
+      const api = useApi()
+
+      const payload = {
+        name: "VIP Summer sale includes tax",
+        description: "Summer sale for VIP customers. 25% off selected items.",
+        type: "sale",
+        status: "active",
+        starts_at: "2022-07-01T00:00:00.000Z",
+        ends_at: "2022-07-31T00:00:00.000Z",
+        customer_groups: [
+          {
+            id: "customer-group-1",
+          },
+        ],
+        prices: [
+          {
+            amount: 85,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+        ],
+        includes_tax: true,
+      }
+
+      let response = await api
+        .post(`/admin/price-lists`, payload, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.price_list).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          includes_tax: true,
+          name: "VIP Summer sale includes tax",
+        })
+      )
+    });
+
+    it("should allow to update a price list that includes_tax", async function () {
+      const api = useApi()
+      let response = await api
+        .get(`/admin/price-lists/${priceList1TaxInclusiveId}`, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.price_list.includes_tax).toBe(false)
+
+      response = await api.post(
+        `/admin/price-lists/${priceList1TaxInclusiveId}`,
+        {
+          includes_tax: true,
+        },
+        adminReqConfig,
+      ).catch((err) => {
+        console.log(err)
+      })
+
+      expect(response.data.price_list.includes_tax).toBe(true)
+    });
   })
 })

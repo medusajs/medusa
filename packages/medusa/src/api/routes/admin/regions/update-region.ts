@@ -9,6 +9,8 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 
 /**
  * @oas [post] /regions/{id}
@@ -44,6 +46,9 @@ import { EntityManager } from "typeorm"
  *           tax_rate:
  *             description: "The tax rate to use on Orders in the Region."
  *             type: number
+ *          includes_tax:
+ *             description: "[EXPERIMENTAL] Is the region tax inclusive or not"
+ *             type: boolean
  *           payment_providers:
  *             description: "A list of Payment Providers that should be enabled for the Region"
  *             type: array
@@ -135,4 +140,10 @@ export class AdminPostRegionsRegionReq {
   @IsString({ each: true })
   @IsOptional()
   countries?: string[]
+
+  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }
