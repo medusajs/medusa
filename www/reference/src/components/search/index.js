@@ -9,6 +9,7 @@ import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import { navigate } from "gatsby-link"
 
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
+const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 
 const Search = ({data}) => {
   const { goTo, api } = useContext(NavigationContext)
@@ -72,6 +73,7 @@ const Search = ({data}) => {
   return (
     <DocSearch
       apiKey={algoliaApiKey}
+      appId={algoliaAppId}
       indexName="medusa-commerce"
       hitComponent={({hit, children}) => <HitComponent data={data} hit={hit} children={children} />}
       navigator={{
