@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { countries } from "../utils/countries"
+import TaxInclusiveFeatureFlag from "../loaders/feature-flags/tax-inclusive"
 
 /**
  * Provides layer to manipulate regions.
@@ -25,6 +26,7 @@ class RegionService extends BaseService {
     taxProviderRepository,
     paymentProviderService,
     fulfillmentProviderService,
+    featureFlagRouter,
   }) {
     super()
 
@@ -60,6 +62,8 @@ class RegionService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
+
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   withTransaction(transactionManager) {
@@ -80,6 +84,7 @@ class RegionService extends BaseService {
       taxProviderService: this.taxProviderService_,
       fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
+      featureFlagRouter: this.featureFlagRouter_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -101,9 +106,18 @@ class RegionService extends BaseService {
         this.currencyRepository_
       )
 
-      const { metadata, currency_code, ...toValidate } = regionObject
+      const { metadata, currency_code, includes_tax, ...toValidate } =
+        regionObject
 
       const validated = await this.validateFields_(toValidate)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          regionObject.includes_tax = includes_tax
+        }
+      }
 
       if (currency_code) {
         // will throw if currency is not added to store currencies
@@ -161,9 +175,17 @@ class RegionService extends BaseService {
 
       const region = await this.retrieve(regionId)
 
-      const { metadata, currency_code, ...toValidate } = update
+      const { metadata, currency_code, includes_tax, ...toValidate } = update
 
       const validated = await this.validateFields_(toValidate, region.id)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          region.includes_tax = includes_tax
+        }
+      }
 
       if (currency_code) {
         // will throw if currency is not added to store currencies

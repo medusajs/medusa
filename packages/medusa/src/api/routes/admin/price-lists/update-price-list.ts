@@ -5,6 +5,7 @@ import {
 } from "../../../../types/price-list"
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
@@ -17,6 +18,8 @@ import PriceListService from "../../../../services/price-list"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 
 /**
  * @oas [post] /price-lists/{id}
@@ -99,6 +102,9 @@ import { EntityManager } from "typeorm"
  *                 id:
  *                   description: The ID of a customer group
  *                   type: string
+ *        includes_tax:
+ *             description: "[EXPERIMENTAL] Is the region tax inclusive or not"
+ *             type: boolean
  * tags:
  *   - Price List
  * responses:
@@ -176,4 +182,10 @@ export class AdminPostPriceListsPriceListPriceListReq {
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
   customer_groups?: CustomerGroup[]
+
+  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

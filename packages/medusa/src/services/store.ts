@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Store } from "../models"
+import { Currency, Store } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
 import { StoreRepository } from "../repositories/store"
 import { FindConfig } from "../types/common"
 import { UpdateStoreInput } from "../types/store"
 import { buildQuery, setMetadata } from "../utils"
-import { currencies, Currency } from "../utils/currencies"
+import { currencies } from "../utils/currencies"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
