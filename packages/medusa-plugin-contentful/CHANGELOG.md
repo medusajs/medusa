@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.0-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b)]:
+  - medusa-interfaces@1.4.0-next.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,60 +14,31 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-contentful
 
-
-
-
-
 ## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.2.0...medusa-plugin-contentful@1.2.2) (2022-06-19)
 
 **Note:** Version bump only for package medusa-plugin-contentful
-
-
-
-
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.2.0...medusa-plugin-contentful@1.2.1) (2022-05-31)
 
 **Note:** Version bump only for package medusa-plugin-contentful
 
-
-
-
-
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.40...medusa-plugin-contentful@1.2.0) (2022-05-01)
-
 
 ### Bug Fixes
 
-* **medusa-plugin-contentful:** add type and collection entity synchronisation  ([#1191](https://github.com/medusajs/medusa/issues/1191)) ([36bfdfe](https://github.com/medusajs/medusa/commit/36bfdfe6e1eb3cefea7aacf711cfd22d44893a8c))
-
-
-
-
+- **medusa-plugin-contentful:** add type and collection entity synchronisation ([#1191](https://github.com/medusajs/medusa/issues/1191)) ([36bfdfe](https://github.com/medusajs/medusa/commit/36bfdfe6e1eb3cefea7aacf711cfd22d44893a8c))
 
 ## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.39...medusa-plugin-contentful@1.1.40) (2022-01-11)
 
 **Note:** Version bump only for package medusa-plugin-contentful
 
-
-
-
-
 ## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.38...medusa-plugin-contentful@1.1.39) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-contentful
 
-
-
-
-
 ## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.37...medusa-plugin-contentful@1.1.38) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-contentful
-
-
-
-
 
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.36...medusa-plugin-contentful@1.1.37) (2021-12-08)
 
