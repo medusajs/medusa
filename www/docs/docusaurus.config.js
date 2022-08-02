@@ -154,7 +154,8 @@ module.exports = {
           routeBasePath: "/",
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
-          ]
+          ],
+          showLastUpdateTime: true
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
