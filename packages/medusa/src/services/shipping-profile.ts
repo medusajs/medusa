@@ -52,8 +52,14 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({
+      manager,
+      shippingProfileRepository,
+      productService,
+      productRepository,
+      shippingOptionService,
+      customShippingOptionService,
+    }])
 
     this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
@@ -215,7 +221,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @return the shipping profile
    */
   async createGiftCardDefault(): Promise<ShippingProfile> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
@@ -272,7 +278,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     profileId: string,
     update: UpdateShippingProfile
   ): Promise<ShippingProfile> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
@@ -325,7 +331,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @return the result of the delete operation.
    */
   async delete(profileId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const profileRepo = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
@@ -354,7 +360,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     profileId: string,
     productId: string
   ): Promise<ShippingProfile> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       await this.productService_
         .withTransaction(manager)
         .update(productId, { profile_id: profileId })
@@ -374,7 +380,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     profileId: string,
     optionId: string
   ): Promise<ShippingProfile> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       await this.shippingOptionService_
         .withTransaction(manager)
         .update(optionId, { profile_id: profileId })
@@ -413,9 +419,6 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       )
     }
     return decorated as ShippingProfile
-
-    // const final = await this.runDecorators_(decorated)
-    // return final
   }
 
   /**
@@ -443,66 +446,68 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @return a list of the available shipping options
    */
   async fetchCartOptions(cart): Promise<ShippingOption[]> {
-    const profileIds = this.getProfilesInCart_(cart)
+    return await this.atomicPhase_(async (manager) => {
+      const profileIds = this.getProfilesInCart_(cart)
 
-    const selector: Selector<ShippingOption> = {
-      profile_id: profileIds,
-      admin_only: false,
-    }
+      const selector: Selector<ShippingOption> = {
+        profile_id: profileIds,
+        admin_only: false,
+      }
 
-    const customShippingOptions = await this.customShippingOptionService_
-      .withTransaction(this.manager_)
-      .list(
-        {
-          cart_id: cart.id,
-        },
-        { select: ["id", "shipping_option_id", "price"] }
-      )
-
-    const hasCustomShippingOptions = customShippingOptions?.length
-    // if there are custom shipping options associated with the cart, use those
-    if (hasCustomShippingOptions) {
-      selector.id = customShippingOptions.map((cso) => cso.shipping_option_id)
-    }
-
-    const rawOpts = await this.shippingOptionService_
-      .withTransaction(this.manager_)
-      .list(selector, {
-        relations: ["requirements", "profile"],
-      })
-
-    // if there are custom shipping options associated with the cart, return cart shipping options with custom price
-    if (hasCustomShippingOptions) {
-      return rawOpts.map((so) => {
-        const customOption = customShippingOptions.find(
-          (cso) => cso.shipping_option_id === so.id
+      const customShippingOptions = await this.customShippingOptionService_
+        .withTransaction(manager)
+        .list(
+          {
+            cart_id: cart.id,
+          },
+          { select: ["id", "shipping_option_id", "price"] }
         )
 
-        return {
-          ...so,
-          amount: customOption?.price,
-        }
-      }) as ShippingOption[]
-    }
+      const hasCustomShippingOptions = customShippingOptions?.length
+      // if there are custom shipping options associated with the cart, use those
+      if (hasCustomShippingOptions) {
+        selector.id = customShippingOptions.map((cso) => cso.shipping_option_id)
+      }
 
-    const options = await Promise.all(
-      rawOpts.map(async (so) => {
-        try {
-          const option = await this.shippingOptionService_
-            .withTransaction(this.manager_)
-            .validateCartOption(so, cart)
-          if (option) {
-            return option
+      const rawOpts = await this.shippingOptionService_
+        .withTransaction(manager)
+        .list(selector, {
+          relations: ["requirements", "profile"],
+        })
+
+      // if there are custom shipping options associated with the cart, return cart shipping options with custom price
+      if (hasCustomShippingOptions) {
+        return rawOpts.map((so) => {
+          const customOption = customShippingOptions.find(
+            (cso) => cso.shipping_option_id === so.id
+          )
+
+          return {
+            ...so,
+            amount: customOption?.price,
           }
-          return null
-        } catch (err) {
-          // if validateCartOption fails it means the option is not valid
-          return null
-        }
-      })
-    )
+        }) as ShippingOption[]
+      }
 
-    return options.filter(Boolean) as ShippingOption[]
+      const options = await Promise.all(
+        rawOpts.map(async (so) => {
+          try {
+            const option = await this.shippingOptionService_
+              .withTransaction(manager)
+              .validateCartOption(so, cart)
+            if (option) {
+              return option
+            }
+            return null
+          } catch (err) {
+            // if validateCartOption fails it means the option is not valid
+            return null
+          }
+        })
+      )
+
+      return options.filter(Boolean) as ShippingOption[]
+    })
   }
 }
 
