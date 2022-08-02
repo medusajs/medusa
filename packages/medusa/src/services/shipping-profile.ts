@@ -3,7 +3,12 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Any, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { ShippingOption, ShippingProfile, ShippingProfileType } from "../models"
+import {
+  ShippingMethod,
+  ShippingOption,
+  ShippingProfile,
+  ShippingProfileType,
+} from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ShippingProfileRepository } from "../repositories/shipping-profile"
 import { FindConfig, Selector } from "../types/common"
@@ -396,14 +401,14 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   async decorate(
     profile: ShippingProfile,
     fields,
-    expandFields = []
+    expandFields: string[] = []
   ): Promise<ShippingProfile> {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(profile, fields.concat(requiredFields))
 
     if (expandFields.includes("products") && profile.products) {
       decorated.products = await Promise.all(
-        profile.products.map((pId) => this.productService_.retrieve(pId))
+        profile.products.map((pId) => this.productService_.retrieve(pId.id))
       )
     }
 
@@ -414,9 +419,10 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
         )
       )
     }
+    return decorated as ShippingProfile
 
-    const final = await this.runDecorators_(decorated)
-    return final
+    // const final = await this.runDecorators_(decorated)
+    // return final
   }
 
   /**
@@ -424,7 +430,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @param {Cart} cart - the cart to extract products from
    * @return {[string]} a list of product ids
    */
-  getProfilesInCart_(cart) {
+  getProfilesInCart_(cart): string[] {
     return cart.items.reduce((acc, next) => {
       // We may have line items that are not associated with a product
       if (next.variant && next.variant.product) {
@@ -443,10 +449,10 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @param {Cart} cart - the cart object to find shipping options for
    * @return {Promise<[ShippingOption]>} a list of the available shipping options
    */
-  async fetchCartOptions(cart) {
+  async fetchCartOptions(cart): Promise<ShippingOption[]> {
     const profileIds = this.getProfilesInCart_(cart)
 
-    const selector = {
+    const selector: Selector<ShippingOption> = {
       profile_id: profileIds,
       admin_only: false,
     }
@@ -483,7 +489,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
           ...so,
           amount: customOption?.price,
         }
-      })
+      }) as ShippingOption[]
     }
 
     const options = await Promise.all(
@@ -503,7 +509,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       })
     )
 
-    return options.filter(Boolean)
+    return options.filter(Boolean) as ShippingOption[]
   }
 }
 
