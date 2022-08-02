@@ -22,7 +22,7 @@ Additionally, we will spin up a PostgreSQL database and a Redis server, both req
 1. Clone the starter project from Github
 
 ```bash
-git clone https://github.com/medusajs/medusa-starter-default.git my-medusa-starter
+medusa new medusa-server
 ```
 
 2. Once cloned, you will jump into the project directory and get started with our configuration.
