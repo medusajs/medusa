@@ -64,9 +64,9 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config object for find
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
    */
   async list(
     selector: Selector<ShippingProfile> = {},
@@ -128,8 +128,8 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   /**
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
-   * @param {string} profileId - the id of the profile to get.
-   * @param {Object} options - options opf the query.
+   * @param profileId - the id of the profile to get.
+   * @param options - options opf the query.
    * @return {Promise<Product>} the profile document.
    */
   async retrieve(
@@ -195,7 +195,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
   /**
    * Retrieves the default gift card profile
-   * @return {Object} the shipping profile for gift cards
+   * @return the shipping profile for gift cards
    */
   async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
     const profileRepository = this.manager_.getCustomRepository(
@@ -212,7 +212,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   /**
    * Creates a default shipping profile, for gift cards if unless it already
    * exists.
-   * @return {Promise<ShippingProfile>} the shipping profile
+   * @return the shipping profile
    */
   async createGiftCardDefault(): Promise<ShippingProfile> {
     return this.atomicPhase_(async (manager) => {
@@ -237,8 +237,8 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
   /**
    * Creates a new shipping profile.
-   * @param {CreateShippingProfile} profile - the shipping profile to create from
-   * @return {Promise} the result of the create operation
+   * @param profile - the shipping profile to create from
+   * @return the result of the create operation
    */
   async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
@@ -263,10 +263,10 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * Updates a profile. Metadata updates and product updates should use
    * dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
    * will throw errors if metadata or product updates are attempted.
-   * @param {string} profileId - the id of the profile. Must be a string that
+   * @param profileId - the id of the profile. Must be a string that
    *   can be casted to an ObjectId
-   * @param {object} update - an object with the update values.
-   * @return {Promise} resolves to the update result.
+   * @param update - an object with the update values.
+   * @return resolves to the update result.
    */
   async update(
     profileId: string,
@@ -320,9 +320,9 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
   /**
    * Deletes a profile with a given profile id.
-   * @param {string} profileId - the id of the profile to delete. Must be
+   * @param profileId - the id of the profile to delete. Must be
    *   castable as an ObjectId
-   * @return {Promise} the result of the delete operation.
+   * @return the result of the delete operation.
    */
   async delete(profileId: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
@@ -346,9 +346,9 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   /**
    * Adds a product to a profile. The method is idempotent, so multiple calls
    * with the same product variant will have the same result.
-   * @param {string} profileId - the profile to add the product to.
-   * @param {string} productId - the product to add.
-   * @return {Promise} the result of update
+   * @param profileId - the profile to add the product to.
+   * @param productId - the product to add.
+   * @return the result of update
    */
   async addProduct(
     profileId: string,
@@ -366,9 +366,9 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   /**
    * Adds a shipping option to the profile. The shipping option can be used to
    * fulfill the products in the products field.
-   * @param {string} profileId - the profile to apply the shipping option to
-   * @param {string} optionId - the option to add to the profile
-   * @return {Promise} the result of the model update operation
+   * @param profileId - the profile to apply the shipping option to
+   * @param optionId - the option to add to the profile
+   * @return the result of the model update operation
    */
   async addShippingOption(
     profileId: string,
@@ -386,10 +386,10 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
   /**
    * Decorates a profile.
-   * @param {Profile} profile - the profile to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Profile} return the decorated profile.
+   * @param profile - the profile to decorate.
+   * @param fields - the fields to include.
+   * @param expandFields - fields to expand.
+   * @return return the decorated profile.
    */
   async decorate(
     profile: ShippingProfile,
@@ -420,8 +420,8 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
   /**
    * Returns a list of all the productIds in the cart.
-   * @param {Cart} cart - the cart to extract products from
-   * @return {[string]} a list of product ids
+   * @param cart - the cart to extract products from
+   * @return a list of product ids
    */
   getProfilesInCart_(cart): string[] {
     return cart.items.reduce((acc, next) => {
@@ -439,8 +439,8 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   /**
    * Finds all the shipping profiles that cover the products in a cart, and
    * validates all options that are available for the cart.
-   * @param {Cart} cart - the cart object to find shipping options for
-   * @return {Promise<[ShippingOption]>} a list of the available shipping options
+   * @param cart - the cart object to find shipping options for
+   * @return a list of the available shipping options
    */
   async fetchCartOptions(cart): Promise<ShippingOption[]> {
     const profileIds = this.getProfilesInCart_(cart)
