@@ -1,10 +1,9 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { Any, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
-  ShippingMethod,
+  Cart,
   ShippingOption,
   ShippingProfile,
   ShippingProfileType,
@@ -59,7 +58,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       productRepository,
       shippingOptionService,
       customShippingOptionService,
-    }])
+    })
 
     this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
@@ -399,10 +398,10 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    */
   async decorate(
     profile: ShippingProfile,
-    fields,
+    fields: string[],
     expandFields: string[] = []
   ): Promise<ShippingProfile> {
-    const requiredFields = ["_id", "metadata"]
+    const requiredFields: string[] = ["_id", "metadata"]
     const decorated = _.pick(profile, fields.concat(requiredFields))
 
     if (expandFields.includes("products") && profile.products) {
@@ -426,7 +425,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @param cart - the cart to extract products from
    * @return a list of product ids
    */
-  getProfilesInCart_(cart): string[] {
+  getProfilesInCart_(cart: Cart): string[] {
     return cart.items.reduce((acc, next) => {
       // We may have line items that are not associated with a product
       if (next.variant && next.variant.product) {
@@ -436,7 +435,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       }
 
       return acc
-    }, [])
+    }, [] as string[])
   }
 
   /**
