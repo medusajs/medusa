@@ -154,7 +154,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile> {
+  async retrieveDefault(): Promise<ShippingProfile | undefined> {
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
@@ -162,13 +162,6 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     const profile = await profileRepository.findOne({
       where: { type: "default" },
     })
-
-    if (!profile) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Defualt Shipping Profile not found`
-      )
-    }
 
     return profile
   }
@@ -178,7 +171,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * @return {Promise<ShippingProfile>} the shipping profile
    */
   async createDefault(): Promise<ShippingProfile> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
@@ -204,7 +197,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    * Retrieves the default gift card profile
    * @return {Object} the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile> {
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
@@ -212,13 +205,6 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
     const giftCardProfile = await profileRepository.findOne({
       where: { type: "gift_card" },
     })
-
-    if (!giftCardProfile) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Gift Card Shipping Profile not found`
-      )
-    }
 
     return giftCardProfile
   }
@@ -259,6 +245,13 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
+
+      if (profile["products"] || profile["shipping_options"]) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Please add products and shipping_options after creating Shipping Profiles"
+        )
+      }
 
       const created = profileRepository.create(profile)
       const result = await profileRepository.save(created)
