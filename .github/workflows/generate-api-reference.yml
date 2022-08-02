@@ -39,9 +39,11 @@ jobs:
       - name: Generate API Reference
         run: yarn openapi:generate
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with: 
-          commit_message: "docs: automatically Generated Services Reference"
-          file_pattern: docs/api/*
-          skip_dirty_check: false
-          branch: master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'Generated API Reference'
+          base: 'master'
+          title: 'docs: Generated API Reference'
+          labels: 'type: docs'
+          add-paths: docs/api/*
