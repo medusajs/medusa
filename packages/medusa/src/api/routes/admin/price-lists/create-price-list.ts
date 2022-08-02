@@ -14,6 +14,7 @@ import {
   PriceListType,
 } from "../../../../types/price-list"
 import { Request } from "express"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /price_lists
@@ -90,9 +91,12 @@ export default async (req: Request, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const priceList = await priceListService.create(
-    req.validatedBody as CreatePriceListInput
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const priceList = await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .create(req.validatedBody as CreatePriceListInput)
+  })
 
   res.json({ price_list: priceList })
 }

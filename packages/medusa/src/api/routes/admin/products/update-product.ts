@@ -24,6 +24,7 @@ import {
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}
@@ -224,12 +225,18 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  await productService.update(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await productService
+      .withTransaction(transactionManager)
+      .update(id, validated)
+  })
 
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })

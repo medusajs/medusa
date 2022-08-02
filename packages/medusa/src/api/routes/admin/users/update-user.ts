@@ -2,6 +2,7 @@ import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users/{user_id}
@@ -33,7 +34,13 @@ export default async (req, res) => {
   const validated = await validator(AdminUpdateUserRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")
-  const data = await userService.update(user_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const data = await manager.transaction(async (transactionManager) => {
+    return await userService
+      .withTransaction(transactionManager)
+      .update(user_id, validated)
+  })
+
   res.status(200).json({ user: data })
 }
 

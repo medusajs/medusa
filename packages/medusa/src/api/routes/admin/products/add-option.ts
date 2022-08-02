@@ -2,6 +2,7 @@ import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, PricingService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/options
@@ -44,7 +45,13 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  await productService.addOption(id, validated.title)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productService
+      .withTransaction(transactionManager)
+      .addOption(id, validated.title)
+  })
+
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,

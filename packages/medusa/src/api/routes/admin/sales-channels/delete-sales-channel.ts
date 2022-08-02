@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { SalesChannelService } from "../../../../services/"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /sales-channels/{id}
@@ -33,7 +34,13 @@ export default async (req: Request, res: Response): Promise<void> => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
-  await salesChannelService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .delete(id)
+  })
+
   res.json({
     id,
     object: "sales-channel",
