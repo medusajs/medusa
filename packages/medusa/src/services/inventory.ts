@@ -32,6 +32,10 @@ class InventoryService extends TransactionBaseService<InventoryService> {
     variantId: string,
     adjustment: number
   ): Promise<ProductVariant | undefined> {
+    if (!variantId) {
+      return
+    }
+
     return await this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
