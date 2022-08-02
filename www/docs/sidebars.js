@@ -467,6 +467,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/s3-acl-error",
+          label: "S3 Plugin ACL Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/documentation-error",
           label: "Documentation Error",
         },
