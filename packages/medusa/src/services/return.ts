@@ -114,7 +114,12 @@ class ReturnService extends TransactionBaseService<ReturnService> {
     order: Order,
     items: OrdersReturnItem[],
     transformer: Transformer
-  ): Promise<(LineItem & OrdersReturnItem)[]> {
+  ): Promise<
+    (LineItem & {
+      reason_id?: string
+      note?: string
+    })[]
+  > {
     let merged = [...order.items]
 
     // merge items from order with items from order swaps
@@ -438,7 +443,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map((i) =>
         rItemRepo.create({
-          item_id: i.item_id,
+          item_id: i.id,
           quantity: i.quantity,
           requested_quantity: i.quantity,
           reason_id: i.reason_id,
