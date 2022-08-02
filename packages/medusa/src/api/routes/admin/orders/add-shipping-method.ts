@@ -8,6 +8,7 @@ import {
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/shipping-methods
@@ -42,14 +43,14 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.addShippingMethod(
-    id,
-    validated.option_id,
-    validated.data,
-    {
-      price: validated.price,
-    }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .addShippingMethod(id, validated.option_id, validated.data, {
+        price: validated.price,
+      })
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

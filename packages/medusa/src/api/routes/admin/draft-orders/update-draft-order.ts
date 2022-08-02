@@ -15,6 +15,9 @@ import { CartService, DraftOrderService } from "../../../../services"
 import { Type } from "class-transformer"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
+import { DraftOrderStatus } from "../../../../models"
+
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
@@ -80,21 +83,28 @@ export default async (req, res) => {
 
   const draftOrder = await draftOrderService.retrieve(id)
 
-  if (draftOrder.status === "completed") {
+  if (draftOrder.status === DraftOrderStatus.COMPLETED) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
       "You are only allowed to update open draft orders"
     )
   }
 
-  if (validated.no_notification_order !== undefined) {
-    await draftOrderService.update(draftOrder.id, {
-      no_notification_order: validated.no_notification_order,
-    })
-    delete validated.no_notification_order
-  }
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    if (validated.no_notification_order !== undefined) {
+      await draftOrderService
+        .withTransaction(transactionManager)
+        .update(draftOrder.id, {
+          no_notification_order: validated.no_notification_order,
+        })
+      delete validated.no_notification_order
+    }
 
-  await cartService.update(draftOrder.cart_id, validated)
+    await cartService
+      .withTransaction(transactionManager)
+      .update(draftOrder.cart_id, validated)
+  })
 
   draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
     relations: defaultAdminDraftOrdersCartRelations,

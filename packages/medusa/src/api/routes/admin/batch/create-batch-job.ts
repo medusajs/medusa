@@ -2,6 +2,7 @@ import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 import { BatchJob } from "../../../../models"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /batch-jobs
@@ -36,9 +37,12 @@ export default async (req, res) => {
 
   const userId = req.user.id ?? req.user.userId
 
-  const batch_job = await batchJobService.create({
-    ...toCreate,
-    created_by: userId,
+  const manager: EntityManager = req.scope.resolve("manager")
+  const batch_job = await manager.transaction(async (transactionManager) => {
+    return await batchJobService.withTransaction(transactionManager).create({
+      ...toCreate,
+      created_by: userId,
+    })
   })
 
   res.status(201).json({ batch_job })

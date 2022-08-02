@@ -5,6 +5,7 @@ import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customer-groups/{id}
@@ -42,7 +43,12 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  await customerGroupService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerGroupService
+      .withTransaction(transactionManager)
+      .update(id, validatedBody)
+  })
 
   let expandFields: string[] = []
   if (validatedQuery.expand) {
