@@ -10,7 +10,6 @@ import TaxProviderService from "./tax-provider"
 import FulfillmentProviderService from "./fulfillment-provider"
 import InventoryService from "./inventory"
 import OrderService from "./order"
-import Order from "./order"
 import { TransactionBaseService } from "../interfaces"
 import {
   FulfillmentStatus,
@@ -19,6 +18,7 @@ import {
   Return,
   ReturnItem,
   ReturnStatus,
+  Order,
 } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { buildQuery, setMetadata } from "../utils"
@@ -40,9 +40,9 @@ type InjectedDependencies = {
 }
 
 type Transformer = (
-  item: LineItem,
-  quantity: number,
-  additional: OrdersReturnItem
+  item?: LineItem,
+  quantity?: number,
+  additional?: OrdersReturnItem
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
 class ReturnService extends TransactionBaseService<ReturnService> {
@@ -220,8 +220,8 @@ class ReturnService extends TransactionBaseService<ReturnService> {
    *   return quantity.
    */
   protected validateReturnLineItem(
-    item: LineItem,
-    quantity: number,
+    item?: LineItem,
+    quantity = 0,
     additional: { reason_id?: string; note?: string } = {}
   ): DeepPartial<LineItem> {
     if (!item) {
