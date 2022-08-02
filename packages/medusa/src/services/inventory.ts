@@ -10,14 +10,13 @@ type InventoryServiceProps = {
   productVariantService: ProductVariantService
 }
 class InventoryService extends TransactionBaseService<InventoryService> {
-  protected productVariantService_: ProductVariantService
+  protected readonly productVariantService_: ProductVariantService
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
   constructor({ manager, productVariantService }: InventoryServiceProps) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({ manager, productVariantService })
 
     this.manager_ = manager
     this.productVariantService_ = productVariantService
@@ -30,15 +29,13 @@ class InventoryService extends TransactionBaseService<InventoryService> {
    * @return resolves to the update result.
    */
   async adjustInventory(
-    variantId: string | undefined | null,
+    variantId: string,
     adjustment: number
   ): Promise<ProductVariant | undefined> {
-    if (typeof variantId === "undefined" || variantId === null) {
-      return undefined
-    }
-
-    return this.atomicPhase_(async (manager) => {
-      const variant = await this.productVariantService_.retrieve(variantId)
+    return await this.atomicPhase_(async (manager) => {
+      const variant = await this.productVariantService_
+        .withTransaction(manager)
+        .retrieve(variantId)
       // if inventory is managed then update
       if (variant.manage_inventory) {
         return await this.productVariantService_
@@ -60,7 +57,7 @@ class InventoryService extends TransactionBaseService<InventoryService> {
    * @return true if the inventory covers the quantity
    */
   async confirmInventory(
-    variantId: string,
+    variantId: string | undefined | null,
     quantity: number
   ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
@@ -69,7 +66,7 @@ class InventoryService extends TransactionBaseService<InventoryService> {
       return true
     }
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
         .retrieve(variantId)
