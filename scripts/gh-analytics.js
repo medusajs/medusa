@@ -17,9 +17,9 @@ async function retrieveAnalytics () {
   console.log(`Pushing ${referrersResponse.data.length} referrers...`);
   referrersResponse.data.forEach((ref) => {
     if (!process.env.DEBUG) {
-      analytics.page({
+      analytics.track({
         anonymousId: uniqid(),
-        category: 'referrals',
+        event: 'referrals',
         properties: {
           title: ref.referrer,
           count: ref.uniques
@@ -38,9 +38,9 @@ async function retrieveAnalytics () {
   
   pathsResponse.data.forEach((path) => {
     if (!process.env.DEBUG) {
-      analytics.page({
+      analytics.track({
         anonymousId: uniqid(),
-        category: 'popular_paths',
+        event: 'popular_paths',
         properties: {
           title: path.title,
           path: path.path,
