@@ -39,14 +39,18 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
-    const { manager, fulfillmentProviderRepository } = this.container_
-    const model = manager.getCustomRepository(fulfillmentProviderRepository)
-    await model.update({}, { is_installed: false })
+    return await this.atomicPhase_(async (manager) => {
+      const { fulfillmentProviderRepository } = this.container_
+      const fulfillmentProviderRepo = manager.getCustomRepository(
+        fulfillmentProviderRepository
+      )
+      await fulfillmentProviderRepo.update({}, { is_installed: false })
 
-    for (const p of providers) {
-      const n = model.create({ id: p, is_installed: true })
-      await model.save(n)
-    }
+      for (const p of providers) {
+        const n = fulfillmentProviderRepo.create({ id: p, is_installed: true })
+        await fulfillmentProviderRepo.save(n)
+      }
+    })
   }
 
   async list(): Promise<FulfillmentProvider[]> {
