@@ -1,29 +1,25 @@
 import { RequestHandler, Router } from "express"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+
+type middlewareHandlerType = (
+  options: Record<string, unknown>
+) => RequestHandler
 
 type middlewareType = {
-  middleware: (options: Record<string, unknown>) => RequestHandler
+  middleware: middlewareHandlerType
   options: Record<string, unknown>
 }
 
 /**
  * Orchestrates dynamic middleware registered through the Medusa Middleware API
  */
-class MiddlewareService extends TransactionBaseService<MiddlewareService> {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
+class MiddlewareService {
   protected readonly postAuthentication_: middlewareType[]
   protected readonly preAuthentication_: middlewareType[]
   protected readonly preCartCreation_: RequestHandler[]
   protected readonly routers: Record<string, Router[]>
 
   constructor() {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
-
     this.postAuthentication_ = []
     this.preAuthentication_ = []
     this.preCartCreation_ = []
@@ -36,8 +32,7 @@ class MiddlewareService extends TransactionBaseService<MiddlewareService> {
   }
 
   getRouters(path: string): Router[] {
-    const routers = this.routers[path] || []
-    return routers
+    return this.routers[path] || []
   }
 
   /**
@@ -45,7 +40,7 @@ class MiddlewareService extends TransactionBaseService<MiddlewareService> {
    * @param {function} fn - the middleware function to validate.
    * @returns nothing if the middleware is a function
    */
-  validateMiddleware_(fn): void {
+  validateMiddleware_(fn: unknown): void {
     if (typeof fn !== "function") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -63,7 +58,7 @@ class MiddlewareService extends TransactionBaseService<MiddlewareService> {
    * @return void
    */
   addPostAuthentication(
-    middleware: (options: Record<string, unknown>) => RequestHandler,
+    middleware: middlewareHandlerType,
     options: Record<string, unknown>
   ): void {
     this.validateMiddleware_(middleware)
@@ -82,7 +77,7 @@ class MiddlewareService extends TransactionBaseService<MiddlewareService> {
    * @return void
    */
   addPreAuthentication(
-    middleware: (options: Record<string, unknown>) => RequestHandler,
+    middleware: middlewareHandlerType,
     options: Record<string, unknown>
   ): void {
     this.validateMiddleware_(middleware)
