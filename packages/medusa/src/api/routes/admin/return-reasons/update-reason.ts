@@ -79,5 +79,5 @@ export class AdminPostReturnReasonsReasonReq {
   description?: string
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

@@ -24,11 +24,11 @@ export class ReturnReason extends SoftDeletableEntity {
   description: string
 
   @Column({ nullable: true })
-  parent_return_reason_id: string
+  parent_return_reason_id: string | null
 
   @ManyToOne(() => ReturnReason, { cascade: ["soft-remove"] })
   @JoinColumn({ name: "parent_return_reason_id" })
-  parent_return_reason: ReturnReason
+  parent_return_reason: ReturnReason | null
 
   @OneToMany(
     () => ReturnReason,
