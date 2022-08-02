@@ -4,7 +4,6 @@ import {
   AdminRegionsRes,
   AdminPostRegionsRegionReq,
   AdminPostRegionsReq,
-  AdminPostRegionsRegionMetadata,
   AdminPostRegionsRegionCountriesReq,
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
@@ -66,37 +65,6 @@ export const useAdminDeleteRegion = (
       [adminRegionKeys.lists(), adminRegionKeys.detail(id)],
       options
     )
-  )
-}
-
-export const useAdminSetRegionMetadata = (
-  id: string,
-  options?: UseMutationOptions<
-    Response<AdminRegionsRes>,
-    Error,
-    AdminPostRegionsRegionMetadata
-  >
-) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    (metadata: AdminPostRegionsRegionMetadata) =>
-      client.admin.regions.setMetadata(id, metadata),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
-
-export const useAdminDeleteRegionMetadata = (
-  id: string,
-  options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
-) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    (key: string) => client.admin.regions.deleteMetadata(id, key),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
   )
 }
 

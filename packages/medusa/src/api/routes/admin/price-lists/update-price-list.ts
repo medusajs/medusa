@@ -15,6 +15,7 @@ import {
   PriceListType,
 } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /price_lists/{id}
@@ -103,7 +104,12 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  await priceListService.update(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .update(id, validated)
+  })
 
   const priceList = await priceListService.retrieve(id, {
     select: defaultAdminPriceListFields as (keyof PriceList)[],
