@@ -1,5 +1,6 @@
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm";
 
 /**
  * @oas [delete] /collections/{id}
@@ -33,7 +34,12 @@ export default async (req: Request, res: Response) => {
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
-  await productCollectionService.delete(id)
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).delete(id)
+  })
+
 
   res.json({
     id,

@@ -9,6 +9,7 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { TrackingLink } from "../../../../models"
+import { EntityManager } from "typeorm"
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
@@ -54,17 +55,22 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.createShipment(
-    id,
-    validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({
-      tracking_number: n,
-    })) as TrackingLink[],
-    {
-      metadata: {},
-      no_notification: validated.no_notification,
-    }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .createShipment(
+        id,
+        validated.fulfillment_id,
+        validated.tracking_numbers?.map((n) => ({
+          tracking_number: n,
+        })) as TrackingLink[],
+        {
+          metadata: {},
+          no_notification: validated.no_notification,
+        }
+      )
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

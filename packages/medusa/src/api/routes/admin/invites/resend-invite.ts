@@ -1,4 +1,5 @@
 import InviteService from "../../../../services/invite"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /invites/{invite_id}/resend
@@ -18,7 +19,10 @@ export default async (req, res) => {
   const { invite_id } = req.params
   const inviteService: InviteService = req.scope.resolve("inviteService")
 
-  await inviteService.resend(invite_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await inviteService.withTransaction(transactionManager).resend(invite_id)
+  })
 
   res.sendStatus(200)
 }
