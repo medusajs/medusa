@@ -1,8 +1,10 @@
 # Quickstart w. Docker
+In this document you will learn how to deploy Medusa server on Docker. Docker is an open-source project for automating the deployment of applications as portable, self-sufficient containers that can run on the cloud or on-premises.
 
+#Prerequisites
 This quick start is intended for developers, that have already configured their local development environment and familiarised them selves with all the technologies and frameworks used throughout the Medusa eco-system.
 
-If this is not the case, please head over to our Getting Started tutorial for a thorough walkthrough.
+If this is not the case, please head over to our [Getting Started](https://docs.medusajs.com/quickstart/quick-start) tutorial for a thorough walkthrough.
 
 ## Introduction
 
@@ -16,13 +18,13 @@ Additionally, we will spin up a PostgreSQL database and a Redis server, both req
 
 ## Get started
 
-1. Clone our starter project from Github
+1. Clone the starter project from Github
 
 ```bash
 git clone https://github.com/medusajs/medusa-starter-default.git my-medusa-starter
 ```
 
-2. Once cloned, we will jump into our project directory and get started with our configuration.
+2. Once cloned, you will jump into the project directory and get started with our configuration.
 
 ```bash
 cd my-medusa-starter
@@ -53,11 +55,11 @@ SENDGRID_API_KEY="some_sendgrid_key"
 docker-compose up --build
 ```
 
-We will use docker-compose and Docker to start up our development environment. Running the above command will do the following:
+You will use docker-compose and Docker to start up our development environment. Running the above command will do the following:
 
-1. Build images for our Medusa project, a PostgreSQL database and a Redis server
-2. Run migrations for our newly created database
-3. Seed our database with some entities, that will allow us to easily get started.
+1. Build images for your Medusa project, a PostgreSQL database and a Redis server
+2. Run migrations for your newly created database
+3. Seed your database with some entities, that will allow you to easily get started.
 
    These include:
 
@@ -67,11 +69,11 @@ We will use docker-compose and Docker to start up our development environment. R
    - A product called Cool Test Product
    - A variant of that product that costs 195 EUR
 
-Once done, our server will be accessible at `http://localhost:9000`.
+Once done, your server will be accessible at `http://localhost:9000`.
 
 ## Try it out
 
-Let's try out our Medusa server by fetching some products.
+Let's try out the Medusa server by fetching some products.
 
 ```bash
 curl -X GET localhost:9000/store/products | python -m json.tool
@@ -79,8 +81,6 @@ curl -X GET localhost:9000/store/products | python -m json.tool
 
 ## What's next?
 
-Add custom endpoint to your Medusa project
-
-Install and configure additional plugins
-
-Build a storefront using our [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
+- Learn how to [deploy your Medusa admin](https://docs.medusajs.com/deployments/admin/)
+- Learn how to [deploy your storefront](https://docs.medusajs.com/deployments/storefront/)
+- Build a storefront using our [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
