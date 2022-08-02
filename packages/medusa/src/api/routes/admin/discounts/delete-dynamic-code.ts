@@ -1,5 +1,6 @@
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /discounts/{id}/dynamic-codes/{code}
@@ -26,7 +27,12 @@ export default async (req, res) => {
   const { discount_id, code } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  await discountService.deleteDynamicCode(discount_id, code)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .deleteDynamicCode(discount_id, code)
+  })
 
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,

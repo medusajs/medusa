@@ -90,12 +90,14 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
-      const line = await lineItemService.generate(
-        validated.variant_id,
-        draftOrder.cart.region_id,
-        validated.quantity,
-        { metadata: validated.metadata, unit_price: validated.unit_price }
-      )
+      const line = await lineItemService
+        .withTransaction(manager)
+        .generate(
+          validated.variant_id,
+          draftOrder.cart.region_id,
+          validated.quantity,
+          { metadata: validated.metadata, unit_price: validated.unit_price }
+        )
 
       await cartService
         .withTransaction(manager)

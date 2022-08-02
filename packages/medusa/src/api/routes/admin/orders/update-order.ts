@@ -13,6 +13,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}
@@ -52,17 +53,17 @@ import { validator } from "../../../../utils/validator"
  *             type: string
  *           payment_method:
  *             description:
- *             type: object
+ *             type: Record<string, unknown>
  *             properties:
  *               provider_id:
  *                 type: string
  *                 description: id of the payment provider
  *               data:
  *                 description: Data relevant for the given payment method
- *                 type: object
+ *                 type: Record<string, unknown>
  *           shipping_method:
  *             description: The Shipping Method used for shipping the order.
- *             type: object
+ *             type: Record<string, unknown>
  *             properties:
  *               provider_id:
  *                 type: string
@@ -74,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  *                 type: integer
  *                 description: The price of the shipping.
  *               data:
- *                 type: object
+ *                 type: Record<string, unknown>
  *                 description: Data relevant to the specific shipping method.
  *               items:
  *                 type: array
@@ -102,7 +103,12 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.update(id, value)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .update(id, value)
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,
@@ -129,7 +135,7 @@ export class AdminPostOrdersOrderReq {
 
   @IsArray()
   @IsOptional()
-  items?: object[]
+  items?: Record<string, unknown>[]
 
   @IsString()
   @IsOptional()
@@ -137,7 +143,7 @@ export class AdminPostOrdersOrderReq {
 
   @IsArray()
   @IsOptional()
-  discounts?: object[]
+  discounts?: Record<string, unknown>[]
 
   @IsString()
   @IsOptional()
@@ -165,7 +171,7 @@ class PaymentMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: Record<string, unknown>
 }
 
 class ShippingMethod {
@@ -183,9 +189,9 @@ class ShippingMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: Record<string, unknown>
 
   @IsArray()
   @IsOptional()
-  items?: object[]
+  items?: Record<string, unknown>[]
 }

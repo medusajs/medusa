@@ -12,6 +12,7 @@ import {
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { ClaimService, OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /order/{id}/claims/{claim_id}
@@ -104,7 +105,12 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const claimService: ClaimService = req.scope.resolve("claimService")
 
-  await claimService.update(claim_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await claimService
+      .withTransaction(transactionManager)
+      .update(claim_id, validated)
+  })
 
   const data = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,
