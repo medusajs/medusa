@@ -1,6 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
+import TaxInclusivePricingFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
-export const featureFlag = "tax_inclusive_pricing"
+export const featureFlag = TaxInclusivePricingFlag.key
 
 export class test1659501357661 implements MigrationInterface {
   name = "test1659501357661"
