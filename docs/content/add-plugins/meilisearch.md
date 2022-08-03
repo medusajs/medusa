@@ -67,13 +67,15 @@ const plugins = [
         products: {
           // MeiliSearch's setting options to be set on a particular index
           searchableAttributes: ["title", "description", "variant_sku"],
-          displayedAttributes: ["title", "description", "variant_sku", "image"],
+          displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
         },
       },
     },
   },
 ];
 ```
+
+You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
 
 ## Test MeiliSearch Plugin
 
@@ -87,11 +89,11 @@ npm run start
 
 The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
 
-![Postman request to search endpoint that shows results returned from the search engine](https://i.imgur.com/gJkBuA6.png)
+![Postman request to search endpoint that shows results returned from the search engine](https://i.imgur.com/RCGquxU.png)
 
 You can also check that the products are properly indexed by opening the MeiliSearch host URL in your browser, which is `http://127.0.0.1:7700/` by default. You’ll find your products that are on your Medusa server added there.
 
-![MeiliSearch dashboard showing products from the Medusa server indexed](https://i.imgur.com/1ajSCzH.png)
+![MeiliSearch dashboard showing products from the Medusa server indexed](https://i.imgur.com/5sk3jyP.png)
 
 ### Add or Update Products
 
@@ -161,6 +163,14 @@ NEXT_PUBLIC_SEARCH_INDEX_NAME=products
 Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
 
 If you run your Next.js storefront now while the Medusa server and the MeiliSearch services are running, the search functionality will be available in your storefront.
+
+:::note
+
+To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
+
+:::
+
+![Search Result on Next.js storefront](https://i.imgur.com/gQVWvH2.png)
 
 ### Add to Gatsby and React-Based Storefronts
 
