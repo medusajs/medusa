@@ -1,5 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockRepository } from "medusa-test-utils"
+import { Cart } from "../../models"
+import { CartRepository } from "../../repositories/cart"
 
 export const carts = {
   emptyCart: {
@@ -207,7 +209,7 @@ export const carts = {
 }
 
 export const CartServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
   updatePaymentSession: jest.fn().mockImplementation((data) => {
@@ -349,15 +351,18 @@ export const CartServiceMock = {
         profile_id: "default_profile",
       }
     }
-    if (optionId === IdMap.getId("withData")) {
-      return {
-        id: IdMap.getId("withData"),
-        profile_id: "default_profile",
-        data: {
-          some_data: "yes",
-        },
-      }
+
+    // RW 03/08/2022
+    // Commenting this out to make it the default else ts coplains that not all code paths return an object
+    // if (optionId === IdMap.getId("withData")) {
+    return {
+      id: IdMap.getId("withData"),
+      profile_id: "default_profile",
+      data: {
+        some_data: "yes",
+      },
     }
+    // }
   }),
   retrievePaymentSession: jest.fn().mockImplementation((cartId, providerId) => {
     if (providerId === "default_provider") {
@@ -369,14 +374,16 @@ export const CartServiceMock = {
       }
     }
 
-    if (providerId === "nono") {
-      return {
-        provider_id: "nono",
-        data: {
-          money_id: "fail",
-        },
-      }
+    // RW 03/08/2022
+    // Commenting this out to make it the default else ts coplains that not all code paths return an object
+    // if (providerId === "nono") {
+    return {
+      provider_id: "nono",
+      data: {
+        money_id: "fail",
+      },
     }
+    // }
   }),
   refreshAdjustments_: jest.fn().mockImplementation((cart) => {
     return Promise.resolve({})
@@ -386,5 +393,11 @@ export const CartServiceMock = {
 const mock = jest.fn().mockImplementation(() => {
   return CartServiceMock
 })
+
+export const cartRepositoryMock = MockRepository({
+  create: jest.fn().mockImplementation((data) => {
+    return Object.assign(new Cart(), data)
+  })
+}) as CartRepository;
 
 export default mock

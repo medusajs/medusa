@@ -1,8 +1,11 @@
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockManager } from "medusa-test-utils"
+import { ITaxCalculationStrategy } from "../../interfaces"
+import TaxProviderService from "../tax-provider"
 import TotalsService from "../totals"
+import { cartRepositoryMock, discountRepositoryMock, lineItemRepositoryMock, orderRepositoryMock } from "../__mocks__"
 
 const discounts = {
-  total10Percent: {
+  total10Percent: discountRepositoryMock.create({
     id: "total10",
     code: "10%OFF",
     rule: {
@@ -11,8 +14,8 @@ const discounts = {
       value: 10,
     },
     regions: [{ id: "fr" }],
-  },
-  item2Fixed: {
+  }),
+  item2Fixed: discountRepositoryMock.create({
     id: "item2Fixed",
     code: "MEDUSA",
     rule: {
@@ -22,8 +25,8 @@ const discounts = {
       // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
-  },
-  item10Percent: {
+  }),
+  item10Percent: discountRepositoryMock.create({
     id: "item10Percent",
     code: "MEDUSA",
     rule: {
@@ -33,8 +36,8 @@ const discounts = {
       // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
-  },
-  total10Fixed: {
+  }),
+  total10Fixed: discountRepositoryMock.create({
     id: "total10Fixed",
     code: "MEDUSA",
     rule: {
@@ -44,8 +47,8 @@ const discounts = {
       // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
-  },
-  expiredDiscount: {
+  }),
+  expiredDiscount: discountRepositoryMock.create({
     id: "expired",
     code: "MEDUSA",
     ends_at: new Date("December 17, 1995 03:24:00"),
@@ -56,7 +59,7 @@ const discounts = {
       // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
-  },
+  }),
 }
 
 const applyDiscount = (cart, discount) => {
@@ -104,8 +107,9 @@ describe("TotalsService", () => {
       withTransaction: function () {
         return this
       },
-    },
-    taxCalculationStrategy: {},
+    } as unknown as TaxProviderService,
+    taxCalculationStrategy: {} as ITaxCalculationStrategy,
+    manager: MockManager
   }
 
   describe("getAllocationItemDiscounts", () => {
@@ -118,7 +122,7 @@ describe("TotalsService", () => {
     })
 
     it("calculates item with percentage discount", async () => {
-      const cart = {
+      const cart = cartRepositoryMock.create({
         items: [
           {
             id: "test",
@@ -132,14 +136,14 @@ describe("TotalsService", () => {
             adjustments: [{ amount: 10 }],
           },
         ],
-      }
+      });
 
-      const discount = {
+      const discount = discountRepositoryMock.create({
         rule: {
           type: "percentage",
           value: 10,
         },
-      }
+      });
 
       res = totalsService.getAllocationItemDiscounts(discount, cart)
 
@@ -163,7 +167,7 @@ describe("TotalsService", () => {
     })
 
     it("calculates item with fixed discount", async () => {
-      const cart = {
+      const cart = cartRepositoryMock.create({
         items: [
           {
             id: "exists",
@@ -177,15 +181,15 @@ describe("TotalsService", () => {
             adjustments: [{ amount: 90 }],
           },
         ],
-      }
+      });
 
-      const discount = {
+      const discount = discountRepositoryMock.create({
         rule: {
           type: "fixed",
           value: 9,
           // TODO: Add conditions relation
         },
-      }
+      });
 
       res = totalsService.getAllocationItemDiscounts(discount, cart)
 
@@ -242,7 +246,7 @@ describe("TotalsService", () => {
     let res
     const totalsService = new TotalsService(container)
 
-    const discountCart = {
+    const discountCart = cartRepositoryMock.create({
       id: "discount_cart",
       discounts: [],
       region_id: "fr",
@@ -268,7 +272,7 @@ describe("TotalsService", () => {
           quantity: 10,
         },
       ],
-    }
+    });
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -323,10 +327,11 @@ describe("TotalsService", () => {
     })
 
     it("returns 0 if no items are in cart", async () => {
-      res = totalsService.getDiscountTotal({
+      const emptyCart = cartRepositoryMock.create({
         items: [],
         discounts: [discounts.total10Fixed],
       })
+      res = totalsService.getDiscountTotal(emptyCart)
 
       expect(res).toEqual(0)
     })
@@ -335,7 +340,7 @@ describe("TotalsService", () => {
   describe("getRefundTotal", () => {
     let res
     const totalsService = new TotalsService(container)
-    const orderToRefund = {
+    const orderToRefund = orderRepositoryMock.create({
       id: "refund-order",
       tax_rate: 25,
       items: [
@@ -377,7 +382,7 @@ describe("TotalsService", () => {
       ],
       region_id: "fr",
       discounts: [],
-    }
+    })
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -386,7 +391,7 @@ describe("TotalsService", () => {
 
     it("calculates refund", async () => {
       res = totalsService.getRefundTotal(orderToRefund, [
-        {
+        lineItemRepositoryMock.create({
           id: "line2",
           unit_price: 100,
           allow_discounts: true,
@@ -397,7 +402,7 @@ describe("TotalsService", () => {
           quantity: 10,
           returned_quantity: 0,
           metadata: {},
-        },
+        }),
       ])
 
       expect(res).toEqual(1250)
@@ -448,7 +453,7 @@ describe("TotalsService", () => {
       orderToRefund.discounts.push(discounts.item2Fixed)
       let order = applyDiscount(orderToRefund, discounts.item2Fixed)
       res = totalsService.getRefundTotal(order, [
-        {
+        lineItemRepositoryMock.create({
           id: "line2",
           unit_price: 100,
           allow_discounts: true,
@@ -458,7 +463,7 @@ describe("TotalsService", () => {
           },
           quantity: 10,
           returned_quantity: 0,
-        },
+        }),
       ])
 
       expect(res).toEqual(1225)
@@ -468,7 +473,7 @@ describe("TotalsService", () => {
       orderToRefund.discounts.push(discounts.item10Percent)
       let order = applyDiscount(orderToRefund, discounts.item10Percent)
       res = totalsService.getRefundTotal(order, [
-        {
+        lineItemRepositoryMock.create({
           id: "line2",
           unit_price: 100,
           allow_discounts: true,
@@ -478,7 +483,7 @@ describe("TotalsService", () => {
           },
           quantity: 10,
           returned_quantity: 0,
-        },
+        }),
       ])
 
       expect(res).toEqual(1125)
@@ -487,7 +492,7 @@ describe("TotalsService", () => {
     it("throws if line items to return is not in order", async () => {
       const work = () =>
         totalsService.getRefundTotal(orderToRefund, [
-          {
+          lineItemRepositoryMock.create({
             id: "notInOrder",
             unit_price: 123,
             allow_discounts: true,
@@ -496,7 +501,7 @@ describe("TotalsService", () => {
               product_id: "pid",
             },
             quantity: 1,
-          },
+          }),
         ])
 
       expect(work).toThrow("Line item does not exist on order")
@@ -512,20 +517,13 @@ describe("TotalsService", () => {
     })
 
     it("calculates shipping", async () => {
-      const order = {
+      const order = cartRepositoryMock.create({
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
-            name: "Expensive Shipping",
             price: 100,
-            provider_id: "default_provider",
-            profile_id: IdMap.getId("default"),
-            data: {
-              extra: "hi",
-            },
           },
         ],
-      }
+      })
       res = totalsService.getShippingTotal(order)
 
       expect(res).toEqual(100)
@@ -545,10 +543,11 @@ describe("TotalsService", () => {
           return this
         },
         getTaxLines: getTaxLinesMock,
-      },
+      } as unknown as TaxProviderService,
       taxCalculationStrategy: {
         calculate: calculateMock,
-      },
+      } as ITaxCalculationStrategy,
+      manager: MockManager
     }
 
     beforeEach(() => {
@@ -693,7 +692,7 @@ describe("TotalsService", () => {
     })
 
     it("calculates total", async () => {
-      const order = {
+      const order = cartRepositoryMock.create({
         region: {
           tax_rate: 25,
         },
@@ -705,17 +704,10 @@ describe("TotalsService", () => {
         ],
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
-            name: "Expensive Shipping",
             price: 100,
-            provider_id: "default_provider",
-            profile_id: IdMap.getId("default"),
-            data: {
-              extra: "hi",
-            },
           },
         ],
-      }
+      })
       const getTaxTotalMock = jest.fn(() => Promise.resolve(35))
       totalsService.getTaxTotal = getTaxTotalMock
       res = await totalsService.getTotal(order)

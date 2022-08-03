@@ -1,5 +1,7 @@
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockRepository } from "medusa-test-utils"
 import { MedusaError } from "medusa-core-utils"
+import { LineItem } from "../../models"
+import { LineItemRepository } from "../../repositories/line-item"
 
 export const LineItemServiceMock = {
   withTransaction: function() {
@@ -60,5 +62,11 @@ export const LineItemServiceMock = {
 const mock = jest.fn().mockImplementation(() => {
   return LineItemServiceMock
 })
+
+export const lineItemRepositoryMock = MockRepository({
+  create: jest.fn().mockImplementation((data) => {
+    return Object.assign(new LineItem(), data)
+  })
+}) as LineItemRepository
 
 export default mock
