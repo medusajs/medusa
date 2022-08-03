@@ -25,5 +25,3 @@ export type CreateRegionInput = {
   countries: string[]
   metadata?: Record<string, unknown>
 }
-
-export type FindRegionConfig = FindConfig<Region>

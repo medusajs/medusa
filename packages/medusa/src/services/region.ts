@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 
 import { MedusaError } from "medusa-core-utils"
 
@@ -14,12 +14,8 @@ import { FulfillmentProviderRepository } from "../repositories/fulfillment-provi
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { Country, Currency, Region } from "../models"
-import { Selector } from "../types/common"
-import {
-  CreateRegionInput,
-  FindRegionConfig,
-  UpdateRegionInput,
-} from "../types/region"
+import { FindConfig, Selector } from "../types/common"
+import { CreateRegionInput, UpdateRegionInput } from "../types/region"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import { PaymentProviderService } from "./index"
 
@@ -37,8 +33,6 @@ type InjectedDependencies = {
   paymentProviderRepository: typeof PaymentProviderRepository
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
 }
-
-type ValidationPartial<T> = Omit<T, "metadata" | "currency_code">
 
 /**
  * Provides layer to manipulate regions.
@@ -108,10 +102,10 @@ class RegionService extends TransactionBaseService<RegionService> {
   /**
    * Creates a region.
    *
-   * @param regionObject - the unvalidated region
+   * @param data - the unvalidated region
    * @return the newly created region
    */
-  async create(regionObject: CreateRegionInput): Promise<Region> {
+  async create(data: CreateRegionInput): Promise<Region> {
     return await this.atomicPhase_(async (manager) => {
       const regionRepository = manager.getCustomRepository(
         this.regionRepository_
@@ -120,7 +114,8 @@ class RegionService extends TransactionBaseService<RegionService> {
         this.currencyRepository_
       )
 
-      const { metadata, currency_code, ...toValidate } = regionObject
+      const regionObject = { ...data } as DeepPartial<Region>
+      const { metadata, currency_code, ...toValidate } = data
 
       const validated = await this.validateFields_(toValidate)
 
@@ -138,13 +133,15 @@ class RegionService extends TransactionBaseService<RegionService> {
           )
         }
 
-        ;(regionObject as CreateRegionInput & { currency: Currency }).currency =
-          currency
+        regionObject.currency = currency
         regionObject.currency_code = currency_code.toLowerCase()
       }
 
       if (metadata) {
-        regionObject.metadata = setMetadata(regionObject, metadata)
+        regionObject.metadata = setMetadata(
+          { metadata: regionObject.metadata ?? null },
+          metadata
+        )
       }
 
       for (const [key, value] of Object.entries(validated)) {
@@ -228,14 +225,14 @@ class RegionService extends TransactionBaseService<RegionService> {
    * Validates fields for creation and updates. If the region already exists
    * the id can be passed to check that country updates are allowed.
    *
-   * @param region - the region data to validate
+   * @param regionData - the region data to validate
    * @param id - optional id of the region to check against
    * @return the validated region data
    */
   async validateFields_<T extends CreateRegionInput | UpdateRegionInput>(
-    region: Omit<T, "metadata" | "currency_code">,
+    regionData: Omit<T, "metadata" | "currency_code">,
     id?: T extends UpdateRegionInput ? string : undefined
-  ): Promise<T> {
+  ): Promise<DeepPartial<Region>> {
     const ppRepository = this.manager_.getCustomRepository(
       this.paymentProviderRepository_
     )
@@ -246,13 +243,15 @@ class RegionService extends TransactionBaseService<RegionService> {
       this.taxProviderRepository_
     )
 
+    const region = { ...regionData } as DeepPartial<Region>
+
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
     }
 
-    if ((region as T & { countries: Country[] }).countries) {
-      ;(region.countries as unknown as Country[]) = await Promise.all(
-        region.countries!.map((countryCode) =>
+    if (regionData.countries) {
+      region.countries = await Promise.all(
+        regionData.countries!.map((countryCode) =>
           this.validateCountry_(countryCode, id!)
         )
       ).catch((err) => {
@@ -260,9 +259,9 @@ class RegionService extends TransactionBaseService<RegionService> {
       })
     }
 
-    if ((region as UpdateRegionInput).tax_provider_id) {
+    if ((regionData as UpdateRegionInput).tax_provider_id) {
       const tp = await tpRepository.findOne({
-        where: { id: (region as UpdateRegionInput).tax_provider_id },
+        where: { id: (regionData as UpdateRegionInput).tax_provider_id },
       })
       if (!tp) {
         throw new MedusaError(
@@ -272,9 +271,9 @@ class RegionService extends TransactionBaseService<RegionService> {
       }
     }
 
-    if (region.payment_providers) {
+    if (regionData.payment_providers) {
       region.payment_providers = await Promise.all(
-        region.payment_providers.map(async (pId) => {
+        regionData.payment_providers.map(async (pId) => {
           const pp = await ppRepository.findOne({ where: { id: pId } })
           if (!pp) {
             throw new MedusaError(
@@ -288,9 +287,9 @@ class RegionService extends TransactionBaseService<RegionService> {
       )
     }
 
-    if (region.fulfillment_providers) {
+    if (regionData.fulfillment_providers) {
       region.fulfillment_providers = await Promise.all(
-        region.fulfillment_providers.map(async (fId) => {
+        regionData.fulfillment_providers.map(async (fId) => {
           const fp = await fpRepository.findOne({ where: { id: fId } })
           if (!fp) {
             throw new MedusaError(
@@ -406,7 +405,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    */
   async retrieveByCountryCode(
     code: Country["iso_2"],
-    config: FindRegionConfig = {}
+    config: FindConfig<Region> = {}
   ): Promise<Region | never> {
     const countryRepository = this.manager_.getCustomRepository(
       this.countryRepository_
@@ -444,7 +443,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    */
   async retrieve(
     regionId: string,
-    config: FindRegionConfig = {}
+    config: FindConfig<Region> = {}
   ): Promise<Region | never> {
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
@@ -473,7 +472,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    */
   async list(
     selector: Selector<Region> = {},
-    config: FindRegionConfig = {
+    config: FindConfig<Region> = {
       relations: [],
       skip: 0,
       take: 10,
