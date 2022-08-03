@@ -173,7 +173,7 @@ class Client {
 
   /**
    * Axios request
-   * @param method method request method
+   * @param method request method
    * @param path request path
    * @param payload request payload
    * @param options axios configuration
