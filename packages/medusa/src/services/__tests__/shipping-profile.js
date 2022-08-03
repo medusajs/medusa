@@ -29,21 +29,21 @@ describe("ShippingProfileService", () => {
 
   describe("update", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
 
     const productService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const shippingOptionService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -98,7 +98,7 @@ describe("ShippingProfileService", () => {
 
   describe("delete", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
@@ -126,7 +126,7 @@ describe("ShippingProfileService", () => {
 
     const productService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -156,7 +156,7 @@ describe("ShippingProfileService", () => {
 
   describe("fetchCartOptions", () => {
     const profRepo = MockRepository({
-      find: q => {
+      find: (q) => {
         switch (q.where.id) {
           default:
             return Promise.resolve([
@@ -188,8 +188,8 @@ describe("ShippingProfileService", () => {
           },
         ])
       }),
-      validateCartOption: jest.fn().mockImplementation(s => s),
-      withTransaction: function() {
+      validateCartOption: jest.fn().mockImplementation((s) => s),
+      withTransaction: function () {
         return this
       },
     }
@@ -301,7 +301,7 @@ describe("ShippingProfileService", () => {
 
     const shippingOptionService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -353,6 +353,11 @@ describe("ShippingProfileService", () => {
     })
 
     it("throws if trying to create with products", async () => {
+      await expect(
+        profileService.create({
+          name: "New Profile",
+          products: ["144"],
+        })
       ).rejects.toThrow(
         "Please add products and shipping_options after creating Shipping Profiles"
       )
