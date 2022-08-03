@@ -5,8 +5,8 @@ import middlewares, {
 } from "../../../middlewares"
 import { AdminGetCurrenciesParams } from "./list-currencies"
 import { AdminPostCurrenciesCurrencyReq } from "./update-currency"
-import { isFeatureFlagEnabled } from "../../../middlewares"
 import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 export default (app) => {
   const route = Router()

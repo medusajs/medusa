@@ -17,9 +17,7 @@ describe("GET /admin/currencies/", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
-          flags: [
-            TaxInclusiveFeatureFlag.key
-          ],
+          flags: [TaxInclusiveFeatureFlag],
         }
       )
     })

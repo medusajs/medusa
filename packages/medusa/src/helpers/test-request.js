@@ -7,9 +7,10 @@ import supertest from "supertest"
 import querystring from "querystring"
 import apiLoader from "../loaders/api"
 import passportLoader from "../loaders/passport"
-import featureFlagLoader from "../loaders/feature-flags"
+import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
+import logger from "../loaders/logger";
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -36,8 +37,6 @@ const testApp = express()
 
 const container = createContainer()
 
-const featureFlagRouter = featureFlagLoader(config)
-
 container.register("featureFlagRouter", asValue(featureFlagRouter))
 container.register("configModule", asValue(config))
 container.register({
@@ -60,6 +59,7 @@ testApp.use((req, res, next) => {
   next()
 })
 
+featureFlagLoader(config)
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
@@ -77,7 +77,7 @@ export async function request(method, url, opts = {}) {
   const { payload, query, headers = {}, flags = [] } = opts
 
   flags.forEach((flag) => {
-    featureFlagRouter.setFlag(flag, true)
+    featureFlagRouter.setFlag(flag.key, true)
   })
 
   const queryParams = query && querystring.stringify(query)
@@ -148,6 +148,5 @@ export async function request(method, url, opts = {}) {
   //  c[clientSessionOpts.cookieName] &&
   //  sessions.util.decode(clientSessionOpts, c[clientSessionOpts.cookieName])
   //    .content
-
   return res
 }
