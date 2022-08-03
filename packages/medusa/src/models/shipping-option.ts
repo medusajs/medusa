@@ -16,6 +16,7 @@ import { FulfillmentProvider } from "./fulfillment-provider"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -74,6 +75,10 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @Column({ default: false })
+  includes_tax: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {

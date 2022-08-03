@@ -12,6 +12,7 @@ import { CustomerGroup } from "./customer-group"
 import { MoneyAmount } from "./money-amount"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 
 @Entity()
 export class PriceList extends SoftDeletableEntity {
@@ -56,6 +57,10 @@ export class PriceList extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   prices: MoneyAmount[]
+
+  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @Column({ default: false })
+  includes_tax: boolean
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {

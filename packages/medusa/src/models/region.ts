@@ -18,6 +18,7 @@ import { TaxProvider } from "./tax-provider"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 
 @Entity()
 export class Region extends SoftDeletableEntity {
@@ -92,6 +93,10 @@ export class Region extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @Column({ default: false })
+  includes_tax: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {

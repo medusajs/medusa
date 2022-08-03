@@ -6,6 +6,7 @@ export type Currency = {
   rounding: number
   code: string
   name_plural: string
+  includes_tax?: boolean
 }
 
 export const currencies: Record<string, Currency> = {
