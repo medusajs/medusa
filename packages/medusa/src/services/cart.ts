@@ -403,7 +403,10 @@ class CartService extends TransactionBaseService {
           }
           if (data.shipping_address_id) {
             const addr = await addressRepo.findOne(data.shipping_address_id)
-            if (addr && !regCountries.includes(addr.country_code!)) {
+            if (
+              addr?.country_code &&
+              !regCountries.includes(addr.country_code)
+            ) {
               throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
                 "Shipping country not in region"

@@ -258,7 +258,7 @@ describe("RegionService", () => {
 
     it("throws on invalid country code", async () => {
       await expect(
-        regionService.validateFields_({
+        regionService.validateFields({
           countries: ["ddd"],
         } as CreateRegionInput)
       ).rejects.toThrow("Invalid country code")
@@ -266,7 +266,7 @@ describe("RegionService", () => {
 
     it("throws on in use country code", async () => {
       await expect(
-        regionService.validateFields_({
+        regionService.validateFields({
           countries: ["DK"],
         } as CreateRegionInput)
       ).rejects.toThrow(
@@ -276,7 +276,7 @@ describe("RegionService", () => {
 
     it("throws on unknown payment providers", async () => {
       await expect(
-        regionService.validateFields_({
+        regionService.validateFields({
           payment_providers: ["should_fail"],
         } as CreateRegionInput)
       ).rejects.toThrow("Payment provider not found")
@@ -284,7 +284,7 @@ describe("RegionService", () => {
 
     it("throws on unknown fulfillment providers", async () => {
       await expect(
-        regionService.validateFields_({
+        regionService.validateFields({
           fulfillment_providers: ["should_fail"],
         } as CreateRegionInput)
       ).rejects.toThrow("Fulfillment provider not found")

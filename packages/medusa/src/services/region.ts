@@ -117,11 +117,11 @@ class RegionService extends TransactionBaseService<RegionService> {
       const regionObject = { ...data } as DeepPartial<Region>
       const { metadata, currency_code, ...toValidate } = data
 
-      const validated = await this.validateFields_(toValidate)
+      const validated = await this.validateFields(toValidate)
 
       if (currency_code) {
         // will throw if currency is not added to store currencies
-        await this.validateCurrency_(currency_code)
+        await this.validateCurrency(currency_code)
         const currency = await currencyRepository.findOne({
           where: { code: currency_code.toLowerCase() },
         })
@@ -181,11 +181,11 @@ class RegionService extends TransactionBaseService<RegionService> {
 
       const { metadata, currency_code, ...toValidate } = update
 
-      const validated = await this.validateFields_(toValidate, region.id)
+      const validated = await this.validateFields(toValidate, region.id)
 
       if (currency_code) {
         // will throw if currency is not added to store currencies
-        await this.validateCurrency_(currency_code)
+        await this.validateCurrency(currency_code)
         const currency = await currencyRepository.findOne({
           where: { code: currency_code.toLowerCase() },
         })
@@ -229,7 +229,9 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @param id - optional id of the region to check against
    * @return the validated region data
    */
-  async validateFields_<T extends CreateRegionInput | UpdateRegionInput>(
+  protected async validateFields<
+    T extends CreateRegionInput | UpdateRegionInput
+  >(
     regionData: Omit<T, "metadata" | "currency_code">,
     id?: T extends UpdateRegionInput ? string : undefined
   ): Promise<DeepPartial<Region>> {
@@ -246,13 +248,13 @@ class RegionService extends TransactionBaseService<RegionService> {
     const region = { ...regionData } as DeepPartial<Region>
 
     if (region.tax_rate) {
-      this.validateTaxRate_(region.tax_rate)
+      this.validateTaxRate(region.tax_rate)
     }
 
     if (regionData.countries) {
       region.countries = await Promise.all(
         regionData.countries!.map((countryCode) =>
-          this.validateCountry_(countryCode, id!)
+          this.validateCountry(countryCode, id!)
         )
       ).catch((err) => {
         throw err
@@ -313,7 +315,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @throws if the tax rate isn't number between 0-100
    * @return void
    */
-  validateTaxRate_(taxRate: number): void | never {
+  protected validateTaxRate(taxRate: number): void | never {
     if (taxRate > 100 || taxRate < 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -329,7 +331,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @throws if the provided currency code is invalid
    * @return void
    */
-  async validateCurrency_(
+  protected async validateCurrency(
     currencyCode: Currency["code"]
   ): Promise<void | never> {
     const store = await this.storeService_
@@ -354,7 +356,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @param regionId - the id of the current region to check against
    * @return the validated Country
    */
-  async validateCountry_(
+  protected async validateCountry(
     code: Country["iso_2"],
     regionId: string
   ): Promise<Country | never> {
@@ -525,7 +527,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
-      const country = await this.validateCountry_(code, regionId)
+      const country = await this.validateCountry(code, regionId)
 
       const region = await this.retrieve(regionId, { relations: ["countries"] })
 
