@@ -8,7 +8,7 @@ import { CreateOauth, UpdateOauth } from "../types/oauth"
 import EventBusService from "./event-bus"
 import { Oauth as OAuthModel } from "../models"
 import { buildQuery } from "../utils"
-import { AbstractOauthService } from "../interfaces/oauth-service"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = MedusaContainer & {
   manager: EntityManager
@@ -16,7 +16,7 @@ type InjectedDependencies = MedusaContainer & {
   oauthRepository: typeof OauthRepository
 }
 
-class Oauth extends AbstractOauthService<Oauth> {
+class Oauth extends TransactionBaseService<Oauth> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   static Events = {
@@ -80,27 +80,31 @@ class Oauth extends AbstractOauthService<Oauth> {
   }
 
   async create(data: CreateOauth): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    return await this.atomicPhase_(async (manager) => {
+      const repo = manager.getCustomRepository(this.oauthRepository_)
 
-    const application = repo.create({
-      display_name: data.display_name,
-      application_name: data.application_name,
-      install_url: data.install_url,
-      uninstall_url: data.uninstall_url,
+      const application = repo.create({
+        display_name: data.display_name,
+        application_name: data.application_name,
+        install_url: data.install_url,
+        uninstall_url: data.uninstall_url,
+      })
+
+      return repo.save(application)
     })
-
-    return repo.save(application)
   }
 
   async update(id: string, update: UpdateOauth): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
-    const oauth = await this.retrieve(id)
+    return await this.atomicPhase_(async (manager) => {
+      const repo = manager.getCustomRepository(this.oauthRepository_)
+      const oauth = await this.retrieve(id)
 
-    if ("data" in update) {
-      oauth.data = update.data
-    }
+      if ("data" in update) {
+        oauth.data = update.data
+      }
 
-    return repo.save(oauth)
+      return repo.save(oauth)
+    })
   }
 
   async registerOauthApp(appDetails: CreateOauth): Promise<OAuthModel> {
@@ -169,10 +173,6 @@ class Oauth extends AbstractOauthService<Oauth> {
       )
       return result
     })
-  }
-
-  destroyToken(token: unknown): void {
-    throw new Error("Method not implemented.")
   }
 }
 
