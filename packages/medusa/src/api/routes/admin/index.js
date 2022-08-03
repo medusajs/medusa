@@ -87,7 +87,7 @@ export default (app, container, config) => {
   returnReasonRoutes(route)
   returnRoutes(route)
   salesChannelRoutes(route)
-  shippingOptionRoutes(route)
+  shippingOptionRoutes(route, featureFlagRouter)
   shippingProfileRoutes(route)
   storeRoutes(route)
   swapRoutes(route)

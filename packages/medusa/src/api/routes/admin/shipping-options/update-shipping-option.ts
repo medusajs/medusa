@@ -12,6 +12,8 @@ import { defaultFields, defaultRelations } from "."
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -60,6 +62,9 @@ import { EntityManager } from "typeorm"
  *                 amount:
  *                   description: The amount to compare with.
  *                   type: integer
+ *           includes_tax:
+ *             description: "[EXPERIMENTAL] Does the shipping option includes tax"
+ *             type: boolean
  * tags:
  *   - Shipping Option
  * responses:
@@ -125,4 +130,10 @@ export class AdminPostShippingOptionsOptionReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }
