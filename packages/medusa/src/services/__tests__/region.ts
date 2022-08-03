@@ -188,6 +188,10 @@ describe("RegionService", () => {
   })
 
   describe("retrieve", () => {
+    const regionRepository = MockRepository({
+      findOne: () => Promise.resolve({ id: IdMap.getId("region") }),
+    })
+
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
@@ -217,6 +221,23 @@ describe("RegionService", () => {
   })
 
   describe("validateFields_", () => {
+    const countryRepository = MockRepository({
+      findOne: (query) => {
+        if (query.where.iso_2 === "dk") {
+          return Promise.resolve({
+            id: IdMap.getId("dk"),
+            name: "Denmark",
+            display_name: "Denmark",
+            region_id: IdMap.getId("dk-reg"),
+          })
+        }
+        return Promise.resolve({
+          id: IdMap.getId("test-country"),
+          name: "World",
+        })
+      },
+    })
+
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
@@ -374,6 +395,7 @@ describe("RegionService", () => {
         return Promise.resolve({ id: IdMap.getId("region") })
       },
     })
+
     const countryRepository = MockRepository({
       findOne: (query) => {
         if (query.where.iso_2 === "dk") {
