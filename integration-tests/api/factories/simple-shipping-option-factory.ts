@@ -8,6 +8,7 @@ import {
 } from "@medusajs/medusa"
 
 export type ShippingOptionFactoryData = {
+  id?: string
   name?: string
   region_id: string
   is_return?: boolean
@@ -36,7 +37,7 @@ export const simpleShippingOptionFactory = async (
   })
 
   const created = manager.create(ShippingOption, {
-    id: `simple-so-${Math.random() * 1000}`,
+    id: data.id ?? `simple-so-${Math.random() * 1000}`,
     name: data.name || "Test Method",
     is_return: data.is_return ?? false,
     region_id: data.region_id,

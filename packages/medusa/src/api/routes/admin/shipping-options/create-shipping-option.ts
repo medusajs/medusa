@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsNumber,
   IsObject,
   IsOptional,
@@ -10,6 +11,8 @@ import {
 import { defaultFields, defaultRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 
 /**
  * @oas [post] /shipping-options
@@ -69,6 +72,9 @@ import { EntityManager } from "typeorm"
  *           metadata:
  *             description: An optional set of key-value pairs with additional information.
  *             type: object
+ *          includes_tax:
+ *             description: "[EXPERIMENTAL] Does the shipping option includes tax"
+ *             type: boolean
  * tags:
  *   - Shipping Option
  * responses:
@@ -156,4 +162,10 @@ export class AdminPostShippingOptionsReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

@@ -1446,8 +1446,8 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
     medusaProcess.kill()
   })
 
-  describe("POST /admin/price-lists/:id", () => {
-    const priceList1TaxInclusiveId = "price-list-1-tax-inclusive"
+  describe("POST /admin/price-list", () => {
+    const priceListIncludesTaxId = "price-list-1-includes-tax"
 
     beforeEach(async () => {
       try {
@@ -1455,7 +1455,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
         await customerSeeder(dbConnection)
         await productSeeder(dbConnection)
         await simplePriceListFactory(dbConnection, {
-          id: priceList1TaxInclusiveId,
+          id: priceListIncludesTaxId,
         })
       } catch (err) {
         console.log(err)
@@ -1468,11 +1468,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("should allow to create a price list that includes_tax", async function () {
+    it("should creates a price list that includes tax", async () => {
       const api = useApi()
 
       const payload = {
-        name: "VIP Summer sale includes tax",
+        name: "VIP Summer sale",
         description: "Summer sale for VIP customers. 25% off selected items.",
         type: "sale",
         status: "active",
@@ -1493,42 +1493,42 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
         includes_tax: true,
       }
 
-      let response = await api
-        .post(`/admin/price-lists`, payload, adminReqConfig)
+      const response = await api
+        .post("/admin/price-lists", payload, adminReqConfig)
         .catch((err) => {
-          console.log(err)
+          console.warn(err.response.data)
         })
 
+      expect(response.status).toEqual(200)
       expect(response.data.price_list).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           includes_tax: true,
-          name: "VIP Summer sale includes tax",
         })
       )
-    });
+    })
 
-    it("should allow to update a price list that includes_tax", async function () {
+    it("should update a price list that include_tax", async () => {
       const api = useApi()
+
       let response = await api
-        .get(`/admin/price-lists/${priceList1TaxInclusiveId}`, adminReqConfig)
+        .get(`/admin/price-lists/${priceListIncludesTaxId}`, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
 
       expect(response.data.price_list.includes_tax).toBe(false)
 
-      response = await api.post(
-        `/admin/price-lists/${priceList1TaxInclusiveId}`,
-        {
-          includes_tax: true,
-        },
-        adminReqConfig,
-      ).catch((err) => {
-        console.log(err)
-      })
+      response = await api
+        .post(
+          `/admin/price-lists/${priceListIncludesTaxId}`,
+          { includes_tax: true, },
+          adminReqConfig
+        ).catch((err) => {
+          console.log(err)
+        })
 
       expect(response.data.price_list.includes_tax).toBe(true)
-    });
+    })
   })
 })

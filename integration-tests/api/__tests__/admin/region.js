@@ -342,7 +342,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/regions", () => {
       await db.teardown()
     })
 
-    it("should allow to create a region that includes_tax", async function () {
+    it("should allow to create a region that includes tax", async function () {
       const api = useApi()
 
       const payload = {
@@ -370,7 +370,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/regions", () => {
       )
     });
 
-    it("should allow to update a region that includes_tax", async function () {
+    it("should allow to update a region that includes tax", async function () {
       const api = useApi()
       let response = await api
         .get(`/admin/regions/${region1TaxInclusiveId}`, adminReqConfig)
