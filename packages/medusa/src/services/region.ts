@@ -21,18 +21,19 @@ import {
   UpdateRegionInput,
 } from "../types/region"
 import { buildQuery, setMetadata, validateId } from "../utils"
+import { PaymentProviderService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
   storeService: StoreService
   eventBusService: EventBusService
+  paymentProviderService: PaymentProviderService
   fulfillmentProviderService: FulfillmentProviderService
 
   regionRepository: typeof RegionRepository
   countryRepository: typeof CountryRepository
   currencyRepository: typeof CurrencyRepository
   taxProviderRepository: typeof TaxProviderRepository
-  paymentProviderService: typeof PaymentProviderRepository
   paymentProviderRepository: typeof PaymentProviderRepository
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
 }
@@ -55,6 +56,7 @@ class RegionService extends TransactionBaseService<RegionService> {
 
   protected readonly eventBus_: EventBusService
   protected readonly storeService_: StoreService
+  protected readonly paymentProviderService_: PaymentProviderService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly regionRepository_: typeof RegionRepository
   protected readonly countryRepository_: typeof CountryRepository
@@ -62,7 +64,6 @@ class RegionService extends TransactionBaseService<RegionService> {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
   protected readonly taxProviderRepository_: typeof TaxProviderRepository
-  protected readonly paymentProviderService_: typeof PaymentProviderRepository
 
   constructor({
     manager,
