@@ -8,19 +8,21 @@ describe("POST /admin/currencies/:code", () => {
   const code = IdMap.getId("currency-1")
 
   beforeAll(async () => {
-    subject = await request("POST", `/admin/currencies/${code}`, {
-      payload: {
-        includes_tax: true,
-      },
-      adminSession: {
-        jwt: {
-          userId: IdMap.getId("admin_user"),
-        },
-      },
-      flags: [
-        TaxInclusiveFeatureFlag.key
-      ],
-    })
+    subject = await request(
+        "POST",
+        `/admin/currencies/${code}`,
+        {
+          payload: {
+            includes_tax: true,
+          },
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
+          },
+          flags: [TaxInclusiveFeatureFlag],
+        }
+      )
   })
 
   it("returns 200", () => {

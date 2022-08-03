@@ -7,7 +7,6 @@ export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { transformQuery } from "./transform-query"
 export { transformBody } from "./transform-body"
-export { isFeatureFlagEnabled } from "../middlewares/feature-flag-enabled"
 
 export default {
   authenticate,
