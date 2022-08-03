@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ShippingOptionService from "../shipping-option"
+import { FlagRouter } from "../../utils/flag-router";
 
 describe("ShippingOptionService", () => {
   describe("retrieve", () => {
@@ -13,6 +14,7 @@ describe("ShippingOptionService", () => {
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     it("successfully gets shipping option", async () => {
@@ -60,6 +62,7 @@ describe("ShippingOptionService", () => {
       shippingOptionRepository,
       shippingOptionRequirementRepository,
       fulfillmentProviderService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -214,6 +217,7 @@ describe("ShippingOptionService", () => {
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -262,6 +266,7 @@ describe("ShippingOptionService", () => {
       manager: MockManager,
       shippingOptionRepository,
       shippingOptionRequirementRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -311,6 +316,7 @@ describe("ShippingOptionService", () => {
     const optionService = new ShippingOptionService({
       manager: MockManager,
       shippingOptionRequirementRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -363,6 +369,7 @@ describe("ShippingOptionService", () => {
       shippingOptionRequirementRepository,
       fulfillmentProviderService,
       regionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -526,6 +533,7 @@ describe("ShippingOptionService", () => {
       shippingOptionRepository,
       totalsService,
       fulfillmentProviderService: providerService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {

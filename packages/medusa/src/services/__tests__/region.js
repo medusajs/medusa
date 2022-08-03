@@ -1,5 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import RegionService from "../region"
+import { FlagRouter } from "../../utils/flag-router";
 
 const eventBusService = {
   emit: jest.fn(),
@@ -73,6 +74,7 @@ describe("RegionService", () => {
       regionRepository,
       countryRepository,
       storeService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -179,6 +181,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -254,6 +257,7 @@ describe("RegionService", () => {
       regionRepository,
       countryRepository,
       storeService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -354,6 +358,7 @@ describe("RegionService", () => {
       countryRepository,
       currencyRepository,
       storeService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -403,6 +408,7 @@ describe("RegionService", () => {
       eventBusService,
       regionRepository,
       countryRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -455,6 +461,7 @@ describe("RegionService", () => {
       eventBusService,
       regionRepository,
       countryRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -499,6 +506,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -551,6 +559,7 @@ describe("RegionService", () => {
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -611,6 +620,7 @@ describe("RegionService", () => {
       eventBusService,
       fulfillmentProviderRepository: fpRepository,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -660,6 +670,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -695,6 +706,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
