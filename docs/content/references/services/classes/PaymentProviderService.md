@@ -1,7 +1,5 @@
 # Class: PaymentProviderService
 
-Helps retrive payment providers
-
 ## Hierarchy
 
 - `"medusa-interfaces"`
@@ -26,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/payment-provider.js:8](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L8)
+[services/payment-provider.js:8](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L8)
 
 ## Properties
 
@@ -36,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/payment-provider.js:14](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L14)
+[services/payment-provider.js:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L14)
 
 ___
 
@@ -46,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:18](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L18)
+[services/payment-provider.js:18](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L18)
 
 ___
 
@@ -56,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L16)
+[services/payment-provider.js:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L16)
 
 ___
 
@@ -66,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:20](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L20)
+[services/payment-provider.js:20](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L20)
 
 ## Methods
 
@@ -87,7 +85,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:283](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L283)
+[services/payment-provider.js:283](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L283)
 
 ___
 
@@ -107,7 +105,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:324](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L324)
+[services/payment-provider.js:324](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L324)
 
 ___
 
@@ -127,7 +125,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:343](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L343)
+[services/payment-provider.js:343](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L343)
 
 ___
 
@@ -147,7 +145,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:246](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L246)
+[services/payment-provider.js:246](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L246)
 
 ___
 
@@ -155,24 +153,20 @@ ___
 
 ▸ **createSession**(`providerId`, `cart`): `Promise`<`any`\>
 
-Creates a payment session with the given provider.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `providerId` | `string` | the id of the provider to create payment with |
-| `cart` | `Cart` | a cart object used to calculate the amount, etc. from |
+| `providerId` | `string` |  |
+| `cart` | `Cart` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-the payment session
-
 #### Defined in
 
-[services/payment-provider.js:121](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L121)
+[services/payment-provider.js:121](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L121)
 
 ___
 
@@ -192,7 +186,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:202](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L202)
+[services/payment-provider.js:202](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L202)
 
 ___
 
@@ -212,7 +206,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:338](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L338)
+[services/payment-provider.js:338](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L338)
 
 ___
 
@@ -226,7 +220,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:47](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L47)
+[services/payment-provider.js:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L47)
 
 ___
 
@@ -251,7 +245,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:80](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L80)
+[services/payment-provider.js:80](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L80)
 
 ___
 
@@ -259,25 +253,20 @@ ___
 
 ▸ **refreshSession**(`paymentSession`, `cart`): `Promise`<`any`\>
 
-Refreshes a payment session with the given provider.
-This means, that we delete the current one and create a new.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `paymentSession` | `PaymentSession` | the payment session object to    update |
-| `cart` | `Cart` | a cart object used to calculate the amount, etc. from |
+| `paymentSession` | `PaymentSession` |  |
+| `cart` | `Cart` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-the payment session
-
 #### Defined in
 
-[services/payment-provider.js:152](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L152)
+[services/payment-provider.js:152](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L152)
 
 ___
 
@@ -300,7 +289,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:358](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L358)
+[services/payment-provider.js:358](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L358)
 
 ___
 
@@ -320,7 +309,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:35](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L35)
+[services/payment-provider.js:35](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L35)
 
 ___
 
@@ -341,7 +330,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:54](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L54)
+[services/payment-provider.js:54](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L54)
 
 ___
 
@@ -349,23 +338,19 @@ ___
 
 ▸ **retrieveProvider**(`providerId`): `PaymentService`
 
-Finds a provider given an id
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `providerId` | `string` | the id of the provider to get |
+| `providerId` | `string` |  |
 
 #### Returns
 
 `PaymentService`
 
-the payment provider
-
 #### Defined in
 
-[services/payment-provider.js:228](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L228)
+[services/payment-provider.js:228](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L228)
 
 ___
 
@@ -386,7 +371,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:422](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L422)
+[services/payment-provider.js:422](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L422)
 
 ___
 
@@ -407,7 +392,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:89](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L89)
+[services/payment-provider.js:89](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L89)
 
 ___
 
@@ -428,7 +413,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:266](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L266)
+[services/payment-provider.js:266](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L266)
 
 ___
 
@@ -436,24 +421,20 @@ ___
 
 ▸ **updateSession**(`paymentSession`, `cart`): `Promise`<`any`\>
 
-Updates an existing payment session.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `paymentSession` | `PaymentSession` | the payment session object to    update |
-| `cart` | `Cart` | the cart object to update for |
+| `paymentSession` | `PaymentSession` |  |
+| `cart` | `Cart` |  |
 
 #### Returns
 
 `Promise`<`any`\>
 
-the updated payment session
-
 #### Defined in
 
-[services/payment-provider.js:188](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L188)
+[services/payment-provider.js:188](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L188)
 
 ___
 
@@ -474,7 +455,7 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:308](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L308)
+[services/payment-provider.js:308](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L308)
 
 ___
 
@@ -494,4 +475,4 @@ ___
 
 #### Defined in
 
-[services/payment-provider.js:23](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/payment-provider.js#L23)
+[services/payment-provider.js:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/payment-provider.js#L23)

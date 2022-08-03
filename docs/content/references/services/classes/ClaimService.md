@@ -27,7 +27,7 @@ TransactionBaseService&lt;
 
 #### Defined in
 
-[services/claim.ts:85](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L85)
+[services/claim.ts:85](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L85)
 
 ## Properties
 
@@ -37,7 +37,7 @@ TransactionBaseService&lt;
 
 #### Defined in
 
-[services/claim.ts:68](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L68)
+[services/claim.ts:68](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L68)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:72](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L72)
+[services/claim.ts:72](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L72)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:69](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L69)
+[services/claim.ts:69](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L69)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:73](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L73)
+[services/claim.ts:73](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L73)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:74](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L74)
+[services/claim.ts:74](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L74)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:75](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L75)
+[services/claim.ts:75](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L75)
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:76](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L76)
+[services/claim.ts:76](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L76)
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:71](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L71)
+[services/claim.ts:71](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L71)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:77](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L77)
+[services/claim.ts:77](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L77)
 
 ___
 
@@ -151,7 +151,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/claim.ts:65](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L65)
+[services/claim.ts:65](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L65)
 
 ___
 
@@ -161,7 +161,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:78](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L78)
+[services/claim.ts:78](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L78)
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:79](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L79)
+[services/claim.ts:79](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L79)
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:80](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L80)
+[services/claim.ts:80](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L80)
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:70](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L70)
+[services/claim.ts:70](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L70)
 
 ___
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:81](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L81)
+[services/claim.ts:81](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L81)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:82](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L82)
+[services/claim.ts:82](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L82)
 
 ___
 
@@ -221,7 +221,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:83](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L83)
+[services/claim.ts:83](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L83)
 
 ___
 
@@ -235,7 +235,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/claim.ts:66](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L66)
+[services/claim.ts:66](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L66)
 
 ___
 
@@ -256,17 +256,13 @@ ___
 
 #### Defined in
 
-[services/claim.ts:56](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L56)
+[services/claim.ts:56](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L56)
 
 ## Methods
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
-
-Wraps some work within a transactional block. If the service already has
-a transaction manager attached this will be reused, otherwise a new
-transaction manager is created.
 
 #### Type parameters
 
@@ -279,15 +275,13 @@ transaction manager is created.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
 
 #### Returns
 
 `Promise`<`TResult`\>
-
-the result of the transactional work
 
 #### Inherited from
 
@@ -295,7 +289,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -315,7 +309,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:753](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L753)
+[services/claim.ts:753](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L753)
 
 ___
 
@@ -335,7 +329,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:602](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L602)
+[services/claim.ts:602](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L602)
 
 ___
 
@@ -343,25 +337,19 @@ ___
 
 ▸ **create**(`data`): `Promise`<`ClaimOrder`\>
 
-Creates a Claim on an Order. Claims consists of items that are claimed and
-optionally items to be sent as replacement for the claimed items. The
-shipping address that the new items will be shipped to
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `CreateClaimInput` | the object containing all data required to create a claim |
+| `data` | `CreateClaimInput` |  |
 
 #### Returns
 
 `Promise`<`ClaimOrder`\>
 
-created claim
-
 #### Defined in
 
-[services/claim.ts:217](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L217)
+[services/claim.ts:217](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L217)
 
 ___
 
@@ -373,20 +361,18 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | the object containing all data required to create a claim |
-| `config` | `Object` | config object |
-| `config.metadata?` | `Record`<`string`, `unknown`\> | config metadata |
-| `config.no_notification?` | `boolean` | config no notification |
+| `id` | `string` |  |
+| `config` | `Object` |  |
+| `config.metadata?` | `Record`<`string`, `unknown`\> |  |
+| `config.no_notification?` | `boolean` |  |
 
 #### Returns
 
 `Promise`<`ClaimOrder`\>
 
-created claim
-
 #### Defined in
 
-[services/claim.ts:456](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L456)
+[services/claim.ts:456](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L456)
 
 ___
 
@@ -411,7 +397,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:674](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L674)
+[services/claim.ts:674](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L674)
 
 ___
 
@@ -423,18 +409,16 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `FindConfig`<`ClaimOrder`\> | the config object containing query settings |
+| `selector` | `any` |  |
+| `config` | `FindConfig`<`ClaimOrder`\> |  |
 
 #### Returns
 
 `Promise`<`ClaimOrder`[]\>
 
-the result of the find operation
-
 #### Defined in
 
-[services/claim.ts:809](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L809)
+[services/claim.ts:809](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L809)
 
 ___
 
@@ -454,7 +438,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:628](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L628)
+[services/claim.ts:628](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L628)
 
 ___
 
@@ -462,24 +446,20 @@ ___
 
 ▸ **retrieve**(`id`, `config?`): `Promise`<`ClaimOrder`\>
 
-Gets an order by id.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of the claim order to retrieve |
-| `config` | `FindConfig`<`ClaimOrder`\> | the config object containing query settings |
+| `id` | `string` |  |
+| `config` | `FindConfig`<`ClaimOrder`\> |  |
 
 #### Returns
 
 `Promise`<`ClaimOrder`\>
 
-the order document
-
 #### Defined in
 
-[services/claim.ts:834](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L834)
+[services/claim.ts:834](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L834)
 
 ___
 
@@ -503,7 +483,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -524,7 +504,7 @@ ___
 
 #### Defined in
 
-[services/claim.ts:127](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L127)
+[services/claim.ts:127](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim.ts#L127)
 
 ___
 
@@ -548,4 +528,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

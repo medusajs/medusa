@@ -1,7 +1,5 @@
 # Class: ProductTypeService
 
-Provides layer to manipulate products.
-
 ## Hierarchy
 
 - `"medusa-interfaces"`
@@ -26,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-type.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L16)
+[services/product-type.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L16)
 
 ## Properties
 
@@ -36,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-type.ts:14](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L14)
+[services/product-type.ts:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L14)
 
 ___
 
@@ -46,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:15](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L15)
+[services/product-type.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L15)
 
 ## Methods
 
@@ -54,24 +52,20 @@ ___
 
 ▸ **list**(`selector?`, `config?`): `Promise`<`ProductType`[]\>
 
-Lists product types
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `FilterableProductTypeProps` | the query object for find |
-| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
+| `selector` | `FilterableProductTypeProps` |  |
+| `config` | `FindConfig`<`ProductType`\> |  |
 
 #### Returns
 
 `Promise`<`ProductType`[]\>
 
-the result of the find operation
-
 #### Defined in
 
-[services/product-type.ts:72](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L72)
+[services/product-type.ts:72](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L72)
 
 ___
 
@@ -79,24 +73,20 @@ ___
 
 ▸ **listAndCount**(`selector?`, `config?`): `Promise`<[`ProductType`[], `number`]\>
 
-Lists product tags and adds count.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `FilterableProductTypeProps` | the query object for find |
-| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
+| `selector` | `FilterableProductTypeProps` |  |
+| `config` | `FindConfig`<`ProductType`\> |  |
 
 #### Returns
 
 `Promise`<[`ProductType`[], `number`]\>
 
-the result of the find operation
-
 #### Defined in
 
-[services/product-type.ts:88](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L88)
+[services/product-type.ts:88](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L88)
 
 ___
 
@@ -104,25 +94,20 @@ ___
 
 ▸ **retrieve**(`id`, `config?`): `Promise`<`ProductType`\>
 
-Gets a product by id.
-Throws in case of DB Error and if product was not found.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of the product to get. |
-| `config` | `FindConfig`<`ProductType`\> | object that defines what should be included in the   query response |
+| `id` | `string` |  |
+| `config` | `FindConfig`<`ProductType`\> |  |
 
 #### Returns
 
 `Promise`<`ProductType`\>
 
-the result of the find one operation.
-
 #### Defined in
 
-[services/product-type.ts:47](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L47)
+[services/product-type.ts:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L47)
 
 ___
 
@@ -142,4 +127,4 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:23](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-type.ts#L23)
+[services/product-type.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L23)
