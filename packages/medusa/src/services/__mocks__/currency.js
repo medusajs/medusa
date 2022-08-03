@@ -4,7 +4,7 @@ export const currency = {
   code: IdMap.getId("currency-1"),
   symbol: "SYM",
   symbol_native: "SYM",
-  name: "Symbol"
+  name: "Symbol",
 }
 
 export const CurrencyServiceMock = {
