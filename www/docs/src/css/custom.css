@@ -115,8 +115,7 @@ html[data-theme="dark"] footer:not(.theme-doc-footer) {
 }
 
 html[data-theme="dark"] .card {
-  border: 1px solid #fff;
-  color: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-primary);
 }
 
 .navbar {
@@ -286,7 +285,7 @@ details summary {
 }
 
 .theme-doc-markdown a:not(.box-link):hover {
-  color: var(--ifm-color-primary-darkest);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
 }
 
