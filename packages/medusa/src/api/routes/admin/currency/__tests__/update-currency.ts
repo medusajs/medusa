@@ -4,8 +4,8 @@ import TaxInclusiveFeatureFlag from "../../../../../loaders/feature-flags/tax-in
 import { currency, CurrencyServiceMock } from "../../../../../services/__mocks__/currency";
 
 describe("POST /admin/currencies/:code", () => {
-  const code = IdMap.getId("currency-1")
   let subject
+  const code = IdMap.getId("currency-1")
 
   beforeAll(async () => {
     subject = await request("POST", `/admin/currencies/${code}`, {
