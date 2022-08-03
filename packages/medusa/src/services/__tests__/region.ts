@@ -258,6 +258,7 @@ describe("RegionService", () => {
 
     it("throws on invalid country code", async () => {
       await expect(
+        // @ts-ignore
         regionService.validateFields({
           countries: ["ddd"],
         } as CreateRegionInput)
@@ -266,6 +267,7 @@ describe("RegionService", () => {
 
     it("throws on in use country code", async () => {
       await expect(
+        // @ts-ignore
         regionService.validateFields({
           countries: ["DK"],
         } as CreateRegionInput)
@@ -276,6 +278,7 @@ describe("RegionService", () => {
 
     it("throws on unknown payment providers", async () => {
       await expect(
+        // @ts-ignore
         regionService.validateFields({
           payment_providers: ["should_fail"],
         } as CreateRegionInput)
@@ -284,6 +287,7 @@ describe("RegionService", () => {
 
     it("throws on unknown fulfillment providers", async () => {
       await expect(
+        // @ts-ignore
         regionService.validateFields({
           fulfillment_providers: ["should_fail"],
         } as CreateRegionInput)
