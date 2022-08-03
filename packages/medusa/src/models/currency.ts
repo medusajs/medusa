@@ -15,8 +15,7 @@ export class Currency {
   @Column()
   name: string
 
-  @Column({ default: false })
-  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
   includes_tax?: boolean = false
 }
 

@@ -76,8 +76,7 @@ export class ShippingOption extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
-  @Column({ default: false })
+  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
   includes_tax: boolean
 
   @BeforeInsert()

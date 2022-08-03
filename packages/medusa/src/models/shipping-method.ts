@@ -90,8 +90,7 @@ export class ShippingMethod {
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
 
-  // @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
-  @Column({ default: false })
+  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
   includes_tax: boolean
 
   @BeforeInsert()
