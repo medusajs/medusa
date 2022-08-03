@@ -1,14 +1,36 @@
 import { MedusaError } from "medusa-core-utils"
 import { OauthService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import { OauthRepository } from "../repositories/oauth"
+import { Selector } from "../types/common"
+import { MedusaContainer } from "../types/global"
+import { CreateOauth, UpdateOauth } from "../types/oauth"
+import EventBusService from "./event-bus"
+import { Oauth as OAuthModel } from "../models"
+import { buildQuery } from "../utils"
+import { AbstractOauthService } from "../interfaces/oauth-service"
 
-class Oauth extends OauthService {
+type InjectedDependencies = MedusaContainer & {
+  manager: EntityManager
+  eventBusService: EventBusService
+  oauthRepository: typeof OauthRepository
+}
+
+class Oauth extends AbstractOauthService<Oauth> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
   static Events = {
     TOKEN_GENERATED: "oauth.token_generated",
     TOKEN_REFRESHED: "oauth.token_refreshed",
   }
 
-  constructor(cradle) {
-    super()
+  protected manager: EntityManager
+  protected container_: InjectedDependencies
+  protected oauthRepository_: typeof OauthRepository
+  protected eventBus_: EventBusService
+
+  constructor(cradle: InjectedDependencies) {
+    super(cradle)
     const manager = cradle.manager
 
     this.manager = manager
@@ -17,19 +39,47 @@ class Oauth extends OauthService {
     this.eventBus_ = cradle.eventBusService
   }
 
-  retrieveByName(appName) {
+  async retrieveByName(appName: string): Promise<OAuthModel> {
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
-    return repo.findOne({
+    const oauth = await repo.findOne({
       application_name: appName,
     })
+
+    if (!oauth) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Oauth application ${appName} not found`
+      )
+    }
+
+    return oauth
   }
 
-  list(selector) {
+  async retrieve(oauthId: string): Promise<OAuthModel> {
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
-    return repo.find(selector)
+    const oauth = await repo.findOne({
+      id: oauthId,
+    })
+
+    if (!oauth) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Oauth application with id ${oauthId} not found`
+      )
+    }
+
+    return oauth
   }
 
-  async create(data) {
+  async list(selector: Selector<OAuthModel>): Promise<OAuthModel[]> {
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+
+    const query = buildQuery(selector, {})
+
+    return repo.find(query)
+  }
+
+  async create(data: CreateOauth): Promise<OAuthModel> {
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
 
     const application = repo.create({
@@ -42,9 +92,9 @@ class Oauth extends OauthService {
     return repo.save(application)
   }
 
-  async update(id, update) {
+  async update(id: string, update: UpdateOauth): Promise<OAuthModel> {
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
-    const oauth = await repo.findOne({ where: { id } })
+    const oauth = await this.retrieve(id)
 
     if ("data" in update) {
       oauth.data = update.data
@@ -53,17 +103,21 @@ class Oauth extends OauthService {
     return repo.save(oauth)
   }
 
-  async registerOauthApp(appDetails) {
+  async registerOauthApp(appDetails: CreateOauth): Promise<OAuthModel> {
     const { application_name } = appDetails
     const existing = await this.retrieveByName(application_name)
     if (existing) {
-      return
+      return existing
     }
 
     return this.create(appDetails)
   }
 
-  async generateToken(appName, code, state) {
+  async generateToken(
+    appName: string,
+    code: string,
+    state: string
+  ): Promise<OAuthModel> {
     const app = await this.retrieveByName(appName)
     const service = this.container_[`${app.application_name}Oauth`]
     if (!service) {
@@ -73,7 +127,7 @@ class Oauth extends OauthService {
       )
     }
 
-    if (!app.state === state) {
+    if (!(app.data.state === state)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         `${app.display_name} could not match state`
@@ -93,7 +147,7 @@ class Oauth extends OauthService {
     })
   }
 
-  async refreshToken(appName) {
+  async refreshToken(appName: string): Promise<OAuthModel> {
     const app = await this.retrieveByName(appName)
     const refreshToken = app.data.refresh_token
     const service = this.container_[`${app.application_name}Oauth`]
@@ -115,6 +169,10 @@ class Oauth extends OauthService {
       )
       return result
     })
+  }
+
+  destroyToken(token: unknown): void {
+    throw new Error("Method not implemented.")
   }
 }
 
