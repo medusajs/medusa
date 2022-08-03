@@ -16,7 +16,7 @@ export class Currency {
   name: string
 
   @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
-  includes_tax?: boolean = false
+  includes_tax?: boolean
 }
 
 /**
