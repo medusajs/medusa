@@ -1,5 +1,6 @@
 import { IdMap, MockRepository } from "medusa-test-utils"
 import { Discount } from "../../models"
+import { DiscountRepository } from "../../repositories/discount"
 
 export const discounts = {
   dynamic: {
@@ -177,7 +178,7 @@ export const discountRepositoryMock = MockRepository({
   create: jest.fn().mockImplementation((data) => {
     return Object.assign(new Discount(), data)
   })
-})
+}) as DiscountRepository
 
 const mock = jest.fn().mockImplementation(() => {
   return DiscountServiceMock
