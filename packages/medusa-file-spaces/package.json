@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-spaces",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Digital Ocean Spaces file connector for Medusa",
   "main": "index.js",
   "repository": {
@@ -33,7 +33,7 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.3.2"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",

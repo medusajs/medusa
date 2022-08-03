@@ -1,18 +1,21 @@
 # Change Log
 
+## 0.1.1
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+* [#1463](https://github.com/medusajs/medusa/pull/1463) [`cbdc5b777`](https://github.com/medusajs/medusa/commit/cbdc5b7774c76f4e95f8aa1367652acd74eb9b6b) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - Moves sourceUpdatedNodes and sourceAllNodes to a separate file, to prevent warning of unsupported exports.
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 # [0.1.0](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.49...gatsby-source-medusa@0.1.0) (2022-05-01)
 
-
 ### Bug Fixes
 
-* **gatsby-source-medusa:** adds support for incremental sourcing of medusa data ([#1217](https://github.com/medusajs/medusa/issues/1217)) ([23f8399](https://github.com/medusajs/medusa/commit/23f8399c16e3f3c7a01a6846b2b96750dde55a60))
-
-
-
-
+- **gatsby-source-medusa:** adds support for incremental sourcing of medusa data ([#1217](https://github.com/medusajs/medusa/issues/1217)) ([23f8399](https://github.com/medusajs/medusa/commit/23f8399c16e3f3c7a01a6846b2b96750dde55a60))
 
 ## [0.0.49](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.48...gatsby-source-medusa@0.0.49) (2022-02-06)
 
