@@ -27,6 +27,43 @@ If you want to use another Git Provider supported by DigitalOcean, it’s possib
 
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 
+## Changes to package.json
+
+Change the `start` script in `package.json` to the following:
+
+```json
+"start": "medusa migrations run && medusa start"
+```
+
+This ensures that Migrations are run everytime the Medusa server is restarted.
+
+## Changes to medusa-config.js
+
+In `medusa-config.js`, the `DATABASE_URL` variable is set to the environment variable `DATABASE_URL`. This needs to be changed as DigitalOcean provides the different details of the database connection separately.
+
+Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
+
+```js
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_DATABASE = process.env.DB_DATABASE;
+
+const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+```
+
+In addition, you must add to `projectConfig` in the exported object a new property `database_extra`:
+
+```js
+module.exports = {
+  projectConfig: {
+    //...
+    database_extra: { ssl: { rejectUnauthorized: false } }
+  },
+};
+```
+
 ## Create GitHub Repository
 
 Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
