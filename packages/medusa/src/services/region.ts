@@ -172,7 +172,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @return the result of the update operation
    */
   async update(regionId: string, update: UpdateRegionInput): Promise<Region> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepository = manager.getCustomRepository(
         this.regionRepository_
       )
@@ -232,16 +232,9 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @param id - optional id of the region to check against
    * @return the validated region data
    */
-  async validateFields_<T extends CreateRegionInput>(
-    region: ValidationPartial<T>
-  ): Promise<T>
-  async validateFields_<T extends UpdateRegionInput>(
-    region: ValidationPartial<T>,
-    id: string
-  ): Promise<T>
   async validateFields_<T extends CreateRegionInput | UpdateRegionInput>(
-    region: T,
-    id?: string
+    region: Omit<T, "metadata" | "currency_code">,
+    id?: T extends UpdateRegionInput ? string : undefined
   ): Promise<T> {
     const ppRepository = this.manager_.getCustomRepository(
       this.paymentProviderRepository_
@@ -499,7 +492,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @return the result of the delete operation
    */
   async delete(regionId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
       const countryRepo = manager.getCustomRepository(this.countryRepository_)
 
@@ -530,7 +523,7 @@ class RegionService extends TransactionBaseService<RegionService> {
    * @return the updated Region
    */
   async addCountry(regionId: string, code: Country["iso_2"]): Promise<Region> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
       const country = await this.validateCountry_(code, regionId)
@@ -571,7 +564,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     regionId: string,
     code: Country["iso_2"]
   ): Promise<Region> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
       const region = await this.retrieve(regionId, { relations: ["countries"] })
@@ -612,7 +605,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     regionId: string,
     providerId: string
   ): Promise<Region | never> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
       const ppRepo = manager.getCustomRepository(
         this.paymentProviderRepository_
@@ -712,7 +705,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     regionId: string,
     providerId: string
   ): Promise<Region | never> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
       const region = await this.retrieve(regionId, {
@@ -751,7 +744,7 @@ class RegionService extends TransactionBaseService<RegionService> {
     regionId: string,
     providerId: string
   ): Promise<Region | never> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
       const region = await this.retrieve(regionId, {
