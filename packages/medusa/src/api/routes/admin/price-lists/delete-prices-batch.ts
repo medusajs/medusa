@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /price-lists/{id}/prices/batch
@@ -51,7 +52,12 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  await priceListService.deletePrices(id, validated.price_ids)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .deletePrices(id, validated.price_ids)
+  })
 
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }

@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.2.4
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+- Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b)]:
+  - medusa-interfaces@1.3.2
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,49 +16,25 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-algolia
 
-
-
-
-
 ## [0.2.2](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.2.0...medusa-plugin-algolia@0.2.2) (2022-06-19)
 
 **Note:** Version bump only for package medusa-plugin-algolia
-
-
-
-
 
 ## [0.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.2.0...medusa-plugin-algolia@0.2.1) (2022-05-31)
 
 **Note:** Version bump only for package medusa-plugin-algolia
 
-
-
-
-
 # [0.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.1.1...medusa-plugin-algolia@0.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-plugin-algolia
-
-
-
-
 
 ## [0.1.1](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.0.8...medusa-plugin-algolia@0.1.1) (2022-02-28)
 
 **Note:** Version bump only for package medusa-plugin-algolia
 
-
-
-
-
 # [0.1.0](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.0.8...medusa-plugin-algolia@0.1.0) (2022-02-25)
 
 **Note:** Version bump only for package medusa-plugin-algolia
-
-
-
-
 
 ## [0.0.8](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.0.7...medusa-plugin-algolia@0.0.8) (2022-02-06)
 

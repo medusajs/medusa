@@ -24,8 +24,11 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -237,8 +240,7 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  let newProduct
-  await entityManager.transaction(async (manager) => {
+  const newProduct = await entityManager.transaction(async (manager) => {
     const { variants } = validated
     delete validated.variants
 
@@ -249,12 +251,16 @@ export default async (req, res) => {
     let shippingProfile
     // Get default shipping profile
     if (validated.is_giftcard) {
-      shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
+      shippingProfile = await shippingProfileService
+        .withTransaction(manager)
+        .retrieveGiftCardDefault()
     } else {
-      shippingProfile = await shippingProfileService.retrieveDefault()
+      shippingProfile = await shippingProfileService
+        .withTransaction(manager)
+        .retrieveDefault()
     }
 
-    newProduct = await productService
+    const newProduct = await productService
       .withTransaction(manager)
       .create({ ...validated, profile_id: shippingProfile.id })
 
@@ -265,7 +271,7 @@ export default async (req, res) => {
 
       const optionIds =
         validated?.options?.map(
-          (o) => newProduct.options.find((newO) => newO.title === o.title).id
+          (o) => newProduct.options.find((newO) => newO.title === o.title)?.id
         ) || []
 
       await Promise.all(
@@ -281,10 +287,12 @@ export default async (req, res) => {
 
           await productVariantService
             .withTransaction(manager)
-            .create(newProduct.id, variant)
+            .create(newProduct.id, variant as CreateProductVariantInput)
         })
       )
     }
+
+    return newProduct
   })
 
   const rawProduct = await productService.retrieve(newProduct.id, {

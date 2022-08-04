@@ -1,31 +1,46 @@
+import { RequestHandler, Router } from "express"
 import { MedusaError } from "medusa-core-utils"
+
+type middlewareHandlerType = (
+  options: Record<string, unknown>
+) => RequestHandler
+
+type middlewareType = {
+  middleware: middlewareHandlerType
+  options: Record<string, unknown>
+}
 
 /**
  * Orchestrates dynamic middleware registered through the Medusa Middleware API
  */
 class MiddlewareService {
-  constructor(container) {
+  protected readonly postAuthentication_: middlewareType[]
+  protected readonly preAuthentication_: middlewareType[]
+  protected readonly preCartCreation_: RequestHandler[]
+  protected readonly routers: Record<string, Router[]>
+
+  constructor() {
     this.postAuthentication_ = []
     this.preAuthentication_ = []
     this.preCartCreation_ = []
     this.routers = {}
   }
 
-  addRouter(path, router) {
+  addRouter(path: string, router: Router): void {
     const existing = this.routers[path] || []
     this.routers[path] = [...existing, router]
   }
 
-  getRouters(path) {
-    const routers = this.routers[path] || []
-    return routers
+  getRouters(path: string): Router[] {
+    return this.routers[path] || []
   }
 
   /**
    * Validates a middleware function, throws if fn is not of type function.
    * @param {function} fn - the middleware function to validate.
+   * @returns nothing if the middleware is a function
    */
-  validateMiddleware_(fn) {
+  validateMiddleware_(fn: unknown): void {
     if (typeof fn !== "function") {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -40,9 +55,12 @@ class MiddlewareService {
    *   middleware function.
    * @param {object} options - the arguments that will be passed to the
    *   middleware
-   * @return {void}
+   * @return void
    */
-  addPostAuthentication(middleware, options) {
+  addPostAuthentication(
+    middleware: middlewareHandlerType,
+    options: Record<string, unknown>
+  ): void {
     this.validateMiddleware_(middleware)
     this.postAuthentication_.push({
       middleware,
@@ -56,9 +74,12 @@ class MiddlewareService {
    *   middleware function.
    * @param {object} options - the arguments that will be passed to the
    *   middleware
-   * @return {void}
+   * @return void
    */
-  addPreAuthentication(middleware, options) {
+  addPreAuthentication(
+    middleware: middlewareHandlerType,
+    options: Record<string, unknown>
+  ): void {
     this.validateMiddleware_(middleware)
     this.preAuthentication_.push({
       middleware,
@@ -72,7 +93,7 @@ class MiddlewareService {
    *   middleware function.
    * @return {void}
    */
-  addPreCartCreation(middleware) {
+  addPreCartCreation(middleware: RequestHandler): void {
     this.validateMiddleware_(middleware)
     this.preCartCreation_.push(middleware)
   }
@@ -82,7 +103,7 @@ class MiddlewareService {
    * @param {ExpressApp} app - the express app to add the middleware to
    * @return {void}
    */
-  usePostAuthentication(app) {
+  usePostAuthentication(app: Router): void {
     for (const object of this.postAuthentication_) {
       app.use(object.middleware(object.options))
     }
@@ -93,13 +114,13 @@ class MiddlewareService {
    * @param {ExpressApp} app - the express app to add the middleware to
    * @return {void}
    */
-  usePreAuthentication(app) {
+  usePreAuthentication(app: Router): void {
     for (const object of this.preAuthentication_) {
       app.use(object.middleware(object.options))
     }
   }
 
-  usePreCartCreation() {
+  usePreCartCreation(): RequestHandler[] {
     return this.preCartCreation_
   }
 }

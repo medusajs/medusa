@@ -2,7 +2,9 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+import { ReturnReason } from "../../../../models"
 import { ReturnReasonService } from "../../../../services"
+import { FindConfig, Selector } from "../../../../types/common"
 
 /**
  * @oas [get] /return-reasons
@@ -29,7 +31,7 @@ export default async (req, res) => {
     "returnReasonService"
   )
 
-  const query = { parent_return_reason_id: null }
+  const query: Selector<ReturnReason> = { parent_return_reason_id: null }
   const data = await returnReasonService.list(query, {
     select: defaultAdminReturnReasonsFields,
     relations: defaultAdminReturnReasonsRelations,

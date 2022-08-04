@@ -52,14 +52,14 @@ export default async (req, res) => {
       metadata: validated.metadata,
       no_notification: validated.no_notification,
     })
-
-    const order = await orderService.withTransaction(manager).retrieve(id, {
-      select: defaultAdminOrdersFields,
-      relations: defaultAdminOrdersRelations,
-    })
-
-    res.status(200).json({ order })
   })
+
+  const order = await orderService.retrieve(id, {
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
+  })
+
+  res.status(200).json({ order })
 }
 
 export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {

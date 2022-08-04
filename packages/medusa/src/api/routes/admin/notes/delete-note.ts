@@ -1,4 +1,5 @@
 import NoteService from "../../../../services/note"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /notes/{id}
@@ -28,7 +29,10 @@ export default async (req, res) => {
   const { id } = req.params
 
   const noteService: NoteService = req.scope.resolve("noteService")
-  await noteService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await noteService.withTransaction(transactionManager).delete(id)
+  })
 
   res.status(200).json({ id, object: "note", deleted: true })
 }

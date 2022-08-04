@@ -18,6 +18,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
 import { FlagRouter } from "../../../../utils/flag-router"
+import { Cart } from "../../../../models";
 
 /**
  * @oas [post] /carts
@@ -81,33 +82,32 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  await entityManager.transaction(async (manager) => {
-    let regionId: string
-    if (typeof validated.region_id !== "undefined") {
-      regionId = validated.region_id
-    } else {
-      const regions = await regionService
-        .withTransaction(manager)
-        .list({})
+  let regionId: string
+  if (typeof validated.region_id !== "undefined") {
+    regionId = validated.region_id
+  } else {
+    const regions = await regionService.list({})
 
-      if (!regions?.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `A region is required to create a cart`
-        )
-      }
-
-      regionId = regions[0].id
+    if (!regions?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region is required to create a cart`
+      )
     }
 
-    let cart = await cartService.withTransaction(manager).create({
+    regionId = regions[0].id
+  }
+
+  let cart: Cart
+  await entityManager.transaction(async (manager) => {
+    cart = await cartService.withTransaction(manager).create({
       ...validated,
       context: {
         ...reqContext,
         ...validated.context,
       },
       region_id: regionId,
-    })
+     })
 
     if (validated.items) {
       await Promise.all(
@@ -117,7 +117,7 @@ export default async (req, res) => {
             .generate(i.variant_id, regionId, i.quantity, {
               customer_id: req.user?.customer_id,
             })
-          await cartService
+          return await cartService
             .withTransaction(manager)
             .addLineItem(cart.id, lineItem, {
               validateSalesChannels:
@@ -126,16 +126,16 @@ export default async (req, res) => {
         })
       )
     }
-
-    cart = await cartService.withTransaction(manager).retrieve(cart.id, {
-      select: defaultStoreCartFields,
-      relations: defaultStoreCartRelations,
-    })
-
-    const data = await decorateLineItemsWithTotals(cart, req)
-
-    res.status(200).json({ cart: data })
   })
+
+  cart = await cartService.retrieve(cart!.id, {
+    select: defaultStoreCartFields,
+    relations: defaultStoreCartRelations,
+  })
+
+  const data = await decorateLineItemsWithTotals(cart, req)
+
+  res.status(200).json({ cart: data })
 }
 
 export class Item {

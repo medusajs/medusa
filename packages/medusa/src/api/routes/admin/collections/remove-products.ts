@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm";
 
 /**
  * @oas [delete] /collections/{id}/products/batch
@@ -37,7 +38,10 @@ export default async (req: Request, res: Response) => {
     "productCollectionService"
   )
 
-  await productCollectionService.removeProducts(id, validatedBody.product_ids)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).removeProducts(id, validatedBody.product_ids)
+  })
 
   res.json({
     id,

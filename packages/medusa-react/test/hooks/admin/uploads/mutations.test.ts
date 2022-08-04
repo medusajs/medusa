@@ -7,7 +7,7 @@ import {
 import { createWrapper } from "../../../utils"
 
 describe("useAdminDeleteFile hook", () => {
-  test("Removes file with key and returns deleteresult", async () => {
+  test("Removes file with key and returns delete result", async () => {
     const file_key = "test"
 
     const { result, waitFor } = renderHook(() => useAdminDeleteFile(), {

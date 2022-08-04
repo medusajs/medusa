@@ -15,8 +15,8 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
     "[indexName]": "[meilisearch settings passed to meilisearch's `updateSettings()` method]"
     // example
     products: {
-      searchableAttributes: ["title", "description", "variant_sku", "type_value"],
-      displayedAttributes: ["title", "description", "variant_sku", "type_value"],
+      searchableAttributes: ["title", "description", "variant_sku"],
+      displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
     }
   }
 }
