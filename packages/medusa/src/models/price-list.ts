@@ -95,7 +95,7 @@ export class PriceList extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/customer_group"
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Are the price list prices including tax"
+ *     description: "[EXPERIMENTAL] Does the price list prices include tax"
  *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
