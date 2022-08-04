@@ -124,7 +124,7 @@ export const adminHandlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        id: fixtures.get("product_collection").id,
+        id: req.params.id,
         object: "product-collection",
         removed_products: [fixtures.get("product").id]
       })
