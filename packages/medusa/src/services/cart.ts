@@ -2160,13 +2160,6 @@ class CartService extends TransactionBaseService {
         )
         const validatedId = validateId(cartId)
 
-        if (typeof key !== "string") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Key type is invalid. Metadata keys must be strings"
-          )
-        }
-
         const cart = await cartRepo.findOne(validatedId)
         if (!cart) {
           throw new MedusaError(

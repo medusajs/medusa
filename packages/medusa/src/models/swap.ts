@@ -25,6 +25,7 @@ export enum SwapFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
   SHIPPED = "shipped",
+  PARTIALLY_SHIPPED = "partially_shipped",
   CANCELED = "canceled",
   REQUIRES_ACTION = "requires_action",
 }

@@ -3,8 +3,8 @@ import {
   ClaimOrder,
   Discount,
   LineItem,
-  Order,
   Payment,
+  Region,
   ShippingMethod,
 } from "../models"
 
@@ -31,6 +31,8 @@ export type CreateFulfillmentOrder = Omit<ClaimOrder, "beforeInsert"> & {
   currency_code: string
   tax_rate: number | null
   region_id: string
+  region?: Region
+  is_swap?: boolean
   display_id: number
   billing_address: Address
   items: LineItem[]
