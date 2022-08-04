@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/system-payment-provider.js:6](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L6)
+[packages/medusa/src/services/system-payment-provider.js:6](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L6)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/system-payment-provider.js:4](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L4)
+[packages/medusa/src/services/system-payment-provider.js:4](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L4)
 
 ## Methods
 
@@ -54,7 +54,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/system-payment-provider.js:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L22)
+[packages/medusa/src/services/system-payment-provider.js:22](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L22)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:46](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L46)
+[packages/medusa/src/services/system-payment-provider.js:46](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L46)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:38](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L38)
+[packages/medusa/src/services/system-payment-provider.js:38](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L38)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:10](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L10)
+[packages/medusa/src/services/system-payment-provider.js:10](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L10)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L34)
+[packages/medusa/src/services/system-payment-provider.js:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L34)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:18](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L18)
+[packages/medusa/src/services/system-payment-provider.js:18](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L18)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L14)
+[packages/medusa/src/services/system-payment-provider.js:14](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L14)
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:42](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L42)
+[packages/medusa/src/services/system-payment-provider.js:42](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L42)
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L30)
+[packages/medusa/src/services/system-payment-provider.js:30](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L30)
 
 ___
 
@@ -234,4 +234,4 @@ ___
 
 #### Defined in
 
-[services/system-payment-provider.js:26](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/system-payment-provider.js#L26)
+[packages/medusa/src/services/system-payment-provider.js:26](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/system-payment-provider.js#L26)

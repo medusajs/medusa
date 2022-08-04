@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-item.d.ts:6
+medusa/dist/models/fulfillment-item.d.ts:6
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-item.d.ts:4
+medusa/dist/models/fulfillment-item.d.ts:4
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-item.d.ts:7
+medusa/dist/models/fulfillment-item.d.ts:7
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-item.d.ts:5
+medusa/dist/models/fulfillment-item.d.ts:5
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-item.d.ts:8
+medusa/dist/models/fulfillment-item.d.ts:8

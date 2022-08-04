@@ -19017,7 +19017,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.1, glob@npm:^8.0.3":
+"glob@npm:^8.0.1":
   version: 8.0.3
   resolution: "glob@npm:8.0.3"
   dependencies:
@@ -24804,7 +24804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.16":
+"marked@npm:^4.0.18":
   version: 4.0.18
   resolution: "marked@npm:4.0.18"
   bin:
@@ -31916,11 +31916,11 @@ __metadata:
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
     turbo: ^1.3.1
-    typedoc: ^0.22.15
+    typedoc: 0.23.10
     typedoc-frontmatter-plugin: "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin"
     typedoc-monorepo-link-types: ^0.0.2
-    typedoc-plugin-markdown: ^3.12.1
-    typedoc-plugin-merge-modules: ^3.1.0
+    typedoc-plugin-markdown: ^3.13.4
+    typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
     typeorm: ^0.2.31
   languageName: unknown
@@ -35396,23 +35396,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-markdown@npm:^3.12.1":
-  version: 3.13.3
-  resolution: "typedoc-plugin-markdown@npm:3.13.3"
+"typedoc-plugin-markdown@npm:^3.13.4":
+  version: 3.13.4
+  resolution: "typedoc-plugin-markdown@npm:3.13.4"
   dependencies:
     handlebars: ^4.7.7
   peerDependencies:
     typedoc: ">=0.23.0"
-  checksum: 08c57d3edc7c9c51684a90cc6ba65dace5d9e9a88e181cfbc3170d010017d62e8e33d830e9f0e8d23235735d5fcb8a43e82d2508926dacc205336b4cb88ecea9
+  checksum: 9c16ed14f0092000d0c93c1cd246b60da49e88ee8aee6616a36212d472ee2c7e46169d51fed76240e4a8d6d4c27ac51f7a43c543f6da2a9129aca17b2155a561
   languageName: node
   linkType: hard
 
-"typedoc-plugin-merge-modules@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "typedoc-plugin-merge-modules@npm:3.1.0"
+"typedoc-plugin-merge-modules@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "typedoc-plugin-merge-modules@npm:4.0.1"
   peerDependencies:
-    typedoc: 0.21.x || 0.22.x
-  checksum: a7747c6a98364f8210f3b5e18f3a9baa006062b64c7dd95ba4ad22656a7bcf163e4a3a7535bad59b46c20fe1a118066c4ebb96ddc61985cd0d8a5cb339d17ff9
+    typedoc: 0.23.x
+  checksum: 5d8165cbdf0e13b3543736be25234572aa7e8ba094c52319b2849bde80ab6b6f968882fa4dbc2cdc959c676f53b17cec6dc6dfeff51396fdd92d7f2bbf522c20
   languageName: node
   linkType: hard
 
@@ -35425,20 +35425,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.22.15":
-  version: 0.22.18
-  resolution: "typedoc@npm:0.22.18"
+"typedoc@npm:0.23.10":
+  version: 0.23.10
+  resolution: "typedoc@npm:0.23.10"
   dependencies:
-    glob: ^8.0.3
     lunr: ^2.3.9
-    marked: ^4.0.16
+    marked: ^4.0.18
     minimatch: ^5.1.0
     shiki: ^0.10.1
   peerDependencies:
-    typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x || 4.6.x || 4.7.x
+    typescript: 4.6.x || 4.7.x
   bin:
     typedoc: bin/typedoc
-  checksum: 57c1e375f5b4e2ebf9ea256707acd5f069027fb040371529dec29cd67de28e633a55ebccfa8eb1960dd0d308af351529be0d2ee9d0b994a0d74604b8e6bcab5b
+  checksum: 634e805a608c699811a0fa10944823504f0023afd599037298700179f2293cd717a937b32cf885c6bcf4808334f3132aaa9c946e63b9131789a9a9b240cb0115
   languageName: node
   linkType: hard
 

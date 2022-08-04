@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).SoftDeletableEntity
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`BaseEntity`](internal.BaseEntity.md)
@@ -29,6 +31,8 @@ displayed_sidebar: jsClientSidebar
   ↳↳ [`ClaimOrder`](internal.ClaimOrder.md)
 
   ↳↳ [`Swap`](internal.Swap.md)
+
+  ↳↳ [`SalesChannel`](internal.SalesChannel.md)
 
   ↳↳ [`PriceList`](internal.PriceList.md)
 
@@ -68,17 +72,19 @@ displayed_sidebar: jsClientSidebar
 
   ↳↳ [`ProductTag`](internal.ProductTag.md)
 
-  ↳↳ [`User`](internal.User.md)
+  ↳↳ [`User`](internal-1.User.md)
 
-  ↳↳ [`Invite`](internal.Invite.md)
+  ↳↳ [`BatchJob`](internal-2.BatchJob.md)
 
-  ↳↳ [`Note`](internal.Note.md)
+  ↳↳ [`Invite`](internal-9.Invite.md)
+
+  ↳↳ [`Note`](internal-10.Note.md)
 
 ## Properties
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -86,17 +92,17 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -110,13 +116,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -124,4 +130,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
