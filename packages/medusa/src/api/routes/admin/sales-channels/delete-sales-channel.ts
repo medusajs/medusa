@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 
-import { SalesChannelService } from "../../../../services/"
 import { EntityManager } from "typeorm"
+import { SalesChannelService } from "../../../../services/"
 
 /**
  * @oas [delete] /sales-channels/{id}
@@ -22,13 +22,15 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The ID of the deleted Sales Channel.
+ *               description: The ID of the deleted sales channel
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: sales-channel
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params

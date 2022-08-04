@@ -36,9 +36,9 @@ import reqIp from "request-ip"
  *           region_id:
  *             type: string
  *             description: The ID of the Region to create the Cart in.
- *          sales_channel_id:
+ *           sales_channel_id:
  *             type: string
- *             description: [EXPERIMENTAL] The id of the Sales channel to create the Cart in.
+ *             description: "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."

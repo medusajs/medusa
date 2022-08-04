@@ -41,9 +41,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *             type: string
  *             description: "An email to be used on the Cart."
  *             format: email
- *          sales_channel_id:
+ *           sales_channel_id:
  *             type: string
- *             description: The id of the Sales channel to update the Cart with.
+ *             description: The ID of the Sales channel to update the Cart with.
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:

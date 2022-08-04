@@ -14,7 +14,19 @@ import { Type } from "class-transformer"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
- *   - (query) id {string} ID of the product to search for.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by product IDs.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of the product to search for.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a product.
  *   - in: query
  *     name: status
  *     style: form
@@ -48,6 +60,15 @@ import { Type } from "class-transformer"
  *     style: form
  *     explode: false
  *     description: Price List IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: Sales Channel IDs to filter products by
  *     schema:
  *       type: array
  *       items:
@@ -125,7 +146,6 @@ import { Type } from "class-transformer"
  *            format: date
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=50 {integer} Limit the number of products returned.
- *   - (query) order {string} the field to use to sort items by.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * tags:

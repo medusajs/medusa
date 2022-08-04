@@ -1,5 +1,5 @@
-import PriceListService from "../../../../services/price-list"
 import { EntityManager } from "typeorm"
+import PriceListService from "../../../../services/price-list"
 
 /**
  * @oas [delete] /price-lists/{id}
@@ -24,9 +24,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: price-list
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

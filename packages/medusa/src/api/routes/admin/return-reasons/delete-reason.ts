@@ -1,5 +1,5 @@
-import { ReturnReasonService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { ReturnReasonService } from "../../../../services"
 
 /**
  * @oas [delete] /return-reasons/{id}
@@ -24,9 +24,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: return_reason
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

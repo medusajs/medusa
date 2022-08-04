@@ -28,6 +28,7 @@ import { EntityManager } from "typeorm"
  *             deleted:
  *               type: boolean
  *               description: Whether the discount was deleted successfully or not.
+ *               default: true
  */
 export default async (req, res) => {
   const { discount_id } = req.params

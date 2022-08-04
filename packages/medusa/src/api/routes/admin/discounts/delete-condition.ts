@@ -4,10 +4,10 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../../models"
 import DiscountConditionService from "../../../../services/discount-condition"
 import { DiscountService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
@@ -39,6 +39,7 @@ import { EntityManager } from "typeorm"
  *             deleted:
  *               type: boolean
  *               description: Whether the discount condition was deleted successfully or not.
+ *               default: true
  *             discount:
  *               description: The Discount to which the condition used to belong
  *               $ref: "#/components/schemas/discount"

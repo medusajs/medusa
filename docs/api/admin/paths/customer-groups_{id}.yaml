@@ -29,6 +29,7 @@ delete:
               deleted:
                 type: boolean
                 description: Whether the customer group was deleted successfully or not.
+                default: true
 get:
   operationId: GetCustomerGroupsGroup
   summary: Retrieve a CustomerGroup

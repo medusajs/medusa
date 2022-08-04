@@ -1,5 +1,5 @@
-import InviteService from "../../../../services/invite"
 import { EntityManager } from "typeorm"
+import InviteService from "../../../../services/invite"
 
 /**
  * @oas [delete] /invites/{invite_id}
@@ -28,6 +28,7 @@ import { EntityManager } from "typeorm"
  *             deleted:
  *               type: boolean
  *               description: Whether or not the Invite was deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { invite_id } = req.params

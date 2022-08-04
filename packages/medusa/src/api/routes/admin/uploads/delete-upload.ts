@@ -35,6 +35,7 @@ import { IsString } from "class-validator"
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const validated = req.validatedBody as AdminDeleteUploadsReq

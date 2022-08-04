@@ -109,10 +109,6 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
-  /apps/authorizations:
-    $ref: paths/apps_authorizations.yaml
-  /apps:
-    $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
   /batch-jobs/{id}/cancel:
@@ -157,6 +153,10 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
+  /apps:
+    $ref: paths/apps.yaml
   /draft-orders:
     $ref: paths/draft-orders.yaml
   /draft-orders/{id}/line-items:
@@ -217,22 +217,20 @@ paths:
     $ref: paths/order_{id}_claims.yaml
   /orders/{id}/fulfillment:
     $ref: paths/orders_{id}_fulfillment.yaml
-  /orders:
-    $ref: paths/orders.yaml
   /orders/{id}/shipment:
     $ref: paths/orders_{id}_shipment.yaml
   /orders/{id}/swaps/{swap_id}/shipments:
     $ref: paths/orders_{id}_swaps_{swap_id}_shipments.yaml
   /order/{id}/swaps:
     $ref: paths/order_{id}_swaps.yaml
-  /order/{id}/metadata/{key}:
-    $ref: paths/order_{id}_metadata_{key}.yaml
   /orders/{id}/claims/{claim_id}/fulfillments:
     $ref: paths/orders_{id}_claims_{claim_id}_fulfillments.yaml
   /orders/{id}/swaps/{swap_id}/fulfillments:
     $ref: paths/orders_{id}_swaps_{swap_id}_fulfillments.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders:
+    $ref: paths/orders.yaml
   /orders/{id}/swaps/{swap_id}/process-payment:
     $ref: paths/orders_{id}_swaps_{swap_id}_process-payment.yaml
   /orders/{id}/refund:
@@ -283,8 +281,6 @@ paths:
     $ref: paths/regions_{id}_payment-providers.yaml
   /regions:
     $ref: paths/regions.yaml
-  /regions/{id}/metadata/{key}:
-    $ref: paths/regions_{id}_metadata_{key}.yaml
   /regions/{id}:
     $ref: paths/regions_{id}.yaml
   /regions/{id}/fulfillment-options:
@@ -295,8 +291,6 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
-  /regions/{id}/metadata:
-    $ref: paths/regions_{id}_metadata.yaml
   /return-reasons:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
@@ -307,6 +301,8 @@ paths:
     $ref: paths/returns.yaml
   /returns/{id}/receive:
     $ref: paths/returns_{id}_receive.yaml
+  /sales-channels/{id}/products/batch:
+    $ref: paths/sales-channels_{id}_products_batch.yaml
   /sales-channels:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
@@ -345,8 +341,6 @@ paths:
     $ref: paths/tax-rates_:id.yaml
   /uploads:
     $ref: paths/uploads.yaml
-  /variants:
-    $ref: paths/variants.yaml
   /users:
     $ref: paths/users.yaml
   /users/{id}:
@@ -355,3 +349,5 @@ paths:
     $ref: paths/users_password-token.yaml
   /users/reset-password:
     $ref: paths/users_reset-password.yaml
+  /variants:
+    $ref: paths/variants.yaml

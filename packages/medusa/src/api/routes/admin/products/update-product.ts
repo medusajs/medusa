@@ -49,9 +49,6 @@ import { validator } from "../../../../utils/validator"
  *           description:
  *             description: "A description of the Product."
  *             type: string
- *           is_giftcard:
- *             description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
- *             type: boolean
  *           discountable:
  *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
  *             type: boolean
@@ -98,21 +95,15 @@ import { validator } from "../../../../utils/validator"
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
- *         sales_channels:
- *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
+ *           sales_channels:
+ *             description: "[EXPERIMENTAL] Sales channels to associate the Product with."
  *             type: array
  *             items:
+ *               required:
+ *                 - id
  *               properties:
  *                 id:
- *                   description: The id of an existing Sales channel.
- *                   type: string
- *           options:
- *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
- *             type: array
- *             items:
- *               properties:
- *                 title:
- *                   description: The title to identify the Product Option by.
+ *                   description: The ID of an existing Sales channel.
  *                   type: string
  *           variants:
  *             description: A list of Product Variants to create with the Product.

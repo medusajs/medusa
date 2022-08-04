@@ -49,7 +49,19 @@ import { pick } from "lodash"
  *   - (query) cart_id {string} to search for.
  *   - (query) customer_id {string} to search for.
  *   - (query) email {string} to search for.
- *   - (query) region_id {string} to search for.
+ *   - in: query
+ *     name: region_id
+ *     style: form
+ *     explode: false
+ *     description: Regions to search orders by
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of a Region.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a Region.
  *   - in: query
  *     name: currency_code
  *     style: form
@@ -127,7 +139,16 @@ import { pick } from "lodash"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) sales_chanel_id {string[]} to retrieve products in.
+ *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: Filter by Sales Channels
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         description: The ID of a Sales Channel
  *   - (query) offset=0 {integer} How many orders to skip before the results.
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.

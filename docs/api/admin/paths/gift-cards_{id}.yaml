@@ -29,6 +29,7 @@ delete:
               deleted:
                 type: boolean
                 description: Whether the gift card was deleted successfully or not.
+                default: true
 get:
   operationId: GetGiftCardsGiftCard
   summary: Retrieve a Gift Card

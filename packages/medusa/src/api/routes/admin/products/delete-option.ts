@@ -1,7 +1,7 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
-import { ProductService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { ProductService } from "../../../../services"
 
 /**
  * @oas [delete] /products/{id}/options/{option_id}
@@ -27,9 +27,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: option
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  *             product:
  *               $ref: "#/components/schemas/product"
  */

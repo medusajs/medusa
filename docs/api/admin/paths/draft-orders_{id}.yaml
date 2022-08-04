@@ -29,6 +29,7 @@ delete:
               deleted:
                 type: boolean
                 description: Whether the draft order was deleted successfully or not.
+                default: true
 get:
   operationId: GetDraftOrdersDraftOrder
   summary: Retrieve a Draft Order

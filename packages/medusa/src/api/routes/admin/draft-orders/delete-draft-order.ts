@@ -27,6 +27,7 @@ import { EntityManager } from "typeorm"
  *             deleted:
  *               type: boolean
  *               description: Whether the draft order was deleted successfully or not.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

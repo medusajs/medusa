@@ -29,6 +29,7 @@ delete:
               deleted:
                 type: boolean
                 description: Whether or not the Note was deleted.
+                default: true
 get:
   operationId: GetNotesNote
   summary: Get Note

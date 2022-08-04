@@ -31,9 +31,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: variant
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  *             product:
  *               $ref: "#/components/schemas/product"
  */

@@ -106,13 +106,15 @@ import { validator } from "../../../../utils/validator"
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
- *          sales_channels:
- *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
+ *           sales_channels:
+ *             description: "[EXPERIMENTAL] Sales channels to associate the Product with."
  *             type: array
  *             items:
+ *               required:
+ *                 - id
  *               properties:
  *                 id:
- *                   description: The id of an existing Sales channel.
+ *                   description: The ID of an existing Sales channel.
  *                   type: string
  *           options:
  *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
@@ -189,9 +191,6 @@ import { validator } from "../../../../utils/validator"
  *                     required:
  *                       - amount
  *                     properties:
- *                       id:
- *                         description: The ID of the Price.
- *                         type: string
  *                       region_id:
  *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                         type: string
@@ -213,6 +212,8 @@ import { validator } from "../../../../utils/validator"
  *                 options:
  *                   type: array
  *                   items:
+ *                     required:
+ *                       - value
  *                     properties:
  *                       value:
  *                         description: The value to give for the Product Option at the same index in the Product's `options` field.
@@ -229,6 +230,9 @@ import { validator } from "../../../../utils/validator"
  *           width:
  *             description: The width of the Product.
  *             type: number
+ *           hs_code:
+ *             description: The Harmonized System code for the Product Variant.
+ *             type: string
  *           origin_country:
  *             description: The country of origin of the Product.
  *             type: string

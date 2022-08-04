@@ -60,6 +60,8 @@ paths:
     $ref: paths/collections_{id}.yaml
   /collections:
     $ref: paths/collections.yaml
+  /gift-cards/{code}:
+    $ref: paths/gift-cards_{code}.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -100,8 +102,6 @@ paths:
     $ref: paths/customers_password-token.yaml
   /customers/password-reset:
     $ref: paths/customers_password-reset.yaml
-  /gift-cards/{code}:
-    $ref: paths/gift-cards_{code}.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:

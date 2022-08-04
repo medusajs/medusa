@@ -1,114 +1,3 @@
-post:
-  operationId: PostOrders
-  summary: Create an order
-  description: Creates and order
-  x-authenticated: true
-  requestBody:
-    content:
-      application/json:
-        schema:
-          required:
-            - email
-            - billing_address
-            - shipping_address
-            - items
-            - region
-            - customer_id
-            - payment_method
-            - shipping_method
-          properties:
-            status:
-              description: status of the order
-              type: string
-              enum:
-                - pending
-                - completed
-                - archived
-                - canceled
-                - requires_action
-            email:
-              description: the email for the order
-              type: string
-              format: email
-            billing_address:
-              description: Billing address
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
-            shipping_address:
-              description: Shipping address
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
-            items:
-              description: The Line Items for the order
-              type: array
-              items:
-                $ref: ../components/schemas/line_item.yaml
-            region:
-              description: ID of Region where the order belongs
-              type: string
-            discounts:
-              description: Discounts applied to the order
-              type: array
-              items:
-                $ref: ../components/schemas/discount.yaml
-            customer_id:
-              description: ID of the customer
-              type: string
-            payment_method:
-              description: payment method chosen for the order
-              type: object
-              required:
-                - provider_id
-              properties:
-                provider_id:
-                  type: string
-                  description: ID of the payment provider
-                data:
-                  description: Data relevant for the given payment method
-                  type: object
-            shipping_method:
-              description: The Shipping Method used for shipping the order.
-              type: array
-              items:
-                type: object
-                required:
-                  - provider_id
-                  - profile_id
-                  - price
-                properties:
-                  provider_id:
-                    type: string
-                    description: The ID of the shipping provider.
-                  profile_id:
-                    type: string
-                    description: The ID of the shipping profile.
-                  price:
-                    type: integer
-                    description: The price of the shipping.
-                  data:
-                    type: object
-                    description: Data relevant to the specific shipping method.
-                  items:
-                    type: array
-                    items:
-                      $ref: ../components/schemas/line_item.yaml
-                      description: Items to ship
-            no_notification:
-              description: >-
-                A flag to indicate if no notifications should be emitted related
-                to the updated order.
-              type: boolean
-  tags:
-    - Order
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            properties:
-              order:
-                $ref: ../components/schemas/order.yaml
 get:
   operationId: GetOrders
   summary: List Orders
@@ -200,9 +89,17 @@ get:
         type: string
     - in: query
       name: region_id
-      description: to search for.
+      style: form
+      explode: false
+      description: Regions to search orders by
       schema:
-        type: string
+        oneOf:
+          - type: string
+            description: ID of a Region.
+          - type: array
+            items:
+              type: string
+              description: ID of a Region.
     - in: query
       name: currency_code
       style: form
@@ -284,6 +181,16 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+    - in: query
+      name: sales_channel_id
+      style: form
+      explode: false
+      description: Filter by Sales Channels
+      schema:
+        type: array
+        items:
+          type: string
+          description: The ID of a Sales Channel
     - in: query
       name: offset
       description: How many orders to skip before the results.

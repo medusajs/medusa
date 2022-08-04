@@ -1,5 +1,5 @@
-import { ShippingProfileService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { ShippingProfileService } from "../../../../services"
 
 /**
  * @oas [delete] /shipping-profiles/{id}
@@ -24,9 +24,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: shipping_profile
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { profile_id } = req.params

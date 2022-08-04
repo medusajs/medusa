@@ -1,5 +1,5 @@
-import { TaxRateService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { TaxRateService } from "../../../../services"
 
 /**
  * @oas [delete] /tax-rates/{id}
@@ -24,9 +24,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: tax-rate
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

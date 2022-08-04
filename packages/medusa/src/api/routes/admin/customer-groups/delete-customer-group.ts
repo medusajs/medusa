@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm"
 
 import { CustomerGroupService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /customer-groups/{id}
@@ -30,6 +30,7 @@ import { CustomerGroupService } from "../../../../services"
  *             deleted:
  *               type: boolean
  *               description: Whether the customer group was deleted successfully or not.
+ *               default: true
  */
 
 export default async (req: Request, res: Response) => {

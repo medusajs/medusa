@@ -1,7 +1,7 @@
 delete:
   operationId: DeleteCustomersCustomerAddressesAddress
   summary: Delete an Address
-  description: Removes an Address from the Customer's saved addresse.
+  description: Removes an Address from the Customer's saved addresses.
   x-authenticated: true
   parameters:
     - in: path

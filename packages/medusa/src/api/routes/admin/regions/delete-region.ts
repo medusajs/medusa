@@ -1,5 +1,5 @@
-import RegionService from "../../../../services/region"
 import { EntityManager } from "typeorm"
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [delete] /regions/{id}
@@ -24,9 +24,11 @@ import { EntityManager } from "typeorm"
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: region
  *             deleted:
  *               type: boolean
  *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { region_id } = req.params

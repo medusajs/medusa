@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm";
 
+import { EntityManager } from "typeorm";
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
@@ -30,6 +30,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *            deleted:
  *              type: boolean
  *              description: Whether the collection was deleted successfully or not.
+ *              default: true
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

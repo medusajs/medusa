@@ -65,10 +65,10 @@ import { validator } from "../../../../utils/validator"
  *                 description: ID of the payment provider
  *               data:
  *                 description: Data relevant for the given payment method
- *                 type: Record<string, unknown>
+ *                 type: object
  *           shipping_method:
  *             description: The Shipping Method used for shipping the order.
- *             type: Record<string, unknown>
+ *             type: object
  *             properties:
  *               provider_id:
  *                 type: string
@@ -80,7 +80,7 @@ import { validator } from "../../../../utils/validator"
  *                 type: integer
  *                 description: The price of the shipping.
  *               data:
- *                 type: Record<string, unknown>
+ *                 type: object
  *                 description: Data relevant to the specific shipping method.
  *               items:
  *                 type: array

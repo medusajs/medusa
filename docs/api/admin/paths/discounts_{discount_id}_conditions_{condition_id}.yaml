@@ -47,6 +47,7 @@ delete:
                 description: >-
                   Whether the discount condition was deleted successfully or
                   not.
+                default: true
               discount:
                 description: The Discount to which the condition used to belong
                 $ref: ../components/schemas/discount.yaml
