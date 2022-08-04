@@ -195,7 +195,7 @@ class Client {
       headers: this.setHeaders(options, method, path, customHeaders),
     }
 
-    if (method === "POST") {
+    if (["POST", "DELETE"].includes(method)) {
       reqOpts["data"] = payload
     }
 
