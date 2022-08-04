@@ -55,7 +55,6 @@ describe("POST /invites", () => {
     })
 
     it("calls InviteService create", () => {
-      console.log(subject.error)
       expect(InviteServiceMock.create).toHaveBeenCalledTimes(1)
       expect(InviteServiceMock.create).toHaveBeenCalledWith(
         "lebron@james.com",
