@@ -358,7 +358,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       no_notification?: boolean
       idempotency_key?: string
       allow_backorder?: boolean
-    } = { no_notification: false }
+    } = { no_notification: undefined }
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
     return await this.atomicPhase_(async (manager) => {
