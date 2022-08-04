@@ -10,6 +10,7 @@ import { defaultFields, defaultRelations } from "."
 
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-options
@@ -104,7 +105,13 @@ export default async (req, res) => {
     validated.profile_id = id
   }
 
-  const result = await optionService.create(validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+    return await optionService
+      .withTransaction(transactionManager)
+      .create(validated)
+  })
+
   const data = await optionService.retrieve(result.id, {
     select: defaultFields,
     relations: defaultRelations,

@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm";
 import { ICartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { IdempotencyKeyService } from "../../../../services"
@@ -61,12 +62,15 @@ export default async (req, res) => {
 
   let idempotencyKey: IdempotencyKey
   try {
-    idempotencyKey = await idempotencyKeyService.initializeRequest(
-      headerKey,
-      req.method,
-      req.params,
-      req.path
-    )
+    const manager: EntityManager = req.scope.resolve("manager")
+    idempotencyKey = await manager.transaction(async (transactionManager) => {
+      return await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
+        headerKey,
+        req.method,
+        req.params,
+        req.path
+      )
+    })
   } catch (error) {
     console.log(error)
     res.status(409).send("Failed to create idempotency key")

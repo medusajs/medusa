@@ -1,79 +1,56 @@
 # Change Log
 
+## 1.2.4
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+- Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b)]:
+  - medusa-interfaces@1.3.2
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [1.2.3](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.2...medusa-file-spaces@1.2.3) (2022-07-05)
 
-
 ### Bug Fixes
 
-* **medusa-file-spaces,medusa-file-s3,medusa-file-minio:** Add options to super call in file plugins ([#1714](https://github.com/medusajs/medusa/issues/1714)) ([a5f717b](https://github.com/medusajs/medusa/commit/a5f717be5ae1954f3dbf1e7b2edb35d11088a8c8))
-
+- **medusa-file-spaces,medusa-file-s3,medusa-file-minio:** Add options to super call in file plugins ([#1714](https://github.com/medusajs/medusa/issues/1714)) ([a5f717b](https://github.com/medusajs/medusa/commit/a5f717be5ae1954f3dbf1e7b2edb35d11088a8c8))
 
 ### Features
 
-* **medusa:** Add batch strategy for order exports ([#1603](https://github.com/medusajs/medusa/issues/1603)) ([bf47d1a](https://github.com/medusajs/medusa/commit/bf47d1aecd74f4489667609444a8b09393e894d3))
-* **medusa:** Extend file-service interface + move to core ([#1577](https://github.com/medusajs/medusa/issues/1577)) ([8e42d37](https://github.com/medusajs/medusa/commit/8e42d37e84e80c003b9c0311117ab8a8871aa61b))
-* **medusa-file-spaces:** DigitalOcean fileservice streaming ([#1585](https://github.com/medusajs/medusa/issues/1585)) ([abaf10b](https://github.com/medusajs/medusa/commit/abaf10b31d1e9a60710da87cac5c9c869195660d)), closes [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582) [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582)
-
-
-
-
+- **medusa:** Add batch strategy for order exports ([#1603](https://github.com/medusajs/medusa/issues/1603)) ([bf47d1a](https://github.com/medusajs/medusa/commit/bf47d1aecd74f4489667609444a8b09393e894d3))
+- **medusa:** Extend file-service interface + move to core ([#1577](https://github.com/medusajs/medusa/issues/1577)) ([8e42d37](https://github.com/medusajs/medusa/commit/8e42d37e84e80c003b9c0311117ab8a8871aa61b))
+- **medusa-file-spaces:** DigitalOcean fileservice streaming ([#1585](https://github.com/medusajs/medusa/issues/1585)) ([abaf10b](https://github.com/medusajs/medusa/commit/abaf10b31d1e9a60710da87cac5c9c869195660d)), closes [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582) [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582)
 
 ## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.2) (2022-06-19)
 
-
 ### Bug Fixes
 
-* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
-
-
-
-
+- **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.1) (2022-05-31)
 
-
 ### Bug Fixes
 
-* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
-
-
-
-
+- **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
 
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.37...medusa-file-spaces@1.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-file-spaces
 
-
-
-
-
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.36...medusa-file-spaces@1.1.37) (2022-01-11)
 
 **Note:** Version bump only for package medusa-file-spaces
-
-
-
-
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.35...medusa-file-spaces@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-file-spaces
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.34...medusa-file-spaces@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-file-spaces
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.33...medusa-file-spaces@1.1.34) (2021-12-08)
 

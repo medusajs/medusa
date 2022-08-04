@@ -8,6 +8,7 @@ import {
 } from "class-validator"
 
 import CustomerService from "../../../../services/customer"
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
@@ -88,7 +89,12 @@ export default async (req, res) => {
     )
   }
 
-  await customerService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .update(id, validatedBody)
+  })
 
   let expandFields: string[] = []
   if (validatedQuery.expand) {

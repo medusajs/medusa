@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
+import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
@@ -55,10 +56,18 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.addCustomers(
-    id,
-    validated.customer_ids.map(({ id }) => id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const customer_group = await manager.transaction(
+    async (transactionManager) => {
+      return await customerGroupService
+        .withTransaction(transactionManager)
+        .addCustomers(
+          id,
+          validated.customer_ids.map(({ id }) => id)
+        )
+    }
   )
+
   res.status(200).json({ customer_group })
 }
 

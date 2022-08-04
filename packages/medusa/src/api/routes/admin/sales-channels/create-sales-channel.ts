@@ -1,7 +1,8 @@
-import { IsObject, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
+import { EntityManager } from "typeorm"
 import SalesChannelService from "../../../../services/sales-channel"
 
 /**
@@ -28,13 +29,18 @@ import SalesChannelService from "../../../../services/sales-channel"
  */
 
 export default async (req: Request, res: Response) => {
+  const validatedBody = req.validatedBody as CreateSalesChannelInput
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
 
-  const salesChannel = await salesChannelService.create(
-    req.validatedBody as CreateSalesChannelInput
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const salesChannel = await manager.transaction(async (transactionManager) => {
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .create(validatedBody)
+  })
+
   res.status(200).json({ sales_channel: salesChannel })
 }
 
@@ -45,4 +51,8 @@ export class AdminPostSalesChannelsReq {
   @IsString()
   @IsOptional()
   description: string
+
+  @IsBoolean()
+  @IsOptional()
+  is_disabled?: boolean
 }

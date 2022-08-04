@@ -1,4 +1,8 @@
 import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
+import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -7,8 +11,6 @@ import {
   ValidateNested,
 } from "class-validator"
 
-import { AdminGetProductsPaginationParams } from "../products"
-import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
 import PriceListService from "../../../../services/price-list"
 import { ProductStatus } from "../../../../models"
@@ -178,7 +180,9 @@ export default async (req: Request, res) => {
   })
 }
 
-export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {
+export class AdminGetPriceListsPriceListProductsParams extends extendedFindParamsMixin(
+  { limit: 50 }
+) {
   @IsString()
   @IsOptional()
   id?: string

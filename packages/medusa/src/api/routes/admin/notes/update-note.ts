@@ -1,6 +1,7 @@
 import { IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /notes/{id}
@@ -39,7 +40,12 @@ export default async (req, res) => {
   const validated = await validator(AdminPostNotesNoteReq, req.body)
 
   const noteService: NoteService = req.scope.resolve("noteService")
-  const note = await noteService.update(id, validated.value)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const note = await manager.transaction(async (transactionManager) => {
+    return await noteService
+      .withTransaction(transactionManager)
+      .update(id, validated.value)
+  })
 
   res.status(200).json({ note })
 }

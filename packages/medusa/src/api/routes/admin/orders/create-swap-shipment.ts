@@ -8,6 +8,7 @@ import {
 import { OrderService, SwapService } from "../../../../services"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -60,12 +61,15 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  await swapService.createShipment(
-    swap_id,
-    validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-    { no_notification: validated.no_notification }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await swapService.withTransaction(transactionManager).createShipment(
+      swap_id,
+      validated.fulfillment_id,
+      validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
+      { no_notification: validated.no_notification }
+    )
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

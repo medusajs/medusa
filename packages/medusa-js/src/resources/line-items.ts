@@ -49,7 +49,7 @@ class LineItemsResource extends BaseResource {
    */
   delete(cart_id: string, line_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items/${line_id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 

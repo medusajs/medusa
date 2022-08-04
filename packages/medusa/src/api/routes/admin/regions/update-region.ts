@@ -7,6 +7,7 @@ import {
 } from "class-validator"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 
+import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
@@ -79,7 +80,13 @@ export default async (req, res) => {
   const validated = await validator(AdminPostRegionsRegionReq, req.body)
 
   const regionService: RegionService = req.scope.resolve("regionService")
-  await regionService.update(region_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await regionService
+      .withTransaction(transactionManager)
+      .update(region_id, validated)
+  })
+
   const region = await regionService.retrieve(region_id, {
     select: defaultAdminRegionFields,
     relations: defaultAdminRegionRelations,

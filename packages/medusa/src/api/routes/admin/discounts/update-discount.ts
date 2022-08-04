@@ -1,3 +1,4 @@
+import { Discount, DiscountConditionOperator } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -15,9 +16,8 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { AllocationType } from "../../../../models"
-import { Discount } from "../../../../models/discount"
-import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
+import { EntityManager } from "typeorm"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 import { Type } from "class-transformer"
@@ -151,7 +151,12 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  await discountService.update(discount_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .update(discount_id, validated)
+  })
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,

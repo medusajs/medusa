@@ -8,10 +8,10 @@ import {
   Unique,
 } from "typeorm"
 
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity } from "../interfaces"
 import { Cart } from "./cart"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { generateEntityId } from "../utils"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",

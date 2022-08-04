@@ -18,6 +18,7 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/variants/{variant_id}
@@ -152,9 +153,14 @@ export default async (req, res) => {
     "productVariantService"
   )
 
-  await productVariantService.update(variant_id, {
-    product_id: id,
-    ...validated,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await productVariantService
+      .withTransaction(transactionManager)
+      .update(variant_id, {
+        product_id: id,
+        ...validated,
+      })
   })
 
   const rawProduct = await productService.retrieve(id, {

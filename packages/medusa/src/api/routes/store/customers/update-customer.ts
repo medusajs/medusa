@@ -5,6 +5,7 @@ import { AddressPayload } from "../../../../types/common"
 import CustomerService from "../../../../services/customer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/me
@@ -60,7 +61,12 @@ export default async (req, res) => {
   const validated = await validator(StorePostCustomersCustomerReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  await customerService.update(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .update(id, validated)
+  })
 
   const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,

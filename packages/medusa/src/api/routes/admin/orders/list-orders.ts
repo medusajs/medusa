@@ -1,6 +1,7 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
 import { AdminListOrdersSelector } from "../../../../types/orders"
+import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
@@ -126,6 +127,7 @@ import { pick } from "lodash"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ *   - (query) sales_chanel_id {string[]} to retrieve products in.
  *   - (query) offset=0 {integer} How many orders to skip before the results.
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
@@ -163,7 +165,7 @@ export default async (req, res) => {
     req.listConfig
   )
 
-  let data = orders
+  let data: Partial<Order>[] = orders
 
   const fields = [...select, ...relations]
   if (fields.length) {

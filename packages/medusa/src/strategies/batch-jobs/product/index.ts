@@ -14,6 +14,7 @@ export type ProductExportBatchJobContext = {
     prices: ProductExportPriceData[]
     dynamicOptionColumnCount: number
     dynamicImageColumnCount: number
+    dynamicSalesChannelsColumnCount: number
   }
   list_config?: {
     select?: string[]

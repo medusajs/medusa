@@ -11,6 +11,7 @@ import {
 import { Transform, Type } from "class-transformer"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -71,9 +72,14 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.createFulfillment(id, validated.items, {
-    metadata: validated.metadata,
-    no_notification: validated.no_notification,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .createFulfillment(id, validated.items, {
+        metadata: validated.metadata,
+        no_notification: validated.no_notification,
+      })
   })
 
   const order = await orderService.retrieve(id, {
@@ -97,7 +103,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 class Item {

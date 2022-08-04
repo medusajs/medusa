@@ -18,6 +18,7 @@ import {
 import { AddressPayload } from "../../../../types/common"
 import { DraftOrder } from "../../../.."
 import { DraftOrderService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { transformIdableFields } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
@@ -138,7 +139,15 @@ export default async (req, res) => {
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
-  let draftOrder: DraftOrder = await draftOrderService.create(value)
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  let draftOrder: DraftOrder = await manager.transaction(
+    async (transactionManager) => {
+      return await draftOrderService
+        .withTransaction(transactionManager)
+        .create(value)
+    }
+  )
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {
     relations: defaultAdminDraftOrdersRelations,

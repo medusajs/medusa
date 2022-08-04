@@ -1,7 +1,9 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
+import { EntityManager } from "typeorm";
 import ProductCollectionService from "../../../../services/product-collection"
+
 /**
  * @oas [post] /collections/{id}
  * operationId: "PostCollectionsCollection"
@@ -44,7 +46,11 @@ export default async (req: Request, res: Response) => {
     "productCollectionService"
   )
 
-  const updated = await productCollectionService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const updated = await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).update(id, validatedBody)
+  })
+
   const collection = await productCollectionService.retrieve(updated.id)
 
   res.status(200).json({ collection })

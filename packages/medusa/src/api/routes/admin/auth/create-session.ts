@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 
 import AuthService from "../../../../services/auth"
+import { EntityManager } from "typeorm";
 import { MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 import jwt from "jsonwebtoken"
@@ -56,10 +57,13 @@ export default async (req, res) => {
   const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
-  const result = await authService.authenticate(
-    validated.email,
-    validated.password
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+     return await authService.withTransaction(transactionManager).authenticate(
+      validated.email,
+      validated.password
+    )
+  })
 
   if (result.success && result.user) {
     // Add JWT to cookie

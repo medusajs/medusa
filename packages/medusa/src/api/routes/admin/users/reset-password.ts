@@ -6,6 +6,7 @@ import UserService from "../../../../services/user"
 import _ from "lodash"
 import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users/reset-password
@@ -73,10 +74,12 @@ export default async (req, res) => {
       return
     }
 
-    const userResult = await userService.setPassword_(
-      user.id,
-      validated.password
-    )
+    const manager: EntityManager = req.scope.resolve("manager")
+    const userResult = await manager.transaction(async (transactionManager) => {
+      return await userService
+        .withTransaction(transactionManager)
+        .setPassword_(user.id, validated.password)
+    })
 
     res.status(200).json({ user: _.omit(userResult, ["password_hash"]) })
   } catch (error) {

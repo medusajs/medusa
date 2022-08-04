@@ -3,7 +3,13 @@ import {
   DraftOrderService,
   LineItemService,
 } from "../../../../services"
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
@@ -11,6 +17,7 @@ import {
 } from "."
 
 import { EntityManager } from "typeorm"
+import { FlagRouter } from "../../../../utils/flag-router"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
 
@@ -88,16 +95,18 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
-      const line = await lineItemService.generate(
-        validated.variant_id,
-        draftOrder.cart.region_id,
-        validated.quantity,
-        { metadata: validated.metadata, unit_price: validated.unit_price }
-      )
+      const line = await lineItemService
+        .withTransaction(manager)
+        .generate(
+          validated.variant_id,
+          draftOrder.cart.region_id,
+          validated.quantity,
+          { metadata: validated.metadata, unit_price: validated.unit_price }
+        )
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line)
+        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({

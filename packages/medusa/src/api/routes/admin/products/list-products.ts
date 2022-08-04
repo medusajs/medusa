@@ -1,19 +1,10 @@
-import {
-  IsArray,
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
-import { Product, ProductStatus } from "../../../../models/product"
-import { Transform, Type } from "class-transformer"
 
-import { DateComparisonOperator } from "../../../../types/common"
+import { FilterableProductProps } from "../../../../types/product"
 import { PricedProduct } from "../../../../types/pricing"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Product } from "../../../../models"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /products
@@ -188,7 +179,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetProductsPaginationParams {
+export class AdminGetProductsParams extends FilterableProductProps {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
@@ -206,70 +197,4 @@ export class AdminGetProductsPaginationParams {
   @IsString()
   @IsOptional()
   fields?: string
-}
-
-export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsOptional()
-  @IsEnum(ProductStatus, { each: true })
-  status?: ProductStatus[]
-
-  @IsArray()
-  @IsOptional()
-  collection_id?: string[]
-
-  @IsArray()
-  @IsOptional()
-  tags?: string[]
-
-  @IsArray()
-  @IsOptional()
-  price_list_id?: string[]
-
-  @IsString()
-  @IsOptional()
-  title?: string
-
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  @IsString()
-  @IsOptional()
-  handle?: string
-
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
-  is_giftcard?: boolean
-
-  @IsString()
-  @IsOptional()
-  type?: string
-
-  @IsString()
-  @IsOptional()
-  order?: string
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => DateComparisonOperator)
-  deleted_at?: DateComparisonOperator
 }

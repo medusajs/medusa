@@ -1,13 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
 import { FilterablePriceListProps } from "../../../../types/price-list"
-import { FindConfig } from "../../../../types/common"
-import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { Request } from "express"
 import { Type } from "class-transformer"
-import omit from "lodash/omit"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /price-lists

@@ -8,6 +8,7 @@ import {
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 
 import DiscountService from "../../../../services/discount"
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -42,10 +43,12 @@ export default async (req, res) => {
   )
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const created = await discountService.createDynamicCode(
-    discount_id,
-    validated
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const created = await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .createDynamicCode(discount_id, validated)
+  })
 
   const discount = await discountService.retrieve(created.id, {
     select: defaultAdminDiscountsFields,

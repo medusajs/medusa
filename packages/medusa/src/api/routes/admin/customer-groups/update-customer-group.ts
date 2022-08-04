@@ -2,6 +2,7 @@ import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
 import { CustomerGroupService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
@@ -51,7 +52,12 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  await customerGroupService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerGroupService
+      .withTransaction(transactionManager)
+      .update(id, validatedBody)
+  })
 
   let expandFields: string[] = []
   if (validatedQuery.expand) {

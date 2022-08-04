@@ -1,5 +1,6 @@
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
@@ -46,7 +47,12 @@ export default async (req, res) => {
   )
 
   const regionService: RegionService = req.scope.resolve("regionService")
-  await regionService.addCountry(region_id, validated.country_code)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await regionService
+      .withTransaction(transactionManager)
+      .addCountry(region_id, validated.country_code)
+  })
 
   const region: Region = await regionService.retrieve(region_id, {
     select: defaultAdminRegionFields,

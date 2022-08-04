@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
 import { NextFunction, Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { Logger } from "../../types/global"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"

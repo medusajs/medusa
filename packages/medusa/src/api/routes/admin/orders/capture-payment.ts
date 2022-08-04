@@ -1,6 +1,7 @@
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { OrderService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/capture
@@ -27,7 +28,12 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.capturePayment(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .capturePayment(id)
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

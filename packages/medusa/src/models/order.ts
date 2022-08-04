@@ -243,7 +243,7 @@ export class Order extends BaseEntity {
   // Total fields
   shipping_total: number
   discount_total: number
-  tax_total: number
+  tax_total: number | null
   refunded_total: number
   total: number
   subtotal: number

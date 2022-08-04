@@ -1,4 +1,8 @@
 import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
+import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -14,11 +18,17 @@ import {
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
+import {
+  ProductSalesChannelReq,
+  ProductTagReq,
+  ProductTypeReq,
+} from "../../../../types/product"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { ProductStatus } from "../../../../models"
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
@@ -95,6 +105,14 @@ import { validator } from "../../../../utils/validator"
  *                   type: string
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
+ *                   type: string
+ *          sales_channels:
+ *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 id:
+ *                   description: The id of an existing Sales channel.
  *                   type: string
  *           options:
  *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
@@ -249,8 +267,7 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  let newProduct
-  await entityManager.transaction(async (manager) => {
+  const newProduct = await entityManager.transaction(async (manager) => {
     const { variants } = validated
     delete validated.variants
 
@@ -261,12 +278,16 @@ export default async (req, res) => {
     let shippingProfile
     // Get default shipping profile
     if (validated.is_giftcard) {
-      shippingProfile = await shippingProfileService.retrieveGiftCardDefault()
+      shippingProfile = await shippingProfileService
+        .withTransaction(manager)
+        .retrieveGiftCardDefault()
     } else {
-      shippingProfile = await shippingProfileService.retrieveDefault()
+      shippingProfile = await shippingProfileService
+        .withTransaction(manager)
+        .retrieveDefault()
     }
 
-    newProduct = await productService
+    const newProduct = await productService
       .withTransaction(manager)
       .create({ ...validated, profile_id: shippingProfile.id })
 
@@ -277,7 +298,7 @@ export default async (req, res) => {
 
       const optionIds =
         validated?.options?.map(
-          (o) => newProduct.options.find((newO) => newO.title === o.title).id
+          (o) => newProduct.options.find((newO) => newO.title === o.title)?.id
         ) || []
 
       await Promise.all(
@@ -293,10 +314,12 @@ export default async (req, res) => {
 
           await productVariantService
             .withTransaction(manager)
-            .create(newProduct.id, variant)
+            .create(newProduct.id, variant as CreateProductVariantInput)
         })
       )
     }
+
+    return newProduct
   })
 
   const rawProduct = await productService.retrieve(newProduct.id, {
@@ -307,24 +330,6 @@ export default async (req, res) => {
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
-}
-
-class ProductTypeReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
-}
-
-class ProductTagReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  value: string
 }
 
 class ProductVariantOptionReq {
@@ -465,6 +470,14 @@ export class AdminPostProductsReq {
   @ValidateNested({ each: true })
   @IsArray()
   tags?: ProductTagReq[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsOptional(),
+    Type(() => ProductSalesChannelReq),
+    ValidateNested({ each: true }),
+    IsArray(),
+  ])
+  sales_channels?: ProductSalesChannelReq[]
 
   @IsOptional()
   @Type(() => ProductOptionReq)

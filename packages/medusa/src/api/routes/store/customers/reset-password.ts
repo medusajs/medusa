@@ -3,6 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/password-reset
@@ -61,8 +62,13 @@ export default async (req, res) => {
     return
   }
 
-  await customerService.update(customer.id, {
-    password: validated.password,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .update(customer.id, {
+        password: validated.password,
+      })
   })
 
   customer = await customerService.retrieve(customer.id)

@@ -3,6 +3,7 @@ import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /invites/accept
@@ -49,7 +50,12 @@ export default async (req, res) => {
 
   const inviteService: InviteService = req.scope.resolve("inviteService")
 
-  await inviteService.accept(validated.token, validated.user)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await inviteService
+      .withTransaction(transactionManager)
+      .accept(validated.token, validated.user)
+  })
 
   res.sendStatus(200)
 }
