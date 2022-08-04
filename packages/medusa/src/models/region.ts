@@ -19,6 +19,7 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class Region extends SoftDeletableEntity {
@@ -94,7 +95,7 @@ export class Region extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
   @BeforeInsert()
@@ -139,6 +140,9 @@ export class Region extends SoftDeletableEntity {
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/fulfillment_provider"
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

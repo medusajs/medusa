@@ -17,6 +17,7 @@ import { ShippingOptionRequirement } from "./shipping-option-requirement"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -76,7 +77,7 @@ export class ShippingOption extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
   @BeforeInsert()
@@ -130,6 +131,9 @@ export class ShippingOption extends SoftDeletableEntity {
  *   data:
  *     description: "The data needed for the Fulfillment Provider to identify the Shipping Option."
  *     type: object
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

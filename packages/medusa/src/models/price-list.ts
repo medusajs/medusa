@@ -13,6 +13,7 @@ import { MoneyAmount } from "./money-amount"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class PriceList extends SoftDeletableEntity {
@@ -58,7 +59,7 @@ export class PriceList extends SoftDeletableEntity {
   })
   prices: MoneyAmount[]
 
-  @FeatureFlagColumn("tax_inclusive_pricing", { default: false })
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
   @BeforeInsert()
@@ -93,6 +94,9 @@ export class PriceList extends SoftDeletableEntity {
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/customer_group"
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string
