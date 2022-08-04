@@ -138,6 +138,6 @@ export class ShippingMethod {
  *     description: "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id."
  *     type: object
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     description: "[EXPERIMENTAL] Indicates if the shipping method price include tax"
  *     type: boolean
  */

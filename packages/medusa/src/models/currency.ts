@@ -39,6 +39,6 @@ export class Currency {
  *    description: "The written name of the currency"
  *    type: string
  *  includes_tax:
- *    description: "[EXPERIMENTAL] Does the currency includes tax"
+ *    description: "[EXPERIMENTAL] Does the currency prices include tax"
  *    type: boolean
  */

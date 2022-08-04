@@ -141,7 +141,7 @@ export class Region extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/fulfillment_provider"
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     description: "[EXPERIMENTAL] Does the prices for the region include tax"
  *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."

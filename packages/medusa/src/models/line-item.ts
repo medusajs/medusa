@@ -198,7 +198,7 @@ export class LineItem extends BaseEntity {
  *     description: "The quantity of the Line Item that has been shipped."
  *     type: integer
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Does the currency includes tax"
+ *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
  *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
