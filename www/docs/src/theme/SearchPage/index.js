@@ -1,16 +1,13 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+import {
+  HtmlClassNameProvider,
+  isRegexpStringMatch,
+  useEvent,
+  usePluralForm,
+} from '@docusaurus/theme-common';
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Translate, {translate} from '@docusaurus/Translate';
 import {
-  isRegexpStringMatch,
-  useEvent,
-  usePluralForm,
   useSearchPage,
   useTitleFormatter,
 } from '@docusaurus/theme-common/internal';
@@ -111,7 +108,7 @@ function SearchVersionSelectList({docsSearchVersionsHelpers}) {
     </div>
   );
 }
-export default function SearchPage() {
+function SearchPageContent() {
   const {
     siteConfig: {themeConfig},
     i18n: {currentLocale},
@@ -175,7 +172,7 @@ export default function SearchPage() {
   algoliaHelper.on(
     'result',
     ({results: {query, hits, page, nbHits, nbPages}}) => {
-      if (query === '' || !(hits instanceof Array)) {
+      if (query === '' || !Array.isArray(hits)) {
         searchResultStateDispatcher({type: 'reset'});
         return;
       }
@@ -223,7 +220,7 @@ export default function SearchPage() {
   const [loaderRef, setLoaderRef] = useState(null);
   const prevY = useRef(0);
   const observer = useRef(
-    ExecutionEnvironment.canUseDOM &&
+    ExecutionEnvironment.canUseIntersectionObserver &&
       new IntersectionObserver(
         (entries) => {
           const {
@@ -285,7 +282,7 @@ export default function SearchPage() {
     makeSearch(searchResultState.lastPage);
   }, [makeSearch, searchResultState.lastPage]);
   return (
-    <Layout wrapperClassName="search-page-wrapper">
+    <Layout>
       <Head>
         <title>{useTitleFormatter(getTitle())}</title>
         {/*
@@ -443,5 +440,12 @@ export default function SearchPage() {
         )}
       </div>
     </Layout>
+  );
+}
+export default function SearchPage() {
+  return (
+    <HtmlClassNameProvider className="search-page-wrapper">
+      <SearchPageContent />
+    </HtmlClassNameProvider>
   );
 }

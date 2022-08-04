@@ -1,5 +1,10 @@
-name: Generate References
+name: Generate Reference
 on: 
+  push:
+    branches:
+      - "master"
+    paths:
+      - packages/medusa/src/services/**
   pull_request:
     types:
       - closed
@@ -19,7 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.5
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js environment
@@ -39,9 +43,11 @@ jobs:
       - name: Generate Services Reference
         run: yarn generate:services
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with: 
-          commit_message: "docs: automatically Generated Services Reference"
-          file_pattern: docs/content/*
-          skip_dirty_check: false
-          branch: master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'docs: Generated Services Reference (automated)'
+          base: 'master'
+          title: 'docs: Generated Services Reference (automated)'
+          labels: 'type: docs'
+          add-paths: docs/content/references/services/**

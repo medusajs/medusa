@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).PaymentSession
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`BaseEntity`](internal.BaseEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:18
+medusa/dist/models/payment-session.d.ts:18
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:12
+medusa/dist/models/payment-session.d.ts:12
 
 ___
 
@@ -40,13 +42,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:11
+medusa/dist/models/payment-session.d.ts:11
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -54,17 +56,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
 ### data
 
-• **data**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **data**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:16
+medusa/dist/models/payment-session.d.ts:16
 
 ___
 
@@ -78,7 +80,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -88,7 +90,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:17
+medusa/dist/models/payment-session.d.ts:17
 
 ___
 
@@ -98,7 +100,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:14
+medusa/dist/models/payment-session.d.ts:14
 
 ___
 
@@ -108,7 +110,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:13
+medusa/dist/models/payment-session.d.ts:13
 
 ___
 
@@ -118,13 +120,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/payment-session.d.ts:15
+medusa/dist/models/payment-session.d.ts:15
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -132,4 +134,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
