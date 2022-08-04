@@ -10,11 +10,14 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 export default (app) => {
   const route = Router()
-  app.use("/currencies", route)
+  app.use(
+    "/currencies",
+    isFeatureFlagEnabled(TaxInclusiveFeatureFlag.key),
+    route
+  )
 
   route.get(
     "/",
-    isFeatureFlagEnabled(TaxInclusiveFeatureFlag.key),
     transformQuery(AdminGetCurrenciesParams, {
       isList: true,
     }),
@@ -23,7 +26,6 @@ export default (app) => {
 
   route.post(
     "/:code",
-    isFeatureFlagEnabled(TaxInclusiveFeatureFlag.key),
     transformBody(AdminPostCurrenciesCurrencyReq),
     middlewares.wrap(require("./update-currency").default)
   )

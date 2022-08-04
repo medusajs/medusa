@@ -47,13 +47,7 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
    * @param code - The code of the currency that must be retrieve
    * @return The currency
    */
-  async retrieve(code: string): Promise<Currency | undefined | never> {
-    if (
-      !this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
-    ) {
-      return
-    }
-
+  async retrieve(code: string): Promise<Currency | never> {
     const currencyRepo = this.manager_.getCustomRepository(
       this.currencyRepository_
     )
@@ -90,12 +84,6 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
       take: 20,
     }
   ): Promise<[Currency[], number]> {
-    if (
-      !this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
-    ) {
-      return [[], 0]
-    }
-
     const productRepo = this.manager_.getCustomRepository(
       this.currencyRepository_
     )
@@ -117,14 +105,6 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
   ): Promise<Currency | undefined | never> {
     return await this.atomicPhase_(async (transactionManager) => {
       const currency = await this.retrieve(code)
-      if (
-        !this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusiveFeatureFlag.key
-        ) ||
-        !currency
-      ) {
-        return
-      }
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
