@@ -1454,7 +1454,7 @@ In one case, when the `/admin/products/{id}` endpoint is used to update the prod
 ```js
 {
   id, //id of product
-  field //an array of field names that were updated
+  fields //an array of field names that were updated
 }
 ```
 
@@ -1673,6 +1673,99 @@ Object of the following format:
 ```js
 {
   id //string ID of region
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+## Sales Channel Events
+
+This section holds all events related to sales channels.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`sales_channel.created`
+
+</td>
+<td>
+
+Triggered when a sales channel is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of sales channel
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`sales_channel.updated`
+
+</td>
+<td>
+
+Triggered when a sales channel is updated
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id, //string ID of sales channel
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`sales_channel.deleted`
+
+</td>
+<td>
+
+Triggered when a sales channel is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of sales channel
 }
 ```
 
@@ -1953,6 +2046,54 @@ Event Data Payload
 <tr>
 <td>
 
+`user.created`
+
+</td>
+<td>
+
+Triggered when a user is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`user.updated`
+
+</td>
+<td>
+
+Triggered when a user is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
 `user.password_reset`
 
 </td>
@@ -1969,6 +2110,30 @@ Object of the following format:
 {
   email, //string email of user requesting to reset their password
   token //token create to reset the password
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`user.deleted`
+
+</td>
+<td>
+
+Triggered when a user is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
 }
 ```
 
