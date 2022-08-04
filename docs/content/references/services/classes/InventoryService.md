@@ -24,7 +24,7 @@ TransactionBaseService&lt;InventoryService\&gt;.constructor
 
 #### Defined in
 
-[services/inventory.ts:18](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L18)
+[packages/medusa/src/services/inventory.ts:18](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L18)
 
 ## Properties
 
@@ -36,6 +36,10 @@ TransactionBaseService&lt;InventoryService\&gt;.constructor
 
 TransactionBaseService.configModule
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
 ___
 
 ### container
@@ -45,6 +49,10 @@ ___
 #### Inherited from
 
 TransactionBaseService.container
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
 
 ___
 
@@ -58,7 +66,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/inventory.ts:15](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L15)
+[packages/medusa/src/services/inventory.ts:15](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L15)
 
 ___
 
@@ -68,7 +76,7 @@ ___
 
 #### Defined in
 
-[services/inventory.ts:13](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L13)
+[packages/medusa/src/services/inventory.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L13)
 
 ___
 
@@ -82,7 +90,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/inventory.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L16)
+[packages/medusa/src/services/inventory.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L16)
 
 ## Methods
 
@@ -90,26 +98,34 @@ TransactionBaseService.transactionManager\_
 
 ▸ **adjustInventory**(`variantId`, `adjustment`): `Promise`<`undefined` \| `ProductVariant`\>
 
+Updates the inventory of a variant based on a given adjustment.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `variantId` | `string` |  |
-| `adjustment` | `number` |  |
+| `variantId` | `string` | the id of the variant to update |
+| `adjustment` | `number` | the number to adjust the inventory quantity by |
 
 #### Returns
 
 `Promise`<`undefined` \| `ProductVariant`\>
 
+resolves to the update result.
+
 #### Defined in
 
-[services/inventory.ts:31](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L31)
+[packages/medusa/src/services/inventory.ts:31](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L31)
 
 ___
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -122,13 +138,15 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -136,7 +154,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -144,20 +162,26 @@ ___
 
 ▸ **confirmInventory**(`variantId`, `quantity`): `Promise`<`boolean`\>
 
+Checks if the inventory of a variant can cover a given quantity. Will
+return true if the variant doesn't have managed inventory or if the variant
+allows backorders or if the inventory quantity is greater than `quantity`.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `variantId` | `undefined` \| ``null`` \| `string` |  |
-| `quantity` | `number` |  |
+| `variantId` | `undefined` \| ``null`` \| `string` | the id of the variant to check |
+| `quantity` | `number` | the number of units to check availability for |
 
 #### Returns
 
 `Promise`<`boolean`\>
 
+true if the inventory covers the quantity
+
 #### Defined in
 
-[services/inventory.ts:63](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/inventory.ts#L63)
+[packages/medusa/src/services/inventory.ts:63](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/inventory.ts#L63)
 
 ___
 
@@ -181,7 +205,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -205,4 +229,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

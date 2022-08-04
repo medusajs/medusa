@@ -1,5 +1,7 @@
 # Class: MiddlewareService
 
+Orchestrates dynamic middleware registered through the Medusa Middleware API
+
 ## Constructors
 
 ### constructor
@@ -8,7 +10,7 @@
 
 #### Defined in
 
-[services/middleware.ts:22](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L22)
+[packages/medusa/src/services/middleware.ts:22](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L22)
 
 ## Properties
 
@@ -18,7 +20,7 @@
 
 #### Defined in
 
-[services/middleware.ts:17](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L17)
+[packages/medusa/src/services/middleware.ts:17](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L17)
 
 ___
 
@@ -28,7 +30,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:18](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L18)
+[packages/medusa/src/services/middleware.ts:18](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L18)
 
 ___
 
@@ -38,7 +40,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:19](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L19)
+[packages/medusa/src/services/middleware.ts:19](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L19)
 
 ___
 
@@ -48,7 +50,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:20](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L20)
+[packages/medusa/src/services/middleware.ts:20](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L20)
 
 ## Methods
 
@@ -56,20 +58,24 @@ ___
 
 ▸ **addPostAuthentication**(`middleware`, `options`): `void`
 
+Adds a middleware function to be called after authentication is completed.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `middleware` | `middlewareHandlerType` |  |
-| `options` | `Record`<`string`, `unknown`\> |  |
+| `middleware` | `middlewareHandlerType` | the middleware function. Should return a   middleware function. |
+| `options` | `Record`<`string`, `unknown`\> | the arguments that will be passed to the   middleware |
 
 #### Returns
 
 `void`
 
+void
+
 #### Defined in
 
-[services/middleware.ts:60](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L60)
+[packages/medusa/src/services/middleware.ts:60](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L60)
 
 ___
 
@@ -77,20 +83,24 @@ ___
 
 ▸ **addPreAuthentication**(`middleware`, `options`): `void`
 
+Adds a middleware function to be called before authentication is completed.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `middleware` | `middlewareHandlerType` |  |
-| `options` | `Record`<`string`, `unknown`\> |  |
+| `middleware` | `middlewareHandlerType` | the middleware function. Should return a   middleware function. |
+| `options` | `Record`<`string`, `unknown`\> | the arguments that will be passed to the   middleware |
 
 #### Returns
 
 `void`
 
+void
+
 #### Defined in
 
-[services/middleware.ts:79](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L79)
+[packages/medusa/src/services/middleware.ts:79](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L79)
 
 ___
 
@@ -98,11 +108,13 @@ ___
 
 ▸ **addPreCartCreation**(`middleware`): `void`
 
+Adds a middleware function to be called before cart creation
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `middleware` | `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, `Record`<`string`, `any`\>\> |  |
+| `middleware` | `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, `Record`<`string`, `any`\>\> | the middleware function. Should return a   middleware function. |
 
 #### Returns
 
@@ -110,7 +122,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:96](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L96)
+[packages/medusa/src/services/middleware.ts:96](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L96)
 
 ___
 
@@ -131,7 +143,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:29](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L29)
+[packages/medusa/src/services/middleware.ts:29](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L29)
 
 ___
 
@@ -151,7 +163,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L34)
+[packages/medusa/src/services/middleware.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L34)
 
 ___
 
@@ -159,11 +171,13 @@ ___
 
 ▸ **usePostAuthentication**(`app`): `void`
 
+Adds post authentication middleware to an express app.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `app` | `Router` |  |
+| `app` | `Router` | the express app to add the middleware to |
 
 #### Returns
 
@@ -171,7 +185,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:106](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L106)
+[packages/medusa/src/services/middleware.ts:106](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L106)
 
 ___
 
@@ -179,11 +193,13 @@ ___
 
 ▸ **usePreAuthentication**(`app`): `void`
 
+Adds pre authentication middleware to an express app.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `app` | `Router` |  |
+| `app` | `Router` | the express app to add the middleware to |
 
 #### Returns
 
@@ -191,7 +207,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:117](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L117)
+[packages/medusa/src/services/middleware.ts:117](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L117)
 
 ___
 
@@ -205,7 +221,7 @@ ___
 
 #### Defined in
 
-[services/middleware.ts:123](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L123)
+[packages/medusa/src/services/middleware.ts:123](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L123)
 
 ___
 
@@ -213,16 +229,20 @@ ___
 
 ▸ **validateMiddleware_**(`fn`): `void`
 
+Validates a middleware function, throws if fn is not of type function.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `fn` | `unknown` |  |
+| `fn` | `unknown` | the middleware function to validate. |
 
 #### Returns
 
 `void`
 
+nothing if the middleware is a function
+
 #### Defined in
 
-[services/middleware.ts:43](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/middleware.ts#L43)
+[packages/medusa/src/services/middleware.ts:43](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/middleware.ts#L43)
