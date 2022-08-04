@@ -3,4 +3,4 @@
 "@medusajs/medusa": patch
 ---
 
-Only include payload on POST requests
+Only include payload on POST and DELETE requests
