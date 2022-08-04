@@ -5775,15 +5775,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "in": "path",
-            "name": "claim_id",
-            "required": true,
-            "description": "The id of the Claim.",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -7957,7 +7948,8 @@
             "name": "id",
             "description": "ID to search for.",
             "schema": {
-              "type": "string"
+              "type": "number",
+              "default": "10"
             }
           },
           {
@@ -8385,7 +8377,10 @@
             "required": true,
             "description": "The ID of the Price List that the Money Amounts that will be deleted belongs to.",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -8958,7 +8953,8 @@
             "name": "order",
             "description": "The field to sort items by.",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
