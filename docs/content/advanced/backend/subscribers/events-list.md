@@ -1685,6 +1685,18 @@ Object of the following format:
 
 This section holds all events related to sales channels.
 
+:::note
+
+As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag. To use Sales Channels, add the following environment variable:
+
+```bash
+MEDUSA_FF_SALES_CHANNELS=true
+```
+
+Then, run the [migrations](../migrations.md#how-to-run-migrations).
+
+:::
+
 <table class="reference-table">
 <thead>
 <tr>
