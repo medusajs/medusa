@@ -34,7 +34,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
     ikey: IdempotencyKey,
     context: RequestContext
   ): Promise<CartCompletionResponse> {
-    let idempotencyKey: IdempotencyKey = ikey
+    let idempotencyKey = ikey
 
     const idempotencyKeyService = this.idempotencyKeyService_
     const cartService = this.cartService_
@@ -42,7 +42,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
     const swapService = this.swapService_
 
     let inProgress = true
-    let err = false
+    let err: unknown = false
 
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
@@ -77,7 +77,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
             inProgress = false
             err = error
           } else {
-            idempotencyKey = key
+            idempotencyKey = key as IdempotencyKey
           }
           break
         }
@@ -118,7 +118,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
             inProgress = false
             err = error
           } else {
-            idempotencyKey = key
+            idempotencyKey = key as IdempotencyKey
           }
           break
         }
@@ -257,7 +257,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
             inProgress = false
             err = error
           } else {
-            idempotencyKey = key
+            idempotencyKey = key as IdempotencyKey
           }
           break
         }
