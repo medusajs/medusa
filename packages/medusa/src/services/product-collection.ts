@@ -113,7 +113,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
   async create(
     collection: CreateProductCollection
   ): Promise<ProductCollection> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
@@ -137,7 +137,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
     collectionId: string,
     update: UpdateProductCollection
   ): Promise<ProductCollection> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
@@ -164,7 +164,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    * @return empty promise
    */
   async delete(collectionId): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productCollectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
@@ -185,7 +185,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
     collectionId: string,
     productIds: string[]
   ): Promise<ProductCollection> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       try {
@@ -206,7 +206,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
     collectionId: string,
     productIds: string[]
   ): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
