@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`TotalsService`](TotalsService.md)\>
 
   ↳ **`TotalsService`**
 
@@ -20,13 +20,47 @@
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;TotalsService\&gt;.constructor
 
 #### Defined in
 
-[services/totals.ts:90](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L90)
+[services/totals.ts:99](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L99)
 
 ## Properties
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/totals.ts:93](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L93)
+
+___
 
 ### taxCalculationStrategy\_
 
@@ -34,7 +68,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/totals.ts:88](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L88)
+[services/totals.ts:97](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L97)
 
 ___
 
@@ -44,9 +78,56 @@ ___
 
 #### Defined in
 
-[services/totals.ts:87](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L87)
+[services/totals.ts:96](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L96)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/totals.ts:94](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L94)
 
 ## Methods
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
 
 ### calculateDiscount\_
 
@@ -68,7 +149,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:553](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L553)
+[services/totals.ts:567](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L567)
 
 ___
 
@@ -89,7 +170,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:595](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L595)
+[services/totals.ts:609](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L609)
 
 ___
 
@@ -110,7 +191,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:376](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L376)
+[services/totals.ts:390](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L390)
 
 ___
 
@@ -131,7 +212,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:959](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L959)
+[services/totals.ts:972](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L972)
 
 ___
 
@@ -151,7 +232,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:925](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L925)
+[services/totals.ts:938](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L938)
 
 ___
 
@@ -176,7 +257,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:853](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L853)
+[services/totals.ts:866](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L866)
 
 ___
 
@@ -196,7 +277,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:838](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L838)
+[services/totals.ts:851](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L851)
 
 ___
 
@@ -217,7 +298,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:646](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L646)
+[services/totals.ts:660](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L660)
 
 ___
 
@@ -237,7 +318,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:623](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L623)
+[services/totals.ts:637](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L637)
 
 ___
 
@@ -258,7 +339,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:608](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L608)
+[services/totals.ts:622](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L622)
 
 ___
 
@@ -279,7 +360,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:468](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L468)
+[services/totals.ts:482](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L482)
 
 ___
 
@@ -301,7 +382,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:807](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L807)
+[services/totals.ts:820](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L820)
 
 ___
 
@@ -323,7 +404,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:692](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L692)
+[services/totals.ts:706](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L706)
 
 ___
 
@@ -343,7 +424,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:129](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L129)
+[services/totals.ts:145](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L145)
 
 ___
 
@@ -364,7 +445,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:512](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L512)
+[services/totals.ts:526](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L526)
 
 ___
 
@@ -384,7 +465,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:453](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L453)
+[services/totals.ts:467](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L467)
 
 ___
 
@@ -406,7 +487,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:163](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L163)
+[services/totals.ts:179](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L179)
 
 ___
 
@@ -426,7 +507,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:271](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L271)
+[services/totals.ts:286](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L286)
 
 ___
 
@@ -447,7 +528,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:247](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L247)
+[services/totals.ts:262](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L262)
 
 ___
 
@@ -467,7 +548,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:144](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L144)
+[services/totals.ts:160](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L160)
 
 ___
 
@@ -488,7 +569,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:286](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L286)
+[services/totals.ts:301](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L301)
 
 ___
 
@@ -509,7 +590,7 @@ ___
 
 #### Defined in
 
-[services/totals.ts:106](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L106)
+[services/totals.ts:122](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L122)
 
 ___
 
@@ -529,4 +610,52 @@ ___
 
 #### Defined in
 
-[services/totals.ts:989](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/totals.ts#L989)
+[services/totals.ts:1002](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/totals.ts#L1002)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`TotalsService`](TotalsService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+[`TotalsService`](TotalsService.md)
+
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

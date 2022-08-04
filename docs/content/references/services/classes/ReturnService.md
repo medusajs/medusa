@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/return.js:9](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L9)
+[services/return.js:9](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L9)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/return.js:49](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L49)
+[services/return.js:49](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L49)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/return.js:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L47)
+[services/return.js:47](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L47)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/return.js:39](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L39)
+[services/return.js:39](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L39)
 
 ## Methods
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/return.js:134](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L134)
+[services/return.js:134](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L134)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/return.js:307](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L307)
+[services/return.js:307](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L307)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[services/return.js:450](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L450)
+[services/return.js:450](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L450)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[services/return.js:89](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L89)
+[services/return.js:89](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L89)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 #### Defined in
 
-[services/return.js:120](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L120)
+[services/return.js:120](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L120)
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-[services/return.js:524](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L524)
+[services/return.js:524](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L524)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[services/return.js:229](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L229)
+[services/return.js:229](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L229)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[services/return.js:248](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L248)
+[services/return.js:248](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L248)
 
 ___
 
@@ -245,7 +245,7 @@ ___
 
 #### Defined in
 
-[services/return.js:271](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L271)
+[services/return.js:271](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L271)
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
 #### Defined in
 
-[services/return.js:191](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L191)
+[services/return.js:191](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L191)
 
 ___
 
@@ -287,7 +287,7 @@ ___
 
 #### Defined in
 
-[services/return.js:161](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L161)
+[services/return.js:161](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L161)
 
 ___
 
@@ -307,4 +307,4 @@ ___
 
 #### Defined in
 
-[services/return.js:55](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/return.js#L55)
+[services/return.js:55](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/return.js#L55)

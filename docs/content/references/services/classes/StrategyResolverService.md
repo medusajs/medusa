@@ -27,7 +27,7 @@ TransactionBaseService&lt;
 
 #### Defined in
 
-[services/strategy-resolver.ts:17](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L17)
+[services/strategy-resolver.ts:17](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/strategy-resolver.ts#L17)
 
 ## Properties
 
@@ -61,7 +61,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/strategy-resolver.ts:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L14)
+[services/strategy-resolver.ts:14](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/strategy-resolver.ts#L14)
 
 ___
 
@@ -75,7 +75,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/strategy-resolver.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L15)
+[services/strategy-resolver.ts:15](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/strategy-resolver.ts#L15)
 
 ## Methods
 
@@ -108,7 +108,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[services/strategy-resolver.ts:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L22)
+[services/strategy-resolver.ts:22](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/strategy-resolver.ts#L22)
 
 ___
 
@@ -158,7 +158,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -182,4 +182,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

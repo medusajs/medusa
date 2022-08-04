@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`NoteService`](NoteService.md)\>
 
   ↳ **`NoteService`**
 
@@ -16,21 +16,89 @@
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;NoteService\&gt;.constructor
 
 #### Defined in
 
-[services/note.js:12](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L12)
+[services/note.ts:29](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L29)
 
 ## Properties
 
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+___
+
+### eventBus\_
+
+• `Protected` `Readonly` **eventBus\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[services/note.ts:27](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L27)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/note.ts:24](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L24)
+
+___
+
+### noteRepository\_
+
+• `Protected` `Readonly` **noteRepository\_**: typeof `NoteRepository`
+
+#### Defined in
+
+[services/note.ts:26](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L26)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/note.ts:25](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L25)
+
+___
+
 ### Events
 
-▪ `Static` **Events**: `Object`
+▪ `Static` `Readonly` **Events**: `Object`
 
 #### Type declaration
 
@@ -42,48 +110,82 @@ BaseService.constructor
 
 #### Defined in
 
-[services/note.js:6](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L6)
+[services/note.ts:18](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L18)
 
 ## Methods
 
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
+
 ### create
 
-▸ **create**(`data`, `config?`): `Promise`<`any`\>
+▸ **create**(`data`, `config?`): `Promise`<`Note`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `data` | `CreateNoteInput` |  |
-| `config` | `any` |  |
+| `config` | `Object` |  |
+| `config.metadata` | `Record`<`string`, `unknown`\> | - |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Note`\>
 
 #### Defined in
 
-[services/note.js:98](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L98)
+[services/note.ts:96](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L96)
 
 ___
 
 ### delete
 
-▸ **delete**(`noteId`): `Promise`<`any`\>
+▸ **delete**(`noteId`): `Promise`<`void`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `noteId` | `any` |  |
+| `noteId` | `string` |  |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[services/note.js:154](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L154)
+[services/note.ts:154](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L154)
 
 ___
 
@@ -95,11 +197,8 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` |  |
-| `config` | `Object` |  |
-| `config.relations` | `string`[] |  |
-| `config.skip` | `number` |  |
-| `config.take` | `number` |  |
+| `selector` | `Selector`<`Note`\> |  |
+| `config` | `FindConfig`<`Note`\> |  |
 
 #### Returns
 
@@ -107,7 +206,7 @@ ___
 
 #### Defined in
 
-[services/note.js:77](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L77)
+[services/note.ts:75](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L75)
 
 ___
 
@@ -120,7 +219,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `config` | `any` |  |
+| `config` | `FindConfig`<`Note`\> |  |
 
 #### Returns
 
@@ -128,45 +227,73 @@ ___
 
 #### Defined in
 
-[services/note.js:51](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L51)
+[services/note.ts:47](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L47)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
 ### update
 
-▸ **update**(`noteId`, `value`): `Promise`<`any`\>
+▸ **update**(`noteId`, `value`): `Promise`<`Note`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `noteId` | `any` |  |
-| `value` | `any` |  |
+| `noteId` | `string` |  |
+| `value` | `string` |  |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Note`\>
 
 #### Defined in
 
-[services/note.js:131](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L131)
+[services/note.ts:132](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/note.ts#L132)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`NoteService`](NoteService.md)
+▸ **withTransaction**(`transactionManager?`): [`NoteService`](NoteService.md)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `transactionManager` | `EntityManager` |  |
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`NoteService`](NoteService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/note.js:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/note.js#L30)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

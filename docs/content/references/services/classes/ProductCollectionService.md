@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:11](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L11)
+[services/product-collection.js:11](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L11)
 
 ## Methods
 
@@ -45,7 +45,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:170](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L170)
+[services/product-collection.js:170](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L170)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:104](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L104)
+[services/product-collection.js:104](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L104)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:152](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L152)
+[services/product-collection.js:152](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L152)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:206](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L206)
+[services/product-collection.js:206](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L206)
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:221](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L221)
+[services/product-collection.js:221](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L221)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:188](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L188)
+[services/product-collection.js:188](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L188)
 
 ___
 
@@ -169,7 +169,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:55](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L55)
+[services/product-collection.js:55](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L55)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:81](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L81)
+[services/product-collection.js:81](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L81)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:125](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L125)
+[services/product-collection.js:125](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L125)
 
 ___
 
@@ -231,4 +231,4 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:32](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-collection.js#L32)
+[services/product-collection.js:32](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-collection.js#L32)

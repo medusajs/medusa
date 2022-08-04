@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-variant.ts:52](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L52)
+[services/product-variant.ts:52](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L52)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-variant.ts:50](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L50)
+[services/product-variant.ts:50](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L50)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:45](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L45)
+[services/product-variant.ts:45](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L45)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:42](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L42)
+[services/product-variant.ts:42](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L42)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:48](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L48)
+[services/product-variant.ts:48](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L48)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L47)
+[services/product-variant.ts:47](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L47)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:49](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L49)
+[services/product-variant.ts:49](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L49)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:44](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L44)
+[services/product-variant.ts:44](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L44)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:43](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L43)
+[services/product-variant.ts:43](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L43)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:46](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L46)
+[services/product-variant.ts:46](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L46)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:36](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L36)
+[services/product-variant.ts:36](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L36)
 
 ## Methods
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:529](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L529)
+[services/product-variant.ts:529](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L529)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:183](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L183)
+[services/product-variant.ts:183](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L183)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:682](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L682)
+[services/product-variant.ts:682](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L682)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:556](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L556)
+[services/product-variant.ts:556](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L556)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:788](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L788)
+[services/product-variant.ts:788](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L788)
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:404](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L404)
+[services/product-variant.ts:404](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L404)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:624](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L624)
+[services/product-variant.ts:624](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L624)
 
 ___
 
@@ -301,7 +301,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:583](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L583)
+[services/product-variant.ts:583](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L583)
 
 ___
 
@@ -328,7 +328,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:749](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L749)
+[services/product-variant.ts:749](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L749)
 
 ___
 
@@ -349,7 +349,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:117](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L117)
+[services/product-variant.ts:117](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L117)
 
 ___
 
@@ -370,7 +370,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:147](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L147)
+[services/product-variant.ts:147](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L147)
 
 ___
 
@@ -391,7 +391,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:470](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L470)
+[services/product-variant.ts:470](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L470)
 
 ___
 
@@ -412,7 +412,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:717](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L717)
+[services/product-variant.ts:717](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L717)
 
 ___
 
@@ -433,7 +433,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:433](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L433)
+[services/product-variant.ts:433](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L433)
 
 ___
 
@@ -454,7 +454,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:288](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L288)
+[services/product-variant.ts:288](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L288)
 
 ___
 
@@ -476,7 +476,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:491](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L491)
+[services/product-variant.ts:491](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L491)
 
 ___
 
@@ -497,7 +497,7 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:366](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L366)
+[services/product-variant.ts:366](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L366)
 
 ___
 
@@ -517,4 +517,4 @@ ___
 
 #### Defined in
 
-[services/product-variant.ts:89](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-variant.ts#L89)
+[services/product-variant.ts:89](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-variant.ts#L89)

@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-type.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L16)
+[services/product-type.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L16)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-type.ts:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L14)
+[services/product-type.ts:14](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L14)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L15)
+[services/product-type.ts:15](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L15)
 
 ## Methods
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:72](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L72)
+[services/product-type.ts:72](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L72)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:88](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L88)
+[services/product-type.ts:88](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L88)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L47)
+[services/product-type.ts:47](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L47)
 
 ___
 
@@ -127,4 +127,4 @@ ___
 
 #### Defined in
 
-[services/product-type.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L23)
+[services/product-type.ts:23](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/product-type.ts#L23)

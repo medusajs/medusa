@@ -24,7 +24,7 @@ TransactionBaseService&lt;CartService\&gt;.constructor
 
 #### Defined in
 
-[services/cart.ts:107](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L107)
+[services/cart.ts:120](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L120)
 
 ## Properties
 
@@ -34,7 +34,7 @@ TransactionBaseService&lt;CartService\&gt;.constructor
 
 #### Defined in
 
-[services/cart.ts:87](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L87)
+[services/cart.ts:97](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L97)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:86](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L86)
+[services/cart.ts:96](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L96)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:103](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L103)
+[services/cart.ts:115](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L115)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:96](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L96)
+[services/cart.ts:108](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L108)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:98](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L98)
+[services/cart.ts:110](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L110)
 
 ___
 
@@ -104,7 +104,17 @@ ___
 
 #### Defined in
 
-[services/cart.ts:90](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L90)
+[services/cart.ts:100](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L100)
+
+___
+
+### featureFlagRouter\_
+
+• `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+
+#### Defined in
+
+[services/cart.ts:118](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L118)
 
 ___
 
@@ -114,7 +124,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:99](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L99)
+[services/cart.ts:111](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L111)
 
 ___
 
@@ -124,7 +134,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:102](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L102)
+[services/cart.ts:114](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L114)
 
 ___
 
@@ -134,7 +144,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:105](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L105)
+[services/cart.ts:117](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L117)
 
 ___
 
@@ -144,7 +154,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:89](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L89)
+[services/cart.ts:99](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L99)
 
 ___
 
@@ -154,7 +164,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:94](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L94)
+[services/cart.ts:106](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L106)
 
 ___
 
@@ -168,7 +178,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/cart.ts:82](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L82)
+[services/cart.ts:92](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L92)
 
 ___
 
@@ -178,7 +188,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:95](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L95)
+[services/cart.ts:107](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L107)
 
 ___
 
@@ -188,7 +198,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:88](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L88)
+[services/cart.ts:98](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L98)
 
 ___
 
@@ -198,7 +208,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:104](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L104)
+[services/cart.ts:116](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L116)
 
 ___
 
@@ -208,7 +218,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:92](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L92)
+[services/cart.ts:102](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L102)
 
 ___
 
@@ -218,7 +228,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:91](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L91)
+[services/cart.ts:101](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L101)
 
 ___
 
@@ -228,7 +238,17 @@ ___
 
 #### Defined in
 
-[services/cart.ts:93](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L93)
+[services/cart.ts:105](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L105)
+
+___
+
+### salesChannelService\_
+
+• `Protected` `Readonly` **salesChannelService\_**: [`SalesChannelService`](SalesChannelService.md)
+
+#### Defined in
+
+[services/cart.ts:104](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L104)
 
 ___
 
@@ -238,7 +258,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:85](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L85)
+[services/cart.ts:95](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L95)
 
 ___
 
@@ -248,7 +268,17 @@ ___
 
 #### Defined in
 
-[services/cart.ts:97](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L97)
+[services/cart.ts:109](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L109)
+
+___
+
+### storeService\_
+
+• `Protected` `Readonly` **storeService\_**: [`StoreService`](StoreService.md)
+
+#### Defined in
+
+[services/cart.ts:103](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L103)
 
 ___
 
@@ -258,7 +288,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:100](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L100)
+[services/cart.ts:112](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L112)
 
 ___
 
@@ -268,7 +298,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:101](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L101)
+[services/cart.ts:113](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L113)
 
 ___
 
@@ -282,7 +312,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/cart.ts:83](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L83)
+[services/cart.ts:93](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L93)
 
 ___
 
@@ -300,20 +330,22 @@ ___
 
 #### Defined in
 
-[services/cart.ts:76](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L76)
+[services/cart.ts:86](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L86)
 
 ## Methods
 
 ### addLineItem
 
-▸ **addLineItem**(`cartId`, `lineItem`): `Promise`<`Cart`\>
+▸ **addLineItem**(`cartId`, `lineItem`, `config?`): `Promise`<`Cart`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cartId` | `string` |  |
-| `lineItem` | `LineItem` |  |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `cartId` | `string` | `undefined` |  |
+| `lineItem` | `LineItem` | `undefined` |  |
+| `config` | `Object` | `undefined` |  |
+| `config.validateSalesChannels` | `boolean` | `true` | - |
 
 #### Returns
 
@@ -321,7 +353,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:533](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L533)
+[services/cart.ts:606](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L606)
 
 ___
 
@@ -343,7 +375,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1539](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1539)
+[services/cart.ts:1692](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1692)
 
 ___
 
@@ -364,7 +396,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:685](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L685)
+[services/cart.ts:773](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L773)
 
 ___
 
@@ -385,7 +417,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1056](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1056)
+[services/cart.ts:1209](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1209)
 
 ___
 
@@ -406,7 +438,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1020](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1020)
+[services/cart.ts:1173](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1173)
 
 ___
 
@@ -439,7 +471,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -460,7 +492,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1195](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1195)
+[services/cart.ts:1348](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1348)
 
 ___
 
@@ -480,7 +512,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:334](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L334)
+[services/cart.ts:343](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L343)
 
 ___
 
@@ -500,7 +532,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:898](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L898)
+[services/cart.ts:1051](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1051)
 
 ___
 
@@ -520,7 +552,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1940](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1940)
+[services/cart.ts:2093](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L2093)
 
 ___
 
@@ -542,7 +574,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:209](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L209)
+[services/cart.ts:228](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L228)
 
 ___
 
@@ -562,7 +594,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1855](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1855)
+[services/cart.ts:2008](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L2008)
 
 ___
 
@@ -583,7 +615,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1997](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1997)
+[services/cart.ts:2150](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L2150)
 
 ___
 
@@ -604,7 +636,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1447](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1447)
+[services/cart.ts:1600](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1600)
 
 ___
 
@@ -625,7 +657,27 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1643](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1643)
+[services/cart.ts:1796](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1796)
+
+___
+
+### getValidatedSalesChannel
+
+▸ `Protected` **getValidatedSalesChannel**(`salesChannelId?`): `Promise`<`SalesChannel`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `salesChannelId?` | `string` |
+
+#### Returns
+
+`Promise`<`SalesChannel`\>
+
+#### Defined in
+
+[services/cart.ts:446](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L446)
 
 ___
 
@@ -646,7 +698,28 @@ ___
 
 #### Defined in
 
-[services/cart.ts:259](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L259)
+[services/cart.ts:278](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L278)
+
+___
+
+### onSalesChannelChange
+
+▸ `Protected` **onSalesChannelChange**(`cart`, `newSalesChannelId`): `Promise`<`void`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cart` | `Cart` |  |
+| `newSalesChannelId` | `string` |  |
+
+#### Returns
+
+`Promise`<`void`\>
+
+#### Defined in
+
+[services/cart.ts:997](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L997)
 
 ___
 
@@ -666,7 +739,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1971](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1971)
+[services/cart.ts:2124](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L2124)
 
 ___
 
@@ -687,7 +760,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1495](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1495)
+[services/cart.ts:1648](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1648)
 
 ___
 
@@ -708,7 +781,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1116](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1116)
+[services/cart.ts:1269](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1269)
 
 ___
 
@@ -729,7 +802,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:437](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L437)
+[services/cart.ts:478](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L478)
 
 ___
 
@@ -751,7 +824,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:282](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L282)
+[services/cart.ts:296](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L296)
 
 ___
 
@@ -773,7 +846,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1898](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1898)
+[services/cart.ts:2051](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L2051)
 
 ___
 
@@ -794,7 +867,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1266](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1266)
+[services/cart.ts:1419](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1419)
 
 ___
 
@@ -814,7 +887,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1339](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1339)
+[services/cart.ts:1492](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1492)
 
 ___
 
@@ -836,7 +909,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1722](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1722)
+[services/cart.ts:1875](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1875)
 
 ___
 
@@ -860,7 +933,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -880,7 +953,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:158](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L158)
+[services/cart.ts:177](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L177)
 
 ___
 
@@ -901,7 +974,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:728](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L728)
+[services/cart.ts:816](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L816)
 
 ___
 
@@ -923,7 +996,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:931](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L931)
+[services/cart.ts:1084](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1084)
 
 ___
 
@@ -944,7 +1017,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:880](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L880)
+[services/cart.ts:1033](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1033)
 
 ___
 
@@ -966,7 +1039,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:620](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L620)
+[services/cart.ts:708](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L708)
 
 ___
 
@@ -987,7 +1060,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1160](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1160)
+[services/cart.ts:1313](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1313)
 
 ___
 
@@ -1009,7 +1082,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:971](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L971)
+[services/cart.ts:1124](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1124)
 
 ___
 
@@ -1031,7 +1104,28 @@ ___
 
 #### Defined in
 
-[services/cart.ts:1662](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L1662)
+[services/cart.ts:1815](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L1815)
+
+___
+
+### validateLineItem
+
+▸ `Protected` **validateLineItem**(`cart`, `lineItem`): `Promise`<`boolean`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cart` | `Cart` |  |
+| `lineItem` | `LineItem` |  |
+
+#### Returns
+
+`Promise`<`boolean`\>
+
+#### Defined in
+
+[services/cart.ts:575](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L575)
 
 ___
 
@@ -1052,7 +1146,7 @@ ___
 
 #### Defined in
 
-[services/cart.ts:503](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/cart.ts#L503)
+[services/cart.ts:544](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/cart.ts#L544)
 
 ___
 
@@ -1076,4 +1170,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

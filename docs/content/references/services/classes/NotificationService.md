@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`NotificationService`](NotificationService.md)\>
 
   ↳ **`NotificationService`**
 
@@ -16,107 +16,198 @@
 
 | Name | Type |
 | :------ | :------ |
-| `container` | `any` |
+| `container` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;NotificationService\&gt;.constructor
 
 #### Defined in
 
-[services/notification.js:9](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L9)
+[services/notification.ts:35](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L35)
 
 ## Properties
 
 ### attachmentGenerator\_
 
-• **attachmentGenerator\_**: `any`
+• `Protected` **attachmentGenerator\_**: `unknown` = `null`
 
 #### Defined in
 
-[services/notification.js:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L30)
+[services/notification.ts:27](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L27)
+
+___
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
 
 ___
 
 ### container\_
 
-• **container\_**: `any`
+• `Protected` `Readonly` **container\_**: `InjectedDependencies` & {}
 
 #### Defined in
 
-[services/notification.js:19](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L19)
+[services/notification.ts:28](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L28)
 
 ___
 
 ### logger\_
 
-• **logger\_**: `any`
+• `Protected` `Readonly` **logger\_**: `Logger`
 
 #### Defined in
 
-[services/notification.js:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L23)
+[services/notification.ts:31](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L31)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/notification.ts:23](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L23)
 
 ___
 
 ### notificationProviderRepository\_
 
-• **notificationProviderRepository\_**: `any`
+• `Protected` `Readonly` **notificationProviderRepository\_**: typeof `NotificationProviderRepository`
 
 #### Defined in
 
-[services/notification.js:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L27)
+[services/notification.ts:33](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L33)
+
+___
+
+### notificationRepository\_
+
+• `Protected` `Readonly` **notificationRepository\_**: typeof `NotificationRepository`
+
+#### Defined in
+
+[services/notification.ts:32](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L32)
 
 ___
 
 ### subscribers\_
 
-• **subscribers\_**: `Object`
+• `Protected` **subscribers\_**: `Object` = `{}`
 
 #### Defined in
 
-[services/notification.js:29](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L29)
+[services/notification.ts:26](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L26)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/notification.ts:24](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L24)
 
 ## Methods
 
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
+
 ### handleEvent
 
-▸ **handleEvent**(`eventName`, `data`): `Promise`<`any`\>
+▸ **handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| `Notification`[]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `eventName` | `string` |  |
-| `data` | `any` |  |
+| `data` | `Record`<`string`, `unknown`\> |  |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`undefined` \| `void` \| `Notification`[]\>
 
 #### Defined in
 
-[services/notification.js:166](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L166)
+[services/notification.ts:173](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L173)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Notification`[]
+▸ **list**(`selector`, `config?`): `Promise`<`Notification`[]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` |  |
-| `config` | `any` |  |
+| `selector` | `Selector`<`Notification`\> |  |
+| `config` | `FindConfig`<`Notification`\> |  |
 
 #### Returns
 
-`Notification`[]
+`Promise`<`Notification`[]\>
 
 #### Defined in
 
-[services/notification.js:84](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L84)
+[services/notification.ts:85](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L85)
 
 ___
 
@@ -128,7 +219,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `service` | `any` |  |
+| `service` | `unknown` |  |
 
 #### Returns
 
@@ -136,19 +227,19 @@ ___
 
 #### Defined in
 
-[services/notification.js:38](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L38)
+[services/notification.ts:61](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L61)
 
 ___
 
 ### registerInstalledProviders
 
-▸ **registerInstalledProviders**(`providers`): `Promise`<`void`\>
+▸ **registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `providers` | `string`[] |  |
+| `providerIds` | `string`[] |  |
 
 #### Returns
 
@@ -156,55 +247,55 @@ ___
 
 #### Defined in
 
-[services/notification.js:68](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L68)
+[services/notification.ts:69](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L69)
 
 ___
 
 ### resend
 
-▸ **resend**(`id`, `config?`): `Notification`
+▸ **resend**(`id`, `config?`): `Promise`<`Notification`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `config` | `any` |  |
+| `config` | `FindConfig`<`Notification`\> |  |
 
 #### Returns
 
-`Notification`
+`Promise`<`Notification`\>
 
 #### Defined in
 
-[services/notification.js:237](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L237)
+[services/notification.ts:253](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L253)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Notification`
+▸ **retrieve**(`id`, `config?`): `Promise`<`Notification`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `config` | `any` |  |
+| `config` | `FindConfig`<`Notification`\> |  |
 
 #### Returns
 
-`Notification`
+`Promise`<`Notification`\>
 
 #### Defined in
 
-[services/notification.js:101](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L101)
+[services/notification.ts:106](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L106)
 
 ___
 
 ### retrieveProvider\_
 
-▸ **retrieveProvider_**(`id`): `NotificationProvider`
+▸ `Protected` **retrieveProvider_**(`id`): `AbstractNotificationService`<`never`\>
 
 #### Parameters
 
@@ -214,33 +305,57 @@ ___
 
 #### Returns
 
-`NotificationProvider`
+`AbstractNotificationService`<`never`\>
 
 #### Defined in
 
-[services/notification.js:147](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L147)
+[services/notification.ts:154](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L154)
 
 ___
 
 ### send
 
-▸ **send**(`event`, `eventData`, `providerId`): `Notification`
+▸ **send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| `Notification`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `event` | `string` |  |
-| `eventData` | `any` |  |
+| `eventData` | `Record`<`string`, `unknown`\> |  |
 | `providerId` | `string` |  |
 
 #### Returns
 
-`Notification`
+`Promise`<`undefined` \| `Notification`\>
 
 #### Defined in
 
-[services/notification.js:195](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L195)
+[services/notification.ts:205](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L205)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -261,24 +376,28 @@ ___
 
 #### Defined in
 
-[services/notification.js:126](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L126)
+[services/notification.ts:133](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/notification.ts#L133)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`NotificationService`](NotificationService.md)
+▸ **withTransaction**(`transactionManager?`): [`NotificationService`](NotificationService.md)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `transactionManager` | `EntityManager` |  |
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`NotificationService`](NotificationService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/notification.js:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/notification.js#L47)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

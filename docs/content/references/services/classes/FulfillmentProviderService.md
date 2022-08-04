@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[services/fulfillment-provider.js:7](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L7)
+[services/fulfillment-provider.js:7](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L7)
 
 ## Methods
 
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[services/fulfillment-provider.js:79](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L79)
+[services/fulfillment-provider.js:79](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L79)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:64](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L64)
+[services/fulfillment-provider.js:64](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L64)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:74](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L74)
+[services/fulfillment-provider.js:74](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L74)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:59](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L59)
+[services/fulfillment-provider.js:59](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L59)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:89](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L89)
+[services/fulfillment-provider.js:89](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L89)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L23)
+[services/fulfillment-provider.js:23](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L23)
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L30)
+[services/fulfillment-provider.js:30](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L30)
 
 ___
 
@@ -173,7 +173,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:12](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L12)
+[services/fulfillment-provider.js:12](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L12)
 
 ___
 
@@ -195,7 +195,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:102](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L102)
+[services/fulfillment-provider.js:102](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L102)
 
 ___
 
@@ -215,7 +215,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:48](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L48)
+[services/fulfillment-provider.js:48](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L48)
 
 ___
 
@@ -237,7 +237,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:69](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L69)
+[services/fulfillment-provider.js:69](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L69)
 
 ___
 
@@ -257,4 +257,4 @@ ___
 
 #### Defined in
 
-[services/fulfillment-provider.js:84](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/fulfillment-provider.js#L84)
+[services/fulfillment-provider.js:84](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/fulfillment-provider.js#L84)

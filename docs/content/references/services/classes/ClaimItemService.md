@@ -24,7 +24,7 @@ BaseService&lt;ClaimItemService\&gt;.constructor
 
 #### Defined in
 
-[services/claim-item.ts:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L30)
+[services/claim-item.ts:30](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L30)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService&lt;ClaimItemService\&gt;.constructor
 
 #### Defined in
 
-[services/claim-item.ts:25](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L25)
+[services/claim-item.ts:25](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L25)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L23)
+[services/claim-item.ts:23](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L23)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:24](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L24)
+[services/claim-item.ts:24](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L24)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L22)
+[services/claim-item.ts:22](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L22)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:21](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L21)
+[services/claim-item.ts:21](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L21)
 
 ___
 
@@ -108,7 +108,7 @@ BaseService.manager\_
 
 #### Defined in
 
-[services/claim-item.ts:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L27)
+[services/claim-item.ts:27](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L27)
 
 ___
 
@@ -122,7 +122,7 @@ BaseService.transactionManager\_
 
 #### Defined in
 
-[services/claim-item.ts:28](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L28)
+[services/claim-item.ts:28](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L28)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L15)
+[services/claim-item.ts:15](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L15)
 
 ## Methods
 
@@ -173,7 +173,7 @@ BaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:49](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L49)
+[services/claim-item.ts:49](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L49)
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:214](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L214)
+[services/claim-item.ts:214](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L214)
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:233](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L233)
+[services/claim-item.ts:233](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L233)
 
 ___
 
@@ -259,7 +259,7 @@ BaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[services/claim-item.ts:132](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/claim-item.ts#L132)
+[services/claim-item.ts:132](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/services/claim-item.ts#L132)
 
 ___
 
@@ -304,4 +304,4 @@ BaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/6663a629/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
