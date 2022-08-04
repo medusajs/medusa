@@ -1,5 +1,6 @@
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockRepository } from "medusa-test-utils"
 import { discounts } from "./discount"
+import { Cart } from "../../models"
 
 export const carts = {
   emptyCart: {
@@ -459,3 +460,9 @@ export const CartModelMock = {
     return Promise.resolve(undefined)
   }),
 }
+
+export const cartRepositoryMock = MockRepository({
+  create: jest.fn().mockImplementation((data) => {
+    return Object.assign(new Cart(), data)
+  })
+});

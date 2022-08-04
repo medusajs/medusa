@@ -266,7 +266,6 @@ export default class EventBusService {
           this.logger_.warn(
             `An error occurred while processing ${eventName}: ${err}`
           )
-          console.error(err)
           return err
         })
       })

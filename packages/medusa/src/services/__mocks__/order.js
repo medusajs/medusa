@@ -56,6 +56,9 @@ export const orders = {
         items: {},
       },
     ],
+    status: "",
+    fulfillment_status: "",
+    payment_status: "",
   },
   processedOrder: {
     id: IdMap.getId("processed-order"),

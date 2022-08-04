@@ -5,19 +5,23 @@ import formatRegistrationName from "../utils/format-registration-name"
 import { ConfigModule, MedusaContainer } from "../types/global"
 
 type Options = {
-  container: MedusaContainer;
+  container: MedusaContainer
   configModule: ConfigModule
-  isTest?: boolean;
+  isTest?: boolean
 }
 
 /**
  * Registers all services in the services directory
+ * @returns void
  */
 export default ({ container, configModule, isTest }: Options): void => {
   const useMock =
     typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
 
-  const corePath = useMock ? "../services/__mocks__/*.js" : "../services/*.js"
+  const corePath = useMock
+    ? `../services/__mocks__/*.{ts,js}`
+    : "../services/*.js"
+
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })

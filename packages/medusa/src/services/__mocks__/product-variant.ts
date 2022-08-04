@@ -198,20 +198,20 @@ export const variants = {
 }
 
 export const ProductVariantServiceMock = {
-  withTransaction: function() {
+  withTransaction: function (): typeof ProductVariantServiceMock {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(testVariant)
   }),
-  publish: jest.fn().mockImplementation(_ => {
+  publish: jest.fn().mockImplementation((_) => {
     return Promise.resolve({
       id: IdMap.getId("publish"),
       name: "Product Variant",
       published: true,
     })
   }),
-  retrieve: jest.fn().mockImplementation(variantId => {
+  retrieve: jest.fn().mockImplementation((variantId) => {
     if (variantId === IdMap.getId("giftCardVar")) {
       return Promise.resolve(variants.giftCard)
     }
@@ -263,6 +263,7 @@ export const ProductVariantServiceMock = {
     if (variantId === "1_man") {
       return Promise.resolve(StockOf1Manage)
     }
+    return Promise.resolve(StockOf1Manage) // random default for ts "not all paths return a value"
   }),
   getRegionPrice: jest.fn().mockImplementation((variantId, regionId) => {
     if (variantId === IdMap.getId("eur-10-us-12")) {
@@ -299,19 +300,18 @@ export const ProductVariantServiceMock = {
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
   }),
-  list: jest.fn().mockImplementation(data => {
+  list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([testVariant])
   }),
   listAndCount: jest.fn().mockImplementation(({ product_id }) => {
     if (product_id === IdMap.getId("product1")) {
-      return Promise.resolve( [
-          [
-            { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
-            { id: IdMap.getId("2"), product_id: IdMap.getId("product1") }
-          ],
-          2
+      return Promise.resolve([
+        [
+          { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+          { id: IdMap.getId("2"), product_id: IdMap.getId("product1") },
         ],
-      )
+        2,
+      ])
     }
 
     return []

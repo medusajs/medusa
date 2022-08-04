@@ -53,7 +53,7 @@ export default async ({
     this: MedusaContainer,
     name: string,
     registration: typeof asFunction | typeof asValue
-  ) {
+  ): MedusaContainer {
     const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
@@ -179,7 +179,8 @@ export default async ({
   const searchActivity = Logger.activity("Initializing search engine indexing")
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
-  const searchAct = Logger.success(searchActivity, "Indexing event emitted") || {}
+  const searchAct =
+    Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
