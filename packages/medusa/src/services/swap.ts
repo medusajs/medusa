@@ -2,11 +2,52 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { isDefined } from "../utils"
 
+import { TransactionBaseService } from "../interfaces"
+import { EntityManager } from "typeorm"
+import LineItemAdjustmentService from "./line-item-adjustment"
+import {
+  CustomShippingOptionService,
+  EventBusService,
+  FulfillmentService,
+  InventoryService,
+  LineItemService,
+  OrderService,
+  PaymentProviderService,
+  ReturnService,
+  ShippingOptionService,
+  TotalsService,
+} from "./index"
+import CartService from "./cart"
+import { SwapRepository } from "../repositories/swap"
+import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+
+type InjectedProps = {
+  manager: EntityManager
+  transactionManager: EntityManager | undefined
+
+  swapRepository: typeof SwapRepository
+  shippingTaxLineRepo: typeof ShippingMethodTaxLineRepository
+  shippingMethodTaxLineRepository: typeof ShippingMethodTaxLineRepository
+
+  eventBusService: EventBusService
+  cartService: CartService
+  eventBus: EventBusService
+  orderService: OrderService
+  returnService: ReturnService
+  totalsService: TotalsService
+  lineItemService: LineItemService
+  inventoryService: InventoryService
+  fulfillmentService: FulfillmentService
+  shippingOptionService: ShippingOptionService
+  paymentProviderService: PaymentProviderService
+  lineItemAdjustmentService: LineItemAdjustmentService
+  customShippingOptionService: CustomShippingOptionService
+}
+
 /**
  * Handles swaps
- * @extends BaseService
  */
-class SwapService extends BaseService {
+class SwapService extends TransactionBaseService<SwapService> {
   static Events = {
     CREATED: "swap.created",
     RECEIVED: "swap.received",
@@ -18,6 +59,26 @@ class SwapService extends BaseService {
     REFUND_PROCESSED: "swap.refund_processed",
     FULFILLMENT_CREATED: "swap.fulfillment_created",
   }
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly swapRepository_ = SwapRepository
+  protected readonly shippingTaxLineRepo_ =
+    typeof ShippingMethodTaxLineRepository
+
+  protected readonly cartService_ = CartService
+  protected readonly eventBus_ = EventBusService
+  protected readonly orderService_ = OrderService
+  protected readonly returnService_ = ReturnService
+  protected readonly totalsService_ = TotalsService
+  protected readonly lineItemService_ = LineItemService
+  protected readonly inventoryService_ = InventoryService
+  protected readonly fulfillmentService_ = FulfillmentService
+  protected readonly shippingOptionService_ = ShippingOptionService
+  protected readonly paymentProviderService_ = PaymentProviderService
+  protected readonly lineItemAdjustmentService_ = LineItemAdjustmentService
+  protected readonly customShippingOptionService_ = CustomShippingOptionService
 
   constructor({
     manager,
@@ -35,81 +96,26 @@ class SwapService extends BaseService {
     inventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
-  }) {
-    super()
+  }: InjectedProps) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {SwapModel} */
     this.swapRepository_ = swapRepository
-
-    /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
-
-    /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @const {ReturnService} */
     this.returnService_ = returnService
-
-    /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
-
-    /** @private @const {CartService} */
     this.cartService_ = cartService
-
-    /** @private @const {FulfillmentService} */
     this.fulfillmentService_ = fulfillmentService
-
-    /** @private @const {OrderService} */
     this.orderService_ = orderService
-
-    /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
-
-    /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {typeof ShippingMethodTaxLineRepository} */
     this.shippingTaxLineRepo_ = shippingMethodTaxLineRepository
-
-    /** @private @const {CustomShippingOptionService} */
     this.customShippingOptionService_ = customShippingOptionService
-
-    /** @private @const {LineItemAdjustmentService} */
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new SwapService({
-      manager: transactionManager,
-      swapRepository: this.swapRepository_,
-      eventBusService: this.eventBus_,
-      cartService: this.cartService_,
-      totalsService: this.totalsService_,
-      returnService: this.returnService_,
-      lineItemService: this.lineItemService_,
-      shippingMethodTaxLineRepository: this.shippingTaxLineRepo_,
-      paymentProviderService: this.paymentProviderService_,
-      shippingOptionService: this.shippingOptionService_,
-      orderService: this.orderService_,
-      inventoryService: this.inventoryService_,
-      fulfillmentService: this.fulfillmentService_,
-      customShippingOptionService: this.customShippingOptionService_,
-      lineItemAdjustmentService: this.lineItemAdjustmentService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   transformQueryForCart_(config) {
