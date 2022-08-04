@@ -355,20 +355,22 @@ describe("/admin/return-reasons", () => {
 
       expect(nested_response.status).toEqual(200)
 
-      expect(nested_response.data.return_reasons).toEqual([
-        expect.objectContaining({
-          label: "Wrong size",
-          description: "Use this if the size was too big",
-          value: "wrong_size",
-          return_reason_children: expect.arrayContaining([
-            expect.objectContaining({
-              label: "Too Big",
-              description: "Use this if the size was too big",
-              value: "too_big",
-            }),
-          ]),
-        }),
-      ])
+      expect(nested_response.data.return_reasons).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            label: "Wrong size",
+            description: "Use this if the size was too big",
+            value: "wrong_size",
+            return_reason_children: expect.arrayContaining([
+              expect.objectContaining({
+                label: "Too Big",
+                description: "Use this if the size was too big",
+                value: "too_big",
+              }),
+            ]),
+          }),
+        ])
+      )
     })
 
     it("list return reasons", async () => {
@@ -401,11 +403,13 @@ describe("/admin/return-reasons", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.return_reasons).toEqual([
-        expect.objectContaining({
-          value: "too_big",
-        }),
-      ])
+      expect(response.data.return_reasons).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            value: "too_big",
+          }),
+        ])
+      )
     })
   })
 

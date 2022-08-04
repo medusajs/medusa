@@ -118,8 +118,7 @@ describe("/store/return-reasons", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.return_reasons).toEqual([
-        expect.objectContaining({
+      expect(response.data.return_reasons)flags: [SalesChannelFeatureFlag]
           id: rrId,
           value: "wrong_size",
           return_reason_children: [
