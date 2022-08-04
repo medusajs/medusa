@@ -18,6 +18,7 @@ export class Currency {
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax?: boolean
+}
 
 /**
  * @schema currency
