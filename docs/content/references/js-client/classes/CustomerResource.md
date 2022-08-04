@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:17](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L17)
+[medusa-js/src/resources/customers.ts:17](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L17)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:16](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L16)
+[medusa-js/src/resources/customers.ts:16](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L16)
 
 ## Methods
 
@@ -38,8 +38,8 @@ Creates a customer
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostCustomersReq`](internal.StorePostCustomersReq.md) | information of customer |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCustomersReq`](internal-32.StorePostCustomersReq.md) | information of customer |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
@@ -47,7 +47,7 @@ Creates a customer
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:25](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L25)
+[medusa-js/src/resources/customers.ts:25](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L25)
 
 ___
 
@@ -62,8 +62,8 @@ The token is not returned but should be sent out to the customer in an email.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostCustomersCustomerPasswordTokenReq`](internal.StorePostCustomersCustomerPasswordTokenReq.md) | info used to generate token |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCustomersCustomerPasswordTokenReq`](internal-32.StorePostCustomersCustomerPasswordTokenReq.md) | info used to generate token |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
@@ -71,13 +71,13 @@ The token is not returned but should be sent out to the customer in an email.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:100](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L100)
+[medusa-js/src/resources/customers.ts:100](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L100)
 
 ___
 
 ### listOrders
 
-▸ **listOrders**(`params?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListOrdersRes`](../modules/internal.md#storecustomerslistordersres)\>
+▸ **listOrders**(`params?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListOrdersRes`](../modules/internal-32.md#storecustomerslistordersres)\>
 
 Retrieve customer orders
 
@@ -85,16 +85,16 @@ Retrieve customer orders
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `params?` | [`StoreGetCustomersCustomerOrdersParams`](internal.StoreGetCustomersCustomerOrdersParams.md) | optional params to retrieve orders |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `params?` | [`StoreGetCustomersCustomerOrdersParams`](internal-32.StoreGetCustomersCustomerOrdersParams.md) | optional params to retrieve orders |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListOrdersRes`](../modules/internal.md#storecustomerslistordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListOrdersRes`](../modules/internal-32.md#storecustomerslistordersres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:65](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L65)
+[medusa-js/src/resources/customers.ts:65](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L65)
 
 ___
 
@@ -108,8 +108,8 @@ Resets customer password
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostCustomersCustomerPasswordTokenReq`](internal.StorePostCustomersCustomerPasswordTokenReq.md) | info used to reset customer password |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCustomersCustomerPasswordTokenReq`](internal-32.StorePostCustomersCustomerPasswordTokenReq.md) | info used to reset customer password |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
@@ -117,7 +117,7 @@ Resets customer password
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:85](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L85)
+[medusa-js/src/resources/customers.ts:85](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L85)
 
 ___
 
@@ -131,7 +131,7 @@ Retrieves the customer that is currently logged
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -139,7 +139,7 @@ Retrieves the customer that is currently logged
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:38](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L38)
+[medusa-js/src/resources/customers.ts:38](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L38)
 
 ___
 
@@ -153,8 +153,8 @@ Updates a customer
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostCustomersCustomerReq`](internal.StorePostCustomersCustomerReq.md) | information to update customer with |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCustomersCustomerReq`](internal-32.StorePostCustomersCustomerReq.md) | information to update customer with |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
@@ -162,4 +162,4 @@ Updates a customer
 
 #### Defined in
 
-[packages/medusa-js/src/resources/customers.ts:51](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/customers.ts#L51)
+[medusa-js/src/resources/customers.ts:51](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/customers.ts#L51)

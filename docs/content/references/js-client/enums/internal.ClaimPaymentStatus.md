@@ -6,32 +6,32 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ClaimPaymentStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### NA
 
-• **NA** = `"na"`
+• **NA** = ``"na"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:14
+medusa/dist/models/claim-order.d.ts:14
 
 ___
 
 ### NOT\_REFUNDED
 
-• **NOT\_REFUNDED** = `"not_refunded"`
+• **NOT\_REFUNDED** = ``"not_refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:15
+medusa/dist/models/claim-order.d.ts:15
 
 ___
 
 ### REFUNDED
 
-• **REFUNDED** = `"refunded"`
+• **REFUNDED** = ``"refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:16
+medusa/dist/models/claim-order.d.ts:16

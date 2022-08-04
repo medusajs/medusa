@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Address
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:37
+medusa/dist/models/address.d.ts:37
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:38
+medusa/dist/models/address.d.ts:38
 
 ___
 
@@ -40,7 +42,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:46
+medusa/dist/models/address.d.ts:46
 
 ___
 
@@ -50,7 +52,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:39
+medusa/dist/models/address.d.ts:39
 
 ___
 
@@ -60,7 +62,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:34
+medusa/dist/models/address.d.ts:34
 
 ___
 
@@ -70,7 +72,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:41
+medusa/dist/models/address.d.ts:41
 
 ___
 
@@ -80,13 +82,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:40
+medusa/dist/models/address.d.ts:40
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -94,7 +96,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -104,7 +106,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:33
+medusa/dist/models/address.d.ts:33
 
 ___
 
@@ -114,13 +116,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:32
+medusa/dist/models/address.d.ts:32
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -128,7 +130,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -138,7 +140,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:35
+medusa/dist/models/address.d.ts:35
 
 ___
 
@@ -152,7 +154,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -162,17 +164,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:36
+medusa/dist/models/address.d.ts:36
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:45
+medusa/dist/models/address.d.ts:45
 
 ___
 
@@ -182,7 +184,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:44
+medusa/dist/models/address.d.ts:44
 
 ___
 
@@ -192,7 +194,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:43
+medusa/dist/models/address.d.ts:43
 
 ___
 
@@ -202,13 +204,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/address.d.ts:42
+medusa/dist/models/address.d.ts:42
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -216,4 +218,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
