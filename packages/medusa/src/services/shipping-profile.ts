@@ -421,24 +421,6 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
   }
 
   /**
-   * Returns a list of all the productIds in the cart.
-   * @param cart - the cart to extract products from
-   * @return a list of product ids
-   */
-  getProfilesInCart_(cart: Cart): string[] {
-    return cart.items.reduce((acc, next) => {
-      // We may have line items that are not associated with a product
-      if (next.variant && next.variant.product) {
-        if (!acc.includes(next.variant.product.profile_id)) {
-          acc.push(next.variant.product.profile_id)
-        }
-      }
-
-      return acc
-    }, [] as string[])
-  }
-
-  /**
    * Finds all the shipping profiles that cover the products in a cart, and
    * validates all options that are available for the cart.
    * @param cart - the cart object to find shipping options for
@@ -446,7 +428,7 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
    */
   async fetchCartOptions(cart): Promise<ShippingOption[]> {
     return await this.atomicPhase_(async (manager) => {
-      const profileIds = this.getProfilesInCart_(cart)
+      const profileIds = this.getProfilesInCart(cart)
 
       const selector: Selector<ShippingOption> = {
         profile_id: profileIds,
@@ -507,6 +489,24 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
 
       return options.filter(Boolean) as ShippingOption[]
     })
+  }
+
+  /**
+   * Returns a list of all the productIds in the cart.
+   * @param cart - the cart to extract products from
+   * @return a list of product ids
+   */
+  protected getProfilesInCart(cart: Cart): string[] {
+    return cart.items.reduce((acc, next) => {
+      // We may have line items that are not associated with a product
+      if (next.variant && next.variant.product) {
+        if (!acc.includes(next.variant.product.profile_id)) {
+          acc.push(next.variant.product.profile_id)
+        }
+      }
+
+      return acc
+    }, [] as string[])
   }
 }
 
