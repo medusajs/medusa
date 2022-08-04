@@ -1,17 +1,17 @@
-name: Generate Reference
+name: Generate JS Client Reference
 on: 
   push:
     branches:
       - "master"
     paths:
-      - packages/medusa/src/services/**
+      - packages/medusa-js/src/resources/**
   pull_request:
     types:
       - closed
     branches:
       - "master"
     paths:
-      - packages/medusa/src/services/**
+      - packages/medusa-js/src/resources/**
 jobs:
   services:
     runs-on: ubuntu-latest
@@ -46,8 +46,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'docs: Generated Services Reference (automated)'
+          commit-message: 'docs: Generated JS Client Reference (automated)'
           base: 'master'
-          title: 'docs: Generated Services Reference (automated)'
+          title: 'docs: Generated JS Client Reference (automated)'
           labels: 'type: docs'
-          add-paths: docs/content/references/services/**
+          add-paths: docs/content/references/js-client/**
