@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-minio",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "MinIO server file connector for Medusa",
   "main": "index.js",
   "repository": {

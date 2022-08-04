@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.9
+
+### Patch Changes
+
+- [#1991](https://github.com/medusajs/medusa/pull/1991) [`3cde81748`](https://github.com/medusajs/medusa/commit/3cde817482df6c3cc8b931be30775fb34f85058a) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Adds missing `path` import
+
 ## 1.0.8
 
 ### Patch Changes
