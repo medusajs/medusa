@@ -16,7 +16,8 @@ import path from "path"
 import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
-  isBatchJobStrategy, isCartCompletionStrategy,
+  isBatchJobStrategy,
+  isCartCompletionStrategy,
   isFileService,
   isNotificationService,
   isPriceSelectionStrategy,

@@ -199,7 +199,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                         }
                       }
                     }
-                    // case "payment_link":
                     default: {
                       if (typeof cart.total === "undefined") {
                         return {
