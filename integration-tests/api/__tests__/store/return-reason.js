@@ -118,21 +118,24 @@ describe("/store/return-reasons", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.return_reasons)flags: [SalesChannelFeatureFlag]
-          id: rrId,
-          value: "wrong_size",
-          return_reason_children: [
-            expect.objectContaining({
-              id: rrId_1,
-              value: "too_big",
-            }),
-          ],
-        }),
-        expect.objectContaining({
-          id: rrId_2,
-          value: "too_big_1",
-        }),
-      ])
+      expect(response.data.return_reasons).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: rrId,
+            value: "wrong_size",
+            return_reason_children: [
+              expect.objectContaining({
+                id: rrId_1,
+                value: "too_big",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: rrId_2,
+            value: "too_big_1",
+          }),
+        ])
+      )
     })
   })
 })

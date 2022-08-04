@@ -398,12 +398,12 @@ describe("/admin/discounts", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toHaveLength(1)
-      expect(response.data.discounts).toEqual([
+      expect(response.data.discounts).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "dynamic-discount",
             code: "Dyn100",
-          }),
+          })
         ])
       )
     })
@@ -424,7 +424,7 @@ describe("/admin/discounts", () => {
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toHaveLength(1)
       expect(response.data.discounts).toEqual(
-        expect.arrayContaining([[
+        expect.arrayContaining([
           expect.objectContaining({
             id: "disabled-discount",
             code: "Dis100",
@@ -625,7 +625,7 @@ describe("/admin/discounts", () => {
       expect(response.status).toEqual(200)
       expect(response.data.discount.rule.conditions).toHaveLength(2)
       expect(response.data.discount.rule.conditions).toEqual(
-        expect.arrayContaining([[
+        expect.arrayContaining([
           expect.objectContaining({
             type: "products",
             operator: "in",
