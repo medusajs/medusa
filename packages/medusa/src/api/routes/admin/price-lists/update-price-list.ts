@@ -85,7 +85,7 @@ import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclu
  *                   description: The id of a customer group
  *                   type: string
  *        includes_tax:
- *             description: "[EXPERIMENTAL] Is the region tax inclusive or not"
+ *             description: "[EXPERIMENTAL] Is the price list tax inclusive or not"
  *             type: boolean
  * tags:
  *   - Price List

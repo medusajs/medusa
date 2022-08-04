@@ -35,10 +35,10 @@ import { FindConfig, FindPaginationParams } from "../../../../types/common"
  *             limit:
  *               description: The limit of the currency query.
  *               type: integer
- *             products:
+ *             currencies:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product"
+ *                 $ref: "#/components/schemas/currency"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const currencyService: CurrencyService = req.scope.resolve("currencyService")
