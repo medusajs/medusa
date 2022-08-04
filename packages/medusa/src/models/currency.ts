@@ -1,4 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Entity()
 export class Currency {
@@ -13,6 +15,9 @@ export class Currency {
 
   @Column()
   name: string
+
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
+  includes_tax?: boolean
 }
 
 /**
@@ -33,4 +38,7 @@ export class Currency {
  *  name:
  *    description: "The written name of the currency"
  *    type: string
+ *  includes_tax:
+ *    description: "[EXPERIMENTAL] Does the currency prices include tax"
+ *    type: boolean
  */

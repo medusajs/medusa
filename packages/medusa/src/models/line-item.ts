@@ -19,6 +19,8 @@ import { ProductVariant } from "./product-variant"
 import { LineItemAdjustment } from "./line-item-adjustment"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -116,6 +118,9 @@ export class LineItem extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
+  includes_tax: boolean
+
   refundable?: number | null
   subtotal?: number | null
   tax_total?: number | null
@@ -192,6 +197,9 @@ export class LineItem extends BaseEntity {
  *   shipped_quantity:
  *     description: "The quantity of the Line Item that has been shipped."
  *     type: integer
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
+ *     type: boolean
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string
