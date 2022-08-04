@@ -20,21 +20,22 @@ import {
 import CartService from "./cart"
 import { SwapRepository } from "../repositories/swap"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+import { buildQuery, validateId } from "../utils"
+import { FindSwapConfig } from "../types/swap"
 
 type InjectedProps = {
   manager: EntityManager
-  transactionManager: EntityManager | undefined
 
   swapRepository: typeof SwapRepository
   shippingTaxLineRepo: typeof ShippingMethodTaxLineRepository
   shippingMethodTaxLineRepository: typeof ShippingMethodTaxLineRepository
 
-  eventBusService: EventBusService
   cartService: CartService
   eventBus: EventBusService
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService
+  eventBusService: EventBusService
   lineItemService: LineItemService
   inventoryService: InventoryService
   fulfillmentService: FulfillmentService
@@ -63,22 +64,21 @@ class SwapService extends TransactionBaseService<SwapService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly swapRepository_ = SwapRepository
-  protected readonly shippingTaxLineRepo_ =
-    typeof ShippingMethodTaxLineRepository
+  protected readonly swapRepository_: typeof SwapRepository
+  protected readonly shippingTaxLineRepo_: typeof ShippingMethodTaxLineRepository
 
-  protected readonly cartService_ = CartService
-  protected readonly eventBus_ = EventBusService
-  protected readonly orderService_ = OrderService
-  protected readonly returnService_ = ReturnService
-  protected readonly totalsService_ = TotalsService
-  protected readonly lineItemService_ = LineItemService
-  protected readonly inventoryService_ = InventoryService
-  protected readonly fulfillmentService_ = FulfillmentService
-  protected readonly shippingOptionService_ = ShippingOptionService
-  protected readonly paymentProviderService_ = PaymentProviderService
-  protected readonly lineItemAdjustmentService_ = LineItemAdjustmentService
-  protected readonly customShippingOptionService_ = CustomShippingOptionService
+  protected readonly cartService_: CartService
+  protected readonly eventBus_: EventBusService
+  protected readonly orderService_: OrderService
+  protected readonly returnService_: ReturnService
+  protected readonly totalsService_: TotalsService
+  protected readonly lineItemService_: LineItemService
+  protected readonly inventoryService_: InventoryService
+  protected readonly fulfillmentService_: FulfillmentService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly paymentProviderService_: PaymentProviderService
+  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
+  protected readonly customShippingOptionService_: CustomShippingOptionService
 
   constructor({
     manager,
@@ -118,7 +118,13 @@ class SwapService extends TransactionBaseService<SwapService> {
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
   }
 
-  transformQueryForCart_(config) {
+  /**
+   * Transform find config object for retrieval.
+   *
+   * @param config parsed swap find config
+   * @return transformed find swap config
+   */
+  transformQueryForCart_(config): FindSwapConfig {
     let { select, relations } = config
 
     let cartSelects = null
@@ -185,10 +191,10 @@ class SwapService extends TransactionBaseService<SwapService> {
    * @param {Object} config - the configuration to retrieve the swap
    * @return {Promise<Swap>} the swap
    */
-  async retrieve(id, config = {}) {
+  async retrieve(id: string, config = {}) {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
-    const validatedId = this.validateId_(id)
+    const validatedId = validateId(id)
 
     const {
       cartSelects,
@@ -196,7 +202,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       ...newConfig
     } = this.transformQueryForCart_(config)
 
-    const query = this.buildQuery_({ id: validatedId }, newConfig)
+    const query = buildQuery({ id: validatedId }, newConfig)
 
     const rels = query.relations
     delete query.relations
