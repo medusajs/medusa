@@ -15,14 +15,14 @@ import {
 } from "../products"
 import { AdminPostPriceListsPriceListReq } from "./create-price-list"
 import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/price-lists", route)
 
-  if (featureFlagRouter.isFeatureEnabled(TaxInclusiveFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
     defaultAdminPriceListFields.push("includes_tax")
   }
 

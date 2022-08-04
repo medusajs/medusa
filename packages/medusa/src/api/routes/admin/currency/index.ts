@@ -5,14 +5,14 @@ import middlewares, {
 } from "../../../middlewares"
 import { AdminGetCurrenciesParams } from "./list-currencies"
 import { AdminPostCurrenciesCurrencyReq } from "./update-currency"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 export default (app) => {
   const route = Router()
   app.use(
     "/currencies",
-    isFeatureFlagEnabled(TaxInclusiveFeatureFlag.key),
+    isFeatureFlagEnabled(TaxInclusivePricingFeatureFlag.key),
     route
   )
 

@@ -11,7 +11,7 @@ import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 /**
  * @oas [post] /regions
  * operationId: "PostRegions"
@@ -116,7 +116,7 @@ export class AdminPostRegionsReq {
   @IsString({ each: true })
   countries: string[]
 
-  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsOptional(),
     IsBoolean(),
   ])

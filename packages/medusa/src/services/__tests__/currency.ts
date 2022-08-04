@@ -1,9 +1,9 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusService } from "../index"
 import { Currency } from "../../models"
-import CurrencyService from "../currency";
-import { FlagRouter } from "../../utils/flag-router";
-import TaxInclusiveFeatureFlag from "../../loaders/feature-flags/tax-inclusive";
+import CurrencyService from "../currency"
+import { FlagRouter } from "../../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 const currencyCode = IdMap.getId("currency-1")
 const eventBusServiceMock = {
@@ -30,7 +30,7 @@ describe('CurrencyService', () => {
     currencyRepository: currencyRepositoryMock,
     eventBusService: eventBusServiceMock,
     featureFlagRouter: new FlagRouter({
-      [TaxInclusiveFeatureFlag.key]: true
+      [TaxInclusivePricingFeatureFlag.key]: true
     }),
   })
 
