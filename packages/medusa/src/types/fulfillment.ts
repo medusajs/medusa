@@ -19,7 +19,7 @@ export type FulfillmentItemPartition = {
 }
 
 export type CreateShipmentConfig = {
-  metadata: Record<string, unknown>
+  metadata?: Record<string, unknown>
   no_notification?: boolean
 }
 

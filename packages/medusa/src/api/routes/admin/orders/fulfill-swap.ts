@@ -67,7 +67,7 @@ export default async (req, res) => {
 export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsBoolean()
   @IsOptional()

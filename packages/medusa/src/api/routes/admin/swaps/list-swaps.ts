@@ -1,8 +1,9 @@
+import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 
 import { SwapService } from "../../../../services"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { FindConfig } from "../../../../types/common"
 
 /**
  * @oas [get] /swaps
@@ -43,7 +44,7 @@ export default async (req, res) => {
 
   const selector = {}
 
-  const listConfig = {
+  const listConfig: FindConfig<Swap> = {
     skip: offset,
     take: limit,
     order: { created_at: "DESC" },

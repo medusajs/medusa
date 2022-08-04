@@ -11,8 +11,6 @@ import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method
 import { FindConfig, QuerySelector } from "../types/common"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import { SwapRepository } from "../repositories/swap"
-import { FindSwapConfig } from "../types/swap"
-import LineItem from "./line-item"
 import CartService from "./cart"
 import {
   CustomShippingOptionService,
@@ -30,6 +28,7 @@ import {
   Cart,
   CartType,
   FulfillmentItem,
+  LineItem,
   LineItemTaxLine,
   Order,
   ReturnItem,
@@ -39,6 +38,7 @@ import {
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
+import { CreateShipmentConfig } from "../types/fulfillment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -141,7 +141,7 @@ class SwapService extends TransactionBaseService<SwapService> {
    * @param config parsed swap find config
    * @return transformed find swap config
    */
-  transformQueryForCart_(config): FindSwapConfig & {
+  protected transformQueryForCart(config): FindConfig<Swap> & {
     cartSelects: FindConfig<Cart>["select"]
     cartRelations: FindConfig<Cart>["relations"]
   } {
@@ -214,7 +214,7 @@ class SwapService extends TransactionBaseService<SwapService> {
    */
   async retrieve(
     id: string,
-    config: FindSwapConfig = {}
+    config: Omit<FindConfig<Swap>, "select"> & { select?: string[] } = {}
   ): Promise<Swap | never> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
@@ -224,7 +224,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       cartSelects,
       cartRelations,
       ...newConfig
-    } = this.transformQueryForCart_(config)
+    } = this.transformQueryForCart(config)
 
     const query = buildQuery({ id: validatedId }, newConfig)
 
@@ -258,7 +258,7 @@ class SwapService extends TransactionBaseService<SwapService> {
    */
   async retrieveByCartId(
     cartId: string,
-    relations: FindSwapConfig["relations"] = []
+    relations: FindConfig<Swap>["relations"] = []
   ): Promise<Swap | never> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
@@ -285,7 +285,7 @@ class SwapService extends TransactionBaseService<SwapService> {
    */
   async list(
     selector: QuerySelector<Swap>,
-    config: FindSwapConfig = {
+    config: FindConfig<Swap> = {
       skip: 0,
       take: 50,
       order: { created_at: "DESC" },
@@ -351,12 +351,14 @@ class SwapService extends TransactionBaseService<SwapService> {
    */
   async create(
     order: Order,
-    returnItems: ReturnItem[],
-    additionalItems: LineItem,
-    returnShipping: ShippingMethod,
-    custom = {
-      no_notification: undefined,
-    }
+    returnItems: Partial<ReturnItem>[],
+    additionalItems?: Pick<LineItem, "variant_id" | "quantity">[],
+    returnShipping?: { option_id: string; price?: number },
+    custom: {
+      no_notification?: boolean
+      idempotency_key?: string
+      allow_backorder?: boolean
+    } = { no_notification: false }
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
     return await this.atomicPhase_(async (manager) => {
@@ -371,7 +373,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       }
 
       for (const item of returnItems) {
-        const line = await this.lineItemService_.retrieve(item.item_id, {
+        const line = await this.lineItemService_.retrieve(item.item_id!, {
           relations: ["order", "swap", "claim_order"],
         })
 
@@ -387,15 +389,19 @@ class SwapService extends TransactionBaseService<SwapService> {
         }
       }
 
-      const newItems = await Promise.all(
-        additionalItems.map(({ variant_id, quantity }) => {
-          return this.lineItemService_.generate(
-            variant_id,
-            order.region_id,
-            quantity
-          )
-        })
-      )
+      let newItems: LineItem[] = []
+
+      if (additionalItems) {
+        newItems = await Promise.all(
+          additionalItems.map(({ variant_id, quantity }) => {
+            return this.lineItemService_.generate(
+              variant_id,
+              order.region_id,
+              quantity
+            )
+          })
+        )
+      }
 
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
@@ -574,6 +580,7 @@ class SwapService extends TransactionBaseService<SwapService> {
 
       if ("shipping_address" in update) {
         // TODO: Check this method - why doesn't exist
+        // @ts-ignore
         await this.updateShippingAddress_(swap, update.shipping_address)
       }
 
@@ -933,7 +940,7 @@ class SwapService extends TransactionBaseService<SwapService> {
    */
   async createFulfillment(
     swapId: string,
-    config = {
+    config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,
     }
@@ -990,6 +997,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       swap.fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(
+          // @ts-ignore
           {
             ...swap,
             payments: swap.payment ? [swap.payment] : order.payments,
@@ -1103,8 +1111,8 @@ class SwapService extends TransactionBaseService<SwapService> {
   async createShipment(
     swapId: string,
     fulfillmentId: string,
-    trackingLinks: { tracking_number: string }[],
-    config = {
+    trackingLinks?: { tracking_number: string }[],
+    config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,
     }

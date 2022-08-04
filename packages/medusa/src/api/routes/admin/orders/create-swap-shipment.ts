@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               type: string
  *           no_notification:
- *             description: If set to true no notification will be send related to this Claim.
+ *             description: If set to true no notification will be sent related to this Claim.
  *             type: boolean
  * tags:
  *   - Swap
@@ -67,7 +67,7 @@ export default async (req, res) => {
       swap_id,
       validated.fulfillment_id,
       validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-      { no_notification: validated.no_notification }
+      { no_notification: !!validated.no_notification }
     )
   })
 
