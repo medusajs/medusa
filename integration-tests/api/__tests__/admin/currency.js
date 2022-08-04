@@ -20,7 +20,7 @@ describe("/admin/currencies", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_TAX_INCLUSIVE: true },
+      env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
       verbose: false,
     })
     dbConnection = connection

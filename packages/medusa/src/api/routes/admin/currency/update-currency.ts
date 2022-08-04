@@ -3,7 +3,7 @@ import { Currency } from "../../../../models"
 import { ExtendedRequest } from "../../../../types/global"
 import { CurrencyService } from "../../../../services"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
  * @oas [post] /currencies/:code
@@ -44,7 +44,7 @@ export default async (req: ExtendedRequest<Currency>, res) => {
 }
 
 export class AdminPostCurrenciesCurrencyReq {
-  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsOptional(),
     IsBoolean(),
   ])

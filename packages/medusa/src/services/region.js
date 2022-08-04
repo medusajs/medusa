@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { countries } from "../utils/countries"
-import TaxInclusiveFeatureFlag from "../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
  * Provides layer to manipulate regions.
@@ -112,7 +112,9 @@ class RegionService extends BaseService {
       const validated = await this.validateFields_(toValidate)
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof includes_tax !== "undefined") {
           regionObject.includes_tax = includes_tax
@@ -180,7 +182,9 @@ class RegionService extends BaseService {
       const validated = await this.validateFields_(toValidate, region.id)
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof includes_tax !== "undefined") {
           region.includes_tax = includes_tax

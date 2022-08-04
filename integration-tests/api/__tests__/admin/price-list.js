@@ -1436,7 +1436,7 @@ describe("/admin/price-lists", () => {
   })
 })
 
-describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
+describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/price-lists", () => {
   let medusaProcess
   let dbConnection
 
@@ -1444,7 +1444,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE] /admin/price-lists", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_TAX_INCLUSIVE: true },
+      env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
       verbose: false,
     })
     dbConnection = connection

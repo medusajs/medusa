@@ -13,7 +13,7 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
  * @oas [post] /shipping-options
@@ -175,7 +175,7 @@ export class AdminPostShippingOptionsReq {
   @IsOptional()
   metadata?: object
 
-  @FeatureFlagDecorators(TaxInclusiveFeatureFlag.key, [
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsOptional(),
     IsBoolean(),
   ])

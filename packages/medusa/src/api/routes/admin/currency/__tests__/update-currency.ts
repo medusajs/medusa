@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import TaxInclusiveFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive";
 import { currency, CurrencyServiceMock } from "../../../../../services/__mocks__/currency";
+import TaxInclusivePricingFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive-pricing";
 
 describe("POST /admin/currencies/:code", () => {
   let subject
@@ -20,7 +20,7 @@ describe("POST /admin/currencies/:code", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
-          flags: [TaxInclusiveFeatureFlag],
+          flags: [TaxInclusivePricingFeatureFlag],
         }
       )
   })

@@ -25,7 +25,7 @@ import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusiveFeatureFlag from "../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -126,7 +126,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
         ) {
           if (typeof includes_tax !== "undefined") {
             rawPriceList.includes_tax = includes_tax
@@ -170,7 +172,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const { prices, customer_groups, includes_tax, ...rest } = update
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof includes_tax !== "undefined") {
           priceList.includes_tax = includes_tax

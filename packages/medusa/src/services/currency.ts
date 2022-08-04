@@ -8,7 +8,7 @@ import EventBusService from "./event-bus"
 import { FindConfig, Selector } from "../types/common"
 import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusiveFeatureFlag from "../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -107,7 +107,9 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
       const currency = await this.retrieve(code)
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof data.includes_tax !== "undefined") {
           currency.includes_tax = data.includes_tax

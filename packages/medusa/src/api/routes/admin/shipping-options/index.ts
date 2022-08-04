@@ -3,14 +3,14 @@ import { ShippingOption } from "../../../.."
 import { PaginatedResponse, DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusiveFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/shipping-options", route)
 
-  if (featureFlagRouter.isFeatureEnabled(TaxInclusiveFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
     defaultFields.push("includes_tax")
   }
 

@@ -23,7 +23,7 @@ import { buildQuery, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusiveFeatureFlag from "../loaders/feature-flags/tax-inclusive"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -421,7 +421,9 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         data.price_type === "calculated" ? null : data.amount ?? null
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof data.includes_tax !== "undefined") {
           option.includes_tax = data.includes_tax
@@ -611,7 +613,9 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(TaxInclusiveFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
         if (typeof update.includes_tax !== "undefined") {
           option.includes_tax = update.includes_tax

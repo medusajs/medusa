@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { currency, CurrencyServiceMock } from "../../../../../services/__mocks__/currency";
-import TaxInclusiveFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive";
+import TaxInclusivePricingFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive-pricing";
 
 describe("GET /admin/currencies/", () => {
   describe("successfully list the currency", () => {
@@ -17,7 +17,7 @@ describe("GET /admin/currencies/", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
-          flags: [TaxInclusiveFeatureFlag],
+          flags: [TaxInclusivePricingFeatureFlag],
         }
       )
     })
