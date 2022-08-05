@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, FindManyOptions, ILike } from "typeorm"
+import { Brackets, EntityManager, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Product, ProductCollection } from "../models"
+import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
 import { ExtendedFindConfig, FindConfig, QuerySelector } from "../types/common"
 import {
   CreateProductCollection,
-  UpdateProductCollection,
+  UpdateProductCollection
 } from "../types/product-collection"
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
@@ -163,7 +163,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    * @param collectionId - id of collection to delete
    * @return empty promise
    */
-  async delete(collectionId): Promise<void> {
+  async delete(collectionId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const productCollectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
