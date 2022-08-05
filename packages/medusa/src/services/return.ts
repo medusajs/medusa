@@ -429,7 +429,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       const returnReasons = await this.returnReasonService_
         .withTransaction(manager)
         .list(
-          { id: [...returnLines.map((rl) => rl.reason_id)] },
+          { id: [...returnLines.map((rl) => rl.reason_id as string)] },
           { relations: ["return_reason_children"] }
         )
 
