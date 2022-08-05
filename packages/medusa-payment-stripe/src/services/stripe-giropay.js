@@ -5,11 +5,11 @@ class GiropayProviderService extends AbstractPaymentService {
   static identifier = "stripe-giropay"
 
   constructor(
-    { stripeProviderService, customerService, totalsService, regionService },
+    { stripeProviderService, customerService, totalsService, regionService, manager },
     options
   ) {
     super(
-      { stripeProviderService, customerService, totalsService, regionService },
+      { stripeProviderService, customerService, totalsService, regionService, manager },
       options
     )
 
@@ -38,6 +38,9 @@ class GiropayProviderService extends AbstractPaymentService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
   }
 
   /**
@@ -74,7 +77,7 @@ class GiropayProviderService extends AbstractPaymentService {
    * @return {Promise<object>} Stripe customer
    */
   async createCustomer(customer) {
-    return await this.stripeProviderService_.createCustomer(customer)
+    return await this.stripeProviderService_.withTransaction(this.manager_).createCustomer(customer)
   }
 
   /**
