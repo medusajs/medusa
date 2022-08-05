@@ -1,6 +1,6 @@
 import { MockManager, MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
-import TestPayService from "../__mocks__/test-pay"
+import { testPayServiceMock } from "../__mocks__/test-pay"
 
 describe("PaymentProviderService", () => {
   describe("retrieveProvider", () => {
