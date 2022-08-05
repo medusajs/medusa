@@ -17,32 +17,40 @@ import { CreateFulfillmentOrder } from "../types/fulfillment"
 import { FulfillmentOptions } from "../types/fulfillment-provider"
 import { MedusaContainer } from "../types/global"
 
+type NotificationProviderKey = `fp_${string}`
+
 type FulfillmentProviderContainer = MedusaContainer & {
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
   manager: EntityManager
+} & {
+  [key in `${NotificationProviderKey}`]: BaseFulfillmentService
 }
+
 /**
  * Helps retrive fulfillment providers
  */
 class FulfillmentProviderService extends TransactionBaseService<FulfillmentProviderService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
+
   protected readonly container_: FulfillmentProviderContainer
+
+  protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
 
   constructor(container: FulfillmentProviderContainer) {
     super(container)
 
-    const { manager } = container
+    const { manager, fulfillmentProviderRepository } = container
 
     this.container_ = container
     this.manager_ = manager
+    this.fulfillmentProviderRepository_ = fulfillmentProviderRepository
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const { fulfillmentProviderRepository } = this.container_
       const fulfillmentProviderRepo = manager.getCustomRepository(
-        fulfillmentProviderRepository
+        this.fulfillmentProviderRepository_
       )
       await fulfillmentProviderRepo.update({}, { is_installed: false })
 
@@ -54,8 +62,9 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const { manager, fulfillmentProviderRepository } = this.container_
-    const fpRepo = manager.getCustomRepository(fulfillmentProviderRepository)
+    const fpRepo = this.manager_.getCustomRepository(
+      this.fulfillmentProviderRepository_
+    )
 
     return await fpRepo.find({})
   }
@@ -79,8 +88,8 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   }
 
   /**
-   * @param {string} provider_id - the provider id
-   * @return {BaseFulfillmentService} the payment fulfillment provider
+   * @param provider_id - the provider id
+   * @return the payment fulfillment provider
    */
   retrieveProvider(provider_id: string): BaseFulfillmentService {
     try {
@@ -108,7 +117,7 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
     ) as unknown as Record<string, unknown>
   }
 
-  async canCalculate(option): Promise<boolean> {
+  async canCalculate(option: ShippingOption): Promise<boolean> {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.canCalculate(option.data) as unknown as boolean
   }
@@ -136,7 +145,7 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
   async calculatePrice(
     option: ShippingOption,
     data: Record<string, unknown>,
-    cart: Order | Cart | undefined
+    cart?: Order | Cart
   ): Promise<number> {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.calculatePrice(option.data, data, cart) as unknown as number
@@ -158,9 +167,9 @@ class FulfillmentProviderService extends TransactionBaseService<FulfillmentProvi
 
   /**
    * Fetches documents from the fulfillment provider
-   * @param {string} providerId - the id of the provider
-   * @param {object} fulfillmentData - the data relating to the fulfillment
-   * @param {"invoice" | "label"} documentType - the typ of
+   * @param providerId - the id of the provider
+   * @param fulfillmentData - the data relating to the fulfillment
+   * @param documentType - the typ of
    * @returns document to fetch
    */
   // TODO: consider removal in favor of "getReturnDocuments" and "getShipmentDocuments"

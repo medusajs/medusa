@@ -25,7 +25,7 @@ class BaseFulfillmentService extends BaseService {
    * customer.
    */
   getFulfillmentOptions() {
-    throw Error("validateFulfillmentData must be overridden by the child class")
+    throw Error("getFulfillmentOptions must be overridden by the child class")
   }
 
   /**
@@ -64,11 +64,11 @@ class BaseFulfillmentService extends BaseService {
   }
 
   createFulfillment(data, items, order, fulfillment) {
-    throw Error("createOrder must be overridden by the child class")
+    throw Error("createFulfillment must be overridden by the child class")
   }
 
   cancelFulfillment(fulfillment) {
-    throw Error("createOrder must be overridden by the child class")
+    throw Error("cancelFulfillment must be overridden by the child class")
   }
 
   /**
