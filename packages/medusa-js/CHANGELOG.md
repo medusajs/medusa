@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.5
+
+### Patch Changes
+
+- [#1985](https://github.com/medusajs/medusa/pull/1985) [`badda5233`](https://github.com/medusajs/medusa/commit/badda5233cf90bfcf974d60dcfa059f6396b0251) Thanks [@adrien2p](https://github.com/adrien2p)! - Only include payload on POST and DELETE requests
+
 ## 1.2.4
 
 ### Patch Changes
