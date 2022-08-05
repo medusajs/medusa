@@ -4,8 +4,8 @@ import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
 
-  constructor({ customerService, totalsService, regionService }, options) {
-    super({ customerService, totalsService, regionService }, options)
+  constructor({ customerService, totalsService, regionService, manager }, options) {
+    super({ customerService, totalsService, regionService, manager }, options)
 
     /**
      * Required Stripe options:
@@ -29,6 +29,9 @@ class StripeProviderService extends AbstractPaymentService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
   }
 
   /**
@@ -116,9 +119,11 @@ class StripeProviderService extends AbstractPaymentService {
       })
 
       if (customer.id) {
-        await this.customerService_.update(customer.id, {
-          metadata: { stripe_id: stripeCustomer.id },
-        })
+        await this.customerService_
+          .withTransaction(this.manager_)
+          .update(customer.id, {
+            metadata: { stripe_id: stripeCustomer.id },
+          })
       }
 
       return stripeCustomer
