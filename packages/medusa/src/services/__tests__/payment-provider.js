@@ -150,7 +150,7 @@ describe(`PaymentProviderService`, () => {
 
   it("successfully retrieves payment provider", () => {
     const provider = providerService.retrieveProvider("default_provider")
-    expect(provider.constructor.identifier).toEqual("test-pay")
+    expect(provider.identifier).toEqual("test-pay")
   })
 
   it("successfully creates session", async () => {
