@@ -20,7 +20,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:75
+medusa-js/node_modules/axios/index.d.ts:75
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:76
+medusa-js/node_modules/axios/index.d.ts:76
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:65
+medusa-js/node_modules/axios/index.d.ts:65
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:90
+medusa-js/node_modules/axios/index.d.ts:90
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:71
+medusa-js/node_modules/axios/index.d.ts:71
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:91
+medusa-js/node_modules/axios/index.d.ts:91
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:68
+medusa-js/node_modules/axios/index.d.ts:68
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:87
+medusa-js/node_modules/axios/index.d.ts:87
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:88
+medusa-js/node_modules/axios/index.d.ts:88
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:94
+medusa-js/node_modules/axios/index.d.ts:94
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:84
+medusa-js/node_modules/axios/index.d.ts:84
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:82
+medusa-js/node_modules/axios/index.d.ts:82
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:85
+medusa-js/node_modules/axios/index.d.ts:85
 
 ___
 
@@ -150,7 +150,55 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:64
+medusa-js/node_modules/axios/index.d.ts:64
+
+___
+
+### onDownloadProgress
+
+• `Optional` **onDownloadProgress**: (`progressEvent`: `any`) => `void`
+
+#### Type declaration
+
+▸ (`progressEvent`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `progressEvent` | `any` |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:81
+
+___
+
+### onUploadProgress
+
+• `Optional` **onUploadProgress**: (`progressEvent`: `any`) => `void`
+
+#### Type declaration
+
+▸ (`progressEvent`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `progressEvent` | `any` |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:80
 
 ___
 
@@ -160,7 +208,31 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:69
+medusa-js/node_modules/axios/index.d.ts:69
+
+___
+
+### paramsSerializer
+
+• `Optional` **paramsSerializer**: (`params`: `any`) => `string`
+
+#### Type declaration
+
+▸ (`params`): `string`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+
+##### Returns
+
+`string`
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:70
 
 ___
 
@@ -170,7 +242,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:89
+medusa-js/node_modules/axios/index.d.ts:89
 
 ___
 
@@ -180,7 +252,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:89
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:89
 
 ___
 
@@ -190,17 +262,17 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:77
+medusa-js/node_modules/axios/index.d.ts:77
 
 ___
 
 ### signal
 
-• `Optional` **signal**: [`AbortSignal`](../modules/internal.md#abortsignal)
+• `Optional` **signal**: `AbortSignal`
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:93
+medusa-js/node_modules/axios/index.d.ts:93
 
 ___
 
@@ -210,7 +282,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:86
+medusa-js/node_modules/axios/index.d.ts:86
 
 ___
 
@@ -220,7 +292,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:72
+medusa-js/node_modules/axios/index.d.ts:72
 
 ___
 
@@ -230,7 +302,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:73
+medusa-js/node_modules/axios/index.d.ts:73
 
 ___
 
@@ -240,7 +312,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:66
+medusa-js/node_modules/axios/index.d.ts:66
 
 ___
 
@@ -250,7 +322,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:67
+medusa-js/node_modules/axios/index.d.ts:67
 
 ___
 
@@ -260,7 +332,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:92
+medusa-js/node_modules/axios/index.d.ts:92
 
 ___
 
@@ -270,7 +342,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:63
+medusa-js/node_modules/axios/index.d.ts:63
 
 ___
 
@@ -280,7 +352,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:83
+medusa-js/node_modules/axios/index.d.ts:83
 
 ___
 
@@ -290,7 +362,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:74
+medusa-js/node_modules/axios/index.d.ts:74
 
 ___
 
@@ -300,7 +372,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:78
+medusa-js/node_modules/axios/index.d.ts:78
 
 ___
 
@@ -310,64 +382,4 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:79
-
-## Methods
-
-### onDownloadProgress
-
-▸ `Optional` **onDownloadProgress**(`progressEvent`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `progressEvent` | `any` |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:81
-
-___
-
-### onUploadProgress
-
-▸ `Optional` **onUploadProgress**(`progressEvent`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `progressEvent` | `any` |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:80
-
-___
-
-### paramsSerializer
-
-▸ `Optional` **paramsSerializer**(`params`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `params` | `any` |
-
-#### Returns
-
-`string`
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:70
+medusa-js/node_modules/axios/index.d.ts:79

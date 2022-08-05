@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+
 import { DiscountCondition } from "./discount-condition"
 import { Product } from "./product"
 
@@ -41,26 +42,34 @@ export class DiscountConditionProduct {
  * title: "Product Discount Condition"
  * description: "Associates a discount condition with a product"
  * x-resourceId: discount_condition_product
+ * required:
+ *   - product_id
+ *   - condition_id
  * properties:
  *   product_id:
- *     description: "The id of the Product"
+ *     description: "The ID of the Product Tag"
  *     type: string
+ *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   condition_id:
- *     description: "The id of the Discount Condition"
+ *     description: "The ID of the Discount Condition"
  *     type: string
+ *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
+ *   product:
+ *     description: Available if the relation `product` is expanded.
+ *     $ref: "#/components/schemas/product"
+ *   discount_condition:
+ *     description: Available if the relation `discount_condition` is expanded.
+ *     $ref: "#/components/schemas/discount_condition"
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
- *     format: date-time
- *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
- *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

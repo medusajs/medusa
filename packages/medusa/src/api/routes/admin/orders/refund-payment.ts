@@ -5,19 +5,20 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/refunds
+ * @oas [post] /orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -33,7 +34,7 @@ import { EntityManager } from "typeorm"
  *             description: The reason for the Refund.
  *             type: string
  *           note:
- *             description: A not with additional details about the Refund.
+ *             description: A note with additional details about the Refund.
  *             type: string
  *           no_notification:
  *             description: If set to true no notification will be send related to this Refund.

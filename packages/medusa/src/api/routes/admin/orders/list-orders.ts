@@ -1,9 +1,10 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { pick } from "lodash"
-import { OrderService } from "../../../../services"
+
 import { AdminListOrdersSelector } from "../../../../types/orders"
-import { Type } from "class-transformer"
 import { Order } from "../../../../models"
+import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
+import { pick } from "lodash"
 
 /**
  * @oas [get] /orders
@@ -12,24 +13,144 @@ import { Order } from "../../../../models"
  * description: "Retrieves a list of Orders"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching orders.
- *   - (query) id {string} Id of the order to search for.
- *   - (query) status {string[]} Status to search for.
- *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
- *   - (query) payment_status {string[]} Payment status to search for.
- *   - (query) display_id {string} Display id to search for.
+ *   - (query) q {string} Query used for searching orders by shipping address first name, orders' email, and orders' display ID
+ *   - (query) id {string} ID of the order to search for.
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Status to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [pending, completed, archived, canceled, requires_action]
+ *   - in: query
+ *     name: fulfillment_status
+ *     style: form
+ *     explode: false
+ *     description: Fulfillment status to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [not_fulfilled, fulfilled, partially_fulfilled, shipped, partially_shipped, canceled, returned, partially_returned, requires_action]
+ *   - in: query
+ *     name: payment_status
+ *     style: form
+ *     explode: false
+ *     description: Payment status to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [captured, awaiting, not_paid, refunded, partially_refunded, canceled, requires_action]
+ *   - (query) display_id {string} Display ID to search for.
  *   - (query) cart_id {string} to search for.
  *   - (query) customer_id {string} to search for.
  *   - (query) email {string} to search for.
- *   - (query) region_id {string} to search for.
- *   - (query) currency_code {string} to search for.
+ *   - in: query
+ *     name: region_id
+ *     style: form
+ *     explode: false
+ *     description: Regions to search orders by
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of a Region.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a Region.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: Currency code to search for
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  *   - (query) tax_rate {string} to search for.
- *   - (query) sales_chanel_id {string[]} to retrieve products in.
- *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many orders to skip in the result.
- *   - (query) limit {string} Limit the number of orders returned.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting orders were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting orders were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: canceled_at
+ *     description: Date comparison for when resulting orders were canceled.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: Filter by Sales Channels
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         description: The ID of a Sales Channel
+ *   - (query) offset=0 {integer} How many orders to skip before the results.
+ *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:
@@ -45,6 +166,15 @@ import { Order } from "../../../../models"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/order"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")

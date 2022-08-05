@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:81
+medusa/dist/types/common.d.ts:108
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:82
+medusa/dist/types/common.d.ts:109
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:83
+medusa/dist/types/common.d.ts:110
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:80
+medusa/dist/types/common.d.ts:107
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:84
+medusa/dist/types/common.d.ts:111
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:76
+medusa/dist/types/common.d.ts:103
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:77
+medusa/dist/types/common.d.ts:104
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:79
+medusa/dist/types/common.d.ts:106
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:78
+medusa/dist/types/common.d.ts:105
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:86
+medusa/dist/types/common.d.ts:113
 
 ___
 
@@ -114,4 +114,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:85
+medusa/dist/types/common.d.ts:112

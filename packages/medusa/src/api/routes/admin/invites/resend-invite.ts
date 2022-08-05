@@ -8,9 +8,9 @@ import { EntityManager } from "typeorm"
  * description: "Resends an Invite by triggering the 'invite' created event again"
  * x-authenticated: true
  * parameters:
- *   - (path) invite_id=* {string} The id of the Invite
+ *   - (path) invite_id=* {string} The ID of the Invite
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

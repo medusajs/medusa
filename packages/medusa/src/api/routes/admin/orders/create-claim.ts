@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { ClaimReason, ClaimType } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -10,13 +10,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { ClaimTypeValue } from "../../../../types/claim"
-import { ClaimType, ClaimReason } from "../../../../models"
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -25,7 +26,7 @@ import { EntityManager } from "typeorm"
  * description: "Creates a Claim."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -44,9 +45,12 @@ import { EntityManager } from "typeorm"
  *             description: The Claim Items that the Claim will consist of.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item that will be claimed.
+ *                   description: The ID of the Line Item that will be claimed.
  *                   type: string
  *                 quantity:
  *                   description: The number of items that will be returned
@@ -71,55 +75,59 @@ import { EntityManager } from "typeorm"
  *                   description: A list of image URL's that will be associated with the Claim
  *                   items:
  *                     type: string
- *            return_shipping:
+ *           return_shipping:
  *              description: Optional details for the Return Shipping Method, if the items are to be sent back.
  *              type: object
  *              properties:
  *                option_id:
  *                  type: string
- *                  description: The id of the Shipping Option to create the Shipping Method from.
+ *                  description: The ID of the Shipping Option to create the Shipping Method from.
  *                price:
  *                  type: integer
  *                  description: The price to charge for the Shipping Method.
- *            additional_items:
+ *           additional_items:
  *              description: The new items to send to the Customer when the Claim type is Replace.
  *              type: array
  *              items:
+ *                required:
+ *                  - variant_id
+ *                  - quantity
  *                properties:
  *                  variant_id:
- *                    description: The id of the Product Variant to ship.
+ *                    description: The ID of the Product Variant to ship.
  *                    type: string
  *                  quantity:
  *                    description: The quantity of the Product Variant to ship.
  *                    type: integer
- *            shipping_methods:
+ *           shipping_methods:
  *              description: The Shipping Methods to send the additional Line Items with.
  *              type: array
  *              items:
  *                 properties:
  *                   id:
- *                     description: The id of an existing Shipping Method
+ *                     description: The ID of an existing Shipping Method
  *                     type: string
  *                   option_id:
- *                     description: The id of the Shipping Option to create a Shipping Method from
+ *                     description: The ID of the Shipping Option to create a Shipping Method from
  *                     type: string
  *                   price:
  *                     description: The price to charge for the Shipping Method
  *                     type: integer
- *            shipping_address:
+ *           shipping_address:
  *              type: object
  *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *            refund_amount:
+ *              $ref: "#/components/schemas/address"
+ *           refund_amount:
  *              description: The amount to refund the Customer when the Claim type is `refund`.
  *              type: integer
- *            no_notification:
+ *           no_notification:
  *              description: If set to true no notification will be send related to this Claim.
  *              type: boolean
- *            metadata:
+ *           metadata:
  *              description: An optional set of key-value pairs to hold additional information.
  *              type: object
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

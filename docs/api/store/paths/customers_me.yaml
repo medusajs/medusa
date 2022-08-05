@@ -1,0 +1,64 @@
+get:
+  operationId: GetCustomersCustomer
+  summary: Retrieves a Customer
+  description: >-
+    Retrieves a Customer - the Customer must be logged in to retrieve their
+    details.
+  x-authenticated: true
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+post:
+  operationId: PostCustomersCustomer
+  summary: Update Customer details
+  description: Updates a Customer's saved details.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            first_name:
+              description: The Customer's first name.
+              type: string
+            last_name:
+              description: The Customer's last name.
+              type: string
+            billing_address:
+              description: The Address to be used for billing purposes.
+              anyOf:
+                - $ref: ../components/schemas/address.yaml
+                  description: The full billing address object
+                - type: string
+                  description: The ID of an existing billing address
+            password:
+              description: The Customer's password.
+              type: string
+            phone:
+              description: The Customer's phone number.
+              type: string
+            email:
+              description: The email of the customer.
+              type: string
+            metadata:
+              description: Metadata about the customer.
+              type: object
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml

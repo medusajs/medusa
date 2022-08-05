@@ -1,0 +1,80 @@
+post:
+  operationId: PostCustomerGroupsGroupCustomersBatch
+  summary: 'Add a list of customers to a customer group '
+  description: Adds a list of customers, represented by id's, to a customer group.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the customer group.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - customer_ids
+          properties:
+            customer_ids:
+              description: The ids of the customers to add
+              type: array
+              items:
+                required:
+                  - id
+                properties:
+                  id:
+                    description: ID of the customer
+                    type: string
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer_group:
+                $ref: ../components/schemas/customer_group.yaml
+delete:
+  operationId: DeleteCustomerGroupsGroupCustomerBatch
+  summary: 'Remove a list of customers from a customer group '
+  description: Removes a list of customers, represented by id's, from a customer group.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the customer group.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - customer_ids
+          properties:
+            customer_ids:
+              description: The ids of the customers to remove
+              type: array
+              items:
+                required:
+                  - id
+                properties:
+                  id:
+                    description: ID of the customer
+                    type: string
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer_group:
+                $ref: ../components/schemas/customer_group.yaml

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:11
+medusa/dist/models/shipping-option-requirement.d.ts:11
 
 ___
 
@@ -24,17 +24,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:13
+medusa/dist/models/shipping-option-requirement.d.ts:13
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: [`Date`](../modules/internal.md#date)
+• **deleted\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:12
+medusa/dist/models/shipping-option-requirement.d.ts:12
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:7
+medusa/dist/models/shipping-option-requirement.d.ts:7
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:9
+medusa/dist/models/shipping-option-requirement.d.ts:9
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:8
+medusa/dist/models/shipping-option-requirement.d.ts:8
 
 ___
 
@@ -74,4 +74,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option-requirement.d.ts:10
+medusa/dist/models/shipping-option-requirement.d.ts:10

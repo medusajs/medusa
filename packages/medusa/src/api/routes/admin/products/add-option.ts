@@ -1,6 +1,7 @@
-import { IsString } from "class-validator"
+import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, PricingService } from "../../../../services"
+
+import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -11,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * description: "Adds a Product Option to a Product"
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:

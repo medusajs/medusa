@@ -1,0 +1,42 @@
+delete:
+  operationId: DeletePriceListsPriceListVariantsVariantPrices
+  summary: Delete all the prices related to a specific variant in a price list
+  description: Delete all the prices related to a specific variant in a price list
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: >-
+        The ID of the Price List that the Money Amounts that will be deleted
+        belongs to.
+      schema:
+        type: string
+    - in: path
+      name: variant_id
+      required: true
+      description: The ID of the variant from which the money amount will be deleted.
+      schema:
+        type: string
+  tags:
+    - Price List
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              ids:
+                type: array
+                description: The price ids that have been deleted.
+                items:
+                  type: string
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: money-amount
+              deleted:
+                type: boolean
+                description: Whether or not the items were deleted.
+                default: true

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:10
+medusa/dist/models/line-item-adjustment.d.ts:10
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:12
+medusa/dist/models/line-item-adjustment.d.ts:12
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:7
+medusa/dist/models/line-item-adjustment.d.ts:7
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:8
+medusa/dist/models/line-item-adjustment.d.ts:8
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:9
+medusa/dist/models/line-item-adjustment.d.ts:9
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:4
+medusa/dist/models/line-item-adjustment.d.ts:4
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:6
+medusa/dist/models/line-item-adjustment.d.ts:6
 
 ___
 
@@ -84,14 +84,14 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:5
+medusa/dist/models/line-item-adjustment.d.ts:5
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/line-item-adjustment.d.ts:11
+medusa/dist/models/line-item-adjustment.d.ts:11

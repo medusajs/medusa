@@ -1,5 +1,6 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [get] /regions/{id}
@@ -8,7 +9,7 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  * description: "Retrieves a Region."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * tags:
  *   - Region
  * responses:

@@ -1,21 +1,72 @@
-import { EntityManager } from "typeorm"
-import { IsString, IsArray, IsOptional } from "class-validator"
-import { omit } from "lodash"
+import { IsArray, IsOptional, IsString } from "class-validator"
+import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
-import { pickByConfig, getRetrieveConfig } from "./utils/get-query-config"
+import { EntityManager } from "typeorm"
+import { IsType } from "../../../../utils/validators/is-type"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
+import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /tax-rates/:id
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
  * description: "Updates a Tax Rate"
+ * parameters:
+ *   - in: query
+ *     name: fields
+ *     description: "Which fields should be included in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: expand
+ *     description: "Which fields should be expanded and retrieved in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           code:
+ *             type: string
+ *             description: "A code to identify the tax type by"
+ *           name:
+ *             type: string
+ *             description: "A human friendly name for the tax"
+ *           region_id:
+ *             type: string
+ *             description: "The ID of the Region that the rate belongs to"
+ *           rate:
+ *             type: number
+ *             description: "The numeric rate to charge"
+ *           products:
+ *             type: array
+ *             description: "The IDs of the products associated with this tax rate"
+ *             items:
+ *               type: string
+ *           shipping_options:
+ *             type: array
+ *             description: "The IDs of the shipping options associated with this tax rate"
+ *             items:
+ *               type: string
+ *           product_types:
+ *             type: array
+ *             description: "The IDs of the types of products associated with this tax rate"
+ *             items:
+ *               type: string
  * tags:
- *   - Tax Rates
+ *   - Tax Rate
  * responses:
  *   200:
  *     description: OK
@@ -24,9 +75,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *         schema:
  *           properties:
  *             tax_rate:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/tax_rate"
  */
 export default async (req, res) => {
   const value = await validator(AdminPostTaxRatesTaxRateReq, req.body)

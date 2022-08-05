@@ -1,0 +1,63 @@
+post:
+  operationId: PostUsers
+  summary: Create a User
+  description: Creates a User
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - email
+            - password
+          properties:
+            email:
+              description: The Users email.
+              type: string
+              format: email
+            first_name:
+              description: The name of the User.
+              type: string
+            last_name:
+              description: The name of the User.
+              type: string
+            role:
+              description: Userrole assigned to the user.
+              type: string
+              enum:
+                - admin
+                - member
+                - developer
+            password:
+              description: The Users password.
+              type: string
+              format: password
+  tags:
+    - User
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              user:
+                $ref: ../components/schemas/user.yaml
+get:
+  operationId: GetUsers
+  summary: Retrieve all users
+  description: Retrieves all users.
+  x-authenticated: true
+  tags:
+    - User
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: ../components/schemas/user.yaml

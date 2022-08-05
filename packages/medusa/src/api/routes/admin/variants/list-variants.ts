@@ -1,12 +1,13 @@
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminVariantFields, defaultAdminVariantRelations } from "./"
 
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { FindConfig } from "../../../../types/common"
 import { ProductVariant } from "../../../../models/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
-import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
-import { IsInt, IsOptional, IsString } from "class-validator"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /variants
  * operationId: "GetVariants"
@@ -15,8 +16,8 @@ import { IsInt, IsOptional, IsString } from "class-validator"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching variants.
- *   - (query) offset {string} How many variants to skip in the result.
- *   - (query) limit {string} Limit the number of variants returned.
+ *   - (query) offset=0 {integer} How many variants to skip in the result.
+ *   - (query) limit=20 {integer} Limit the number of variants returned.
  * tags:
  *   - Product Variant
  * responses:
@@ -30,6 +31,15 @@ import { IsInt, IsOptional, IsString } from "class-validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product_variant"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const variantService: ProductVariantService = req.scope.resolve(

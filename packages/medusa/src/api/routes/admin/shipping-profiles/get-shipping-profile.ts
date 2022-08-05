@@ -2,6 +2,7 @@ import {
   defaultAdminShippingProfilesFields,
   defaultAdminShippingProfilesRelations,
 } from "."
+
 import { ShippingProfileService } from "../../../../services"
 
 /**
@@ -11,7 +12,7 @@ import { ShippingProfileService } from "../../../../services"
  * description: "Retrieves a Shipping Profile."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
+ *   - (path) id=* {string} The ID of the Shipping Profile.
  * tags:
  *   - Shipping Profile
  * responses:

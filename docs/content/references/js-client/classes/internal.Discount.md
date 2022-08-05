@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Discount
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,13 +22,13 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:5
+medusa/dist/models/discount.d.ts:5
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -34,13 +36,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -48,17 +50,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
 ### ends\_at
 
-• **ends\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **ends\_at**: ``null`` \| `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:13
+medusa/dist/models/discount.d.ts:13
 
 ___
 
@@ -72,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -82,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:9
+medusa/dist/models/discount.d.ts:9
 
 ___
 
@@ -92,17 +94,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:6
+medusa/dist/models/discount.d.ts:6
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:18
+medusa/dist/models/discount.d.ts:18
 
 ___
 
@@ -112,7 +114,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:11
+medusa/dist/models/discount.d.ts:11
 
 ___
 
@@ -122,7 +124,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:10
+medusa/dist/models/discount.d.ts:10
 
 ___
 
@@ -132,7 +134,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:15
+medusa/dist/models/discount.d.ts:15
 
 ___
 
@@ -142,7 +144,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:8
+medusa/dist/models/discount.d.ts:8
 
 ___
 
@@ -152,23 +154,23 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:7
+medusa/dist/models/discount.d.ts:7
 
 ___
 
 ### starts\_at
 
-• **starts\_at**: [`Date`](../modules/internal.md#date)
+• **starts\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:12
+medusa/dist/models/discount.d.ts:12
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -176,7 +178,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ___
 
@@ -186,7 +188,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:19
+medusa/dist/models/discount.d.ts:19
 
 ___
 
@@ -196,7 +198,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:17
+medusa/dist/models/discount.d.ts:17
 
 ___
 
@@ -206,7 +208,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:16
+medusa/dist/models/discount.d.ts:16
 
 ___
 
@@ -216,4 +218,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/discount.d.ts:14
+medusa/dist/models/discount.d.ts:14

@@ -1,5 +1,5 @@
 /**
- * @oas [get] /auth
+ * @oas [delete] /auth
  * operationId: "DeleteAuth"
  * summary: "Delete Session"
  * x-authenticated: true

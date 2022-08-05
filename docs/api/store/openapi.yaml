@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Medusa Storefront API
+  description: >-
+    API reference for Medusa's Storefront endpoints. All endpoints are prefixed
+    with `/store`.
+  license:
+    name: MIT
+    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+tags:
+  - name: Auth
+    description: >-
+      Auth endpoints that allow authorization of customers and manages their
+      sessions.
+  - name: Cart
+    description: Cart endpoints that allow handling carts in Medusa.
+    x-resourceId: cart
+  - name: Collection
+    description: Collection endpoints that allow handling collections in Medusa.
+    x-resourceId: product_collection
+  - name: Customer
+    description: Customer endpoints that allow handling customers in Medusa.
+    x-resourceId: customer
+  - name: Gift Card
+    description: Gift Card endpoints that allow handling gift cards in Medusa.
+    x-resourceId: gift_card
+  - name: Order
+    description: Order endpoints that allow handling orders in Medusa.
+    x-resourceId: order
+  - name: Product
+    description: Product endpoints that allow handling products in Medusa.
+    x-resourceId: product
+  - name: Product Variant
+    description: Product Variant endpoints that allow handling product variants in Medusa.
+    x-resourceId: product_variant
+  - name: Region
+    description: Region endpoints that allow handling regions in Medusa.
+    x-resourceId: region
+  - name: Return Reason
+    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    x-resourceId: return_reason
+  - name: Return
+    description: Return endpoints that allow handling returns in Medusa.
+    x-resourceId: return
+  - name: Shipping Option
+    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+    x-resourceId: shipping_option
+  - name: Swap
+    description: Swap endpoints that allow handling swaps in Medusa.
+    x-resourceId: swap
+servers:
+  - url: https://api.medusa-commerce.com/store
+paths:
+  /auth:
+    $ref: paths/auth.yaml
+  /auth/{email}:
+    $ref: paths/auth_{email}.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
+  /gift-cards/{code}:
+    $ref: paths/gift-cards_{code}.yaml
+  /carts/{id}/shipping-methods:
+    $ref: paths/carts_{id}_shipping-methods.yaml
+  /carts/{id}/taxes:
+    $ref: paths/carts_{id}_taxes.yaml
+  /carts/{id}/complete:
+    $ref: paths/carts_{id}_complete.yaml
+  /carts:
+    $ref: paths/carts.yaml
+  /carts/{id}/line-items:
+    $ref: paths/carts_{id}_line-items.yaml
+  /carts/{id}/payment-sessions:
+    $ref: paths/carts_{id}_payment-sessions.yaml
+  /carts/{id}/discounts/{code}:
+    $ref: paths/carts_{id}_discounts_{code}.yaml
+  /carts/{id}/line-items/{line_id}:
+    $ref: paths/carts_{id}_line-items_{line_id}.yaml
+  /carts/{id}/payment-sessions/{provider_id}:
+    $ref: paths/carts_{id}_payment-sessions_{provider_id}.yaml
+  /carts/{id}:
+    $ref: paths/carts_{id}.yaml
+  /carts/{id}/payment-sessions/{provider_id}/refresh:
+    $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
+  /carts/{id}/payment-session:
+    $ref: paths/carts_{id}_payment-session.yaml
+  /customers/me/addresses:
+    $ref: paths/customers_me_addresses.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/me/addresses/{address_id}:
+    $ref: paths/customers_me_addresses_{address_id}.yaml
+  /customers/me:
+    $ref: paths/customers_me.yaml
+  /customers/me/payment-methods:
+    $ref: paths/customers_me_payment-methods.yaml
+  /customers/me/orders:
+    $ref: paths/customers_me_orders.yaml
+  /customers/password-token:
+    $ref: paths/customers_password-token.yaml
+  /customers/password-reset:
+    $ref: paths/customers_password-reset.yaml
+  /orders/cart/{cart_id}:
+    $ref: paths/orders_cart_{cart_id}.yaml
+  /orders/{id}:
+    $ref: paths/orders_{id}.yaml
+  /orders:
+    $ref: paths/orders.yaml
+  /products/{id}:
+    $ref: paths/products_{id}.yaml
+  /products:
+    $ref: paths/products.yaml
+  /products/search:
+    $ref: paths/products_search.yaml
+  /regions/{id}:
+    $ref: paths/regions_{id}.yaml
+  /regions:
+    $ref: paths/regions.yaml
+  /return-reasons/{id}:
+    $ref: paths/return-reasons_{id}.yaml
+  /return-reasons:
+    $ref: paths/return-reasons.yaml
+  /returns:
+    $ref: paths/returns.yaml
+  /shipping-options:
+    $ref: paths/shipping-options.yaml
+  /shipping-options/{cart_id}:
+    $ref: paths/shipping-options_{cart_id}.yaml
+  /swaps:
+    $ref: paths/swaps.yaml
+  /swaps/{cart_id}:
+    $ref: paths/swaps_{cart_id}.yaml
+  /variants/{variant_id}:
+    $ref: paths/variants_{variant_id}.yaml
+  /variants:
+    $ref: paths/variants.yaml

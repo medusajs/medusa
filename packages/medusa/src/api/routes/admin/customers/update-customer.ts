@@ -6,13 +6,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomersRelations } from "."
-import { Type } from "class-transformer"
-import { FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { defaultAdminCustomersRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/{id}
@@ -21,7 +22,9 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Customer."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ *   - (path) id=* {string} The ID of the Customer.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,7 +32,8 @@ import { EntityManager } from "typeorm"
  *         properties:
  *           email:
  *             type: string
- *             description: The Customer's email. Only providable if user not registered.
+ *             description: The Customer's email.
+ *             format: email
  *           first_name:
  *             type: string
  *             description:  The Customer's first name.
@@ -42,19 +46,20 @@ import { EntityManager } from "typeorm"
  *           password:
  *             type: string
  *             description: The Customer's password.
+ *             format: password
  *           groups:
  *             type: array
- *             description: A list of customer groups to which the customer belongs.
  *             items:
  *               required:
  *                 - id
  *               properties:
  *                 id:
- *                   description: The id of a customer group
+ *                   description: The ID of a customer group
  *                   type: string
+ *             description: A list of customer groups to which the customer belongs.
  *           metadata:
+ *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
- *             description: Metadata for the customer.
  * tags:
  *   - Customer
  * responses:

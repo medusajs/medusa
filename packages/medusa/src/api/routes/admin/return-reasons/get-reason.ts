@@ -2,6 +2,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 
 /**
@@ -11,7 +12,7 @@ import { ReturnReasonService } from "../../../../services"
  * description: "Retrieves a Return Reason."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Return Reason.
+ *   - (path) id=* {string} The ID of the Return Reason.
  * tags:
  *   - Return Reason
  * responses:

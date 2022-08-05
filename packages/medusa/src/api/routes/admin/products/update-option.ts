@@ -1,5 +1,6 @@
-import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { IsString } from "class-validator"
 import { ProductService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -11,14 +12,14 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Product Option"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) option_id=* {string} The id of the Product Option.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) option_id=* {string} The ID of the Product Option.
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - title
  *       schema:
+ *         required:
+ *           - title
  *         properties:
  *           title:
  *             description: "The title of the Product Option"
