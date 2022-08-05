@@ -532,7 +532,6 @@ class OrderService extends TransactionBaseService<OrderService> {
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
-        // Throw if payment method does not exist
         if (!payment) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -540,13 +539,10 @@ class OrderService extends TransactionBaseService<OrderService> {
           )
         }
 
-        /* The force cast here is necessary until the rethink of the payment API
-           It has been discussed with seb that we still pass a payment here */
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
           .getStatus(payment)
 
-        // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
