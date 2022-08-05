@@ -8,7 +8,6 @@ import { RefundRepository } from "../repositories/refund"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { buildQuery } from "../utils"
 import { FindConfig, Selector } from "../types/common"
-import { AwilixContainer } from "awilix"
 import {
   Cart,
   Payment,
@@ -18,12 +17,17 @@ import {
   Refund,
 } from "../models"
 
+type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
   manager: EntityManager
   paymentSessionRepository: typeof PaymentSessionRepository
   paymentProviderRepository: typeof PaymentProviderRepository
   paymentRepository: typeof PaymentRepository
   refundRepository: typeof RefundRepository
+} & {
+  [key in `${PaymentProviderKey}`]:
+    | AbstractPaymentService<never>
+    | typeof BasePaymentService
 }
 
 /**
@@ -32,7 +36,7 @@ type InjectedDependencies = {
 export default class PaymentProviderService extends TransactionBaseService<PaymentProviderService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly container_: AwilixContainer<InjectedDependencies>["cradle"]
+  protected readonly container_: InjectedDependencies
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
