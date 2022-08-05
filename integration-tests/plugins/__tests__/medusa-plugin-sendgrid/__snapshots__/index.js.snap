@@ -1901,7 +1901,7 @@ Object {
       },
     ],
     "metadata": Object {},
-    "no_notification": null,
+    "no_notification": false,
     "order_id": null,
     "provider_id": "test-ful",
     "shipped_at": Any<Date>,
