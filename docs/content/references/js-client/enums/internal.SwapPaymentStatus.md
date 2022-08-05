@@ -6,92 +6,92 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).SwapPaymentStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### AWAITING
 
-• **AWAITING** = `"awaiting"`
+• **AWAITING** = ``"awaiting"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:19
+medusa/dist/models/swap.d.ts:19
 
 ___
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:22
+medusa/dist/models/swap.d.ts:22
 
 ___
 
 ### CAPTURED
 
-• **CAPTURED** = `"captured"`
+• **CAPTURED** = ``"captured"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:20
+medusa/dist/models/swap.d.ts:20
 
 ___
 
 ### CONFIRMED
 
-• **CONFIRMED** = `"confirmed"`
+• **CONFIRMED** = ``"confirmed"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:21
+medusa/dist/models/swap.d.ts:21
 
 ___
 
 ### DIFFERENCE\_REFUNDED
 
-• **DIFFERENCE\_REFUNDED** = `"difference_refunded"`
+• **DIFFERENCE\_REFUNDED** = ``"difference_refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:23
+medusa/dist/models/swap.d.ts:23
 
 ___
 
 ### NOT\_PAID
 
-• **NOT\_PAID** = `"not_paid"`
+• **NOT\_PAID** = ``"not_paid"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:18
+medusa/dist/models/swap.d.ts:18
 
 ___
 
 ### PARTIALLY\_REFUNDED
 
-• **PARTIALLY\_REFUNDED** = `"partially_refunded"`
+• **PARTIALLY\_REFUNDED** = ``"partially_refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:24
+medusa/dist/models/swap.d.ts:24
 
 ___
 
 ### REFUNDED
 
-• **REFUNDED** = `"refunded"`
+• **REFUNDED** = ``"refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:25
+medusa/dist/models/swap.d.ts:25
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/swap.d.ts:26
+medusa/dist/models/swap.d.ts:26

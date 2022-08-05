@@ -8,7 +8,15 @@ import { EntityManager } from "typeorm"
  * description: "Removes a Currency Code from the available currencies."
  * x-authenticated: true
  * parameters:
- *   - (path) code=* {string} The 3 character ISO currency code.
+ *   - in: path
+ *     name: code
+ *     required: true
+ *     description: The 3 character ISO currency code.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  * tags:
  *   - Store
  * responses:

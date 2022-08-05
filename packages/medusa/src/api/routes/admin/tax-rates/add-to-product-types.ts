@@ -1,5 +1,5 @@
-import { pickByConfig, getRetrieveConfig } from "./utils/get-query-config"
 import { IsArray, IsOptional } from "class-validator"
+import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
@@ -11,9 +11,40 @@ import { EntityManager } from "typeorm"
  * operationId: "PostTaxRatesTaxRateProductTypes"
  * summary: "Add Tax Rate to Product Types"
  * description: "Associates a Tax Rate with a list of Product Types"
+ * parameters:
+ *   - in: query
+ *     name: fields
+ *     description: "Which fields should be included in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: expand
+ *     description: "Which fields should be expanded and retrieved in the result."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - product_types
+ *         properties:
+ *           product_types:
+ *             type: array
+ *             description: "The IDs of the types of products to associate with this tax rate"
+ *             items:
+ *               type: string
  * tags:
- *   - Tax Rates
+ *   - Tax Rate
  * responses:
  *   200:
  *     description: OK
@@ -22,9 +53,7 @@ import { EntityManager } from "typeorm"
  *         schema:
  *           properties:
  *             tax_rate:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/tax_rate"
  */
 export default async (req, res) => {
   const value = await validator(

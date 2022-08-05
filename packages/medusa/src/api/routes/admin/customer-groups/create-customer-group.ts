@@ -1,8 +1,9 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import { CustomerGroupService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { Request, Response } from "express"
+
+import { CustomerGroupService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customer-groups
@@ -14,7 +15,7 @@ import { EntityManager } from "typeorm"
  *   - (body) name=* {string} Name of the customer group
  *   - (body) metadata {object} Metadata for the customer.
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

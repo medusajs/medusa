@@ -1,0 +1,74 @@
+get:
+  operationId: GetRegions
+  summary: List Regions
+  description: Retrieves a list of Regions.
+  parameters:
+    - in: query
+      name: offset
+      description: How many regions to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of regions returned.
+      schema:
+        type: integer
+        default: 100
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting regions were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting regions were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              regions:
+                type: array
+                items:
+                  $ref: ../components/schemas/region.yaml

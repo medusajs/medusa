@@ -1,4 +1,8 @@
-import { Type } from "class-transformer"
+import {
+  EventBusService,
+  OrderService,
+  ReturnService,
+} from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -7,25 +11,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import {
-  EventBusService,
-  OrderService,
-  ReturnService,
-} from "../../../../services"
 import { OrdersReturnItem } from "../../../../types/orders"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/returns
+ * @oas [post] /orders/{id}/return
  * operationId: "PostOrdersOrderReturns"
  * summary: "Request a Return"
  * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -37,12 +38,15 @@ import { EntityManager } from "typeorm"
  *             description: The Line Items that will be returned.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item.
+ *                   description: The ID of the Line Item.
  *                   type: string
  *                 reason_id:
- *                   description: The id of the Return Reason to use.
+ *                   description: The ID of the Return Reason to use.
  *                   type: string
  *                 note:
  *                   description: An optional note with information about the Return.
@@ -56,13 +60,17 @@ import { EntityManager } from "typeorm"
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  *               price:
  *                 type: integer
  *                 description: The price to charge for the Shipping Method.
+ *           note:
+ *             description: An optional note with information about the Return.
+ *             type: string
  *           receive_now:
  *             description: A flag to indicate if the Return should be registerd as received immediately.
  *             type: boolean
+ *             default: false
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the requested Return.
  *             type: boolean
@@ -70,6 +78,7 @@ import { EntityManager } from "typeorm"
  *             description: The amount to refund.
  *             type: integer
  * tags:
+ *   - Return
  *   - Order
  * responses:
  *   200:

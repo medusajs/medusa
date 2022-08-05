@@ -1,0 +1,62 @@
+post:
+  operationId: PostAuth
+  summary: Authenticate a User
+  x-authenticated: false
+  description: Logs a User in and authorizes them to manage Store settings.
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              description: The User's email.
+            password:
+              type: string
+              description: The User's password.
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              user:
+                $ref: ../components/schemas/user.yaml
+    '401':
+      description: The user doesn't exist or the credentials are incorrect.
+delete:
+  operationId: DeleteAuth
+  summary: Delete Session
+  x-authenticated: true
+  description: Deletes the current session for the logged in user.
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+get:
+  operationId: GetAuth
+  summary: Get Session
+  x-authenticated: true
+  description: Gets the currently logged in User.
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              user:
+                $ref: ../components/schemas/user.yaml
+    '400':
+      description: An error occurred.

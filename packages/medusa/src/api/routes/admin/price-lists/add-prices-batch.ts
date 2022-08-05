@@ -1,9 +1,10 @@
-import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -14,44 +15,47 @@ import { EntityManager } from "typeorm"
  * description: "Batch update prices for a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List to update prices for.
+ *   - (path) id=* {string} The ID of the Price List to update prices for.
  * requestBody:
  *  content:
- *   application/json:
- *   schema:
- *     properties:
- *       prices:
- *         description: The prices to update or add.
- *         type: array
- *         items:
- *           properties:
- *             id:
- *               description: The id of the price.
- *               type: string
- *             status:
- *               description: The status of the Price List.
- *               type: string
- *               enum:
- *                 - active
- *                 - draft
- *            region_id:
- *              description: The id of the Region for which the price is used.
- *              type: string
- *            currency_code:
- *              description: The 3 character ISO currency code for which the price will be used.
- *              type: string
- *            amount:
- *              description: The amount of the price.
- *              type: number
- *            min_quantity:
- *              description: The minimum quantity for which the price will be used.
- *              type: number
- *            max_quantity:
- *             description: The maximum quantity for which the price will be used.
- *             type: number
- *       override:
- *         description: "If true the prices will replace all existing prices associated with the Price List."
- *         type: boolean
+ *    application/json:
+ *      schema:
+ *        properties:
+ *          prices:
+ *            description: The prices to update or add.
+ *            type: array
+ *            items:
+ *              required:
+ *                - amount
+ *                - variant_id
+ *              properties:
+ *                id:
+ *                  description: The ID of the price.
+ *                  type: string
+ *                region_id:
+ *                  description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *                  type: string
+ *                currency_code:
+ *                  description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                  type: string
+ *                  externalDocs:
+ *                    url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                    description: See a list of codes.
+ *                variant_id:
+ *                  description: The ID of the Variant for which the price is used.
+ *                  type: string
+ *                amount:
+ *                  description: The amount to charge for the Product Variant.
+ *                  type: integer
+ *                min_quantity:
+ *                  description: The minimum quantity for which the price will be used.
+ *                  type: integer
+ *                max_quantity:
+ *                  description: The maximum quantity for which the price will be used.
+ *                  type: integer
+ *          override:
+ *            description: "If true the prices will replace all existing prices associated with the Price List."
+ *            type: boolean
  * tags:
  *   - Price List
  * responses:
@@ -61,14 +65,8 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             id:
- *               type: string
- *               description: The id of the deleted Price List.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *             deleted:
- *               type: boolean
+ *             price_list:
+ *               $ref: "#/components/schemas/price_list"
  */
 export default async (req, res) => {
   const { id } = req.params

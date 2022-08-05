@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+
 import { SalesChannelService } from "../../../../services"
 
 /**
@@ -8,7 +9,7 @@ import { SalesChannelService } from "../../../../services"
  * description: "Retrieves the sales channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales channel.
+ *   - (path) id=* {string} The ID of the Sales channel.
  * tags:
  *   - Sales Channel
  * responses:

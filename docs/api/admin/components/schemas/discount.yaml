@@ -1,0 +1,91 @@
+title: Discount
+description: Represents a discount that can be applied to a cart for promotional purposes.
+x-resourceId: discount
+required:
+  - code
+  - is_dynamic
+properties:
+  id:
+    type: string
+    description: The discount's ID
+    example: disc_01F0YESMW10MGHWJKZSDDMN0VN
+  code:
+    description: >-
+      A unique code for the discount - this will be used by the customer to
+      apply the discount
+    type: string
+    example: 10DISC
+  is_dynamic:
+    description: >-
+      A flag to indicate if multiple instances of the discount can be generated.
+      I.e. for newsletter discounts
+    type: boolean
+    example: false
+  rule_id:
+    type: string
+    description: The Discount Rule that governs the behaviour of the Discount
+    example: dru_01F0YESMVK96HVX7N419E3CJ7C
+  rule:
+    description: Available if the relation `rule` is expanded.
+    $ref: ./discount_rule.yaml
+  is_disabled:
+    description: >-
+      Whether the Discount has been disabled. Disabled discounts cannot be
+      applied to carts
+    type: boolean
+    example: false
+  parent_discount_id:
+    type: string
+    description: >-
+      The Discount that the discount was created from. This will always be a
+      dynamic discount
+    example: disc_01G8ZH853YPY9B94857DY91YGW
+  parent_discount:
+    description: Available if the relation `parent_discount` is expanded.
+    $ref: ./discount.yaml
+  starts_at:
+    description: The time at which the discount can be used.
+    type: string
+    format: date-time
+  ends_at:
+    description: The time at which the discount can no longer be used.
+    type: string
+    format: date-time
+  valid_duration:
+    type: string
+    description: Duration the discount runs between
+    example: P3Y6M4DT12H30M5S
+  regions:
+    description: >-
+      The Regions in which the Discount can be used. Available if the relation
+      `regions` is expanded.
+    type: array
+    items:
+      type: object
+      description: A region object.
+  usage_limit:
+    description: The maximum number of times that a discount can be used.
+    type: integer
+    example: 100
+  usage_count:
+    description: The number of times a discount has been used.
+    type: integer
+    example: 50
+    default: 0
+  created_at:
+    type: string
+    description: The date with timezone at which the resource was created.
+    format: date-time
+  updated_at:
+    type: string
+    description: The date with timezone at which the resource was updated.
+    format: date-time
+  deleted_at:
+    type: string
+    description: The date with timezone at which the resource was deleted.
+    format: date-time
+  metadata:
+    type: object
+    description: An optional key-value map with additional details
+    example:
+      car: white

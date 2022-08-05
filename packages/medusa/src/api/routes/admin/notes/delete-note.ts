@@ -1,5 +1,5 @@
-import NoteService from "../../../../services/note"
 import { EntityManager } from "typeorm"
+import NoteService from "../../../../services/note"
 
 /**
  * @oas [delete] /notes/{id}
@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * description: "Deletes a Note."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Note to delete.
+ *   - (path) id=* {string} The ID of the Note to delete.
  * tags:
  *   - Note
  * responses:
@@ -20,10 +20,15 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Note.
+ *               description: The ID of the deleted Note.
+ *             object:
+ *               type: string
+ *               description: The type of the object that was deleted.
+ *               default: note
  *             deleted:
  *               type: boolean
  *               description: Whether or not the Note was deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

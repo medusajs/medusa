@@ -1,0 +1,18 @@
+get:
+  operationId: GetStoreTaxProviders
+  summary: Retrieve configured Tax Providers
+  description: Retrieves the configured Tax Providers
+  x-authenticated: true
+  tags:
+    - Store
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              tax_providers:
+                type: array
+                items:
+                  $ref: ../components/schemas/tax_provider.yaml

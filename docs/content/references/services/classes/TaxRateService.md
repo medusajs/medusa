@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/tax-rate.ts:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L27)
+[packages/medusa/src/services/tax-rate.ts:27](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L27)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/tax-rate.ts:21](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L21)
+[packages/medusa/src/services/tax-rate.ts:21](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L21)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L22)
+[packages/medusa/src/services/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L22)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L23)
+[packages/medusa/src/services/tax-rate.ts:23](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L23)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:24](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L24)
+[packages/medusa/src/services/tax-rate.ts:24](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L24)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L25)
+[packages/medusa/src/services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L25)
 
 ## Methods
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:197](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L197)
+[packages/medusa/src/services/tax-rate.ts:196](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L196)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:233](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L233)
+[packages/medusa/src/services/tax-rate.ts:232](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L232)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:273](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L273)
+[packages/medusa/src/services/tax-rate.ts:272](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L272)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:104](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L104)
+[packages/medusa/src/services/tax-rate.ts:103](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L103)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:135](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L135)
+[packages/medusa/src/services/tax-rate.ts:134](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L134)
 
 ___
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:62](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L62)
+[packages/medusa/src/services/tax-rate.ts:62](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L62)
 
 ___
 
@@ -222,7 +222,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:73](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L73)
+[packages/medusa/src/services/tax-rate.ts:73](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L73)
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:321](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L321)
+[packages/medusa/src/services/tax-rate.ts:320](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L320)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:332](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L332)
+[packages/medusa/src/services/tax-rate.ts:330](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L330)
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:143](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L143)
+[packages/medusa/src/services/tax-rate.ts:142](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L142)
 
 ___
 
@@ -305,7 +305,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:161](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L161)
+[packages/medusa/src/services/tax-rate.ts:160](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L160)
 
 ___
 
@@ -326,7 +326,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:179](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L179)
+[packages/medusa/src/services/tax-rate.ts:178](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L178)
 
 ___
 
@@ -347,7 +347,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L84)
+[packages/medusa/src/services/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L84)
 
 ___
 
@@ -368,7 +368,7 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:120](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L120)
+[packages/medusa/src/services/tax-rate.ts:119](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L119)
 
 ___
 
@@ -388,4 +388,4 @@ ___
 
 #### Defined in
 
-[services/tax-rate.ts:43](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/tax-rate.ts#L43)
+[packages/medusa/src/services/tax-rate.ts:43](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/tax-rate.ts#L43)

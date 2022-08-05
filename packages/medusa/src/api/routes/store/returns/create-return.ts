@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNotEmpty,
@@ -8,11 +7,13 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { MedusaError } from "medusa-core-utils"
 import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm";
 
@@ -25,36 +26,42 @@ import { EntityManager } from "typeorm";
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - order_id
+ *           - items
  *         properties:
  *           order_id:
  *             type: string
- *             description: The id of the Order to create the Return from.
+ *             description: The ID of the Order to create the Return from.
  *           items:
  *             description: "The items to include in the Return."
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item from the Order.
+ *                   description: The ID of the Line Item from the Order.
  *                   type: string
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *               required:
- *                 - item_id
- *                 - quantity
+ *                 reason_id:
+ *                   description: The ID of the return reason.
+ *                   type: string
+ *                 note:
+ *                   description: A note to add to the item returned.
+ *                   type: string
  *           return_shipping:
  *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
  *             type: object
+ *             required:
+ *               - option_id
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
- *             required:
- *               - option_id
- *         required:
- *           - order_id
- *           - items
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  * tags:
  *   - Return
  * responses:

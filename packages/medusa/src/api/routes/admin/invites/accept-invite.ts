@@ -1,6 +1,7 @@
-import { Type } from "class-transformer"
 import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
+
 import InviteService from "../../../../services/invite"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -37,8 +38,9 @@ import { EntityManager } from "typeorm"
  *               password:
  *                 description: The desired password for the User
  *                 type: string
+ *                 format: password
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

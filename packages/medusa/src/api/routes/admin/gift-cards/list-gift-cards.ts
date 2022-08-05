@@ -1,7 +1,8 @@
-import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { pickBy } from "lodash"
+
 import { GiftCardService } from "../../../../services"
+import { Type } from "class-transformer"
+import { pickBy } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -10,6 +11,10 @@ import { validator } from "../../../../utils/validator"
  * summary: "List Gift Cards"
  * description: "Retrieves a list of Gift Cards."
  * x-authenticated: true
+ * parameters:
+ *   - (query) offset=0 {number} The number of items to skip before the results.
+ *   - (query) limit=50 {number} Limit the number of items returned.
+ *   - (query) q {string} a search term to search by code or display ID
  * tags:
  *   - Gift Card
  * responses:
@@ -23,6 +28,15 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/gift_card"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetGiftCardsParams, req.query)
