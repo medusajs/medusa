@@ -415,13 +415,9 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
     })
   }
 
-  async getStatus(
-    paymentSession: PaymentSession
-  ): Promise<PaymentSessionStatus> {
-    const provider = this.retrieveProvider(paymentSession.provider_id)
-    return await provider
-      .withTransaction(this.manager_)
-      .getStatus(paymentSession.data)
+  async getStatus(payment: Payment): Promise<PaymentSessionStatus> {
+    const provider = this.retrieveProvider(payment.provider_id)
+    return await provider.withTransaction(this.manager_).getStatus(payment.data)
   }
 
   async capturePayment(

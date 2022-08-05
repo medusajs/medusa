@@ -544,7 +544,7 @@ class OrderService extends TransactionBaseService<OrderService> {
            It has been discussed with seb that we still pass a payment here */
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
-          .getStatus(payment as unknown as PaymentSession)
+          .getStatus(payment)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized") {
