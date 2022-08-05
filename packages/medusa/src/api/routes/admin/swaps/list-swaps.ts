@@ -4,6 +4,7 @@ import { IsInt, IsOptional } from "class-validator"
 import { SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
+import { Swap } from "../../../../models"
 
 /**
  * @oas [get] /swaps
