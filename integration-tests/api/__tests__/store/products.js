@@ -55,6 +55,7 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -83,6 +84,7 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -150,6 +152,7 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -180,6 +183,7 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -268,6 +272,7 @@ describe("/store/products", () => {
           console.log(err)
         })
 
+      expect(response.data.products).toHaveLength(5)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

@@ -673,6 +673,7 @@ describe("/admin/orders", () => {
       )
 
       expect(status).toEqual(200)
+      expect(updateData.order.claims[0].shipping_methods).toHaveLength(1)
       expect(updateData.order.claims[0].shipping_methods).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -896,6 +897,7 @@ describe("/admin/orders", () => {
         }
       )
       expect(fulRes.status).toEqual(200)
+      expect(fulRes.data.order.claims).toHaveLength(1)
       expect(fulRes.data.order.claims).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -908,6 +910,8 @@ describe("/admin/orders", () => {
 
       const fid = fulRes.data.order.claims[0].fulfillments[0].id
       const iid = fulRes.data.order.claims[0].additional_items[0].id
+
+      expect(fulRes.data.order.claims[0].fulfillments).toHaveLength(1)
       expect(fulRes.data.order.claims[0].fulfillments).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1326,6 +1330,7 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.order.returns[0].refund_amount).toEqual(7200)
+      expect(response.data.order.returns[0].items).toHaveLength(1)
       expect(response.data.order.returns[0].items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1430,6 +1435,7 @@ describe("/admin/orders", () => {
       })
 
       expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1471,6 +1477,7 @@ describe("/admin/orders", () => {
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(2)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1516,6 +1523,7 @@ describe("/admin/orders", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1562,6 +1570,7 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1616,6 +1625,7 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1670,6 +1680,7 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
       expect(response.data.orders).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1886,6 +1897,7 @@ describe("/admin/orders", () => {
             const cart = response.data.cart
             const items = cart.items
             const [returnItem] = items.filter((i) => i.is_return)
+            expect(returnItem.adjustments).toHaveLength(1)
             expect(returnItem.adjustments).toEqual(
               expect.arrayContaining([
                 expect.objectContaining({

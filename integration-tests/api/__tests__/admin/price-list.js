@@ -363,6 +363,7 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.price_lists.length).toEqual(2)
+      expect(response.data.price_lists).toHaveLength(2)
       expect(response.data.price_lists).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ id: "test-list-cgroup-1" }),
@@ -1179,6 +1180,7 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
+      expect(response.data.products).toHaveLength(2)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1244,6 +1246,7 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ id: "test-prod-2" }),
@@ -1266,6 +1269,7 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

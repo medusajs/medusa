@@ -355,6 +355,7 @@ describe("/admin/return-reasons", () => {
 
       expect(nested_response.status).toEqual(200)
 
+      expect(nested_response.data.return_reasons).toHaveLength(1)
       expect(nested_response.data.return_reasons).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -403,6 +404,7 @@ describe("/admin/return-reasons", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.return_reasons).toHaveLength(1)
       expect(response.data.return_reasons).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

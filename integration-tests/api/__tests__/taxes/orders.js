@@ -290,6 +290,7 @@ describe("Order Taxes", () => {
       response.data.data.items.flatMap((li) => li.tax_lines).length
     ).toEqual(2)
 
+    expect(response.data.data.items[0].tax_lines).toHaveLength(1)
     expect(response.data.data.items[0].tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -297,6 +298,7 @@ describe("Order Taxes", () => {
         }),
       ])
     )
+    expect(response.data.data.items[1].tax_lines).toHaveLength(1)
     expect(response.data.data.items[1].tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -385,6 +387,7 @@ describe("Order Taxes", () => {
     expect(response.data.data.tax_total).toEqual(35)
     expect(response.data.data.total).toEqual(185)
 
+    expect(response.data.data.items[0].tax_lines).toHaveLength(1)
     expect(response.data.data.items[0].tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -392,6 +395,7 @@ describe("Order Taxes", () => {
         }),
       ])
     )
+    expect(response.data.data.items[1].tax_lines).toHaveLength(1)
     expect(response.data.data.items[1].tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

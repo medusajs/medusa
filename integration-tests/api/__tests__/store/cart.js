@@ -155,6 +155,7 @@ describe("/store/carts", () => {
       response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
       expect(response.status).toEqual(200)
+      expect(response.data.cart.items).toHaveLength(2)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -237,6 +238,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -264,6 +266,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -297,6 +300,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -330,6 +334,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -363,6 +368,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -396,6 +402,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -436,6 +443,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -462,6 +470,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -488,6 +497,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -783,6 +793,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -825,6 +836,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -867,6 +879,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -909,6 +922,7 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
+      expect(response.data.cart.items).toHaveLength(1)
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

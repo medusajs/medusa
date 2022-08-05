@@ -118,6 +118,7 @@ describe("/store/return-reasons", () => {
 
       expect(response.status).toEqual(200)
 
+      expect(response.data.return_reasons).toHaveLength(2)
       expect(response.data.return_reasons).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

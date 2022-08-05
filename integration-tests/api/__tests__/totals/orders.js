@@ -93,6 +93,7 @@ describe("Order Totals", () => {
       headers: { Authorization: `Bearer test_token` },
     })
 
+    expect(data.order.gift_card_transactions).toHaveLength(1)
     expect(data.order.gift_card_transactions).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -157,6 +158,7 @@ describe("Order Totals", () => {
       headers: { Authorization: `Bearer test_token` },
     })
 
+    expect(data.order.gift_card_transactions).toHaveLength(1)
     expect(data.order.gift_card_transactions).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

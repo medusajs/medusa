@@ -69,6 +69,7 @@ describe("Shipping Options Totals Calculations", () => {
       },
     })
 
+    expect(res.data.shipping_options).toHaveLength(1)
     expect(res.data.shipping_options).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -100,6 +101,7 @@ describe("Shipping Options Totals Calculations", () => {
 
     const res = await api.get(`/store/shipping-options?region_id=${region.id}`)
 
+    expect(res.data.shipping_options).toHaveLength(1)
     expect(res.data.shipping_options).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

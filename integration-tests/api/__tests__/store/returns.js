@@ -241,6 +241,7 @@ describe("/store/carts", () => {
         })
       expect(response.status).toEqual(200)
 
+      expect(response.data.return.items).toHaveLength(1)
       expect(response.data.return.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

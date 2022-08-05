@@ -165,6 +165,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -206,6 +207,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -241,6 +243,7 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -329,6 +332,7 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toEqual(
+      expect(response.data.products).toHaveLength(1)
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-product_filtering_4",
@@ -356,6 +360,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -441,6 +446,7 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

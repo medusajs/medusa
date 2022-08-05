@@ -162,6 +162,7 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
+      expect(response.data.regions).toHaveLength(3)
       expect(response.data.regions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -191,6 +192,7 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
+      expect(response.data.regions).toHaveLength(2)
       expect(response.data.regions).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

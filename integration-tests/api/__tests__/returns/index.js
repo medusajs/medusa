@@ -72,6 +72,7 @@ describe("/admin/orders", () => {
      * 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1125)
+    expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -115,6 +116,7 @@ describe("/admin/orders", () => {
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1200)
 
+    expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -167,6 +169,7 @@ describe("/admin/orders", () => {
      * shipping method will have 12.5 rate 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(75)
+    expect(response.data.order.returns[0].shipping_method.tax_lines).toHaveLength(1)
     expect(response.data.order.returns[0].shipping_method.tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -176,6 +179,7 @@ describe("/admin/orders", () => {
         }),
       ])
     )
+    expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -222,6 +226,7 @@ describe("/admin/orders", () => {
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1080)
 
+    expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
