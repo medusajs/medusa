@@ -15,17 +15,20 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "../index"
-import { SwapRepository } from "../../repositories/swap"
 import CartService from "../cart"
+import { Order, ReturnItem, Swap } from "../../models"
+import { SwapRepository } from "../../repositories/swap"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import { ShippingMethodTaxLineRepository } from "../../repositories/shipping-method-tax-line"
-import { Order, ReturnItem } from "../../models"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
 const swapRepo = MockRepository({
   findOneWithRelations: (existing) => Promise.resolve(existing),
-}) as unknown as typeof SwapRepository
+  create: jest.fn().mockImplementation((data) => {
+    return Object.assign(new Swap(), data)
+  }),
+})
 
 const shippingMethodTaxLineRepository = MockRepository(
   {}
@@ -532,7 +535,7 @@ describe("SwapService", () => {
             price: 20,
           }
         )
-        // @ts-ignore
+
         expect(swapRepo.create).toHaveBeenCalledWith({
           order_id: IdMap.getId("test"),
           fulfillment_status: "not_fulfilled",
@@ -1088,7 +1091,13 @@ describe("SwapService", () => {
               return Promise.resolve(existing(1, false))
           }
         },
-      }) as unknown as typeof SwapRepository
+        create: jest.fn().mockImplementation((data) => {
+          return Object.assign(new Swap(), data)
+        }),
+        save: jest.fn().mockImplementation((data) => {
+          return Object.assign(new Swap(), data)
+        }),
+      })
 
       const swapService = new SwapService({
         ...defaultProps,
@@ -1103,7 +1112,7 @@ describe("SwapService", () => {
         expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
           id: "good",
         })
-        // @ts-ignore
+
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(1, false),
           payment_status: "captured",
@@ -1115,7 +1124,7 @@ describe("SwapService", () => {
         expect(paymentProviderService.capturePayment).toHaveBeenCalledWith({
           id: "f",
         })
-        // @ts-ignore
+
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(1, true),
           payment_status: "requires_action",
@@ -1133,7 +1142,7 @@ describe("SwapService", () => {
           1,
           "swap"
         )
-        // @ts-ignore
+
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(-1, false),
           payment_status: "difference_refunded",
@@ -1152,7 +1161,7 @@ describe("SwapService", () => {
           1,
           "swap"
         )
-        // @ts-ignore
+
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(-1, true),
           payment_status: "requires_action",
@@ -1167,7 +1176,6 @@ describe("SwapService", () => {
 
       it("zero", async () => {
         await swapService.processDifference("0")
-        // @ts-ignore
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing(0, false),
           payment_status: "difference_refunded",

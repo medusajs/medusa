@@ -576,9 +576,9 @@ class SwapService extends TransactionBaseService<SwapService> {
         swap.no_notification = update.no_notification!
       }
 
-      // TODO: Check this - calling method that doesn't exist
-      // also it seems that update swap isn't call anywhere
       if ("shipping_address" in update) {
+        // TODO: Check this - calling method that doesn't exist
+        // also it seems that update swap isn't call anywhere
         // await this.updateShippingAddress_(swap, update.shipping_address)
       }
 
