@@ -7,6 +7,8 @@ on:
       - "master"
     paths:
       - packages/medusa/src/api/routes/**
+      - '!packages/medusa/src/api/routes/**/index.ts'
+      - '!packages/medusa/src/api/routes/**/index.js'
 jobs:
   api:
     runs-on: ubuntu-latest
@@ -42,8 +44,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'Generated API Reference'
+          commit-message: 'chore(docs): Generated API Reference'
           base: 'master'
-          title: 'docs: Generated API Reference'
-          labels: 'type: docs'
+          title: 'chore(docs): Updated API Reference'
+          labels: 'type: chore'
           add-paths: docs/api/*

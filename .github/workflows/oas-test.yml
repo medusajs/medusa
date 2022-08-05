@@ -1,4 +1,4 @@
-name: OAS Comments Test
+name: OAS Comments Format Validation
 on: 
   pull_request:
     paths:
