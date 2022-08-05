@@ -1,6 +1,7 @@
+import { CartService, IdempotencyKeyService } from "../../../../services"
+
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
-import { CartService, IdempotencyKeyService } from "../../../../services"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
@@ -10,20 +11,18 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  * description: "Calculates taxes for a cart. Depending on the cart's region
  *   this may involve making 3rd party API calls to a Tax Provider service."
  * parameters:
- *   - (path) id=* {String} The Cart id.
+ *   - (path) id=* {String} The Cart ID.
  * tags:
  *   - Cart
  * responses:
  *   200:
- *     description: "A cart object with the tax_total field populated"
+ *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           oneOf:
- *            - type: object
- *              properties:
- *                cart:
- *                  $ref: "#/components/schemas/cart"
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/cart"
  */
 export default async (req, res) => {
   const { id } = req.params

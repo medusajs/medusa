@@ -46,8 +46,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'docs: Generated JS Client Reference (automated)'
+          commit-message: 'chore(docs): Generated JS Client Reference (automated)'
           base: 'master'
-          title: 'docs: Generated JS Client Reference (automated)'
-          labels: 'type: docs'
+          title: 'chore(docs): Updated API Reference'
+          labels: 'type: chore'
           add-paths: docs/content/references/js-client/**

@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,16 +10,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { transformIdableFields } from "medusa-core-utils"
 import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
+
+import { AddressPayload } from "../../../../types/common"
 import { DraftOrder } from "../../../.."
 import { DraftOrderService } from "../../../../services"
-import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
+import { transformIdableFields } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
@@ -40,24 +42,27 @@ import { EntityManager } from "typeorm"
  *           status:
  *             description: "The status of the draft order"
  *             type: string
+ *             enum: [open, completed]
  *           email:
  *             description: "The email of the customer of the draft order"
  *             type: string
+ *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           items:
  *             description: The Line Items that have been received.
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - quantity
  *               properties:
  *                 variant_id:
- *                   description: The id of the Product Variant to generate the Line Item from.
+ *                   description: The ID of the Product Variant to generate the Line Item from.
  *                   type: string
  *                 unit_price:
  *                   description: The potential custom price of the item.
@@ -72,18 +77,21 @@ import { EntityManager } from "typeorm"
  *                   description: The optional key-value map with additional details about the Line Item.
  *                   type: object
  *           region_id:
- *             description: The id of the region for the draft order
+ *             description: The ID of the region for the draft order
  *             type: string
  *           discounts:
  *             description: The discounts to add on the draft order
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: The code of the discount to apply
  *                   type: string
  *           customer_id:
- *             description: The id of the customer to add on the draft order
+ *             description: The ID of the customer to add on the draft order
  *             type: string
  *           no_notification_order:
  *             description: An optional flag passed to the resulting order to determine use of notifications.
@@ -92,9 +100,12 @@ import { EntityManager } from "typeorm"
  *             description: The shipping methods for the draft order
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                  - option_id
  *               properties:
  *                 option_id:
- *                   description: The id of the shipping option in use
+ *                   description: The ID of the shipping option in use
  *                   type: string
  *                 data:
  *                   description: The optional additional data needed for the shipping method

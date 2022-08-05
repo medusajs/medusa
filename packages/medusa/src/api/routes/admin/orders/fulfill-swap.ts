@@ -1,8 +1,10 @@
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
@@ -10,8 +12,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Creates a Fulfillment for a Swap."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *             description: If set to true no notification will be send related to this Claim.
  *             type: boolean
  * tags:
- *   - Order
+ *   - Fulfillment
  * responses:
  *   200:
  *     description: OK

@@ -1,0 +1,99 @@
+delete:
+  operationId: DeleteCustomerGroupsCustomerGroup
+  summary: Delete a CustomerGroup
+  description: Deletes a CustomerGroup.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Customer Group
+      schema:
+        type: string
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted customer group.
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: customer_group
+              deleted:
+                type: boolean
+                description: Whether the customer group was deleted successfully or not.
+                default: true
+get:
+  operationId: GetCustomerGroupsGroup
+  summary: Retrieve a CustomerGroup
+  description: Retrieves a Customer Group.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Customer Group.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in the customer group.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: (Comma separated) Which fields should be included in the customer group.
+      schema:
+        type: string
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer_group:
+                $ref: ../components/schemas/customer_group.yaml
+post:
+  operationId: PostCustomerGroupsGroup
+  summary: Update a CustomerGroup
+  description: Update a CustomerGroup.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the customer group.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            name:
+              description: Name of the customer group
+              type: string
+            metadata:
+              description: Metadata for the customer.
+              type: object
+  tags:
+    - Customer Group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer_group:
+                $ref: ../components/schemas/customer_group.yaml

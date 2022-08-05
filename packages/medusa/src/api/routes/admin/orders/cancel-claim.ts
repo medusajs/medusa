@@ -1,7 +1,8 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { ClaimService, OrderService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/cancel
@@ -10,8 +11,8 @@ import { EntityManager } from "typeorm"
  * description: "Cancels a Claim"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * tags:
  *   - Claim
  * responses:
@@ -22,7 +23,7 @@ import { EntityManager } from "typeorm"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/claim_order"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, claim_id } = req.params

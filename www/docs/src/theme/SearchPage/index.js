@@ -22,6 +22,7 @@ import clsx from 'clsx';
 import styles from './styles.module.css';
 import {useAllDocsData} from '@docusaurus/plugin-content-docs/client';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
   const {selectMessage} = usePluralForm();

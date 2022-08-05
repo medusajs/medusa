@@ -1,0 +1,88 @@
+delete:
+  operationId: DeleteNotesNote
+  summary: Deletes a Note
+  description: Deletes a Note.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Note to delete.
+      schema:
+        type: string
+  tags:
+    - Note
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted Note.
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: note
+              deleted:
+                type: boolean
+                description: Whether or not the Note was deleted.
+                default: true
+get:
+  operationId: GetNotesNote
+  summary: Get Note
+  description: Retrieves a single note using its id
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the note to retrieve.
+      schema:
+        type: string
+  tags:
+    - Note
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              note:
+                $ref: ../components/schemas/note.yaml
+post:
+  operationId: PostNotesNote
+  summary: Updates a Note
+  x-authenticated: true
+  description: Updates a Note associated with some resource
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Note to update
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - value
+          properties:
+            value:
+              type: string
+              description: The updated description of the Note.
+  tags:
+    - Note
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              note:
+                $ref: ../components/schemas/note.yaml

@@ -284,7 +284,7 @@ details summary {
   cursor: pointer;
 }
 
-.theme-doc-markdown a:not(.box-link):hover {
+[data-theme="dark"] .theme-doc-markdown a.card:hover {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
 }
@@ -317,4 +317,13 @@ details summary {
   max-width: 100%;
   word-break: break-word;
   white-space: break-spaces;
+}
+
+/* API Reference Styling */
+html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-medusa-gray);
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
 }

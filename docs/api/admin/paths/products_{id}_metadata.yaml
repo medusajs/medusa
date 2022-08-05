@@ -1,0 +1,37 @@
+post:
+  operationId: PostProductsProductMetadata
+  summary: Set Product metadata
+  description: Set metadata key/value pair for Product
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - key
+            - value
+          properties:
+            key:
+              description: The metadata key
+              type: string
+            value:
+              description: The metadata value
+              type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              product:
+                $ref: ../components/schemas/product.yaml

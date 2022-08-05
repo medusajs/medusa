@@ -1,0 +1,18 @@
+get:
+  operationId: GetApps
+  summary: List applications
+  description: Retrieve a list of applications.
+  x-authenticated: true
+  tags:
+    - App
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              apps:
+                type: array
+                items:
+                  $ref: ../components/schemas/OAuth.yaml

@@ -1,13 +1,14 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import OrderService from "../../../../services/order"
-import { validator } from "../../../../utils/validator"
 import {
   allowedStoreOrdersFields,
   allowedStoreOrdersRelations,
 } from "../orders"
 import { FindConfig } from "../../../../types/common"
 import { Order } from "../../../../models"
+
+import OrderService from "../../../../services/order"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /customers/me/orders
@@ -16,10 +17,10 @@ import { Order } from "../../../../models"
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {integer} How many addresses to return.
- *   - (query) offset {integer} The offset in the resulting addresses.
- *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting addresses.
- *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting addresses.
+ *   - (query) limit=10 {integer} How many orders to return.
+ *   - (query) offset=0 {integer} The offset in the resulting orders.
+ *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
+ *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
  * tags:
  *   - Customer
  * responses:
@@ -29,19 +30,19 @@ import { Order } from "../../../../models"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The total number of Orders.
- *               type: integer
- *             offset:
- *               description: The offset for pagination.
- *               type: integer
- *             limit:
- *               description: The maxmimum number of Orders to return,
- *               type: integer
  *             orders:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/orders"
+ *                 $ref: "#/components/schemas/order"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const id: string = req.user.customer_id

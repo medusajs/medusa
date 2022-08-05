@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,6 +8,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
+
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -19,11 +20,13 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Shipping Option"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - requirements
  *         properties:
  *           name:
  *             description: "The name of the Shipping Option"
@@ -41,7 +44,13 @@ import { EntityManager } from "typeorm"
  *             description: "The requirements that must be satisfied for the Shipping Option to be available."
  *             type: array
  *             items:
+ *               required:
+ *                 - type
+ *                 - amount
  *               properties:
+ *                 id:
+ *                   description: The ID of the requirement
+ *                   type: string
  *                 type:
  *                   description: The type of the requirement
  *                   type: string

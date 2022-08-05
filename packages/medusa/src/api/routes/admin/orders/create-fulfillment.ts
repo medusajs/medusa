@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,18 +8,21 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { Transform, Type } from "class-transformer"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+
 /**
- * @oas [post] /orders/{id}/fulfillments
+ * @oas [post] /orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,9 +34,12 @@ import { EntityManager } from "typeorm"
  *             description: The Line Items to include in the Fulfillment.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of Line Item to fulfill.
+ *                   description: The ID of Line Item to fulfill.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item to fulfill.
@@ -46,7 +51,7 @@ import { EntityManager } from "typeorm"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - Order
+ *   - Fulfillment
  * responses:
  *   200:
  *     description: OK

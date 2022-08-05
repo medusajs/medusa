@@ -17,6 +17,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
+    "@redocly/cli": "latest",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "axios": "^0.21.1",
@@ -67,6 +68,7 @@
     "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
+    "openapi:generate": "node ./scripts/build-openapi.js",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"

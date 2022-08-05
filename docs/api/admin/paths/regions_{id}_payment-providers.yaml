@@ -1,0 +1,33 @@
+post:
+  operationId: PostRegionsRegionPaymentProviders
+  summary: Add Payment Provider
+  description: Adds a Payment Provider to a Region
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Region.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - provider_id
+          properties:
+            provider_id:
+              description: The ID of the Payment Provider to add.
+              type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml

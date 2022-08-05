@@ -1,9 +1,10 @@
-import { IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm";
+import { IsString } from "class-validator"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/payment-session
@@ -11,8 +12,8 @@ import { EntityManager } from "typeorm";
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (body) provider_id=* {string} The id of the Payment Provider.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (body) provider_id=* {string} The ID of the Payment Provider.
  * tags:
  *   - Cart
  * responses:

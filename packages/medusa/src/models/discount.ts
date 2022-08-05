@@ -9,6 +9,7 @@ import {
   ManyToOne,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
@@ -90,26 +91,40 @@ export class Discount extends SoftDeletableEntity {
  * title: "Discount"
  * description: "Represents a discount that can be applied to a cart for promotional purposes."
  * x-resourceId: discount
+ * required:
+ *   - code
+ *   - is_dynamic
  * properties:
  *   id:
- *     description: "The id of the Discount. Will be prefixed by `disc_`."
  *     type: string
+ *     description: The discount's ID
+ *     example: disc_01F0YESMW10MGHWJKZSDDMN0VN
  *   code:
  *     description: "A unique code for the discount - this will be used by the customer to apply the discount"
  *     type: string
+ *     example: 10DISC
  *   is_dynamic:
  *     description: "A flag to indicate if multiple instances of the discount can be generated. I.e. for newsletter discounts"
  *     type: boolean
- *   rule:
+ *     example: false
+ *   rule_id:
+ *     type: string
  *     description: "The Discount Rule that governs the behaviour of the Discount"
- *     anyOf:
- *       - $ref: "#/components/schemas/discount_rule"
+ *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
+ *   rule:
+ *     description: Available if the relation `rule` is expanded.
+ *     $ref: "#/components/schemas/discount_rule"
  *   is_disabled:
  *     description: "Whether the Discount has been disabled. Disabled discounts cannot be applied to carts"
  *     type: boolean
+ *     example: false
  *   parent_discount_id:
- *     description: "The Discount that the discount was created from. This will always be a dynamic discount"
  *     type: string
+ *     description: "The Discount that the discount was created from. This will always be a dynamic discount"
+ *     example: disc_01G8ZH853YPY9B94857DY91YGW
+ *   parent_discount:
+ *     description: Available if the relation `parent_discount` is expanded.
+ *     $ref: "#/components/schemas/discount"
  *   starts_at:
  *     description: "The time at which the discount can be used."
  *     type: string
@@ -118,30 +133,39 @@ export class Discount extends SoftDeletableEntity {
  *     description: "The time at which the discount can no longer be used."
  *     type: string
  *     format: date-time
+ *   valid_duration:
+ *     type: string
+ *     description: Duration the discount runs between
+ *     example: P3Y6M4DT12H30M5S
  *   regions:
- *     description: "The Regions in which the Discount can be used"
+ *     description: The Regions in which the Discount can be used. Available if the relation `regions` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/region"
+ *       type: object
+ *       description: A region object.
  *   usage_limit:
  *     description: "The maximum number of times that a discount can be used."
  *     type: integer
+ *     example: 100
  *   usage_count:
  *     description: "The number of times a discount has been used."
  *     type: integer
+ *     example: 50
+ *     default: 0
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */
