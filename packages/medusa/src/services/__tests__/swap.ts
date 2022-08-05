@@ -3,12 +3,128 @@ import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import SwapService from "../swap"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import {
+  CustomShippingOptionService,
+  EventBusService,
+  FulfillmentService,
+  InventoryService,
+  LineItemService,
+  OrderService,
+  PaymentProviderService,
+  ReturnService,
+  ShippingOptionService,
+  TotalsService,
+} from "../index"
+import { Item } from "../../api"
+import { SwapRepository } from "../../repositories/swap"
+import CartService from "../cart"
+import LineItemAdjustmentService from "../line-item-adjustment"
+import { ShippingMethodTaxLineRepository } from "../../repositories/shipping-method-tax-line"
+
+/* ******************** DEFAULT REPOSITORY MOCKS ******************** */
+
+const swapRepo = MockRepository({
+  findOneWithRelations: (existing) => Promise.resolve(existing),
+}) as unknown as typeof SwapRepository
+
+const shippingMethodTaxLineRepository = MockRepository(
+  {}
+) as unknown as typeof ShippingMethodTaxLineRepository
+
+/* ******************** DEFAULT SERVICE MOCKS ******************** */
 
 const eventBusService = {
   emit: jest.fn(),
   withTransaction: function () {
     return this
   },
+} as unknown as EventBusService
+
+const cartService = {
+  create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),
+  retrieve: jest
+    .fn()
+    .mockReturnValue(
+      Promise.resolve({ id: "cart", items: [{ id: "test-item" }] })
+    ),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as CartService
+
+const customShippingOptionService = {
+  create: jest.fn().mockReturnValue(Promise.resolve({ id: "cso-test" })),
+  update: jest.fn().mockReturnValue(Promise.resolve()),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as CustomShippingOptionService
+
+const lineItemService = {
+  create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
+  update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
+  retrieve: () => Promise.resolve({}),
+  createReturnLines: jest.fn(() => Promise.resolve()),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as LineItemService
+
+const totalsService = {
+  getTotal: () => {
+    return Promise.resolve(100)
+  },
+} as unknown as TotalsService
+
+const shippingOptionService = {
+  updateShippingMethod: () => {
+    return Promise.resolve()
+  },
+  withTransaction: function () {
+    return this
+  },
+} as unknown as ShippingOptionService
+
+const paymentProviderService = {
+  getStatus: jest.fn(() => {
+    return Promise.resolve("authorized")
+  }),
+  updatePayment: jest.fn(() => {
+    return Promise.resolve()
+  }),
+  cancelPayment: jest.fn(() => {
+    return Promise.resolve()
+  }),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as PaymentProviderService
+
+const orderService = {} as unknown as OrderService
+const returnService = {} as unknown as ReturnService
+const inventoryService = {} as unknown as InventoryService
+const fulfillmentService = {} as unknown as FulfillmentService
+const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
+
+const defaultProps = {
+  manager: MockManager,
+  swapRepository: swapRepo,
+  shippingMethodTaxLineRepository: shippingMethodTaxLineRepository,
+
+  cartService: cartService,
+  eventBus: eventBusService,
+  orderService: orderService,
+  returnService: returnService,
+  totalsService: totalsService,
+  eventBusService: eventBusService,
+  lineItemService: lineItemService,
+  inventoryService: inventoryService,
+  fulfillmentService: fulfillmentService,
+  shippingOptionService: shippingOptionService,
+  paymentProviderService: paymentProviderService,
+  lineItemAdjustmentService: lineItemAdjustmentService,
+  customShippingOptionService: customShippingOptionService,
 }
 
 const generateOrder = (orderId, items, additional = {}) => {
@@ -82,9 +198,11 @@ describe("SwapService", () => {
 
     it("fails if item is returned", async () => {
       const swapService = new SwapService({
+        ...defaultProps,
         eventBusService,
       })
       const res = () =>
+        // @ts-ignore
         swapService.validateReturnItems(
           {
             items: [
@@ -92,7 +210,7 @@ describe("SwapService", () => {
                 id: IdMap.getId("line1"),
                 quantity: 1,
                 returned_quantity: 1,
-              },
+              } as Item,
             ],
           },
           [{ item_id: IdMap.getId("line1"), quantity: 1 }]
@@ -102,7 +220,7 @@ describe("SwapService", () => {
     })
 
     it("fails if item is returned", async () => {
-      const swapService = new SwapService({})
+      const swapService = new SwapService({ ...defaultProps })
       const res = () =>
         swapService.validateReturnItems(
           {
@@ -121,7 +239,8 @@ describe("SwapService", () => {
     })
 
     it("successfully resolves", async () => {
-      const swapService = new SwapService({})
+      const swapService = new SwapService({ ...defaultProps })
+      // @ts-ignore
       const res = swapService.validateReturnItems(
         {
           items: [
@@ -170,11 +289,11 @@ describe("SwapService", () => {
         withTransaction: function () {
           return this
         },
-      }
+      } as unknown as CartService
 
       const swapRepo = MockRepository({
         findOneWithRelations: () => Promise.resolve(existing),
-      })
+      }) as unknown as typeof SwapRepository
 
       const customShippingOptionService = {
         create: jest.fn().mockReturnValue(Promise.resolve({ id: "cso-test" })),
@@ -182,7 +301,7 @@ describe("SwapService", () => {
         withTransaction: function () {
           return this
         },
-      }
+      } as unknown as CustomShippingOptionService
 
       const lineItemService = {
         create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
@@ -192,16 +311,18 @@ describe("SwapService", () => {
         withTransaction: function () {
           return this
         },
-      }
+      } as unknown as LineItemService
 
       const swapService = new SwapService({
+        ...defaultProps,
         manager: MockManager,
         eventBusService,
         swapRepository: swapRepo,
         cartService,
         lineItemService,
         customShippingOptionService,
-        lineItemAdjustmentService: LineItemAdjustmentServiceMock,
+        lineItemAdjustmentService:
+          LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
       })
 
       it("finds swap and calls return create cart", async () => {
@@ -748,13 +869,6 @@ describe("SwapService", () => {
       jest.clearAllMocks()
       Date.now = jest.fn(() => 1572393600000)
     })
-
-    const eventBusService = {
-      emit: jest.fn().mockReturnValue(Promise.resolve()),
-      withTransaction: function () {
-        return this
-      },
-    }
 
     const totalsService = {
       getTotal: () => {
