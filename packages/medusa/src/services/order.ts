@@ -30,6 +30,7 @@ import {
   Order,
   OrderStatus,
   Payment,
+  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
@@ -539,9 +540,11 @@ class OrderService extends TransactionBaseService<OrderService> {
           )
         }
 
+        /* The force cast here is necessary until the rethink of the payment API
+           It has been discussed with seb that we still pass a payment here */
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
-          .getStatus(payment)
+          .getStatus(payment as unknown as PaymentSession)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized") {
