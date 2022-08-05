@@ -1,12 +1,15 @@
 import Stripe from "stripe"
-import { PaymentService } from "medusa-interfaces"
-import { PaymentSessionStatus } from '@medusajs/medusa/dist'
+import {
+  PaymentSessionStatus,
+  AbstractPaymentService,
+  PaymentSessionData,
+} from "@medusajs/medusa"
 
-class StripeProviderService extends PaymentService {
+class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
 
-  constructor({ customerService, totalsService, regionService }, options) {
-    super()
+  constructor({ customerService, totalsService, regionService, manager }, options) {
+    super({ customerService, totalsService, regionService, manager }, options)
 
     /**
      * Required Stripe options:
@@ -30,13 +33,16 @@ class StripeProviderService extends PaymentService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    /** @private @const {EntityManager} */
+    this.manager_ = manager
   }
 
   /**
-   * Fetches Stripe payment intent. Check its status and returns the
-   * corresponding Medusa status.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * Get payment session status
+   * statuses.
+   * @param {PaymentSessionData} paymentData - the data stored with the payment session
+   * @return {Promise<PaymentSessionStatus>} the status of the order
    */
   async getStatus(paymentData) {
     const { id } = paymentData
@@ -101,9 +107,11 @@ class StripeProviderService extends PaymentService {
       })
 
       if (customer.id) {
-        await this.customerService_.update(customer.id, {
-          metadata: { stripe_id: stripeCustomer.id },
-        })
+        await this.customerService_
+          .withTransaction(this.manager_)
+          .update(customer.id, {
+            metadata: { stripe_id: stripeCustomer.id },
+          })
       }
 
       return stripeCustomer
