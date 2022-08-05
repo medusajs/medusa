@@ -14,8 +14,6 @@ import {
 import path from "path"
 import { EntitySchema } from "typeorm"
 import {
-  AbstractFileService,
-  AbstractPaymentService,
   AbstractTaxService,
   isBatchJobStrategy,
   isCartCompletionStrategy,
@@ -368,10 +366,7 @@ export async function registerServices(
         throw new Error(message)
       }
 
-      if (
-        loaded.prototype instanceof AbstractPaymentService ||
-        loaded.prototype instanceof PaymentService
-      ) {
+      if (isPaymentService(loaded.prototype)) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",
