@@ -40,18 +40,15 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
     reqParams: Record<string, unknown>,
     reqPath: string
   ): Promise<IdempotencyKey> {
-    return this.atomicPhase_(async (_) => {
-      const key = await this.retrieve(headerKey)
-
-      if (key) {
-        return key
-      }
-
-      return await this.create({
-        request_method: reqMethod,
-        request_params: reqParams,
-        request_path: reqPath,
-      })
+    return await this.atomicPhase_(async () => {
+      return (
+        (await this.retrieve(headerKey).catch(() => void 0)) ??
+        (await this.create({
+          request_method: reqMethod,
+          request_params: reqParams,
+          request_path: reqPath,
+        }))
+      )
     }, "SERIALIZABLE")
   }
 
@@ -68,9 +65,7 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
         this.idempotencyKeyRepository_
       )
 
-      if (!payload.idempotency_key) {
-        payload.idempotency_key = v4()
-      }
+      payload.idempotency_key = payload.idempotency_key ?? v4()
 
       const created = await idempotencyKeyRepo.create(payload)
       return await idempotencyKeyRepo.save(created)
@@ -177,24 +172,20 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
   ): Promise<{ key?: IdempotencyKey; error?: unknown }> {
     try {
       return await this.atomicPhase_(async (manager) => {
-        let key
-
         const { recovery_point, response_code, response_body } = await callback(
           manager
         )
 
-        if (recovery_point) {
-          key = await this.update(idempotencyKey, {
-            recovery_point,
-          })
-        } else {
-          key = await this.update(idempotencyKey, {
-            recovery_point: "finished",
-            response_body,
-            response_code,
-          })
+        const data: DeepPartial<IdempotencyKey> = {
+          recovery_point: recovery_point ?? "finished",
         }
 
+        if (!recovery_point) {
+          data.response_body = response_body
+          data.response_code = response_code
+        }
+
+        const key = await this.update(idempotencyKey, data)
         return { key }
       }, "SERIALIZABLE")
     } catch (err) {
