@@ -3,9 +3,11 @@ import { AbstractPaymentService } from "@medusajs/medusa"
 class MobilePayAdyenService extends AbstractPaymentService {
   static identifier = "mobilepay-adyen"
 
-  constructor({ adyenService }) {
-    super({ adyenService })
+  constructor({ adyenService, manager }) {
+    super({ adyenService, manager })
 
+    /** @private @constant {EntityManager} */
+    this.manager_ = manager
     this.adyenService_ = adyenService
   }
 
@@ -20,10 +22,12 @@ class MobilePayAdyenService extends AbstractPaymentService {
   }
 
   async authorizePayment(paymentSessionData, context) {
-    return await this.adyenService_.authorizePayment(
-      paymentSessionData,
-      context
-    )
+    return await this.adyenService_
+      .withTransaction(this.manager_)
+      .authorizePayment(
+        paymentSessionData,
+        context
+      )
   }
 
   async retrievePayment(paymentData) {

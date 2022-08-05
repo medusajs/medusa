@@ -5,11 +5,14 @@ import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
 class AdyenService extends AbstractPaymentService {
-  constructor({ cartService }, options) {
-    super({ cartService }, options)
+  constructor({ cartService, manager }, options) {
+    super({ cartService, manager }, options)
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
+
+    /** @private @constant {EntityManager} */
+    this.manager_ = manager
 
     /**
      * {
@@ -76,12 +79,10 @@ class AdyenService extends AbstractPaymentService {
   validateNotification(notification) {
     const validator = new hmacValidator()
 
-    const validated = validator.validateHMAC(
+    return validator.validateHMAC(
       notification,
       this.options_.notification_hmac
     )
-
-    return validated
   }
 
   /**
@@ -238,10 +239,12 @@ class AdyenService extends AbstractPaymentService {
       return { data: sessionData, status: "authorized" }
     }
 
-    const cart = await this.cartService_.retrieve(session.cart_id, {
-      select: ["total"],
-      relations: ["region", "shipping_address"],
-    })
+    const cart = await this.cartService_
+      .withTransaction(this.manager_)
+      .retrieve(session.cart_id, {
+        select: ["total"],
+        relations: ["region", "shipping_address"],
+      })
 
     const amount = {
       currency: cart.region.currency_code.toUpperCase(),
