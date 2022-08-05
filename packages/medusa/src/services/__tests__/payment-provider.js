@@ -1,6 +1,6 @@
 import { MockManager, MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
-import TestPayService from "../__mocks__/test-pay"
+import { testPayServiceMock } from "../__mocks__/test-pay"
 
 describe("PaymentProviderService", () => {
   describe("retrieveProvider", () => {
@@ -140,7 +140,7 @@ describe(`PaymentProviderService`, () => {
         }]),
     }),
     refundRepository: MockRepository(),
-    pp_default_provider: new TestPayService(),
+    pp_default_provider: testPayServiceMock,
   }
   const providerService = new PaymentProviderService(container)
 
@@ -158,8 +158,8 @@ describe(`PaymentProviderService`, () => {
       total: 100,
     })
 
-    expect(TestPayService.prototype.createPayment).toBeCalledTimes(1)
-    expect(TestPayService.prototype.createPayment).toBeCalledWith({
+    expect(testPayServiceMock.createPayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.createPayment).toBeCalledWith({
       total: 100,
     })
   })
@@ -178,8 +178,8 @@ describe(`PaymentProviderService`, () => {
       }
     )
 
-    expect(TestPayService.prototype.updatePayment).toBeCalledTimes(1)
-    expect(TestPayService.prototype.updatePayment).toBeCalledWith(
+    expect(testPayServiceMock.updatePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.updatePayment).toBeCalledWith(
       { id: "1234" },
       {
         total: 100,
@@ -201,8 +201,8 @@ describe(`PaymentProviderService`, () => {
       }
     )
 
-    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
-    expect(TestPayService.prototype.createPayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.deletePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.createPayment).toBeCalledTimes(1)
   })
 
   it("successfully delete session", async () => {
@@ -216,7 +216,7 @@ describe(`PaymentProviderService`, () => {
       }
     )
 
-    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.deletePayment).toBeCalledTimes(1)
   })
 
   it("successfully delete session", async () => {
@@ -230,7 +230,7 @@ describe(`PaymentProviderService`, () => {
       }
     )
 
-    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.deletePayment).toBeCalledTimes(1)
   })
 
   it("successfully authorize payment", async () => {
@@ -245,7 +245,7 @@ describe(`PaymentProviderService`, () => {
       {}
     )
 
-    expect(TestPayService.prototype.authorizePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.authorizePayment).toBeCalledTimes(1)
   })
 
   it("successfully update session data", async () => {
@@ -260,27 +260,27 @@ describe(`PaymentProviderService`, () => {
       {}
     )
 
-    expect(TestPayService.prototype.updatePaymentData).toBeCalledTimes(1)
+    expect(testPayServiceMock.updatePaymentData).toBeCalledTimes(1)
   })
 
   it("successfully cancel payment", async () => {
     await providerService.cancelPayment({
       id: "pay_jadazdjk"
     })
-    expect(TestPayService.prototype.cancelPayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.cancelPayment).toBeCalledTimes(1)
   })
 
   it("successfully capture payment", async () => {
     await providerService.capturePayment({
       id: "pay_jadazdjk"
     })
-    expect(TestPayService.prototype.capturePayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.capturePayment).toBeCalledTimes(1)
   })
 
   it("successfully refund payment", async () => {
     await providerService.refundPayment([{
       id: "pay_jadazdjk"
     }], 50)
-    expect(TestPayService.prototype.refundPayment).toBeCalledTimes(1)
+    expect(testPayServiceMock.refundPayment).toBeCalledTimes(1)
   })
 })
