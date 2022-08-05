@@ -3,5 +3,5 @@ module.exports = {
   transform: {
     "^.+\\.[jt]s?$": `../../jest-transformer.js`,
   },
-  setupFilesAfterEnv: ["<rootDit>/setupTests.js"],
+  setupFilesAfterEnv: ["./setupTests.js"],
 }
