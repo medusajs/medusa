@@ -9,7 +9,8 @@ export default async (req, res) => {
     const shippingProfileService = req.scope.resolve("shippingProfileService")
 
     const result = await manager.transaction("SERIALIZABLE", async (m) => {
-      const cart = await cartService.retrieve(merchant_data, {
+      const cartServiceTx = cartService.withTransaction(m)
+      const cart = await cartServiceTx.retrieve(merchant_data, {
         select: ["subtotal"],
         relations: [
           "shipping_address",
@@ -46,28 +47,26 @@ export default async (req, res) => {
           phone: shipping_address.phone,
         }
 
-        await cartService.update(cart.id, {
+        await cartServiceTx.update(cart.id, {
           shipping_address: shippingAddress,
           billing_address: billingAddress,
           email: shipping_address.email,
         })
 
-        const shippingOptions = await shippingProfileService.fetchCartOptions(
-          cart
-        )
+        const shippingOptions = await shippingProfileService
+          .withTransaction(m)
+          .fetchCartOptions(cart)
 
         if (shippingOptions?.length) {
           const option = shippingOptions.find(
             (o) => o.data && !o.data.require_drop_point
           )
-          await cartService
-            .withTransaction(m)
+          await cartServiceTx
             .addShippingMethod(cart.id, option.id, option.data)
         }
 
         // Fetch and return updated Klarna order
         const updatedCart = await cartService
-          .withTransaction(m)
           .retrieve(cart.id, {
             select: [
               "gift_card_total",
@@ -97,10 +96,8 @@ export default async (req, res) => {
 
     if (result) {
       res.json(result)
-      return
     } else {
       res.sendStatus(400)
-      return
     }
   } catch (error) {
     throw error
