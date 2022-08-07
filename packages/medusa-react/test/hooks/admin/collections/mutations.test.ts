@@ -109,7 +109,7 @@ describe("useAdminAddProductsToCollection hook", () => {
   })
 })
 
-describe("useAdminRemoveProductssFromCollection hook", () => {
+describe("useAdminRemoveProductsFromCollection hook", () => {
   test("remove products from a collection", async () => {
     const remove = {
       product_ids: [fixtures.get("product").id],
