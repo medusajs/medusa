@@ -1,14 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
-import { OauthService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import { Oauth as OAuthModel } from "../models"
 import { OauthRepository } from "../repositories/oauth"
 import { Selector } from "../types/common"
 import { MedusaContainer } from "../types/global"
-import { CreateOauth, UpdateOauth } from "../types/oauth"
-import EventBusService from "./event-bus"
-import { Oauth as OAuthModel } from "../models"
+import { CreateOauthInput, UpdateOauthInput } from "../types/oauth"
 import { buildQuery } from "../utils"
-import { TransactionBaseService } from "../interfaces"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = MedusaContainer & {
   manager: EntityManager
@@ -79,7 +78,7 @@ class Oauth extends TransactionBaseService<Oauth> {
     return repo.find(query)
   }
 
-  async create(data: CreateOauth): Promise<OAuthModel> {
+  async create(data: CreateOauthInput): Promise<OAuthModel> {
     return await this.atomicPhase_(async (manager) => {
       const repo = manager.getCustomRepository(this.oauthRepository_)
 
@@ -94,7 +93,7 @@ class Oauth extends TransactionBaseService<Oauth> {
     })
   }
 
-  async update(id: string, update: UpdateOauth): Promise<OAuthModel> {
+  async update(id: string, update: UpdateOauthInput): Promise<OAuthModel> {
     return await this.atomicPhase_(async (manager) => {
       const repo = manager.getCustomRepository(this.oauthRepository_)
       const oauth = await this.retrieve(id)
@@ -107,7 +106,7 @@ class Oauth extends TransactionBaseService<Oauth> {
     })
   }
 
-  async registerOauthApp(appDetails: CreateOauth): Promise<OAuthModel> {
+  async registerOauthApp(appDetails: CreateOauthInput): Promise<OAuthModel> {
     const { application_name } = appDetails
     const existing = await this.retrieveByName(application_name)
     if (existing) {
