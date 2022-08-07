@@ -241,12 +241,15 @@ describe("/store/carts", () => {
         })
       expect(response.status).toEqual(200)
 
-      expect(response.data.return.items).toEqual([
-        expect.objectContaining({
-          reason_id: rrId_child,
-          note: "TOO small",
-        }),
-      ])
+      expect(response.data.return.items).toHaveLength(1)
+      expect(response.data.return.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            reason_id: rrId_child,
+            note: "TOO small",
+          }),
+        ])
+      )
     })
 
     it("failes to create a return with an invalid quantity (less than 1)", async () => {
