@@ -75,7 +75,7 @@ class Oauth extends TransactionBaseService<Oauth> {
 
     const query = buildQuery(selector, {})
 
-    return repo.find(query)
+    return await repo.find(query)
   }
 
   async create(data: CreateOauthInput): Promise<OAuthModel> {
@@ -89,7 +89,7 @@ class Oauth extends TransactionBaseService<Oauth> {
         uninstall_url: data.uninstall_url,
       })
 
-      return repo.save(application)
+      return await repo.save(application)
     })
   }
 
@@ -102,7 +102,7 @@ class Oauth extends TransactionBaseService<Oauth> {
         oauth.data = update.data
       }
 
-      return repo.save(oauth)
+      return await repo.save(oauth)
     })
   }
 
@@ -113,7 +113,7 @@ class Oauth extends TransactionBaseService<Oauth> {
       return existing
     }
 
-    return this.create(appDetails)
+    return await this.create(appDetails)
   }
 
   async generateToken(
@@ -139,10 +139,10 @@ class Oauth extends TransactionBaseService<Oauth> {
 
     const authData = await service.generateToken(code)
 
-    return this.update(app.id, {
+    return await this.update(app.id, {
       data: authData,
-    }).then((result) => {
-      this.eventBus_.emit(
+    }).then(async (result) => {
+      await this.eventBus_.emit(
         `${Oauth.Events.TOKEN_GENERATED}.${appName}`,
         authData
       )
@@ -163,10 +163,10 @@ class Oauth extends TransactionBaseService<Oauth> {
 
     const authData = await service.refreshToken(refreshToken)
 
-    return this.update(app.id, {
+    return await this.update(app.id, {
       data: authData,
-    }).then((result) => {
-      this.eventBus_.emit(
+    }).then(async (result) => {
+      await this.eventBus_.emit(
         `${Oauth.Events.TOKEN_REFRESHED}.${appName}`,
         authData
       )
