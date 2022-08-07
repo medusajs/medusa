@@ -30,7 +30,7 @@ type InjectedDependencies = {
  * Handles draft orders
  * @implements {BaseService}
  */
-class DraftOrderService extends TransactionBaseService<DraftOrderService> {
+class DraftOrderService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "draft_order.created",
     UPDATED: "draft_order.updated",

@@ -49,10 +49,7 @@ type InjectedDependencies = {
   totalsService: TotalsService
 }
 
-export default class ClaimService extends TransactionBaseService<
-  ClaimService,
-  InjectedDependencies
-> {
+export default class ClaimService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "claim.created",
     UPDATED: "claim.updated",

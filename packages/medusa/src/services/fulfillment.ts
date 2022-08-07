@@ -32,7 +32,7 @@ type InjectedDependencies = {
 /**
  * Handles Fulfillments
  */
-class FulfillmentService extends TransactionBaseService<FulfillmentService> {
+class FulfillmentService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
