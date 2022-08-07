@@ -67,7 +67,7 @@ export const useAdminDeleteCollection = (
 
 
 /**
- * Hook returns functions for addition of multiple products to a collection.
+ * Hook returns function for adding multiple products to a collection.
  *
  * @param id - id of the collection in which products are being added
  * @param options
