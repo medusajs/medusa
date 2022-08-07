@@ -116,7 +116,7 @@ describe("useAdminRemoveProductsFromCollection hook", () => {
     }
 
     const { result, waitFor } = renderHook(
-      () => useAdminRemoveProductssFromCollection(fixtures.get("product_collection").id),
+      () => useAdminRemoveProductsFromCollection(fixtures.get("product_collection").id),
       {
         wrapper: createWrapper(),
       }
