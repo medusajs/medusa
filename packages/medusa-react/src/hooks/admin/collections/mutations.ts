@@ -100,7 +100,7 @@ export const useAdminAddProductsToCollection = (
  * @param id - id of the collection from which products will be removed
  * @param options
  */
-export const useAdminRemoveProductssFromCollection = (
+export const useAdminRemoveProductsFromCollection = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminCollectionsDeleteRes>,
