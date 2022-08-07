@@ -3,7 +3,7 @@ import {
   useAdminUpdateCollection,
   useAdminDeleteCollection,
   useAdminAddProductsToCollection,
-  useAdminRemoveProductssFromCollection,
+  useAdminRemoveProductsFromCollection,
 } from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
