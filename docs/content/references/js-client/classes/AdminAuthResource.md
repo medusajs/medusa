@@ -10,24 +10,26 @@
 
 ### createSession
 
-▸ **createSession**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal.md#adminauthres)\>
+▸ **createSession**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal-1.md#adminauthres)\>
 
-**`description`** Creates an authenticated session
+**`Description`**
+
+Creates an authenticated session
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostAuthReq`](internal.AdminPostAuthReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostAuthReq`](internal-1.AdminPostAuthReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal.md#adminauthres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal-1.md#adminauthres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:33](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/auth.ts#L33)
+[medusa-js/src/resources/admin/auth.ts:37](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/auth.ts#L37)
 
 ___
 
@@ -35,13 +37,15 @@ ___
 
 ▸ **deleteSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
 
-**`description`** destroys an authenticated session
+**`Description`**
+
+destroys an authenticated session
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -49,27 +53,29 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:22](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/auth.ts#L22)
+[medusa-js/src/resources/admin/auth.ts:24](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/auth.ts#L24)
 
 ___
 
 ### getSession
 
-▸ **getSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal.md#adminauthres)\>
+▸ **getSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal-1.md#adminauthres)\>
 
-**`description`** Retrieves an authenticated session
+**`Description`**
+
+Retrieves an authenticated session
 Usually used to check if authenticated session is alive.
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal.md#adminauthres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminAuthRes`](../modules/internal-1.md#adminauthres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:12](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/auth.ts#L12)
+[medusa-js/src/resources/admin/auth.ts:12](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/auth.ts#L12)

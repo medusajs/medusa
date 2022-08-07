@@ -1,6 +1,7 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+
 import { AddressPayload } from "../../../../types/common"
+import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -16,11 +17,8 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           address:
- *             description: "The updated Address."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *         anyOf:
+ *           - $ref: "#/components/schemas/address"
  * tags:
  *   - Customer
  * responses:

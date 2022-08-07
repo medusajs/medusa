@@ -1,7 +1,8 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
@@ -10,8 +11,8 @@ import { EntityManager } from "typeorm"
  * description: "Cancels a Swap"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * tags:
  *   - Swap
  * responses:
@@ -22,7 +23,7 @@ import { EntityManager } from "typeorm"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/swap"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, swap_id } = req.params

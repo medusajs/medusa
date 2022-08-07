@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -10,10 +9,12 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { OrderService } from "../../../../services"
+
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}
@@ -22,7 +23,7 @@ import { EntityManager } from "typeorm"
  * description: "Updates and order"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,51 +35,57 @@ import { EntityManager } from "typeorm"
  *           billing_address:
  *             description: Billing address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: Shipping address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           items:
  *             description: The Line Items for the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/line_item"
  *           region:
- *             description: Region where the order belongs
+ *             description: ID of the region where the order belongs
  *             type: string
  *           discounts:
  *             description: Discounts applied to the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/discount"
  *           customer_id:
- *             description: id of the customer
+ *             description: ID of the customer
  *             type: string
  *           payment_method:
- *             description:
- *             type: Record<string, unknown>
+ *             description: payment method chosen for the order
+ *             type: object
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: id of the payment provider
+ *                 description: ID of the payment provider
  *               data:
  *                 description: Data relevant for the given payment method
- *                 type: Record<string, unknown>
+ *                 type: object
  *           shipping_method:
  *             description: The Shipping Method used for shipping the order.
- *             type: Record<string, unknown>
+ *             type: object
  *             properties:
  *               provider_id:
  *                 type: string
- *                 description: The id of the shipping provider.
+ *                 description: The ID of the shipping provider.
  *               profile_id:
  *                 type: string
- *                 description: The id of the shipping profile.
+ *                 description: The ID of the shipping profile.
  *               price:
  *                 type: integer
  *                 description: The price of the shipping.
  *               data:
- *                 type: Record<string, unknown>
+ *                 type: object
  *                 description: Data relevant to the specific shipping method.
  *               items:
  *                 type: array
+ *                 items:
+ *                   $ref: "#/components/schemas/line_item"
  *                 description: Items to ship
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the updated order.

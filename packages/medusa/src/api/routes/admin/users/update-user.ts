@@ -1,23 +1,42 @@
 import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
+
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/{user_id}
+ * @oas [post] /users/{id}
  * operationId: "PostUsersUser"
  * summary: "Update a User"
  * description: "Updates a User"
- * x-authenticated: true
  * parameters:
- *   - (path) user_id=* {string} The id of the User.
- *   - (body) first_name {string} The name of the User.
- *   - (body) last_name {string} The name of the User.
- *   - (body) role {string} The role of the User(admin, member, developer).
- *   - (body) api_token {string} The api_token of the User.
+ *   - (path) id=* {string} The ID of the User.
+ * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           first_name:
+ *             description: "The name of the User."
+ *             type: string
+ *           last_name:
+ *             description: "The name of the User."
+ *             type: string
+ *           role:
+ *             description: "Userrole assigned to the user."
+ *             type: string
+ *             enum: [admin, member, developer]
+ *           api_token:
+ *             description: "The api token of the User."
+ *             type: string
+ *           metadata:
+ *             description: An optional set of key-value pairs with additional information.
+ *             type: object
+ * 
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK

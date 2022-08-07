@@ -1,10 +1,11 @@
+import { IsEmail, IsNotEmpty, IsString } from "class-validator"
+
+import AuthService from "../../../../services/auth"
+import { EntityManager } from "typeorm";
+import { MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
-import { IsEmail, IsNotEmpty, IsString } from "class-validator"
-import AuthService from "../../../../services/auth"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm";
 
 /**
  * @oas [post] /auth
@@ -15,6 +16,22 @@ import { EntityManager } from "typeorm";
  * parameters:
  *   - (body) email=* {string} The User's email.
  *   - (body) password=* {string} The User's password.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - email
+ *           - password
+ *         properties:
+ *           email:
+ *             type: string
+ *             description: The User's email.
+ *             format: email
+ *           password:
+ *             type: string
+ *             description: The User's password.
+ *             format: password
  * tags:
  *   - Auth
  * responses:
@@ -26,6 +43,8 @@ import { EntityManager } from "typeorm";
  *          properties:
  *            user:
  *              $ref: "#/components/schemas/user"
+ *  "401":
+ *    description: The user doesn't exist or the credentials are incorrect.
  */
 export default async (req, res) => {
   const { projectConfig: { jwt_secret } } = req.scope.resolve('configModule')

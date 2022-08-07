@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `AbstractSearchService`<[`SearchService`](SearchService.md)\>
 
   ↳ **`SearchService`**
 
@@ -10,41 +10,134 @@
 
 ### constructor
 
-• **new SearchService**(`container`)
+• **new SearchService**(`__namedParameters`, `options`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `container` | `any` |
+| `__namedParameters` | `InjectedDependencies` |
+| `options` | `any` |
 
 #### Overrides
 
-SearchService.constructor
+AbstractSearchService&lt;DefaultSearchService\&gt;.constructor
 
 #### Defined in
 
-[services/search.js:8](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L8)
+[packages/medusa/src/services/search.ts:18](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L18)
 
 ## Properties
 
-### isDefault
+### configModule
 
-• **isDefault**: `boolean`
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+AbstractSearchService.configModule
 
 #### Defined in
 
-[services/search.js:11](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L11)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+AbstractSearchService.container
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
+___
+
+### isDefault
+
+• **isDefault**: `boolean` = `true`
+
+#### Overrides
+
+AbstractSearchService.isDefault
+
+#### Defined in
+
+[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L11)
 
 ___
 
 ### logger\_
 
-• **logger\_**: `any`
+• `Protected` `Readonly` **logger\_**: `Logger`
 
 #### Defined in
 
-[services/search.js:13](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L13)
+[packages/medusa/src/services/search.ts:15](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L15)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+AbstractSearchService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L13)
+
+___
+
+### options\_
+
+• `Protected` `Readonly` **options\_**: `Record`<`string`, `unknown`\>
+
+#### Overrides
+
+AbstractSearchService.options\_
+
+#### Defined in
+
+[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L16)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+AbstractSearchService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L14)
+
+## Accessors
+
+### options
+
+• `get` **options**(): `Record`<`string`, `unknown`\>
+
+#### Returns
+
+`Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+AbstractSearchService.options
+
+#### Defined in
+
+[packages/medusa/src/interfaces/search-service.ts:84](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/search-service.ts#L84)
 
 ## Methods
 
@@ -56,17 +149,60 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `documents` | `any` |
-| `type` | `any` |
+| `indexName` | `string` |
+| `documents` | `unknown` |
+| `type` | `string` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.addDocuments
+
 #### Defined in
 
-[services/search.js:28](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L28)
+[packages/medusa/src/services/search.ts:43](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L43)
+
+___
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+AbstractSearchService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -78,16 +214,20 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `options` | `any` |
+| `indexName` | `string` |
+| `options` | `unknown` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.createIndex
+
 #### Defined in
 
-[services/search.js:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L16)
+[packages/medusa/src/services/search.ts:31](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L31)
 
 ___
 
@@ -99,15 +239,19 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
+| `indexName` | `string` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.deleteAllDocuments
+
 #### Defined in
 
-[services/search.js:46](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L46)
+[packages/medusa/src/services/search.ts:61](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L61)
 
 ___
 
@@ -119,16 +263,20 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `document_id` | `any` |
+| `indexName` | `string` |
+| `document_id` | `string` \| `number` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.deleteDocument
+
 #### Defined in
 
-[services/search.js:40](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L40)
+[packages/medusa/src/services/search.ts:55](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L55)
 
 ___
 
@@ -140,15 +288,19 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
+| `indexName` | `string` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.getIndex
+
 #### Defined in
 
-[services/search.js:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L22)
+[packages/medusa/src/services/search.ts:37](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L37)
 
 ___
 
@@ -160,17 +312,21 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `documents` | `any` |
-| `type` | `any` |
+| `indexName` | `string` |
+| `documents` | `unknown` |
+| `type` | `string` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.replaceDocuments
+
 #### Defined in
 
-[services/search.js:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L34)
+[packages/medusa/src/services/search.ts:49](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L49)
 
 ___
 
@@ -182,9 +338,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `query` | `any` |
-| `options` | `any` |
+| `indexName` | `string` |
+| `query` | `unknown` |
+| `options` | `unknown` |
 
 #### Returns
 
@@ -192,11 +348,39 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `hits` | `never`[] |
+| `hits` | `unknown`[] |
+
+#### Overrides
+
+AbstractSearchService.search
 
 #### Defined in
 
-[services/search.js:52](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L52)
+[packages/medusa/src/services/search.ts:67](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L67)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+AbstractSearchService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -208,13 +392,41 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `indexName` | `any` |
-| `settings` | `any` |
+| `indexName` | `string` |
+| `settings` | `unknown` |
 
 #### Returns
 
 `void`
 
+#### Overrides
+
+AbstractSearchService.updateSettings
+
 #### Defined in
 
-[services/search.js:59](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/search.js#L59)
+[packages/medusa/src/services/search.ts:78](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L78)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`SearchService`](SearchService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+[`SearchService`](SearchService.md)
+
+#### Inherited from
+
+AbstractSearchService.withTransaction
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

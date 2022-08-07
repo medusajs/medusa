@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:25
+medusa/dist/models/shipping-method.d.ts:25
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:16
+medusa/dist/models/shipping-method.d.ts:16
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:15
+medusa/dist/models/shipping-method.d.ts:15
 
 ___
 
@@ -44,27 +44,27 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:14
+medusa/dist/models/shipping-method.d.ts:14
 
 ___
 
 ### claim\_order\_id
 
-• **claim\_order\_id**: `string`
+• **claim\_order\_id**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:13
+medusa/dist/models/shipping-method.d.ts:13
 
 ___
 
 ### data
 
-• **data**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **data**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:24
+medusa/dist/models/shipping-method.d.ts:24
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:9
+medusa/dist/models/shipping-method.d.ts:9
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:12
+medusa/dist/models/shipping-method.d.ts:12
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:11
+medusa/dist/models/shipping-method.d.ts:11
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:23
+medusa/dist/models/shipping-method.d.ts:23
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:19
+medusa/dist/models/shipping-method.d.ts:19
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:20
+medusa/dist/models/shipping-method.d.ts:20
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:21
+medusa/dist/models/shipping-method.d.ts:21
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:10
+medusa/dist/models/shipping-method.d.ts:10
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:18
+medusa/dist/models/shipping-method.d.ts:18
 
 ___
 
@@ -164,7 +164,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:17
+medusa/dist/models/shipping-method.d.ts:17
 
 ___
 
@@ -174,4 +174,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-method.d.ts:22
+medusa/dist/models/shipping-method.d.ts:22

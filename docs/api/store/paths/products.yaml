@@ -1,0 +1,158 @@
+get:
+  operationId: GetProducts
+  summary: List Products
+  description: Retrieves a list of Products.
+  parameters:
+    - in: query
+      name: q
+      description: >-
+        Query used for searching products by title, description, variant's
+        title, variant's sku, and collection's title
+      schema:
+        type: string
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: product IDs to search for.
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    - in: query
+      name: collection_id
+      style: form
+      explode: false
+      description: Collection IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: tags
+      style: form
+      explode: false
+      description: Tag IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: title
+      description: title to search for.
+      schema:
+        type: string
+    - in: query
+      name: description
+      description: description to search for.
+      schema:
+        type: string
+    - in: query
+      name: handle
+      description: handle to search for.
+      schema:
+        type: string
+    - in: query
+      name: is_giftcard
+      description: Search for giftcards using is_giftcard=true.
+      schema:
+        type: boolean
+    - in: query
+      name: type
+      description: type to search for.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting products were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting products were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: offset
+      description: How many products to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of products returned.
+      schema:
+        type: integer
+        default: 100
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each order of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each order of the
+        result.
+      schema:
+        type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              products:
+                type: array
+                items:
+                  $ref: ../components/schemas/product.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

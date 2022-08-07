@@ -10,7 +10,7 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * description: "Updates a Note associated with some resource"
  * parameters:
- *   - (path) id=* {string} The id of the Note to update
+ *   - (path) id=* {string} The ID of the Note to update
  * requestBody:
  *  content:
  *    application/json:

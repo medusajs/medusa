@@ -1,12 +1,13 @@
 import { IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import { Discount } from "../../../../models"
-import { DiscountService } from "../../../../services"
 import DiscountConditionService from "../../../../services/discount-condition"
+import { DiscountService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
@@ -15,10 +16,12 @@ import { EntityManager } from "typeorm"
  * description: "Deletes a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount
- *   - (path) condition_id=* {string} The id of the DiscountCondition
+ *   - (path) discount_id=* {string} The ID of the Discount
+ *   - (path) condition_id=* {string} The ID of the DiscountCondition
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
- *   - Discount
+ *   - Discount Condition
  * responses:
  *   200:
  *     description: OK
@@ -28,15 +31,18 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted DiscountCondition
+ *               description: The ID of the deleted DiscountCondition
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: discount-condition
  *             deleted:
  *               type: boolean
+ *               description: Whether the discount condition was deleted successfully or not.
+ *               default: true
  *             discount:
- *               type: object
  *               description: The Discount to which the condition used to belong
+ *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
   const { discount_id, condition_id } = req.params

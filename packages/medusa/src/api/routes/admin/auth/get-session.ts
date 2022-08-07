@@ -1,5 +1,5 @@
-import _ from "lodash"
 import UserService from "../../../../services/user"
+import _ from "lodash"
 
 /**
  * @oas [get] /auth
@@ -18,6 +18,8 @@ import UserService from "../../../../services/user"
  *          properties:
  *            user:
  *              $ref: "#/components/schemas/user"
+ *  "400":
+ *    description: An error occurred.
  */
 export default async (req, res) => {
   try {

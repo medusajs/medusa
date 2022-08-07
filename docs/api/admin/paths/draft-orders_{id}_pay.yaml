@@ -1,0 +1,23 @@
+post:
+  summary: Registers a payment for a Draft Order
+  operationId: PostDraftOrdersDraftOrderRegisterPayment
+  description: Registers a payment for a Draft Order.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The Draft Order id.
+      schema:
+        type: string
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/draft-order.yaml

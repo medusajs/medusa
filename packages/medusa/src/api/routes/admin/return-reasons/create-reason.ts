@@ -3,6 +3,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -27,8 +28,8 @@ import { EntityManager } from "typeorm"
  *           value:
  *             description: "The value that the Return Reason will be identified by. Must be unique."
  *             type: string
- *            parent_return_reason_id:
- *             description: "The id of the parent return reason."
+ *           parent_return_reason_id:
+ *             description: "The ID of the parent return reason."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."

@@ -15,9 +15,9 @@ import { EntityManager } from "typeorm"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - address
  *       schema:
+ *         required:
+ *           - address
  *         properties:
  *           address:
  *             description: "The Address to add to the Customer."

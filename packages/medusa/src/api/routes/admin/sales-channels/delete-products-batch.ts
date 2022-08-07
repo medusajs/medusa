@@ -1,9 +1,10 @@
-import { Type } from "class-transformer"
 import { IsArray, ValidateNested } from "class-validator"
-import { SalesChannelService } from "../../../../services"
 import { Request, Response } from "express"
-import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
+
 import { EntityManager } from "typeorm"
+import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
+import { SalesChannelService } from "../../../../services"
+import { Type } from "class-transformer"
 
 /**
  * @oas [delete] /sales-channels/{id}/products/batch
@@ -12,8 +13,25 @@ import { EntityManager } from "typeorm"
  * description: "Remove a list of products from a sales channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
- *   - (body) product_ids=* {ProductBatchSalesChannel[]} ids of the product to remove
+ *   - (path) id=* {string} The ID of the Sales Channel
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - product_ids
+ *         properties:
+ *           product_ids:
+ *             description: The IDs of the products to delete from the Sales Channel.
+ *             type: array
+ *             items:
+ *               type: object
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   description: The ID of a product
+ *                   type: string
  * tags:
  *   - Sales Channel
  * responses:
