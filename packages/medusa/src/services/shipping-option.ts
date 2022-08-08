@@ -296,6 +296,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const toCreate: Partial<ShippingMethod> = {
         shipping_option_id: option.id,
+        includes_tax: option.includes_tax,
         data: validatedData,
         price: methodPrice,
       }
@@ -328,10 +329,10 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const created = await methodRepo.save(method)
 
-      return methodRepo.findOne({
+      return (await methodRepo.findOne({
         where: { id: created.id },
         relations: ["shipping_option"],
-      }) as unknown as ShippingMethod
+      })) as ShippingMethod
     })
   }
 
