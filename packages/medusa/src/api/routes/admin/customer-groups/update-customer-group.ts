@@ -1,11 +1,11 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import { defaultAdminCustomerGroupsRelations } from "."
+import { Request, Response } from "express"
 
 import { CustomerGroupService } from "../../../../services"
-import { FindParams } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { defaultAdminCustomerGroupsRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customer-groups/{id}
@@ -14,11 +14,20 @@ import { EntityManager } from "typeorm"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
- *   - (body) name=* {string} Name of the customer group
- *   - (body) metadata {object} Metadata for the customer.
+ *   - (path) id=* {string} The ID of the customer group.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           name:
+ *             description: "Name of the customer group"
+ *             type: string
+ *           metadata:
+ *             description: "Metadata for the customer."
+ *             type: object
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

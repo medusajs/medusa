@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * description: "Marks a batch job as canceled"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the batch job.
+ *   - (path) id=* {string} The ID of the batch job.
  * tags:
  *   - Batch Job
  * responses:

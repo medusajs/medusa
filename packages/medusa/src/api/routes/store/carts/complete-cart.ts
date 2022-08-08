@@ -1,7 +1,7 @@
-import { ICartCompletionStrategy } from "../../../../interfaces"
-import { IdempotencyKeyService } from "../../../../services"
-import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { EntityManager } from "typeorm";
+import { AbstractCartCompletionStrategy } from "../../../../interfaces"
+import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { IdempotencyKeyService } from "../../../../services"
 
 /**
  * @oas [post] /carts/{id}/complete
@@ -26,23 +26,35 @@ import { EntityManager } from "typeorm";
  *     content:
  *       application/json:
  *         schema:
- *           oneOf:
- *            - type: object
- *              properties:
- *                order:
- *                  $ref: "#/components/schemas/order"
- *            - type: object
- *              properties:
- *                cart:
- *                  $ref: "#/components/schemas/cart"
- *            - type: object
- *              properties:
- *                cart:
- *                  $ref: "#/components/schemas/swap"
+ *           properties:
+ *             type:
+ *               type: string
+ *               description: The type of the data property.
+ *               enum: [order, cart, swap]
+ *             data:
+ *               type: object
+ *               description: The data of the result object. Its type depends on the type field.
+ *               oneOf:
+ *                 - type: object
+ *                   description: Cart was successfully authorized and order was placed successfully.
+ *                   properties:
+ *                     order:
+ *                       $ref: "#/components/schemas/order"
+ *                 - type: object
+ *                   description: Cart was successfully authorized but requires further actions.
+ *                   properties:
+ *                     cart:
+ *                       $ref: "#/components/schemas/cart"
+ *                 - type: object
+ *                   description: When cart is used for a swap and it has been completed successfully.
+ *                   properties:
+ *                     cart:
+ *                       $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
   const { id } = req.params
 
+  const manager: EntityManager = req.scope.resolve("manager")
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
@@ -51,7 +63,6 @@ export default async (req, res) => {
 
   let idempotencyKey: IdempotencyKey
   try {
-    const manager: EntityManager = req.scope.resolve("manager")
     idempotencyKey = await manager.transaction(async (transactionManager) => {
       return await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
         headerKey,
@@ -69,7 +80,7 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const completionStrat: ICartCompletionStrategy = req.scope.resolve(
+  const completionStrat: AbstractCartCompletionStrategy = req.scope.resolve(
     "cartCompletionStrategy"
   )
 

@@ -1,0 +1,40 @@
+post:
+  operationId: PostCartsCartShippingMethod
+  description: Adds a Shipping Method to the Cart.
+  summary: Add a Shipping Method
+  tags:
+    - Cart
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The cart ID.
+      schema:
+        type: string
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - option_id
+          properties:
+            option_id:
+              type: string
+              description: ID of the shipping option to create the method from
+            data:
+              type: object
+              description: >-
+                Used to hold any data that the shipping method may need to
+                process the fulfillment of the order. Look at the documentation
+                for your installed fulfillment providers to find out what to
+                send.

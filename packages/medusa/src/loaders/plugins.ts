@@ -17,6 +17,7 @@ import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
+  isCartCompletionStrategy,
   isFileService,
   isNotificationService,
   isPriceSelectionStrategy,
@@ -179,6 +180,22 @@ export function registerStrategies(
         } else {
           logger.warn(
             `Cannot register ${file}. A tax calculation strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isCartCompletionStrategy(module.prototype): {
+        if (!("cartCompletionStrategy" in registeredServices)) {
+          container.register({
+            cartCompletionStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+          registeredServices["cartCompletionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A cart completion strategy is already registered`
           )
         }
         break

@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNotEmpty,
@@ -8,14 +7,16 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultStoreSwapFields, defaultStoreSwapRelations } from "."
+
+import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { MedusaError } from "medusa-core-utils"
 import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import SwapService from "../../../../services/swap"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /swaps
@@ -33,7 +34,7 @@ import { EntityManager } from "typeorm"
  *         properties:
  *           order_id:
  *             type: string
- *             description: The id of the Order to create the Swap for.
+ *             description: The ID of the Order to create the Swap for.
  *           return_items:
  *             description: "The items to include in the Return."
  *             type: array
@@ -43,20 +44,20 @@ import { EntityManager } from "typeorm"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item from the Order.
+ *                   description: The ID of the Line Item from the Order.
  *                   type: string
  *                 quantity:
- *                   description: The quantity to return.
+ *                   description: The quantity to swap.
  *                   type: integer
  *                 reason_id:
- *                   description: The id of the reason of this return
+ *                   description: The ID of the reason of this return.
  *                   type: string
- *                 note_id:
- *                   description: The id of the note
+ *                 note:
+ *                   description: The note to add to the item being swapped.
  *                   type: string
  *           return_shipping_option:
  *             type: string
- *             description: The id of the Shipping Option to create the Shipping Method from.
+ *             description: The ID of the Shipping Option to create the Shipping Method from.
  *           additional_items:
  *             description: "The items to exchange the returned items to."
  *             type: array
@@ -66,15 +67,11 @@ import { EntityManager } from "typeorm"
  *                 - quantity
  *               properties:
  *                 variant_id:
- *                   description: The id of the Product Variant to send.
+ *                   description: The ID of the Product Variant to send.
  *                   type: string
  *                 quantity:
  *                   description: The quantity to send of the variant.
  *                   type: integer
- *         required:
- *          - order_id
- *          - return_items
- *          - additional_items
  * tags:
  *   - Swap
  * responses:

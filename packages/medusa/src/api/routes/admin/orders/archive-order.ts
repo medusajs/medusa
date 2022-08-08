@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * description: "Archives the order with the given id."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * tags:
  *   - Order
  * responses:

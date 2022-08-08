@@ -1,0 +1,172 @@
+post:
+  operationId: PostTaxRates
+  summary: Create a Tax Rate
+  description: Creates a Tax Rate
+  parameters:
+    - in: query
+      name: fields
+      description: Which fields should be included in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: Which fields should be expanded and retrieved in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - code
+            - name
+            - region_id
+          properties:
+            code:
+              type: string
+              description: A code to identify the tax type by
+            name:
+              type: string
+              description: A human friendly name for the tax
+            region_id:
+              type: string
+              description: The ID of the Region that the rate belongs to
+            rate:
+              type: number
+              description: The numeric rate to charge
+            products:
+              type: array
+              description: The IDs of the products associated with this tax rate
+              items:
+                type: string
+            shipping_options:
+              type: array
+              description: The IDs of the shipping options associated with this tax rate
+              items:
+                type: string
+            product_types:
+              type: array
+              description: The IDs of the types of products associated with this tax rate
+              items:
+                type: string
+  tags:
+    - Tax Rate
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              tax_rate:
+                $ref: ../components/schemas/tax_rate.yaml
+get:
+  operationId: GetTaxRates
+  summary: List Tax Rates
+  description: Retrieves a list of TaxRates
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: name
+      description: Name of tax rate to retrieve
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      style: form
+      explode: false
+      description: Filter by Region ID
+      schema:
+        oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+    - in: query
+      name: code
+      description: code to search for.
+      schema:
+        type: string
+    - in: query
+      name: rate
+      style: form
+      explode: false
+      description: Filter by Rate
+      schema:
+        oneOf:
+          - type: number
+          - type: object
+            properties:
+              lt:
+                type: number
+                description: filter by rates less than this number
+              gt:
+                type: number
+                description: filter by rates greater than this number
+              lte:
+                type: number
+                description: filter by rates less than or equal to this number
+              gte:
+                type: number
+                description: filter by rates greater than or equal to this number
+    - in: query
+      name: offset
+      description: How many tax rates to skip before retrieving the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of tax rates returned.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: fields
+      description: Which fields should be included in each item.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: Which fields should be expanded and retrieved for each item.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  tags:
+    - Tax Rate
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              tax_rates:
+                type: array
+                items:
+                  $ref: ../components/schemas/tax_rate.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

@@ -331,12 +331,15 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "fixed-discount",
-          code: "fixed100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "fixed-discount",
+            code: "fixed100",
+          }),
+        ])
+      )
     })
 
     it("fails when listing invalid discount types", async () => {
@@ -394,12 +397,15 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "dynamic-discount",
-          code: "Dyn100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "dynamic-discount",
+            code: "Dyn100",
+          })
+        ])
+      )
     })
 
     it("lists disabled discounts ", async () => {
@@ -416,12 +422,15 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "disabled-discount",
-          code: "Dis100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "disabled-discount",
+            code: "Dis100",
+          }),
+        ])
+      )
     })
   })
 
@@ -614,16 +623,19 @@ describe("/admin/discounts", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-      ])
+      expect(response.data.discount.rule.conditions).toHaveLength(2)
+      expect(response.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+        ])
+      )
 
       const createdRule = response.data.discount.rule
       const condsToUpdate = createdRule.conditions[0]

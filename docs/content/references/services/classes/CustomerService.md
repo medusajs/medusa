@@ -1,5 +1,7 @@
 # Class: CustomerService
 
+Provides layer to manipulate customers.
+
 ## Hierarchy
 
 - `TransactionBaseService`<[`CustomerService`](CustomerService.md)\>
@@ -24,7 +26,7 @@ TransactionBaseService&lt;CustomerService\&gt;.constructor
 
 #### Defined in
 
-[services/customer.ts:40](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L40)
+[packages/medusa/src/services/customer.ts:39](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L39)
 
 ## Properties
 
@@ -34,7 +36,7 @@ TransactionBaseService&lt;CustomerService\&gt;.constructor
 
 #### Defined in
 
-[services/customer.ts:28](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L28)
+[packages/medusa/src/services/customer.ts:27](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L27)
 
 ___
 
@@ -46,6 +48,10 @@ ___
 
 TransactionBaseService.configModule
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
 ___
 
 ### container
@@ -56,6 +62,10 @@ ___
 
 TransactionBaseService.container
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
 ___
 
 ### customerRepository\_
@@ -64,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L27)
+[packages/medusa/src/services/customer.ts:26](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L26)
 
 ___
 
@@ -74,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:29](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L29)
+[packages/medusa/src/services/customer.ts:28](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L28)
 
 ___
 
@@ -88,7 +98,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/customer.ts:31](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L31)
+[packages/medusa/src/services/customer.ts:30](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L30)
 
 ___
 
@@ -102,7 +112,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/customer.ts:32](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L32)
+[packages/medusa/src/services/customer.ts:31](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L31)
 
 ___
 
@@ -120,7 +130,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L34)
+[packages/medusa/src/services/customer.ts:33](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L33)
 
 ## Methods
 
@@ -141,13 +151,17 @@ ___
 
 #### Defined in
 
-[services/customer.ts:471](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L471)
+[packages/medusa/src/services/customer.ts:461](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L461)
 
 ___
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -160,13 +174,15 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -174,7 +190,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -182,13 +198,17 @@ ___
 
 ▸ **count**(): `Promise`<`number`\>
 
+Return the total number of documents in database
+
 #### Returns
 
 `Promise`<`number`\>
 
+the result of the count operation
+
 #### Defined in
 
-[services/customer.ts:161](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L161)
+[packages/medusa/src/services/customer.ts:158](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L158)
 
 ___
 
@@ -196,19 +216,26 @@ ___
 
 ▸ **create**(`customer`): `Promise`<`Customer`\>
 
+Creates a customer from an email - customers can have accounts associated,
+e.g. to login and view order history, etc. If a password is provided the
+customer will automatically get an account, otherwise the customer is just
+used to hold details of customers.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customer` | `CreateCustomerInput` |  |
+| `customer` | `CreateCustomerInput` | the customer to create |
 
 #### Returns
 
 `Promise`<`Customer`\>
 
+the result of create
+
 #### Defined in
 
-[services/customer.ts:255](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L255)
+[packages/medusa/src/services/customer.ts:245](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L245)
 
 ___
 
@@ -216,19 +243,23 @@ ___
 
 ▸ **delete**(`customerId`): `Promise`<`void` \| `Customer`\>
 
+Deletes a customer from a given customer id.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customerId` | `string` |  |
+| `customerId` | `string` | the id of the customer to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
 `Promise`<`void` \| `Customer`\>
 
+the result of the delete operation.
+
 #### Defined in
 
-[services/customer.ts:519](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L519)
+[packages/medusa/src/services/customer.ts:509](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L509)
 
 ___
 
@@ -236,19 +267,27 @@ ___
 
 ▸ **generateResetPasswordToken**(`customerId`): `Promise`<`string`\>
 
+Generate a JSON Web token, that will be sent to a customer, that wishes to
+reset password.
+The token will be signed with the customer's current password hash as a
+secret a long side a payload with userId and the expiry time for the token,
+which is always 15 minutes.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customerId` | `string` |  |
+| `customerId` | `string` | the customer to reset the password for |
 
 #### Returns
 
 `Promise`<`string`\>
 
+the generated JSON web token
+
 #### Defined in
 
-[services/customer.ts:65](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L65)
+[packages/medusa/src/services/customer.ts:64](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L64)
 
 ___
 
@@ -256,19 +295,23 @@ ___
 
 ▸ **hashPassword_**(`password`): `Promise`<`string`\>
 
+Hashes a password
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `password` | `string` |  |
+| `password` | `string` | the value to hash |
 
 #### Returns
 
 `Promise`<`string`\>
 
+hashed password
+
 #### Defined in
 
-[services/customer.ts:242](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L242)
+[packages/medusa/src/services/customer.ts:232](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L232)
 
 ___
 
@@ -280,16 +323,18 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } |  |
-| `config` | `FindConfig`<`Customer`\> |  |
+| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } | the query object for find |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
 `Promise`<`Customer`[]\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/customer.ts:108](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L108)
+[packages/medusa/src/services/customer.ts:107](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L107)
 
 ___
 
@@ -301,16 +346,18 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } |  |
-| `config` | `FindConfig`<`Customer`\> |  |
+| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } | the query object for find |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
 `Promise`<[`Customer`[], `number`]\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/customer.ts:133](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L133)
+[packages/medusa/src/services/customer.ts:131](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L131)
 
 ___
 
@@ -331,7 +378,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:454](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L454)
+[packages/medusa/src/services/customer.ts:444](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L444)
 
 ___
 
@@ -339,20 +386,24 @@ ___
 
 ▸ **retrieve**(`customerId`, `config?`): `Promise`<`Customer`\>
 
+Gets a customer by id.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customerId` | `string` |  |
-| `config` | `FindConfig`<`Customer`\> |  |
+| `customerId` | `string` | the id of the customer to get. |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
 `Promise`<`Customer`\>
 
+the customer document.
+
 #### Defined in
 
-[services/customer.ts:228](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L228)
+[packages/medusa/src/services/customer.ts:220](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L220)
 
 ___
 
@@ -360,20 +411,24 @@ ___
 
 ▸ **retrieveByEmail**(`email`, `config?`): `Promise`<`Customer`\>
 
+Gets a customer by email.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `email` | `string` |  |
-| `config` | `FindConfig`<`Customer`\> |  |
+| `email` | `string` | the email of the customer to get. |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
 `Promise`<`Customer`\>
 
+the customer document.
+
 #### Defined in
 
-[services/customer.ts:198](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L198)
+[packages/medusa/src/services/customer.ts:194](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L194)
 
 ___
 
@@ -381,20 +436,24 @@ ___
 
 ▸ **retrieveByPhone**(`phone`, `config?`): `Promise`<`Customer`\>
 
+Gets a customer by phone.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `phone` | `string` |  |
-| `config` | `FindConfig`<`Customer`\> |  |
+| `phone` | `string` | the phone of the customer to get. |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
 `Promise`<`Customer`\>
 
+the customer document.
+
 #### Defined in
 
-[services/customer.ts:213](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L213)
+[packages/medusa/src/services/customer.ts:207](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L207)
 
 ___
 
@@ -415,7 +474,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:168](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L168)
+[packages/medusa/src/services/customer.ts:164](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L164)
 
 ___
 
@@ -439,7 +498,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -447,20 +506,24 @@ ___
 
 ▸ **update**(`customerId`, `update`): `Promise`<`Customer`\>
 
+Updates a customer.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customerId` | `string` |  |
-| `update` | `UpdateCustomerInput` |  |
+| `customerId` | `string` | the id of the variant. Must be a string that   can be casted to an ObjectId |
+| `update` | `UpdateCustomerInput` | an object with the update values. |
 
 #### Returns
 
 `Promise`<`Customer`\>
 
+resolves to the update result.
+
 #### Defined in
 
-[services/customer.ts:310](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L310)
+[packages/medusa/src/services/customer.ts:300](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L300)
 
 ___
 
@@ -482,7 +545,7 @@ ___
 
 #### Defined in
 
-[services/customer.ts:426](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L426)
+[packages/medusa/src/services/customer.ts:416](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L416)
 
 ___
 
@@ -490,20 +553,24 @@ ___
 
 ▸ **updateBillingAddress_**(`customer`, `addressOrId`): `Promise`<`void`\>
 
+Updates the customers' billing address.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customer` | `Customer` |  |
-| `addressOrId` | `undefined` \| `string` \| { `address_1?`: ``null`` \| `string` ; `address_2?`: ``null`` \| `string` ; `city?`: ``null`` \| `string` ; `company?`: ``null`` \| `string` ; `country?`: ``null`` \| { id?: number \| undefined; iso\_2?: string \| undefined; iso\_3?: string \| undefined; num\_code?: number \| undefined; name?: string \| undefined; display\_name?: string \| undefined; region\_id?: string \| ... 1 more ... \| undefined; region?: { ...; } \| undefined; } ; `country_code?`: ``null`` \| `string` ; `created_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `customer?`: ``null`` \| { email?: string \| undefined; first\_name?: string \| undefined; last\_name?: string \| undefined; billing\_address\_id?: string \| null \| undefined; billing\_address?: { customer\_id?: string \| null \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 10 more ...; updated\_at?: { ...; } \| undef... ; `customer_id?`: ``null`` \| `string` ; `deleted_at?`: ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `first_name?`: ``null`` \| `string` ; `id?`: `string` ; `last_name?`: ``null`` \| `string` ; `metadata?`: { [x: string]: unknown; } ; `phone?`: ``null`` \| `string` ; `postal_code?`: ``null`` \| `string` ; `province?`: ``null`` \| `string` ; `updated_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; }  } |  |
+| `customer` | `Customer` | the Customer to update |
+| `addressOrId` | `undefined` \| `string` \| { `address_1?`: ``null`` \| `string` ; `address_2?`: ``null`` \| `string` ; `city?`: ``null`` \| `string` ; `company?`: ``null`` \| `string` ; `country?`: ``null`` \| { id?: number \| undefined; iso\_2?: string \| undefined; iso\_3?: string \| undefined; num\_code?: number \| undefined; name?: string \| undefined; display\_name?: string \| undefined; region\_id?: string \| ... 1 more ... \| undefined; region?: { ...; } \| undefined; } ; `country_code?`: ``null`` \| `string` ; `created_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `customer?`: ``null`` \| { email?: string \| undefined; first\_name?: string \| undefined; last\_name?: string \| undefined; billing\_address\_id?: string \| null \| undefined; billing\_address?: { customer\_id?: string \| null \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 10 more ...; updated\_at?: { ...; } \| undef... ; `customer_id?`: ``null`` \| `string` ; `deleted_at?`: ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `first_name?`: ``null`` \| `string` ; `id?`: `string` ; `last_name?`: ``null`` \| `string` ; `metadata?`: { [x: string]: unknown; } ; `phone?`: ``null`` \| `string` ; `postal_code?`: ``null`` \| `string` ; `province?`: ``null`` \| `string` ; `updated_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; }  } | the value to set the billing address to |
 
 #### Returns
 
 `Promise`<`void`\>
 
+the result of the update operation
+
 #### Defined in
 
-[services/customer.ts:374](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/customer.ts#L374)
+[packages/medusa/src/services/customer.ts:364](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L364)
 
 ___
 
@@ -527,4 +594,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

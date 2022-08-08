@@ -1,21 +1,26 @@
+import { CartService, DraftOrderService } from "../../../../services"
 import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
 } from "."
+
 import { DraftOrder } from "../../../.."
+import { EntityManager } from "typeorm"
 import { LineItemUpdate } from "../../../../types/cart"
-import { CartService, DraftOrderService } from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item for a Draft Order"
  * description: "Updates a Line Item for a Draft Order"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Draft Order.
+ *   - (path) line_id=* {string} The ID of the Line Item.
  * requestBody:
  *   content:
  *     application/json:

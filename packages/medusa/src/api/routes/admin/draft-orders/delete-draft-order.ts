@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
  * description: "Deletes a Draft Order"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * tags:
  *   - Draft Order
  * responses:
@@ -19,12 +19,15 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Draft Order.
+ *               description: The ID of the deleted Draft Order.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: draft-order
  *             deleted:
  *               type: boolean
+ *               description: Whether the draft order was deleted successfully or not.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params

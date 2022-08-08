@@ -1,4 +1,5 @@
 import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
+
 import { SwapService } from "../../../../services"
 
 /**
@@ -8,7 +9,7 @@ import { SwapService } from "../../../../services"
  * description: "Retrieves a Swap."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Swap.
  * tags:
  *   - Swap
  * responses:

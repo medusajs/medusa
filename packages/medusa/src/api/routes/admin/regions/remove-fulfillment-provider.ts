@@ -1,6 +1,7 @@
-import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
 import { EntityManager } from "typeorm"
+import RegionService from "../../../../services/region"
 
 /**
  * @oas [delete] /regions/{id}/fulfillment-providers/{provider_id}
@@ -9,8 +10,8 @@ import { EntityManager } from "typeorm"
  * description: "Removes a Fulfillment Provider."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
- *   - (path) provider_id=* {string} The id of the Fulfillment Provider.
+ *   - (path) id=* {string} The ID of the Region.
+ *   - (path) provider_id=* {string} The ID of the Fulfillment Provider.
  * tags:
  *   - Region
  * responses:

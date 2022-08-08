@@ -1,0 +1,27 @@
+post:
+  operationId: PostCustomersCustomerAddresses
+  summary: Add a Shipping Address
+  description: Adds a Shipping Address to a Customer's saved addresses.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - address
+          properties:
+            address:
+              description: The Address to add to the Customer.
+              anyOf:
+                - $ref: ../components/schemas/address.yaml
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: A successful response
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml

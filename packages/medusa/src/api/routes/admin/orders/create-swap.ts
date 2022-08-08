@@ -1,26 +1,27 @@
-import { Type } from "class-transformer"
-import {
-  Min,
-  IsOptional,
-  IsArray,
-  IsString,
-  IsBoolean,
-  IsObject,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  ValidateNested,
-} from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import {
   IdempotencyKeyService,
   OrderService,
   ReturnService,
   SwapService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -29,7 +30,7 @@ import { EntityManager } from "typeorm"
  * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -46,18 +47,26 @@ import { EntityManager } from "typeorm"
  *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item that will be claimed.
+ *                   description: The ID of the Line Item that will be claimed.
  *                   type: string
  *                 quantity:
  *                   description: The number of items that will be returned
  *                   type: integer
+ *                 reason_id:
+ *                   description: The ID of the Return Reason to use.
+ *                   type: string
+ *                 note:
+ *                   description: An optional note with information about the Return.
+ *                   type: string
  *           return_shipping:
  *             description: How the Swap will be returned.
  *             type: object
+ *             required:
+ *               - option_id
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  *               price:
  *                 type: integer
  *                 description: The price to charge for the Shipping Method.
@@ -70,7 +79,7 @@ import { EntityManager } from "typeorm"
  *                 - quantity
  *               properties:
  *                 variant_id:
- *                   description: The id of the Product Variant to ship.
+ *                   description: The ID of the Product Variant to ship.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Product Variant to ship.
@@ -84,7 +93,7 @@ import { EntityManager } from "typeorm"
  *                 - price
  *               properties:
  *                 option_id:
- *                   description: The id of the Shipping Option to override with a custom price.
+ *                   description: The ID of the Shipping Option to override with a custom price.
  *                   type: string
  *                 price:
  *                   description: The custom price of the Shipping Option.
@@ -95,8 +104,9 @@ import { EntityManager } from "typeorm"
  *           allow_backorder:
  *             description: If true, swaps can be completed with items out of stock
  *             type: boolean
+ *             default: true
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

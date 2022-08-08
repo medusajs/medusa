@@ -1,5 +1,7 @@
 # Class: AuthService
 
+Can authenticate a user based on email password combination
+
 ## Hierarchy
 
 - `TransactionBaseService`<[`AuthService`](AuthService.md)\>
@@ -24,7 +26,7 @@ TransactionBaseService&lt;AuthService\&gt;.constructor
 
 #### Defined in
 
-[services/auth.ts:25](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L25)
+[packages/medusa/src/services/auth.ts:25](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L25)
 
 ## Properties
 
@@ -36,6 +38,10 @@ TransactionBaseService&lt;AuthService\&gt;.constructor
 
 TransactionBaseService.configModule
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
 ___
 
 ### container
@@ -46,6 +52,10 @@ ___
 
 TransactionBaseService.container
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
 ___
 
 ### customerService\_
@@ -54,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/auth.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L23)
+[packages/medusa/src/services/auth.ts:23](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L23)
 
 ___
 
@@ -68,7 +78,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/auth.ts:20](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L20)
+[packages/medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L20)
 
 ___
 
@@ -82,7 +92,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/auth.ts:21](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L21)
+[packages/medusa/src/services/auth.ts:21](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L21)
 
 ___
 
@@ -92,13 +102,17 @@ ___
 
 #### Defined in
 
-[services/auth.ts:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L22)
+[packages/medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L22)
 
 ## Methods
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -111,13 +125,15 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -125,7 +141,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -133,20 +149,27 @@ ___
 
 ▸ **authenticate**(`email`, `password`): `Promise`<`AuthenticateResult`\>
 
+Authenticates a given user based on an email, password combination. Uses
+scrypt to match password with hashed value.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `email` | `string` |  |
-| `password` | `string` |  |
+| `email` | `string` | the email of the user |
+| `password` | `string` | the password of the user |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
+success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
+
 #### Defined in
 
-[services/auth.ts:98](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L98)
+[packages/medusa/src/services/auth.ts:98](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L98)
 
 ___
 
@@ -154,19 +177,25 @@ ___
 
 ▸ **authenticateAPIToken**(`token`): `Promise`<`AuthenticateResult`\>
 
+Authenticates a given user with an API token
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `token` | `string` |  |
+| `token` | `string` | the api_token of the user to authenticate |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
+success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
+
 #### Defined in
 
-[services/auth.ts:55](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L55)
+[packages/medusa/src/services/auth.ts:55](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L55)
 
 ___
 
@@ -174,20 +203,27 @@ ___
 
 ▸ **authenticateCustomer**(`email`, `password`): `Promise`<`AuthenticateResult`\>
 
+Authenticates a customer based on an email, password combination. Uses
+scrypt to match password with hashed value.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `email` | `string` |  |
-| `password` | `string` |  |
+| `email` | `string` | the email of the user |
+| `password` | `string` | the password of the user |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
+success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
+
 #### Defined in
 
-[services/auth.ts:147](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L147)
+[packages/medusa/src/services/auth.ts:147](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L147)
 
 ___
 
@@ -195,20 +231,24 @@ ___
 
 ▸ `Protected` **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
 
+Verifies if a password is valid given the provided password hash
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `password` | `string` |  |
-| `hash` | `string` |  |
+| `password` | `string` | the raw password to check |
+| `hash` | `string` | the hash to compare against |
 
 #### Returns
 
 `Promise`<`boolean`\>
 
+the result of the comparison
+
 #### Defined in
 
-[services/auth.ts:39](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/auth.ts#L39)
+[packages/medusa/src/services/auth.ts:39](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/auth.ts#L39)
 
 ___
 
@@ -232,7 +272,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -256,4 +296,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

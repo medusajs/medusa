@@ -1,0 +1,34 @@
+name: OAS Comments Format Validation
+on: 
+  pull_request:
+    paths:
+      - packages/medusa/src/api/routes/**
+
+jobs:
+  docs-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: oas
+
+      - name: Build OAS
+        run: |
+          yarn openapi:generate
