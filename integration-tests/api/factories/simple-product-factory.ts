@@ -97,7 +97,7 @@ export const simpleProductFactory = async (
   await manager.save(toSave)
 
   const optionId = `${prodId}-option`
-  const options = data.options || [{ id: `optionId-${Math.random() * 1000}`, title: "Size" }]
+  const options = data.options || [{ id: optionId, title: "Size" }]
   for (const o of options) {
     await manager.insert(ProductOption, {
       id: o.id,
