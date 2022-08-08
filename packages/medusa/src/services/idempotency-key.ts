@@ -41,14 +41,15 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
     reqPath: string
   ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async () => {
-      return (
-        (await this.retrieve(headerKey).catch(() => void 0)) ??
-        (await this.create({
-          request_method: reqMethod,
-          request_params: reqParams,
-          request_path: reqPath,
-        }))
-      )
+      const key = await this.retrieve(headerKey).catch(() => void 0)
+      if (key) {
+        return key
+      }
+      return await this.create({
+        request_method: reqMethod,
+        request_params: reqParams,
+        request_path: reqPath,
+      })
     }, "SERIALIZABLE")
   }
 
@@ -67,7 +68,7 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
 
       payload.idempotency_key = payload.idempotency_key ?? v4()
 
-      const created = await idempotencyKeyRepo.create(payload)
+      const created = idempotencyKeyRepo.create(payload)
       return await idempotencyKeyRepo.save(created)
     })
   }
@@ -114,7 +115,7 @@ class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService
         new Date(key.locked_at).getTime() > Date.now() - KEY_LOCKED_TIMEOUT
 
       if (isLocked) {
-        throw new MedusaError("conflict", "Key already locked")
+        throw new MedusaError(MedusaError.Types.CONFLICT, "Key already locked")
       }
 
       return await idempotencyKeyRepo.save({
