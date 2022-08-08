@@ -12,11 +12,11 @@ import {
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /price-lists/{id}
@@ -99,6 +99,25 @@ import { EntityManager } from "typeorm"
  *                 id:
  *                   description: The ID of a customer group
  *                   type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.priceLists.update('', {
+ *         name: 'New Price List'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/price-lists/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "New Price List"
+ *       }'
  * tags:
  *   - Price List
  * responses:

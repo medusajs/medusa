@@ -105,6 +105,35 @@ import { validator } from "../../../../utils/validator"
  *             description: If true, swaps can be completed with items out of stock
  *             type: boolean
  *             default: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.createSwap('', {
+ *         return_items: [
+ *           {
+ *             item_id: '',
+ *             quantity: 1
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/swaps' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "return_items": [
+ *             {
+ *               "item_id": "asfasf",
+ *               "quantity": 1
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Swap
  * responses:
