@@ -1,17 +1,18 @@
 import { IsArray, IsOptional } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
+import { EntityManager } from "typeorm"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /tax-rates/:id/shipping-options/batch
+ * @oas [delete] /tax-rates/{id}/shipping-options/batch
  * operationId: "DeleteTaxRatesTaxRateShippingOptions"
  * summary: "Removes a Tax Rate from Product Types"
  * description: "Removes a Tax Rate from a list of Product Types"
  * parameters:
+ *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
  *     description: "Which fields should be included in the result."

@@ -20,12 +20,13 @@ import { pickBy } from "lodash"
 import { isDefined } from "../../../../utils"
 
 /**
- * @oas [get] /price-lists/:id/products
+ * @oas [get] /price-lists/{id}/products
  * operationId: "GetPriceListsPriceListProducts"
  * summary: "List Product in a Price List"
  * description: "Retrieves a list of Product that are part of a Price List"
  * x-authenticated: true
  * parameters:
+ *   - (path) id=* {string} ID of the price list.
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
  *   - (query) id {string} ID of the product to search for.
  *   - in: query
