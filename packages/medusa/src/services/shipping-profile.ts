@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -387,37 +386,6 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       const updated = await this.retrieve(profileId)
       return updated
     })
-  }
-
-  /**
-   * Decorates a profile.
-   * @param profile - the profile to decorate.
-   * @param fields - the fields to include.
-   * @param expandFields - fields to expand.
-   * @return return the decorated profile.
-   */
-  async decorate(
-    profile: ShippingProfile,
-    fields: string[],
-    expandFields: string[] = []
-  ): Promise<ShippingProfile> {
-    const requiredFields: string[] = ["_id", "metadata"]
-    const decorated = _.pick(profile, fields.concat(requiredFields))
-
-    if (expandFields.includes("products") && profile.products) {
-      decorated.products = await Promise.all(
-        profile.products.map((pId) => this.productService_.retrieve(pId.id))
-      )
-    }
-
-    if (expandFields.includes("shipping_options") && profile.shipping_options) {
-      decorated.shipping_options = await Promise.all(
-        profile.shipping_options.map((oId) =>
-          this.shippingOptionService_.retrieve(oId)
-        )
-      )
-    }
-    return decorated as ShippingProfile
   }
 
   /**
