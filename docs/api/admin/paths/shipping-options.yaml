@@ -74,6 +74,15 @@ post:
             metadata:
               description: An optional set of key-value pairs with additional information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-options/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-options/postundefined
   tags:
     - Shipping Option
   responses:
@@ -106,6 +115,15 @@ get:
       schema:
         type: boolean
       description: Flag for fetching admin specific options
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-options/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-options/getundefined
   tags:
     - Shipping Option
   responses:

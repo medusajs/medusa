@@ -1,0 +1,9 @@
+curl --location --request POST 'localhost:9000/admin/customers' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "user@example.com",
+    "first_name": "Caterina",
+    "last_name": "Yost",
+    "password": "supersecret"
+}'

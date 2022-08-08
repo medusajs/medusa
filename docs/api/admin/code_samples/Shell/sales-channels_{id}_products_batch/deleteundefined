@@ -1,0 +1,10 @@
+curl --location --request DELETE 'localhost:9000/admin/sales-channels/{id}/products/batch' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "product_ids": [
+      {
+        "id": "{product_id}"
+      }
+    ]
+}'

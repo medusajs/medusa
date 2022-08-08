@@ -16,6 +16,16 @@ post:
       description: The ID of the Region.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{id}_regions_{region_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/discounts_{id}_regions_{region_id}/postundefined
   tags:
     - Discount
   responses:
@@ -45,6 +55,17 @@ delete:
       description: The ID of the Region.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{id}_regions_{region_id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/discounts_{id}_regions_{region_id}/deleteundefined
   tags:
     - Discount
   responses:

@@ -10,6 +10,15 @@ delete:
       description: The ID of the User.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/users_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/users_{id}/deleteundefined
   tags:
     - Users
   responses:
@@ -42,6 +51,15 @@ get:
       description: The ID of the User.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/users_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/users_{id}/getundefined
   tags:
     - User
   responses:
@@ -89,6 +107,15 @@ post:
             metadata:
               description: An optional set of key-value pairs with additional information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/users_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/users_{id}/postundefined
   tags:
     - User
   responses:

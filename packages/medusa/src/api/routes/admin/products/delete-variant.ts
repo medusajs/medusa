@@ -22,7 +22,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in
+ *       // must be previously logged in or use api token
  *       medusa.admin.products.deleteVariant(product_id, variant_id)
  *   - lang: Shell
  *     label: cURL

@@ -16,6 +16,25 @@ import { IsString } from "class-validator"
  *           file_key:
  *             description: "key of the file to delete"
  *             type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.uploads.delete({
+ *         file_key
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/uploads' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "file_key": "{file_key}"
+ *       }'
  * tags:
  *   - Upload
  * responses:

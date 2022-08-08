@@ -32,8 +32,8 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in
- *       medusa.admin.customerGroups.update('', {
+ *       // must be previously logged in or use api token
+ *       medusa.admin.customerGroups.update(customer_group_id, {
  *         name: 'VIP'
  *       })
  *   - lang: Shell

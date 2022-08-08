@@ -3,6 +3,15 @@ get:
   summary: Retrieve Store details.
   description: Retrieves the Store details
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store/getundefined
   tags:
     - Store
   responses:
@@ -56,6 +65,15 @@ post:
             metadata:
               description: An optional set of key-value pairs with additional information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store/postundefined
   tags:
     - Store
   responses:

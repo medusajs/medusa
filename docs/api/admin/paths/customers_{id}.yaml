@@ -20,6 +20,15 @@ get:
       description: (Comma separated) Which fields should be included in the customer.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_{id}/getundefined
   tags:
     - Customer
   responses:
@@ -90,6 +99,15 @@ post:
                 An optional set of key-value pairs to hold additional
                 information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_{id}/postundefined
   tags:
     - Customer
   responses:

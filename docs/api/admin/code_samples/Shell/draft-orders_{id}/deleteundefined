@@ -1,0 +1,2 @@
+curl --location --request DELETE 'localhost:9000/admin/draft-orders/{id}' \
+--header 'Authorization: Bearer {api_token}'

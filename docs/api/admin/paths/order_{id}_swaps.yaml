@@ -94,6 +94,15 @@ post:
               description: If true, swaps can be completed with items out of stock
               type: boolean
               default: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order_{id}_swaps/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order_{id}_swaps/postundefined
   tags:
     - Swap
   responses:

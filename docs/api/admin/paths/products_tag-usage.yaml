@@ -3,6 +3,15 @@ get:
   summary: List Product Tags Usage Number
   description: Retrieves a list of Product Tags with how many times each is used.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/products_tag-usage/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/products_tag-usage/getundefined
   tags:
     - Product Tag
   responses:

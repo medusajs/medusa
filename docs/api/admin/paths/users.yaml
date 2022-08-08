@@ -32,6 +32,15 @@ post:
               description: The Users password.
               type: string
               format: password
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/users/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/users/postundefined
   tags:
     - User
   responses:
@@ -48,6 +57,15 @@ get:
   summary: Retrieve all users
   description: Retrieves all users.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/users/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/users/getundefined
   tags:
     - User
   responses:

@@ -1,7 +1,7 @@
+import { EntityManager } from "typeorm"
 import { IsEmail } from "class-validator"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users/password-token
@@ -20,6 +20,25 @@ import { EntityManager } from "typeorm"
  *             description: "The Users email."
  *             type: string
  *             format: email
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.users.sendResetPasswordToken({
+ *         email: 'user@example.com'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/users/password-token' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com"
+ *       }'
  * tags:
  *   - User
  * responses:

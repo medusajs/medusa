@@ -17,6 +17,25 @@ import { IsString } from "class-validator"
  *           file_key:
  *             description: "key of the file to obtain the download link for"
  *             type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.uploads.getPresignedDownloadUrl({
+ *         file_key
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/uploads/download-url' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "file_key": "{file_key}"
+ *       }'
  * tags:
  *   - Upload
  * responses:

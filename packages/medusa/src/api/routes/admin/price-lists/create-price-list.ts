@@ -105,7 +105,7 @@ import { Type } from "class-transformer"
  *       import Medusa from "@medusajs/medusa-js"
  *       import { PriceListType } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in
+ *       // must be previously logged in or use api token
  *       medusa.admin.priceLists.create({
  *         name: 'New Price List',
  *         description: 'A new price list',

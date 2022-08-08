@@ -18,6 +18,17 @@ delete:
       description: The ID of the product from which the money amount will be deleted.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/price-lists_{id}_products_{product_id}_prices/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/price-lists_{id}_products_{product_id}_prices/deleteundefined
   tags:
     - Price List
   responses:
