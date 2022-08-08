@@ -1,9 +1,10 @@
-import path from "path"
 import glob from "glob"
+import path from "path"
 
+import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
-import { FlagRouter } from "../../utils/flag-router"
 import { Logger } from "../../types/global"
+import { FlagRouter } from "../../utils/flag-router"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -61,6 +62,10 @@ export default (
         break
       default:
         flagConfig[flagSettings.key] = flagSettings.default_val
+    }
+
+    if (flagConfig[flagSettings.key]) {
+      trackFeatureFlag(flagSettings.key)
     }
   }
 
