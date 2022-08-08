@@ -1514,6 +1514,7 @@ class CartService extends TransactionBaseService {
               "discount_total",
               "shipping_total",
               "gift_card_total",
+              "customer_id",
             ],
             relations: [
               "items",
