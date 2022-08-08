@@ -153,6 +153,19 @@ import { pick } from "lodash"
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/orders' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Order
  * responses:

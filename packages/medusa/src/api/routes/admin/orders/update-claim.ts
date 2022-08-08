@@ -11,9 +11,9 @@ import {
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /order/{id}/claims/{claim_id}
@@ -105,6 +105,25 @@ import { EntityManager } from "typeorm"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.updateClaim(order_id, claim_id, {
+ *         no_notification: true
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/claims/{claim_id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "no_notification": true
+ *       }'
  * tags:
  *   - Claim
  * responses:

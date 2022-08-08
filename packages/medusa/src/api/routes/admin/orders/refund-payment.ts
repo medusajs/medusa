@@ -7,9 +7,9 @@ import {
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/refund
@@ -39,6 +39,27 @@ import { EntityManager } from "typeorm"
  *           no_notification:
  *             description: If set to true no notification will be send related to this Refund.
  *             type: boolean
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.refundPayment('', {
+ *         amount: 1000,
+ *         reason: 'Do not like it'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/adasda/refund' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "amount": 1000,
+ *           "reason": "Do not like it"
+ *       }'
  * tags:
  *   - Order
  * responses:

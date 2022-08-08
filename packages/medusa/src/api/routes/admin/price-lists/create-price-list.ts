@@ -98,6 +98,44 @@ import { Type } from "class-transformer"
  *                 id:
  *                   description: The ID of a customer group
  *                   type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       import { PriceListType } from "@medusajs/medusa"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.priceLists.create({
+ *         name: 'New Price List',
+ *         description: 'A new price list',
+ *         type: PriceListType.SALE,
+ *         prices: [
+ *           {
+ *             amount: 1000,
+ *             variant_id,
+ *             currency_code: 'eur'
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/price-lists' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "New Price List",
+ *           "description": "A new price list",
+ *           "type": "sale",
+ *           "prices": [
+ *             {
+ *               "amount": 1000,
+ *               "variant_id": "afafa",
+ *               "currency_code": "eur"
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Price List
  * responses:

@@ -10,6 +10,19 @@ import PriceListService from "../../../../services/price-list"
  * parameters:
  *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
  *   - (path) product_id=* {string} The ID of the product from which the money amount will be deleted.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.priceLists.deleteProductPrices(price_list_id, product_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/price-lists/{id}/products/{product_id}/prices' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Price List
  * responses:
