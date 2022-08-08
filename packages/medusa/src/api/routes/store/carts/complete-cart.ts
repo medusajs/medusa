@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { AbstractCartCompletionStrategy, ICartCompletionStrategy } from "../../../../interfaces"
+import { AbstractCartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { IdempotencyKeyService } from "../../../../services"
 
