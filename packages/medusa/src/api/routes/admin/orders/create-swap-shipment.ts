@@ -5,10 +5,12 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
@@ -16,8 +18,8 @@ import { EntityManager } from "typeorm"
  * description: "Registers a Swap Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +28,7 @@ import { EntityManager } from "typeorm"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.
@@ -37,7 +39,7 @@ import { EntityManager } from "typeorm"
  *             description: If set to true no notification will be send related to this Claim.
  *             type: boolean
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

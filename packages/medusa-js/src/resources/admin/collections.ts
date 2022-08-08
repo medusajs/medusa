@@ -5,6 +5,8 @@ import {
   AdminCollectionsDeleteRes,
   AdminCollectionsListRes,
   AdminGetCollectionsParams,
+  AdminPostProductsToCollectionReq,
+  AdminDeleteProductsFromCollectionReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -87,6 +89,36 @@ class AdminCollectionsResource extends BaseResource {
     }
 
     return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * @description Updates products associated with a Product Collection
+   * @param id the id of the Collection
+   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param customHeaders
+   */
+  addProducts(
+    id: string,
+    payload: AdminPostProductsToCollectionReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsRes> {
+    const path = `/admin/collections/${id}/products/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Removes products associated with a Product Collection
+   * @param id - the id of the Collection
+   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param customHeaders
+   */
+  removeProducts(
+    id: string,
+    payload: AdminDeleteProductsFromCollectionReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsDeleteRes> {
+    const path = `/admin/collections/${id}/products/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 

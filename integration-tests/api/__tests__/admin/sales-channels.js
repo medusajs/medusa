@@ -832,11 +832,13 @@ describe("sales channels", () => {
 
         expect(response.status).toEqual(200)
         expect(response.data.orders.length).toEqual(1)
-        expect(response.data.orders).toEqual([
-          expect.objectContaining({
-            id: order.id,
-          }),
-        ])
+        expect(response.data.orders).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: order.id,
+            }),
+          ])
+        )
       })
     })
   })

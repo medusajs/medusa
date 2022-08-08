@@ -9,11 +9,11 @@ import {
   PrimaryColumn,
   Unique,
 } from "typeorm"
-import { resolveDbType } from "../utils/db-aware-column"
 
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { resolveDbType } from "../utils/db-aware-column"
 
 @Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()
@@ -59,25 +59,42 @@ export class GiftCardTransaction {
  * title: "Gift Card Transaction"
  * description: "Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order"
  * x-resourceId: gift_card_transaction
+ * required:
+ *   - gift_card_id
+ *   - amount
  * properties:
  *   id:
- *     description: "The id of the Gift Card Transaction. This value will be prefixed by `gct_`."
  *     type: string
+ *     description: The gift card transaction's ID
+ *     example: gct_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   gift_card_id:
- *     description: "The id of the Gift Card that was used in the transaction."
+ *     description: "The ID of the Gift Card that was used in the transaction."
  *     type: string
+ *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   gift_card:
- *     description: "The Gift Card that was used in the transaction."
- *     anyOf:
- *       - $ref: "#/components/schemas/gift_card"
+ *     description: A gift card object. Available if the relation `gift_card` is expanded.
+ *     type: object
  *   order_id:
- *     description: "The id of the Order that the Gift Card was used to pay for."
+ *     description: "The ID of the Order that the Gift Card was used to pay for."
  *     type: string
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
+ *   order:
+ *     description: An order object. Available if the relation `order` is expanded.
+ *     type: object
  *   amount:
  *     description: "The amount that was used from the Gift Card."
  *     type: integer
+ *     example: 10
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string
  *     format: date-time
+ *   is_taxable:
+ *     description: "Whether the transaction is taxable or not."
+ *     type: boolean
+ *     example: false
+ *   tax_rate:
+ *     description: "The tax rate of the transaction"
+ *     type: number
+ *     example: 0
  */

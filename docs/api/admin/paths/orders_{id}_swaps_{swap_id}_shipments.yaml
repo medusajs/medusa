@@ -1,0 +1,49 @@
+post:
+  operationId: PostOrdersOrderSwapsSwapShipments
+  summary: Create Swap Shipment
+  description: Registers a Swap Fulfillment as shipped.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: swap_id
+      required: true
+      description: The ID of the Swap.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - fulfillment_id
+          properties:
+            fulfillment_id:
+              description: The ID of the Fulfillment.
+              type: string
+            tracking_numbers:
+              description: The tracking numbers for the shipment.
+              type: array
+              items:
+                type: string
+            no_notification:
+              description: >-
+                If set to true no notification will be send related to this
+                Claim.
+              type: boolean
+  tags:
+    - Swap
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

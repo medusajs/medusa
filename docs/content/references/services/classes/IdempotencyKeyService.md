@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`IdempotencyKeyService`**
 
@@ -20,13 +20,94 @@
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/idempotency-key.js:8](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L8)
+[packages/medusa/src/services/idempotency-key.js:8](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L8)
+
+## Properties
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `any`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
+___
+
+### transactionManager\_
+
+• `Protected` `Abstract` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ## Methods
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
 
 ### create
 
@@ -50,7 +131,7 @@ the created idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:52](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L52)
+[packages/medusa/src/services/idempotency-key.js:52](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L52)
 
 ___
 
@@ -77,7 +158,7 @@ the existing or created idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:26](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L26)
+[packages/medusa/src/services/idempotency-key.js:26](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L26)
 
 ___
 
@@ -101,7 +182,7 @@ result of the update operation
 
 #### Defined in
 
-[services/idempotency-key.js:90](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L90)
+[packages/medusa/src/services/idempotency-key.js:90](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L90)
 
 ___
 
@@ -125,7 +206,31 @@ idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:73](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L73)
+[packages/medusa/src/services/idempotency-key.js:73](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L73)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -150,7 +255,31 @@ result of the update operation
 
 #### Defined in
 
-[services/idempotency-key.js:117](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L117)
+[packages/medusa/src/services/idempotency-key.js:117](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L117)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): `any`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+`any`
+
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
 
 ___
 
@@ -179,4 +308,4 @@ new updated idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:144](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L144)
+[packages/medusa/src/services/idempotency-key.js:144](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/idempotency-key.js#L144)

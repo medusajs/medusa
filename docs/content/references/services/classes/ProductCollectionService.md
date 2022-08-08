@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:11](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L11)
+[packages/medusa/src/services/product-collection.js:11](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L11)
 
 ## Methods
 
@@ -47,7 +47,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product-collection.js:170](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L170)
+[packages/medusa/src/services/product-collection.js:170](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L170)
 
 ___
 
@@ -71,7 +71,7 @@ created collection
 
 #### Defined in
 
-[services/product-collection.js:104](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L104)
+[packages/medusa/src/services/product-collection.js:104](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L104)
 
 ___
 
@@ -95,7 +95,7 @@ empty promise
 
 #### Defined in
 
-[services/product-collection.js:152](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L152)
+[packages/medusa/src/services/product-collection.js:152](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L152)
 
 ___
 
@@ -120,7 +120,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/product-collection.js:206](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L206)
+[packages/medusa/src/services/product-collection.js:206](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L206)
 
 ___
 
@@ -145,7 +145,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/product-collection.js:221](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L221)
+[packages/medusa/src/services/product-collection.js:221](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L221)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:188](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L188)
+[packages/medusa/src/services/product-collection.js:188](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L188)
 
 ___
 
@@ -191,7 +191,7 @@ the collection.
 
 #### Defined in
 
-[services/product-collection.js:55](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L55)
+[packages/medusa/src/services/product-collection.js:55](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L55)
 
 ___
 
@@ -216,7 +216,7 @@ the collection.
 
 #### Defined in
 
-[services/product-collection.js:81](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L81)
+[packages/medusa/src/services/product-collection.js:81](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L81)
 
 ___
 
@@ -241,7 +241,7 @@ update collection
 
 #### Defined in
 
-[services/product-collection.js:125](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L125)
+[packages/medusa/src/services/product-collection.js:125](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L125)
 
 ___
 
@@ -261,4 +261,4 @@ ___
 
 #### Defined in
 
-[services/product-collection.js:32](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/product-collection.js#L32)
+[packages/medusa/src/services/product-collection.js:32](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/product-collection.js#L32)

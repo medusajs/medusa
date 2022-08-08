@@ -1,5 +1,6 @@
-import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -10,7 +11,7 @@ import { EntityManager } from "typeorm"
  * description: "Set metadata key/value pair for Product"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:

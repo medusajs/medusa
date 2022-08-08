@@ -1,6 +1,7 @@
 import { IsEmail, IsEnum } from "class-validator"
-import { UserRoles } from "../../../../models/user"
+
 import InviteService from "../../../../services/invite"
+import { UserRoles } from "../../../../models/user"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -21,11 +22,13 @@ import { EntityManager } from "typeorm"
  *           user:
  *             description: "The email for the user to be created."
  *             type: string
+ *             format: email
  *           role:
  *             description: "The role of the user to be created."
  *             type: string
+ *             enum: [admin, member, developer]
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK

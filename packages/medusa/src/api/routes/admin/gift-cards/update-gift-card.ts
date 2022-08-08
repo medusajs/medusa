@@ -1,7 +1,8 @@
-import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
+
 import { GiftCardService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -12,7 +13,7 @@ import { EntityManager } from "typeorm"
  * description: "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Gift Card.
+ *   - (path) id=* {string} The ID of the Gift Card.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,10 +30,8 @@ import { EntityManager } from "typeorm"
  *             format: date-time
  *             description: The time at which the Gift Card should no longer be available.
  *           region_id:
- *             description: The id of the Region in which the Gift Card can be used.
- *             type: array
- *             items:
- *               type: string
+ *             description: The ID of the Region in which the Gift Card can be used.
+ *             type: string
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object

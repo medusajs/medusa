@@ -1,7 +1,8 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+
 import { AddressPayload } from "../../../../types/common"
+import CustomerService from "../../../../services/customer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -27,6 +28,9 @@ import { EntityManager } from "typeorm"
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: The full billing address object
+ *               - type: string
+ *                 description: The ID of an existing billing address
  *           password:
  *             description: "The Customer's password."
  *             type: string

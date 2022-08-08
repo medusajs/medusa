@@ -5,11 +5,13 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { TrackingLink } from "../../../../models"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { OrderService } from "../../../../services"
+import { TrackingLink } from "../../../../models"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
@@ -17,7 +19,7 @@ import { EntityManager } from "typeorm"
  * description: "Registers a Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +28,7 @@ import { EntityManager } from "typeorm"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.

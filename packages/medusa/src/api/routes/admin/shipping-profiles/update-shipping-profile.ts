@@ -1,4 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
+
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -9,7 +10,7 @@ import { EntityManager } from "typeorm"
  * summary: "Update a Shipping Profiles"
  * description: "Updates a Shipping Profile"
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
+ *   - (path) id=* {string} The ID of the Shipping Profile.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,7 +28,7 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             shipping_profiles:
+ *             shipping_profile:
  *               $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {

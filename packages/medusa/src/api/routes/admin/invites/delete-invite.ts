@@ -1,5 +1,5 @@
-import InviteService from "../../../../services/invite"
 import { EntityManager } from "typeorm"
+import InviteService from "../../../../services/invite"
 
 /**
  * @oas [delete] /invites/{invite_id}
@@ -8,12 +8,27 @@ import { EntityManager } from "typeorm"
  * description: "Creates an Invite and triggers an 'invite' created event"
  * x-authenticated: true
  * parameters:
- *   - (path) invite_id=* {string} The id of the Invite
+ *   - (path) invite_id=* {string} The ID of the Invite
  * tags:
- *   - Invites
+ *   - Invite
  * responses:
  *   200:
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             id:
+ *               type: string
+ *               description: The ID of the deleted Invite.
+ *             object:
+ *               type: string
+ *               description: The type of the object that was deleted.
+ *               format: invite
+ *             deleted:
+ *               type: boolean
+ *               description: Whether or not the Invite was deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { invite_id } = req.params

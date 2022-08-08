@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -12,19 +11,21 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
 import { PricingService, ProductService } from "../../../../services"
 import {
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { ProductStatus } from "../../../../models"
+import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}
@@ -33,7 +34,7 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Product"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:
@@ -48,9 +49,6 @@ import { EntityManager } from "typeorm"
  *           description:
  *             description: "A description of the Product."
  *             type: string
- *           is_giftcard:
- *             description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
- *             type: boolean
  *           discountable:
  *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
  *             type: boolean
@@ -65,48 +63,56 @@ import { EntityManager } from "typeorm"
  *           handle:
  *             description: A unique handle to identify the Product by.
  *             type: string
+ *           status:
+ *             description: The status of the product.
+ *             type: string
+ *             enum: [draft, proposed, published, rejected]
  *           type:
  *             description: The Product Type to associate the Product with.
  *             type: object
+ *             required:
+ *               - value
  *             properties:
+ *               id:
+ *                 description: The ID of the Product Type.
+ *                 type: string
  *               value:
  *                 description: The value of the Product Type.
  *                 type: string
  *           collection_id:
- *             description: The id of the Collection the Product should belong to.
+ *             description: The ID of the Collection the Product should belong to.
  *             type: string
  *           tags:
  *             description: Tags to associate the Product with.
  *             type: array
  *             items:
+ *               required:
+ *                 - value
  *               properties:
  *                 id:
- *                   description: The id of an existing Tag.
+ *                   description: The ID of an existing Tag.
  *                   type: string
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
- *         sales_channels:
- *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
+ *           sales_channels:
+ *             description: "[EXPERIMENTAL] Sales channels to associate the Product with."
  *             type: array
  *             items:
+ *               required:
+ *                 - id
  *               properties:
  *                 id:
- *                   description: The id of an existing Sales channel.
- *                   type: string
- *           options:
- *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
- *             type: array
- *             items:
- *               properties:
- *                 title:
- *                   description: The title to identify the Product Option by.
+ *                   description: The ID of an existing Sales channel.
  *                   type: string
  *           variants:
  *             description: A list of Product Variants to create with the Product.
  *             type: array
  *             items:
  *               properties:
+ *                 id:
+ *                   description: The ID of the Product Variant.
+ *                   type: string
  *                 title:
  *                   description: The title to identify the Product Variant by.
  *                   type: string
@@ -136,16 +142,16 @@ import { EntityManager } from "typeorm"
  *                   type: boolean
  *                 weight:
  *                   description: The wieght of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 length:
  *                   description: The length of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 height:
  *                   description: The height of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 width:
  *                   description: The width of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 origin_country:
  *                   description: The country of origin of the Product Variant.
  *                   type: string
@@ -161,38 +167,55 @@ import { EntityManager } from "typeorm"
  *                 prices:
  *                   type: array
  *                   items:
+ *                     required:
+ *                       - amount
  *                     properties:
+ *                       id:
+ *                         description: The ID of the Price.
+ *                         type: string
  *                       region_id:
- *                         description: The id of the Region for which the price is used.
+ *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                         type: string
  *                       currency_code:
- *                         description: The 3 character ISO currency code for which the price will be used.
+ *                         description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                         type: string
+ *                         externalDocs:
+ *                           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                           description: See a list of codes.
  *                       amount:
  *                         description: The amount to charge for the Product Variant.
  *                         type: integer
- *                       sale_amount:
- *                         description: The sale amount to charge for the Product Variant.
+ *                       min_quantity:
+ *                         description: The minimum quantity for which the price will be used.
+ *                         type: integer
+ *                       max_quantity:
+ *                         description: The maximum quantity for which the price will be used.
  *                         type: integer
  *                 options:
  *                   type: array
  *                   items:
+ *                     required:
+ *                       - option_id
+ *                       - value
  *                     properties:
+ *                       option_id:
+ *                         description: The ID of the Option.
+ *                         type: string
  *                       value:
  *                         description: The value to give for the Product Option at the same index in the Product's `options` field.
  *                         type: string
  *           weight:
  *             description: The wieght of the Product.
- *             type: string
+ *             type: number
  *           length:
  *             description: The length of the Product.
- *             type: string
+ *             type: number
  *           height:
  *             description: The height of the Product.
- *             type: string
+ *             type: number
  *           width:
  *             description: The width of the Product.
- *             type: string
+ *             type: number
  *           origin_country:
  *             description: The country of origin of the Product.
  *             type: string

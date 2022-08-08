@@ -1,0 +1,35 @@
+get:
+  operationId: GetRegionsRegionFulfillmentOptions
+  summary: List Fulfillment Options available in the Region
+  description: Gathers all the fulfillment options available to in the Region.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Region.
+      schema:
+        type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              fulfillment_options:
+                type: array
+                items:
+                  properties:
+                    provider_id:
+                      type: string
+                      description: ID of the fulfillment provider
+                    options:
+                      type: array
+                      description: fulfillment provider options
+                      example:
+                        - id: manual-fulfillment
+                        - id: manual-fulfillment-return
+                          is_return: true

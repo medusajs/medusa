@@ -1,21 +1,22 @@
-import { Type } from "class-transformer"
-import { IsNumber, IsOptional, IsString } from "class-validator"
-import { identity, omit, pickBy } from "lodash"
-import { MedusaError } from "medusa-core-utils"
-import {
-  allowedAdminProductTagsFields,
-  defaultAdminProductTagsFields,
-  defaultAdminProductTagsRelations,
-} from "."
-import { ProductTag } from "../../../../models/product-tag"
-import ProductTagService from "../../../../services/product-tag"
 import {
   DateComparisonOperator,
   FindConfig,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  allowedAdminProductTagsFields,
+  defaultAdminProductTagsFields,
+  defaultAdminProductTagsRelations,
+} from "."
+import { identity, omit, pickBy } from "lodash"
+
 import { IsType } from "../../../../utils/validators/is-type"
+import { MedusaError } from "medusa-core-utils"
+import { ProductTag } from "../../../../models/product-tag"
+import ProductTagService from "../../../../services/product-tag"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /product-tags
@@ -24,12 +25,72 @@ import { IsType } from "../../../../utils/validators/is-type"
  * description: "Retrieve a list of Product Tags."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {string} The number of tags to return.
- *   - (query) offset {string} The offset of tags to return.
- *   - (query) value {string} The value of tags to return.
- *   - (query) id {string} The id of tags to return.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting tas was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting tas was updated, i.e. less than, greater than etc.
+ *   - (query) limit=10 {integer} The number of tags to return.
+ *   - (query) offset=0 {integer} The number of items to skip before the results.
+ *   - (query) order {string} The field to sort items by.
+ *   - in: query
+ *     name: value
+ *     style: form
+ *     explode: false
+ *     description: The tag values to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) q {string} A query string to search values for
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: The tag IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting product tags were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting product tags were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * tags:
  *   - Product Tag
  * responses:
@@ -39,8 +100,17 @@ import { IsType } from "../../../../utils/validators/is-type"
  *      application/json:
  *        schema:
  *          properties:
- *            tags:
+ *            product_tags:
  *              $ref: "#/components/schemas/product_tag"
+ *            count:
+ *              type: integer
+ *              description: The total number of items available
+ *            offset:
+ *              type: integer
+ *              description: The number of items skipped before these items
+ *            limit:
+ *              type: integer
+ *              description: The number of items per page
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetProductTagsParams, req.query)

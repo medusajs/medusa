@@ -3,6 +3,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -14,7 +15,7 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Return Reason"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Return Reason.
+ *   - (path) id=* {string} The ID of the Return Reason.
  * requestBody:
  *   content:
  *     application/json:
@@ -22,6 +23,9 @@ import { EntityManager } from "typeorm"
  *         properties:
  *           label:
  *             description: "The label to display to the Customer."
+ *             type: string
+ *           value:
+ *             description: "The value that the Return Reason will be identified by. Must be unique."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."

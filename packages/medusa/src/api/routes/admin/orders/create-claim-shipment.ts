@@ -1,6 +1,7 @@
+import { ClaimService, OrderService } from "../../../../services"
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { ClaimService, OrderService } from "../../../../services"
+
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -11,8 +12,8 @@ import { EntityManager } from "typeorm"
  * description: "Registers a Claim Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,7 +22,7 @@ import { EntityManager } from "typeorm"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.
@@ -29,7 +30,7 @@ import { EntityManager } from "typeorm"
  *             items:
  *               type: string
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

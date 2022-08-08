@@ -12,11 +12,11 @@ If you’re not very familiar with Medusa’s architecture, you can learn more a
 
 :::
 
-<!-- ## Instant Deployment to Netlify
+## Instant Deployment to Netlify
 
 Instead of manually following this guide to install then later deploy the Medusa Admin, you can deploy the Medusa Admin to Netlify with this button:
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin) -->
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin)
 
 ## Install the Admin
 

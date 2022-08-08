@@ -1,19 +1,32 @@
-import { Request, Response } from "express"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
-import SalesChannelService from "../../../../services/sales-channel"
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
 import { EntityManager } from "typeorm"
+import SalesChannelService from "../../../../services/sales-channel"
 
 /**
  * @oas [post] /sales-channels
  * operationId: "PostSalesChannels"
- * summary: "Create a sales channel"
- * description: "Creates a sales channel."
+ * summary: "Create a Sales Channel"
+ * description: "Creates a Sales Channel."
  * x-authenticated: true
- * parameters:
- *   - (body) name=* {string} Name of the sales channel
- *   - (body) description=* {string} Description of the sales channel
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - name
+ *         properties:
+ *           name:
+ *             description: The name of the Sales Channel
+ *             type: string
+ *           description:
+ *             description: The description of the Sales Channel
+ *             type: string
+ *           is_disabled:
+ *             description: Whether the Sales Channel is disabled or not.
+ *             type: boolean
  * tags:
  *   - Sales Channel
  * responses:

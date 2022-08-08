@@ -1,0 +1,110 @@
+get:
+  operationId: GetProductTags
+  summary: List Product Tags
+  description: Retrieve a list of Product Tags.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: The number of tags to return.
+      schema:
+        type: integer
+        default: 10
+    - in: query
+      name: offset
+      description: The number of items to skip before the results.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: order
+      description: The field to sort items by.
+      schema:
+        type: string
+    - in: query
+      name: value
+      style: form
+      explode: false
+      description: The tag values to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: q
+      description: A query string to search values for
+      schema:
+        type: string
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: The tag IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting product tags were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting product tags were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+  tags:
+    - Product Tag
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              product_tags:
+                $ref: ../components/schemas/product_tag.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

@@ -6,92 +6,92 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).FulfillmentStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:34
+medusa/dist/models/order.d.ts:35
 
 ___
 
 ### FULFILLED
 
-• **FULFILLED** = `"fulfilled"`
+• **FULFILLED** = ``"fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:29
+medusa/dist/models/order.d.ts:30
 
 ___
 
 ### NOT\_FULFILLED
 
-• **NOT\_FULFILLED** = `"not_fulfilled"`
+• **NOT\_FULFILLED** = ``"not_fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:27
+medusa/dist/models/order.d.ts:28
 
 ___
 
 ### PARTIALLY\_FULFILLED
 
-• **PARTIALLY\_FULFILLED** = `"partially_fulfilled"`
+• **PARTIALLY\_FULFILLED** = ``"partially_fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:28
+medusa/dist/models/order.d.ts:29
 
 ___
 
 ### PARTIALLY\_RETURNED
 
-• **PARTIALLY\_RETURNED** = `"partially_returned"`
+• **PARTIALLY\_RETURNED** = ``"partially_returned"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:32
+medusa/dist/models/order.d.ts:33
 
 ___
 
 ### PARTIALLY\_SHIPPED
 
-• **PARTIALLY\_SHIPPED** = `"partially_shipped"`
+• **PARTIALLY\_SHIPPED** = ``"partially_shipped"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:30
+medusa/dist/models/order.d.ts:31
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:35
+medusa/dist/models/order.d.ts:36
 
 ___
 
 ### RETURNED
 
-• **RETURNED** = `"returned"`
+• **RETURNED** = ``"returned"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:33
+medusa/dist/models/order.d.ts:34
 
 ___
 
 ### SHIPPED
 
-• **SHIPPED** = `"shipped"`
+• **SHIPPED** = ``"shipped"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:31
+medusa/dist/models/order.d.ts:32

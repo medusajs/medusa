@@ -1,10 +1,11 @@
-import { Type } from "class-transformer"
-import { ValidateNested } from "class-validator"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
-import { validator } from "../../../../utils/validator"
-import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
+import { ValidateNested } from "class-validator"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customer-groups/{id}/customers/batch
@@ -13,10 +14,26 @@ import { EntityManager } from "typeorm"
  * description: "Adds a list of customers, represented by id's, to a customer group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
- *   - (body) customers=* {{id: string }[]} ids of the customers to add
+ *   - (path) id=* {string} The ID of the customer group.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - customer_ids
+ *         properties:
+ *           customer_ids:
+ *             description: "The ids of the customers to add"
+ *             type: array
+ *             items:
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   description: ID of the customer
+ *                   type: string
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -24,8 +41,8 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *             customer_group:
+ *               $ref: "#/components/schemas/customer_group"
  */
 
 export default async (req: Request, res: Response) => {
