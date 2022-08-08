@@ -1,0 +1,72 @@
+get:
+  operationId: GetNotifications
+  summary: List Notifications
+  description: Retrieves a list of Notifications.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: offset
+      description: >-
+        The number of notifications to skip before starting to collect the
+        notifications set
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: The number of notifications to return
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: fields
+      description: Comma separated fields to include in the result set
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated fields to populate
+      schema:
+        type: string
+    - in: query
+      name: event_name
+      description: The name of the event that the notification was sent for.
+      schema:
+        type: string
+    - in: query
+      name: resource_type
+      description: The type of resource that the Notification refers to.
+      schema:
+        type: string
+    - in: query
+      name: resource_id
+      description: The ID of the resource that the Notification refers to.
+      schema:
+        type: string
+    - in: query
+      name: to
+      description: >-
+        The address that the Notification was sent to. This will usually be an
+        email address, but represent other addresses such as a chat bot user id
+      schema:
+        type: string
+    - in: query
+      name: include_resends
+      description: >-
+        A boolean indicating whether the result set should include resent
+        notifications or not
+      schema:
+        type: string
+  tags:
+    - Notification
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              notifications:
+                type: array
+                items:
+                  $ref: ../components/schemas/notification.yaml

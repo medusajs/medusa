@@ -1,12 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { CartService, DraftOrderService } from "../../../../services"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
 } from "."
+
 import { DraftOrder } from "../../../.."
-import { CartService, DraftOrderService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+
 /**
  * @oas [delete] /draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
@@ -14,8 +16,8 @@ import { CartService, DraftOrderService } from "../../../../services"
  * description: "Removes a Line Item from a Draft Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
- *   - (path) line_id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
+ *   - (path) line_id=* {string} The ID of the Draft Order.
  * tags:
  *   - Draft Order
  * responses:

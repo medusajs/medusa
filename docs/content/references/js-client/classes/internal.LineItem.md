@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).LineItem
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`BaseEntity`](internal.BaseEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:19
+medusa/dist/models/line-item.d.ts:19
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:26
+medusa/dist/models/line-item.d.ts:26
 
 ___
 
@@ -40,7 +42,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:37
+medusa/dist/models/line-item.d.ts:44
 
 ___
 
@@ -50,7 +52,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:11
+medusa/dist/models/line-item.d.ts:11
 
 ___
 
@@ -60,7 +62,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:10
+medusa/dist/models/line-item.d.ts:10
 
 ___
 
@@ -70,7 +72,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:17
+medusa/dist/models/line-item.d.ts:17
 
 ___
 
@@ -80,13 +82,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:16
+medusa/dist/models/line-item.d.ts:16
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -94,7 +96,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -104,7 +106,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:21
+medusa/dist/models/line-item.d.ts:21
+
+___
+
+### discount\_total
+
+• `Optional` **discount\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:42
 
 ___
 
@@ -114,7 +126,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:32
+medusa/dist/models/line-item.d.ts:32
+
+___
+
+### gift\_card\_total
+
+• `Optional` **gift\_card\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:43
 
 ___
 
@@ -124,7 +146,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:27
+medusa/dist/models/line-item.d.ts:27
 
 ___
 
@@ -138,7 +160,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -148,7 +170,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:24
+medusa/dist/models/line-item.d.ts:24
 
 ___
 
@@ -158,17 +180,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:23
+medusa/dist/models/line-item.d.ts:23
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:35
+medusa/dist/models/line-item.d.ts:35
 
 ___
 
@@ -178,7 +200,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:13
+medusa/dist/models/line-item.d.ts:13
 
 ___
 
@@ -188,7 +210,27 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:12
+medusa/dist/models/line-item.d.ts:12
+
+___
+
+### original\_tax\_total
+
+• `Optional` **original\_tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:41
+
+___
+
+### original\_total
+
+• `Optional` **original\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:40
 
 ___
 
@@ -198,17 +240,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:31
+medusa/dist/models/line-item.d.ts:31
 
 ___
 
 ### refundable
 
-• **refundable**: ``null`` \| `number`
+• `Optional` **refundable**: ``null`` \| `number`
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:36
+medusa/dist/models/line-item.d.ts:36
 
 ___
 
@@ -218,7 +260,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:33
+medusa/dist/models/line-item.d.ts:33
 
 ___
 
@@ -228,7 +270,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:34
+medusa/dist/models/line-item.d.ts:34
 
 ___
 
@@ -238,7 +280,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:25
+medusa/dist/models/line-item.d.ts:25
+
+___
+
+### subtotal
+
+• `Optional` **subtotal**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:37
 
 ___
 
@@ -248,7 +300,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:15
+medusa/dist/models/line-item.d.ts:15
 
 ___
 
@@ -258,7 +310,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:14
+medusa/dist/models/line-item.d.ts:14
 
 ___
 
@@ -268,17 +320,27 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:18
+medusa/dist/models/line-item.d.ts:18
+
+___
+
+### tax\_total
+
+• `Optional` **tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:38
 
 ___
 
 ### thumbnail
 
-• **thumbnail**: `string`
+• **thumbnail**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:22
+medusa/dist/models/line-item.d.ts:22
 
 ___
 
@@ -288,7 +350,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:20
+medusa/dist/models/line-item.d.ts:20
+
+___
+
+### total
+
+• `Optional` **total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:39
 
 ___
 
@@ -298,13 +370,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:28
+medusa/dist/models/line-item.d.ts:28
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -312,7 +384,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ___
 
@@ -322,7 +394,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:30
+medusa/dist/models/line-item.d.ts:30
 
 ___
 
@@ -332,4 +404,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/line-item.d.ts:29
+medusa/dist/models/line-item.d.ts:29

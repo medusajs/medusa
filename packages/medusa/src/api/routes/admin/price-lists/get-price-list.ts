@@ -1,4 +1,5 @@
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 
@@ -9,7 +10,7 @@ import PriceListService from "../../../../services/price-list"
  * description: "Retrieves a Price List."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List.
+ *   - (path) id=* {string} The ID of the Price List.
  * tags:
  *   - Price List
  * responses:

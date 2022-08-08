@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsEmail,
@@ -7,18 +6,20 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
 import { AddressPayload } from "../../../../types/common"
-import { IsType } from "../../../../utils/validators/is-type"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm";
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import { IsType } from "../../../../utils/validators/is-type"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import { Type } from "class-transformer"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
- * @oas [post] /store/carts/{id}
+ * @oas [post] /carts/{id}
  * operationId: PostCartsCart
- * summary: Update a Cart"
+ * summary: Update a Cart
  * description: "Updates a Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
@@ -33,20 +34,30 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *               description: See a list of codes.
  *           email:
  *             type: string
  *             description: "An email to be used on the Cart."
- *          sales_channel_id:
+ *             format: email
+ *           sales_channel_id:
  *             type: string
- *             description: The id of the Sales channel to update the Cart with.
+ *             description: The ID of the Sales channel to update the Cart with.
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: A full billing address object.
+ *               - type: string
+ *                 description: The billing address ID
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: A full shipping address object.
+ *               - type: string
+ *                 description: The shipping address ID
  *           gift_cards:
  *             description: "An array of Gift Card codes to add to the Cart."
  *             type: array
@@ -68,11 +79,14 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
  *                   description: "The code that a Discount is identifed by."
  *                   type: string
  *           customer_id:
- *             description: "The id of the Customer to associate the Cart with."
+ *             description: "The ID of the Customer to associate the Cart with."
  *             type: string
  *           context:
  *             description: "An optional object to provide context to the Cart."
  *             type: object
+ *             example:
+ *               ip: "::1"
+ *               user_agent: "Chrome"
  * tags:
  *   - Cart
  * responses:

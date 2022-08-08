@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { CartService, LineItemService, RegionService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -8,17 +8,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
-import { EntityManager } from "typeorm"
+import { defaultStoreCartFields, defaultStoreCartRelations, } from "."
 
-import { defaultStoreCartFields, defaultStoreCartRelations,  } from "."
-import { CartService, LineItemService, RegionService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import { Cart } from "../../../../models";
+import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
 import { FlagRouter } from "../../../../utils/flag-router"
-import { Cart } from "../../../../models";
+import { MedusaError } from "medusa-core-utils"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import { Type } from "class-transformer"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import reqIp from "request-ip"
 
 /**
  * @oas [post] /carts
@@ -35,17 +35,23 @@ import { Cart } from "../../../../models";
  *         properties:
  *           region_id:
  *             type: string
- *             description: The id of the Region to create the Cart in.
- *          sales_channel_id:
+ *             description: The ID of the Region to create the Cart in.
+ *           sales_channel_id:
  *             type: string
- *             description: [EXPERIMENTAL] The id of the Sales channel to create the Cart in.
+ *             description: "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."
+ *             externalDocs:
+ *              url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *              description: See a list of codes.
  *           items:
  *             description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
  *             type: array
  *             items:
+ *               required:
+ *                 - variant_id
+ *                 - quantity
  *               properties:
  *                 variant_id:
  *                   description: The id of the Product Variant to generate a Line Item from.
@@ -56,6 +62,9 @@ import { Cart } from "../../../../models";
  *           context:
  *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
  *             type: object
+ *             example:
+ *               ip: "::1"
+ *               user_agent: "Chrome"
  * tags:
  *   - Cart
  * responses:

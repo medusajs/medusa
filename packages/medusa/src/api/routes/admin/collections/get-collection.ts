@@ -1,6 +1,7 @@
-import { defaultAdminCollectionsRelations } from "."
-import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+
+import ProductCollectionService from "../../../../services/product-collection"
+import { defaultAdminCollectionsRelations } from "."
 /**
  * @oas [get] /collections/{id}
  * operationId: "GetCollectionsCollection"
@@ -8,7 +9,7 @@ import { Request, Response } from "express"
  * description: "Retrieves a Product Collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product Collection
+ *   - (path) id=* {string} The ID of the Product Collection
  * tags:
  *   - Collection
  * responses:

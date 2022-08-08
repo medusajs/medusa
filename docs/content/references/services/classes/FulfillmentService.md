@@ -26,7 +26,7 @@ TransactionBaseService&lt;FulfillmentService\&gt;.constructor
 
 #### Defined in
 
-[services/fulfillment.ts:47](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L47)
+[packages/medusa/src/services/fulfillment.ts:47](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L47)
 
 ## Properties
 
@@ -38,6 +38,10 @@ TransactionBaseService&lt;FulfillmentService\&gt;.constructor
 
 TransactionBaseService.configModule
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
 ___
 
 ### container
@@ -48,6 +52,10 @@ ___
 
 TransactionBaseService.container
 
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
 ___
 
 ### fulfillmentProviderService\_
@@ -56,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:42](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L42)
+[packages/medusa/src/services/fulfillment.ts:42](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L42)
 
 ___
 
@@ -66,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:43](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L43)
+[packages/medusa/src/services/fulfillment.ts:43](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L43)
 
 ___
 
@@ -76,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L45)
+[packages/medusa/src/services/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L45)
 
 ___
 
@@ -86,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:40](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L40)
+[packages/medusa/src/services/fulfillment.ts:40](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L40)
 
 ___
 
@@ -100,7 +108,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/fulfillment.ts:36](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L36)
+[packages/medusa/src/services/fulfillment.ts:36](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L36)
 
 ___
 
@@ -110,7 +118,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L41)
+[packages/medusa/src/services/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L41)
 
 ___
 
@@ -120,7 +128,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:39](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L39)
+[packages/medusa/src/services/fulfillment.ts:39](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L39)
 
 ___
 
@@ -130,7 +138,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:44](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L44)
+[packages/medusa/src/services/fulfillment.ts:44](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L44)
 
 ___
 
@@ -144,7 +152,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L37)
+[packages/medusa/src/services/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L37)
 
 ## Methods
 
@@ -183,7 +191,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
@@ -209,7 +217,7 @@ the result of the save operation
 
 #### Defined in
 
-[services/fulfillment.ts:254](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L254)
+[packages/medusa/src/services/fulfillment.ts:253](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L253)
 
 ___
 
@@ -238,13 +246,13 @@ the created fulfillments
 
 #### Defined in
 
-[services/fulfillment.ts:199](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L199)
+[packages/medusa/src/services/fulfillment.ts:198](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L198)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`fulfillmentId`, `trackingLinks`, `config?`): `Promise`<`Fulfillment`\>
+▸ **createShipment**(`fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<`Fulfillment`\>
 
 Creates a shipment by marking a fulfillment as shipped. Adds
 tracking links and potentially more metadata.
@@ -254,7 +262,7 @@ tracking links and potentially more metadata.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `fulfillmentId` | `string` | the fulfillment to ship |
-| `trackingLinks` | { `tracking_number`: `string`  }[] | tracking links for the shipment |
+| `trackingLinks?` | { `tracking_number`: `string`  }[] | tracking links for the shipment |
 | `config` | `CreateShipmentConfig` | potential configuration settings, such as no_notification and metadata |
 
 #### Returns
@@ -265,7 +273,7 @@ the shipped fulfillment
 
 #### Defined in
 
-[services/fulfillment.ts:304](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L304)
+[packages/medusa/src/services/fulfillment.ts:303](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L303)
 
 ___
 
@@ -290,7 +298,7 @@ the line items generated by the transformer.
 
 #### Defined in
 
-[services/fulfillment.ts:109](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L109)
+[packages/medusa/src/services/fulfillment.ts:109](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L109)
 
 ___
 
@@ -311,7 +319,7 @@ ___
 
 #### Defined in
 
-[services/fulfillment.ts:71](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L71)
+[packages/medusa/src/services/fulfillment.ts:71](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L71)
 
 ___
 
@@ -336,7 +344,7 @@ the fulfillment
 
 #### Defined in
 
-[services/fulfillment.ts:166](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L166)
+[packages/medusa/src/services/fulfillment.ts:166](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L166)
 
 ___
 
@@ -360,7 +368,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
@@ -389,7 +397,7 @@ a line item that has the requested fulfillment quantity
 
 #### Defined in
 
-[services/fulfillment.ts:134](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L134)
+[packages/medusa/src/services/fulfillment.ts:134](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/fulfillment.ts#L134)
 
 ___
 
@@ -413,4 +421,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

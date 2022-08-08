@@ -1,0 +1,177 @@
+post:
+  operationId: PostSalesChannels
+  summary: Create a Sales Channel
+  description: Creates a Sales Channel.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - name
+          properties:
+            name:
+              description: The name of the Sales Channel
+              type: string
+            description:
+              description: The description of the Sales Channel
+              type: string
+            is_disabled:
+              description: Whether the Sales Channel is disabled or not.
+              type: boolean
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              sales_channel:
+                $ref: ../components/schemas/sales_channel.yaml
+get:
+  operationId: GetSalesChannels
+  summary: List sales channels
+  description: Retrieves a list of sales channels
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: id
+      description: ID of the sales channel
+      schema:
+        type: string
+    - in: query
+      name: name
+      description: Name of the sales channel
+      schema:
+        type: string
+    - in: query
+      name: description
+      description: Description of the sales channel
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: Query used for searching sales channels' names and descriptions.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: The field to order the results by.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting collections were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting collections were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: deleted_at
+      description: Date comparison for when resulting collections were deleted.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: offset
+      description: How many sales channels to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of sales channels returned.
+      schema:
+        type: integer
+        default: 20
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each sales channel
+        of the result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each sales channel
+        of the result.
+      schema:
+        type: string
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              sales_channels:
+                type: array
+                items:
+                  $ref: ../components/schemas/sales_channel.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

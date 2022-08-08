@@ -24,7 +24,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:68
+medusa/dist/types/common.d.ts:95
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:69
+medusa/dist/types/common.d.ts:96
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:70
+medusa/dist/types/common.d.ts:97
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:67
+medusa/dist/types/common.d.ts:94
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:71
+medusa/dist/types/common.d.ts:98
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:63
+medusa/dist/types/common.d.ts:90
 
 ___
 
@@ -108,13 +108,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:64
+medusa/dist/types/common.d.ts:91
 
 ___
 
 ### metadata
 
-• `Optional` **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• `Optional` **metadata**: `Record`<`string`, `unknown`\>
 
 #### Inherited from
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:66
+medusa/dist/types/common.d.ts:93
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:65
+medusa/dist/types/common.d.ts:92
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:73
+medusa/dist/types/common.d.ts:100
 
 ___
 
@@ -164,4 +164,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:72
+medusa/dist/types/common.d.ts:99

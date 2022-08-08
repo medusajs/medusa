@@ -27,7 +27,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 ### 1. Install Medusa CLI
 
    ```bash npm2yarn
-   npm install -g @medusajs/medusa-cli
+   npm install @medusajs/medusa-cli -g
    ```
 
 ### 2. Create a new Medusa project
@@ -81,5 +81,5 @@ You can learn more about configuring your server and loading environment variabl
 
 - Install our [Next.js](../starters/nextjs-medusa-starter) or [Gatsby](../starters/gatsby-medusa-starter) storefronts to set up your ecommerce storefront quickly.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
-- Check our the [API reference](https://docs.medusajs.com/api) to learn more about available endpoints available on your Medusa server.
+- Check out the [API reference](https://docs.medusajs.com/api) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.

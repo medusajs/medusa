@@ -1,14 +1,14 @@
-import UserService from "../../../../services/user"
 import { EntityManager } from "typeorm"
+import UserService from "../../../../services/user"
 
 /**
- * @oas [delete] /users/{user_id}
+ * @oas [delete] /users/{id}
  * operationId: "DeleteUsersUser"
  * summary: "Delete a User"
  * description: "Deletes a User"
  * x-authenticated: true
  * parameters:
- *   - (path) user_id=* {string} The id of the User.
+ *   - (path) id=* {string} The ID of the User.
  * tags:
  *   - Users
  * responses:
@@ -20,12 +20,15 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Shipping Profile.
+ *               description: The ID of the deleted user.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: user
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { user_id } = req.params

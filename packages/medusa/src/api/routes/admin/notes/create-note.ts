@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
+
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
@@ -13,10 +14,14 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
+ *        required:
+ *          - resource_id
+ *          - resource_type
+ *          - value
  *        properties:
  *          resource_id:
  *            type: string
- *            description: The id of the resource which the Note relates to.
+ *            description: The ID of the resource which the Note relates to.
  *          resource_type:
  *            type: string
  *            description: The type of resource which the Note relates to.

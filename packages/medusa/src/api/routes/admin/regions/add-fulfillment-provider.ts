@@ -1,9 +1,11 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /regions/{id}/fulfillment-providers
  * operationId: "PostRegionsRegionFulfillmentProviders"
@@ -11,16 +13,16 @@ import { EntityManager } from "typeorm"
  * description: "Adds a Fulfillment Provider to a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - provider_id
  *       schema:
+ *         required:
+ *           - provider_id
  *         properties:
  *           provider_id:
- *             description: "The id of the Fulfillment Provider to add."
+ *             description: "The ID of the Fulfillment Provider to add."
  *             type: string
  * tags:
  *   - Region

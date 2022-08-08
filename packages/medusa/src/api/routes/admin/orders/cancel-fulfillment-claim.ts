@@ -1,11 +1,12 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import {
   ClaimService,
   FulfillmentService,
   OrderService,
 } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
@@ -14,9 +15,9 @@ import { EntityManager } from "typeorm"
  * description: "Registers a Fulfillment as canceled."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order which the Claim relates to.
- *   - (path) claim_id=* {string} The id of the Claim which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The id of the Fulfillment.
+ *   - (path) id=* {string} The ID of the Order which the Claim relates to.
+ *   - (path) claim_id=* {string} The ID of the Claim which the Fulfillment relates to.
+ *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
  * tags:
  *   - Fulfillment
  * responses:
@@ -26,8 +27,8 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             fulfillment:
- *               $ref: "#/components/schemas/fulfillment"
+ *             order:
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, claim_id, fulfillment_id } = req.params

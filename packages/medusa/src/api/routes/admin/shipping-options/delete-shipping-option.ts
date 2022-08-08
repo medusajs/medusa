@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
  * description: "Deletes a Shipping Option."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * tags:
  *   - Shipping Option
  * responses:
@@ -19,12 +19,15 @@ import { EntityManager } from "typeorm"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Shipping Option.
+ *               description: The ID of the deleted Shipping Option.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: shipping-option
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { option_id } = req.params

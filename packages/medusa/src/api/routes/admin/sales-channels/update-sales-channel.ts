@@ -1,5 +1,6 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+
 import { SalesChannelService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
@@ -10,7 +11,7 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Sales Channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales Channel.
+ *   - (path) id=* {string} The ID of the Sales Channel.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,8 +35,8 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             customer:
- *               $ref: "#/components/schemas/sales-channel"
+ *             sales_channel:
+ *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

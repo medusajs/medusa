@@ -152,7 +152,7 @@ medusa migrations <action>
 
 | Name | Description | Default |
 | --- | --- | --- |
-| `action` | The action to perform. Values can be run or show. run is used to run the migrations, and show is used to only show what migrations are available to run. | This argument is required and does not have a default value. |
+| `action` | The action to perform. Values can be `run`, `show`, or `revert`. `run` is used to run the migrations; `show` is used to only show what migrations are available to run; and `revert` is to undo the last migration. | This argument is required and does not have a default value. |
 
 ### seed
 

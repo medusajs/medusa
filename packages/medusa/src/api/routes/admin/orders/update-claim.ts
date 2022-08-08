@@ -1,16 +1,17 @@
-import { Type } from "class-transformer"
+import { ClaimService, OrderService } from "../../../../services"
 import {
   IsArray,
-  ValidateNested,
-  IsOptional,
-  IsString,
   IsBoolean,
   IsInt,
   IsNotEmpty,
   IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { ClaimService, OrderService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -21,8 +22,8 @@ import { EntityManager } from "typeorm"
  * description: "Updates a Claim."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,12 +33,16 @@ import { EntityManager } from "typeorm"
  *             description: The Claim Items that the Claim will consist of.
  *             type: array
  *             items:
+ *               required:
+ *                 - id
+ *                 - images
+ *                 - tags
  *               properties:
  *                 id:
- *                   description: The id of the Claim Item.
+ *                   description: The ID of the Claim Item.
  *                   type: string
  *                 item_id:
- *                   description: The id of the Line Item that will be claimed.
+ *                   description: The ID of the Line Item that will be claimed.
  *                   type: string
  *                 quantity:
  *                   description: The number of items that will be returned
@@ -57,21 +62,39 @@ import { EntityManager } from "typeorm"
  *                   description: A list o tags to add to the Claim Item
  *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Tag ID
+ *                       value:
+ *                         type: string
+ *                         description: Tag value
  *                 images:
  *                   description: A list of image URL's that will be associated with the Claim
+ *                   type: array
  *                   items:
- *                     type: string
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Image ID
+ *                       url:
+ *                         type: string
+ *                         description: Image URL
+ *                 metadata:
+ *                   description: An optional set of key-value pairs to hold additional information.
+ *                   type: object
  *           shipping_methods:
  *             description: The Shipping Methods to send the additional Line Items with.
  *             type: array
  *             items:
  *                properties:
  *                  id:
- *                    description: The id of an existing Shipping Method
+ *                    description: The ID of an existing Shipping Method
  *                    type: string
  *                  option_id:
- *                    description: The id of the Shipping Option to create a Shipping Method from
+ *                    description: The ID of the Shipping Option to create a Shipping Method from
  *                    type: string
  *                  price:
  *                    description: The price to charge for the Shipping Method
@@ -83,7 +106,7 @@ import { EntityManager } from "typeorm"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK

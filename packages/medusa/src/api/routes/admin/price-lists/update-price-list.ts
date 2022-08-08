@@ -1,4 +1,8 @@
-import { Type } from "class-transformer"
+import {
+  AdminPriceListPricesUpdateReq,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 import {
   IsArray,
   IsEnum,
@@ -7,24 +11,21 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /price_lists/{id}
+ * @oas [post] /price-lists/{id}
  * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
  * description: "Updates a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List.
+ *   - (path) id=* {string} The ID of the Price List.
  * requestBody:
  *   content:
  *     application/json:
@@ -36,50 +37,67 @@ import { EntityManager } from "typeorm"
  *           description:
  *             description: "A description of the Price List."
  *             type: string
+ *           starts_at:
+ *             description: "The date with timezone that the Price List starts being valid."
+ *             type: string
+ *             format: date
+ *           ends_at:
+ *             description: "The date with timezone that the Price List ends being valid."
+ *             type: string
+ *             format: date
  *           type:
  *             description: The type of the Price List.
  *             type: string
  *             enum:
  *              - sale
  *              - override
- *          status:
- *            description: The status of the Price List.
- *            type: string
- *            enum:
- *             - active
- *             - draft
- *          prices:
- *            description: The prices of the Price List.
- *            type: array
- *            items:
- *              properties:
- *                id:
- *                  description: The id of the price.
- *                  type: string
- *                region_id:
- *                  description: The id of the Region for which the price is used.
- *                  type: string
- *                currency_code:
- *                  description: The 3 character ISO currency code for which the price will be used.
- *                  type: string
- *                amount:
- *                  description: The amount to charge for the Product Variant.
- *                  type: integer
- *                min_quantity:
- *                  description: The minimum quantity for which the price will be used.
- *                  type: integer
- *                max_quantity:
- *                  description: The maximum quantity for which the price will be used.
- *                  type: integer
- *          customer_groups:
- *            type: array
+ *           status:
+ *             description: The status of the Price List.
+ *             type: string
+ *             enum:
+ *              - active
+ *              - draft
+ *           prices:
+ *             description: The prices of the Price List.
+ *             type: array
+ *             items:
+ *               required:
+ *                 - amount
+ *                 - variant_id
+ *               properties:
+ *                 id:
+ *                   description: The ID of the price.
+ *                   type: string
+ *                 region_id:
+ *                   description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *                   type: string
+ *                 currency_code:
+ *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                   type: string
+ *                   externalDocs:
+ *                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                      description: See a list of codes.
+ *                 variant_id:
+ *                   description: The ID of the Variant for which the price is used.
+ *                   type: string
+ *                 amount:
+ *                   description: The amount to charge for the Product Variant.
+ *                   type: integer
+ *                 min_quantity:
+ *                   description: The minimum quantity for which the price will be used.
+ *                   type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
+ *                   type: integer
+ *           customer_groups:
+ *             type: array
  *             description: A list of customer groups that the Price List applies to.
  *             items:
  *               required:
  *                 - id
  *               properties:
  *                 id:
- *                   description: The id of a customer group
+ *                   description: The ID of a customer group
  *                   type: string
  * tags:
  *   - Price List
@@ -90,7 +108,7 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             product:
+ *             price_list:
  *               $ref: "#/components/schemas/price_list"
  */
 export default async (req, res) => {

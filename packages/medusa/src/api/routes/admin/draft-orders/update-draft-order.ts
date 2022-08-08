@@ -1,8 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
-import {
-  defaultAdminDraftOrdersCartFields,
-  defaultAdminDraftOrdersCartRelations,
-} from "."
+import { CartService, DraftOrderService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -11,12 +7,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { CartService, DraftOrderService } from "../../../../services"
-import { Type } from "class-transformer"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+} from "."
+
 import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 import { DraftOrderStatus } from "../../../../models"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/draft-orders/{id}
@@ -25,7 +26,7 @@ import { DraftOrderStatus } from "../../../../models"
  * description: "Updates a Draft Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -33,22 +34,30 @@ import { DraftOrderStatus } from "../../../../models"
  *         properties:
  *           region_id:
  *             type: string
- *             description: The id of the Region to create the Draft Order in.
+ *             description: The ID of the Region to create the Draft Order in.
+ *           country_code:
+ *             type: string
+ *             description: "The 2 character ISO code for the Country."
+ *             externalDocs:
+ *                url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *                description: See a list of codes.
  *           email:
  *             type: string
  *             description: "An email to be used on the Draft Order."
+ *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address"
  *           discounts:
  *             description: "An array of Discount codes to add to the Draft Order."
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: "The code that a Discount is identifed by."
@@ -57,7 +66,7 @@ import { DraftOrderStatus } from "../../../../models"
  *             description: "An optional flag passed to the resulting order to determine use of notifications."
  *             type: boolean
  *           customer_id:
- *             description: "The id of the Customer to associate the Draft Order with."
+ *             description: "The ID of the Customer to associate the Draft Order with."
  *             type: string
  * tags:
  *   - Draft Order

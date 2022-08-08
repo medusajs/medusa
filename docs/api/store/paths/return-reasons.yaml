@@ -1,0 +1,17 @@
+get:
+  operationId: GetReturnReasons
+  summary: List Return Reasons
+  description: Retrieves a list of Return Reasons.
+  tags:
+    - Return Reason
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              return_reasons:
+                type: array
+                items:
+                  $ref: ../components/schemas/return_reason.yaml

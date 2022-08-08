@@ -1,4 +1,7 @@
-import { Type } from "class-transformer"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import {
   IsArray,
   IsBoolean,
@@ -9,10 +12,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
 import {
   PricingService,
   ProductService,
@@ -24,11 +23,13 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
+import { ProductStatus } from "../../../../models"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -40,10 +41,6 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - title
- *         - subtitle
- *         - description
  *       schema:
  *         required:
  *           - title
@@ -60,9 +57,11 @@ import { validator } from "../../../../utils/validator"
  *           is_giftcard:
  *             description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
  *             type: boolean
+ *             default: false
  *           discountable:
  *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
  *             type: boolean
+ *             default: true
  *           images:
  *             description: Images of the Product.
  *             type: array
@@ -74,39 +73,55 @@ import { validator } from "../../../../utils/validator"
  *           handle:
  *             description: A unique handle to identify the Product by.
  *             type: string
+ *           status:
+ *             description: The status of the product.
+ *             type: string
+ *             enum: [draft, proposed, published, rejected]
+ *             default: draft
  *           type:
  *             description: The Product Type to associate the Product with.
  *             type: object
+ *             required:
+ *               - value
  *             properties:
+ *               id:
+ *                 description: The ID of the Product Type.
+ *                 type: string
  *               value:
  *                 description: The value of the Product Type.
  *                 type: string
  *           collection_id:
- *             description: The id of the Collection the Product should belong to.
+ *             description: The ID of the Collection the Product should belong to.
  *             type: string
  *           tags:
  *             description: Tags to associate the Product with.
  *             type: array
  *             items:
+ *               required:
+ *                 - value
  *               properties:
  *                 id:
- *                   description: The id of an existing Tag.
+ *                   description: The ID of an existing Tag.
  *                   type: string
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
- *          sales_channels:
- *             description: [EXPERIMENTAL] Sales channels to associate the Product with.
+ *           sales_channels:
+ *             description: "[EXPERIMENTAL] Sales channels to associate the Product with."
  *             type: array
  *             items:
+ *               required:
+ *                 - id
  *               properties:
  *                 id:
- *                   description: The id of an existing Sales channel.
+ *                   description: The ID of an existing Sales channel.
  *                   type: string
  *           options:
  *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
  *             type: array
  *             items:
+ *               required:
+ *                 - title
  *               properties:
  *                 title:
  *                   description: The title to identify the Product Option by.
@@ -115,6 +130,8 @@ import { validator } from "../../../../utils/validator"
  *             description: A list of Product Variants to create with the Product.
  *             type: array
  *             items:
+ *               required:
+ *                 - title
  *               properties:
  *                 title:
  *                   description: The title to identify the Product Variant by.
@@ -137,6 +154,7 @@ import { validator } from "../../../../utils/validator"
  *                 inventory_quantity:
  *                   description: The amount of stock kept for the Product Variant.
  *                   type: integer
+ *                   default: 0
  *                 allow_backorder:
  *                   description: Whether the Product Variant can be purchased when out of stock.
  *                   type: boolean
@@ -145,16 +163,16 @@ import { validator } from "../../../../utils/validator"
  *                   type: boolean
  *                 weight:
  *                   description: The wieght of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 length:
  *                   description: The length of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 height:
  *                   description: The height of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 width:
  *                   description: The width of the Product Variant.
- *                   type: string
+ *                   type: number
  *                 origin_country:
  *                   description: The country of origin of the Product Variant.
  *                   type: string
@@ -170,37 +188,50 @@ import { validator } from "../../../../utils/validator"
  *                 prices:
  *                   type: array
  *                   items:
+ *                     required:
+ *                       - amount
  *                     properties:
  *                       region_id:
- *                         description: The id of the Region for which the price is used.
+ *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                         type: string
  *                       currency_code:
- *                         description: The 3 character ISO currency code for which the price will be used.
+ *                         description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                         type: string
+ *                         externalDocs:
+ *                           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                           description: See a list of codes.
  *                       amount:
  *                         description: The amount to charge for the Product Variant.
  *                         type: integer
- *                       sale_amount:
- *                         description: The sale amount to charge for the Product Variant.
+ *                       min_quantity:
+ *                         description: The minimum quantity for which the price will be used.
+ *                         type: integer
+ *                       max_quantity:
+ *                         description: The maximum quantity for which the price will be used.
  *                         type: integer
  *                 options:
  *                   type: array
  *                   items:
+ *                     required:
+ *                       - value
  *                     properties:
  *                       value:
  *                         description: The value to give for the Product Option at the same index in the Product's `options` field.
  *                         type: string
  *           weight:
  *             description: The wieght of the Product.
- *             type: string
+ *             type: number
  *           length:
  *             description: The length of the Product.
- *             type: string
+ *             type: number
  *           height:
  *             description: The height of the Product.
- *             type: string
+ *             type: number
  *           width:
  *             description: The width of the Product.
+ *             type: number
+ *           hs_code:
+ *             description: The Harmonized System code for the Product Variant.
  *             type: string
  *           origin_country:
  *             description: The country of origin of the Product.

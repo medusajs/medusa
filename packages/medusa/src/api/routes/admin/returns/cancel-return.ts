@@ -11,7 +11,7 @@ import { EntityManager } from "typeorm"
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
  * parameters:
- *   - (path) id=* {string} The id of the Return.
+ *   - (path) id=* {string} The ID of the Return.
  * tags:
  *   - Return
  * responses:
@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  *       application/json:
  *         schema:
  *           properties:
- *             return:
+ *             order:
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {

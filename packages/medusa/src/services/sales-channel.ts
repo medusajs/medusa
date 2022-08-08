@@ -1,17 +1,17 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models"
-import { SalesChannelRepository } from "../repositories/sales-channel"
-import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { buildQuery } from "../utils"
+import { FindConfig, QuerySelector } from "../types/common"
+
+import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
+import { MedusaError } from "medusa-core-utils"
+import { SalesChannel } from "../models"
+import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -181,7 +181,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @param salesChannelId - the id of the sales channel to delete
-   * @return Promise<void>
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {

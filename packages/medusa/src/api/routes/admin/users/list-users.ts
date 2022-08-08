@@ -7,7 +7,7 @@ import UserService from "../../../../services/user"
  * description: "Retrieves all users."
  * x-authenticated: true
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK
