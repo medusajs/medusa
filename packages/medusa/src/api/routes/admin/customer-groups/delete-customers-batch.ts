@@ -32,6 +32,33 @@ import { validator } from "../../../../utils/validator"
  *                 id:
  *                   description: ID of the customer
  *                   type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.customerGroups.removeCustomers(customer_group_id, {
+ *         customer_ids: [
+ *           {
+ *             id: customer_id
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/customer-groups/{id}/customers/batch' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "customer_ids": [
+ *               {
+ *                   "id": "cus_01G2Q4BS9GAHDBMDEN4ZQZCJB2"
+ *               }
+ *           ]
+ *       }'
  * tags:
  *   - Customer Group
  * responses:

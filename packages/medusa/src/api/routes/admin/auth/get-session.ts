@@ -7,6 +7,19 @@ import _ from "lodash"
  * summary: "Get Session"
  * x-authenticated: true
  * description: "Gets the currently logged in User."
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.auth.getSession()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/auth' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Auth
  * responses:

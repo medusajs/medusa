@@ -327,3 +327,8 @@ html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
 .redocusaurus a {
   color: var(--ifm-link-color) !important;
 }
+
+.redocusaurus pre {
+  background-color: transparent !important;
+  margin-top: 10px;
+}

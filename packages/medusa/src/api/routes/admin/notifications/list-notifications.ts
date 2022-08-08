@@ -3,9 +3,9 @@ import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
-import { Notification } from "../../../../models"
-import { FindConfig } from "../../../../types/common"
 
+import { FindConfig } from "../../../../types/common"
+import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
@@ -27,6 +27,19 @@ import { validator } from "../../../../utils/validator"
  *   - (query) resource_id {string} The ID of the resource that the Notification refers to.
  *   - (query) to {string} The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
  *   - (query) include_resends {string} A boolean indicating whether the result set should include resent notifications or not
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.notifications.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/notifications' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Notification
  * responses:

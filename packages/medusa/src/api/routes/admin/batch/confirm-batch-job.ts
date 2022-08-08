@@ -9,6 +9,19 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.batchJobs.confirm(batch_job_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Batch Job
  * responses:

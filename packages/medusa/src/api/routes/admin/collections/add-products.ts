@@ -1,7 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm";
 
+import { EntityManager } from "typeorm";
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
@@ -25,6 +25,18 @@ import ProductCollectionService from "../../../../services/product-collection"
  *             items:
  *               description: "The ID of a Product to add to the Product Collection."
  *               type: string
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/collections/{id}/products/batch' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "product_ids": [
+ *               "prod_01G1G5V2MBA328390B5AXJ610F"
+ *           ]
+ *       }'
  * tags:
  *   - Collection
  * responses:

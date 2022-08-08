@@ -6,6 +6,19 @@ import InviteService from "../../../../services/invite"
  * summary: "Lists all Invites"
  * description: "Lists all Invites"
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.invites.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/invites' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Invite
  * responses:

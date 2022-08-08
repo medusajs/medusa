@@ -21,6 +21,19 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset=0 {number} The number of items to skip before the results.
  *   - (query) limit=50 {number} Limit the number of items returned.
  *   - (query) q {string} a search term to search emails in carts associated with draft orders and display IDs of draft orders
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.draftOrders.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/draft-orders' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Draft Order
  * responses:

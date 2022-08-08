@@ -46,6 +46,28 @@ import { validator } from "../../../../utils/validator"
  *            type: boolean
  *            description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
  *            default: false
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.batchJobs.create({
+ *         type: 'product-export',
+ *         context: {},
+ *         dry_run: false
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/batch-jobs' \
+ *       --header 'Content-Type: application/json' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --data-raw '{
+ *           "type": "product-export",
+ *           "context": { }
+ *       }'
  * tags:
  *   - Batch Job
  * responses:

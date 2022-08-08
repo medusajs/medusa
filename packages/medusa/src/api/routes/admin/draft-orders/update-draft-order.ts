@@ -68,6 +68,25 @@ import { validator } from "../../../../utils/validator"
  *           customer_id:
  *             description: "The ID of the Customer to associate the Draft Order with."
  *             type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.draftOrders.update(draft_order_id, {
+ *         email: "user@example.com"
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/draft-orders/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com"
+ *       }'
  * tags:
  *   - Draft Order
  * responses:

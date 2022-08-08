@@ -1,9 +1,9 @@
 import { IsEmail, IsEnum } from "class-validator"
 
+import { EntityManager } from "typeorm"
 import InviteService from "../../../../services/invite"
 import { UserRoles } from "../../../../models/user"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /invites
@@ -27,6 +27,27 @@ import { EntityManager } from "typeorm"
  *             description: "The role of the user to be created."
  *             type: string
  *             enum: [admin, member, developer]
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.invites.create({
+ *         user: "user@example.com",
+ *         role: "admin"
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/invites' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "user": "user@example.com",
+ *           "role": "admin"
+ *       }'
  * tags:
  *   - Invite
  * responses:

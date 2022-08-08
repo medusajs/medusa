@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
 
+import { EntityManager } from "typeorm"
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /invites/accept
@@ -39,6 +39,35 @@ import { EntityManager } from "typeorm"
  *                 description: The desired password for the User
  *                 type: string
  *                 format: password
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.invites.accept({
+ *         token,
+ *         user: {
+ *           first_name: 'Brigitte',
+ *           last_name: 'Collier',
+ *           password: 'supersecret'
+ *         }
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/invites/accept' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "token": "{token}",
+ *           "user": {
+ *             "first_name": "Brigitte",
+ *             "last_name": "Collier",
+ *             "password": "supersecret"
+ *           }
+ *       }'
  * tags:
  *   - Invite
  * responses:
