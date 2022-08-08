@@ -6,6 +6,19 @@
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Batch Job
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.batchJobs.retrieve(batch_job_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/batch-jobs/{id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Batch Job
  * responses:

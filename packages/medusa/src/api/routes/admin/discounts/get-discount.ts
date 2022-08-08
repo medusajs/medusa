@@ -5,6 +5,7 @@ import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /discounts/{id}
  * operationId: "GetDiscountsDiscount"
@@ -15,6 +16,19 @@ import { validator } from "../../../../utils/validator"
  *   - (path) id=* {string} The ID of the Discount
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.retrieve(discount_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/discounts/{id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Discount
  * responses:

@@ -6,6 +6,12 @@ import { OauthService } from "../../../../services"
  * summary: "List applications"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/apps' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - App
  * responses:

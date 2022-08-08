@@ -18,6 +18,19 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
  *   - (path) line_id=* {string} The ID of the Draft Order.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.draftOrders.removeLineItem(draft_order_id, item_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/draft-orders/{id}/line-items/{line_id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Draft Order
  * responses:

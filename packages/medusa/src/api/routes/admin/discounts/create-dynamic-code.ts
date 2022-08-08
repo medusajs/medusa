@@ -22,6 +22,26 @@ import { validator } from "../../../../utils/validator"
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
  *   - (body) usage_limit=1 {number} amount of times the discount can be applied.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.createDynamicCode('', {
+ *         code: 'TEST',
+ *         usage_limit: 1
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/discounts/{id}/dynamic-codes' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "code": "TEST"
+ *       }'
  * tags:
  *   - Discount
  * responses:

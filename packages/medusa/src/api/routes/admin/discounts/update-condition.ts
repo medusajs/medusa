@@ -50,6 +50,29 @@ import { validator } from "../../../../utils/validator"
  *              description: list of customer group IDs if the condition is applied on customer groups.
  *              items:
  *                type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.updateCondition(discount_id, condition_id, {
+ *         products: [
+ *           product_id
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/discounts/{id}/conditions/{condition}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "products": [
+ *              "prod_01G1G5V2MBA328390B5AXJ610F"
+ *           ]
+ *       }'
  * tags:
  *   - Discount
  * responses:

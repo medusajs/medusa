@@ -8,6 +8,19 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Gift Card to delete.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.giftCards.delete(gift_card_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/gift-cards/{id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Gift Card
  * responses:

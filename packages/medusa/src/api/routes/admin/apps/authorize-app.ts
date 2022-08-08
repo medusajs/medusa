@@ -27,6 +27,18 @@ import { validator } from "../../../../utils/validator"
  *           code:
  *             type: string
  *             description: The code for the generated token.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/apps/authorizations' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "application_name": "example",
+ *           "state": "ready",
+ *           "code": "token"
+ *       }'
  * tags:
  *   - App
  * responses:

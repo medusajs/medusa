@@ -20,6 +20,19 @@ import { validator } from "../../../../utils/validator"
  *   - (path) condition_id=* {string} The ID of the DiscountCondition
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.deleteCondition(discount_id, condition_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/discounts/{id}/conditions/{condition_id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Discount Condition
  * responses:

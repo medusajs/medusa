@@ -126,6 +126,37 @@ import { validator } from "../../../../utils/validator"
  *           metadata:
  *              description: An optional set of key-value pairs to hold additional information.
  *              type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.createClaim(order_id, {
+ *         type: 'refund',
+ *         claim_items: [
+ *           {
+ *             item_id,
+ *             quantity: 1
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/claims' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "type": "refund",
+ *           "claim_items": [
+ *             {
+ *               "item_id": "asdsd",
+ *               "quantity": 1
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Claim
  * responses:

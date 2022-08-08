@@ -2,8 +2,8 @@ import { ClaimService, OrderService } from "../../../../services"
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/shipments
@@ -29,6 +29,25 @@ import { EntityManager } from "typeorm"
  *             type: array
  *             items:
  *               type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.createClaimShipment(order_id, claim_id, {
+ *         fulfillment_id
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/claims/{claim_id}/shipments' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "fulfillment_id": "{fulfillment_id}"
+ *       }'
  * tags:
  *   - Claim
  * responses:

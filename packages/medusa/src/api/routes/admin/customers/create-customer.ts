@@ -1,8 +1,8 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 
 import { CustomerService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers
@@ -42,6 +42,31 @@ import { EntityManager } from "typeorm"
  *             type: object
  * tags:
  *   - Customer
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.customers.create({
+ *         email: 'user@example.com',
+ *         first_name: 'Caterina',
+ *         last_name: 'Yost',
+ *         password: 'supersecret'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/customers' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com",
+ *           "first_name": "Caterina",
+ *           "last_name": "Yost",
+ *           "password": "supersecret"
+ *       }'
  * responses:
  *   201:
  *     description: OK

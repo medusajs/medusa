@@ -139,6 +139,38 @@ import { validator } from "../../../../utils/validator"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.create({
+ *         code: 'TEST',
+ *         rule: {
+ *           type: DiscountRuleType.FIXED,
+ *           value: 10,
+ *           allocation: AllocationType.ITEM
+ *         },
+ *         is_dynamic: false,
+ *         is_disabled: false
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/discounts' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "code": "TEST",
+ *           "rule": {
+ *              "type": "fixed",
+ *              "value": 10,
+ *              "allocation": "item"
+ *           }
+ *       }'
  * tags:
  *   - Discount
  * responses:

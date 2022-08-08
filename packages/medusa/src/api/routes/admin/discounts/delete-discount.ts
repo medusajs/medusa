@@ -9,6 +9,19 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.discounts.delete(discount_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/discounts/{id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Discount
  * responses:

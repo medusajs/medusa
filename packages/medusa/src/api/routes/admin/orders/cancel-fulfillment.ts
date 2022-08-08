@@ -13,6 +13,19 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.cancelFulfillment(order_id, fulfillment_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Fulfillment
  * responses:

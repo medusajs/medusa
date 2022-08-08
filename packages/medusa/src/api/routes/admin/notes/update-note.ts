@@ -1,7 +1,7 @@
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /notes/{id}
@@ -21,6 +21,25 @@ import { EntityManager } from "typeorm"
  *          value:
  *            type: string
  *            description: The updated description of the Note.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.notes.update('', {
+ *        value: 'We delivered this order'
+ *      })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/notes/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "value": "We delivered this order"
+ *       }'
  * tags:
  *   - Note
  * responses:

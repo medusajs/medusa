@@ -1,7 +1,7 @@
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
-import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [post] /orders/{id}/capture
@@ -11,6 +11,19 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.capturePayment(order_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/capture' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Order
  * responses:
