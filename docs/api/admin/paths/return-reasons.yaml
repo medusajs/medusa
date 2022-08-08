@@ -28,6 +28,15 @@ post:
             metadata:
               description: An optional set of key-value pairs with additional information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/return-reasons/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/return-reasons/postundefined
   tags:
     - Return Reason
   responses:
@@ -44,6 +53,15 @@ get:
   summary: List Return Reasons
   description: Retrieves a list of Return Reasons.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/return-reasons/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/return-reasons/getundefined
   tags:
     - Return Reason
   responses:

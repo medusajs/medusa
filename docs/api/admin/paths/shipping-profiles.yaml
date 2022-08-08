@@ -13,6 +13,15 @@ post:
             name:
               description: The name of the Shipping Profile
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-profiles/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-profiles/postundefined
   tags:
     - Shipping Profile
   responses:
@@ -29,6 +38,15 @@ get:
   summary: List Shipping Profiles
   description: Retrieves a list of Shipping Profile.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-profiles/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-profiles/getundefined
   tags:
     - Shipping Profile
   responses:

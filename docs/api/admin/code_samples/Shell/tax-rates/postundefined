@@ -1,0 +1,8 @@
+curl --location --request POST 'localhost:9000/admin/tax-rates' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "code": "TEST",
+    "name": "New Tax Rate",
+    "region_id": "{region_id}"
+}'

@@ -1630,14 +1630,17 @@
         "parameters": [
           {
             "in": "query",
-            "name": "q",
-            "description": "Query used for searching orders.",
+            "name": "limit",
+            "description": "How many orders to return.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "default": 10
             }
           },
           {
             "in": "query",
+<<<<<<< HEAD
             "name": "id",
             "description": "Id of the order to search for.",
             "schema": {
@@ -1655,10 +1658,18 @@
               "items": {
                 "type": "string"
               }
+=======
+            "name": "offset",
+            "description": "The offset in the resulting orders.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             }
           },
           {
             "in": "query",
+<<<<<<< HEAD
             "name": "fulfillment_status",
             "style": "form",
             "explode": false,
@@ -1687,12 +1698,17 @@
             "in": "query",
             "name": "display_id",
             "description": "Display id to search for.",
+=======
+            "name": "fields",
+            "description": "(Comma separated string) Which fields should be included in the resulting orders.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
+<<<<<<< HEAD
             "name": "cart_id",
             "description": "to search for.",
             "schema": {
@@ -1719,136 +1735,7 @@
             "in": "query",
             "name": "currency_code",
             "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "tax_rate",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting collections were created.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting collections were updated.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "description": "Date comparison for when resulting collections were canceled.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "How many orders to return.",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset in the resulting orders.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "(Comma separated string) Which fields should be included in the resulting orders.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
+=======
             "name": "expand",
             "description": "(Comma separated string) Which relations should be expanded in the resulting orders.",
             "schema": {
@@ -2024,6 +1911,135 @@
         "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
         "parameters": [
           {
+<<<<<<< HEAD
+            "in": "query",
+            "name": "tax_rate",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting collections were created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections were updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "description": "Date comparison for when resulting collections were canceled.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "How many orders to return.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset in the resulting orders.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated string) Which fields should be included in the resulting orders.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated string) Which relations should be expanded in the resulting orders.",
+=======
             "in": "path",
             "name": "cart_id",
             "required": true,
@@ -2065,13 +2081,18 @@
             "name": "id",
             "required": true,
             "description": "The id of the Order.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
+<<<<<<< HEAD
+          "Customer"
+=======
           "Order"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2080,14 +2101,101 @@
               "application/json": {
                 "schema": {
                   "properties": {
+<<<<<<< HEAD
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+=======
                     "order": {
                       "$ref": "#/components/schemas/order"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
               }
             }
           }
+<<<<<<< HEAD
+        }
+      }
+    },
+    "/customers/password-token": {
+      "post": {
+        "operationId": "PostCustomersCustomerPasswordToken",
+        "summary": "Creates a reset password token",
+        "description": "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The email of the customer.",
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/customers/password-reset": {
+      "post": {
+        "operationId": "PostCustomersResetPassword",
+        "summary": "Resets Customer password",
+        "description": "Resets a Customer's password using a password token created by a previous /password-token request.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password",
+                  "token"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The email of the customer.",
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "description": "The Customer's password.",
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "token": {
+                    "description": "The reset password token",
+                    "type": "string"
+                  }
+=======
         }
       }
     },
@@ -2130,13 +2238,18 @@
                 "postal_code": {
                   "type": "string",
                   "description": "The postal code of the shipping address"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                 }
               }
             }
           }
-        ],
+        },
         "tags": [
+<<<<<<< HEAD
+          "Customer"
+=======
           "Order"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2145,8 +2258,13 @@
               "application/json": {
                 "schema": {
                   "properties": {
+<<<<<<< HEAD
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+=======
                     "order": {
                       "$ref": "#/components/schemas/order"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2156,24 +2274,40 @@
         }
       }
     },
+<<<<<<< HEAD
+    "/gift-cards/{code}": {
+      "get": {
+        "operationId": "GetGiftCardsCode",
+        "summary": "Retrieve Gift Card by Code",
+        "description": "Retrieves a Gift Card by its associated unqiue code.",
+=======
     "/products/{id}": {
       "get": {
         "operationId": "GetProductsProduct",
         "summary": "Retrieves a Product",
         "description": "Retrieves a Product.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "code",
             "required": true,
+<<<<<<< HEAD
+            "description": "The unique Gift Card code.",
+=======
             "description": "The id of the Product.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
+<<<<<<< HEAD
+          "Gift Card"
+=======
           "Product"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2182,8 +2316,13 @@
               "application/json": {
                 "schema": {
                   "properties": {
+<<<<<<< HEAD
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+=======
                     "product": {
                       "$ref": "#/components/schemas/product"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2193,6 +2332,19 @@
         }
       }
     },
+<<<<<<< HEAD
+    "/orders/cart/{cart_id}": {
+      "get": {
+        "operationId": "GetOrdersOrderCartId",
+        "summary": "Retrieves Order by Cart id",
+        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "required": true,
+            "description": "The ID of Cart.",
+=======
     "/products": {
       "get": {
         "operationId": "GetProducts",
@@ -2383,13 +2535,18 @@
             "in": "query",
             "name": "fields",
             "description": "(Comma separated) Which fields should be included in each order of the result.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
+<<<<<<< HEAD
+          "Order"
+=======
           "Product"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2398,6 +2555,10 @@
               "application/json": {
                 "schema": {
                   "properties": {
+<<<<<<< HEAD
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+=======
                     "products": {
                       "type": "array",
                       "items": {
@@ -2415,6 +2576,7 @@
                     "limit": {
                       "type": "integer",
                       "description": "The number of items per page"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2424,17 +2586,29 @@
         }
       }
     },
+<<<<<<< HEAD
+    "/orders/{id}": {
+      "get": {
+        "operationId": "GetOrdersOrder",
+        "summary": "Retrieves an Order",
+        "description": "Retrieves an Order",
+=======
     "/products/search": {
       "get": {
         "operationId": "GetProductsSearch",
         "summary": "Search Products",
         "description": "Run a search query on products using the search engine installed on Medusa",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         "parameters": [
           {
             "in": "query",
             "name": "q",
             "required": true,
+<<<<<<< HEAD
+            "description": "The id of the Order.",
+=======
             "description": "The query to run the search with.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
@@ -2457,7 +2631,11 @@
           }
         ],
         "tags": [
+<<<<<<< HEAD
+          "Order"
+=======
           "Product"
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2466,15 +2644,21 @@
               "application/json": {
                 "schema": {
                   "properties": {
+<<<<<<< HEAD
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+=======
                     "hits": {
                       "type": "array",
                       "description": "Array of results. The format of the items depends on the search engine installed on the server."
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
               }
             }
           }
+<<<<<<< HEAD
         }
       }
     },

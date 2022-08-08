@@ -44,6 +44,29 @@ import { validator } from "../../../../utils/validator"
  *             description: "The IDs of the types of products to associate with this tax rate"
  *             items:
  *               type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.taxRates.addProductTypes(tax_rate_id, {
+ *         product_types: [
+ *           product_type_id
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/tax-rates/{id}/product-types/batch' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *          "product_types": [
+ *            "{product_type_id}"
+ *          ]
+ *       }'
  * tags:
  *   - Tax Rate
  * responses:

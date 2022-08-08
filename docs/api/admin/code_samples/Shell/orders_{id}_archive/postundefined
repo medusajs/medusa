@@ -1,0 +1,2 @@
+curl --location --request POST 'localhost:9000/admin/orders/{id}/archive' \
+--header 'Authorization: Bearer {api_token}'

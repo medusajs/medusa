@@ -88,6 +88,15 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-tags/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/product-tags/getundefined
   tags:
     - Product Tag
   responses:

@@ -6,8 +6,6 @@ import fs from "fs"
  * summary: "Uploads a file"
  * description: "Uploads a file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
- * tags:
- *   - Upload
  * requestBody:
  *   content:
  *     multipart/form-data:
@@ -17,6 +15,23 @@ import fs from "fs"
  *           files:
  *             type: string
  *             format: binary
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.uploads.create(file)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/uploads' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: image/jpeg' \
+ *       --data-binary '{file_path}'
+ * tags:
+ *   - Upload
  * responses:
  *   200:
  *     description: OK

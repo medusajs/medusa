@@ -3,6 +3,11 @@ get:
   summary: List applications
   description: Retrieve a list of applications.
   x-authenticated: true
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/apps/getundefined
   tags:
     - App
   responses:

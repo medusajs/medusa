@@ -10,6 +10,15 @@ delete:
       description: The ID of the Shipping Option.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/deleteundefined
   tags:
     - Tax Rate
   responses:
@@ -60,6 +69,15 @@ get:
         items:
           type: string
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/getundefined
   tags:
     - Tax Rate
   responses:
@@ -133,6 +151,15 @@ post:
               description: The IDs of the types of products associated with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/postundefined
   tags:
     - Tax Rate
   responses:

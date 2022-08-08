@@ -16,7 +16,7 @@ import PriceListService from "../../../../services/price-list"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in
+ *       // must be previously logged in or use api token
  *       medusa.admin.priceLists.deleteVariantPrices(price_list_id, variant_id)
  *   - lang: Shell
  *     label: cURL

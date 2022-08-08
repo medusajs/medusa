@@ -42,6 +42,15 @@ post:
                 Set a batch job in dry_run mode to get some information on what
                 will be done without applying any modifications.
               default: false
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/batch-jobs/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/batch-jobs/postundefined
   tags:
     - Batch Job
   responses:
@@ -294,6 +303,15 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/batch-jobs/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/batch-jobs/getundefined
   tags:
     - Batch Job
   responses:

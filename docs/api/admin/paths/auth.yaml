@@ -19,6 +19,15 @@ post:
             password:
               type: string
               description: The User's password.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/postundefined
   tags:
     - Auth
   responses:
@@ -37,6 +46,15 @@ delete:
   summary: Delete Session
   x-authenticated: true
   description: Deletes the current session for the logged in user.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/deleteundefined
   tags:
     - Auth
   responses:
@@ -47,6 +65,15 @@ get:
   summary: Get Session
   x-authenticated: true
   description: Gets the currently logged in User.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/getundefined
   tags:
     - Auth
   responses:

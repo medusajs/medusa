@@ -22,6 +22,15 @@ post:
                 A new address or user identifier that the Notification should be
                 sent to
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/notifications_{id}_resend/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/notifications_{id}_resend/postundefined
   tags:
     - Notification
   responses:

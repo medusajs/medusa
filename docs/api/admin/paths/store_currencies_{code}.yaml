@@ -13,6 +13,15 @@ post:
         externalDocs:
           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
           description: See a list of codes.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_currencies_{code}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_currencies_{code}/postundefined
   tags:
     - Store
   responses:
@@ -39,6 +48,15 @@ delete:
         externalDocs:
           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
           description: See a list of codes.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_currencies_{code}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_currencies_{code}/deleteundefined
   tags:
     - Store
   responses:

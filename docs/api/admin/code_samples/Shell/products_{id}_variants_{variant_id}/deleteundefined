@@ -1,0 +1,2 @@
+curl --location --request DELETE 'localhost:9000/admin/products/{id}/variants/{variant_id}' \
+--header 'Authorization: Bearer {api_token}'

@@ -22,6 +22,15 @@ post:
                 - admin
                 - member
                 - developer
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/invites/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/invites/postundefined
   tags:
     - Invite
   responses:
@@ -32,6 +41,15 @@ get:
   summary: Lists all Invites
   description: Lists all Invites
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/invites/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/invites/getundefined
   tags:
     - Invite
   responses:

@@ -10,6 +10,15 @@ delete:
       description: The ID of the Collection.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/deleteundefined
   tags:
     - Collection
   responses:
@@ -42,6 +51,15 @@ get:
       description: The ID of the Product Collection
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/getundefined
   tags:
     - Collection
   responses:
@@ -83,6 +101,15 @@ post:
                 An optional set of key-value pairs to hold additional
                 information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/postundefined
   tags:
     - Collection
   responses:

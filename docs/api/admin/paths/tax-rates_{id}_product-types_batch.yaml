@@ -40,6 +40,16 @@ post:
               description: The IDs of the types of products to associate with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/tax-rates_{id}_product-types_batch/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}_product-types_batch/postundefined
   tags:
     - Tax Rate
   responses:
@@ -95,6 +105,17 @@ delete:
                 tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/tax-rates_{id}_product-types_batch/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/tax-rates_{id}_product-types_batch/deleteundefined
   tags:
     - Tax Rate
   responses:

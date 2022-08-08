@@ -68,6 +68,15 @@ post:
             refund:
               description: The amount to refund.
               type: integer
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/orders_{id}_return/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/orders_{id}_return/postundefined
   tags:
     - Return
     - Order

@@ -131,6 +131,15 @@ post:
                 An optional set of key-value pairs to hold additional
                 information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order_{id}_claims/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order_{id}_claims/postundefined
   tags:
     - Claim
   responses:

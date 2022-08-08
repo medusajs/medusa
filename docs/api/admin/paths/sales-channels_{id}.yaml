@@ -10,6 +10,15 @@ delete:
       description: The ID of the Sales channel.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}/deleteundefined
   tags:
     - Sales Channel
   responses:
@@ -42,6 +51,15 @@ get:
       description: The ID of the Sales channel.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}/getundefined
   tags:
     - Sales Channel
   responses:
@@ -79,6 +97,15 @@ post:
             is_disabled:
               type: boolean
               description: Indication of if the sales channel is active.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}/postundefined
   tags:
     - Sales Channel
   responses:

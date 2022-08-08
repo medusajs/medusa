@@ -100,7 +100,7 @@
       "x-resourceId": "product_tag"
     },
     {
-      "name": "Product Types",
+      "name": "Product Type",
       "description": "Product Types endpoints that allow handling product types in Medusa.",
       "x-resourceId": "product_type"
     },

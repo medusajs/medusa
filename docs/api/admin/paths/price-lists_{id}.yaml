@@ -10,6 +10,15 @@ delete:
       description: The ID of the Price List to delete.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/price-lists_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/price-lists_{id}/deleteundefined
   tags:
     - Price List
   responses:
@@ -42,6 +51,15 @@ get:
       description: The ID of the Price List.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/price-lists_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/price-lists_{id}/getundefined
   tags:
     - Price List
   responses:
@@ -142,6 +160,15 @@ post:
                   id:
                     description: The ID of a customer group
                     type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/price-lists_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/price-lists_{id}/postundefined
   tags:
     - Price List
   responses:

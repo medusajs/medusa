@@ -80,10 +80,6 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
@@ -102,6 +98,10 @@ paths:
     $ref: paths/customers_password-reset.yaml
   /gift-cards/{code}:
     $ref: paths/gift-cards_{code}.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:
@@ -124,14 +124,14 @@ paths:
     $ref: paths/return-reasons.yaml
   /returns:
     $ref: paths/returns.yaml
-  /shipping-options:
-    $ref: paths/shipping-options.yaml
-  /shipping-options/{cart_id}:
-    $ref: paths/shipping-options_{cart_id}.yaml
   /swaps:
     $ref: paths/swaps.yaml
   /swaps/{cart_id}:
     $ref: paths/swaps_{cart_id}.yaml
+  /shipping-options:
+    $ref: paths/shipping-options.yaml
+  /shipping-options/{cart_id}:
+    $ref: paths/shipping-options_{cart_id}.yaml
   /variants/{variant_id}:
     $ref: paths/variants_{variant_id}.yaml
   /variants:

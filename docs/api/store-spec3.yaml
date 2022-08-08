@@ -193,17 +193,31 @@ paths:
           description: The Cart ID.
           schema:
             type: string
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       tags:
         - Cart
       responses:
         '200':
+<<<<<<< HEAD
+          description: Successfully created a new Cart
+=======
           description: OK
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           content:
             application/json:
               schema:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+  '/carts/{id}/line-items':
+    post:
+      operationId: PostCartsCartLineItems
+      summary: Add a Line Item
+      description: >-
+        Generates a Line Item with a given Product Variant and adds it to the
+        Cart
+=======
   '/carts/{id}/complete':
     post:
       summary: Complete a Cart
@@ -215,11 +229,16 @@ paths:
         is not yet created, we make sure to do so. The completion of a cart can
         be performed idempotently with a provided header `Idempotency-Key`. If
         not provided, we will generate one for the request.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
+<<<<<<< HEAD
+          description: The id of the Cart to add the Line Item to.
+=======
           description: The Cart id.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       tags:
@@ -235,6 +254,46 @@ paths:
             application/json:
               schema:
                 properties:
+<<<<<<< HEAD
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  type: string
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                quantity:
+                  type: integer
+                  description: The quantity of the Product Variant to add to the Line Item.
+                metadata:
+                  type: object
+                  description: >-
+                    An optional key-value map with additional details about the
+                    Line Item.
+  '/carts/{id}/payment-sessions':
+    post:
+      operationId: PostCartsCartPaymentSessions
+      summary: Initialize Payment Sessions
+      description: >-
+        Creates Payment Sessions for each of the available Payment Providers in
+        the Cart's Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+=======
                   type:
                     type: string
                     description: The type of the data property.
@@ -326,6 +385,7 @@ paths:
                   example:
                     ip: '::1'
                     user_agent: Chrome
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       tags:
         - Cart
       responses:
@@ -337,6 +397,13 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+  '/carts/{id}/discounts/{code}':
+    delete:
+      operationId: DeleteCartsCartDiscountsDiscount
+      description: Removes a Discount from a Cart.
+      summary: Remove Discount from Cart
+=======
   '/carts/{id}/line-items':
     post:
       operationId: PostCartsCartLineItems
@@ -344,11 +411,22 @@ paths:
       description: >-
         Generates a Line Item with a given Product Variant and adds it to the
         Cart
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
+<<<<<<< HEAD
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: code
+          required: true
+          description: The unique Discount code.
+=======
           description: The id of the Cart to add the Line Item to.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       tags:
@@ -362,6 +440,13 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+  '/carts/{id}/line-items/{line_id}':
+    delete:
+      operationId: DeleteCartsCartLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Cart.
+=======
       requestBody:
         content:
           application/json:
@@ -391,6 +476,7 @@ paths:
       description: >-
         Creates Payment Sessions for each of the available Payment Providers in
         the Cart's Region.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -398,6 +484,15 @@ paths:
           description: The id of the Cart.
           schema:
             type: string
+<<<<<<< HEAD
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+=======
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       tags:
         - Cart
       responses:
@@ -409,11 +504,18 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+    post:
+      operationId: PostCartsCartLineItemsItem
+      summary: Update a Line Item
+      description: Updates a Line Item if the desired quantity can be fulfilled.
+=======
   '/carts/{id}/discounts/{code}':
     delete:
       operationId: DeleteCartsCartDiscountsDiscount
       description: Removes a Discount from a Cart.
       summary: Remove Discount from Cart
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -422,9 +524,15 @@ paths:
           schema:
             type: string
         - in: path
+<<<<<<< HEAD
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+=======
           name: code
           required: true
           description: The unique Discount code.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       tags:
@@ -438,6 +546,8 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+=======
   '/carts/{id}/line-items/{line_id}':
     delete:
       operationId: DeleteCartsCartLineItemsItem
@@ -495,6 +605,7 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       requestBody:
         content:
           application/json:
@@ -513,6 +624,8 @@ paths:
       description: >-
         Deletes a Payment Session on a Cart. May be useful if a payment has
         failed.
+<<<<<<< HEAD
+=======
       parameters:
         - in: path
           name: id
@@ -543,6 +656,7 @@ paths:
       operationId: PostCartsCartPaymentSessionUpdate
       summary: Update a Payment Session
       description: Updates a Payment Session with additional data.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -553,7 +667,13 @@ paths:
         - in: path
           name: provider_id
           required: true
+<<<<<<< HEAD
+          description: >-
+            The id of the Payment Provider used to create the Payment Session to
+            be deleted.
+=======
           description: The id of the payment provider.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       tags:
@@ -567,6 +687,12 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+    post:
+      operationId: PostCartsCartPaymentSessionUpdate
+      summary: Update a Payment Session
+      description: Updates a Payment Session with additional data.
+=======
       requestBody:
         content:
           application/json:
@@ -583,11 +709,21 @@ paths:
       operationId: GetCartsCart
       summary: Retrieve a Cart
       description: Retrieves a Cart.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
           description: The id of the Cart.
+<<<<<<< HEAD
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: The id of the payment provider.
+=======
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       tags:
@@ -601,15 +737,135 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  description: The data to update the payment session with.
+  '/carts/{id}':
+    get:
+      operationId: GetCartsCart
+      summary: Retrieve a Cart
+      description: Retrieves a Cart.
+=======
     post:
       operationId: PostCartsCart
       summary: Update a Cart
       description: Updates a Cart.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
           description: The id of the Cart.
+          schema:
+            type: string
+<<<<<<< HEAD
+=======
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                  externalDocs:
+                    url: >-
+                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+                    description: See a list of codes.
+                email:
+                  type: string
+                  description: An email to be used on the Cart.
+                  format: email
+                sales_channel_id:
+                  type: string
+                  description: The ID of the Sales channel to update the Cart with.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                      description: A full billing address object.
+                    - type: string
+                      description: The billing address ID
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                      description: A full shipping address object.
+                    - type: string
+                      description: The shipping address ID
+                gift_cards:
+                  description: An array of Gift Card codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Gift Card is identified by.
+                        type: string
+                discounts:
+                  description: An array of Discount codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                customer_id:
+                  description: The ID of the Customer to associate the Cart with.
+                  type: string
+                context:
+                  description: An optional object to provide context to the Cart.
+                  type: object
+                  example:
+                    ip: '::1'
+                    user_agent: Chrome
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+    post:
+      operationId: PostCartsCart
+      summary: Update a Cart
+      description: Updates a Cart.
+=======
+  '/carts/{id}/payment-sessions/{provider_id}/refresh':
+    post:
+      operationId: PostCartsCartPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the Cart -
+        this is usually not necessary.
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+<<<<<<< HEAD
           schema:
             type: string
       requestBody:
@@ -677,29 +933,7 @@ paths:
                   example:
                     ip: '::1'
                     user_agent: Chrome
-      tags:
-        - Cart
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/payment-sessions/{provider_id}/refresh':
-    post:
-      operationId: PostCartsCartPaymentSessionsSession
-      summary: Refresh a Payment Session
-      description: >-
-        Refreshes a Payment Session to ensure that it is in sync with the Cart -
-        this is usually not necessary.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
+=======
           schema:
             type: string
         - in: path
@@ -735,6 +969,7 @@ paths:
           description: The ID of the Cart.
           schema:
             type: string
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       tags:
         - Cart
       responses:
@@ -746,6 +981,28 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+<<<<<<< HEAD
+  '/carts/{id}/payment-sessions/{provider_id}/refresh':
+    post:
+      operationId: PostCartsCartPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the Cart -
+        this is usually not necessary.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: >-
+            The id of the Payment Provider that created the Payment Session to
+            be refreshed.
+=======
       requestBody:
         content:
           application/json:
@@ -757,115 +1014,6 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -1116,139 +1264,6 @@ paths:
       x-authenticated: true
       parameters:
         - in: query
-          name: q
-          description: Query used for searching orders.
-          schema:
-            type: string
-        - in: query
-          name: id
-          description: Id of the order to search for.
-          schema:
-            type: string
-        - in: query
-          name: status
-          style: form
-          explode: false
-          description: Status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: fulfillment_status
-          style: form
-          explode: false
-          description: Fulfillment status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: payment_status
-          style: form
-          explode: false
-          description: Payment status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: display_id
-          description: Display id to search for.
-          schema:
-            type: string
-        - in: query
-          name: cart_id
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: email
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: currency_code
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: tax_rate
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: canceled_at
-          description: Date comparison for when resulting collections were canceled.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
           name: limit
           description: How many orders to return.
           schema:
@@ -1381,6 +1396,115 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -1892,67 +2016,6 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
-  /shipping-options:
-    get:
-      operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
-      description: Retrieves a list of Shipping Options.
-      parameters:
-        - in: query
-          name: is_return
-          description: >-
-            Whether return Shipping Options should be included. By default all
-            Shipping Options are returned.
-          schema:
-            type: boolean
-        - in: query
-          name: product_ids
-          description: A comma separated list of Product ids to filter Shipping Options by.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: the Region to retrieve Shipping Options from.
-          schema:
-            type: string
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
-  '/shipping-options/{cart_id}':
-    get:
-      operationId: GetShippingOptionsCartId
-      summary: Retrieve Shipping Options for Cart
-      description: Retrieves a list of Shipping Options available to a cart.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
   /swaps:
     post:
       operationId: PostSwaps
@@ -2045,6 +2108,67 @@ paths:
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
+  /shipping-options:
+    get:
+      operationId: GetShippingOptions
+      summary: Retrieve Shipping Options
+      description: Retrieves a list of Shipping Options.
+      parameters:
+        - in: query
+          name: is_return
+          description: >-
+            Whether return Shipping Options should be included. By default all
+            Shipping Options are returned.
+          schema:
+            type: boolean
+        - in: query
+          name: product_ids
+          description: A comma separated list of Product ids to filter Shipping Options by.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: the Region to retrieve Shipping Options from.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{cart_id}':
+    get:
+      operationId: GetShippingOptionsCartId
+      summary: Retrieve Shipping Options for Cart
+      description: Retrieves a list of Shipping Options available to a cart.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant

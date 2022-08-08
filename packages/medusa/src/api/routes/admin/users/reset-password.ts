@@ -1,12 +1,12 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 
+import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { User } from "../../../.."
 import UserService from "../../../../services/user"
 import _ from "lodash"
 import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users/reset-password
@@ -33,6 +33,27 @@ import { EntityManager } from "typeorm"
  *             description: "The Users new password."
  *             type: string
  *             format: password
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.users.resetPassword({
+ *         token: 'supersecrettoken',
+ *         password: 'supersecret'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/users/reset-password' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "token": "supersecrettoken",
+ *           "password": "supersecret"
+ *       }'
  * tags:
  *   - User
  * responses:

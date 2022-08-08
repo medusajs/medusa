@@ -26,6 +26,17 @@ delete:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/deleteundefined
   tags:
     - Discount Condition
   responses:
@@ -54,6 +65,7 @@ delete:
 get:
   operationId: GetDiscountsDiscountConditionsCondition
   summary: Gets a DiscountCondition
+  description: Gets a DiscountCondition
   x-authenticated: true
   parameters:
     - in: path
@@ -78,7 +90,17 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
-  description: Gets a DiscountCondition
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/getundefined
   tags:
     - Discount Condition
   responses:
@@ -163,6 +185,17 @@ post:
                 customer groups.
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{discount_id}_conditions_{condition_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/postundefined
   tags:
     - Discount
   responses:

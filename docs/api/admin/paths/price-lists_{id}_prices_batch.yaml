@@ -56,6 +56,15 @@ post:
                 If true the prices will replace all existing prices associated
                 with the Price List.
               type: boolean
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/price-lists_{id}_prices_batch/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/postundefined
   tags:
     - Price List
   responses:
@@ -91,6 +100,16 @@ delete:
               type: array
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/price-lists_{id}_prices_batch/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/deleteundefined
   tags:
     - Price List
   responses:

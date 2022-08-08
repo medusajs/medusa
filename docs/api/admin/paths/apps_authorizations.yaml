@@ -21,6 +21,11 @@ post:
             code:
               type: string
               description: The code for the generated token.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/apps_authorizations/postundefined
   tags:
     - App
   responses:

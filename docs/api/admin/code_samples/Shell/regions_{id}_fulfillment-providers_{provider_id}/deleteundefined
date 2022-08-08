@@ -1,0 +1,2 @@
+curl --location --request DELETE 'localhost:9000/admin/regions/{id}/fulfillment-providers/manual' \
+--header 'Authorization: Bearer {api_token}'

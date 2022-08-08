@@ -57,6 +57,15 @@ get:
         notifications or not
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/notifications/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/notifications/getundefined
   tags:
     - Notification
   responses:

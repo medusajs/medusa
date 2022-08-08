@@ -71,6 +71,29 @@ import { isDefined } from "../../../../utils"
  *             description: "The IDs of the types of products associated with this tax rate"
  *             items:
  *               type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.taxRates.create({
+ *         code: 'TEST',
+ *         name: 'New Tax Rate',
+ *         region_id
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/tax-rates' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "code": "TEST",
+ *           "name": "New Tax Rate",
+ *           "region_id": "{region_id}"
+ *       }'
  * tags:
  *   - Tax Rate
  * responses:

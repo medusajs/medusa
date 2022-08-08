@@ -10,6 +10,15 @@ delete:
       description: The ID of the Shipping Profile.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-profiles_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-profiles_{id}/deleteundefined
   tags:
     - Shipping Profile
   responses:
@@ -42,6 +51,15 @@ get:
       description: The ID of the Shipping Profile.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-profiles_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-profiles_{id}/getundefined
   tags:
     - Shipping Profile
   responses:
@@ -72,6 +90,15 @@ post:
             name:
               description: The name of the Shipping Profile
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/shipping-profiles_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/shipping-profiles_{id}/postundefined
   tags:
     - Shipping Profile
   responses:

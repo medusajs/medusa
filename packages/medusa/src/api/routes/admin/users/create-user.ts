@@ -1,10 +1,10 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
 
+import { EntityManager } from "typeorm"
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import _ from "lodash"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users
@@ -38,6 +38,27 @@ import { EntityManager } from "typeorm"
  *             description: "The Users password."
  *             type: string
  *             format: password
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.users.create({
+ *         email: 'user@example.com',
+ *         password: 'supersecret'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/users' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com",
+ *           "password": "supersecret"
+ *       }'
  * tags:
  *   - User
  * responses:

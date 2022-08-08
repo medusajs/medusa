@@ -10,6 +10,15 @@ delete:
       description: The ID of the Customer Group
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customer-groups_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customer-groups_{id}/deleteundefined
   tags:
     - Customer Group
   responses:
@@ -52,6 +61,15 @@ get:
       description: (Comma separated) Which fields should be included in the customer group.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customer-groups_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customer-groups_{id}/getundefined
   tags:
     - Customer Group
   responses:
@@ -86,6 +104,15 @@ post:
             metadata:
               description: Metadata for the customer.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customer-groups_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customer-groups_{id}/postundefined
   tags:
     - Customer Group
   responses:

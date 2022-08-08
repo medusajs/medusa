@@ -58,6 +58,15 @@ post:
               description: The IDs of the types of products associated with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates/postundefined
   tags:
     - Tax Rate
   responses:
@@ -148,6 +157,15 @@ get:
         type: array
         items:
           type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates/getundefined
   tags:
     - Tax Rate
   responses:
