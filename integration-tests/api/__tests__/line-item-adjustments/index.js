@@ -101,10 +101,6 @@ describe("Line Item Adjustments", () => {
       await doAfterEach()
     })
 
-    afterEach(async () => {
-      await doAfterEach()
-    })
-
     describe("Given an existing line item, a discount, and a line item adjustment for both", () => {
       describe("When creating an adjustment for another line item w. same discount", () => {
         test("Then should create an adjustment", async () => {
@@ -126,9 +122,8 @@ describe("Line Item Adjustments", () => {
             })
           }
 
-          expect(createLineItemWithAdjustment()).resolves.toEqual(
-            expect.anything()
-          )
+          const res = await createLineItemWithAdjustment()
+          expect(res).toEqual(expect.anything())
         })
       })
 
@@ -144,9 +139,8 @@ describe("Line Item Adjustments", () => {
             })
           }
 
-          expect(createAdjustmentNullDiscount()).resolves.toEqual(
-            expect.anything()
-          )
+          const res = await createAdjustmentNullDiscount()
+          expect(res).toEqual(expect.anything())
         })
       })
 
@@ -168,9 +162,9 @@ describe("Line Item Adjustments", () => {
               discount_id: null,
             })
           }
-          expect(createAdjustmentsNullDiscount()).resolves.toEqual(
-            expect.anything()
-          )
+
+          const res = await createAdjustmentsNullDiscount()
+          expect(res).toEqual(expect.anything())
         })
       })
 
@@ -197,7 +191,8 @@ describe("Line Item Adjustments", () => {
             })
           }
 
-          expect(createAdjustment()).resolves.toEqual(expect.anything())
+          const res = await createAdjustment()
+          expect(res).toEqual(expect.anything())
         })
       })
 
@@ -212,7 +207,8 @@ describe("Line Item Adjustments", () => {
               discount_id: discount.id,
             })
 
-          expect(createDuplicateAdjustment()).rejects.toEqual(
+          const resError = createDuplicateAdjustment().catch(e => e)
+          expect(resError).toEqual(
             expect.objectContaining({ code: "23505" })
           )
         })
