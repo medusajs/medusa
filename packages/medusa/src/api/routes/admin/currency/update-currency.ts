@@ -20,7 +20,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *         properties:
  *           includes_tax:
  *             type: boolean
- *             description: [EXPERIMENTAL] Is the currency tax inclusive or not.
+ *             description: [EXPERIMENTAL] Tax included in prices of currency.
  * tags:
  *   - Currency
  * responses:

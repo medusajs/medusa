@@ -56,45 +56,45 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *             enum:
  *              - sale
  *              - override
- *           includes_tax:
- *                description: "[EXPERIMENTAL] Is the price list tax inclusive or not"
- *                type: boolean
- *             status:
- *               description: The status of the Price List.
- *               type: string
- *               enum:
- *                - active
- *                - draft
- *             prices:
- *               description: The prices of the Price List.
- *               type: array
+ *          includes_tax:
+ *               description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *               type: boolean
+ *            status:
+ *              description: The status of the Price List.
+ *              type: string
+ *              enum:
+ *               - active
+ *               - draft
+ *            prices:
+ *              description: The prices of the Price List.
+ *              type: array
+ *              items:
+ *                properties:
+ *                  region_id:
+ *                    description: The id of the Region for which the price is used.
+ *                    type: string
+ *                  currency_code:
+ *                    description: The 3 character ISO currency code for which the price will be used.
+ *                    type: string
+ *                  amount:
+ *                    description: The amount to charge for the Product Variant.
+ *                    type: integer
+ *                  min_quantity:
+ *                    description: The minimum quantity for which the price will be used.
+ *                    type: integer
+ *                  max_quantity:
+ *                    description: The maximum quantity for which the price will be used.
+ *                    type: integer
+ *            customer_groups:
+ *              type: array
+ *               description: A list of customer groups that the Price List applies to.
  *               items:
+ *                 required:
+ *                   - id
  *                 properties:
- *                   region_id:
- *                     description: The id of the Region for which the price is used.
+ *                   id:
+ *                     description: The id of a customer group
  *                     type: string
- *                   currency_code:
- *                     description: The 3 character ISO currency code for which the price will be used.
- *                     type: string
- *                   amount:
- *                     description: The amount to charge for the Product Variant.
- *                     type: integer
- *                   min_quantity:
- *                     description: The minimum quantity for which the price will be used.
- *                     type: integer
- *                   max_quantity:
- *                     description: The maximum quantity for which the price will be used.
- *                     type: integer
- *             customer_groups:
- *               type: array
- *                description: A list of customer groups that the Price List applies to.
- *                items:
- *                  required:
- *                    - id
- *                  properties:
- *                    id:
- *                      description: The ID of a customer group
- *                      type: string
  * tags:
  *   - Price List
  * responses:

@@ -51,7 +51,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *             description: "The tax rate to use on Orders in the Region."
  *             type: number
  *          includes_tax:
- *             description: "[EXPERIMENTAL] Is the region tax inclusive or not"
+ *             description: "[EXPERIMENTAL] Tax included in prices of region"
  *             type: boolean
  *           payment_providers:
  *             description: "A list of Payment Provider IDs that should be enabled for the Region"

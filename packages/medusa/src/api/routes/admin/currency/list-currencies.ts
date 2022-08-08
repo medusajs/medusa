@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Currency } from "../../../../models"
 import { CurrencyService } from "../../../../services"
 import { ExtendedRequest } from "../../../../types/global"
@@ -11,7 +11,6 @@ import { FindConfig, FindPaginationParams } from "../../../../types/common"
  * description: "Retrieves a list of Currency"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching currencies.
  *   - (query) code {string} Code of the currency to search for.
  *   - (query) includes_tax {boolean} Search for tax inclusive currencies.
  *   - (query) order {string} to retrieve products in.
@@ -63,6 +62,14 @@ export default async (req: ExtendedRequest<Currency>, res) => {
 }
 
 export class AdminGetCurrenciesParams extends FindPaginationParams {
+  @IsString()
+  @IsOptional()
+  code?: string
+
+  @IsBoolean()
+  @IsOptional()
+  includes_tax?: boolean
+
   @IsString()
   @IsOptional()
   order?: string
