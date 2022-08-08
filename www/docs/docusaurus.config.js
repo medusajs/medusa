@@ -188,14 +188,14 @@ module.exports = {
         // Plugin Options for loading OpenAPI files
         specs: [
           {
-            spec: path.join(apisPath, 'store/openapi.yaml'),
+            spec: path.join(apisPath, 'store-spec3.yaml'),
             route: '/api/store',
             layout: {
               noFooter: true
             }
           },
           {
-            spec: path.join(apisPath, 'admin/openapi.yaml'),
+            spec: path.join(apisPath, 'admin-spec3.yaml'),
             route: '/api/admin',
             layout: {
               noFooter: true

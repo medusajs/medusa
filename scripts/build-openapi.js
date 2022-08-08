@@ -3,7 +3,6 @@
 const fs = require("fs")
 const OAS = require("oas-normalize")
 const swaggerInline = require("swagger-inline")
-const { exec } = require("child_process")
 
 // Storefront API
 swaggerInline(
@@ -33,12 +32,7 @@ swaggerInline(
   }
 ).then((gen) => {
   fs.writeFileSync("./docs/api/store-spec3.yaml", gen)
-  exec("rm -rf docs/api/store/ && yarn run -- redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/", (error, stdout, stderr) => {
-    if (error) {
-      throw new Error(`error: ${error.message}`)
-    }
-    console.log(`${stderr || stdout}`);
-  });
+  console.log("Storefront API Reference generated successfully.")
 })
 
 // Admin API
@@ -53,6 +47,7 @@ swaggerInline(
     .validate(true)
     .then(() => {
       fs.writeFileSync("./docs/api/admin-spec3.json", gen)
+      console.log("Admin API Reference generated successfully.")
     })
     .catch((err) => {
       console.log("Error in admin")
@@ -69,11 +64,4 @@ swaggerInline(
   }
 ).then((gen) => {
   fs.writeFileSync("./docs/api/admin-spec3.yaml", gen)
-  exec("rm -rf docs/api/admin/ && yarn run -- redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/", (error, stdout, stderr) => {
-    if (error) {
-        throw new Error(`error: ${error.message}`)
-    }
-    console.log(`${stderr || stdout}`);
-    return;
-  });
 })

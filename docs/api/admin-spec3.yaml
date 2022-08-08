@@ -109,6 +109,60 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
+  /apps/authorizations:
+    post:
+      operationId: PostApps
+      summary: Generates a token for an application.
+      description: Generates a token for an application.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - application_name
+                - state
+                - code
+              properties:
+                application_name:
+                  type: string
+                  description: Name of the application for the token to be generated for.
+                state:
+                  type: string
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
+  /apps:
+    get:
+      operationId: GetApps
+      summary: List applications
+      description: Retrieve a list of applications.
+      x-authenticated: true
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  apps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OAuth'
   /auth:
     post:
       operationId: PostAuth
@@ -1297,209 +1351,6 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - email
-                - first_name
-                - last_name
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The customer's email.
-                  format: email
-                first_name:
-                  type: string
-                  description: The customer's first name.
-                last_name:
-                  type: string
-                  description: The customer's last name.
-                password:
-                  type: string
-                  description: The customer's password.
-                  format: password
-                phone:
-                  type: string
-                  description: The customer's phone number.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of items to return.
-          schema:
-            type: integer
-            default: 50
-        - in: query
-          name: offset
-          description: The items to skip before result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'a search term to search email, first_name, and last_name.'
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in the customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be included in the customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be retrieved in each customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                  format: email
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                  format: password
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The ID of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -2414,49 +2265,85 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /apps/authorizations:
+  /customers:
     post:
-      operationId: PostApps
-      summary: Generates a token for an application.
-      description: Generates a token for an application.
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
       x-authenticated: true
       requestBody:
         content:
           application/json:
             schema:
               required:
-                - application_name
-                - state
-                - code
+                - email
+                - first_name
+                - last_name
+                - password
               properties:
-                application_name:
+                email:
                   type: string
-                  description: Name of the application for the token to be generated for.
-                state:
+                  description: The customer's email.
+                  format: email
+                first_name:
                   type: string
-                  description: State of the application.
-                code:
+                  description: The customer's first name.
+                last_name:
                   type: string
-                  description: The code for the generated token.
+                  description: The customer's last name.
+                password:
+                  type: string
+                  description: The customer's password.
+                  format: password
+                phone:
+                  type: string
+                  description: The customer's phone number.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
       tags:
-        - App
+        - Customer
       responses:
-        '200':
+        '201':
           description: OK
           content:
             application/json:
               schema:
                 properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-  /apps:
+                  customer:
+                    $ref: '#/components/schemas/customer'
     get:
-      operationId: GetApps
-      summary: List applications
-      description: Retrieve a list of applications.
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of items to return.
+          schema:
+            type: integer
+            default: 50
+        - in: query
+          name: offset
+          description: The items to skip before result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'a search term to search email, first_name, and last_name.'
+          schema:
+            type: string
       tags:
-        - App
+        - Customer
       responses:
         '200':
           description: OK
@@ -2464,10 +2351,123 @@ paths:
             application/json:
               schema:
                 properties:
-                  apps:
+                  customers:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OAuth'
+                      $ref: '#/components/schemas/customer'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be included in the customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be retrieved in each customer.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                  format: email
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                  format: password
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The ID of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders
