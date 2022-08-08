@@ -65,7 +65,7 @@
     "test": "turbo run test",
     "prettier": "prettier",
     "test:integration": "jest --config=integration-tests/jest.config.js",
-    "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
+    "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api -- integration-tests/api/__tests__/line-item-adjustments/index.js",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
     "openapi:generate": "node ./scripts/build-openapi.js",

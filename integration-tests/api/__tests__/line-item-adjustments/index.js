@@ -207,7 +207,7 @@ describe("Line Item Adjustments", () => {
               discount_id: discount.id,
             })
 
-          const resError = createDuplicateAdjustment().catch(e => e)
+          const resError = await createDuplicateAdjustment().catch(e => e)
           expect(resError).toEqual(
             expect.objectContaining({ code: "23505" })
           )

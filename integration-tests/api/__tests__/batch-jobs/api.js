@@ -9,7 +9,7 @@ const userSeeder = require("../../helpers/user-seeder")
 
 const { simpleBatchJobFactory } = require("../../factories")
 
-jest.setTimeout(50000)
+jest.setTimeout(70000)
 
 const adminReqConfig = {
   headers: {
