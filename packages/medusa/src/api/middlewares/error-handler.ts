@@ -33,14 +33,9 @@ export default () => {
       case QUERY_RUNNER_RELEASED:
       case TRANSACTION_STARTED:
       case TRANSACTION_NOT_STARTED:
-        statusCode = 409
-        errObj.code = INVALID_STATE_ERROR
-        errObj.message =
-          "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
-        break
       case MedusaError.Types.CONFLICT:
         statusCode = 409
-        errObj.code = MedusaError.Types.CONFLICT
+        errObj.code = INVALID_STATE_ERROR
         errObj.message =
           "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
         break
