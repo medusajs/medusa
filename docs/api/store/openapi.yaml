@@ -56,34 +56,6 @@ paths:
     $ref: paths/auth.yaml
   /auth/{email}:
     $ref: paths/auth_{email}.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
-  /gift-cards/{code}:
-    $ref: paths/gift-cards_{code}.yaml
-  /customers/me/addresses:
-    $ref: paths/customers_me_addresses.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/me/addresses/{address_id}:
-    $ref: paths/customers_me_addresses_{address_id}.yaml
-  /customers/me:
-    $ref: paths/customers_me.yaml
-  /customers/me/payment-methods:
-    $ref: paths/customers_me_payment-methods.yaml
-  /customers/me/orders:
-    $ref: paths/customers_me_orders.yaml
-  /customers/password-token:
-    $ref: paths/customers_password-token.yaml
-  /customers/password-reset:
-    $ref: paths/customers_password-reset.yaml
-  /orders/cart/{cart_id}:
-    $ref: paths/orders_cart_{cart_id}.yaml
-  /orders/{id}:
-    $ref: paths/orders_{id}.yaml
-  /orders:
-    $ref: paths/orders.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -108,6 +80,34 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
+  /customers/me/addresses:
+    $ref: paths/customers_me_addresses.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/me/addresses/{address_id}:
+    $ref: paths/customers_me_addresses_{address_id}.yaml
+  /customers/me:
+    $ref: paths/customers_me.yaml
+  /customers/me/payment-methods:
+    $ref: paths/customers_me_payment-methods.yaml
+  /customers/me/orders:
+    $ref: paths/customers_me_orders.yaml
+  /customers/password-token:
+    $ref: paths/customers_password-token.yaml
+  /customers/password-reset:
+    $ref: paths/customers_password-reset.yaml
+  /gift-cards/{code}:
+    $ref: paths/gift-cards_{code}.yaml
+  /orders/cart/{cart_id}:
+    $ref: paths/orders_cart_{cart_id}.yaml
+  /orders/{id}:
+    $ref: paths/orders_{id}.yaml
+  /orders:
+    $ref: paths/orders.yaml
   /products/{id}:
     $ref: paths/products_{id}.yaml
   /products:
