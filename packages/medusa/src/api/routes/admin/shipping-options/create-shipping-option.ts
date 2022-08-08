@@ -73,7 +73,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *             description: An optional set of key-value pairs with additional information.
  *             type: object
  *          includes_tax:
- *             description: "[EXPERIMENTAL] Does the shipping option includes tax"
+ *             description: "[EXPERIMENTAL] Tax included in prices of shipping option"
  *             type: boolean
  * tags:
  *   - Shipping Option

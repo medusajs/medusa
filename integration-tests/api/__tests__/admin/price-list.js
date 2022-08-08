@@ -1183,47 +1183,47 @@ describe("/admin/price-lists", () => {
       expect(response.data.products).toEqual([
         expect.objectContaining({
           id: "test-prod-1",
-          variants: [
+          variants: expect.arrayContaining([
             expect.objectContaining({
               id: "test-variant-1",
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "usd", amount: 100 }),
                 expect.objectContaining({
                   currency_code: "usd",
                   amount: 150,
                   price_list_id: "test-list",
                 }),
-              ],
+              ],)
             }),
             expect.objectContaining({
               id: "test-variant-2",
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ],
+              ]),
             }),
-          ],
+          ]),
         }),
         expect.objectContaining({
           id: "test-prod-2",
-          variants: [
+          variants: expect.arrayContaining([
             expect.objectContaining({
               id: "test-variant-3",
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ],
+              ]),
             }),
             expect.objectContaining({
               id: "test-variant-4",
-              prices: [
+              prices: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "usd", amount: 100 }),
                 expect.objectContaining({
                   currency_code: "usd",
                   amount: 150,
                   price_list_id: "test-list",
                 }),
-              ],
+              ]),
             }),
-          ],
+          ]),
         }),
       ])
     })

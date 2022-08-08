@@ -43,7 +43,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *              - sale
  *              - override
  *        includes_tax:
- *             description: "[EXPERIMENTAL] Is the price list tax inclusive or not"
+ *             description: "[EXPERIMENTAL] Tax included in prices of price list"
  *             type: boolean
  *          status:
  *            description: The status of the Price List.
