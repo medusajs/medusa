@@ -1,10 +1,11 @@
+import { FindConfig, Selector } from "../../../../types/common"
 import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReason } from "../../../../models"
 import { ReturnReasonService } from "../../../../services"
-import { FindConfig, Selector } from "../../../../types/common"
 
 /**
  * @oas [get] /return-reasons
@@ -12,6 +13,19 @@ import { FindConfig, Selector } from "../../../../types/common"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.returnReasons.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/return-reasons' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Return Reason
  * responses:

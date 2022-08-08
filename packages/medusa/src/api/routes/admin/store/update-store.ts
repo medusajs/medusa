@@ -1,8 +1,8 @@
 import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
 
+import { EntityManager } from "typeorm"
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /store
@@ -41,6 +41,25 @@ import { EntityManager } from "typeorm"
  *           metadata:
  *             description: "An optional set of key-value pairs with additional information."
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.store.update({
+ *         name: 'Medusa Store'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/store' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "Medusa Store"
+ *       }'
  * tags:
  *   - Store
  * responses:

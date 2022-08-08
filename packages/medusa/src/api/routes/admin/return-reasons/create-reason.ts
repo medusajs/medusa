@@ -4,9 +4,9 @@ import {
   defaultAdminReturnReasonsRelations,
 } from "."
 
+import { EntityManager } from "typeorm"
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /return-reasons
@@ -37,6 +37,27 @@ import { EntityManager } from "typeorm"
  *           metadata:
  *             description: An optional set of key-value pairs with additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.returnReasons.create({
+ *         label: 'Damaged',
+ *         value: 'damaged'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/return-reasons' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "label": "Damaged",
+ *           "value": "damaged"
+ *       }'
  * tags:
  *   - Return Reason
  * responses:

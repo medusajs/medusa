@@ -12,6 +12,19 @@ import { ProductService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) option_id=* {string} The ID of the Product Option.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.products.deleteOption(product_id, option_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/products/{id}/options/{option_id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product
  * responses:

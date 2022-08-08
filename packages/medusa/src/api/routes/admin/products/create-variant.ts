@@ -10,10 +10,10 @@ import {
 import { ProductService, ProductVariantService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -124,6 +124,50 @@ import { EntityManager } from "typeorm"
  *                 value:
  *                   description: The value to give for the Product Option.
  *                   type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.products.createVariant('', {
+ *         title: 'Color',
+ *         prices: [
+ *           {
+ *             amount: 1000,
+ *             currency_code: "eur"
+ *           }
+ *         ],
+ *         options: [
+ *           {
+ *             option_id,
+ *             value: 'S'
+ *           }
+ *         ],
+ *         inventory_quantity: 100
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/products/{id}/variants' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "title": "Color",
+ *           "prices": [
+ *             {
+ *               "amount": 1000,
+ *               "currency_code": "eur"
+ *             }
+ *           ],
+ *           "options": [
+ *             {
+ *               "option_id": "asdasf",
+ *               "value": "S"
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Product
  * responses:

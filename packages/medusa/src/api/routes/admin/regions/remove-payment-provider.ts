@@ -12,6 +12,19 @@ import RegionService from "../../../../services/region"
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
  *   - (path) provider_id=* {string} The ID of the Payment Provider.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.regions.deletePaymentProvider(region_id, 'manual')
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/regions/{id}/payment-providers/manual' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Region
  * responses:

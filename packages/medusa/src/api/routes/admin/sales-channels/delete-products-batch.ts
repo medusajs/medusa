@@ -32,6 +32,33 @@ import { Type } from "class-transformer"
  *                 id:
  *                   description: The ID of a product
  *                   type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.salesChannels.removeProducts(sales_channel_id, {
+ *         product_ids: [
+ *           {
+ *             id: product_id
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/sales-channels/{id}/products/batch' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "product_ids": [
+ *             {
+ *               "id": "{product_id}"
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Sales Channel
  * responses:

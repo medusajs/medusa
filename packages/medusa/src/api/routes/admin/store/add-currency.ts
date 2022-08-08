@@ -1,5 +1,5 @@
-import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { StoreService } from "../../../../services"
 /**
  * @oas [post] /store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
@@ -16,6 +16,19 @@ import { EntityManager } from "typeorm"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.store.addCurrency('eur')
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/store/currencies/eur' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store
  * responses:

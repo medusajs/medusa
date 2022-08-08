@@ -228,6 +228,26 @@ import { validator } from "../../../../utils/validator"
  *           metadata:
  *             description: An optional set of key-value pairs with additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.products.update(product_id, {
+ *         title: 'Shirt',
+ *         images: []
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/products/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "title": "Size"
+ *       }'
  * tags:
  *   - Product
  * responses:

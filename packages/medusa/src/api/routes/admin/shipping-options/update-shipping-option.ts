@@ -9,9 +9,9 @@ import {
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -60,6 +60,37 @@ import { EntityManager } from "typeorm"
  *                 amount:
  *                   description: The amount to compare with.
  *                   type: integer
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.shippingOptions.update(option_id, {
+ *         name: 'PostFake',
+ *         requirements: [
+ *           {
+ *             id,
+ *             type: 'max_subtotal',
+ *             amount: 1000
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/shipping-options/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "requirements": [
+ *             {
+ *               "type": "max_subtotal",
+ *               "amount": 1000
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Shipping Option
  * responses:
