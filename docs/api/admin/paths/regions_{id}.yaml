@@ -83,7 +83,7 @@ post:
               description: >-
                 If true Medusa will automatically calculate taxes for carts in
                 this region. If false you have to manually call POST
-                /carts/{id}/taxes.
+                /carts/:id/taxes.
               type: boolean
             gift_cards_taxable:
               description: >-
