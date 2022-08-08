@@ -34,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *               description: See a list of codes.
  *           automatic_taxes:
- *             description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
+ *             description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/{id}/taxes."
  *             type: boolean
  *           gift_cards_taxable:
  *             description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"

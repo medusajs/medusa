@@ -9,11 +9,12 @@ import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/:id
+ * @oas [post] /tax-rates/{id}
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
  * description: "Updates a Tax Rate"
  * parameters:
+ *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
  *     description: "Which fields should be included in the result."

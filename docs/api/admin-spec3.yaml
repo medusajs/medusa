@@ -109,30 +109,32 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /auth:
+  /apps/authorizations:
     post:
-      operationId: PostAuth
-      summary: Authenticate a User
-      x-authenticated: false
-      description: Logs a User in and authorizes them to manage Store settings.
-      parameters: []
+      operationId: PostApps
+      summary: Generates a token for an application.
+      description: Generates a token for an application.
+      x-authenticated: true
       requestBody:
         content:
           application/json:
             schema:
-              type: object
               required:
-                - email
-                - password
+                - application_name
+                - state
+                - code
               properties:
-                email:
+                application_name:
                   type: string
-                  description: The User's email.
-                password:
+                  description: Name of the application for the token to be generated for.
+                state:
                   type: string
-                  description: The User's password.
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
       tags:
-        - Auth
+        - App
       responses:
         '200':
           description: OK
@@ -140,27 +142,16 @@ paths:
             application/json:
               schema:
                 properties:
-                  user:
-                    $ref: '#/components/schemas/user'
-        '401':
-          description: The user doesn't exist or the credentials are incorrect.
-    delete:
-      operationId: DeleteAuth
-      summary: Delete Session
-      x-authenticated: true
-      description: Deletes the current session for the logged in user.
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
+  /apps:
     get:
-      operationId: GetAuth
-      summary: Get Session
+      operationId: GetApps
+      summary: List applications
+      description: Retrieve a list of applications.
       x-authenticated: true
-      description: Gets the currently logged in User.
       tags:
-        - Auth
+        - App
       responses:
         '200':
           description: OK
@@ -168,10 +159,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  user:
-                    $ref: '#/components/schemas/user'
-        '400':
-          description: An error occurred.
+                  apps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OAuth'
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
@@ -563,230 +554,85 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
-  '/collections/{id}/products/batch':
+  /customers:
     post:
-      operationId: PostProductsToCollection
-      summary: Updates products associated with a Product Collection
-      description: Updates products associated with a Product Collection
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - product_ids
-              properties:
-                product_ids:
-                  description: An array of Product IDs to add to the Product Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-    delete:
-      operationId: DeleteProductsFromCollection
-      summary: Removes products associated with a Product Collection
-      description: Removes products associated with a Product Collection
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - product_ids
-              properties:
-                product_ids:
-                  description: >-
-                    An array of Product IDs to remove from the Product
-                    Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the collection
-                  object:
-                    type: string
-                    description: The type of object the removal was executed on
-                    default: product-collection
-                  removed_products:
-                    description: The IDs of the products removed from the collection
-                    type: array
-                    items:
-                      description: The ID of a Product to add to the Product Collection.
-                      type: string
-  /collections:
-    post:
-      operationId: PostCollections
-      summary: Create a Product Collection
-      description: Creates a Product Collection.
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
       x-authenticated: true
       requestBody:
         content:
           application/json:
             schema:
               required:
-                - title
+                - email
+                - first_name
+                - last_name
+                - password
               properties:
-                title:
+                email:
                   type: string
-                  description: The title to identify the Collection by.
-                handle:
+                  description: The customer's email.
+                  format: email
+                first_name:
                   type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                  description: The customer's first name.
+                last_name:
+                  type: string
+                  description: The customer's last name.
+                password:
+                  type: string
+                  description: The customer's password.
+                  format: password
+                phone:
+                  type: string
+                  description: The customer's phone number.
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
                     information.
                   type: object
       tags:
-        - Collection
+        - Customer
       responses:
-        '200':
+        '201':
           description: OK
           content:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  customer:
+                    $ref: '#/components/schemas/customer'
     get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       x-authenticated: true
       parameters:
         - in: query
           name: limit
-          description: The number of collections to return.
+          description: The number of items to return.
           schema:
             type: integer
-            default: 10
+            default: 50
         - in: query
           name: offset
-          description: The number of collections to skip before the results.
+          description: The items to skip before result.
           schema:
             type: integer
             default: 0
         - in: query
-          name: title
-          description: The title of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: handle
-          description: The handle of collections to return.
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
           schema:
             type: string
         - in: query
           name: q
-          description: a search term to search titles and handles.
+          description: 'a search term to search email, first_name, and last_name.'
           schema:
             type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: deleted_at
-          description: Date comparison for when resulting collections were deleted.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -794,10 +640,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  collections:
+                  customers:
                     type: array
                     items:
-                      $ref: '#/components/schemas/product_collection'
+                      $ref: '#/components/schemas/customer'
                   count:
                     type: integer
                     description: The total number of items available
@@ -807,53 +653,31 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  '/collections/{id}':
-    delete:
-      operationId: DeleteCollectionsCollection
-      summary: Delete a Product Collection
-      description: Deletes a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Collection
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: product-collection
-                  deleted:
-                    type: boolean
-                    description: Whether the collection was deleted successfully or not.
-                    default: true
+  '/customers/{id}':
     get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Product Collection
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be included in the customer.
           schema:
             type: string
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -861,18 +685,28 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  customer:
+                    $ref: '#/components/schemas/customer'
     post:
-      operationId: PostCollectionsCollection
-      summary: Update a Product Collection
-      description: Updates a Product Collection.
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Collection.
+          description: The ID of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be retrieved in each customer.
           schema:
             type: string
       requestBody:
@@ -880,21 +714,40 @@ paths:
           application/json:
             schema:
               properties:
-                title:
+                email:
                   type: string
-                  description: The title to identify the Collection by.
-                handle:
+                  description: The Customer's email.
+                  format: email
+                first_name:
                   type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                  format: password
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The ID of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
                     information.
                   type: object
       tags:
-        - Collection
+        - Customer
       responses:
         '200':
           description: OK
@@ -902,8 +755,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  customer:
+                    $ref: '#/components/schemas/customer'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -1297,85 +1150,58 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  /customers:
+  /auth:
     post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
+      operationId: PostAuth
+      summary: Authenticate a User
+      x-authenticated: false
+      description: Logs a User in and authorizes them to manage Store settings.
+      parameters: []
       requestBody:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
-                - first_name
-                - last_name
                 - password
               properties:
                 email:
                   type: string
-                  description: The customer's email.
-                  format: email
-                first_name:
-                  type: string
-                  description: The customer's first name.
-                last_name:
-                  type: string
-                  description: The customer's last name.
+                  description: The User's email.
                 password:
                   type: string
-                  description: The customer's password.
-                  format: password
-                phone:
-                  type: string
-                  description: The customer's phone number.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
+                  description: The User's password.
       tags:
-        - Customer
+        - Auth
       responses:
-        '201':
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  user:
+                    $ref: '#/components/schemas/user'
+        '401':
+          description: The user doesn't exist or the credentials are incorrect.
+    delete:
+      operationId: DeleteAuth
+      summary: Delete Session
+      x-authenticated: true
+      description: Deletes the current session for the logged in user.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
     get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
+      operationId: GetAuth
+      summary: Get Session
       x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of items to return.
-          schema:
-            type: integer
-            default: 50
-        - in: query
-          name: offset
-          description: The items to skip before result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'a search term to search email, first_name, and last_name.'
-          schema:
-            type: string
+      description: Gets the currently logged in User.
       tags:
-        - Customer
+        - Auth
       responses:
         '200':
           description: OK
@@ -1383,123 +1209,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in the customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be included in the customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: (Comma separated) Which fields should be retrieved in each customer.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                  format: email
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                  format: password
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The ID of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  user:
+                    $ref: '#/components/schemas/user'
+        '400':
+          description: An error occurred.
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -2414,32 +2127,120 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /apps/authorizations:
+  '/collections/{id}/products/batch':
     post:
-      operationId: PostApps
-      summary: Generates a token for an application.
-      description: Generates a token for an application.
+      operationId: PostProductsToCollection
+      summary: Updates products associated with a Product Collection
+      description: Updates products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - product_ids
+              properties:
+                product_ids:
+                  description: An array of Product IDs to add to the Product Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+    delete:
+      operationId: DeleteProductsFromCollection
+      summary: Removes products associated with a Product Collection
+      description: Removes products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - product_ids
+              properties:
+                product_ids:
+                  description: >-
+                    An array of Product IDs to remove from the Product
+                    Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the collection
+                  object:
+                    type: string
+                    description: The type of object the removal was executed on
+                    default: product-collection
+                  removed_products:
+                    description: The IDs of the products removed from the collection
+                    type: array
+                    items:
+                      description: The ID of a Product to add to the Product Collection.
+                      type: string
+  /collections:
+    post:
+      operationId: PostCollections
+      summary: Create a Product Collection
+      description: Creates a Product Collection.
       x-authenticated: true
       requestBody:
         content:
           application/json:
             schema:
               required:
-                - application_name
-                - state
-                - code
+                - title
               properties:
-                application_name:
+                title:
                   type: string
-                  description: Name of the application for the token to be generated for.
-                state:
+                  description: The title to identify the Collection by.
+                handle:
                   type: string
-                  description: State of the application.
-                code:
-                  type: string
-                  description: The code for the generated token.
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
       tags:
-        - App
+        - Collection
       responses:
         '200':
           description: OK
@@ -2447,16 +2248,109 @@ paths:
             application/json:
               schema:
                 properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-  /apps:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
     get:
-      operationId: GetApps
-      summary: List applications
-      description: Retrieve a list of applications.
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
       x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of collections to skip before the results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: title
+          description: The title of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: The handle of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: a search term to search titles and handles.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
       tags:
-        - App
+        - Collection
       responses:
         '200':
           description: OK
@@ -2464,10 +2358,116 @@ paths:
             application/json:
               schema:
                 properties:
-                  apps:
+                  collections:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OAuth'
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/collections/{id}':
+    delete:
+      operationId: DeleteCollectionsCollection
+      summary: Delete a Product Collection
+      description: Deletes a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Collection
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: product-collection
+                  deleted:
+                    type: boolean
+                    description: Whether the collection was deleted successfully or not.
+                    default: true
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+    post:
+      operationId: PostCollectionsCollection
+      summary: Update a Product Collection
+      description: Updates a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -5657,13 +5657,19 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
-  '/price-lists/:id/products':
+  '/price-lists/{id}/products':
     get:
       operationId: GetPriceListsPriceListProducts
       summary: List Product in a Price List
       description: Retrieves a list of Product that are part of a Price List
       x-authenticated: true
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the price list.
+          schema:
+            type: string
         - in: query
           name: q
           description: >-
@@ -7753,7 +7759,7 @@ paths:
                   description: >-
                     If true Medusa will automatically calculate taxes for carts
                     in this region. If false you have to manually call POST
-                    /carts/:id/taxes.
+                    /carts/{id}/taxes.
                   type: boolean
                 gift_cards_taxable:
                   description: >-
@@ -9170,12 +9176,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  '/tax-rates/:id/product-types/batch':
+  '/tax-rates/{id}/product-types/batch':
     post:
       operationId: PostTaxRatesTaxRateProductTypes
       summary: Add Tax Rate to Product Types
       description: Associates a Tax Rate with a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9225,6 +9237,12 @@ paths:
       summary: Remove Tax Rate from Product Types
       description: Removes a Tax Rate from a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9269,12 +9287,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
-  '/tax-rates/:id/products/batch':
+  '/tax-rates/{id}/products/batch':
     post:
       operationId: PostTaxRatesTaxRateProducts
       summary: Add Tax Rate to Products
       description: Associates a Tax Rate with a list of Products
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9322,6 +9346,12 @@ paths:
       summary: Removes Tax Rate from Products
       description: Removes a Tax Rate from a list of Products
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9366,12 +9396,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
-  '/tax-rates/:id/shipping-options/batch':
+  '/tax-rates/{id}/shipping-options/batch':
     post:
       operationId: PostTaxRatesTaxRateShippingOptions
       summary: Add Tax Rate to Product Types
       description: Associates a Tax Rate with a list of Shipping Options
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9421,6 +9457,12 @@ paths:
       summary: Removes a Tax Rate from Product Types
       description: Removes a Tax Rate from a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9675,12 +9717,17 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
-  '/tax-rates/:id':
     get:
       operationId: GetTaxRatesTaxRate
       summary: Get Tax Rate
       description: Retrieves a TaxRate
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9716,6 +9763,12 @@ paths:
       summary: Update a Tax Rate
       description: Updates a Tax Rate
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
