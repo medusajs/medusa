@@ -38,6 +38,25 @@ import { validator } from "../../../../utils/validator"
  *           no_notification:
  *             description: If set to true no notification will be send related to this Claim.
  *             type: boolean
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.orders.createSwapShipment(order_id, swap_id, {
+ *         fulfillment_id
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/orders/{id}/swaps/{swap_id}/shipments' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "fulfillment_id": "{fulfillment_id}"
+ *       }'
  * tags:
  *   - Swap
  * responses:
