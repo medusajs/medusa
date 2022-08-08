@@ -4,6 +4,7 @@ import {
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
+
 import { FeatureFlagsResponse } from "../../../../types/feature-flags"
 import { FlagRouter } from "../../../../utils/flag-router"
 
@@ -13,6 +14,19 @@ import { FlagRouter } from "../../../../utils/flag-router"
  * summary: "Retrieve Store details."
  * description: "Retrieves the Store details"
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.store.retrieve()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/store' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store
  * responses:

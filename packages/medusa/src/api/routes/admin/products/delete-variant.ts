@@ -16,6 +16,19 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) variant_id=* {string} The ID of the Product Variant.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.products.deleteVariant(product_id, variant_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'localhost:9000/admin/products/{id}/variants/{variant_id}' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product
  * responses:

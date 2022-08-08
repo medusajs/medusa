@@ -27,6 +27,26 @@ import SalesChannelService from "../../../../services/sales-channel"
  *           is_disabled:
  *             description: Whether the Sales Channel is disabled or not.
  *             type: boolean
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.salesChannels.create({
+ *         name: 'App',
+ *         description: 'Mobile app'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/sales-channels' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "App"
+ *       }'
  * tags:
  *   - Sales Channel
  * responses:

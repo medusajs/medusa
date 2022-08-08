@@ -6,6 +6,19 @@ import { ProductService } from "../../../../services"
  * summary: "List Product Types"
  * description: "Retrieves a list of Product Types."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.products.listTypes()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/products/types' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product
  * responses:

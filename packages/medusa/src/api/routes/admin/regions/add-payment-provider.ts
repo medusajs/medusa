@@ -24,6 +24,25 @@ import { validator } from "../../../../utils/validator"
  *           provider_id:
  *             description: "The ID of the Payment Provider to add."
  *             type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.regions.addPaymentProvider(region_id, {
+ *         provider_id: 'manual'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'localhost:9000/admin/regions/{id}/payment-providers' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "provider_id": "manual"
+ *       }'
  * tags:
  *   - Region
  * responses:

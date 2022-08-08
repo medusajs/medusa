@@ -20,6 +20,12 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} Comma separated string of the relations to include.
  *   - (query) offset=0 {integer} How many items to skip before the results.
  *   - (query) limit=100 {integer} Limit the number of items returned.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/products/{id}/variants' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product
  * responses:

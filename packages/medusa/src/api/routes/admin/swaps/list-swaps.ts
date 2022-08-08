@@ -13,6 +13,19 @@ import { validator } from "../../../../utils/validator"
  *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
  *   - (query) offset=0 {number} The offset of the list returned.
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in
+ *       medusa.admin.swaps.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'localhost:9000/admin/swaps' \
+ *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Swap
  * responses:
