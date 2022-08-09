@@ -47,9 +47,7 @@ export interface PaymentService<T extends TransactionBaseService<never>>
 
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
-  getStatus(
-    paymentSessionData: PaymentSessionData
-  ): Promise<PaymentSessionStatus>
+  getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
 export abstract class AbstractPaymentService<
@@ -110,9 +108,7 @@ export abstract class AbstractPaymentService<
     return Promise.resolve([])
   }
 
-  public abstract getStatus(
-    paymentSessionData: PaymentSessionData
-  ): Promise<PaymentSessionStatus>
+  public abstract getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
 export function isPaymentService(obj: unknown): boolean {
