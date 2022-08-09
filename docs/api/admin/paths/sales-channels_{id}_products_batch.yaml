@@ -38,6 +38,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/sales-channels_{id}_products_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -90,6 +93,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/sales-channels_{id}_products_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:

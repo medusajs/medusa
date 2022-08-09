@@ -73,6 +73,9 @@ import { validator } from "../../../../utils/validator"
  *              "prod_01G1G5V2MBA328390B5AXJ610F"
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:

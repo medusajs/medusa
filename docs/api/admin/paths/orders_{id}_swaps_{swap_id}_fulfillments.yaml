@@ -42,6 +42,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/orders_{id}_swaps_{swap_id}_fulfillments/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Fulfillment
   responses:

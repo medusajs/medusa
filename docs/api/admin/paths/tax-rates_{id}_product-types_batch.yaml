@@ -50,6 +50,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/tax-rates_{id}_product-types_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -116,6 +119,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/tax-rates_{id}_product-types_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:

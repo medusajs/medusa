@@ -22,6 +22,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-profiles/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Profile
   responses:
@@ -47,6 +50,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-profiles/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Profile
   responses:

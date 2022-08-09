@@ -48,6 +48,9 @@ import { validator } from "../../../../utils/validator"
  *           "user": "user@example.com",
  *           "role": "admin"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Invite
  * responses:

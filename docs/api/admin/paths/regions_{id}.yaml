@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/regions_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/regions_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:
@@ -149,6 +155,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/regions_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:

@@ -62,6 +62,8 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "first_name": "Laury"
  *       }'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:

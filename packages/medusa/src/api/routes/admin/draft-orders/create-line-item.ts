@@ -71,6 +71,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "quantity": 1
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Draft Order
  * responses:

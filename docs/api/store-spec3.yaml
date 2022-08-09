@@ -2,9 +2,19 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Storefront API
-  description: >-
+  description: >
     API reference for Medusa's Storefront endpoints. All endpoints are prefixed
     with `/store`.
+
+
+    ## Authentication
+
+
+    To send requests as an authenticated customer, you must use the Cookie
+    Session ID.
+
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
   license:
     name: MIT
     url: 'https://github.com/medusajs/medusa/blob/master/LICENSE'
@@ -52,295 +62,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate Customer
-      description: >-
-        Logs a Customer in and authorizes them to view their details. Successful
-        authentication will set a session cookie in the Customer's browser.
-      parameters: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.authenticate({
-              email: 'user@example.com',
-              password: 'user@example.com'
-            })
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request POST 'https://medusa-url.com/store/auth' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-                "email": "user@example.com",
-                "password": "supersecret"
-            }'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                password:
-                  type: string
-                  description: The Customer's password.
-    delete:
-      operationId: DeleteAuth
-      summary: Log out
-      description: Destroys a Customer's authenticated session.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE 'https://medusa-url.com/store/auth'
-            \
-
-            --header 'Cookie: connect.sid={sid}'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      description: Gets the currently logged in Customer.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.auth.getSession()
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/store/auth' \
-            --header 'Cookie: connect.sid={sid}'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '401':
-          description: Unauthorized
-  '/auth/{email}':
-    get:
-      operationId: GetAuthEmail
-      summary: Check if email has account
-      description: Checks if a Customer with the given email has signed up.
-      parameters:
-        - in: path
-          name: email
-          schema:
-            type: string
-            format: email
-          required: true
-          description: The email to check if exists.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.exists('user@example.com')
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/auth/user@example.com' \
-
-            --header 'Cookie: connect.sid={sid}'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  exists:
-                    type: boolean
-                    description: Whether email exists or not.
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.retrieve(collection_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections/{id}'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.list()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -1226,16 +947,16 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
-  '/gift-cards/{code}':
+  '/collections/{id}':
     get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
       parameters:
         - in: path
-          name: code
+          name: id
           required: true
-          description: The unique Gift Card code.
+          description: The id of the Product Collection
           schema:
             type: string
       x-codeSamples:
@@ -1247,14 +968,14 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
             3 })
 
-            medusa.giftCards.retrieve(code)
+            medusa.collections.retrieve(collection_id)
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/store/gift-cards/{code}'
+            'https://medusa-url.com/store/collections/{id}'
       tags:
-        - Gift Card
+        - Collection
       responses:
         '200':
           description: OK
@@ -1262,8 +983,109 @@ paths:
             application/json:
               schema:
                 properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.list()
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -1327,6 +1149,8 @@ paths:
                   "postal_code": "85137"
                 }
             }'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1463,6 +1287,8 @@ paths:
             'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
 
             --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1519,6 +1345,8 @@ paths:
             --data-raw '{
                 "first_name": "Gina"
             }'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1557,6 +1385,8 @@ paths:
             'https://medusa-url.com/store/customers/me' \
 
             --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1630,6 +1460,8 @@ paths:
             --data-raw '{
                 "first_name": "Laury"
             }'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1669,6 +1501,8 @@ paths:
             'https://medusa-url.com/store/customers/me/payment-methods' \
 
             --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1744,6 +1578,8 @@ paths:
             'https://medusa-url.com/store/customers/me/orders' \
 
             --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -1878,6 +1714,198 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.giftCards.retrieve(code)
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/gift-cards/{code}'
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate Customer
+      description: >-
+        Logs a Customer in and authorizes them to view their details. Successful
+        authentication will set a session cookie in the Customer's browser.
+      parameters: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.authenticate({
+              email: 'user@example.com',
+              password: 'user@example.com'
+            })
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://medusa-url.com/store/auth' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "email": "user@example.com",
+                "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                password:
+                  type: string
+                  description: The Customer's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Log out
+      description: Destroys a Customer's authenticated session.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE 'https://medusa-url.com/store/auth'
+            \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      description: Gets the currently logged in Customer.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.auth.getSession()
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/store/auth' \
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '401':
+          description: Unauthorized
+  '/auth/{email}':
+    get:
+      operationId: GetAuthEmail
+      summary: Check if email has account
+      description: Checks if a Customer with the given email has signed up.
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+            format: email
+          required: true
+          description: The email to check if exists.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.exists('user@example.com')
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/auth/user@example.com' \
+
+            --header 'Cookie: connect.sid={sid}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  exists:
+                    type: boolean
+                    description: Whether email exists or not.
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -2959,6 +2987,73 @@ paths:
                     items:
                       $ref: '#/components/schemas/product_variant'
 components:
+  securitySchemes:
+    cookie_auth:
+      type: apiKey
+      x-displayName: Cookie Session ID
+      in: cookie
+      name: connect.sid
+      description: >
+        Use a cookie session to send authenticated requests.
+
+
+        ### How to Obtain the Cookie Session
+
+
+        If you're sending requests through a browser, using JS Client, or using
+        tools like Postman, the cookie session should be automatically set when
+        the customer is logged in.
+
+
+        If you're sending requests using cURL, you must set the Session ID in
+        the cookie manually.
+
+
+        To do that, send a request to [authenticate the
+        customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+
+        ```bash
+
+        curl -v --location --request POST 'https://medusa-url.com/store/auth' \
+
+        --header 'Content-Type: application/json' \
+
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+
+        ```
+
+
+        The headers will be logged in the terminal as well as the response. You
+        should find in the headers a Cookie header similar to this:
+
+
+        ```bash
+
+        Set-Cookie:
+        connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+
+        ```
+
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass
+        it as a cookie in subsequent requests as the following:
+
+
+        ```bash
+
+        curl --location --request GET
+        'https://medusa-url.com/store/customers/me/orders' \
+
+        --header 'Cookie: connect.sid={sid}'
+
+        ```
+
+
+        Where `{sid}` is the value of `connect.sid` that you copied.
   schemas:
     address:
       title: Address

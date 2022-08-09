@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Medusa Storefront API
+  description: |
+    API reference for Medusa's Storefront endpoints. All endpoints are prefixed with `/store`.
+    
+    ## Authentication
+
+    To send requests as an authenticated customer, you must use the Cookie Session ID.
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
+  license:
+    name: MIT
+    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+tags:
+- name: Auth
+  description: Auth endpoints that allow authorization of customers and manages their
+    sessions.
+- name: Cart
+  description: Cart endpoints that allow handling carts in Medusa.
+  x-resourceId: cart
+- name: Collection
+  description: Collection endpoints that allow handling collections in Medusa.
+  x-resourceId: product_collection
+- name: Customer
+  description: Customer endpoints that allow handling customers in Medusa.
+  x-resourceId: customer
+- name: Gift Card
+  description: Gift Card endpoints that allow handling gift cards in Medusa.
+  x-resourceId: gift_card
+- name: Order
+  description: Order endpoints that allow handling orders in Medusa.
+  x-resourceId: order
+- name: Product
+  description: Product endpoints that allow handling products in Medusa.
+  x-resourceId: product
+- name: Product Variant
+  description: Product Variant endpoints that allow handling product variants in Medusa.
+  x-resourceId: product_variant
+- name: Region
+  description: Region endpoints that allow handling regions in Medusa.
+  x-resourceId: region
+- name: Return Reason
+  description: Return Reason endpoints that allow handling return reasons in Medusa.
+  x-resourceId: return_reason
+- name: Return
+  description: Return endpoints that allow handling returns in Medusa.
+  x-resourceId: return
+- name: Shipping Option
+  description: Shipping Option endpoints that allow handling shipping options in Medusa.
+  x-resourceId: shipping_option
+- name: Swap
+  description: Swap endpoints that allow handling swaps in Medusa.
+  x-resourceId: swap
+servers:
+- url: https://api.medusa-commerce.com/store
+paths: {}
+components:
+  securitySchemes:
+    cookie_auth:
+      type: apiKey
+      x-displayName: Cookie Session ID
+      in: cookie
+      name: connect.sid
+      description: |
+        Use a cookie session to send authenticated requests.
+
+        ### How to Obtain the Cookie Session
+
+        If you're sending requests through a browser, using JS Client, or using tools like Postman, the cookie session should be automatically set when the customer is logged in.
+
+        If you're sending requests using cURL, you must set the Session ID in the cookie manually.
+
+        To do that, send a request to [authenticate the customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+        ```bash
+        curl -v --location --request POST 'https://medusa-url.com/store/auth' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+        ```
+
+        The headers will be logged in the terminal as well as the response. You should find in the headers a Cookie header similar to this:
+
+        ```bash
+        Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+        ```
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass it as a cookie in subsequent requests as the following:
+
+        ```bash
+        curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
+        --header 'Cookie: connect.sid={sid}'
+        ```
+        
+        Where `{sid}` is the value of `connect.sid` that you copied.

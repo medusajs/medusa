@@ -32,6 +32,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/collections/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -151,6 +154,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/collections/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:

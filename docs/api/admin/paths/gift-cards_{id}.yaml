@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/gift-cards_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/gift-cards_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -119,6 +125,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/gift-cards_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:

@@ -8,6 +8,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/apps/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - App
   responses:

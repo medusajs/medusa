@@ -93,6 +93,9 @@ import { validator } from "../../../../utils/validator"
  *           "name": "New Tax Rate",
  *           "region_id": "{region_id}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Tax Rate
  * responses:

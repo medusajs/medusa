@@ -29,6 +29,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/discounts_code_{code}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:

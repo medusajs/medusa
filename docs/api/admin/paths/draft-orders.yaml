@@ -111,6 +111,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/draft-orders/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Draft Order
   responses:
@@ -156,6 +159,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/draft-orders/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Draft Order
   responses:

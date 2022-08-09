@@ -12,6 +12,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/store_tax-providers/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Store
   responses:

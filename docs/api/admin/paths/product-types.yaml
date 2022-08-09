@@ -97,6 +97,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/product-types/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product Type
   responses:

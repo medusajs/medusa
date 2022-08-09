@@ -162,6 +162,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/discounts/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:
@@ -244,6 +247,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/discounts/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:

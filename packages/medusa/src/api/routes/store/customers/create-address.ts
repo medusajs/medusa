@@ -62,6 +62,8 @@ import { validator } from "../../../../utils/validator"
  *             "postal_code": "85137"
  *           }
  *       }'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:

@@ -54,6 +54,9 @@ import { validator } from "../../../../utils/validator"
  *           "token": "supersecrettoken",
  *           "password": "supersecret"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - User
  * responses:

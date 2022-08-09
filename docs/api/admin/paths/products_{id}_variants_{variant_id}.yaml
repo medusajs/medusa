@@ -27,6 +27,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/products_{id}_variants_{variant_id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product
   responses:
@@ -182,6 +185,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/products_{id}_variants_{variant_id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product
   responses:

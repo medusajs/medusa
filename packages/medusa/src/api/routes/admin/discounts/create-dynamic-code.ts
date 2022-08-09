@@ -42,6 +42,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "code": "TEST"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:

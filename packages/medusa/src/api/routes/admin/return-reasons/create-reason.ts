@@ -58,6 +58,9 @@ import { validator } from "../../../../utils/validator"
  *           "label": "Damaged",
  *           "value": "damaged"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Return Reason
  * responses:

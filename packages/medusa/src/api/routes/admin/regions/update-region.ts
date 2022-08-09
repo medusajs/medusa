@@ -82,6 +82,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "Europe"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

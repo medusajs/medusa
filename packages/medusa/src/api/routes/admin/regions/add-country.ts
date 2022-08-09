@@ -46,6 +46,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "country_code": "dk"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

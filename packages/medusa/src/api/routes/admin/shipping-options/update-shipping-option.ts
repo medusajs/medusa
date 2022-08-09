@@ -91,6 +91,9 @@ import { validator } from "../../../../utils/validator"
  *             }
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Option
  * responses:

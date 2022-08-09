@@ -67,6 +67,9 @@ import { validator } from "../../../../utils/validator"
  *            "{shipping_option_id}"
  *          ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Tax Rate
  * responses:

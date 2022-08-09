@@ -62,6 +62,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/regions/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:
@@ -126,6 +129,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/regions/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:

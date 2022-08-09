@@ -22,6 +22,9 @@ import RegionService from "../../../../services/region"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/regions/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

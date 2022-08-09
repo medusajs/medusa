@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/notes_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/notes_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -102,6 +108,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/notes_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Note
   responses:

@@ -30,6 +30,9 @@ import fs from "fs"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
  *       --data-binary '{file_path}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Upload
  * responses:

@@ -118,6 +118,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "New Price List"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Price List
  * responses:

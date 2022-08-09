@@ -43,6 +43,9 @@ import { validator } from "../../../../utils/validator"
  *           "price": 1000,
  *           "option_id": "{option_id}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Order
  * responses:

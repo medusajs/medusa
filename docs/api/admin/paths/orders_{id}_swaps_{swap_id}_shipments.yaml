@@ -47,6 +47,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/orders_{id}_swaps_{swap_id}_shipments/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Swap
   responses:

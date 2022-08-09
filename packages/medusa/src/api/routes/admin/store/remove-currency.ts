@@ -30,6 +30,9 @@ import { StoreService } from "../../../../services"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/store/currencies/eur' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Store
  * responses:

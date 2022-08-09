@@ -266,6 +266,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "title": "Shirt"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:

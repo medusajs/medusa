@@ -85,6 +85,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "New Tax Rate"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Tax Rate
  * responses:

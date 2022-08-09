@@ -52,6 +52,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "label": "Damaged"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Return Reason
  * responses:

@@ -12,6 +12,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/store/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Store
   responses:
@@ -74,6 +77,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/store/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Store
   responses:

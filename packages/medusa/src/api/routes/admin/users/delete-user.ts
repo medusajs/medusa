@@ -22,6 +22,9 @@ import UserService from "../../../../services/user"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/users/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Users
  * responses:

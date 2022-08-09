@@ -42,6 +42,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/orders_{id}_claims_{claim_id}_shipments/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Claim
   responses:

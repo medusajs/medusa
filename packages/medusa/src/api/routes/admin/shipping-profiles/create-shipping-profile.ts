@@ -38,6 +38,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "Large Products"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Profile
  * responses:

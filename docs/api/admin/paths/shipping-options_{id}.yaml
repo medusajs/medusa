@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-options_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Option
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-options_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Option
   responses:
@@ -133,6 +139,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-options_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Option
   responses:

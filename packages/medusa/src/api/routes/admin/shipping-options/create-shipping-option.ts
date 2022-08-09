@@ -109,6 +109,9 @@ import { validator } from "../../../../utils/validator"
  *           "data": {},
  *           "price_type": "flat_rate"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Option
  * responses:

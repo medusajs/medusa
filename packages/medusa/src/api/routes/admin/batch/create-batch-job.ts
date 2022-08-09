@@ -68,6 +68,9 @@ import { validator } from "../../../../utils/validator"
  *           "type": "product-export",
  *           "context": { }
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Batch Job
  * responses:

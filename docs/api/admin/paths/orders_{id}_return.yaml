@@ -77,6 +77,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/orders_{id}_return/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Return
     - Order
