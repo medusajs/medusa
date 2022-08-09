@@ -296,9 +296,18 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const toCreate: Partial<ShippingMethod> = {
         shipping_option_id: option.id,
-        includes_tax: option.includes_tax,
         data: validatedData,
         price: methodPrice,
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof option.includes_tax !== "undefined") {
+          toCreate.includes_tax = option.includes_tax
+        }
       }
 
       if (config.order) {

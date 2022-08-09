@@ -28,6 +28,22 @@ export const carts = {
     total: 1000,
     region_id: IdMap.getId("testRegion"),
   },
+  testCartTaxInclusive: {
+    id: IdMap.getId("test-cart"),
+    items: [],
+    payment: {
+      data: "some-data",
+    },
+    payment_session: {
+      status: "authorized",
+    },
+    total: 1000,
+    region_id: IdMap.getId("testRegion"),
+    shipping_options: [{
+      id: IdMap.getId("tax-inclusive-option"),
+      includes_tax: true
+    }],
+  },
   testSwapCart: {
     id: IdMap.getId("test-swap"),
     items: [],
@@ -262,6 +278,9 @@ export const CartServiceMock = {
     }
     if (cartId === IdMap.getId("test-cart2")) {
       return Promise.resolve(carts.testCart)
+    }
+    if (cartId === IdMap.getId("tax-inclusive-option")) {
+      return Promise.resolve(carts.testCartTaxInclusive)
     }
     throw new MedusaError(MedusaError.Types.NOT_FOUND, "cart not found")
   }),

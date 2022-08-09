@@ -105,8 +105,6 @@ module.exports = {
 
     const entities = modelsLoader({}, { register: false })
 
-    console.log("=================================== env ===================================", process.env.MEDUSA_FF_TAX_INCLUSIVE_PRICING)
-
     if (projectConfig.database_type === "sqlite") {
       connectionType = "sqlite"
       const dbConnection = await createConnection({
