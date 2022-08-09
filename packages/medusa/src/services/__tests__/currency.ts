@@ -41,7 +41,7 @@ describe('CurrencyService', () => {
   it("should retrieve the currency by calling the repository findOne method", async () => {
     await currencyService.retrieveByCode(currencyCode)
     expect(currencyRepositoryMock.findOne).toHaveBeenCalledWith({
-      where: { code: currencyCode },
+      where: { code: currencyCode.toLowerCase() },
     })
   })
 
@@ -50,7 +50,7 @@ describe('CurrencyService', () => {
       includes_tax: true,
     })
     expect(currencyRepositoryMock.findOne).toHaveBeenCalledWith({
-      where: { code: currencyCode },
+      where: { code: currencyCode.toLowerCase() },
     })
     expect(currencyRepositoryMock.save).toHaveBeenCalledWith({
       code: currencyCode,
