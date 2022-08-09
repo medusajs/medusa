@@ -108,7 +108,7 @@ export default async (req, res) => {
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
-    let err = false
+    let err: unknown = false
 
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
