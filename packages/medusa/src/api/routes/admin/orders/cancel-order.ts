@@ -22,7 +22,7 @@ import { OrderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/orders/{id}/cancel' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/cancel' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Order

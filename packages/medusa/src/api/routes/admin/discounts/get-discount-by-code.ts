@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/discounts/code/{code}' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/discounts/code/{code}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Discount

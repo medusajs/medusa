@@ -20,7 +20,7 @@ import InviteService from "../../../../services/invite"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/invites/{invite_id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/invites/{invite_id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Invite

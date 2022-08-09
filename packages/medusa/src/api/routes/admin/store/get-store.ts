@@ -25,7 +25,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/store' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/store' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store

@@ -72,6 +72,47 @@ import { validator } from "../../../../utils/validator"
  *                 quantity:
  *                   description: The quantity to send of the variant.
  *                   type: integer
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.swaps.create({
+ *         order_id,
+ *         return_items: [
+ *           {
+ *             item_id,
+ *             quantity: 1
+ *           }
+ *         ],
+ *         additional_items: [
+ *           {
+ *             variant_id,
+ *             quantity: 1
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/swaps' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "order_id": "asfasf",
+ *           "return_items": [
+ *             {
+ *               "item_id": "asfas",
+ *               "quantity": 1
+ *             }
+ *           ],
+ *           "additional_items": [
+ *             {
+ *               "variant_id": "asfas",
+ *               "quantity": 1
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Swap
  * responses:

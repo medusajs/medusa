@@ -1,9 +1,10 @@
-import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm";
+import { IsObject } from "class-validator"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}
@@ -14,6 +15,25 @@ import { EntityManager } from "typeorm";
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the payment provider.
  *   - (body) data=* {object} The data to update the payment session with.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.updatePaymentSession(cart_id, 'manual', {
+ *         data: {
+ *           
+ *         }
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "data": {}
+ *       }'
  * tags:
  *   - Cart
  * responses:

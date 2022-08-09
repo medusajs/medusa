@@ -21,7 +21,7 @@ import { SwapService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/swaps/{id}' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/swaps/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Swap

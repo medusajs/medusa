@@ -9,6 +9,17 @@ import { OrderService } from "../../../../services"
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
  * parameters:
  *   - (path) cart_id=* {string} The ID of Cart.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.retrieveByCartId(cart_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
  * tags:
  *   - Order
  * responses:

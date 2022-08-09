@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/swaps' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/swaps' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Swap

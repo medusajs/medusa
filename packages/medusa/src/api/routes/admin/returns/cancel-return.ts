@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/returns/{id}/cancel' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/returns/{id}/cancel' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Return

@@ -16,7 +16,7 @@ import { PaymentProviderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/store/payment-providers' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/store/payment-providers' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store

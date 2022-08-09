@@ -87,6 +87,23 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *             example:
  *               ip: "::1"
  *               user_agent: "Chrome"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.update(cart_id, {
+ *         email: 'user@example.com'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com"
+ *       }'
  * tags:
  *   - Cart
  * responses:

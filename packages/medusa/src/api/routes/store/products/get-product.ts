@@ -1,11 +1,12 @@
-import { defaultStoreProductsRelations } from "."
 import {
-  ProductService,
-  PricingService,
   CartService,
+  PricingService,
+  ProductService,
   RegionService,
 } from "../../../../services"
+
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { defaultStoreProductsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -15,6 +16,17 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a Product."
  * parameters:
  *   - (path) id=* {string} The id of the Product.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.products.retrieve(product_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/products/{id}'
  * tags:
  *   - Product
  * responses:

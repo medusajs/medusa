@@ -26,7 +26,7 @@ import fs from "fs"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/uploads' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
  *       --data-binary '{file_path}'

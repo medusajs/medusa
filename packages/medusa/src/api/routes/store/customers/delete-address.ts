@@ -11,6 +11,19 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.addresses.deleteAddress(address_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+ *       --header 'Cookie: connect.sid={sid}'
  * tags:
  *   - Customer
  * responses:

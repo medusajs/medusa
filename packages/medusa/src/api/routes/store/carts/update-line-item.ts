@@ -1,10 +1,11 @@
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
+import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { IsInt } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/line-items/{line_id}
@@ -15,6 +16,23 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
  *   - (body) quantity=* {integer} The quantity to set the Line Item to.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.lineItems.update(cart_id, line_id, {
+ *         quantity: 1
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "quantity": 1
+ *       }'
  * tags:
  *   - Cart
  * responses:

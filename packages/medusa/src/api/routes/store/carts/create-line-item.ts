@@ -1,10 +1,11 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { IsInt, IsOptional, IsString } from "class-validator"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { FlagRouter } from "../../../../utils/flag-router"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -17,6 +18,25 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - (body) variant_id=* {string} The id of the Product Variant to generate the Line Item from.
  *   - (body) quantity=* {integer} The quantity of the Product Variant to add to the Line Item.
  *   - (body) metadata {object} An optional key-value map with additional details about the Line Item.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.lineItems.create(cart_id, {
+ *         variant_id,
+ *         quantity: 1
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "variant_id": "{variant_id}",
+ *           "quantity": 1
+ *       }'
  * tags:
  *   - Cart
  * responses:

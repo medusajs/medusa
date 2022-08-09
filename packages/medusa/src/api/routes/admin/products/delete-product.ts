@@ -20,7 +20,7 @@ import { ProductService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/products/asfsaf' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/products/asfsaf' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product

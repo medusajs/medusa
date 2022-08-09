@@ -38,6 +38,20 @@ import { validator } from "../../../../utils/validator"
  *         postal_code:
  *           type: string
  *           description: The postal code of the shipping address
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.lookupOrder({
+ *         display_id: 1,
+ *         email: 'user@example.com'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
  *   - Order
  * responses:

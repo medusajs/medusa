@@ -17,7 +17,7 @@ import { ProductService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/products/tag-usage' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/products/tag-usage' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product Tag

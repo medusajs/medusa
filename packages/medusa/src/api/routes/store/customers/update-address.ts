@@ -2,8 +2,8 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
 import { AddressPayload } from "../../../../types/common"
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}
@@ -19,6 +19,25 @@ import { EntityManager } from "typeorm"
  *       schema:
  *         anyOf:
  *           - $ref: "#/components/schemas/address"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.addresses.updateAddress(address_id, {
+ *         first_name: 'Gina'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+ *       --header 'Cookie: connect.sid={sid}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "first_name": "Gina"
+ *       }'
  * tags:
  *   - Customer
  * responses:

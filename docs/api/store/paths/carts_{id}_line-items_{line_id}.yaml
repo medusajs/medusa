@@ -15,6 +15,16 @@ delete:
       description: The id of the Line Item.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/deleteundefined
   tags:
     - Cart
   responses:
@@ -43,6 +53,16 @@ post:
       description: The id of the Line Item.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/postundefined
   tags:
     - Cart
   responses:

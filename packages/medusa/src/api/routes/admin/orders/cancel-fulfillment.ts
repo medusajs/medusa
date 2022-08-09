@@ -24,7 +24,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Fulfillment

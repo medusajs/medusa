@@ -102,7 +102,7 @@ import { removeUndefinedProperties } from "../../../../utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/sales-channels' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/sales-channels' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Sales Channel

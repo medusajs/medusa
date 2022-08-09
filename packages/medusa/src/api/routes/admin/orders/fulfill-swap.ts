@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Fulfillment

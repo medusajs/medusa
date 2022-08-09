@@ -82,7 +82,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/tax-rates' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/tax-rates' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Tax Rate

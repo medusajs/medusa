@@ -22,7 +22,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/collections/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/collections/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Collection

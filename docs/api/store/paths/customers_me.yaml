@@ -5,6 +5,15 @@ get:
     Retrieves a Customer - the Customer must be logged in to retrieve their
     details.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_me/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_me/getundefined
   tags:
     - Customer
   responses:
@@ -51,6 +60,15 @@ post:
             metadata:
               description: Metadata about the customer.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_me/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_me/postundefined
   tags:
     - Customer
   responses:

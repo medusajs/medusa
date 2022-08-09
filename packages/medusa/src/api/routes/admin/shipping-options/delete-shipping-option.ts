@@ -19,7 +19,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/shipping-options/{option_id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/shipping-options/{option_id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Shipping Option

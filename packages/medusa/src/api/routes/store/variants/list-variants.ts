@@ -60,6 +60,11 @@ import { validator } from "../../../../utils/validator"
  *             gte:
  *               type: number
  *               description: filter by inventory quantity greater than or equal to this number
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/variants'
  * tags:
  *   - Product Variant
  * responses:

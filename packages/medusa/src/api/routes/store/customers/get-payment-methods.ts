@@ -1,8 +1,8 @@
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
+import { PaymentProvider } from "../../../../models"
 import PaymentProviderService from "../../../../services/payment-provider"
 import StoreService from "../../../../services/store"
-import { PaymentProvider } from "../../../../models"
 
 /**
  * @oas [get] /customers/me/payment-methods
@@ -10,6 +10,19 @@ import { PaymentProvider } from "../../../../models"
  * summary: Retrieve saved payment methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.paymentMethods.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/customers/me/payment-methods' \
+ *       --header 'Cookie: connect.sid={sid}'
  * tags:
  *   - Customer
  * responses:

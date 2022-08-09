@@ -23,7 +23,7 @@ import RegionService from "../../../../services/region"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/regions/{id}/payment-providers/manual' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/regions/{id}/payment-providers/manual' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Region

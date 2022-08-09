@@ -5,6 +5,19 @@ import CustomerService from "../../../../services/customer"
  * summary: "Get Session"
  * description: "Gets the currently logged in Customer."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.auth.getSession()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/auth' \
+ *       --header 'Cookie: connect.sid={sid}'
  * tags:
  *   - Auth
  * responses:

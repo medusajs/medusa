@@ -1,7 +1,7 @@
 import CustomerService from "../../../../services/customer"
+import { EntityManager } from "typeorm"
 import { IsEmail } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/password-token
@@ -19,6 +19,23 @@ import { EntityManager } from "typeorm"
  *             description: "The email of the customer."
  *             type: string
  *             format: email
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.customers.generatePasswordToken({
+ *         email: 'user@example.com'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/password-token' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com"
+ *       }'
  * tags:
  *   - Customer
  * responses:

@@ -144,7 +144,7 @@ import { isDefined } from "../../../../utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/price-lists/{id}/products' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/price-lists/{id}/products' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product

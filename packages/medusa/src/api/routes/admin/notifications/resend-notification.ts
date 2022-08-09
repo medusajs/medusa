@@ -37,7 +37,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/notifications/{id}/resend' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/notifications/{id}/resend' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Notification

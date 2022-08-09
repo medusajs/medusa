@@ -20,7 +20,7 @@ import UserService from "../../../../services/user"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/users/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/users/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Users

@@ -109,6 +109,12 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
+  /apps:
+    $ref: paths/apps.yaml
+  /auth:
+    $ref: paths/auth.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -123,10 +129,6 @@ paths:
     $ref: paths/collections.yaml
   /collections/{id}:
     $ref: paths/collections_{id}.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -155,12 +157,6 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
-  /apps/authorizations:
-    $ref: paths/apps_authorizations.yaml
-  /apps:
-    $ref: paths/apps.yaml
-  /auth:
-    $ref: paths/auth.yaml
   /draft-orders:
     $ref: paths/draft-orders.yaml
   /draft-orders/{id}/line-items:
@@ -173,6 +169,10 @@ paths:
     $ref: paths/draft-orders_{id}_pay.yaml
   /admin/draft-orders/{id}:
     $ref: paths/admin_draft-orders_{id}.yaml
+  /gift-cards:
+    $ref: paths/gift-cards.yaml
+  /gift-cards/{id}:
+    $ref: paths/gift-cards_{id}.yaml
   /invites/accept:
     $ref: paths/invites_accept.yaml
   /invites:
@@ -185,26 +185,10 @@ paths:
     $ref: paths/notes.yaml
   /notes/{id}:
     $ref: paths/notes_{id}.yaml
-  /gift-cards:
-    $ref: paths/gift-cards.yaml
-  /gift-cards/{id}:
-    $ref: paths/gift-cards_{id}.yaml
   /notifications:
     $ref: paths/notifications.yaml
   /notifications/{id}/resend:
     $ref: paths/notifications_{id}_resend.yaml
-  /price-lists/{id}/prices/batch:
-    $ref: paths/price-lists_{id}_prices_batch.yaml
-  /price-lists:
-    $ref: paths/price-lists.yaml
-  /price-lists/{id}:
-    $ref: paths/price-lists_{id}.yaml
-  /price-lists/{id}/products/{product_id}/prices:
-    $ref: paths/price-lists_{id}_products_{product_id}_prices.yaml
-  /price-lists/{id}/variants/{variant_id}/prices:
-    $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
-  /price-lists/{id}/products:
-    $ref: paths/price-lists_{id}_products.yaml
   /orders/{id}/shipping-methods:
     $ref: paths/orders_{id}_shipping-methods.yaml
   /orders/{id}/archive:
@@ -255,6 +239,18 @@ paths:
     $ref: paths/orders_{id}_return.yaml
   /order/{id}/claims/{claim_id}:
     $ref: paths/order_{id}_claims_{claim_id}.yaml
+  /price-lists/{id}/prices/batch:
+    $ref: paths/price-lists_{id}_prices_batch.yaml
+  /price-lists:
+    $ref: paths/price-lists.yaml
+  /price-lists/{id}:
+    $ref: paths/price-lists_{id}.yaml
+  /price-lists/{id}/products/{product_id}/prices:
+    $ref: paths/price-lists_{id}_products_{product_id}_prices.yaml
+  /price-lists/{id}/variants/{variant_id}/prices:
+    $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
+  /price-lists/{id}/products:
+    $ref: paths/price-lists_{id}_products.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -299,18 +295,18 @@ paths:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
-  /sales-channels/{id}/products/batch:
-    $ref: paths/sales-channels_{id}_products_batch.yaml
-  /sales-channels:
-    $ref: paths/sales-channels.yaml
-  /sales-channels/{id}:
-    $ref: paths/sales-channels_{id}.yaml
   /returns/{id}/cancel:
     $ref: paths/returns_{id}_cancel.yaml
   /returns:
     $ref: paths/returns.yaml
   /returns/{id}/receive:
     $ref: paths/returns_{id}_receive.yaml
+  /sales-channels/{id}/products/batch:
+    $ref: paths/sales-channels_{id}_products_batch.yaml
+  /sales-channels:
+    $ref: paths/sales-channels.yaml
+  /sales-channels/{id}:
+    $ref: paths/sales-channels_{id}.yaml
   /shipping-options:
     $ref: paths/shipping-options.yaml
   /shipping-options/{id}:
@@ -343,8 +339,6 @@ paths:
     $ref: paths/tax-rates_{id}.yaml
   /uploads:
     $ref: paths/uploads.yaml
-  /variants:
-    $ref: paths/variants.yaml
   /users:
     $ref: paths/users.yaml
   /users/{id}:
@@ -353,3 +347,5 @@ paths:
     $ref: paths/users_password-token.yaml
   /users/reset-password:
     $ref: paths/users_reset-password.yaml
+  /variants:
+    $ref: paths/variants.yaml

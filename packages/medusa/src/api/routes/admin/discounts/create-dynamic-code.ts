@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/discounts/{id}/dynamic-codes' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/dynamic-codes' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

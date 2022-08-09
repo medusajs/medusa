@@ -9,6 +9,17 @@ import { OrderService } from "../../../../services"
  * description: "Retrieves an Order"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.retrieve(order_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders/{id}'
  * tags:
  *   - Order
  * responses:

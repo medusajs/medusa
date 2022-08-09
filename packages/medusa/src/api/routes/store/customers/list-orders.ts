@@ -129,6 +129,19 @@ import { Type } from "class-transformer"
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
  *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.listOrders()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
+ *       --header 'Cookie: connect.sid={sid}'
  * tags:
  *   - Customer
  * responses:

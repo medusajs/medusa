@@ -87,6 +87,18 @@
         "summary": "Authenticate Customer",
         "description": "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser.",
         "parameters": [],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.auth.authenticate({\n  email: 'user@example.com',\n  password: 'user@example.com'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/auth' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"email\": \"user@example.com\",\n    \"password\": \"supersecret\"\n}'\n"
+          }
+        ],
         "tags": [
           "Auth"
         ],
@@ -134,6 +146,13 @@
         "operationId": "DeleteAuth",
         "summary": "Log out",
         "description": "Destroys a Customer's authenticated session.",
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request DELETE 'https://medusa-url.com/store/auth' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Auth"
         ],
@@ -148,6 +167,18 @@
         "summary": "Get Session",
         "description": "Gets the currently logged in Customer.",
         "x-authenticated": true,
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.auth.getSession()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/auth' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Auth"
         ],
@@ -189,6 +220,18 @@
             "description": "The email to check if exists."
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.auth.exists('user@example.com')\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/auth/user@example.com' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Auth"
         ],
@@ -211,893 +254,6 @@
         }
       }
     },
-    "/carts/{id}/shipping-methods": {
-      "post": {
-        "operationId": "PostCartsCartShippingMethod",
-        "description": "Adds a Shipping Method to the Cart.",
-        "summary": "Add a Shipping Method",
-        "tags": [
-          "Cart"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The cart ID.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "option_id"
-                ],
-                "properties": {
-                  "option_id": {
-                    "type": "string",
-                    "description": "ID of the shipping option to create the method from"
-                  },
-                  "data": {
-                    "type": "object",
-                    "description": "Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/taxes": {
-      "post": {
-        "summary": "Calculate Cart Taxes",
-        "operationId": "PostCartsCartTaxes",
-        "description": "Calculates taxes for a cart. Depending on the cart's region this may involve making 3rd party API calls to a Tax Provider service.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The Cart ID.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/complete": {
-      "post": {
-        "summary": "Complete a Cart",
-        "operationId": "PostCartsCartComplete",
-        "description": "Completes a cart. The following steps will be performed. Payment authorization is attempted and if more work is required, we simply return the cart for further updates. If payment is authorized and order is not yet created, we make sure to do so. The completion of a cart can be performed idempotently with a provided header `Idempotency-Key`. If not provided, we will generate one for the request.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The Cart id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "If a cart was successfully authorized, but requires further action from the user the response body will contain the cart with an updated payment session. If the Cart was successfully completed the response body will contain the newly created Order.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "description": "The type of the data property.",
-                      "enum": [
-                        "order",
-                        "cart",
-                        "swap"
-                      ]
-                    },
-                    "data": {
-                      "type": "object",
-                      "description": "The data of the result object. Its type depends on the type field.",
-                      "oneOf": [
-                        {
-                          "type": "object",
-                          "description": "Cart was successfully authorized and order was placed successfully.",
-                          "properties": {
-                            "order": {
-                              "$ref": "#/components/schemas/order"
-                            }
-                          }
-                        },
-                        {
-                          "type": "object",
-                          "description": "Cart was successfully authorized but requires further actions.",
-                          "properties": {
-                            "cart": {
-                              "$ref": "#/components/schemas/cart"
-                            }
-                          }
-                        },
-                        {
-                          "type": "object",
-                          "description": "When cart is used for a swap and it has been completed successfully.",
-                          "properties": {
-                            "cart": {
-                              "$ref": "#/components/schemas/swap"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts": {
-      "post": {
-        "summary": "Create a Cart",
-        "operationId": "PostCart",
-        "description": "Creates a Cart within the given region and with the initial items. If no `region_id` is provided the cart will be associated with the first Region available. If no items are provided the cart will be empty after creation. If a user is logged in the cart's customer id and email will be set.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The ID of the Region to create the Cart in."
-                  },
-                  "sales_channel_id": {
-                    "type": "string",
-                    "description": "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
-                  },
-                  "country_code": {
-                    "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in.",
-                    "externalDocs": {
-                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
-                      "description": "See a list of codes."
-                    }
-                  },
-                  "items": {
-                    "description": "An optional array of `variant_id`, `quantity` pairs to generate Line Items from.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "variant_id",
-                        "quantity"
-                      ],
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to generate a Line Item from.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Product Variant to add",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "context": {
-                    "description": "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
-                    "type": "object",
-                    "example": {
-                      "ip": "::1",
-                      "user_agent": "Chrome"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully created a new Cart",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/line-items": {
-      "post": {
-        "operationId": "PostCartsCartLineItems",
-        "summary": "Add a Line Item",
-        "description": "Generates a Line Item with a given Product Variant and adds it to the Cart",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart to add the Line Item to.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "variant_id",
-                  "quantity"
-                ],
-                "properties": {
-                  "variant_id": {
-                    "type": "string",
-                    "description": "The id of the Product Variant to generate the Line Item from."
-                  },
-                  "quantity": {
-                    "type": "integer",
-                    "description": "The quantity of the Product Variant to add to the Line Item."
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "An optional key-value map with additional details about the Line Item."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/payment-sessions": {
-      "post": {
-        "operationId": "PostCartsCartPaymentSessions",
-        "summary": "Initialize Payment Sessions",
-        "description": "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/discounts/{code}": {
-      "delete": {
-        "operationId": "DeleteCartsCartDiscountsDiscount",
-        "description": "Removes a Discount from a Cart.",
-        "summary": "Remove Discount from Cart",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "code",
-            "required": true,
-            "description": "The unique Discount code.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/line-items/{line_id}": {
-      "delete": {
-        "operationId": "DeleteCartsCartLineItemsItem",
-        "summary": "Delete a Line Item",
-        "description": "Removes a Line Item from a Cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "line_id",
-            "required": true,
-            "description": "The id of the Line Item.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCartsCartLineItemsItem",
-        "summary": "Update a Line Item",
-        "description": "Updates a Line Item if the desired quantity can be fulfilled.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "line_id",
-            "required": true,
-            "description": "The id of the Line Item.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "quantity"
-                ],
-                "properties": {
-                  "quantity": {
-                    "type": "integer",
-                    "description": "The quantity to set the Line Item to."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/payment-sessions/{provider_id}": {
-      "delete": {
-        "operationId": "DeleteCartsCartPaymentSessionsSession",
-        "summary": "Delete a Payment Session",
-        "description": "Deletes a Payment Session on a Cart. May be useful if a payment has failed.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "provider_id",
-            "required": true,
-            "description": "The id of the Payment Provider used to create the Payment Session to be deleted.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCartsCartPaymentSessionUpdate",
-        "summary": "Update a Payment Session",
-        "description": "Updates a Payment Session with additional data.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "provider_id",
-            "required": true,
-            "description": "The id of the payment provider.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "data"
-                ],
-                "properties": {
-                  "data": {
-                    "type": "object",
-                    "description": "The data to update the payment session with."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}": {
-      "get": {
-        "operationId": "GetCartsCart",
-        "summary": "Retrieve a Cart",
-        "description": "Retrieves a Cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCartsCart",
-        "summary": "Update a Cart",
-        "description": "Updates a Cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The id of the Region to create the Cart in."
-                  },
-                  "country_code": {
-                    "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in.",
-                    "externalDocs": {
-                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
-                      "description": "See a list of codes."
-                    }
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Cart.",
-                    "format": "email"
-                  },
-                  "sales_channel_id": {
-                    "type": "string",
-                    "description": "The ID of the Sales channel to update the Cart with."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address",
-                        "description": "A full billing address object."
-                      },
-                      {
-                        "type": "string",
-                        "description": "The billing address ID"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address",
-                        "description": "A full shipping address object."
-                      },
-                      {
-                        "type": "string",
-                        "description": "The shipping address ID"
-                      }
-                    ]
-                  },
-                  "gift_cards": {
-                    "description": "An array of Gift Card codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "code"
-                      ],
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Gift Card is identified by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "code"
-                      ],
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "customer_id": {
-                    "description": "The ID of the Customer to associate the Cart with.",
-                    "type": "string"
-                  },
-                  "context": {
-                    "description": "An optional object to provide context to the Cart.",
-                    "type": "object",
-                    "example": {
-                      "ip": "::1",
-                      "user_agent": "Chrome"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/payment-sessions/{provider_id}/refresh": {
-      "post": {
-        "operationId": "PostCartsCartPaymentSessionsSession",
-        "summary": "Refresh a Payment Session",
-        "description": "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "provider_id",
-            "required": true,
-            "description": "The id of the Payment Provider that created the Payment Session to be refreshed.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/carts/{id}/payment-session": {
-      "post": {
-        "operationId": "PostCartsCartPaymentSession",
-        "summary": "Select a Payment Session",
-        "description": "Selects a Payment Session as the session intended to be used towards the completion of the Cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Cart"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "cart": {
-                      "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "provider_id"
-                ],
-                "properties": {
-                  "provider_id": {
-                    "type": "string",
-                    "description": "The ID of the Payment Provider."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/collections/{id}": {
       "get": {
         "operationId": "GetCollectionsCollection",
@@ -1112,6 +268,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.collections.retrieve(collection_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/collections/{id}'\n"
           }
         ],
         "tags": [
@@ -1220,6 +388,18 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.collections.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/collections'\n"
+          }
+        ],
         "tags": [
           "Collection"
         ],
@@ -1283,6 +463,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.addresses.addAddress({\n  address: {\n    first_name: 'Celia',\n    last_name: 'Schumm',\n    address_1: '225 Bednar Curve',\n    city: 'Danielville',\n    country_code: 'US',\n    postal_code: '85137',\n    phone: '981-596-6748 x90188',\n    company: 'Wyman LLC',\n    address_2: '',\n    province: 'Georgia',\n    metadata: {}\n  }\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses' \\\n--header 'Cookie: connect.sid={sid}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"address\": {\n      \"first_name\": \"Celia\",\n      \"last_name\": \"Schumm\",\n      \"address_1\": \"225 Bednar Curve\",\n      \"city\": \"Danielville\",\n      \"country_code\": \"US\",\n      \"postal_code\": \"85137\"\n    }\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1347,6 +539,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.customers.create({\n  first_name: 'Alec',\n  last_name: 'Reynolds',\n  email: 'user@example.com',\n  password: 'supersecret'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"first_name\": \"Alec\",\n    \"last_name\": \"Reynolds\",\n    \"email\": \"user@example.com\",\n    \"password\": \"supersecret\"\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1413,6 +617,18 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.addresses.deleteAddress(address_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1462,6 +678,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.addresses.updateAddress(address_id, {\n  first_name: 'Gina'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \\\n--header 'Cookie: connect.sid={sid}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"first_name\": \"Gina\"\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1489,6 +717,18 @@
         "summary": "Retrieves a Customer",
         "description": "Retrieves a Customer - the Customer must be logged in to retrieve their details.",
         "x-authenticated": true,
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.retrieve()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/customers/me' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1561,6 +801,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.update({\n  first_name: 'Laury'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers/me' \\\n--header 'Cookie: connect.sid={sid}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"first_name\": \"Laury\"\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1588,6 +840,18 @@
         "summary": "Retrieve saved payment methods",
         "description": "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods.",
         "x-authenticated": true,
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.paymentMethods.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/customers/me/payment-methods' \\\n--header 'Cookie: connect.sid={sid}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1632,7 +896,6 @@
             "in": "query",
             "name": "limit",
             "description": "How many orders to return.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "integer",
               "default": 10
@@ -1640,107 +903,40 @@
           },
           {
             "in": "query",
-<<<<<<< HEAD
-            "name": "id",
-            "description": "Id of the order to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "style": "form",
-            "explode": false,
-            "description": "Status to search for.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-=======
             "name": "offset",
             "description": "The offset in the resulting orders.",
             "schema": {
               "type": "integer",
               "default": 0
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             }
           },
           {
             "in": "query",
-<<<<<<< HEAD
-            "name": "fulfillment_status",
-            "style": "form",
-            "explode": false,
-            "description": "Fulfillment status to search for.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "payment_status",
-            "style": "form",
-            "explode": false,
-            "description": "Payment status to search for.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "display_id",
-            "description": "Display id to search for.",
-=======
             "name": "fields",
             "description": "(Comma separated string) Which fields should be included in the resulting orders.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-<<<<<<< HEAD
-            "name": "cart_id",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "region_id",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "currency_code",
-            "description": "to search for.",
-=======
             "name": "expand",
             "description": "(Comma separated string) Which relations should be expanded in the resulting orders.",
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged\nmedusa.customers.listOrders()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \\\n--header 'Cookie: connect.sid={sid}'\n"
           }
         ],
         "tags": [
@@ -1802,6 +998,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.customers.generatePasswordToken({\n  email: 'user@example.com'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers/password-token' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"email\": \"user@example.com\"\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1846,6 +1054,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.customers.resetPassword({\n  email: 'user@example.com',\n  password: 'supersecret',\n  token: 'supersecrettoken'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/customers/password-reset' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"email\": \"user@example.com\",\n    \"password\": \"supersecret\",\n    \"token\": \"supersecrettoken\"\n}'\n"
+          }
+        ],
         "tags": [
           "Customer"
         ],
@@ -1883,6 +1103,18 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.giftCards.retrieve(code)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'\n"
+          }
+        ],
         "tags": [
           "Gift Card"
         ],
@@ -1911,135 +1143,6 @@
         "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
         "parameters": [
           {
-<<<<<<< HEAD
-            "in": "query",
-            "name": "tax_rate",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting collections were created.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting collections were updated.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "description": "Date comparison for when resulting collections were canceled.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "How many orders to return.",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset in the resulting orders.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "(Comma separated string) Which fields should be included in the resulting orders.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated string) Which relations should be expanded in the resulting orders.",
-=======
             "in": "path",
             "name": "cart_id",
             "required": true,
@@ -2047,6 +1150,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.orders.retrieveByCartId(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'\n"
           }
         ],
         "tags": [
@@ -2081,18 +1196,25 @@
             "name": "id",
             "required": true,
             "description": "The id of the Order.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.orders.retrieve(order_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/orders/{id}'\n"
+          }
+        ],
         "tags": [
-<<<<<<< HEAD
-          "Customer"
-=======
           "Order"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2101,101 +1223,14 @@
               "application/json": {
                 "schema": {
                   "properties": {
-<<<<<<< HEAD
-                    "orders": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/order"
-                      }
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
-=======
                     "order": {
                       "$ref": "#/components/schemas/order"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
               }
             }
           }
-<<<<<<< HEAD
-        }
-      }
-    },
-    "/customers/password-token": {
-      "post": {
-        "operationId": "PostCustomersCustomerPasswordToken",
-        "summary": "Creates a reset password token",
-        "description": "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "email"
-                ],
-                "properties": {
-                  "email": {
-                    "description": "The email of the customer.",
-                    "type": "string",
-                    "format": "email"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "204": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/customers/password-reset": {
-      "post": {
-        "operationId": "PostCustomersResetPassword",
-        "summary": "Resets Customer password",
-        "description": "Resets a Customer's password using a password token created by a previous /password-token request.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "email",
-                  "password",
-                  "token"
-                ],
-                "properties": {
-                  "email": {
-                    "description": "The email of the customer.",
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "password": {
-                    "description": "The Customer's password.",
-                    "type": "string",
-                    "format": "password"
-                  },
-                  "token": {
-                    "description": "The reset password token",
-                    "type": "string"
-                  }
-=======
         }
       }
     },
@@ -2238,18 +1273,25 @@
                 "postal_code": {
                   "type": "string",
                   "description": "The postal code of the shipping address"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                 }
               }
             }
           }
-        },
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.orders.lookupOrder({\n  display_id: 1,\n  email: 'user@example.com'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'\n"
+          }
+        ],
         "tags": [
-<<<<<<< HEAD
-          "Customer"
-=======
           "Order"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2258,13 +1300,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-<<<<<<< HEAD
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-=======
                     "order": {
                       "$ref": "#/components/schemas/order"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2274,40 +1311,36 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/gift-cards/{code}": {
-      "get": {
-        "operationId": "GetGiftCardsCode",
-        "summary": "Retrieve Gift Card by Code",
-        "description": "Retrieves a Gift Card by its associated unqiue code.",
-=======
     "/products/{id}": {
       "get": {
         "operationId": "GetProductsProduct",
         "summary": "Retrieves a Product",
         "description": "Retrieves a Product.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         "parameters": [
           {
             "in": "path",
-            "name": "code",
+            "name": "id",
             "required": true,
-<<<<<<< HEAD
-            "description": "The unique Gift Card code.",
-=======
             "description": "The id of the Product.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.products.retrieve(product_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/products/{id}'\n"
+          }
+        ],
         "tags": [
-<<<<<<< HEAD
-          "Gift Card"
-=======
           "Product"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2316,13 +1349,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-<<<<<<< HEAD
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-=======
                     "product": {
                       "$ref": "#/components/schemas/product"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2332,19 +1360,6 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/orders/cart/{cart_id}": {
-      "get": {
-        "operationId": "GetOrdersOrderCartId",
-        "summary": "Retrieves Order by Cart id",
-        "description": "Retrieves an Order by the id of the Cart that was used to create the Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The ID of Cart.",
-=======
     "/products": {
       "get": {
         "operationId": "GetProducts",
@@ -2535,18 +1550,25 @@
             "in": "query",
             "name": "fields",
             "description": "(Comma separated) Which fields should be included in each order of the result.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.products.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/products'\n"
+          }
+        ],
         "tags": [
-<<<<<<< HEAD
-          "Order"
-=======
           "Product"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2555,10 +1577,6 @@
               "application/json": {
                 "schema": {
                   "properties": {
-<<<<<<< HEAD
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-=======
                     "products": {
                       "type": "array",
                       "items": {
@@ -2576,7 +1594,6 @@
                     "limit": {
                       "type": "integer",
                       "description": "The number of items per page"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
@@ -2586,29 +1603,17 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
-=======
     "/products/search": {
-      "get": {
-        "operationId": "GetProductsSearch",
+      "post": {
+        "operationId": "PostProductsSearch",
         "summary": "Search Products",
         "description": "Run a search query on products using the search engine installed on Medusa",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         "parameters": [
           {
             "in": "query",
             "name": "q",
             "required": true,
-<<<<<<< HEAD
-            "description": "The id of the Order.",
-=======
             "description": "The query to run the search with.",
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
             "schema": {
               "type": "string"
             }
@@ -2630,12 +1635,20 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.products.search({\n  q: 'Shirt'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/products/search?q=Shirt'\n"
+          }
+        ],
         "tags": [
-<<<<<<< HEAD
-          "Order"
-=======
           "Product"
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
         ],
         "responses": {
           "200": {
@@ -2644,21 +1657,15 @@
               "application/json": {
                 "schema": {
                   "properties": {
-<<<<<<< HEAD
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-=======
                     "hits": {
                       "type": "array",
                       "description": "Array of results. The format of the items depends on the search engine installed on the server."
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
                     }
                   }
                 }
               }
             }
           }
-<<<<<<< HEAD
         }
       }
     },
@@ -2676,6 +1683,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.regions.retrieve(region_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/regions/{id}'\n"
           }
         ],
         "tags": [
@@ -2784,6 +1803,18 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.regions.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/regions'\n"
+          }
+        ],
         "tags": [
           "Region"
         ],
@@ -2808,6 +1839,1244 @@
         }
       }
     },
+    "/carts/{id}/shipping-methods": {
+      "post": {
+        "operationId": "PostCartsCartShippingMethod",
+        "description": "Adds a Shipping Method to the Cart.",
+        "summary": "Add a Shipping Method",
+        "parameters": [
+          {
+<<<<<<< HEAD
+            "in": "query",
+            "name": "limit",
+            "description": "How many orders to return.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "in": "query",
+<<<<<<< HEAD
+            "name": "id",
+            "description": "Id of the order to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "style": "form",
+            "explode": false,
+            "description": "Status to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+=======
+            "name": "offset",
+            "description": "The offset in the resulting orders.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+            }
+          },
+          {
+            "in": "query",
+<<<<<<< HEAD
+            "name": "fulfillment_status",
+            "style": "form",
+            "explode": false,
+            "description": "Fulfillment status to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "payment_status",
+            "style": "form",
+            "explode": false,
+            "description": "Payment status to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "display_id",
+            "description": "Display id to search for.",
+=======
+            "name": "fields",
+            "description": "(Comma separated string) Which fields should be included in the resulting orders.",
+>>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+<<<<<<< HEAD
+            "name": "cart_id",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region_id",
+            "description": "to search for.",
+=======
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The cart ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.addShippingMethod(cart_id, {\n  option_id\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/shipping-methods' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"option_id\": \"{option_id}\",\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "option_id"
+                ],
+                "properties": {
+                  "option_id": {
+                    "type": "string",
+                    "description": "ID of the shipping option to create the method from"
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "option_id"
+                ],
+                "properties": {
+                  "option_id": {
+                    "type": "string",
+                    "description": "ID of the shipping option to create the method from"
+                  },
+                  "data": {
+                    "type": "object",
+                    "description": "Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/taxes": {
+      "post": {
+        "summary": "Calculate Cart Taxes",
+        "operationId": "PostCartsCartTaxes",
+        "description": "Calculates taxes for a cart. Depending on the cart's region this may involve making 3rd party API calls to a Tax Provider service.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The Cart ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/complete": {
+      "post": {
+        "summary": "Complete a Cart",
+        "operationId": "PostCartsCartComplete",
+        "description": "Completes a cart. The following steps will be performed. Payment authorization is attempted and if more work is required, we simply return the cart for further updates. If payment is authorized and order is not yet created, we make sure to do so. The completion of a cart can be performed idempotently with a provided header `Idempotency-Key`. If not provided, we will generate one for the request.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The Cart id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.complete(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/complete'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "If a cart was successfully authorized, but requires further action from the user the response body will contain the cart with an updated payment session. If the Cart was successfully completed the response body will contain the newly created Order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "The type of the data property.",
+                      "enum": [
+                        "order",
+                        "cart",
+                        "swap"
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "The data of the result object. Its type depends on the type field.",
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "description": "Cart was successfully authorized and order was placed successfully.",
+                          "properties": {
+                            "order": {
+                              "$ref": "#/components/schemas/order"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "description": "Cart was successfully authorized but requires further actions.",
+                          "properties": {
+                            "cart": {
+                              "$ref": "#/components/schemas/cart"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "description": "When cart is used for a swap and it has been completed successfully.",
+                          "properties": {
+                            "cart": {
+                              "$ref": "#/components/schemas/swap"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections were updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "description": "Date comparison for when resulting collections were canceled.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+          }
+        }
+      }
+    },
+    "/carts": {
+      "post": {
+        "summary": "Create a Cart",
+        "operationId": "PostCart",
+        "description": "Creates a Cart within the given region and with the initial items. If no `region_id` is provided the cart will be associated with the first Region available. If no items are provided the cart will be empty after creation. If a user is logged in the cart's customer id and email will be set.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "region_id": {
+                    "type": "string",
+                    "description": "The ID of the Region to create the Cart in."
+                  },
+                  "sales_channel_id": {
+                    "type": "string",
+                    "description": "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
+                  },
+                  "country_code": {
+                    "type": "string",
+                    "description": "The 2 character ISO country code to create the Cart in.",
+                    "externalDocs": {
+                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+                      "description": "See a list of codes."
+                    }
+                  },
+                  "items": {
+                    "description": "An optional array of `variant_id`, `quantity` pairs to generate Line Items from.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "variant_id",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to generate a Line Item from.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Product Variant to add",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+                    "type": "object",
+                    "example": {
+                      "ip": "::1",
+                      "user_agent": "Chrome"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.create()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new Cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/line-items": {
+      "post": {
+        "operationId": "PostCartsCartLineItems",
+        "summary": "Add a Line Item",
+        "description": "Generates a Line Item with a given Product Variant and adds it to the Cart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart to add the Line Item to.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.lineItems.create(cart_id, {\n  variant_id,\n  quantity: 1\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"variant_id\": \"{variant_id}\",\n    \"quantity\": 1\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "variant_id",
+                  "quantity"
+                ],
+                "properties": {
+                  "variant_id": {
+                    "type": "string",
+                    "description": "The id of the Product Variant to generate the Line Item from."
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "description": "The quantity of the Product Variant to add to the Line Item."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "An optional key-value map with additional details about the Line Item."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/payment-sessions": {
+      "post": {
+        "operationId": "PostCartsCartPaymentSessions",
+        "summary": "Initialize Payment Sessions",
+        "description": "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.createPaymentSessions(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/discounts/{code}": {
+      "delete": {
+        "operationId": "DeleteCartsCartDiscountsDiscount",
+        "description": "Removes a Discount from a Cart.",
+        "summary": "Remove Discount from Cart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "description": "The unique Discount code.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.deleteDiscount(cart_id, code)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/discounts/{code}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/line-items/{line_id}": {
+      "delete": {
+        "operationId": "DeleteCartsCartLineItemsItem",
+        "summary": "Delete a Line Item",
+        "description": "Removes a Line Item from a Cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Line Item.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.lineItems.delete(cart_id, line_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCartsCartLineItemsItem",
+        "summary": "Update a Line Item",
+        "description": "Updates a Line Item if the desired quantity can be fulfilled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Line Item.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.lineItems.update(cart_id, line_id, {\n  quantity: 1\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"quantity\": 1\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "quantity"
+                ],
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "description": "The quantity to set the Line Item to."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/payment-sessions/{provider_id}": {
+      "delete": {
+        "operationId": "DeleteCartsCartPaymentSessionsSession",
+        "summary": "Delete a Payment Session",
+        "description": "Deletes a Payment Session on a Cart. May be useful if a payment has failed.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the Payment Provider used to create the Payment Session to be deleted.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.deletePaymentSession(cart_id, 'manual')\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCartsCartPaymentSessionUpdate",
+        "summary": "Update a Payment Session",
+        "description": "Updates a Payment Session with additional data.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+      "post": {
+        "operationId": "PostCartsCart",
+        "summary": "Update a Cart",
+        "description": "Updates a Cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the payment provider.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.updatePaymentSession(cart_id, 'manual', {\n  data: {\n  }\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"data\": {}\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "description": "The data to update the payment session with."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}": {
+      "get": {
+        "operationId": "GetCartsCart",
+        "summary": "Retrieve a Cart",
+        "description": "Retrieves a Cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.retrieve(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/carts/{id}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCartsCart",
+        "summary": "Update a Cart",
+        "description": "Updates a Cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "region_id": {
+                    "type": "string",
+                    "description": "The id of the Region to create the Cart in."
+                  },
+                  "country_code": {
+                    "type": "string",
+                    "description": "The 2 character ISO country code to create the Cart in.",
+                    "externalDocs": {
+                      "url": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+                      "description": "See a list of codes."
+                    }
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "An email to be used on the Cart.",
+                    "format": "email"
+                  },
+                  "sales_channel_id": {
+                    "type": "string",
+                    "description": "The ID of the Sales channel to update the Cart with."
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address",
+                        "description": "A full billing address object."
+                      },
+                      {
+                        "type": "string",
+                        "description": "The billing address ID"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address",
+                        "description": "A full shipping address object."
+                      },
+                      {
+                        "type": "string",
+                        "description": "The shipping address ID"
+                      }
+                    ]
+                  },
+                  "gift_cards": {
+                    "description": "An array of Gift Card codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Gift Card is identified by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "discounts": {
+                    "description": "An array of Discount codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Discount is identifed by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "customer_id": {
+                    "description": "The ID of the Customer to associate the Cart with.",
+                    "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object",
+                    "example": {
+                      "ip": "::1",
+                      "user_agent": "Chrome"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.update(cart_id, {\n  email: 'user@example.com'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"email\": \"user@example.com\"\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/payment-sessions/{provider_id}/refresh": {
+      "post": {
+        "operationId": "PostCartsCartPaymentSessionsSession",
+        "summary": "Refresh a Payment Session",
+        "description": "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the Payment Provider that created the Payment Session to be refreshed.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.refreshPaymentSession(cart_id, 'manual')\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual/refresh'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/payment-session": {
+      "post": {
+        "operationId": "PostCartsCartPaymentSession",
+        "summary": "Select a Payment Session",
+        "description": "Selects a Payment Session as the session intended to be used towards the completion of the Cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.setPaymentSession(cart_id, {\n  provider_id: 'manual'\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"provider_id\": \"manual\"\n}'\n"
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "provider_id"
+                ],
+                "properties": {
+                  "provider_id": {
+                    "type": "string",
+                    "description": "The ID of the Payment Provider."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/return-reasons/{id}": {
       "get": {
         "operationId": "GetReturnReasonsReason",
@@ -2822,6 +3091,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.returnReasons.retrieve(reason_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/return-reasons/{id}'\n"
           }
         ],
         "tags": [
@@ -2850,6 +3131,18 @@
         "operationId": "GetReturnReasons",
         "summary": "List Return Reasons",
         "description": "Retrieves a list of Return Reasons.",
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.returnReasons.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/return-reasons'\n"
+          }
+        ],
         "tags": [
           "Return Reason"
         ],
@@ -2938,6 +3231,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.returns.create({\n  order_id,\n  items: [\n    {\n      item_id,\n      quantity: 1\n    }\n  ]\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/returns' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"order_id\": \"asfasf\",\n    \"items\": [\n      {\n        \"item_id\": \"assfasf\",\n        \"quantity\": 1\n      }\n    ]\n}'\n"
+          }
+        ],
         "tags": [
           "Return"
         ],
@@ -2950,101 +3255,6 @@
                   "properties": {
                     "return": {
                       "$ref": "#/components/schemas/return"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/shipping-options": {
-      "get": {
-        "operationId": "GetShippingOptions",
-        "summary": "Retrieve Shipping Options",
-        "description": "Retrieves a list of Shipping Options.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "is_return",
-            "description": "Whether return Shipping Options should be included. By default all Shipping Options are returned.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "product_ids",
-            "description": "A comma separated list of Product ids to filter Shipping Options by.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "region_id",
-            "description": "the Region to retrieve Shipping Options from.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Shipping Option"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_options": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/shipping_option"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/shipping-options/{cart_id}": {
-      "get": {
-        "operationId": "GetShippingOptionsCartId",
-        "summary": "Retrieve Shipping Options for Cart",
-        "description": "Retrieves a list of Shipping Options available to a cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The id of the Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Shipping Option"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_options": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/shipping_option"
-                      }
                     }
                   }
                 }
@@ -3130,6 +3340,18 @@
             }
           }
         },
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.swaps.create({\n  order_id,\n  return_items: [\n    {\n      item_id,\n      quantity: 1\n    }\n  ],\n  additional_items: [\n    {\n      variant_id,\n      quantity: 1\n    }\n  ]\n})\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request POST 'https://medusa-url.com/store/swaps' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"order_id\": \"asfasf\",\n    \"return_items\": [\n      {\n        \"item_id\": \"asfas\",\n        \"quantity\": 1\n      }\n    ],\n    \"additional_items\": [\n      {\n        \"variant_id\": \"asfas\",\n        \"quantity\": 1\n      }\n    ]\n}'\n"
+          }
+        ],
         "tags": [
           "Swap"
         ],
@@ -3165,6 +3387,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.swaps.retrieveByCartId(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/swaps/{cart_id}'\n"
           }
         ],
         "tags": [
@@ -3232,6 +3466,13 @@
                 "description": "See a list of codes."
               }
             }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/variants/{id}'\n"
           }
         ],
         "tags": [
@@ -3353,6 +3594,13 @@
             }
           }
         ],
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/variants'\n"
+          }
+        ],
         "tags": [
           "Product Variant"
         ],
@@ -3367,6 +3615,125 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/product_variant"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-options": {
+      "get": {
+        "operationId": "GetShippingOptions",
+        "summary": "Retrieve Shipping Options",
+        "description": "Retrieves a list of Shipping Options.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "is_return",
+            "description": "Whether return Shipping Options should be included. By default all Shipping Options are returned.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "product_ids",
+            "description": "A comma separated list of Product ids to filter Shipping Options by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region_id",
+            "description": "the Region to retrieve Shipping Options from.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.shippingOptions.list()\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/shipping-options'\n"
+          }
+        ],
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_options": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/shipping_option"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-options/{cart_id}": {
+      "get": {
+        "operationId": "GetShippingOptionsCartId",
+        "summary": "Retrieve Shipping Options for Cart",
+        "description": "Retrieves a list of Shipping Options available to a cart.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "JavaScript",
+            "label": "JS Client",
+            "source": "import Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.shippingOptions.listCartOptions(cart_id)\n"
+          },
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'\n"
+          }
+        ],
+        "tags": [
+          "Shipping Option"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_options": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/shipping_option"
                       }
                     }
                   }

@@ -12,6 +12,11 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *   this may involve making 3rd party API calls to a Tax Provider service."
  * parameters:
  *   - (path) id=* {String} The Cart ID.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
  * tags:
  *   - Cart
  * responses:

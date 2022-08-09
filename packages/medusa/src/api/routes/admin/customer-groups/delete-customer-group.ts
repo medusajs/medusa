@@ -22,7 +22,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/customer-groups/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/customer-groups/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Customer Group

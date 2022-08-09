@@ -59,7 +59,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/tax-rates/{id}/shipping-options/batch' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/shipping-options/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

@@ -27,7 +27,7 @@ import { isDefined } from "../../../../utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/gift-cards' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/gift-cards' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Gift Card

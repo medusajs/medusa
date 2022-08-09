@@ -153,7 +153,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/products/asfsaf/variants/saaga' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/products/asfsaf/variants/saaga' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

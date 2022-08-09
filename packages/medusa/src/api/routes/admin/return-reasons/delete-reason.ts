@@ -20,7 +20,7 @@ import { ReturnReasonService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/return-reasons/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/return-reasons/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Return Reason
