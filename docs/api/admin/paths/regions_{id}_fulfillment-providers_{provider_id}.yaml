@@ -27,6 +27,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/regions_{id}_fulfillment-providers_{provider_id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:

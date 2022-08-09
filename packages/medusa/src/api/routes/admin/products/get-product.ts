@@ -21,6 +21,9 @@ import { PricingService, ProductService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/products/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:

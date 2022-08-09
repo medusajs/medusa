@@ -41,6 +41,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/gift-cards/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -84,6 +87,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/gift-cards/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:

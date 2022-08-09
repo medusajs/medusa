@@ -45,6 +45,9 @@ import { SalesChannelService } from "../../../../services"
  *       --data-raw '{
  *           "name": "App"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Sales Channel
  * responses:

@@ -59,6 +59,9 @@ import { Type } from "class-transformer"
  *             }
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Sales Channel
  * responses:

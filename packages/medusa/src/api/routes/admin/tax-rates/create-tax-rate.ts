@@ -94,6 +94,9 @@ import { isDefined } from "../../../../utils"
  *           "name": "New Tax Rate",
  *           "region_id": "{region_id}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Tax Rate
  * responses:

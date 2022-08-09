@@ -37,6 +37,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/return-reasons/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Return Reason
   responses:
@@ -62,6 +65,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/return-reasons/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Return Reason
   responses:

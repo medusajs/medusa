@@ -2,9 +2,19 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Admin API
-  description: >-
+  description: >
     API reference for Medusa's Admin endpoints. All endpoints are prefixed with
     `/admin`.
+
+
+    ## Authentication
+
+
+    There are two ways to send authenticated requests to the Medusa server:
+    Using a user's API token, or using a Cookie Session ID.
+
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
   license:
     name: MIT
     url: 'https://github.com/medusajs/medusa/blob/master/LICENSE'
@@ -149,6 +159,9 @@ paths:
                 "state": "ready",
                 "code": "token"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - App
       responses:
@@ -172,6 +185,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/apps' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - App
       responses:
@@ -266,6 +282,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Auth
       responses:
@@ -293,6 +312,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/auth' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Auth
       responses:
@@ -338,6 +360,9 @@ paths:
             'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Batch Job
       responses:
@@ -381,6 +406,9 @@ paths:
             'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Batch Job
       responses:
@@ -467,6 +495,9 @@ paths:
                 "type": "product-export",
                 "context": { }
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Batch Job
       responses:
@@ -738,6 +769,9 @@ paths:
             'https://medusa-url.com/admin/batch-jobs' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Batch Job
       responses:
@@ -792,6 +826,9 @@ paths:
             'https://medusa-url.com/admin/batch-jobs/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Batch Job
       responses:
@@ -845,6 +882,9 @@ paths:
                     "prod_01G1G5V2MBA328390B5AXJ610F"
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -899,6 +939,9 @@ paths:
                     "prod_01G1G5V2MBA328390B5AXJ610F"
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -974,6 +1017,9 @@ paths:
             --data-raw '{
                 "title": "New Collection"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -1103,6 +1149,9 @@ paths:
             'https://medusa-url.com/admin/collections' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -1157,6 +1206,9 @@ paths:
             'https://medusa-url.com/admin/collections/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -1208,6 +1260,9 @@ paths:
             'https://medusa-url.com/admin/collections/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -1276,6 +1331,9 @@ paths:
             --data-raw '{
                 "title": "New Collection"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Collection
       responses:
@@ -1287,601 +1345,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  '/customer-groups/{id}/customers/batch':
-    post:
-      operationId: PostCustomerGroupsGroupCustomersBatch
-      summary: 'Add a list of customers to a customer group '
-      description: 'Adds a list of customers, represented by id''s, to a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - customer_ids
-              properties:
-                customer_ids:
-                  description: The ids of the customers to add
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: ID of the customer
-                        type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.addCustomers(customer_group_id, {
-              customer_ids: [
-                {
-                  id: customer_id
-                }
-              ]
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/customer-groups/{id}/customers/batch'
-            \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "customer_ids": [
-                    {
-                        "id": "cus_01G2Q4BS9GAHDBMDEN4ZQZCJB2"
-                    }
-                ]
-            }'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    delete:
-      operationId: DeleteCustomerGroupsGroupCustomerBatch
-      summary: 'Remove a list of customers from a customer group '
-      description: 'Removes a list of customers, represented by id''s, from a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - customer_ids
-              properties:
-                customer_ids:
-                  description: The ids of the customers to remove
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: ID of the customer
-                        type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.removeCustomers(customer_group_id, {
-              customer_ids: [
-                {
-                  id: customer_id
-                }
-              ]
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/customer-groups/{id}/customers/batch'
-            \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "customer_ids": [
-                    {
-                        "id": "cus_01G2Q4BS9GAHDBMDEN4ZQZCJB2"
-                    }
-                ]
-            }'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-  /customer-groups:
-    post:
-      operationId: PostCustomerGroups
-      summary: Create a CustomerGroup
-      description: Creates a CustomerGroup.
-      x-authenticated: true
-      parameters: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.create({
-              name: 'VIP'
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/customer-groups' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "VIP"
-            }'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomerGroups
-      summary: Retrieve a list of customer groups
-      description: Retrieve a list of customer groups.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching customer group names.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many groups to skip in the result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: order
-          description: the field used to order the customer groups.
-          schema:
-            type: string
-        - in: query
-          name: id
-          style: form
-          explode: false
-          description: Filter by the customer group ID
-          schema:
-            oneOf:
-              - type: string
-                description: customer group ID
-              - type: array
-                description: multiple customer group IDs
-                items:
-                  type: string
-              - type: object
-                properties:
-                  lt:
-                    type: string
-                    description: filter by IDs less than this ID
-                  gt:
-                    type: string
-                    description: filter by IDs greater than this ID
-                  lte:
-                    type: string
-                    description: filter by IDs less than or equal to this ID
-                  gte:
-                    type: string
-                    description: filter by IDs greater than or equal to this ID
-        - in: query
-          name: name
-          style: form
-          explode: false
-          description: Filter by the customer group name
-          schema:
-            type: array
-            description: multiple customer group names
-            items:
-              type: string
-              description: customer group name
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting customer groups were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting customer groups were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: limit
-          description: Limit the number of customer groups returned.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each customer
-            groups of the result.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.list()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/customer-groups' \
-
-            --header 'Authorization: Bearer {api_token}'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_groups:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer_group'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customer-groups/{id}':
-    delete:
-      operationId: DeleteCustomerGroupsCustomerGroup
-      summary: Delete a CustomerGroup
-      description: Deletes a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer Group
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.delete(customer_group_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/customer-groups/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted customer group.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: customer_group
-                  deleted:
-                    type: boolean
-                    description: >-
-                      Whether the customer group was deleted successfully or
-                      not.
-                    default: true
-    get:
-      operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
-      description: Retrieves a Customer Group.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Customer Group.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in the customer
-            group.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in the customer
-            group.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.retrieve(customer_group_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/customer-groups/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    post:
-      operationId: PostCustomerGroupsGroup
-      summary: Update a CustomerGroup
-      description: Update a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: Name of the customer group
-                  type: string
-                metadata:
-                  description: Metadata for the customer.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.update(customer_group_id, {
-              name: 'VIP'
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/customer-groups/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "VIP"
-            }'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-  '/customer-groups/{id}/customers':
-    get:
-      operationId: GetCustomerGroupsGroupCustomers
-      summary: List Customers
-      description: Retrieves a list of customers in a customer group
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the customer group.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.customerGroups.listCustomers(customer_group_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/customer-groups/{id}/customers' \
-
-            --header 'Authorization: Bearer {api_token}'
-      tags:
-        - Customer Group
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
   /customers:
     post:
       operationId: PostCustomers
@@ -1955,6 +1418,9 @@ paths:
                 "last_name": "Yost",
                 "password": "supersecret"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       responses:
         '201':
           description: OK
@@ -2011,6 +1477,9 @@ paths:
             'https://medusa-url.com/admin/customers' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -2075,6 +1544,9 @@ paths:
             'https://medusa-url.com/admin/customers/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -2172,6 +1644,9 @@ paths:
             --data-raw '{
                 "first_name": "Dolly"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Customer
       responses:
@@ -2221,6 +1696,9 @@ paths:
             'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -2271,6 +1749,9 @@ paths:
             'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -2387,6 +1868,9 @@ paths:
             --data-raw '{
                 "operator": "in"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount Condition
       responses:
@@ -2598,6 +2082,9 @@ paths:
                    "allocation": "item"
                 }
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -2691,6 +2178,9 @@ paths:
             'https://medusa-url.com/admin/discounts' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -2756,6 +2246,9 @@ paths:
             --data-raw '{
                 "code": "TEST"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -2836,6 +2329,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount Condition
       responses:
@@ -2909,6 +2405,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount Condition
       responses:
@@ -3025,6 +2524,9 @@ paths:
                    "prod_01G1G5V2MBA328390B5AXJ610F"
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3068,6 +2570,9 @@ paths:
             'https://medusa-url.com/admin/discounts/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3129,6 +2634,9 @@ paths:
             'https://medusa-url.com/admin/discounts/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3314,6 +2822,9 @@ paths:
             --data-raw '{
                 "code": "TEST"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3363,6 +2874,9 @@ paths:
             'https://medusa-url.com/admin/discounts/{id}/dynamic-codes/{code}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3416,6 +2930,9 @@ paths:
             'https://medusa-url.com/admin/discounts/code/{code}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Discount
       responses:
@@ -3427,6 +2944,625 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  '/customer-groups/{id}/customers/batch':
+    post:
+      operationId: PostCustomerGroupsGroupCustomersBatch
+      summary: 'Add a list of customers to a customer group '
+      description: 'Adds a list of customers, represented by id''s, to a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - customer_ids
+              properties:
+                customer_ids:
+                  description: The ids of the customers to add
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: ID of the customer
+                        type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.addCustomers(customer_group_id, {
+              customer_ids: [
+                {
+                  id: customer_id
+                }
+              ]
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/customer-groups/{id}/customers/batch'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "customer_ids": [
+                    {
+                        "id": "cus_01G2Q4BS9GAHDBMDEN4ZQZCJB2"
+                    }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    delete:
+      operationId: DeleteCustomerGroupsGroupCustomerBatch
+      summary: 'Remove a list of customers from a customer group '
+      description: 'Removes a list of customers, represented by id''s, from a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - customer_ids
+              properties:
+                customer_ids:
+                  description: The ids of the customers to remove
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: ID of the customer
+                        type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.removeCustomers(customer_group_id, {
+              customer_ids: [
+                {
+                  id: customer_id
+                }
+              ]
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/customer-groups/{id}/customers/batch'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "customer_ids": [
+                    {
+                        "id": "cus_01G2Q4BS9GAHDBMDEN4ZQZCJB2"
+                    }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  /customer-groups:
+    post:
+      operationId: PostCustomerGroups
+      summary: Create a CustomerGroup
+      description: Creates a CustomerGroup.
+      x-authenticated: true
+      parameters: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.create({
+              name: 'VIP'
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/customer-groups' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "VIP"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the customer group
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomerGroups
+      summary: Retrieve a list of customer groups
+      description: Retrieve a list of customer groups.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching customer group names.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many groups to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: the field used to order the customer groups.
+          schema:
+            type: string
+        - in: query
+          name: id
+          style: form
+          explode: false
+          description: Filter by the customer group ID
+          schema:
+            oneOf:
+              - type: string
+                description: customer group ID
+              - type: array
+                description: multiple customer group IDs
+                items:
+                  type: string
+              - type: object
+                properties:
+                  lt:
+                    type: string
+                    description: filter by IDs less than this ID
+                  gt:
+                    type: string
+                    description: filter by IDs greater than this ID
+                  lte:
+                    type: string
+                    description: filter by IDs less than or equal to this ID
+                  gte:
+                    type: string
+                    description: filter by IDs greater than or equal to this ID
+        - in: query
+          name: name
+          style: form
+          explode: false
+          description: Filter by the customer group name
+          schema:
+            type: array
+            description: multiple customer group names
+            items:
+              type: string
+              description: customer group name
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting customer groups were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting customer groups were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: limit
+          description: Limit the number of customer groups returned.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each customer
+            groups of the result.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.list()
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/customer-groups' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer_group'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customer-groups/{id}':
+    delete:
+      operationId: DeleteCustomerGroupsCustomerGroup
+      summary: Delete a CustomerGroup
+      description: Deletes a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Customer Group
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.delete(customer_group_id)
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/customer-groups/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted customer group.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: customer_group
+                  deleted:
+                    type: boolean
+                    description: >-
+                      Whether the customer group was deleted successfully or
+                      not.
+                    default: true
+    get:
+      operationId: GetCustomerGroupsGroup
+      summary: Retrieve a CustomerGroup
+      description: Retrieves a Customer Group.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Customer Group.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in the customer
+            group.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in the customer
+            group.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.retrieve(customer_group_id)
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/customer-groups/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    post:
+      operationId: PostCustomerGroupsGroup
+      summary: Update a CustomerGroup
+      description: Update a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: Name of the customer group
+                  type: string
+                metadata:
+                  description: Metadata for the customer.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.update(customer_group_id, {
+              name: 'VIP'
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/customer-groups/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "VIP"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  '/customer-groups/{id}/customers':
+    get:
+      operationId: GetCustomerGroupsGroupCustomers
+      summary: List Customers
+      description: Retrieves a list of customers in a customer group
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the customer group.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.customerGroups.listCustomers(customer_group_id)
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/customer-groups/{id}/customers' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Customer Group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -3581,6 +3717,9 @@ paths:
                    }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3636,6 +3775,9 @@ paths:
             'https://medusa-url.com/admin/draft-orders' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3725,6 +3867,9 @@ paths:
             --data-raw '{
                 "quantity": 1
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3768,6 +3913,9 @@ paths:
             'https://medusa-url.com/admin/draft-orders/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3819,6 +3967,9 @@ paths:
             'https://medusa-url.com/admin/draft-orders/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3869,6 +4020,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3945,6 +4099,9 @@ paths:
             --data-raw '{
                 "quantity": 1
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -3988,6 +4145,9 @@ paths:
             'https://medusa-url.com/admin/draft-orders/{id}/pay' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -4083,6 +4243,9 @@ paths:
             --data-raw '{
                 "email": "user@example.com"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Draft Order
       responses:
@@ -4160,6 +4323,9 @@ paths:
             --data-raw '{
                 "region_id": "{region_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Gift Card
       responses:
@@ -4213,6 +4379,9 @@ paths:
             'https://medusa-url.com/admin/gift-cards' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Gift Card
       responses:
@@ -4267,6 +4436,9 @@ paths:
             'https://medusa-url.com/admin/gift-cards/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Gift Card
       responses:
@@ -4318,6 +4490,9 @@ paths:
             'https://medusa-url.com/admin/gift-cards/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Gift Card
       responses:
@@ -4399,6 +4574,9 @@ paths:
             --data-raw '{
                 "region_id": "{region_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Gift Card
       responses:
@@ -4481,6 +4659,9 @@ paths:
                   "password": "supersecret"
                 }
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Invite
       responses:
@@ -4540,6 +4721,9 @@ paths:
                 "user": "user@example.com",
                 "role": "admin"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Invite
       responses:
@@ -4569,6 +4753,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Invite
       responses:
@@ -4614,6 +4801,9 @@ paths:
             'https://medusa-url.com/admin/invites/{invite_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Invite
       responses:
@@ -4666,6 +4856,9 @@ paths:
             'https://medusa-url.com/admin/invites/{invite_id}/resend' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Invite
       responses:
@@ -4726,6 +4919,9 @@ paths:
                 "resource_type": "order",
                 "value": "We delivered this order"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Note
       responses:
@@ -4777,6 +4973,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/notes' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Note
       responses:
@@ -4831,6 +5030,9 @@ paths:
             'https://medusa-url.com/admin/notes/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Note
       responses:
@@ -4882,6 +5084,9 @@ paths:
             'https://medusa-url.com/admin/notes/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Note
       responses:
@@ -4942,6 +5147,9 @@ paths:
             --data-raw '{
                 "value": "We delivered this order"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Note
       responses:
@@ -5033,6 +5241,9 @@ paths:
             'https://medusa-url.com/admin/notifications' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Notification
       responses:
@@ -5090,6 +5301,9 @@ paths:
             'https://medusa-url.com/admin/notifications/{id}/resend' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Notification
       responses:
@@ -5146,6 +5360,9 @@ paths:
                 "price": 1000,
                 "option_id": "{option_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -5214,6 +5431,9 @@ paths:
             'https://medusa-url.com/admin/orders/{id}/archive' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -5264,6 +5484,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Claim
       responses:
@@ -5372,6 +5595,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -5429,6 +5655,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -5479,6 +5708,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -5525,6 +5757,9 @@ paths:
             'https://medusa-url.com/admin/orders/{id}/cancel' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -5575,6 +5810,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -5618,6 +5856,9 @@ paths:
             'https://medusa-url.com/admin/orders/{id}/capture' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -5661,6 +5902,9 @@ paths:
             'https://medusa-url.com/admin/orders/{id}/complete' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -5734,6 +5978,9 @@ paths:
             --data-raw '{
                 "fulfillment_id": "{fulfillment_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Claim
       responses:
@@ -5920,6 +6167,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Claim
       responses:
@@ -6014,6 +6264,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -6085,6 +6338,9 @@ paths:
             --data-raw '{
                 "fulfillment_id": "{fulfillment_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -6163,6 +6419,9 @@ paths:
             --data-raw '{
                 "fulfillment_id": "{fulfillment_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -6308,6 +6567,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -6373,6 +6635,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -6438,6 +6703,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Fulfillment
       responses:
@@ -6481,6 +6749,9 @@ paths:
             'https://medusa-url.com/admin/orders/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -6599,6 +6870,9 @@ paths:
             --data-raw '{
                 "email": "user@example.com"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -6849,6 +7123,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -6913,6 +7190,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -6988,6 +7268,9 @@ paths:
                 "amount": 1000,
                 "reason": "Do not like it"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Order
       responses:
@@ -7109,6 +7392,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return
         - Order
@@ -7260,6 +7546,9 @@ paths:
             --data-raw '{
                 "no_notification": true
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Claim
       responses:
@@ -7370,6 +7659,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -7436,6 +7728,9 @@ paths:
                   "adasfa"
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -7593,6 +7888,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -7769,6 +8067,9 @@ paths:
             'https://medusa-url.com/admin/price-lists' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -7823,6 +8124,9 @@ paths:
             'https://medusa-url.com/admin/price-lists/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -7874,6 +8178,9 @@ paths:
             'https://medusa-url.com/admin/price-lists/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -8004,6 +8311,9 @@ paths:
             --data-raw '{
                 "name": "New Price List"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -8057,6 +8367,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -8121,6 +8434,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Price List
       responses:
@@ -8341,6 +8657,9 @@ paths:
             'https://medusa-url.com/admin/price-lists/{id}/products' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -8473,6 +8792,9 @@ paths:
             'https://medusa-url.com/admin/product-tags' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product Tag
       responses:
@@ -8603,6 +8925,9 @@ paths:
             'https://medusa-url.com/admin/product-types' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product Type
       responses:
@@ -8675,6 +9000,9 @@ paths:
             --data-raw '{
                 "title": "Size"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -8962,6 +9290,9 @@ paths:
             --data-raw '{
                 "title": "Shirt"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9185,6 +9516,9 @@ paths:
             'https://medusa-url.com/admin/products' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9388,6 +9722,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9441,6 +9778,9 @@ paths:
             'https://medusa-url.com/admin/products/{id}/variants' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9505,6 +9845,9 @@ paths:
             'https://medusa-url.com/admin/products/{id}/options/{option_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9582,6 +9925,9 @@ paths:
             --data-raw '{
                 "title": "Size"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9625,6 +9971,9 @@ paths:
             'https://medusa-url.com/admin/products/asfsaf' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9676,6 +10025,9 @@ paths:
             'https://medusa-url.com/admin/products/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9949,6 +10301,9 @@ paths:
             --data-raw '{
                 "title": "Size"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -9998,6 +10353,9 @@ paths:
             'https://medusa-url.com/admin/products/{id}/variants/{variant_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -10195,6 +10553,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -10231,6 +10592,9 @@ paths:
             'https://medusa-url.com/admin/products/tag-usage' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product Tag
       responses:
@@ -10278,6 +10642,9 @@ paths:
             'https://medusa-url.com/admin/products/types' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -10348,6 +10715,9 @@ paths:
                 "key": "test",
                 "value": "true"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product
       responses:
@@ -10413,6 +10783,9 @@ paths:
             --data-raw '{
                 "country_code": "dk"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10474,6 +10847,9 @@ paths:
             --data-raw '{
                 "provider_id": "manual"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10535,6 +10911,9 @@ paths:
             --data-raw '{
                 "provider_id": "manual"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10658,6 +11037,9 @@ paths:
                   "DK"
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10732,6 +11114,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10786,6 +11171,9 @@ paths:
             'https://medusa-url.com/admin/regions/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10837,6 +11225,9 @@ paths:
             'https://medusa-url.com/admin/regions/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10944,6 +11335,9 @@ paths:
             --data-raw '{
                 "name": "Europe"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -10987,6 +11381,9 @@ paths:
             'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -11051,6 +11448,9 @@ paths:
             'https://medusa-url.com/admin/regions/{id}/countries/dk' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -11101,6 +11501,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -11151,6 +11554,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Region
       responses:
@@ -11224,6 +11630,9 @@ paths:
                 "label": "Damaged",
                 "value": "damaged"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return Reason
       responses:
@@ -11259,6 +11668,9 @@ paths:
             'https://medusa-url.com/admin/return-reasons' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return Reason
       responses:
@@ -11304,6 +11716,9 @@ paths:
             'https://medusa-url.com/admin/return-reasons/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return Reason
       responses:
@@ -11355,6 +11770,9 @@ paths:
             'https://medusa-url.com/admin/return-reasons/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return Reason
       responses:
@@ -11426,6 +11844,9 @@ paths:
             --data-raw '{
                 "label": "Damaged"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return Reason
       responses:
@@ -11468,6 +11889,9 @@ paths:
             'https://medusa-url.com/admin/returns/{id}/cancel' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return
       responses:
@@ -11516,6 +11940,9 @@ paths:
             \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return
       responses:
@@ -11613,6 +12040,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Return
       responses:
@@ -11690,6 +12120,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -11766,6 +12199,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -11827,6 +12263,9 @@ paths:
             --data-raw '{
                 "name": "App"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -11980,6 +12419,9 @@ paths:
             'https://medusa-url.com/admin/sales-channels' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -12034,6 +12476,9 @@ paths:
             'https://medusa-url.com/admin/sales-channels/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -12085,6 +12530,9 @@ paths:
             'https://medusa-url.com/admin/sales-channels/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -12149,6 +12597,9 @@ paths:
             --data-raw '{
                 "name": "App"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Sales Channel
       responses:
@@ -12277,6 +12728,9 @@ paths:
                 "data": {},
                 "price_type": "flat_rate"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Option
       responses:
@@ -12328,6 +12782,9 @@ paths:
             'https://medusa-url.com/admin/shipping-options' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Option
       responses:
@@ -12376,6 +12833,9 @@ paths:
             'https://medusa-url.com/admin/shipping-options/{option_id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Option
       responses:
@@ -12427,6 +12887,9 @@ paths:
             'https://medusa-url.com/admin/shipping-options/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Option
       responses:
@@ -12532,6 +12995,9 @@ paths:
                   }
                 ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Option
       responses:
@@ -12586,6 +13052,9 @@ paths:
             --data-raw '{
                 "name": "Large Products"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Profile
       responses:
@@ -12621,6 +13090,9 @@ paths:
             'https://medusa-url.com/admin/shipping-profiles' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Profile
       responses:
@@ -12666,6 +13138,9 @@ paths:
             'https://medusa-url.com/admin/shipping-profiles/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Profile
       responses:
@@ -12717,6 +13192,9 @@ paths:
             'https://medusa-url.com/admin/shipping-profiles/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Profile
       responses:
@@ -12774,6 +13252,9 @@ paths:
             --data-raw '{
                 "name": "Large Products"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Shipping Profile
       responses:
@@ -12820,6 +13301,9 @@ paths:
             'https://medusa-url.com/admin/store/currencies/eur' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -12865,6 +13349,9 @@ paths:
             'https://medusa-url.com/admin/store/currencies/eur' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -12899,6 +13386,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/store' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -12981,6 +13471,9 @@ paths:
             --data-raw '{
                 "name": "Medusa Store"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -13017,6 +13510,9 @@ paths:
             'https://medusa-url.com/admin/store/payment-providers' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -13055,6 +13551,9 @@ paths:
             'https://medusa-url.com/admin/store/tax-providers' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Store
       responses:
@@ -13100,6 +13599,9 @@ paths:
             'https://medusa-url.com/admin/swaps/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -13147,6 +13649,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/swaps' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Swap
       responses:
@@ -13245,6 +13750,9 @@ paths:
                  "{product_type_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13331,6 +13839,9 @@ paths:
                  "{product_type_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13416,6 +13927,9 @@ paths:
                  "{product_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13502,6 +14016,9 @@ paths:
                  "{product_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13590,6 +14107,9 @@ paths:
                  "{shipping_option_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13677,6 +14197,9 @@ paths:
                  "{shipping_option_id}"
                ]
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13784,6 +14307,9 @@ paths:
                 "name": "New Tax Rate",
                 "region_id": "{region_id}"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13893,6 +14419,9 @@ paths:
             'https://medusa-url.com/admin/tax-rates' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -13947,6 +14476,9 @@ paths:
             'https://medusa-url.com/admin/tax-rates/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -14016,6 +14548,9 @@ paths:
             'https://medusa-url.com/admin/tax-rates/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -14120,6 +14655,9 @@ paths:
             --data-raw '{
                 "name": "New Tax Rate"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Tax Rate
       responses:
@@ -14169,6 +14707,9 @@ paths:
             --header 'Content-Type: image/jpeg' \
 
             --data-binary '{file_path}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Upload
       responses:
@@ -14251,6 +14792,9 @@ paths:
                 "email": "user@example.com",
                 "password": "supersecret"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14284,6 +14828,9 @@ paths:
           source: |
             curl --location --request GET 'https://medusa-url.com/admin/users' \
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14329,6 +14876,9 @@ paths:
             'https://medusa-url.com/admin/users/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Users
       responses:
@@ -14380,6 +14930,9 @@ paths:
             'https://medusa-url.com/admin/users/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14456,6 +15009,9 @@ paths:
             --data-raw '{
                 "first_name": "Marcellus"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14511,6 +15067,9 @@ paths:
             --data-raw '{
                 "email": "user@example.com"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14570,6 +15129,9 @@ paths:
                 "token": "supersecrettoken",
                 "password": "supersecret"
             }'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - User
       responses:
@@ -14624,6 +15186,9 @@ paths:
             'https://medusa-url.com/admin/variants' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
         - Product Variant
       responses:
@@ -14647,6 +15212,146 @@ paths:
                     type: integer
                     description: The number of items per page
 components:
+  securitySchemes:
+    api_token:
+      type: http
+      x-displayName: API Token
+      description: >
+        Use a user's API Token to send authenticated requests.
+
+
+        ### How to Add API Token to a User
+
+
+        At the moment, there's no direct way of adding an API Token for a user.
+        The only way it can be done is through directly editing the database.
+
+
+        If you're using a PostgreSQL database, you can run the following
+        commands in your command line to add API token:
+
+
+        ```bash
+
+        psql -d <DB_NAME> -U <DB_USER>
+
+        UPDATE public.user SET api_token='<API_TOKEN>' WHERE
+        email='<USER_EMAIL>';
+
+        ```
+
+
+        Where:
+
+        - `<DB_NAME>` is the name of the database schema you use for the Medusa
+        server.
+
+        - `<DB_USER>` is the name of the user that has privileges over the
+        database schema.
+
+        - `<API_TOKEN>` is the API token you want to associate with the user.
+        You can use [this tool to generate a random
+        token](https://randomkeygen.com/).
+
+        - `<USER_EMAIL>` is the email address of the admin user you want to have
+        this API token.
+
+
+        ### How to Use the API Token
+
+
+        The API token can be used for Bearer Authentication. It's passed in the
+        `Authorization` header as the following:
+
+
+        ```
+
+        Authorization: Bearer {api_token}
+
+        ```
+
+
+        In this API reference, you'll find in the cURL request samples the use
+        of `{api_token}`. This is where you must pass the API token.
+
+
+        If you're alternatively following along with the JS Client request
+        samples, you must provide the `apiKey` option when creating the Medusa
+        client:
+
+
+        ```js
+
+        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3,
+        apiKey: '{api_token}' })
+
+        ```
+      scheme: bearer
+    cookie_auth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      x-displayName: Cookie Session ID
+      description: >
+        Use a cookie session to send authenticated requests.
+
+
+        ### How to Obtain the Cookie Session
+
+
+        If you're sending requests through a browser, using JS Client, or using
+        tools like Postman, the cookie session should be automatically set when
+        the admin user is logged in.
+
+
+        If you're sending requests using cURL, you must set the Session ID in
+        the cookie manually.
+
+
+        To do that, send a request to [authenticate the
+        user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+
+        ```bash
+
+        curl -v --location --request POST 'https://medusa-url.com/admin/auth' \
+
+        --header 'Content-Type: application/json' \
+
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+
+        ```
+
+
+        The headers will be logged in the terminal as well as the response. You
+        should find in the headers a Cookie header similar to this:
+
+
+        ```bash
+
+        Set-Cookie:
+        connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+
+        ```
+
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass
+        it as a cookie in subsequent requests as the following:
+
+
+        ```bash
+
+        curl --location --request GET 'https://medusa-url.com/admin/products' \
+
+        --header 'Cookie: connect.sid={sid}'
+
+        ```
+
+
+        Where `{sid}` is the value of `connect.sid` that you copied.
   schemas:
     address:
       title: Address

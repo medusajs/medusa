@@ -171,6 +171,9 @@ import { validator } from "../../../../utils/validator"
  *              "allocation": "item"
  *           }
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:

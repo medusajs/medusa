@@ -49,6 +49,8 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/auth/deleteundefined
+  security:
+    - cookie_auth: []
   tags:
     - Auth
   responses:
@@ -68,6 +70,8 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/auth/getundefined
+  security:
+    - cookie_auth: []
   tags:
     - Auth
   responses:

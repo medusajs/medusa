@@ -26,6 +26,9 @@ import { ReturnReasonService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/return-reasons/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Return Reason
  * responses:

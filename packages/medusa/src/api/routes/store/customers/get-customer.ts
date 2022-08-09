@@ -21,6 +21,8 @@ import CustomerService from "../../../../services/customer"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/customers/me' \
  *       --header 'Cookie: connect.sid={sid}'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:

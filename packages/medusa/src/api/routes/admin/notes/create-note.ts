@@ -51,6 +51,9 @@ import { validator } from "../../../../utils/validator"
  *           "resource_type": "order",
  *           "value": "We delivered this order"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Note
  * responses:

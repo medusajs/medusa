@@ -57,6 +57,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "fulfillment_id": "{fulfillment_id}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Swap
  * responses:

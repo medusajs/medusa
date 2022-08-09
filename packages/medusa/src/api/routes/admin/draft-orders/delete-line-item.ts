@@ -31,6 +31,9 @@ import { MedusaError } from "medusa-core-utils"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Draft Order
  * responses:

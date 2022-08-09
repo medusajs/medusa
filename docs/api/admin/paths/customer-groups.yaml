@@ -13,6 +13,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customer-groups/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:
@@ -164,6 +167,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customer-groups/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:

@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/sales-channels_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/sales-channels_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -106,6 +112,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/sales-channels_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:

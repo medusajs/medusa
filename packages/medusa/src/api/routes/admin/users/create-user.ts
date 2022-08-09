@@ -59,6 +59,9 @@ import { validator } from "../../../../utils/validator"
  *           "email": "user@example.com",
  *           "password": "supersecret"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - User
  * responses:

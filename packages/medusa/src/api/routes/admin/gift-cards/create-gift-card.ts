@@ -54,6 +54,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "region_id": "{region_id}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Gift Card
  * responses:

@@ -30,6 +30,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/notes/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -73,6 +76,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/notes/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Note
   responses:

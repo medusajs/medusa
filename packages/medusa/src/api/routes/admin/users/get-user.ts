@@ -21,6 +21,9 @@ import UserService from "../../../../services/user"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/users/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - User
  * responses:

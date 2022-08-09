@@ -23,6 +23,9 @@ import PriceListService from "../../../../services/price-list"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/products/{product_id}/prices' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Price List
  * responses:

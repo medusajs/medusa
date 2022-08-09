@@ -19,6 +19,9 @@ import { ShippingProfileService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/shipping-profiles' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Profile
  * responses:

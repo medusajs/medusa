@@ -29,6 +29,9 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/products/{id}/variants/{variant_id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:

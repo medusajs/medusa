@@ -124,6 +124,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "no_notification": true
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Claim
  * responses:

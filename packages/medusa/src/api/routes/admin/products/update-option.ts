@@ -43,6 +43,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "title": "Size"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:

@@ -36,6 +36,9 @@ import { IsString } from "class-validator"
  *       --data-raw '{
  *           "file_key": "{file_key}"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Upload
  * responses:

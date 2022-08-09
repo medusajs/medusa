@@ -47,6 +47,9 @@ import { validator } from "../../../../utils/validator"
  *           "key": "test",
  *           "value": "true"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:

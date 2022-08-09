@@ -26,6 +26,9 @@ import { FindParams } from "../../../../types/common"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Customer Group
  * responses:

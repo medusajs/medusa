@@ -29,6 +29,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customers_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -108,6 +111,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customers_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer
   responses:

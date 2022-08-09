@@ -60,6 +60,9 @@ import { validator } from "../../../../utils/validator"
  *           "amount": 1000,
  *           "reason": "Do not like it"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Order
  * responses:

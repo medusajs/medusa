@@ -60,6 +60,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "Medusa Store"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Store
  * responses:

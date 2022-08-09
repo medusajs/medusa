@@ -43,6 +43,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "provider_id": "manual"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

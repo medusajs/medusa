@@ -44,6 +44,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/draft-orders_{id}_line-items/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Draft Order
   responses:

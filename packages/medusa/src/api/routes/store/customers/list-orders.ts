@@ -142,6 +142,8 @@ import { Type } from "class-transformer"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
  *       --header 'Cookie: connect.sid={sid}'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:

@@ -157,6 +157,9 @@ import { validator } from "../../../../utils/validator"
  *              }
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Draft Order
  * responses:

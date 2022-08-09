@@ -68,6 +68,9 @@ import { validator } from "../../../../utils/validator"
  *             "password": "supersecret"
  *           }
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Invite
  * responses:

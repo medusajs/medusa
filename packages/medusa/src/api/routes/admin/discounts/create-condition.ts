@@ -75,6 +75,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "operator": "in"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount Condition
  * responses:

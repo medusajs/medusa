@@ -18,6 +18,9 @@ import { PaymentProviderService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/store/payment-providers' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Store
  * responses:

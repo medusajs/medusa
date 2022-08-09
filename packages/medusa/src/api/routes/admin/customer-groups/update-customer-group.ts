@@ -45,6 +45,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "name": "VIP"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Customer Group
  * responses:

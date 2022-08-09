@@ -37,6 +37,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount Condition
   responses:
@@ -101,6 +104,9 @@ get:
       source:
         $ref: >-
           ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount Condition
   responses:
@@ -196,6 +202,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/discounts_{discount_id}_conditions_{condition_id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:

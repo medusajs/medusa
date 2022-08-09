@@ -39,6 +39,9 @@ import { validator } from "../../../../utils/validator"
  *           "state": "ready",
  *           "code": "token"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - App
  * responses:

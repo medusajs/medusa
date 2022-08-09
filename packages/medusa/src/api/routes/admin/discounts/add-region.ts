@@ -26,6 +26,9 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:

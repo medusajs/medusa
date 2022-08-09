@@ -29,6 +29,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/price-lists_{id}_variants_{variant_id}_prices/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Price List
   responses:

@@ -23,6 +23,9 @@ import { SwapService } from "../../../../services"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/swaps/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Swap
  * responses:

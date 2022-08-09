@@ -128,6 +128,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/products_{id}_variants/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product
   responses:
@@ -178,6 +181,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/products_{id}_variants/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product
   responses:

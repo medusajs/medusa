@@ -24,6 +24,8 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
  *       --header 'Cookie: connect.sid={sid}'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:

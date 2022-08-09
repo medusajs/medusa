@@ -67,6 +67,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/tax-rates/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -166,6 +169,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/tax-rates/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:

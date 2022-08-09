@@ -30,6 +30,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/orders_{id}_swaps_{swap_id}_process-payment/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Swap
   responses:

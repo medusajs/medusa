@@ -26,6 +26,9 @@ import { MedusaError } from "medusa-core-utils"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/orders/{order_id}/swaps/{swap_id}/cancel' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Swap
  * responses:

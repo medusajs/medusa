@@ -21,6 +21,9 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/shipping-options/{option_id}' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Option
  * responses:

@@ -44,6 +44,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       --data-raw '{
  *           "title": "New Collection"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Collection
  * responses:

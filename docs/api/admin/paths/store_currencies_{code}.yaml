@@ -22,6 +22,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/store_currencies_{code}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Store
   responses:
@@ -57,6 +60,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/store_currencies_{code}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Store
   responses:

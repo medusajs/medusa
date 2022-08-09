@@ -38,6 +38,9 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/customer-groups_{id}_customers_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:
@@ -89,6 +92,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/customer-groups_{id}_customers_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:

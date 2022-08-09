@@ -83,6 +83,9 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *       --data-raw '{
  *           "name": "Europe"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

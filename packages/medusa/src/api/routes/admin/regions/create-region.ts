@@ -102,6 +102,9 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *             "DK"
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:

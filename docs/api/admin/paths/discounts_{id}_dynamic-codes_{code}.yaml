@@ -27,6 +27,9 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/discounts_{id}_dynamic-codes_{code}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:

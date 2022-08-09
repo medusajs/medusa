@@ -140,6 +140,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/order_{id}_claims/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Claim
   responses:

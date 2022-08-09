@@ -19,6 +19,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/orders_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Order
   responses:
@@ -119,6 +122,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/orders_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Order
   responses:

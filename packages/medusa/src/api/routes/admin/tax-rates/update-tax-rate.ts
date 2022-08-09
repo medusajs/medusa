@@ -86,6 +86,9 @@ import { isDefined } from "../../../../utils"
  *       --data-raw '{
  *           "name": "New Tax Rate"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Tax Rate
  * responses:

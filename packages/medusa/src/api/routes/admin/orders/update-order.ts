@@ -109,6 +109,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Order
  * responses:

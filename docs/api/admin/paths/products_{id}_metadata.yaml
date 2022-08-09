@@ -33,6 +33,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/products_{id}_metadata/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Product
   responses:

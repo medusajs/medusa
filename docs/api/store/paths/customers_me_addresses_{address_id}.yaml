@@ -21,6 +21,8 @@ delete:
       source:
         $ref: >-
           ../code_samples/Shell/customers_me_addresses_{address_id}/deleteundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -61,6 +63,8 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/customers_me_addresses_{address_id}/postundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:

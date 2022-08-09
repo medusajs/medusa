@@ -104,6 +104,9 @@ import { removeUndefinedProperties } from "../../../../utils"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/admin/sales-channels' \
  *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Sales Channel
  * responses:

@@ -19,6 +19,9 @@ delete:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-profiles_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Profile
   responses:
@@ -60,6 +63,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-profiles_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Profile
   responses:
@@ -99,6 +105,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/shipping-profiles_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Shipping Profile
   responses:

@@ -172,6 +172,8 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customers_me_orders/getundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:

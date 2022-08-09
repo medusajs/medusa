@@ -40,6 +40,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "value": "We delivered this order"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Note
  * responses:

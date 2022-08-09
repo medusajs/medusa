@@ -53,6 +53,9 @@ import { validator } from "../../../../utils/validator"
  *       --data-raw '{
  *           "first_name": "Marcellus"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - User
  * responses:

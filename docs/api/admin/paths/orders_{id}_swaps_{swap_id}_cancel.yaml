@@ -26,6 +26,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/orders_{id}_swaps_{swap_id}_cancel/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Swap
   responses:

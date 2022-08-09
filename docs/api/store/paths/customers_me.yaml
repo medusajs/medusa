@@ -14,6 +14,8 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customers_me/getundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -69,6 +71,8 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/customers_me/postundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:

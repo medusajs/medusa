@@ -67,6 +67,9 @@ import { validator } from "../../../../utils/validator"
  *           "last_name": "Yost",
  *           "password": "supersecret"
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * responses:
  *   201:
  *     description: OK

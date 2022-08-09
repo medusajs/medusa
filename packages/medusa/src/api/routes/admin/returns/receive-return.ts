@@ -72,6 +72,9 @@ import { isDefined } from "../../../../utils"
  *             }
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Return
  * responses:

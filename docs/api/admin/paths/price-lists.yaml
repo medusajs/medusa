@@ -91,6 +91,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/price-lists/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Price List
   responses:
@@ -257,6 +260,9 @@ get:
       label: cURL
       source:
         $ref: ../code_samples/Shell/price-lists/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Price List
   responses:

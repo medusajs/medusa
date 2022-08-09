@@ -45,6 +45,9 @@ import { validator } from "../../../../utils/validator"
  *             "adasfa"
  *           ]
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Price List
  * responses:
