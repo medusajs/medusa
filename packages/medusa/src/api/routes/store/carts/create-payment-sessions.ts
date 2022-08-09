@@ -67,7 +67,7 @@ export default async (req, res) => {
                 async (manager) => {
                   await cartService.withTransaction(manager).setPaymentSessions(id)
 
-                  const cart = await cartService.retrieve(id, {
+                  const cart = await cartService.withTransaction(manager).retrieve(id, {
                     select: defaultStoreCartFields,
                     relations: defaultStoreCartRelations,
                   })
