@@ -15,8 +15,6 @@ export default (container, config) => {
   return app
 }
 
-console.log("test")
-
 // Admin
 export * from "./routes/admin/auth"
 export * from "./routes/admin/batch"
