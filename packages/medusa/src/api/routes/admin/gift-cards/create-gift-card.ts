@@ -48,7 +48,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/gift-cards' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/gift-cards' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

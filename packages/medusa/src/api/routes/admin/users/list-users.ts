@@ -17,7 +17,7 @@ import UserService from "../../../../services/user"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/users' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/users' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - User

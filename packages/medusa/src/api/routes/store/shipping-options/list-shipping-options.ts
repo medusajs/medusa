@@ -1,4 +1,5 @@
 import { CartService, PricingService } from "../../../../services"
+
 import ShippingProfileService from "../../../../services/shipping-profile"
 
 /**
@@ -8,6 +9,17 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * description: "Retrieves a list of Shipping Options available to a cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.shippingOptions.listCartOptions(cart_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
  * tags:
  *   - Shipping Option
  * responses:

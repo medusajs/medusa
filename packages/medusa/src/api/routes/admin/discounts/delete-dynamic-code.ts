@@ -23,7 +23,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/discounts/{id}/dynamic-codes/{code}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/dynamic-codes/{code}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Discount

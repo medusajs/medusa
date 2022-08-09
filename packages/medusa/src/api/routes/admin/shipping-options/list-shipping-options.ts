@@ -39,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/shipping-options' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/shipping-options' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Shipping Option

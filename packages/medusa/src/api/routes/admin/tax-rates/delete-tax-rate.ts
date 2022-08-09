@@ -20,7 +20,7 @@ import { TaxRateService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/tax-rates/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Tax Rate

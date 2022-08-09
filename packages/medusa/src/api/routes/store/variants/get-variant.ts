@@ -28,6 +28,11 @@ import { validator } from "../../../../utils/validator"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
  * tags:
  *   - Product Variant
  * responses:

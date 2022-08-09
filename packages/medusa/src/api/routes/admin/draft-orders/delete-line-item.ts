@@ -29,7 +29,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/draft-orders/{id}/line-items/{line_id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Draft Order

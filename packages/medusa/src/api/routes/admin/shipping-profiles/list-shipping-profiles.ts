@@ -17,7 +17,7 @@ import { ShippingProfileService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/shipping-profiles' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/shipping-profiles' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Shipping Profile

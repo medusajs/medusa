@@ -21,7 +21,7 @@ import PriceListService from "../../../../services/price-list"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/price-lists/{id}/variants/{variant_id}/prices' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/variants/{variant_id}/prices' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Price List

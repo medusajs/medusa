@@ -1,7 +1,8 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm";
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions
@@ -10,6 +11,17 @@ import { EntityManager } from "typeorm";
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.createPaymentSessions(cart_id)
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
  *   - Cart
  * responses:

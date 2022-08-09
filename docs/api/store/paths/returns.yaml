@@ -47,6 +47,15 @@ post:
                   description: >-
                     The ID of the Shipping Option to create the Shipping Method
                     from.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/returns/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/returns/postundefined
   tags:
     - Return
   responses:

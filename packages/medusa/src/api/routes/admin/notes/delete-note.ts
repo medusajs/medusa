@@ -20,7 +20,7 @@ import NoteService from "../../../../services/note"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/notes/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/notes/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Note

@@ -2,8 +2,8 @@ import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/password-reset
@@ -30,6 +30,27 @@ import { EntityManager } from "typeorm"
  *           token:
  *             description: "The reset password token"
  *             type: string
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.customers.resetPassword({
+ *         email: 'user@example.com',
+ *         password: 'supersecret',
+ *         token: 'supersecrettoken'
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/password-reset' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com",
+ *           "password": "supersecret",
+ *           "token": "supersecrettoken"
+ *       }'
  * tags:
  *   - Customer
  * responses:

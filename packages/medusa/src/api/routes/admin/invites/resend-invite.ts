@@ -20,7 +20,7 @@ import InviteService from "../../../../services/invite"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/invites/{invite_id}/resend' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/invites/{invite_id}/resend' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Invite

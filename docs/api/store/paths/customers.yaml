@@ -29,6 +29,15 @@ post:
             phone:
               description: The Customer's phone number.
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers/postundefined
   tags:
     - Customer
   responses:

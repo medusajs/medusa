@@ -27,7 +27,7 @@ import { StoreService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'localhost:9000/admin/store/currencies/eur' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/store/currencies/eur' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store

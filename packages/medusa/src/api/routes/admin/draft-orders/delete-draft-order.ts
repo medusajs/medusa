@@ -19,7 +19,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/draft-orders/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/draft-orders/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Draft Order

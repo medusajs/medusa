@@ -1,5 +1,6 @@
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
+
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
 
@@ -12,6 +13,17 @@ import { validator } from "../../../../utils/validator"
  *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
  *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
  *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.shippingOptions.list()
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
  * tags:
  *   - Shipping Option
  * responses:

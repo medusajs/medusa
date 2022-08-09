@@ -17,7 +17,7 @@ import { TaxProviderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/store/tax-providers' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/store/tax-providers' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Store

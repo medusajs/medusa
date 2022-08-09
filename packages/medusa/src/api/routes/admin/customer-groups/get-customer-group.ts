@@ -24,7 +24,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/customer-groups/{id}' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Customer Group

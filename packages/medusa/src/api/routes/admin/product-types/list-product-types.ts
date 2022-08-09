@@ -102,7 +102,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'localhost:9000/admin/product-types' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/product-types' \
  *       --header 'Authorization: Bearer {api_token}'
  * tags:
  *   - Product Type

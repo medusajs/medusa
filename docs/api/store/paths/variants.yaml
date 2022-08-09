@@ -62,6 +62,11 @@ get:
                 description: >-
                   filter by inventory quantity greater than or equal to this
                   number
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/variants/getundefined
   tags:
     - Product Variant
   responses:

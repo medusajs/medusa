@@ -29,7 +29,7 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'localhost:9000/admin/uploads' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/uploads' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

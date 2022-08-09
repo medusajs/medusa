@@ -1,4 +1,4 @@
-curl --location --request DELETE 'localhost:9000/admin/tax-rates/{id}/product-types/batch' \
+curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/product-types/batch' \
 --header 'Authorization: Bearer {api_token}' \
 --header 'Content-Type: application/json' \
 --data-raw '{

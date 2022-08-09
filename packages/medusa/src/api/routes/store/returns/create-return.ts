@@ -8,6 +8,7 @@ import {
   ValidateNested,
 } from "class-validator"
 
+import { EntityManager } from "typeorm";
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
@@ -15,7 +16,6 @@ import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm";
 
 /**
  * @oas [post] /returns
@@ -62,6 +62,35 @@ import { EntityManager } from "typeorm";
  *               option_id:
  *                 type: string
  *                 description: The ID of the Shipping Option to create the Shipping Method from.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.returns.create({
+ *         order_id,
+ *         items: [
+ *           {
+ *             item_id,
+ *             quantity: 1
+ *           }
+ *         ]
+ *       })
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/returns' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "order_id": "asfasf",
+ *           "items": [
+ *             {
+ *               "item_id": "assfasf",
+ *               "quantity": 1
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Return
  * responses:
