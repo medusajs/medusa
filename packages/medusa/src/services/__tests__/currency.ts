@@ -39,7 +39,7 @@ describe('CurrencyService', () => {
   })
 
   it("should retrieve the currency by calling the repository findOne method", async () => {
-    await currencyService.retrieve(currencyCode)
+    await currencyService.retrieveByCode(currencyCode)
     expect(currencyRepositoryMock.findOne).toHaveBeenCalledWith({
       where: { code: currencyCode },
     })

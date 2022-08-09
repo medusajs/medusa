@@ -47,7 +47,7 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
    * @param code - The code of the currency that must be retrieve
    * @return The currency
    */
-  async retrieve(code: string): Promise<Currency | never> {
+  async retrieveByCode(code: string): Promise<Currency | never> {
     const currencyRepo = this.manager_.getCustomRepository(
       this.currencyRepository_
     )
@@ -105,7 +105,7 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
     data: UpdateCurrencyInput
   ): Promise<Currency | undefined | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const currency = await this.retrieve(code)
+      const currency = await this.retrieveByCode(code)
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
