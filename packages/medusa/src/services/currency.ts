@@ -18,8 +18,8 @@ type InjectedDependencies = {
 }
 
 export default class CurrencyService extends TransactionBaseService<CurrencyService> {
-  static readonly EVENTS = {
-    UPDATE: "currency.update",
+  static readonly Events = {
+    UPDATED: "currency.updated",
   }
 
   protected manager_: EntityManager
@@ -52,6 +52,7 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
       this.currencyRepository_
     )
 
+    code = code.toLowerCase()
     const currency = await currencyRepo.findOne({
       where: { code },
     })
@@ -121,7 +122,7 @@ export default class CurrencyService extends TransactionBaseService<CurrencyServ
       )
       await currencyRepo.save(currency)
 
-      await this.eventBusService_.emit(CurrencyService.EVENTS.UPDATE, {
+      await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
         code,
       })
 
