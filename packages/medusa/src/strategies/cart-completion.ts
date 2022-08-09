@@ -1,16 +1,16 @@
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { IdempotencyKey, Order } from "../models"
 import CartService from "../services/cart"
-import { RequestContext } from "../types/request"
-import OrderService from "../services/order"
 import IdempotencyKeyService from "../services/idempotency-key"
+import OrderService from "../services/order"
 import SwapService from "../services/swap"
+import { RequestContext } from "../types/request"
 
 import {
-  CartCompletionResponse,
   AbstractCartCompletionStrategy,
+  CartCompletionResponse,
 } from "../interfaces"
 
 type InjectedDependencies = {
@@ -58,7 +58,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     const swapService = this.swapService_
 
     let inProgress = true
-    let err = false
+    let err: unknown = false
 
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
@@ -96,7 +96,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               inProgress = false
               err = error
             } else {
-              idempotencyKey = key
+              idempotencyKey = key as IdempotencyKey
             }
           })
           break
@@ -141,7 +141,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               inProgress = false
               err = error
             } else {
-              idempotencyKey = key
+              idempotencyKey = key as IdempotencyKey
             }
           })
           break
@@ -291,7 +291,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               inProgress = false
               err = error
             } else {
-              idempotencyKey = key
+              idempotencyKey = key as IdempotencyKey
             }
           })
           break
