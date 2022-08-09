@@ -20,6 +20,8 @@ import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
 import { ShippingOption } from "./shipping-option"
 import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -88,6 +90,9 @@ export class ShippingMethod {
 
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
+
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
+  includes_tax: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -163,4 +168,7 @@ export class ShippingMethod {
  *     description: "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id."
  *     type: object
  *     example: {}
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Indicates if the shipping method price include tax"
+ *     type: boolean
  */
