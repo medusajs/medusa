@@ -1,18 +1,17 @@
 import { isEmpty, isEqual } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import {
-  DiscountRuleType,
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
+  DiscountRuleType,
   LineItem,
-  ShippingMethod,
   SalesChannel,
+  ShippingMethod,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -22,11 +21,11 @@ import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
   CartCreateProps,
   CartUpdateProps,
-  FilterableCartProps,
   LineItemUpdate,
+  TotalField,
 } from "../types/cart"
-import { AddressPayload, FindConfig, TotalField } from "../types/common"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { AddressPayload, FindConfig } from "../types/common"
+import { setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -46,6 +45,7 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { FlagRouter } from "../utils/flag-router"
 import StoreService from "./store"
 import { SalesChannelService } from "./index"
+import { TransactionCrudService } from "../interfaces/transaction-crud-service"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -82,7 +82,10 @@ type TotalsConfig = {
 /* Provides layer to manipulate carts.
  * @implements BaseService
  */
-class CartService extends TransactionBaseService<CartService> {
+export default class CartService extends TransactionCrudService<
+  CartService,
+  Cart
+> {
   static readonly Events = {
     CUSTOMER_UPDATED: "cart.customer_updated",
     CREATED: "cart.created",
@@ -145,7 +148,7 @@ class CartService extends TransactionBaseService<CartService> {
     storeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super(cartRepository, "Cart", arguments[0])
 
     this.manager_ = manager
     this.shippingMethodRepository_ = shippingMethodRepository
@@ -271,22 +274,6 @@ class CartService extends TransactionBaseService<CartService> {
   }
 
   /**
-   * @param selector - the query object for find
-   * @param config - config object
-   * @return the result of the find operation
-   */
-  async list(
-    selector: FilterableCartProps,
-    config: FindConfig<Cart> = {}
-  ): Promise<Cart[]> {
-    const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
-
-    const query = buildQuery(selector, config)
-    return await cartRepo.find(query)
-  }
-
-  /**
    * Gets a cart by id.
    * @param cartId - the id of the cart to get.
    * @param options - the options to get a cart
@@ -298,40 +285,14 @@ class CartService extends TransactionBaseService<CartService> {
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
-    const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
-    const validatedId = validateId(cartId)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(options)
-
-    const query = buildQuery(
-      { id: validatedId },
-      { ...options, select, relations }
-    )
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
-    }
-
-    if (select && select.length > 0) {
-      query.select = select
-    } else {
-      query.select = undefined
-    }
-
-    const queryRelations = query.relations
-    query.relations = undefined
-
-    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
-
-    if (!raw) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Cart with ${cartId} was not found`
-      )
-    }
-
+    let totalsToSelect
+    const raw = await super.retrieve(cartId, options, {
+      customBuildQuery: (config: FindConfig<Cart>) => {
+        const query = this.transformQueryForTotals_(config)
+        totalsToSelect = query.totalsToSelect
+        return { select: query.select, relations: query.relations }
+      },
+    })
     return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
   }
 
@@ -2183,5 +2144,3 @@ class CartService extends TransactionBaseService<CartService> {
     )
   }
 }
-
-export default CartService

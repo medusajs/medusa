@@ -58,16 +58,18 @@ export type Selector<TEntity> = {
     | FindOperator<TEntity[key][] | string[]>
 }
 
-export type TotalField =
-  | "shipping_total"
-  | "discount_total"
-  | "tax_total"
-  | "refunded_total"
-  | "total"
-  | "subtotal"
-  | "refundable_amount"
-  | "gift_card_total"
-  | "gift_card_tax_total"
+export type DefaultWithoutRelations<
+  TEntity,
+  TSelector = Selector<TEntity>
+> = Omit<ExtendedFindConfig<TEntity, TSelector>, "relations">
+
+export type FindWithoutRelationsOptions<
+  TEntity,
+  TSelector = Selector<TEntity>
+> = DefaultWithoutRelations<TEntity> & {
+  where: ExtendedFindConfig<TEntity, TSelector>["where"] &
+    Record<string, unknown>
+}
 
 export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
