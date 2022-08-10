@@ -5,10 +5,16 @@ import {
 } from "../../__mocks__/@paypal/checkout-server-sdk"
 
 const TotalsServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   getTotal: jest.fn().mockImplementation((c) => c.total),
 }
 
 const RegionServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation((id) =>
     Promise.resolve({
       currency_code: "eur",

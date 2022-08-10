@@ -96,9 +96,9 @@ class PayPalProviderService extends AbstractPaymentService {
    */
   async createPayment(cart) {
     const { region_id } = cart
-    const { currency_code } = await this.regionService_.retrieve(region_id)
+    const { currency_code } = await this.regionService_.withTransaction(this.manager_).retrieve(region_id)
 
-    const amount = await this.totalsService_.getTotal(cart)
+    const amount = await this.totalsService_.withTransaction(this.manager_).getTotal(cart)
 
     const request = new PayPal.orders.OrdersCreateRequest()
     request.requestBody({
