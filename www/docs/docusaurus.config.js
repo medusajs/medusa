@@ -113,6 +113,11 @@ module.exports = {
           ]
         },
         {
+          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+          position: 'right',
+          label: 'Report an Issue'
+        },
+        {
           href: "https://github.com/medusajs/medusa",
           className: "navbar-github-link",
           position: "right",
