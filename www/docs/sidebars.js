@@ -270,10 +270,6 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "guides/carts-in-medusa",
-            },
-            {
-              type: "doc",
               id: "advanced/backend/migrations",
               label: "Migrations"
             },
@@ -303,6 +299,10 @@ module.exports = {
             {
               type: "doc",
               id: "advanced/storefront/how-to-implement-checkout-flow",
+            },
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
             },
           ]
         }
