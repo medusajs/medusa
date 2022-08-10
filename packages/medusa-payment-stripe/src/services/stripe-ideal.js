@@ -140,9 +140,9 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
-    const { currency_code } = await this.regionService_.retrieve(region_id)
+    const { currency_code } = await this.regionService_.withTransaction(this.manager_).retrieve(region_id)
 
-    const amount = await this.totalsService_.getTotal(cart)
+    const amount = await this.totalsService_.withTransaction(this.manager_).getTotal(cart)
 
     const intentRequest = {
       description:
@@ -155,7 +155,7 @@ class StripeProviderService extends AbstractPaymentService {
     }
 
     if (customer_id) {
-      const customer = await this.customerService_.retrieve(customer_id)
+      const customer = await this.customerService_.withTransaction(this.manager_).retrieve(customer_id)
 
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
