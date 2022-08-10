@@ -49,11 +49,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
 
   /**
-   * Create a new order
-   */
-  route.post("/", require("./create-order").default)
-
-  /**
    * Update an order
    */
   route.post("/:id", require("./update-order").default)
