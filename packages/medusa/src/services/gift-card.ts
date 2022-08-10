@@ -17,7 +17,7 @@ import {
   CreateGiftCardTransactionInput,
   UpdateGiftCardInput,
 } from "../types/gift-card"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import RegionService from "./region"
 
 type InjectedDependencies = {
@@ -89,7 +89,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
     let q: string | undefined
-    if (typeof selector.q !== "undefined") {
+    if (isDefined(selector.q)) {
       q = selector.q
       delete selector.q
     }
@@ -118,7 +118,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
     let q: string | undefined
-    if (typeof selector.q !== "undefined") {
+    if (isDefined(selector.q)) {
       q = selector.q
       delete selector.q
     }
@@ -255,7 +255,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
         giftCard.metadata = setMetadata(giftCard, metadata)
       }
 
-      if (typeof balance !== "undefined") {
+      if (isDefined(balance)) {
         if (balance < 0 || giftCard.value < balance) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,

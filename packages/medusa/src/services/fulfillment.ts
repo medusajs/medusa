@@ -13,7 +13,7 @@ import {
   FulfillmentItemPartition,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
 import TotalsService from "./totals"
@@ -336,7 +336,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
         trackingLinkRepo.create(tl)
       )
 
-      if (typeof no_notification !== "undefined") {
+      if (isDefined(no_notification)) {
         fulfillment.no_notification = no_notification
       }
 

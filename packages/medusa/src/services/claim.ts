@@ -25,7 +25,7 @@ import { LineItemRepository } from "../repositories/line-item"
 import { MedusaError } from "medusa-core-utils"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FindConfig } from "../types/common"
 import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
 
@@ -336,7 +336,7 @@ export default class ClaimService extends TransactionBaseService<
         }
 
         let newItems: LineItem[] = []
-        if (typeof additional_items !== "undefined") {
+        if (isDefined(additional_items)) {
           for (const item of additional_items) {
             await this.inventoryService_
               .withTransaction(transactionManager)

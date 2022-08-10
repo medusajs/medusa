@@ -357,7 +357,7 @@ class ReturnService extends BaseService {
       )
 
       let toRefund = data.refund_amount
-      if (typeof toRefund !== "undefined") {
+      if (isDefined(toRefund)) {
         // Merchant wants to do a custom refund amount; we check if amount is
         // refundable
         const refundable = order.refundable_amount
