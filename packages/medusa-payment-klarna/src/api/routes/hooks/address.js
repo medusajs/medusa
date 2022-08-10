@@ -66,7 +66,7 @@ export default async (req, res) => {
         }
 
         // Fetch and return updated Klarna order
-        const updatedCart = await cartService
+        const updatedCart = await cartServiceTx
           .retrieve(cart.id, {
             select: [
               "gift_card_total",

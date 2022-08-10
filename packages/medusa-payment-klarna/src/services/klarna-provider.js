@@ -172,7 +172,7 @@ class KlarnaProviderService extends AbstractPaymentService {
     }
 
     if (cart.shipping_address && cart.shipping_address.first_name) {
-      let shippingOptions = await this.shippingProfileService_.fetchCartOptions(
+      let shippingOptions = await this.shippingProfileService_.withTransaction(this.manager_).fetchCartOptions(
         cart
       )
 
@@ -184,7 +184,7 @@ class KlarnaProviderService extends AbstractPaymentService {
       // shipping_options and set the selected shipping method
       if (cart.shipping_methods.length) {
         const shipping_method = cart.shipping_methods[0]
-        const totals = await this.totalsService_.getShippingMethodTotals(
+        const totals = await this.totalsService_.withTransaction(this.manager_).getShippingMethodTotals(
           shipping_method,
           cart,
           {

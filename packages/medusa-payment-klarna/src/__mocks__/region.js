@@ -1,6 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 
 export const RegionServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation((regionId) => {
     return Promise.resolve({
       _id: IdMap.getId("testRegion"),
