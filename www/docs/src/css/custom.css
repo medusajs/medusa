@@ -299,6 +299,10 @@ details summary {
   text-decoration: none;
 }
 
+[data-theme="dark"] a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .DocSearch-Container {
   z-index: 1001 !important;
 }
