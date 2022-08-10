@@ -1,6 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 
 export const StripeProviderServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrievePayment: jest.fn().mockImplementation((payData) => {
     if (payData.id === "pi_123456789") {
       return Promise.resolve({
