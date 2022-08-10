@@ -64,15 +64,18 @@ export default async (req, res) => {
               .withTransaction(transactionManager)
               .workStage(
                 idempotencyKey.idempotency_key,
-                async (manager) => {
-                  await cartService.withTransaction(manager).setPaymentSessions(id)
+                async (stageManager) => {
+                  await cartService.withTransaction(stageManager).setPaymentSessions(id)
 
-                  const cart = await cartService.withTransaction(manager).retrieve(id, {
+                  const cart = await cartService.withTransaction(stageManager).retrieve(id, {
                     select: defaultStoreCartFields,
                     relations: defaultStoreCartRelations,
                   })
 
-                  const data = await decorateLineItemsWithTotals(cart, req)
+                  const data = await decorateLineItemsWithTotals(cart, req, {
+                    force_taxes: false,
+                    transactionManager: stageManager
+                  })
 
                   return {
                     response_code: 200,
