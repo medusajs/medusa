@@ -22,6 +22,7 @@ export enum PaymentSessionStatus {
 }
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
+@Unique("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"])
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()

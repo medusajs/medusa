@@ -30,6 +30,7 @@ import {
   Order,
   OrderStatus,
   Payment,
+  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
@@ -531,7 +532,6 @@ class OrderService extends TransactionBaseService<OrderService> {
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
-        // Throw if payment method does not exist
         if (!payment) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -543,7 +543,6 @@ class OrderService extends TransactionBaseService<OrderService> {
           .withTransaction(manager)
           .getStatus(payment)
 
-        // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
