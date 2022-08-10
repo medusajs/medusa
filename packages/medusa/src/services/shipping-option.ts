@@ -300,6 +300,16 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         price: methodPrice,
       }
 
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof option.includes_tax !== "undefined") {
+          toCreate.includes_tax = option.includes_tax
+        }
+      }
+
       if (config.order) {
         toCreate.order_id = config.order.id
       }
@@ -328,10 +338,10 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const created = await methodRepo.save(method)
 
-      return methodRepo.findOne({
+      return (await methodRepo.findOne({
         where: { id: created.id },
         relations: ["shipping_option"],
-      }) as unknown as ShippingMethod
+      })) as ShippingMethod
     })
   }
 
