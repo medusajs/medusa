@@ -5,6 +5,8 @@ import {
   StorePostCustomersCustomerPasswordTokenReq,
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
+  StorePostCustomersResetPasswordReq,
+  
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
