@@ -1,18 +1,17 @@
 import { isEmpty, isEqual } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import {
-  DiscountRuleType,
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
+  DiscountRuleType,
   LineItem,
-  ShippingMethod,
   SalesChannel,
+  ShippingMethod,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -181,8 +180,7 @@ class CartService extends TransactionBaseService<CartService> {
 
     if (!select) {
       return {
-        select,
-        relations,
+        ...config,
         totalsToSelect: [],
       }
     }
@@ -200,20 +198,21 @@ class CartService extends TransactionBaseService<CartService> {
       totalFields.includes(v)
     ) as TotalField[]
     if (totalsToSelect.length > 0) {
-      const relationSet = new Set(relations)
-      relationSet.add("items")
-      relationSet.add("items.tax_lines")
-      relationSet.add("gift_cards")
-      relationSet.add("discounts")
-      relationSet.add("discounts.rule")
-      // relationSet.add("discounts.parent_discount")
-      // relationSet.add("discounts.parent_discount.rule")
-      // relationSet.add("discounts.parent_discount.regions")
-      relationSet.add("shipping_methods")
-      relationSet.add("shipping_address")
-      relationSet.add("region")
-      relationSet.add("region.tax_rates")
-      relations = Array.from(relationSet.values())
+      relations = [
+        ...new Set(relations)
+          .add("items")
+          .add("items.tax_lines")
+          .add("gift_cards")
+          .add("discounts")
+          .add("discounts.rule")
+          // .add("discounts.parent_discount")
+          // .add("discounts.parent_discount.rule")
+          // .add("discounts.parent_discount.regions")
+          .add("shipping_methods")
+          .add("shipping_address")
+          .add("region")
+          .add("region.tax_rates"),
+      ]
 
       select = select.filter((v) => !totalFields.includes(v))
     }
@@ -300,15 +299,11 @@ class CartService extends TransactionBaseService<CartService> {
   ): Promise<Cart> {
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
-    const validatedId = validateId(cartId)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
 
-    const query = buildQuery(
-      { id: validatedId },
-      { ...options, select, relations }
-    )
+    const query = buildQuery({ id: cartId }, { ...options, select, relations })
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -320,10 +315,7 @@ class CartService extends TransactionBaseService<CartService> {
       query.select = undefined
     }
 
-    const queryRelations = query.relations
-    query.relations = undefined
-
-    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
+    const raw = await cartRepo.findOne(query)
 
     if (!raw) {
       throw new MedusaError(
