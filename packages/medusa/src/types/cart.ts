@@ -1,6 +1,6 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
-import { Cart, CartType } from "../models/cart"
+import { Cart, CartType } from "../models"
 import {
   AddressPayload,
   DateComparisonOperator,
@@ -11,6 +11,17 @@ import {
 export function isCart(object: any): object is Cart {
   return object.object === "cart"
 }
+
+export type TotalField =
+  | "shipping_total"
+  | "discount_total"
+  | "tax_total"
+  | "refunded_total"
+  | "total"
+  | "subtotal"
+  | "refundable_amount"
+  | "gift_card_total"
+  | "gift_card_tax_total"
 
 export class FilterableCartProps {
   @ValidateNested()

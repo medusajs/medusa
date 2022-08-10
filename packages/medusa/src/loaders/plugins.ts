@@ -24,6 +24,7 @@ import {
   isSearchService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
+  TransactionCrudService as CrudBaseService,
 } from "../interfaces"
 import { MiddlewareService } from "../services"
 import {
@@ -358,7 +359,8 @@ export async function registerServices(
 
       if (
         !(loaded.prototype instanceof LegacyBaseService) &&
-        !(loaded.prototype instanceof BaseService)
+        !(loaded.prototype instanceof BaseService) &&
+        !(loaded.prototype instanceof CrudBaseService)
       ) {
         const logger = container.resolve<Logger>("logger")
         const message = `The class must be a valid service implementation, please check ${fn}`
