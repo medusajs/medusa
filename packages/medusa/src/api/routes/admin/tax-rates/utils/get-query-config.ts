@@ -2,6 +2,7 @@ import { pick } from "lodash"
 import { defaultAdminTaxRatesFields, defaultAdminTaxRatesRelations } from "../"
 import { TaxRate } from "../../../../.."
 import { FindConfig } from "../../../../../types/common"
+import { isDefined } from "../../../../../utils"
 
 export function pickByConfig<T>(
   obj: T | T[],
@@ -24,14 +25,14 @@ export function getRetrieveConfig(
   expand?: string[]
 ): FindConfig<TaxRate> {
   let includeFields: (keyof TaxRate)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     const fieldSet = new Set(fields)
     fieldSet.add("id")
     includeFields = Array.from(fieldSet) as (keyof TaxRate)[]
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand
   }
 
@@ -51,7 +52,7 @@ export function getListConfig(
   order?: { [k: symbol]: "DESC" | "ASC" }
 ): FindConfig<TaxRate> {
   let includeFields: (keyof TaxRate)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     const fieldSet = new Set(fields)
     // Ensure created_at is included, since we are sorting on this
     fieldSet.add("created_at")
@@ -60,7 +61,7 @@ export function getListConfig(
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand
   }
 

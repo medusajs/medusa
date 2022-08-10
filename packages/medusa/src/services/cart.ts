@@ -27,7 +27,7 @@ import {
   LineItemUpdate,
 } from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -423,10 +423,7 @@ class CartService extends TransactionBaseService<CartService> {
         ]
 
         for (const remainingField of remainingFields) {
-          if (
-            typeof data[remainingField] !== "undefined" &&
-            remainingField !== "object"
-          ) {
+          if (isDefined(data[remainingField]) && remainingField !== "object") {
             const key = remainingField as string
             rawCart[key] = data[remainingField]
           }
@@ -448,7 +445,7 @@ class CartService extends TransactionBaseService<CartService> {
     salesChannelId?: string
   ): Promise<SalesChannel | never> {
     let salesChannel: SalesChannel
-    if (typeof salesChannelId !== "undefined") {
+    if (isDefined(salesChannelId)) {
       salesChannel = await this.salesChannelService_
         .withTransaction(this.manager_)
         .retrieve(salesChannelId)
@@ -858,7 +855,7 @@ class CartService extends TransactionBaseService<CartService> {
         if (data.customer_id) {
           await this.updateCustomerId_(cart, data.customer_id)
         } else {
-          if (typeof data.email !== "undefined") {
+          if (isDefined(data.email)) {
             const customer = await this.createOrFetchUserFromEmail_(data.email)
             cart.customer = customer
             cart.customer_id = customer.id
@@ -866,14 +863,11 @@ class CartService extends TransactionBaseService<CartService> {
           }
         }
 
-        if (
-          typeof data.customer_id !== "undefined" ||
-          typeof data.region_id !== "undefined"
-        ) {
+        if (isDefined(data.customer_id) || isDefined(data.region_id)) {
           await this.updateUnitPrices_(cart, data.region_id, data.customer_id)
         }
 
-        if (typeof data.region_id !== "undefined") {
+        if (isDefined(data.region_id)) {
           const shippingAddress =
             typeof data.shipping_address !== "string"
               ? data.shipping_address
@@ -902,7 +896,7 @@ class CartService extends TransactionBaseService<CartService> {
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
           if (
-            typeof data.sales_channel_id !== "undefined" &&
+            isDefined(data.sales_channel_id) &&
             data.sales_channel_id != cart.sales_channel_id
           ) {
             await this.onSalesChannelChange(cart, data.sales_channel_id)
@@ -910,7 +904,7 @@ class CartService extends TransactionBaseService<CartService> {
           }
         }
 
-        if (typeof data.discounts !== "undefined") {
+        if (isDefined(data.discounts)) {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 

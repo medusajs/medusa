@@ -1,5 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { isDefined } from "../utils"
 
 /**
  * Handles swaps
@@ -117,7 +118,7 @@ class SwapService extends BaseService {
     let cartSelects = null
     let cartRelations = null
 
-    if (typeof relations !== "undefined" && relations.includes("cart")) {
+    if (isDefined(relations) && relations.includes("cart")) {
       const [swapRelations, cartRels] = relations.reduce(
         (acc, next) => {
           if (next === "cart") {
@@ -140,7 +141,7 @@ class SwapService extends BaseService {
       cartRelations = cartRels
 
       let foundCartId = false
-      if (typeof select !== "undefined") {
+      if (isDefined(select)) {
         const [swapSelects, cartSels] = select.reduce(
           (acc, next) => {
             if (next.startsWith("cart.")) {

@@ -5,6 +5,7 @@ import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
 import { FlagRouter } from "../../utils/flag-router"
+import { isDefined } from "../../utils"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -36,10 +37,10 @@ export default (
     flagConfig[flagSettings.key] = isTruthy(flagSettings.default_val)
 
     let from
-    if (typeof process.env[flagSettings.env_key] !== "undefined") {
+    if (isDefined(process.env[flagSettings.env_key])) {
       from = "environment"
       flagConfig[flagSettings.key] = isTruthy(process.env[flagSettings.env_key])
-    } else if (typeof projectConfigFlags[flagSettings.key] !== "undefined") {
+    } else if (isDefined(projectConfigFlags[flagSettings.key])) {
       from = "project config"
       flagConfig[flagSettings.key] = isTruthy(
         projectConfigFlags[flagSettings.key]
