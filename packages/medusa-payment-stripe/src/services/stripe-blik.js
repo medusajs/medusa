@@ -1,15 +1,14 @@
-import _ from "lodash"
 import Stripe from "stripe"
-import { PaymentService } from "medusa-interfaces"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 
-class BlikProviderService extends PaymentService {
+class BlikProviderService extends AbstractPaymentService {
   static identifier = "stripe-blik"
 
   constructor(
     { stripeProviderService, customerService, totalsService, regionService },
     options
   ) {
-    super()
+    super({ stripeProviderService, customerService, totalsService, regionService }, options)
 
     /**
      * Required Stripe options:
@@ -42,7 +41,7 @@ class BlikProviderService extends PaymentService {
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
    * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @returns {Promise<PaymentSessionStatus>} the status of the payment intent
    */
   async getStatus(paymentData) {
     return await this.stripeProviderService_.getStatus(paymentData)
@@ -50,8 +49,8 @@ class BlikProviderService extends PaymentService {
 
   /**
    * Fetches a customers saved payment methods if registered in Stripe.
-   * @param {object} customer - customer to fetch saved cards for
-   * @returns {Promise<Array<object>>} saved payments methods
+   * @param {Customer} customer - customer to fetch saved cards for
+   * @returns {Promise<Data[]>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
     return Promise.resolve([])
@@ -78,8 +77,8 @@ class BlikProviderService extends PaymentService {
   /**
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
-   * @param {object} cart - cart to create a payment for
-   * @returns {object} Stripe payment intent
+   * @param {Cart} cart - cart to create a payment for
+   * @returns {PaymentSessionData} Stripe payment intent
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
@@ -135,8 +134,8 @@ class BlikProviderService extends PaymentService {
 
   /**
    * Gets a Stripe payment intent and returns it.
-   * @param {object} sessionData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @param {PaymentSession} sessionData - the data of the payment to retrieve
+   * @returns {Promise<PaymentData>} Stripe payment intent
    */
   async getPaymentData(sessionData) {
     return await this.stripeProviderService_.getPaymentData(sessionData)
@@ -145,9 +144,9 @@ class BlikProviderService extends PaymentService {
   /**
    * Authorizes Stripe payment intent by simply returning
    * the status for the payment intent in use.
-   * @param {object} sessionData - payment session data
+   * @param {PaymentSession} sessionData - payment session data
    * @param {object} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @returns {Promise<{ status: PaymentSessionStatus, data: PaymentSessionData }>} result with data and status
    */
   async authorizePayment(sessionData, context = {}) {
     return await this.stripeProviderService_.authorizePayment(
