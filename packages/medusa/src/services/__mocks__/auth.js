@@ -35,17 +35,9 @@ const mock = jest.fn().mockImplementation(() => {
       }
     }),
     retrieveAuthenticationStrategy: jest.fn().mockImplementation((req, scope) => {
-        const strategyResolverService = req.scope.resolve(
-          "strategyResolverService"
-        )
-
         return scope === "admin"
-          ? strategyResolverService.resolveAuthByType(
-              "core-admin-default-auth"
-            )
-          : strategyResolverService.resolveAuthByType(
-              "core-store-default-auth"
-            )
+          ? req.scope.resolve("auth_core-admin-default-auth")
+          : req.scope.resolve("auth_core-store-default-auth")
       }
     )
   }

@@ -125,9 +125,6 @@ export default async (req, res) => {
     select: defaultStoreCustomersFields,
   }
 
-  const { email, password } = validated
-  req.body = { email, password }
-
   await authStrategy.authenticate(req, res)
 }
 
