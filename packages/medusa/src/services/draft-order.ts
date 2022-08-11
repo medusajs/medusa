@@ -300,7 +300,7 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
 
         for (const item of items) {
           if (item.variant_id) {
-            const line = lineItemServiceTx.generate(
+            const line = await lineItemServiceTx.generate(
               item.variant_id,
               data.region_id,
               item.quantity,
