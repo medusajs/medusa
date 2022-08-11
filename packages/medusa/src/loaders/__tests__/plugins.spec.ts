@@ -11,6 +11,7 @@ import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
 import { MedusaContainer } from "../../types/global"
+import { Express } from "express";
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -291,7 +292,7 @@ describe("plugins loader", () => {
     it("should load the services from the services directory but only js files", async () => {
       let err
       try {
-        await registerServices(pluginsDetails, container)
+        await registerServices(pluginsDetails, container, {} as unknown as Express)
       } catch (e) {
         err = e
       }
