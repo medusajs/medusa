@@ -38,12 +38,13 @@ const config = {
 }
 
 let supertestRequest
+let featureFlagRouter
 const loadSupertest = async () => {
   const testApp = express()
 
   const container = createContainer()
 
-  const featureFlagRouter = featureFlagLoader(config)
+  featureFlagRouter = featureFlagLoader(config)
 
   container.register("featureFlagRouter", asValue(featureFlagRouter))
   container.register("configModule", asValue(config))
