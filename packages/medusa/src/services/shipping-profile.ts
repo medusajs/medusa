@@ -297,20 +297,21 @@ class ShippingProfileService extends TransactionBaseService<ShippingProfileServi
       }
 
       if (products) {
+        const productServiceTx = this.productService_.withTransaction(manager)
         for (const pId of products) {
-          await this.productService_.withTransaction(manager).update(pId, {
+          await productServiceTx.update(pId, {
             profile_id: profile.id,
           })
         }
       }
 
       if (shipping_options) {
+        const shippingOptionServiceTx =
+          this.shippingOptionService_.withTransaction(manager)
         for (const oId of shipping_options) {
-          await this.shippingOptionService_
-            .withTransaction(manager)
-            .update(oId, {
-              profile_id: profile.id,
-            })
+          await shippingOptionServiceTx.update(oId, {
+            profile_id: profile.id,
+          })
         }
       }
 

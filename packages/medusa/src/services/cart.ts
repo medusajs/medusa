@@ -1736,14 +1736,17 @@ class CartService extends TransactionBaseService<CartService> {
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
+
           for (const shippingMethod of shipping_methods) {
             if (
               shippingMethod.shipping_option.profile_id ===
               newShippingMethod.shipping_option.profile_id
             ) {
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethods(shippingMethod)
+              await shippingOptionServiceTx.deleteShippingMethods(
+                shippingMethod
+              )
             } else {
               methods.push(shippingMethod)
             }
@@ -1751,13 +1754,14 @@ class CartService extends TransactionBaseService<CartService> {
         }
 
         if (cart.items?.length) {
+          const lineItemServiceTx =
+            this.lineItemService_.withTransaction(transactionManager)
+
           await Promise.all(
             cart.items.map(async (item) => {
-              return this.lineItemService_
-                .withTransaction(transactionManager)
-                .update(item.id, {
-                  has_shipping: this.validateLineItemShipping_(methods, item),
-                })
+              return lineItemServiceTx.update(item.id, {
+                has_shipping: this.validateLineItemShipping_(methods, item),
+              })
             })
           )
         }

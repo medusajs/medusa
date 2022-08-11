@@ -274,12 +274,12 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
 
       fulfillment.canceled_at = new Date()
 
-      const lineItemService = this.lineItemService_.withTransaction(manager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       for (const fItem of fulfillment.items) {
-        const item = await lineItemService.retrieve(fItem.item_id)
+        const item = await lineItemServiceTx.retrieve(fItem.item_id)
         const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity
-        await lineItemService.update(item.id, {
+        await lineItemServiceTx.update(item.id, {
           fulfilled_quantity: fulfilledQuantity,
         })
       }
