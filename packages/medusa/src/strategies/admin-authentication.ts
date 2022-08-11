@@ -41,8 +41,6 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
     const authService = container.resolve("authService") as AuthService
     const configModule = container.resolve("configModule") as ConfigModule
 
-    this.validateConfig(configModule)
-
     // For good old email password authentication
     passport.use(
       new LocalStrategy(
@@ -148,28 +146,5 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
     next: NextFunction
   ): Promise<void> {
     passport.authenticate(["jwt", "bearer"], { session: false })(req, res, next)
-  }
-
-  private static validateConfig(configModule: ConfigModule): void | never {
-    const isProduction = ["production", "prod"].includes(
-      process.env.NODE_ENV || ""
-    )
-    const errorHandler = isProduction
-      ? (msg: string): never => {
-          throw new Error(msg)
-        }
-      : console.log
-
-    const jwt_secret =
-      configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
-    if (!jwt_secret) {
-      errorHandler(
-        `[medusa-config] ⚠️ jwt_secret not found.${
-          isProduction
-            ? ""
-            : " fallback to either cookie_secret or default 'supersecret'."
-        }`
-      )
-    }
   }
 }

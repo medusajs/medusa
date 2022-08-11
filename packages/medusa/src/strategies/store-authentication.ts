@@ -2,7 +2,7 @@ import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
-import { Request, Response, NextFunction, Express } from "express"
+import { Express, NextFunction, Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import jwt from "jsonwebtoken"
 
@@ -12,10 +12,6 @@ import { ConfigModule, MedusaContainer } from "../types/global"
 import { validator } from "../utils/validator"
 import CustomerService from "../services/customer"
 import { StorePostAuthReq } from "../api/routes/store/auth"
-import {
-  defaultStoreCustomersFields,
-  defaultStoreCustomersRelations,
-} from "../api/routes/store/customers"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -43,8 +39,6 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
   ): Promise<void> {
     const authService = container.resolve("authService") as AuthService
     const configModule = container.resolve("configModule") as ConfigModule
-
-    this.validateConfig(configModule)
 
     // For good old email password authentication
     passport.use(
@@ -170,28 +164,5 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
         return next()
       }
     )(req, res, next)
-  }
-
-  private static validateConfig(configModule: ConfigModule): void | never {
-    const isProduction = ["production", "prod"].includes(
-      process.env.NODE_ENV || ""
-    )
-    const errorHandler = isProduction
-      ? (msg: string): never => {
-          throw new Error(msg)
-        }
-      : console.log
-
-    const jwt_secret =
-      configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
-    if (!jwt_secret) {
-      errorHandler(
-        `[medusa-config] ⚠️ jwt_secret not found.${
-          isProduction
-            ? ""
-            : " fallback to either cookie_secret or default 'supersecret'."
-        }`
-      )
-    }
   }
 }
