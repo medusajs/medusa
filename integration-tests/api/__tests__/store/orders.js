@@ -14,6 +14,7 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const { simpleRegionFactory, simpleProductFactory } = require("../../factories")
+const { MedusaError } = require("medusa-core-utils");
 
 jest.setTimeout(30000)
 
@@ -153,7 +154,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("recovers from failed copmletion", async () => {
+    it("recovers from failed completion", async () => {
       const api = useApi()
 
       const region = await simpleRegionFactory(dbConnection)
@@ -187,11 +188,23 @@ describe("/store/carts", () => {
         }
       )
 
-      let response = await api
+      const responseFail = await api
         .post(`/store/carts/${cartId}/complete`)
         .catch((err) => {
           return err.response
         })
+
+      expect(responseFail.status).toEqual(409)
+      expect(responseFail.data.type).toEqual("not_allowed")
+      expect(responseFail.data.code).toEqual(MedusaError.Codes.INSUFFICIENT_INVENTORY)
+
+      let payments = await manager.find(Payment, { cart_id: cartId })
+      expect(payments).toHaveLength(1)
+      expect(payments).toContainEqual(
+        expect.objectContaining({
+          canceled_at: expect.any(Date),
+        })
+      )
 
       await manager.update(
         ProductVariant,
@@ -201,27 +214,83 @@ describe("/store/carts", () => {
         }
       )
 
-      response = await api
+      const responseSuccess = await api
         .post(`/store/carts/${cartId}/complete`)
         .catch((err) => {
           return err.response
         })
 
-      const payment = await manager.find(Payment, { cart_id: cartId })
+      expect(responseSuccess.status).toEqual(200)
+      expect(responseSuccess.data.type).toEqual("order")
 
-      expect(payment).toContainEqual(
+      payments = await manager.find(Payment, { cart_id: cartId })
+      expect(payments).toHaveLength(2)
+      expect(payments).toContainEqual(
         expect.objectContaining({
-          canceled_at: expect.any(Date),
+          canceled_at: null,
         })
       )
-      expect(payment).toContainEqual(
+    })
+  })
+
+  describe("Cart consecutive completion", () => {
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should fails on cart already completed", async () => {
+      const api = useApi()
+      const manager = dbConnection.manager
+
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+
+      const cartRes = await api
+        .post("/store/carts", {
+          region_id: region.id,
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+      await api.post(`/store/carts/${cartId}/payment-sessions`)
+
+      const responseSuccess = await api
+        .post(`/store/carts/${cartId}/complete`)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(responseSuccess.status).toEqual(200)
+      expect(responseSuccess.data.type).toEqual("order")
+
+      let payments = await manager.find(Payment, { cart_id: cartId })
+      expect(payments).toHaveLength(1)
+      expect(payments).toContainEqual(
         expect.objectContaining({
           canceled_at: null,
         })
       )
 
-      expect(response.status).toEqual(200)
-      expect(response.data.type).toEqual("order")
+      const responseFail = await api
+        .post(`/store/carts/${cartId}/complete`)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(responseFail.status).toEqual(409)
+      expect(responseFail.data.code).toEqual("cart_incompatible_state")
+      expect(responseFail.data.message).toEqual("Cart has already been completed")
     })
   })
 })

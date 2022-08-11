@@ -17,6 +17,7 @@ import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Index(["cart_id"], { where: "canceled_at IS NOT NULL" })
+@Index("UniquePaymentActive", ["cart_id"], { where: "canceled_at IS NULL", unique: true, })
 @Entity()
 export class Payment extends BaseEntity {
   @Index()
