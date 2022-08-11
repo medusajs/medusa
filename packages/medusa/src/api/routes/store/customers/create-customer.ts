@@ -1,9 +1,5 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
-import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-
-import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
-import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 import { AuthService } from "../../../../services"
