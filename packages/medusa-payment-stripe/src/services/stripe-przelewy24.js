@@ -1,15 +1,14 @@
-import _ from "lodash"
 import Stripe from "stripe"
-import { PaymentService } from "medusa-interfaces"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 
-class Przelewy24ProviderService extends PaymentService {
+class Przelewy24ProviderService extends AbstractPaymentService {
   static identifier = "stripe-przelewy24"
 
   constructor(
     { stripeProviderService, customerService, totalsService, regionService },
     options
   ) {
-    super()
+    super({ stripeProviderService, customerService, totalsService, regionService }, options)
 
     /**
      * Required Stripe options:
@@ -42,7 +41,7 @@ class Przelewy24ProviderService extends PaymentService {
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
    * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @returns {Promise<PaymentSessionStatus>} the status of the payment intent
    */
   async getStatus(paymentData) {
     return await this.stripeProviderService_.getStatus(paymentData)
