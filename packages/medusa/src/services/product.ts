@@ -29,7 +29,7 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
@@ -390,7 +390,7 @@ class ProductService extends TransactionBaseService {
         if (
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
-          if (typeof salesChannels !== "undefined") {
+          if (isDefined(salesChannels)) {
             product.sales_channels = []
             if (salesChannels?.length) {
               const salesChannelIds = salesChannels?.map((sc) => sc.id)
@@ -461,11 +461,11 @@ class ProductService extends TransactionBaseService {
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        if (typeof update.sales_channels !== "undefined") {
+        if (isDefined(update.sales_channels)) {
           relations.push("sales_channels")
         }
       } else {
-        if (typeof update.sales_channels !== "undefined") {
+        if (isDefined(update.sales_channels)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "the property sales_channels should no appears as part of the payload"
@@ -510,7 +510,7 @@ class ProductService extends TransactionBaseService {
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        if (typeof salesChannels !== "undefined") {
+        if (isDefined(salesChannels)) {
           product.sales_channels = []
           if (salesChannels?.length) {
             const salesChannelIds = salesChannels?.map((sc) => sc.id)
@@ -655,10 +655,14 @@ class ProductService extends TransactionBaseService {
 
       await productOptionRepo.save(option)
 
+      const productVariantServiceTx =
+        this.productVariantService_.withTransaction(manager)
       for (const variant of product.variants) {
-        this.productVariantService_
-          .withTransaction(manager)
-          .addOptionValue(variant.id, option.id, "Default Value")
+        await productVariantServiceTx.addOptionValue(
+          variant.id,
+          option.id,
+          "Default Value"
+        )
       }
 
       const result = await this.retrieve(productId)
