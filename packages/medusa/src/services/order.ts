@@ -64,7 +64,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
 }
 
-class OrderService extends TransactionBaseService<OrderService> {
+class OrderService extends TransactionBaseService {
   static readonly Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",

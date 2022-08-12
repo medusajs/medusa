@@ -33,7 +33,7 @@ type InjectedDependencies = {
 /**
  * Helps retrieve payment providers
  */
-export default class PaymentProviderService extends TransactionBaseService<PaymentProviderService> {
+export default class PaymentProviderService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly container_: InjectedDependencies

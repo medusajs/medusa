@@ -32,7 +32,7 @@ type InjectedDependencies = {
  * @constructor
  * @implements {BaseService}
  */
-class ShippingProfileService extends TransactionBaseService<ShippingProfileService> {
+class ShippingProfileService extends TransactionBaseService {
   protected readonly productService_: ProductService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly customShippingOptionService_: CustomShippingOptionService

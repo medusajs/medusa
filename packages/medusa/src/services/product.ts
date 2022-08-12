@@ -47,10 +47,7 @@ type InjectedDependencies = {
   featureFlagRouter: FlagRouter
 }
 
-class ProductService extends TransactionBaseService<
-  ProductService,
-  InjectedDependencies
-> {
+class ProductService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 

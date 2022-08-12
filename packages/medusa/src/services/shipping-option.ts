@@ -26,7 +26,7 @@ import RegionService from "./region"
 /**
  * Provides layer to manipulate profiles.
  */
-class ShippingOptionService extends TransactionBaseService<ShippingOptionService> {
+class ShippingOptionService extends TransactionBaseService {
   protected readonly providerService_: FulfillmentProviderService
   protected readonly regionService_: RegionService
   protected readonly requirementRepository_: typeof ShippingOptionRequirementRepository

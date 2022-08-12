@@ -22,7 +22,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate customers.
  */
-class CustomerService extends TransactionBaseService<CustomerService> {
+class CustomerService extends TransactionBaseService {
   protected readonly customerRepository_: typeof CustomerRepository
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly eventBusService_: EventBusService
