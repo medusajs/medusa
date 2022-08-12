@@ -236,6 +236,9 @@ describe("DiscountService", () => {
     })
 
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("france"),
@@ -333,6 +336,9 @@ describe("DiscountService", () => {
     const discountRuleRepository = MockRepository({})
 
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-region-2"),
@@ -406,6 +412,9 @@ describe("DiscountService", () => {
     const discountRuleRepository = MockRepository({})
 
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-region"),
@@ -454,6 +463,9 @@ describe("DiscountService", () => {
     const discountRuleRepository = MockRepository({})
 
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("test-region"),
