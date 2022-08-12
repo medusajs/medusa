@@ -439,12 +439,15 @@ class ShippingProfileService extends TransactionBaseService {
         }) as ShippingOption[]
       }
 
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
       const options = await Promise.all(
         rawOpts.map(async (so) => {
           try {
-            const option = await this.shippingOptionService_
-              .withTransaction(manager)
-              .validateCartOption(so, cart)
+            const option = await shippingOptionServiceTx.validateCartOption(
+              so,
+              cart
+            )
             if (option) {
               return option
             }

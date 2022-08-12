@@ -1831,11 +1831,12 @@ class CartService extends TransactionBaseService {
           relations: ["countries"],
         })
 
+      const priceSelectionStrategyTx =
+        this.priceSelectionStrategy_.withTransaction(transactionManager)
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {
-            const availablePrice = await this.priceSelectionStrategy_
-              .withTransaction(transactionManager)
+            const availablePrice = await priceSelectionStrategyTx
               .calculateVariantPrice(item.variant_id, {
                 region_id: region.id,
                 currency_code: region.currency_code,

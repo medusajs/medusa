@@ -353,11 +353,9 @@ class SwapService extends BaseService {
 
       const newItems = await Promise.all(
         additionalItems.map(({ variant_id, quantity }) => {
-          return this.lineItemService_.generate(
-            variant_id,
-            order.region_id,
-            quantity
-          )
+          return this.lineItemService_
+            .withTransaction(manager)
+            .generate(variant_id, order.region_id, quantity)
         })
       )
 

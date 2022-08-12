@@ -289,7 +289,7 @@ export default class EventBusService {
       observers.map((subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
-            `An error occured while processing ${eventName}: ${err}`
+            `An error occurred while processing ${eventName}: ${err}`
           )
           return err
         })

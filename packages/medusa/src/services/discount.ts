@@ -196,9 +196,10 @@ class DiscountService extends TransactionBaseService {
       }
       try {
         if (discount.regions) {
+          const regionServiceTx = this.regionService_.withTransaction(manager)
           discount.regions = (await Promise.all(
             discount.regions.map((regionId) =>
-              this.regionService_.withTransaction(manager).retrieve(regionId)
+              regionServiceTx.retrieve(regionId)
             )
           )) as Region[]
         }
@@ -347,8 +348,9 @@ class DiscountService extends TransactionBaseService {
       }
 
       if (regions) {
+        const regionServiceTx = this.regionService_.withTransaction(manager)
         discount.regions = await Promise.all(
-          regions.map((regionId) => this.regionService_.retrieve(regionId))
+          regions.map((regionId) => regionServiceTx.retrieve(regionId))
         )
       }
 
