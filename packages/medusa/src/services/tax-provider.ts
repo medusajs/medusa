@@ -38,7 +38,7 @@ type RegionDetails = {
 /**
  * Finds tax providers and assists in tax related operations.
  */
-class TaxProviderService extends TransactionBaseService<TaxProviderService> {
+class TaxProviderService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 

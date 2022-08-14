@@ -30,7 +30,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate gift cards.
  */
-class GiftCardService extends TransactionBaseService<GiftCardService> {
+class GiftCardService extends TransactionBaseService {
   protected readonly giftCardRepository_: typeof GiftCardRepository
   protected readonly giftCardTransactionRepo_: typeof GiftCardTransactionRepository
   protected readonly regionService_: RegionService
