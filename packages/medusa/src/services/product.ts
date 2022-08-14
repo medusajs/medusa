@@ -21,6 +21,7 @@ import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
+import { ShippingProfileRepository } from "../repositories/shipping-profile"
 import { Selector } from "../types/common"
 import {
   CreateProductInput,
@@ -41,6 +42,7 @@ type InjectedDependencies = {
   productTypeRepository: typeof ProductTypeRepository
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
+  shippingProfileRepository: typeof ShippingProfileRepository
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
@@ -60,6 +62,7 @@ class ProductService extends TransactionBaseService<
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
+  protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
@@ -84,6 +87,7 @@ class ProductService extends TransactionBaseService<
     imageRepository,
     searchService,
     featureFlagRouter,
+    shippingProfileRepository,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -99,6 +103,7 @@ class ProductService extends TransactionBaseService<
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
     this.featureFlagRouter_ = featureFlagRouter
+    this.shippingProfileRepository_ = shippingProfileRepository
   }
 
   /**
@@ -365,6 +370,20 @@ class ProductService extends TransactionBaseService<
         sales_channels: salesChannels,
         ...rest
       } = productObject
+
+      // If the profile_id is not supplied then get default shipping profile
+      if (!rest.profile_id) {
+        const profileRepository = this.manager_.getCustomRepository(
+          this.shippingProfileRepository_
+        )
+
+        const type = rest.is_giftcard ? "gift_card" : "default"
+
+        const shippingProfile = await profileRepository.findOne({
+          where: { type },
+        })
+        rest.profile_id = shippingProfile?.id
+      }
 
       if (!rest.thumbnail && images?.length) {
         rest.thumbnail = images[0]

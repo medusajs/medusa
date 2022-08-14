@@ -1,10 +1,10 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductService from "../product"
-import { FlagRouter } from "../../utils/flag-router";
+import { FlagRouter } from "../../utils/flag-router"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -110,11 +110,15 @@ describe("ProductService", () => {
     productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: (id) =>
         Promise.resolve({ id: IdMap.getId("cat"), title: "Suits" }),
+    }
+
+    const shippingProfileRepository = {
+      findOne: () => Promise.resolve({ id: IdMap.getId("sp"), title: "Suits" }),
     }
 
     const productService = new ProductService({
@@ -125,6 +129,7 @@ describe("ProductService", () => {
       productTagRepository,
       productTypeRepository,
       featureFlagRouter: new FlagRouter({}),
+      shippingProfileRepository,
     })
 
     beforeEach(() => {
@@ -158,6 +163,7 @@ describe("ProductService", () => {
       expect(productRepository.create).toHaveBeenCalledTimes(1)
       expect(productRepository.create).toHaveBeenCalledWith({
         title: "Suit",
+        profile_id: expect.any(String),
         variants: [
           {
             id: "test1",
@@ -250,7 +256,7 @@ describe("ProductService", () => {
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       update: (variant, update) => {
@@ -491,7 +497,7 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       addOptionValue: jest.fn(),
