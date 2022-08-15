@@ -17,6 +17,7 @@ import { ProductStatus } from "../../../../models"
 import { Request } from "express"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [get] /price-lists/:id/products
@@ -168,7 +169,7 @@ export default async (req: Request, res) => {
 
   const [products, count] = await priceListService.listProducts(
     id,
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    pickBy(filterableFields, (val) => isDefined(val)),
     req.listConfig
   )
 

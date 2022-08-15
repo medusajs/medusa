@@ -4,6 +4,7 @@ import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
 import { validator } from "../../../../utils/validator"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [get] /gift-cards
@@ -44,7 +45,7 @@ export default async (req, res) => {
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
   const [giftCards, count] = await giftCardService.listAndCount(
-    pickBy(req.filterableFields, (val) => typeof val !== "undefined"),
+    pickBy(req.filterableFields, (val) => isDefined(val)),
     req.listConfig
   )
 
