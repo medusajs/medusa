@@ -257,6 +257,9 @@ import { validator } from "../../../../utils/validator"
  *         is_giftcard: false,
  *         discountable: true
  *       })
+ *       .then(({ product }) => {
+ *         console.log(product.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

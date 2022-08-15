@@ -24,6 +24,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.carts.addShippingMethod(cart_id, {
  *         option_id
  *       })
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

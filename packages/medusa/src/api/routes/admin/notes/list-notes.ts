@@ -23,6 +23,9 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.notes.list()
+ *       .then(({ notes, limit, offset, count }) => {
+ *         console.log(notes.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

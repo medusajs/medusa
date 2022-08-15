@@ -24,6 +24,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.products.search({
  *         q: 'Shirt'
  *       })
+ *       .then(({ hits }) => {
+ *         console.log(hits.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

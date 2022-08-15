@@ -55,6 +55,9 @@ import { validator } from "../../../../utils/validator"
  *         last_name: 'Yost',
  *         password: 'supersecret'
  *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

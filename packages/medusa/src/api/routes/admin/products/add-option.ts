@@ -33,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.products.addOption(product_id, {
  *         title: 'Size'
  *       })
+ *       .then(({ product }) => {
+ *         console.log(product.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -34,6 +34,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.addFulfillmentProvider(region_id, {
  *         provider_id: 'manual'
  *       })
+ *       .then(({ region }) => {
+ *         console.log(region.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

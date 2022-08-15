@@ -4,3 +4,6 @@ medusa.orders.lookupOrder({
   display_id: 1,
   email: 'user@example.com'
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

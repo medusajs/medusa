@@ -9,3 +9,6 @@ medusa.admin.shippingOptions.create({
   },
   price_type: 'flat_rate'
 })
+.then(({ shipping_option }) => {
+  console.log(shipping_option.id);
+});

@@ -5,3 +5,6 @@ medusa.customers.resetPassword({
   password: 'supersecret',
   token: 'supersecrettoken'
 })
+.then(({ customer }) => {
+  console.log(customer.id);
+});

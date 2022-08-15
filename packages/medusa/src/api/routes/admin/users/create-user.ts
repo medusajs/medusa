@@ -49,6 +49,9 @@ import { validator } from "../../../../utils/validator"
  *         email: 'user@example.com',
  *         password: 'supersecret'
  *       })
+ *       .then(({ user }) => {
+ *         console.log(user.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

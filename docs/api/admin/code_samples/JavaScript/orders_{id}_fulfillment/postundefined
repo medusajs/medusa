@@ -9,3 +9,6 @@ medusa.admin.orders.createFulfillment(order_id, {
     }
   ]
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

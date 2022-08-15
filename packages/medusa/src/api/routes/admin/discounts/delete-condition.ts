@@ -28,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.deleteCondition(discount_id, condition_id)
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

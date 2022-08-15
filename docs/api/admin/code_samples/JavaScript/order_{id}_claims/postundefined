@@ -10,3 +10,6 @@ medusa.admin.orders.createClaim(order_id, {
     }
   ]
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

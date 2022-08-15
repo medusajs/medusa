@@ -5,3 +5,6 @@ medusa.admin.returnReasons.create({
   label: 'Damaged',
   value: 'damaged'
 })
+.then(({ return_reason }) => {
+  console.log(return_reason.id);
+});

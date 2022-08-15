@@ -5,3 +5,6 @@ medusa.admin.products.update(product_id, {
   title: 'Shirt',
   images: []
 })
+.then(({ product }) => {
+  console.log(product.id);
+});

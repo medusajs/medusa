@@ -6,3 +6,6 @@ medusa.admin.notes.create({
   resource_type: 'order',
   value: 'We delivered this order'
 })
+.then(({ note }) => {
+  console.log(note.id);
+});

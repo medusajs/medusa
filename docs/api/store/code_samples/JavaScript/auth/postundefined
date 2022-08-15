@@ -4,3 +4,6 @@ medusa.auth.authenticate({
   email: 'user@example.com',
   password: 'user@example.com'
 })
+.then(({ customer }) => {
+  console.log(customer.id);
+});

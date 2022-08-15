@@ -37,6 +37,9 @@ import { validator } from "../../../../utils/validator"
  *       key: 'test',
  *         value: 'true'
  *       })
+ *       .then(({ product }) => {
+ *         console.log(product.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

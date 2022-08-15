@@ -50,6 +50,9 @@ import { validator } from "../../../../utils/validator"
  *         amount: 1000,
  *         reason: 'Do not like it'
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

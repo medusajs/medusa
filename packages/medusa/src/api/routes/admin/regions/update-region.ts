@@ -73,6 +73,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.update(region_id, {
  *         name: 'Europe'
  *       })
+ *       .then(({ region }) => {
+ *         console.log(region.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

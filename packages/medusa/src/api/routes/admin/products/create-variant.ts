@@ -147,6 +147,9 @@ import { validator } from "../../../../utils/validator"
  *         ],
  *         inventory_quantity: 100
  *       })
+ *       .then(({ product }) => {
+ *         console.log(product.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

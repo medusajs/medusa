@@ -62,6 +62,9 @@ import { validator } from "../../../../utils/validator"
  *           product_id
  *         ]
  *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -33,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *         price: 1000,
  *         option_id
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -54,6 +54,12 @@ import { validator } from "../../../../utils/validator"
  *           password: 'supersecret'
  *         }
  *       })
+ *       .then(() => {
+ *         // successful
+ *       })
+ *       .catch(() => {
+ *         // an error occurred
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

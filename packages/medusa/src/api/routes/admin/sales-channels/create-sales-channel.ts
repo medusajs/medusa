@@ -38,6 +38,9 @@ import SalesChannelService from "../../../../services/sales-channel"
  *         name: 'App',
  *         description: 'Mobile app'
  *       })
+ *       .then(({ sales_channel }) => {
+ *         console.log(sales_channel.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

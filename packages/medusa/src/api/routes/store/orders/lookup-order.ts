@@ -48,6 +48,9 @@ import { validator } from "../../../../utils/validator"
  *         display_id: 1,
  *         email: 'user@example.com'
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

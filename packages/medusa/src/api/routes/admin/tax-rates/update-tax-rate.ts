@@ -76,6 +76,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.taxRates.update(tax_rate_id, {
  *         name: 'New Tax Rate'
  *       })
+ *       .then(({ tax_rate }) => {
+ *         console.log(tax_rate.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -4,3 +4,6 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.products.addOption(product_id, {
   title: 'Size'
 })
+.then(({ product }) => {
+  console.log(product.id);
+});

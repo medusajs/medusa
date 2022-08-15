@@ -36,6 +36,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.customerGroups.update(customer_group_id, {
  *         name: 'VIP'
  *       })
+ *       .then(({ customer_group }) => {
+ *         console.log(customer_group.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

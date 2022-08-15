@@ -99,6 +99,9 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.productTypes.list()
+ *       .then(({ product_types }) => {
+ *         console.log(product_types.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

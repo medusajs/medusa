@@ -37,6 +37,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.addCountry(region_id, {
  *         country_code: 'dk'
  *       })
+ *       .then(({ region }) => {
+ *         console.log(region.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -157,6 +157,9 @@ import { validator } from "../../../../utils/validator"
  *         is_dynamic: false,
  *         is_disabled: false
  *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -15,6 +15,9 @@ import _ from "lodash"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.auth.getSession()
+ *       .then(({ user }) => {
+ *         console.log(user.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

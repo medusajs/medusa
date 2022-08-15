@@ -6,3 +6,6 @@ medusa.admin.taxRates.addProductTypes(tax_rate_id, {
     product_type_id
   ]
 })
+.then(({ tax_rate }) => {
+  console.log(tax_rate.id);
+});

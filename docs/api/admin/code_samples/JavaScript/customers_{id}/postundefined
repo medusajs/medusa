@@ -4,3 +4,6 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.customers.update(customer_id, {
   first_name: 'Dolly'
 })
+.then(({ customer }) => {
+  console.log(customer.id);
+});

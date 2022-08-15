@@ -48,6 +48,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.orders.createSwapShipment(order_id, swap_id, {
  *         fulfillment_id
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

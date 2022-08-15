@@ -96,6 +96,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *       medusa.carts.update(cart_id, {
  *         email: 'user@example.com'
  *       })
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

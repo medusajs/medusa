@@ -45,6 +45,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.giftCards.create({
  *         region_id
  *       })
+ *       .then(({ gift_card }) => {
+ *         console.log(gift_card.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

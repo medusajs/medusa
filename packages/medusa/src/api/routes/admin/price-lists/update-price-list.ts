@@ -109,6 +109,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.priceLists.update(price_list_id, {
  *         name: 'New Price List'
  *       })
+ *       .then(({ price_list }) => {
+ *         console.log(price_list.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -31,6 +31,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notes.update(note_id, {
  *        value: 'We delivered this order'
  *       })
+ *       .then(({ note }) => {
+ *         console.log(note.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

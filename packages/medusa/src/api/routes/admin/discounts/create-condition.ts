@@ -66,6 +66,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.discounts.createCondition(discount_id, {
  *         operator: DiscountConditionOperator.IN
  *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -27,6 +27,9 @@ import { IsString } from "class-validator"
  *       medusa.admin.uploads.getPresignedDownloadUrl({
  *         file_key
  *       })
+ *       .then(({ download_url }) => {
+ *         console.log(download_url);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -24,6 +24,9 @@ import { StoreService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.store.addCurrency('eur')
+ *       .then(({ store }) => {
+ *         console.log(store.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

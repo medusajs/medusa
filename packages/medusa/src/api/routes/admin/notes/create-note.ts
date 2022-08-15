@@ -40,6 +40,9 @@ import { validator } from "../../../../utils/validator"
  *         resource_type: 'order',
  *         value: 'We delivered this order'
  *       })
+ *       .then(({ note }) => {
+ *         console.log(note.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

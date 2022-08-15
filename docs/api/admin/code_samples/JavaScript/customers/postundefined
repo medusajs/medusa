@@ -7,3 +7,6 @@ medusa.admin.customers.create({
   last_name: 'Yost',
   password: 'supersecret'
 })
+.then(({ customer }) => {
+  console.log(customer.id);
+});

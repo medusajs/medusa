@@ -65,6 +65,9 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

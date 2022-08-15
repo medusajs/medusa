@@ -8,3 +8,6 @@ medusa.admin.customerGroups.removeCustomers(customer_group_id, {
     }
   ]
 })
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});

@@ -16,6 +16,9 @@ import NoteService from "../../../../services/note"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.notes.retrieve(note_id)
+ *       .then(({ note }) => {
+ *         console.log(note.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

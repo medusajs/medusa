@@ -9,3 +9,9 @@ medusa.admin.invites.accept({
     password: 'supersecret'
   }
 })
+.then(() => {
+  // successful
+})
+.catch(() => {
+  // an error occurred
+});

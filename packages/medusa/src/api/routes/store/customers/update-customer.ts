@@ -53,6 +53,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.customers.update({
  *         first_name: 'Laury'
  *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

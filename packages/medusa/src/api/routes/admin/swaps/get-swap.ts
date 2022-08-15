@@ -18,6 +18,9 @@ import { SwapService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.swaps.retrieve(swap_id)
+ *       .then(({ swap }) => {
+ *         console.log(swap.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

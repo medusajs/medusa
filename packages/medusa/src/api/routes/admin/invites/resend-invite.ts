@@ -17,6 +17,12 @@ import InviteService from "../../../../services/invite"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.invites.resend(invite_id)
+ *       .then(() => {
+ *         // successful
+ *       })
+ *       .catch(() => {
+ *         // an error occurred
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

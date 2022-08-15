@@ -5,3 +5,9 @@ medusa.admin.invites.create({
   user: "user@example.com",
   role: "admin"
 })
+.then(() => {
+  // successful
+})
+.catch(() => {
+  // an error occurred
+});

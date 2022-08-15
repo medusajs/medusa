@@ -14,6 +14,9 @@ import UserService from "../../../../services/user"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.list()
+ *       .then(({ users }) => {
+ *         console.log(users.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

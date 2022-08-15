@@ -6,3 +6,6 @@ medusa.admin.taxRates.addShippingOptions(tax_rate_id, {
     shipping_option_id
   ]
 })
+.then(({ tax_rate }) => {
+  console.log(tax_rate.id);
+});

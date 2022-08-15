@@ -70,6 +70,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.customers.update(customer_id, {
  *         first_name: 'Dolly'
  *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

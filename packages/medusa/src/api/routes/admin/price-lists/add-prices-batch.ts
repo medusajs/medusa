@@ -72,6 +72,9 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
+ *       .then(({ price_list }) => {
+ *         console.log(price_list.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

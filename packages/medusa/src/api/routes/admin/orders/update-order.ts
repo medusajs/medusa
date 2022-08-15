@@ -100,6 +100,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.orders.update(order_id, {
  *         email: 'user@example.com'
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

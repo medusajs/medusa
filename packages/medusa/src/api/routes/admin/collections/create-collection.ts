@@ -36,6 +36,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.admin.collections.create({
  *         title: 'New Collection'
  *       })
+ *       .then(({ collection }) => {
+ *         console.log(collection.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

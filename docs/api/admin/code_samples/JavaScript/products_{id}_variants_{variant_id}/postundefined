@@ -17,3 +17,6 @@ medusa.admin.products.updateVariant(product_id, variant_id, {
   ],
   inventory_quantity: 100
 })
+.then(({ product }) => {
+  console.log(product.id);
+});

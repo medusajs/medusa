@@ -28,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *         variant_id,
  *         quantity: 1
  *       })
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -123,6 +123,8 @@ paths:
     $ref: paths/apps_authorizations.yaml
   /apps:
     $ref: paths/apps.yaml
+  /auth:
+    $ref: paths/auth.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -141,8 +143,6 @@ paths:
     $ref: paths/customers.yaml
   /customers/{id}:
     $ref: paths/customers_{id}.yaml
-  /auth:
-    $ref: paths/auth.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions:
@@ -283,6 +283,10 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
+  /return-reasons:
+    $ref: paths/return-reasons.yaml
+  /return-reasons/{id}:
+    $ref: paths/return-reasons_{id}.yaml
   /regions/{id}/countries:
     $ref: paths/regions_{id}_countries.yaml
   /regions/{id}/fulfillment-providers:
@@ -301,10 +305,6 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
-  /return-reasons:
-    $ref: paths/return-reasons.yaml
-  /return-reasons/{id}:
-    $ref: paths/return-reasons_{id}.yaml
   /returns/{id}/cancel:
     $ref: paths/returns_{id}_cancel.yaml
   /returns:

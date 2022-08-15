@@ -33,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *         code: 'TEST',
  *         usage_limit: 1
  *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -51,6 +51,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.store.update({
  *         name: 'Medusa Store'
  *       })
+ *       .then(({ store }) => {
+ *         console.log(store.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
