@@ -12,7 +12,7 @@ Services in Medusa represent bundled helper methods that you want to use across 
 
 For example, you can use Medusa’s `productService` to get the list of products, as well as perform other functionalities related to products. There’s also an `authService` that provides functionalities like authenticating customers and users.
 
-Custom services reside in the `src/services` directory of your Medusa Server installation. Each service should be a class that extends the `BaseService` class from `medusa-interfaces`.
+Custom services reside in the `src/services` directory of your Medusa Server installation. Each service should be a class that extends the `TransactionBaseService` class from the core Medusa package `@medusajs/medusa`.
 
 Each file you create in `src/services` should hold one service and export it.
 
@@ -29,9 +29,9 @@ To create a service, you should create a JavaScript file in `src/services` to ho
 For example, if you want to create a service `helloService`, create the file `hello.js` in `src/services` with the following content:
 
 ```js
-import { BaseService } from "medusa-interfaces"
+import { TransactionBaseService } from '@medusajs/medusa';
 
-class HelloService extends BaseService {
+class HelloService extends TransactionBaseService {
   getMessage() {
     return `Welcome to My Store!`
   }
@@ -42,7 +42,7 @@ export default HelloService
 
 ## Service Constructor
 
-As the service extends the `BaseService` class, all services in Medusa’s core, as well as all your custom services, will be available in your service’s constructor using dependency injection.
+As the service extends the `TransactionBaseService` class, all services in Medusa’s core, as well as all your custom services, will be available in your service’s constructor using dependency injection.
 
 So, if you want your service to use another service, simply add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
