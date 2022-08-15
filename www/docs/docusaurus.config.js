@@ -97,6 +97,11 @@ module.exports = {
               label: "CLI Reference",
             },
             {
+              type: "docSidebar",
+              sidebarId: "entitiesSidebar",
+              label: "Entities Reference",
+            },
+            {
               to: "advanced/backend/subscribers/events-list",
               label: "Events Reference",
             },
