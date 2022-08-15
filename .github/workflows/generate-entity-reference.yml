@@ -1,17 +1,17 @@
-name: Generate Services Reference
+name: Generate Entity Reference
 on: 
   push:
     branches:
       - "master"
     paths:
-      - packages/medusa/src/services/**
+      - packages/medusa/src/models/**
   pull_request:
     types:
       - closed
     branches:
       - "master"
     paths:
-      - packages/medusa/src/services/**
+      - packages/medusa/src/models/**
 jobs:
   services:
     runs-on: ubuntu-latest
@@ -40,14 +40,14 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Generate Services Reference
-        run: yarn generate:services
+      - name: Generate Entities Reference
+        run: yarn generate:entities
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'chore(docs): Generated Services Reference (automated)'
+          commit-message: 'chore(docs): Generated Entities Reference (automated)'
           base: 'master'
-          title: 'chore(docs): Generated Services Reference (automated)'
+          title: 'chore(docs): Generated Entities Reference (automated)'
           labels: 'type: chore'
-          add-paths: docs/content/references/services/**
+          add-paths: docs/content/references/entities/**

@@ -155,6 +155,6 @@ await postRepository.softDelete(post.id);
 
 ## What’s Next 🚀
 
-- Learn more about [Services](services/create-service.md) and how to use them.
-- Learn how to create an endpoint for [storefront](endpoints/add-storefront.md) and [admin](endpoints/add-admin.md).
+- Check out Medusa's entities in the [Entities' reference](../../references/entities/classes/Address.md).
 - Learn about [migrations](migrations.md).
+- Learn more about [Services](services/create-service.md) and how to use them.
