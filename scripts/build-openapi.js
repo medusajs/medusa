@@ -7,7 +7,7 @@ const { exec } = require("child_process")
 
 // Storefront API
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
   {
     base: "./docs/api/store-spec3-base.yaml",
   }
@@ -26,7 +26,7 @@ swaggerInline(
 })
 
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
   {
     base: "./docs/api/store-spec3-base.yaml",
     format: "yaml",
@@ -43,7 +43,7 @@ swaggerInline(
 
 // Admin API
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
   {
     base: "./docs/api/admin-spec3-base.yaml",
   }
@@ -62,7 +62,7 @@ swaggerInline(
 })
 
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
   {
     base: "./docs/api/admin-spec3-base.yaml",
     format: "yaml",

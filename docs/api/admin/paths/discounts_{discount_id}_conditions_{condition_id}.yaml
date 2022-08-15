@@ -65,6 +65,18 @@ delete:
               discount:
                 description: The Discount to which the condition used to belong
                 $ref: ../components/schemas/discount.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetDiscountsDiscountConditionsCondition
   summary: Gets a DiscountCondition
@@ -118,6 +130,18 @@ get:
             properties:
               discount_condition:
                 $ref: ../components/schemas/discount_condition.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostDiscountsDiscountConditionsCondition
   summary: >-
@@ -216,3 +240,15 @@ post:
             properties:
               discount:
                 $ref: ../components/schemas/discount.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -25,6 +25,18 @@ post:
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/incorrect_credentials.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
   requestBody:
     content:
       application/json:
@@ -44,6 +56,7 @@ delete:
   operationId: DeleteAuth
   summary: Log out
   description: Destroys a Customer's authenticated session.
+  x-authenticated: true
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -56,6 +69,18 @@ delete:
   responses:
     '200':
       description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetAuth
   summary: Get Session
@@ -83,5 +108,15 @@ get:
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
     '401':
-      description: Unauthorized
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

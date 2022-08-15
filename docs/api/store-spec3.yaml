@@ -62,6 +62,205 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate Customer
+      description: >-
+        Logs a Customer in and authorizes them to view their details. Successful
+        authentication will set a session cookie in the Customer's browser.
+      parameters: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.authenticate({
+              email: 'user@example.com',
+              password: 'user@example.com'
+            })
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://medusa-url.com/store/auth' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "email": "user@example.com",
+                "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/incorrect_credentials'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                password:
+                  type: string
+                  description: The Customer's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Log out
+      description: Destroys a Customer's authenticated session.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE 'https://medusa-url.com/store/auth'
+            \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      description: Gets the currently logged in Customer.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.auth.getSession()
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/store/auth' \
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/auth/{email}':
+    get:
+      operationId: GetAuthEmail
+      summary: Check if email has account
+      description: Checks if a Customer with the given email has signed up.
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+            format: email
+          required: true
+          description: The email to check if exists.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.exists('user@example.com')
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/auth/user@example.com' \
+
+            --header 'Cookie: connect.sid={sid}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  exists:
+                    type: boolean
+                    description: Whether email exists or not.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -108,6 +307,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -150,26 +359,23 @@ paths:
         - Cart
       responses:
         '200':
-<<<<<<< HEAD
-          description: Successfully created a new Cart
-=======
           description: OK
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           content:
             application/json:
               schema:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-  '/carts/{id}/line-items':
-    post:
-      operationId: PostCartsCartLineItems
-      summary: Add a Line Item
-      description: >-
-        Generates a Line Item with a given Product Variant and adds it to the
-        Cart
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/complete':
     post:
       summary: Complete a Cart
@@ -181,16 +387,11 @@ paths:
         is not yet created, we make sure to do so. The completion of a cart can
         be performed idempotently with a provided header `Idempotency-Key`. If
         not provided, we will generate one for the request.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
-<<<<<<< HEAD
-          description: The id of the Cart to add the Line Item to.
-=======
           description: The Cart id.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       x-codeSamples:
@@ -221,46 +422,6 @@ paths:
             application/json:
               schema:
                 properties:
-<<<<<<< HEAD
-                  cart:
-                    $ref: '#/components/schemas/cart'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - variant_id
-                - quantity
-              properties:
-                variant_id:
-                  type: string
-                  description: >-
-                    The id of the Product Variant to generate the Line Item
-                    from.
-                quantity:
-                  type: integer
-                  description: The quantity of the Product Variant to add to the Line Item.
-                metadata:
-                  type: object
-                  description: >-
-                    An optional key-value map with additional details about the
-                    Line Item.
-  '/carts/{id}/payment-sessions':
-    post:
-      operationId: PostCartsCartPaymentSessions
-      summary: Initialize Payment Sessions
-      description: >-
-        Creates Payment Sessions for each of the available Payment Providers in
-        the Cart's Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-=======
                   type:
                     type: string
                     description: The type of the data property.
@@ -295,6 +456,16 @@ paths:
                         properties:
                           cart:
                             $ref: '#/components/schemas/swap'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /carts:
     post:
       summary: Create a Cart
@@ -377,13 +548,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-  '/carts/{id}/discounts/{code}':
-    delete:
-      operationId: DeleteCartsCartDiscountsDiscount
-      description: Removes a Discount from a Cart.
-      summary: Remove Discount from Cart
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/line-items':
     post:
       operationId: PostCartsCartLineItems
@@ -391,22 +565,11 @@ paths:
       description: >-
         Generates a Line Item with a given Product Variant and adds it to the
         Cart
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
-<<<<<<< HEAD
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: code
-          required: true
-          description: The unique Discount code.
-=======
           description: The id of the Cart to add the Line Item to.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       x-codeSamples:
@@ -445,13 +608,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-  '/carts/{id}/line-items/{line_id}':
-    delete:
-      operationId: DeleteCartsCartLineItemsItem
-      summary: Delete a Line Item
-      description: Removes a Line Item from a Cart.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -481,7 +647,6 @@ paths:
       description: >-
         Creates Payment Sessions for each of the available Payment Providers in
         the Cart's Region.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -515,18 +680,21 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-    post:
-      operationId: PostCartsCartLineItemsItem
-      summary: Update a Line Item
-      description: Updates a Line Item if the desired quantity can be fulfilled.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/discounts/{code}':
     delete:
       operationId: DeleteCartsCartDiscountsDiscount
       description: Removes a Discount from a Cart.
       summary: Remove Discount from Cart
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -535,15 +703,9 @@ paths:
           schema:
             type: string
         - in: path
-<<<<<<< HEAD
-          name: line_id
-          required: true
-          description: The id of the Line Item.
-=======
           name: code
           required: true
           description: The unique Discount code.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       x-codeSamples:
@@ -572,8 +734,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/line-items/{line_id}':
     delete:
       operationId: DeleteCartsCartLineItemsItem
@@ -618,6 +788,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCartsCartLineItemsItem
       summary: Update a Line Item
@@ -669,7 +849,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -688,8 +877,6 @@ paths:
       description: >-
         Deletes a Payment Session on a Cart. May be useful if a payment has
         failed.
-<<<<<<< HEAD
-=======
       parameters:
         - in: path
           name: id
@@ -731,11 +918,20 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCartsCartPaymentSessionUpdate
       summary: Update a Payment Session
       description: Updates a Payment Session with additional data.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -746,13 +942,7 @@ paths:
         - in: path
           name: provider_id
           required: true
-<<<<<<< HEAD
-          description: >-
-            The id of the Payment Provider used to create the Payment Session to
-            be deleted.
-=======
           description: The id of the payment provider.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
           schema:
             type: string
       x-codeSamples:
@@ -790,12 +980,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-    post:
-      operationId: PostCartsCartPaymentSessionUpdate
-      summary: Update a Payment Session
-      description: Updates a Payment Session with additional data.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -812,7 +1006,6 @@ paths:
       operationId: GetCartsCart
       summary: Retrieve a Cart
       description: Retrieves a Cart.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -846,29 +1039,20 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - data
-              properties:
-                data:
-                  type: object
-                  description: The data to update the payment session with.
-  '/carts/{id}':
-    get:
-      operationId: GetCartsCart
-      summary: Retrieve a Cart
-      description: Retrieves a Cart.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCartsCart
       summary: Update a Cart
       description: Updates a Cart.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
@@ -876,8 +1060,6 @@ paths:
           description: The id of the Cart.
           schema:
             type: string
-<<<<<<< HEAD
-=======
       requestBody:
         content:
           application/json:
@@ -977,12 +1159,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-    post:
-      operationId: PostCartsCart
-      summary: Update a Cart
-      description: Updates a Cart.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/payment-sessions/{provider_id}/refresh':
     post:
       operationId: PostCartsCartPaymentSessionsSession
@@ -990,81 +1176,11 @@ paths:
       description: >-
         Refreshes a Payment Session to ensure that it is in sync with the Cart -
         this is usually not necessary.
->>>>>>> 2e3ff6dd2 (added request examples for all admin endpoints)
       parameters:
         - in: path
           name: id
           required: true
           description: The id of the Cart.
-<<<<<<< HEAD
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The id of the Region to create the Cart in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO country code to create the Cart in.
-                  externalDocs:
-                    url: >-
-                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
-                    description: See a list of codes.
-                email:
-                  type: string
-                  description: An email to be used on the Cart.
-                  format: email
-                sales_channel_id:
-                  type: string
-                  description: The ID of the Sales channel to update the Cart with.
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                      description: A full billing address object.
-                    - type: string
-                      description: The billing address ID
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                      description: A full shipping address object.
-                    - type: string
-                      description: The shipping address ID
-                gift_cards:
-                  description: An array of Gift Card codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Gift Card is identified by.
-                        type: string
-                discounts:
-                  description: An array of Discount codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Discount is identifed by.
-                        type: string
-                customer_id:
-                  description: The ID of the Customer to associate the Cart with.
-                  type: string
-                context:
-                  description: An optional object to provide context to the Cart.
-                  type: object
-                  example:
-                    ip: '::1'
-                    user_agent: Chrome
-=======
           schema:
             type: string
         - in: path
@@ -1101,6 +1217,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/payment-session':
     post:
       operationId: PostCartsCartPaymentSession
@@ -1149,28 +1275,16 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-<<<<<<< HEAD
-  '/carts/{id}/payment-sessions/{provider_id}/refresh':
-    post:
-      operationId: PostCartsCartPaymentSessionsSession
-      summary: Refresh a Payment Session
-      description: >-
-        Refreshes a Payment Session to ensure that it is in sync with the Cart -
-        this is usually not necessary.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: provider_id
-          required: true
-          description: >-
-            The id of the Payment Provider that created the Payment Session to
-            be refreshed.
-=======
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -1220,6 +1334,16 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /collections:
     get:
       operationId: GetCollections
@@ -1321,6 +1445,16 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -1397,6 +1531,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers:
     post:
       operationId: PostCustomers
@@ -1469,6 +1615,12 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
         '422':
           description: A customer with the same email exists
           content:
@@ -1490,6 +1642,8 @@ paths:
                 message: >-
                   A customer with the given email already has an account. Log in
                   instead
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customers/me/addresses/{address_id}':
     delete:
       operationId: DeleteCustomersCustomerAddressesAddress
@@ -1535,6 +1689,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomersCustomerAddressesAddress
       summary: Update a Shipping Address
@@ -1593,6 +1759,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/me:
     get:
       operationId: GetCustomersCustomer
@@ -1633,6 +1811,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomersCustomer
       summary: Update Customer details
@@ -1708,6 +1898,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/me/payment-methods:
     get:
       operationId: GetCustomersCustomerPaymentMethods
@@ -1761,6 +1963,18 @@ paths:
                           description: >-
                             The data needed for the Payment Provider to use the
                             saved payment method.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/me/orders:
     get:
       operationId: GetCustomersCustomerOrders
@@ -1837,6 +2051,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
@@ -1884,6 +2110,18 @@ paths:
       responses:
         '204':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/password-reset:
     post:
       operationId: PostCustomersResetPassword
@@ -1949,6 +2187,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
@@ -1987,160 +2237,16 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate Customer
-      description: >-
-        Logs a Customer in and authorizes them to view their details. Successful
-        authentication will set a session cookie in the Customer's browser.
-      parameters: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.authenticate({
-              email: 'user@example.com',
-              password: 'user@example.com'
-            })
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request POST 'https://medusa-url.com/store/auth' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-                "email": "user@example.com",
-                "password": "supersecret"
-            }'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                password:
-                  type: string
-                  description: The Customer's password.
-    delete:
-      operationId: DeleteAuth
-      summary: Log out
-      description: Destroys a Customer's authenticated session.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE 'https://medusa-url.com/store/auth'
-            \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      description: Gets the currently logged in Customer.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.auth.getSession()
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/store/auth' \
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '401':
-          description: Unauthorized
-  '/auth/{email}':
-    get:
-      operationId: GetAuthEmail
-      summary: Check if email has account
-      description: Checks if a Customer with the given email has signed up.
-      parameters:
-        - in: path
-          name: email
-          schema:
-            type: string
-            format: email
-          required: true
-          description: The email to check if exists.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.exists('user@example.com')
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/auth/user@example.com' \
-
-            --header 'Cookie: connect.sid={sid}'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  exists:
-                    type: boolean
-                    description: Whether email exists or not.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -2181,6 +2287,16 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}':
     get:
       operationId: GetOrdersOrder
@@ -2219,6 +2335,16 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /orders:
     get:
       operationId: GetOrders
@@ -2280,6 +2406,16 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}':
     get:
       operationId: GetProductsProduct
@@ -2318,6 +2454,16 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /products:
     get:
       operationId: GetProducts
@@ -2492,6 +2638,16 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /products/search:
     post:
       operationId: PostProductsSearch
@@ -2547,6 +2703,16 @@ paths:
                     description: >-
                       Array of results. The format of the items depends on the
                       search engine installed on the server.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
@@ -2585,6 +2751,16 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /regions:
     get:
       operationId: GetRegions
@@ -2674,6 +2850,16 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
@@ -2712,6 +2898,16 @@ paths:
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /return-reasons:
     get:
       operationId: GetReturnReasons
@@ -2745,6 +2941,16 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /returns:
     post:
       operationId: PostReturns
@@ -2841,6 +3047,16 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -2892,6 +3108,16 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/shipping-options/{cart_id}':
     get:
       operationId: GetShippingOptionsCartId
@@ -2932,6 +3158,16 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /swaps:
     post:
       operationId: PostSwaps
@@ -3048,6 +3284,16 @@ paths:
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
@@ -3086,6 +3332,16 @@ paths:
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
@@ -3135,6 +3391,16 @@ paths:
                 properties:
                   variant:
                     $ref: '#/components/schemas/product_variant'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /variants:
     get:
       operationId: GetVariants
@@ -3221,7 +3487,149 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_variant'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
 components:
+  responses:
+    default_error:
+      description: Default Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: unknown_error
+            message: An unknown error occurred.
+            type: unknown_error
+    invalid_state_error:
+      description: Invalid State Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: unknown_error
+            message: >-
+              The request conflicted with another request. You may retry the
+              request with the provided Idempotency-Key.
+            type: QueryRunnerAlreadyReleasedError
+    invalid_request_error:
+      description: Invalid Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: invalid_request_error
+            message: Discount with code TEST already exists.
+            type: duplicate_error
+    not_found_error:
+      description: Not Found Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            message: Entity with id 1 was not found
+            type: not_found
+    400_error:
+      description: Client Error or Multiple Errors
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/error'
+              - $ref: '#/components/schemas/multiple_errors'
+          examples:
+            not_allowed:
+              $ref: '#/components/examples/not_allowed_error'
+            invalid_data:
+              $ref: '#/components/examples/invalid_data_error'
+            multiple_errors:
+              $ref: '#/components/examples/multiple_errors'
+    500_error:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            database:
+              $ref: '#/components/examples/database_error'
+            unexpected_state:
+              $ref: '#/components/examples/unexpected_state_error'
+            invalid_argument:
+              $ref: '#/components/examples/invalid_argument_error'
+            default_error:
+              $ref: '#/components/examples/default_error'
+    unauthorized:
+      description: User is not authorized. Must log in first
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+    incorrect_credentials:
+      description: User does not exist or incorrect credentials
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+  examples:
+    not_allowed_error:
+      summary: Not Allowed Error
+      value:
+        message: Discount must be set to dynamic
+        type: not_allowed
+    invalid_data_error:
+      summary: Invalid Data Error
+      value:
+        message: first_name must be a string
+        type: invalid_data
+    multiple_errors:
+      summary: Multiple Errors
+      value:
+        message: >-
+          Provided request body contains errors. Please check the data and retry
+          the request
+        errors:
+          - message: first_name must be a string
+            type: invalid_data
+          - message: Discount must be set to dynamic
+            type: not_allowed
+    database_error:
+      summary: Database Error
+      value:
+        code: api_error
+        message: An error occured while hashing password
+        type: database_error
+    unexpected_state_error:
+      summary: Unexpected State Error
+      value:
+        message: cart.total must be defined
+        type: unexpected_state
+    invalid_argument_error:
+      summary: Invalid Argument Error
+      value:
+        message: cart.total must be defined
+        type: unexpected_state
+    default_error:
+      summary: Default Error
+      value:
+        code: unknown_error
+        message: An unknown error occurred.
+        type: unknown_error
   securitySchemes:
     cookie_auth:
       type: apiKey
@@ -8199,3 +8607,30 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    multiple_errors:
+      title: Multiple Errors
+      x-resourceId: multiple_errors
+      properties:
+        errors:
+          type: array
+          description: Array of errors
+          items:
+            $ref: '#/components/schemas/error'
+        message:
+          type: string
+          default: >-
+            Provided request body contains errors. Please check the data and
+            retry the request
+    error:
+      title: Response Error
+      x-resourceId: error
+      properties:
+        code:
+          type: string
+          description: A slug code to indicate the type of the error.
+        message:
+          type: string
+          description: Description of the error that occurred.
+        type:
+          type: string
+          description: A slug indicating the type of the error.

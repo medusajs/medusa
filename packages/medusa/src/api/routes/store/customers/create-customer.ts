@@ -92,6 +92,14 @@ import { validator } from "../../../../utils/validator"
  *           code: "invalid_request_error"
  *           type: "duplicate_error"
  *           message: "A customer with the given email already has an account. Log in instead"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = await validator(StorePostCustomersReq, req.body)
