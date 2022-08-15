@@ -24,6 +24,9 @@ import { validator } from "../../../../utils/validator"
  *         email: 'user@example.com',
  *         password: 'user@example.com'
  *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -100,6 +100,9 @@ import { isDefined } from "../../../../utils"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.productTags.list()
+ *       .then(({ product_tags }) => {
+ *         console.log(product_tags.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

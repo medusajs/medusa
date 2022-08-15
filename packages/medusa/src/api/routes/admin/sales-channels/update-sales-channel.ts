@@ -36,6 +36,9 @@ import { SalesChannelService } from "../../../../services"
  *       medusa.admin.salesChannels.update(sales_channel_id, {
  *         name: 'App'
  *       })
+ *       .then(({ sales_channel }) => {
+ *         console.log(sales_channel.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -19,6 +19,9 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
  *       medusa.customers.addresses.deleteAddress(address_id)
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

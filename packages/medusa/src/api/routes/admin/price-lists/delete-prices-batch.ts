@@ -34,6 +34,9 @@ import { validator } from "../../../../utils/validator"
  *           price_id
  *         ]
  *       })
+ *       .then(({ ids, object, deleted }) => {
+ *         console.log(ids.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

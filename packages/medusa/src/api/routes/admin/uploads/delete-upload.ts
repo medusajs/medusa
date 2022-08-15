@@ -26,6 +26,9 @@ import { IsString } from "class-validator"
  *       medusa.admin.uploads.delete({
  *         file_key
  *       })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

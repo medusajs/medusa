@@ -16,3 +16,6 @@ medusa.customers.addresses.addAddress({
     metadata: {}
   }
 })
+.then(({ customer }) => {
+  console.log(customer.id);
+});

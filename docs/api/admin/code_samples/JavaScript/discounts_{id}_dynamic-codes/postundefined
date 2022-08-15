@@ -5,3 +5,6 @@ medusa.admin.discounts.createDynamicCode(discount_id, {
   code: 'TEST',
   usage_limit: 1
 })
+.then(({ discount }) => {
+  console.log(discount.id);
+});

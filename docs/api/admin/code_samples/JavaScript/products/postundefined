@@ -6,3 +6,6 @@ medusa.admin.products.create({
   is_giftcard: false,
   discountable: true
 })
+.then(({ product }) => {
+  console.log(product.id);
+});

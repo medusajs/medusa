@@ -78,6 +78,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.draftOrders.update(draft_order_id, {
  *         email: "user@example.com"
  *       })
+ *       .then(({ draft_order }) => {
+ *         console.log(draft_order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -225,6 +225,171 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate a User
+      x-authenticated: false
+      description: Logs a User in and authorizes them to manage Store settings.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The User's email.
+                password:
+                  type: string
+                  description: The User's password.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.admin.auth.createSession({
+              email: 'user@example.com',
+              password: 'supersecret'
+            }).then((({ user }) => {
+              console.log(user.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://medusa-url.com/admin/auth' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+              "email": "user@example.com",
+              "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/incorrect_credentials'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteAuth
+      summary: Delete Session
+      x-authenticated: true
+      description: Deletes the current session for the logged in user.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.auth.deleteSession()
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE 'https://medusa-url.com/admin/auth'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      x-authenticated: true
+      description: Gets the currently logged in User.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.auth.getSession()
+
+            .then(({ user }) => {
+              console.log(user.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/auth' \
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
@@ -250,6 +415,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.batchJobs.cancel(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -308,6 +477,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.batchJobs.confirm(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -401,7 +574,9 @@ paths:
               type: 'product-export',
               context: {},
               dry_run: false
-            })
+            }).then((({ batch_job }) => {
+              console.log(batch_job.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -695,6 +870,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.batchJobs.list()
+
+            .then(({ batch_jobs, limit, offset, count }) => {
+              console.log(batch_jobs.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -764,6 +943,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.batchJobs.retrieve(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -985,6 +1168,10 @@ paths:
             medusa.admin.collections.create({
               title: 'New Collection'
             })
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1135,6 +1322,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.collections.list()
+
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1204,6 +1395,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.collections.delete(collection_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1270,6 +1465,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.collections.retrieve(collection_id)
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1347,6 +1546,10 @@ paths:
             medusa.admin.collections.update(collection_id, {
               title: 'New Collection'
             })
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1443,6 +1646,10 @@ paths:
               last_name: 'Yost',
               password: 'supersecret'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1523,6 +1730,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customers.list()
+
+            .then(({ customers, limit, offset, count }) => {
+              console.log(customers.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1602,6 +1813,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customers.retrieve(customer_id)
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1708,6 +1923,10 @@ paths:
             medusa.admin.customers.update(customer_id, {
               first_name: 'Dolly'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1735,165 +1954,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate a User
-      x-authenticated: false
-      description: Logs a User in and authorizes them to manage Store settings.
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The User's email.
-                password:
-                  type: string
-                  description: The User's password.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.admin.auth.createSession({
-              email: 'user@example.com',
-              password: 'supersecret'
-            })
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request POST 'https://medusa-url.com/admin/auth' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-              "email": "user@example.com",
-              "password": "supersecret"
-            }'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/incorrect_credentials'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    delete:
-      operationId: DeleteAuth
-      summary: Delete Session
-      x-authenticated: true
-      description: Deletes the current session for the logged in user.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.auth.deleteSession()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE 'https://medusa-url.com/admin/auth'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      x-authenticated: true
-      description: Gets the currently logged in User.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.auth.getSession()
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/auth' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1937,6 +1997,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.addRegion(discount_id, region_id)
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2002,6 +2066,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.removeRegion(discount_id, region_id)
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2127,6 +2195,10 @@ paths:
             medusa.admin.discounts.createCondition(discount_id, {
               operator: DiscountConditionOperator.IN
             })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2348,6 +2420,10 @@ paths:
               is_dynamic: false,
               is_disabled: false
             })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2467,6 +2543,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.list()
+
+            .then(({ discounts, limit, offset, count }) => {
+              console.log(discounts.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2541,6 +2621,10 @@ paths:
               code: 'TEST',
               usage_limit: 1
             })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2641,6 +2725,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.deleteCondition(discount_id, condition_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2729,6 +2817,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.getCondition(discount_id, condition_id)
+
+            .then(({ discount_condition }) => {
+              console.log(discount_condition.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2852,6 +2944,10 @@ paths:
                 product_id
               ]
             })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2919,6 +3015,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.delete(discount_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2995,6 +3095,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.retrieve(discount_id)
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3189,6 +3293,10 @@ paths:
             medusa.admin.discounts.update(discount_id, {
               code: 'TEST'
             })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3259,6 +3367,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.deleteDynamicCode(discount_id, code)
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3327,6 +3439,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.retrieveByCode(code)
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3408,6 +3524,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ customer_group }) => {
+              console.log(customer_group.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3499,6 +3619,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ customer_group }) => {
+              console.log(customer_group.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3564,6 +3688,10 @@ paths:
             medusa.admin.customerGroups.create({
               name: 'VIP'
             })
+
+            .then(({ customer_group }) => {
+              console.log(customer_group.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3746,6 +3874,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customerGroups.list()
+
+            .then(({ customer_groups, limit, offset, count }) => {
+              console.log(customer_groups.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3815,6 +3947,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customerGroups.delete(customer_group_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3897,6 +4033,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customerGroups.retrieve(customer_group_id)
+
+            .then(({ customer_group }) => {
+              console.log(customer_group.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3967,6 +4107,10 @@ paths:
             medusa.admin.customerGroups.update(customer_group_id, {
               name: 'VIP'
             })
+
+            .then(({ customer_group }) => {
+              console.log(customer_group.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4031,6 +4175,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.customerGroups.listCustomers(customer_group_id)
+
+            .then(({ customers }) => {
+              console.log(customers.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4205,6 +4353,10 @@ paths:
                 }
               ],
             })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4292,6 +4444,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.draftOrders.list()
+
+            .then(({ draft_orders, limit, offset, count }) => {
+              console.log(draft_orders.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4390,6 +4546,10 @@ paths:
             medusa.admin.draftOrders.addLineItem(draft_order_id, {
               quantity: 1
             })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4454,6 +4614,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.draftOrders.delete(draft_order_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4520,6 +4684,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.draftOrders.retrieve(draft_order_id)
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4584,6 +4752,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.draftOrders.removeLineItem(draft_order_id, item_id)
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4669,6 +4841,10 @@ paths:
             medusa.admin.draftOrders.updateLineItem(draft_order_id, line_id, {
               quantity: 1
             })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4734,6 +4910,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.draftOrders.markPaid(draft_order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4838,6 +5018,10 @@ paths:
             medusa.admin.draftOrders.update(draft_order_id, {
               email: "user@example.com"
             })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -4930,6 +5114,10 @@ paths:
             medusa.admin.giftCards.create({
               region_id
             })
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5004,6 +5192,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.giftCards.list()
+
+            .then(({ gift_cards, limit, offset, count }) => {
+              console.log(gift_cards.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5073,6 +5265,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.giftCards.delete(gift_card_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5139,6 +5335,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.giftCards.retrieve(gift_card_id)
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5229,6 +5429,10 @@ paths:
             medusa.admin.giftCards.update(gift_card_id, {
               region_id
             })
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5321,6 +5525,14 @@ paths:
                 password: 'supersecret'
               }
             })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5399,6 +5611,14 @@ paths:
               user: "user@example.com",
               role: "admin"
             })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5450,6 +5670,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.invites.list()
+
+            .then(({ invites }) => {
+              console.log(invites.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5510,6 +5734,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.invites.delete(invite_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5577,6 +5805,14 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.invites.resend(invite_id)
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5644,6 +5880,10 @@ paths:
               resource_type: 'order',
               value: 'We delivered this order'
             })
+
+            .then(({ note }) => {
+              console.log(note.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5720,6 +5960,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.notes.list()
+
+            .then(({ notes, limit, offset, count }) => {
+              console.log(notes.length);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -5787,6 +6031,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.notes.delete(note_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5853,6 +6101,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.notes.retrieve(note_id)
+
+            .then(({ note }) => {
+              console.log(note.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -5922,6 +6174,10 @@ paths:
             medusa.admin.notes.update(note_id, {
              value: 'We delivered this order'
             })
+
+            .then(({ note }) => {
+              console.log(note.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6034,6 +6290,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.notifications.list()
+
+            .then(({ notifications }) => {
+              console.log(notifications.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6106,6 +6366,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.notifications.resend(notification_id)
+
+            .then(({ notification }) => {
+              console.log(notification.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6170,6 +6434,10 @@ paths:
               price: 1000,
               option_id
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6260,6 +6528,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.archive(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6324,6 +6596,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.cancelClaim(order_id, claim_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6447,6 +6723,10 @@ paths:
 
             medusa.admin.orders.cancelClaimFulfillment(order_id, claim_id,
             fulfillment_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6519,6 +6799,10 @@ paths:
 
             medusa.admin.orders.cancelSwapFulfillment(order_id, swap_id,
             fulfillment_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6584,6 +6868,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.cancelFulfillment(order_id, fulfillment_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6646,6 +6934,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.cancel(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6710,6 +7002,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.cancelSwap(order_id, swap_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6769,6 +7065,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.capturePayment(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6827,6 +7127,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.complete(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -6908,6 +7212,10 @@ paths:
             medusa.admin.orders.createClaimShipment(order_id, claim_id, {
               fulfillment_id
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7104,6 +7412,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7214,6 +7526,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7305,6 +7621,10 @@ paths:
             medusa.admin.orders.createShipment(order_id, {
               fulfillment_id
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7397,6 +7717,10 @@ paths:
             medusa.admin.orders.createSwapShipment(order_id, swap_id, {
               fulfillment_id
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7553,6 +7877,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7643,6 +7971,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.fulfillClaim(order_id, claim_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7723,6 +8055,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.fulfillSwap(order_id, swap_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7782,6 +8118,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.retrieve(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -7909,6 +8249,10 @@ paths:
             medusa.admin.orders.update(order_id, {
               email: 'user@example.com'
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8180,6 +8524,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.list()
+
+            .then(({ orders, limit, offset, count }) => {
+              console.log(orders.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8258,6 +8606,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orders.processSwapPayment(order_id, swap_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8342,6 +8694,10 @@ paths:
               amount: 1000,
               reason: 'Do not like it'
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8474,6 +8830,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8645,6 +9005,10 @@ paths:
             medusa.admin.orders.updateClaim(order_id, claim_id, {
               no_notification: true
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8764,6 +9128,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ price_list }) => {
+              console.log(price_list.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -8849,6 +9217,10 @@ paths:
                 price_id
               ]
             })
+
+            .then(({ ids, object, deleted }) => {
+              console.log(ids.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9014,6 +9386,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ price_list }) => {
+              console.log(price_list.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9220,6 +9596,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.priceLists.list()
+
+            .then(({ price_lists, limit, offset, count }) => {
+              console.log(price_lists.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9289,6 +9669,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.priceLists.delete(price_list_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9355,6 +9739,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.priceLists.retrieve(price_list_id)
+
+            .then(({ price_list }) => {
+              console.log(price_list.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9494,6 +9882,10 @@ paths:
             medusa.admin.priceLists.update(price_list_id, {
               name: 'New Price List'
             })
+
+            .then(({ price_list }) => {
+              console.log(price_list.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9567,6 +9959,10 @@ paths:
 
             medusa.admin.priceLists.deleteProductPrices(price_list_id,
             product_id)
+
+            .then(({ ids, object, deleted }) => {
+              console.log(ids.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9646,6 +10042,10 @@ paths:
 
             medusa.admin.priceLists.deleteVariantPrices(price_list_id,
             variant_id)
+
+            .then(({ ids, object, deleted }) => {
+              console.log(ids);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -9882,6 +10282,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.priceLists.listProducts(price_list_id)
+
+            .then(({ products, limit, offset, count }) => {
+              console.log(products.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10029,6 +10433,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.productTags.list()
+
+            .then(({ product_tags }) => {
+              console.log(product_tags.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10174,6 +10582,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.productTypes.list()
+
+            .then(({ product_types }) => {
+              console.log(product_types.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10255,6 +10667,10 @@ paths:
             medusa.admin.products.addOption(product_id, {
               title: 'Size'
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10557,6 +10973,10 @@ paths:
               is_giftcard: false,
               discountable: true
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10801,6 +11221,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.list()
+
+            .then(({ products, limit, offset, count }) => {
+              console.log(products.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11001,6 +11425,10 @@ paths:
               ],
               inventory_quantity: 100
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11166,6 +11594,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.deleteOption(product_id, option_id)
+
+            .then(({ option_id, object, delete, product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11252,6 +11684,10 @@ paths:
             medusa.admin.products.updateOption(product_id, option_id, {
               title: 'Size'
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11316,6 +11752,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.delete(product_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11382,6 +11822,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.retrieve(product_id)
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11664,6 +12108,10 @@ paths:
               title: 'Shirt',
               images: []
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11734,6 +12182,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.deleteVariant(product_id, variant_id)
+
+            .then(({ variant_id, object, deleted, product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11934,6 +12386,10 @@ paths:
               ],
               inventory_quantity: 100
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -11997,6 +12453,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.listTags()
+
+            .then(({ tags }) => {
+              console.log(tags.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12059,6 +12519,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.products.listTypes()
+
+            .then(({ types }) => {
+              console.log(types.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12137,6 +12601,10 @@ paths:
             key: 'test',
               value: 'true'
             })
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12165,6 +12633,376 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /return-reasons:
+    post:
+      operationId: PostReturnReasons
+      summary: Create a Return Reason
+      description: Creates a Return Reason
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - label
+                - value
+              properties:
+                label:
+                  description: The label to display to the Customer.
+                  type: string
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
+                  type: string
+                parent_return_reason_id:
+                  description: The ID of the parent return reason.
+                  type: string
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returnReasons.create({
+              label: 'Damaged',
+              value: 'damaged'
+            })
+
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/return-reasons' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "label": "Damaged",
+                "value": "damaged"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returnReasons.list()
+
+            .then(({ return_reasons }) => {
+              console.log(return_reasons.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/return-reasons' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/return-reasons/{id}':
+    delete:
+      operationId: DeleteReturnReason
+      summary: Delete a return reason
+      description: Deletes a return reason.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the return reason
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returnReasons.delete(return_reason_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/return-reasons/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted return reason
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: return_reason
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Retrieve a Return Reason
+      description: Retrieves a Return Reason.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return Reason.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returnReasons.retrieve(return_reason_id)
+
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/return-reasons/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostReturnReasonsReason
+      summary: Update a Return Reason
+      description: Updates a Return Reason
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return Reason.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                label:
+                  description: The label to display to the Customer.
+                  type: string
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
+                  type: string
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returnReasons.update(return_reason_id, {
+              label: 'Damaged'
+            })
+
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/return-reasons/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "label": "Damaged"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -12218,6 +13056,10 @@ paths:
             medusa.admin.regions.addCountry(region_id, {
               country_code: 'dk'
             })
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12294,6 +13136,10 @@ paths:
             medusa.admin.regions.addFulfillmentProvider(region_id, {
               provider_id: 'manual'
             })
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12370,6 +13216,10 @@ paths:
             medusa.admin.regions.addPaymentProvider(region_id, {
               provider_id: 'manual'
             })
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12477,26 +13327,23 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.create({
-
-            name: 'Europe',
-
-            currency_code: 'eur',
-
-            tax_rate: 0,
-
-            payment_providers: [
-              'manual'
-            ],
-
-            fulfillment_providers: [
-              'manual'
-            ],
-
-            countries: [
-              'DK'
-            ]
-
+              name: 'Europe',
+              currency_code: 'eur',
+              tax_rate: 0,
+              payment_providers: [
+                'manual'
+              ],
+              fulfillment_providers: [
+                'manual'
+              ],
+              countries: [
+                'DK'
+              ]
             })
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12603,6 +13450,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.list()
+
+            .then(({ regions, limit, offset, count }) => {
+              console.log(regions.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12672,6 +13523,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.delete(region_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12738,6 +13593,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.retrieve(region_id)
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12854,6 +13713,10 @@ paths:
             medusa.admin.regions.update(region_id, {
               name: 'Europe'
             })
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12918,6 +13781,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.retrieveFulfillmentOptions(region_id)
+
+            .then(({ fulfillment_options }) => {
+              console.log(fulfillment_options.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -12997,6 +13864,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.deleteCountry(region_id, 'dk')
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13061,6 +13932,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.deleteFulfillmentProvider(region_id, 'manual')
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13126,6 +14001,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.regions.deletePaymentProvider(region_id, 'manual')
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13148,356 +14027,6 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /return-reasons:
-    post:
-      operationId: PostReturnReasons
-      summary: Create a Return Reason
-      description: Creates a Return Reason
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - label
-                - value
-              properties:
-                label:
-                  description: The label to display to the Customer.
-                  type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                parent_return_reason_id:
-                  description: The ID of the parent return reason.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returnReasons.create({
-              label: 'Damaged',
-              value: 'damaged'
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/return-reasons' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "label": "Damaged",
-                "value": "damaged"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returnReasons.list()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/return-reasons' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/return-reasons/{id}':
-    delete:
-      operationId: DeleteReturnReason
-      summary: Delete a return reason
-      description: Deletes a return reason.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the return reason
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returnReasons.delete(return_reason_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/return-reasons/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted return reason
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: return_reason
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
-      description: Retrieves a Return Reason.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return Reason.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returnReasons.retrieve(return_reason_id)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/return-reasons/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostReturnReasonsReason
-      summary: Update a Return Reason
-      description: Updates a Return Reason
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return Reason.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                label:
-                  description: The label to display to the Customer.
-                  type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returnReasons.update(return_reason_id, {
-              label: 'Damaged'
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/return-reasons/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "label": "Damaged"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -13534,6 +14063,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.returns.cancel(return_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13597,6 +14130,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.returns.list()
+
+            .then(({ returns, limit, offset, count }) => {
+              console.log(returns.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13698,6 +14235,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ return }) => {
+              console.log(return.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13791,6 +14332,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13882,6 +14427,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -13962,6 +14511,10 @@ paths:
               name: 'App',
               description: 'Mobile app'
             })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14136,6 +14689,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.salesChannels.list()
+
+            .then(({ sales_channels, limit, offset, count }) => {
+              console.log(sales_channels.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14205,6 +14762,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.salesChannels.delete(sales_channel_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14271,6 +14832,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.salesChannels.retrieve(sales_channel_id)
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14344,6 +14909,10 @@ paths:
             medusa.admin.salesChannels.update(sales_channel_id, {
               name: 'App'
             })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14483,6 +15052,10 @@ paths:
               },
               price_type: 'flat_rate'
             })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14559,6 +15132,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingOptions.list()
+
+            .then(({ shipping_options, count }) => {
+              console.log(shipping_options.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14622,6 +15199,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingOptions.delete(option_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14688,6 +15269,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingOptions.retrieve(option_id)
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14797,6 +15382,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14871,6 +15460,10 @@ paths:
             medusa.admin.shippingProfiles.create({
               name: 'Large Products'
             })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14927,6 +15520,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingProfiles.list()
+
+            .then(({ shipping_profiles }) => {
+              console.log(shipping_profiles.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -14987,6 +15584,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingProfiles.delete(profile_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15053,6 +15654,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.shippingProfiles.retrieve(profile_id)
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15119,6 +15724,10 @@ paths:
             medusa.admin.shippingProfiles.update(shipping_profile_id, {
               name: 'Large Products'
             })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15186,6 +15795,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.store.addCurrency('eur')
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15246,6 +15859,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.store.deleteCurrency('eur')
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15297,6 +15914,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.store.retrieve()
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -15386,6 +16007,10 @@ paths:
             medusa.admin.store.update({
               name: 'Medusa Store'
             })
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15443,6 +16068,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.store.listPaymentProviders()
+
+            .then(({ payment_providers }) => {
+              console.log(payment_providers.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15496,6 +16125,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.store.listTaxProviders()
+
+            .then(({ tax_providers }) => {
+              console.log(tax_providers.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15556,6 +16189,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.swaps.retrieve(swap_id)
+
+            .then(({ swap }) => {
+              console.log(swap.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15620,6 +16257,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.swaps.list()
+
+            .then(({ swaps }) => {
+              console.log(swaps.length);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -15723,6 +16364,10 @@ paths:
                 product_type_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15824,6 +16469,10 @@ paths:
                 product_type_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -15924,6 +16573,10 @@ paths:
                 product_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16025,6 +16678,10 @@ paths:
                 product_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16127,6 +16784,10 @@ paths:
                 shipping_option_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16229,6 +16890,10 @@ paths:
                 shipping_option_id
               ]
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16352,6 +17017,10 @@ paths:
               name: 'New Tax Rate',
               region_id
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16484,6 +17153,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.taxRates.list()
+
+            .then(({ tax_rates, limit, offset, count }) => {
+              console.log(tax_rates.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16553,6 +17226,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.taxRates.delete(tax_rate_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16637,6 +17314,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.taxRates.retrieve(tax_rate_id)
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16750,6 +17431,10 @@ paths:
             medusa.admin.taxRates.update(tax_rate_id, {
               name: 'New Tax Rate'
             })
+
+            .then(({ tax_rate }) => {
+              console.log(tax_rate.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16816,6 +17501,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.uploads.create(file)
+
+            .then(({ uploads }) => {
+              console.log(uploads.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16910,6 +17599,10 @@ paths:
               email: 'user@example.com',
               password: 'supersecret'
             })
+
+            .then(({ user }) => {
+              console.log(user.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -16967,6 +17660,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.users.list()
+
+            .then(({ users }) => {
+              console.log(users.length);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -17025,6 +17722,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.users.delete(user_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -17091,6 +17792,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.users.retrieve(user_id)
+
+            .then(({ user }) => {
+              console.log(user.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -17176,6 +17881,10 @@ paths:
             medusa.admin.users.update(user_id, {
               first_name: 'Marcellus'
             })
+
+            .then(({ user }) => {
+              console.log(user.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -17246,6 +17955,14 @@ paths:
             medusa.admin.users.sendResetPasswordToken({
               email: 'user@example.com'
             })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // error occurred
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -17319,6 +18036,10 @@ paths:
               token: 'supersecrettoken',
               password: 'supersecret'
             })
+
+            .then(({ user }) => {
+              console.log(user.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -17395,6 +18116,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.variants.list()
+
+            .then(({ variants, limit, offset, count }) => {
+              console.log(variants.length);
+            });
         - lang: Shell
           label: cURL
           source: >

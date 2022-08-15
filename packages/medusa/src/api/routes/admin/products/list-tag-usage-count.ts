@@ -14,6 +14,9 @@ import { ProductService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.products.listTags()
+ *       .then(({ tags }) => {
+ *         console.log(tags.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

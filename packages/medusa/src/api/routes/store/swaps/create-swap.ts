@@ -93,6 +93,9 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
+ *       .then(({ swap }) => {
+ *         console.log(swap.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

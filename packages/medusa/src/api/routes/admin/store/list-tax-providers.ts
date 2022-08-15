@@ -14,6 +14,9 @@ import { TaxProviderService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.store.listTaxProviders()
+ *       .then(({ tax_providers }) => {
+ *         console.log(tax_providers.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

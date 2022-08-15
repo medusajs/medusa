@@ -9,3 +9,6 @@ medusa.admin.orders.createSwap(order_id, {
     }
   ]
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

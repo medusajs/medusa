@@ -137,6 +137,9 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ],
  *       })
+ *       .then(({ draft_order }) => {
+ *         console.log(draft_order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

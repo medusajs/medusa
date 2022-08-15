@@ -161,6 +161,9 @@ import { pick } from "lodash"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orders.list()
+ *       .then(({ orders, limit, offset, count }) => {
+ *         console.log(orders.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

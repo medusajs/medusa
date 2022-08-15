@@ -23,6 +23,9 @@ import fs from "fs"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.uploads.create(file)
+ *       .then(({ uploads }) => {
+ *         console.log(uploads.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

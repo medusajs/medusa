@@ -56,6 +56,9 @@ import { validator } from "../../../../utils/validator"
  *           shipping_option_id
  *         ]
  *       })
+ *       .then(({ tax_rate }) => {
+ *         console.log(tax_rate.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

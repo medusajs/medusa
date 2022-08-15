@@ -28,6 +28,12 @@ import { validator } from "../../../../utils/validator"
  *       medusa.customers.generatePasswordToken({
  *         email: 'user@example.com'
  *       })
+ *       .then(() => {
+ *         // successful
+ *       })
+ *       .catch(() => {
+ *         // failed
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -115,6 +115,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.orders.updateClaim(order_id, claim_id, {
  *         no_notification: true
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

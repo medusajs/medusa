@@ -5,3 +5,6 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.discounts.createCondition(discount_id, {
   operator: DiscountConditionOperator.IN
 })
+.then(({ discount }) => {
+  console.log(discount.id);
+});

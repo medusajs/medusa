@@ -17,6 +17,9 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.delete(discount_id)
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

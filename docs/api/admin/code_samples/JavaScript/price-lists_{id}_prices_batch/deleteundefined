@@ -6,3 +6,6 @@ medusa.admin.priceLists.deletePrices(price_list_id, {
     price_id
   ]
 })
+.then(({ ids, object, deleted }) => {
+  console.log(ids.length);
+});

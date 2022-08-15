@@ -8,3 +8,6 @@ medusa.admin.salesChannels.addProducts(sales_channel_id, {
     }
   ]
 })
+.then(({ sales_channel }) => {
+  console.log(sales_channel.id);
+});

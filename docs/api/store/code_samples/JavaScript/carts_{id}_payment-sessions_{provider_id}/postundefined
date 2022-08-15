@@ -4,3 +4,6 @@ medusa.carts.updatePaymentSession(cart_id, 'manual', {
   data: {
   }
 })
+.then(({ cart }) => {
+  console.log(cart.id);
+});

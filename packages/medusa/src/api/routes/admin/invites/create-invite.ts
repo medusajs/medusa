@@ -38,6 +38,12 @@ import { validator } from "../../../../utils/validator"
  *         user: "user@example.com",
  *         role: "admin"
  *       })
+ *       .then(() => {
+ *         // successful
+ *       })
+ *       .catch(() => {
+ *         // an error occurred
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

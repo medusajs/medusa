@@ -30,6 +30,12 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.users.sendResetPasswordToken({
  *         email: 'user@example.com'
  *       })
+ *       .then(() => {
+ *         // successful
+ *       })
+ *       .catch(() => {
+ *         // error occurred
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

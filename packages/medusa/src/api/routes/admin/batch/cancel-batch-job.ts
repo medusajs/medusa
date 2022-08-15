@@ -17,6 +17,9 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.batchJobs.cancel(batch_job_id)
+ *       .then(({ batch_job }) => {
+ *         console.log(batch_job.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

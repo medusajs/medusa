@@ -6,3 +6,6 @@ medusa.admin.discounts.updateCondition(discount_id, condition_id, {
     product_id
   ]
 })
+.then(({ discount }) => {
+  console.log(discount.id);
+});

@@ -6,3 +6,6 @@ medusa.admin.taxRates.create({
   name: 'New Tax Rate',
   region_id
 })
+.then(({ tax_rate }) => {
+  console.log(tax_rate.id);
+});

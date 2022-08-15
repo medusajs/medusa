@@ -18,6 +18,9 @@ import StoreService from "../../../../services/store"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
  *       medusa.customers.paymentMethods.list()
+ *       .then(({ payment_methods }) => {
+ *         console.log(payment_methods.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

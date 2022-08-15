@@ -44,6 +44,9 @@ import { validator } from "../../../../utils/validator"
  *         token: 'supersecrettoken',
  *         password: 'supersecret'
  *       })
+ *       .then(({ user }) => {
+ *         console.log(user.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

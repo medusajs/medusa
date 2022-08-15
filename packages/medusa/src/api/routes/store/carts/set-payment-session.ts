@@ -23,6 +23,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.carts.setPaymentSession(cart_id, {
  *         provider_id: 'manual'
  *       })
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

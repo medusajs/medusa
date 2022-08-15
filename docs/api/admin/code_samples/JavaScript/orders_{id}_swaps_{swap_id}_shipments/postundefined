@@ -4,3 +4,6 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.orders.createSwapShipment(order_id, swap_id, {
   fulfillment_id
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

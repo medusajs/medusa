@@ -12,3 +12,6 @@ medusa.admin.discounts.create({
   is_dynamic: false,
   is_disabled: false
 })
+.then(({ discount }) => {
+  console.log(discount.id);
+});

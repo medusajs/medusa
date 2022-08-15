@@ -6,3 +6,6 @@ medusa.admin.taxRates.removeProducts(tax_rate_id, {
     product_id
   ]
 })
+.then(({ tax_rate }) => {
+  console.log(tax_rate.id);
+});

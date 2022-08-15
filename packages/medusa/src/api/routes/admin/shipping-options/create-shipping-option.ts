@@ -96,6 +96,9 @@ import { validator } from "../../../../utils/validator"
  *         },
  *         price_type: 'flat_rate'
  *       })
+ *       .then(({ shipping_option }) => {
+ *         console.log(shipping_option.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

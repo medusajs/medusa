@@ -48,6 +48,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.draftOrders.updateLineItem(draft_order_id, line_id, {
  *         quantity: 1
  *       })
+ *       .then(({ draft_order }) => {
+ *         console.log(draft_order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -39,6 +39,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.orders.createClaimShipment(order_id, claim_id, {
  *         fulfillment_id
  *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

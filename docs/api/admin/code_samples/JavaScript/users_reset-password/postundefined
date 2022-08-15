@@ -5,3 +5,6 @@ medusa.admin.users.resetPassword({
   token: 'supersecrettoken',
   password: 'supersecret'
 })
+.then(({ user }) => {
+  console.log(user.id);
+});

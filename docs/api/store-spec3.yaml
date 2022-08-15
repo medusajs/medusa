@@ -83,6 +83,10 @@ paths:
               email: 'user@example.com',
               password: 'user@example.com'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -179,6 +183,10 @@ paths:
             // must be previously logged
 
             medusa.auth.getSession()
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -261,6 +269,173 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.retrieve(collection_id)
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections/{id}'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.list()
+
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -285,6 +460,10 @@ paths:
             medusa.carts.addShippingMethod(cart_id, {
               option_id
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -404,6 +583,10 @@ paths:
             3 })
 
             medusa.carts.complete(cart_id)
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -533,6 +716,10 @@ paths:
             3 })
 
             medusa.carts.create()
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -585,6 +772,10 @@ paths:
               variant_id,
               quantity: 1
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -664,6 +855,10 @@ paths:
             3 })
 
             medusa.carts.createPaymentSessions(cart_id)
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -718,6 +913,10 @@ paths:
             3 })
 
             medusa.carts.deleteDiscount(cart_id, code)
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -772,6 +971,10 @@ paths:
             3 })
 
             medusa.carts.lineItems.delete(cart_id, line_id)
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -827,6 +1030,10 @@ paths:
             medusa.carts.lineItems.update(cart_id, line_id, {
               quantity: 1
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -902,6 +1109,10 @@ paths:
             3 })
 
             medusa.carts.deletePaymentSession(cart_id, 'manual')
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -958,6 +1169,10 @@ paths:
               data: {
               }
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1023,6 +1238,10 @@ paths:
             3 })
 
             medusa.carts.retrieve(cart_id)
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1137,6 +1356,10 @@ paths:
             medusa.carts.update(cart_id, {
               email: 'user@example.com'
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1201,6 +1424,10 @@ paths:
             3 })
 
             medusa.carts.refreshPaymentSession(cart_id, 'manual')
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1253,6 +1480,10 @@ paths:
             medusa.carts.setPaymentSession(cart_id, {
               provider_id: 'manual'
             })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1296,16 +1527,16 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
-  '/collections/{id}':
+  '/gift-cards/{code}':
     get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
       parameters:
         - in: path
-          name: id
+          name: code
           required: true
-          description: The id of the Product Collection
+          description: The unique Gift Card code.
           schema:
             type: string
       x-codeSamples:
@@ -1317,14 +1548,18 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
             3 })
 
-            medusa.collections.retrieve(collection_id)
+            medusa.giftCards.retrieve(code)
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/store/collections/{id}'
+            'https://medusa-url.com/store/gift-cards/{code}'
       tags:
-        - Collection
+        - Gift Card
       responses:
         '200':
           description: OK
@@ -1332,119 +1567,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.list()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1498,6 +1622,10 @@ paths:
                 metadata: {}
               }
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1590,6 +1718,10 @@ paths:
               email: 'user@example.com',
               password: 'supersecret'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1669,6 +1801,10 @@ paths:
             // must be previously logged
 
             medusa.customers.addresses.deleteAddress(address_id)
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1733,6 +1869,10 @@ paths:
             medusa.customers.addresses.updateAddress(address_id, {
               first_name: 'Gina'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1791,6 +1931,10 @@ paths:
             // must be previously logged
 
             medusa.customers.retrieve()
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1872,6 +2016,10 @@ paths:
             medusa.customers.update({
               first_name: 'Laury'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -1931,6 +2079,10 @@ paths:
             // must be previously logged
 
             medusa.customers.paymentMethods.list()
+
+            .then(({ payment_methods }) => {
+              console.log(payment_methods.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2020,6 +2172,10 @@ paths:
             // must be previously logged
 
             medusa.customers.listOrders()
+
+            .then(({ orders, limit, offset, count }) => {
+              console.log(orders);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2094,6 +2250,14 @@ paths:
             medusa.customers.generatePasswordToken({
               email: 'user@example.com'
             })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // failed
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2163,6 +2327,10 @@ paths:
               password: 'supersecret',
               token: 'supersecrettoken'
             })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2199,54 +2367,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.giftCards.retrieve(code)
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/gift-cards/{code}'
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
@@ -2271,6 +2391,10 @@ paths:
             3 })
 
             medusa.orders.retrieveByCartId(cart_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2319,6 +2443,10 @@ paths:
             3 })
 
             medusa.orders.retrieve(order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2390,6 +2518,10 @@ paths:
               display_id: 1,
               email: 'user@example.com'
             })
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2438,6 +2570,10 @@ paths:
             3 })
 
             medusa.products.retrieve(product_id)
+
+            .then(({ product }) => {
+              console.log(product.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2611,6 +2747,10 @@ paths:
             3 })
 
             medusa.products.list()
+
+            .then(({ products, limit, offset, count }) => {
+              console.log(products.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2684,6 +2824,10 @@ paths:
             medusa.products.search({
               q: 'Shirt'
             })
+
+            .then(({ hits }) => {
+              console.log(hits.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2735,6 +2879,10 @@ paths:
             3 })
 
             medusa.regions.retrieve(region_id)
+
+            .then(({ region }) => {
+              console.log(region.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2833,6 +2981,10 @@ paths:
             3 })
 
             medusa.regions.list()
+
+            .then(({ regions }) => {
+              console.log(regions.length);
+            });
         - lang: Shell
           label: cURL
           source: |
@@ -2882,6 +3034,10 @@ paths:
             3 })
 
             medusa.returnReasons.retrieve(reason_id)
+
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -2923,6 +3079,10 @@ paths:
             3 })
 
             medusa.returnReasons.list()
+
+            .then(({ return_reasons }) => {
+              console.log(return_reasons.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3019,6 +3179,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ return }) => {
+              console.log(return.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3090,6 +3254,10 @@ paths:
             3 })
 
             medusa.shippingOptions.list()
+
+            .then(({ shipping_options }) => {
+              console.log(shipping_options.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3140,6 +3308,10 @@ paths:
             3 })
 
             medusa.shippingOptions.listCartOptions(cart_id)
+
+            .then(({ shipping_options }) => {
+              console.log(shipping_options.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3250,6 +3422,10 @@ paths:
                 }
               ]
             })
+
+            .then(({ swap }) => {
+              console.log(swap.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -3316,6 +3492,10 @@ paths:
             3 })
 
             medusa.swaps.retrieveByCartId(cart_id)
+
+            .then(({ swap }) => {
+              console.log(swap.id);
+            });
         - lang: Shell
           label: cURL
           source: >

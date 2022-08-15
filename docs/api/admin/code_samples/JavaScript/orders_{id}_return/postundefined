@@ -9,3 +9,6 @@ medusa.admin.orders.requestReturn(order_id, {
     }
   ]
 })
+.then(({ order }) => {
+  console.log(order.id);
+});

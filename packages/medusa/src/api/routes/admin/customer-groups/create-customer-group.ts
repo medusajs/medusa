@@ -24,6 +24,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.customerGroups.create({
  *         name: 'VIP'
  *       })
+ *       .then(({ customer_group }) => {
+ *         console.log(customer_group.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

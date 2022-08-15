@@ -44,6 +44,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.users.update(user_id, {
  *         first_name: 'Marcellus'
  *       })
+ *       .then(({ user }) => {
+ *         console.log(user.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

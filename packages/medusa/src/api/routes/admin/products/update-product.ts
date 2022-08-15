@@ -239,6 +239,9 @@ import { validator } from "../../../../utils/validator"
  *         title: 'Shirt',
  *         images: []
  *       })
+ *       .then(({ product }) => {
+ *         console.log(product.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

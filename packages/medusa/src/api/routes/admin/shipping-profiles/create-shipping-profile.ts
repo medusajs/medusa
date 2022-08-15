@@ -29,6 +29,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.shippingProfiles.create({
  *         name: 'Large Products'
  *       })
+ *       .then(({ shipping_profile }) => {
+ *         console.log(shipping_profile.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

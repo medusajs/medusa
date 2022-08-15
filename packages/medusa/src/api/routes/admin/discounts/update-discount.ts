@@ -137,6 +137,9 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.discounts.update(discount_id, {
  *         code: 'TEST'
  *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

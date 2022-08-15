@@ -83,6 +83,9 @@ import { isDefined } from "../../../../utils"
  *         name: 'New Tax Rate',
  *         region_id
  *       })
+ *       .then(({ tax_rate }) => {
+ *         console.log(tax_rate.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
