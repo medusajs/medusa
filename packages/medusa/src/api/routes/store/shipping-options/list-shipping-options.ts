@@ -33,6 +33,16 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { cart_id } = req.params

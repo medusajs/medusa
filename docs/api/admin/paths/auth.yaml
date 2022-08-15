@@ -39,8 +39,18 @@ post:
             properties:
               user:
                 $ref: ../components/schemas/user.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
     '401':
-      description: The user doesn't exist or the credentials are incorrect.
+      $ref: ../components/responses/incorrect_credentials.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteAuth
   summary: Delete Session
@@ -63,6 +73,18 @@ delete:
   responses:
     '200':
       description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetAuth
   summary: Get Session
@@ -92,4 +114,14 @@ get:
               user:
                 $ref: ../components/schemas/user.yaml
     '400':
-      description: An error occurred.
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

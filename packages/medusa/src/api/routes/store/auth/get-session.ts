@@ -23,8 +23,6 @@ import CustomerService from "../../../../services/customer"
  * tags:
  *   - Auth
  * responses:
- *  "401":
- *    description: Unauthorized
  *  "200":
  *    description: OK
  *    content:
@@ -33,6 +31,18 @@ import CustomerService from "../../../../services/customer"
  *          properties:
  *            customer:
  *              $ref: "#/components/schemas/customer"
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "401":
+ *    $ref: "#/components/responses/unauthorized"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   if (req.user && req.user.customer_id) {

@@ -123,8 +123,6 @@ paths:
     $ref: paths/apps_authorizations.yaml
   /apps:
     $ref: paths/apps.yaml
-  /auth:
-    $ref: paths/auth.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -143,6 +141,8 @@ paths:
     $ref: paths/customers.yaml
   /customers/{id}:
     $ref: paths/customers_{id}.yaml
+  /auth:
+    $ref: paths/auth.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions:

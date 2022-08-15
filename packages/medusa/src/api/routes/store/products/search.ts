@@ -40,6 +40,16 @@ import { validator } from "../../../../utils/validator"
  *             hits:
  *               type: array
  *               description: Array of results. The format of the items depends on the search engine installed on the server.
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   // As we want to allow wildcards, we pass a config allowing this

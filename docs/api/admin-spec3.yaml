@@ -173,6 +173,18 @@ paths:
                 properties:
                   apps:
                     $ref: '#/components/schemas/OAuth'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /apps:
     get:
       operationId: GetApps
@@ -201,133 +213,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/OAuth'
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate a User
-      x-authenticated: false
-      description: Logs a User in and authorizes them to manage Store settings.
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The User's email.
-                password:
-                  type: string
-                  description: The User's password.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.admin.auth.createSession({
-              email: 'user@example.com',
-              password: 'supersecret'
-            })
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request POST 'https://medusa-url.com/admin/auth' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-              "email": "user@example.com",
-              "password": "supersecret"
-            }'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
-        '401':
-          description: The user doesn't exist or the credentials are incorrect.
-    delete:
-      operationId: DeleteAuth
-      summary: Delete Session
-      x-authenticated: true
-      description: Deletes the current session for the logged in user.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.auth.deleteSession()
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE 'https://medusa-url.com/admin/auth'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      x-authenticated: true
-      description: Gets the currently logged in User.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.auth.getSession()
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/auth' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
         '400':
-          description: An error occurred.
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
@@ -374,6 +271,18 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/batch-jobs/{id}/confirm':
     post:
       operationId: PostBatchJobsBatchJobConfirmProcessing
@@ -420,6 +329,18 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /batch-jobs:
     post:
       operationId: PostBatchJobs
@@ -509,6 +430,18 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetBatchJobs
       summary: List Batch Jobs
@@ -794,6 +727,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/batch-jobs/{id}':
     get:
       operationId: GetBatchJobsBatchJob
@@ -840,6 +785,18 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
@@ -896,6 +853,18 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteProductsFromCollection
       summary: Removes products associated with a Product Collection
@@ -964,6 +933,18 @@ paths:
                     items:
                       description: The ID of a Product to add to the Product Collection.
                       type: string
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /collections:
     post:
       operationId: PostCollections
@@ -1031,6 +1012,18 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetCollections
       summary: List Product Collections
@@ -1174,6 +1167,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/collections/{id}':
     delete:
       operationId: DeleteCollectionsCollection
@@ -1229,6 +1234,18 @@ paths:
                     type: boolean
                     description: Whether the collection was deleted successfully or not.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetCollectionsCollection
       summary: Retrieve a Product Collection
@@ -1274,6 +1291,18 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCollectionsCollection
       summary: Update a Product Collection
@@ -1345,6 +1374,18 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers:
     post:
       operationId: PostCustomers
@@ -1430,6 +1471,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetCustomers
       summary: List Customers
@@ -1502,6 +1555,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customers/{id}':
     get:
       operationId: GetCustomersCustomer
@@ -1558,6 +1623,18 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomersCustomer
       summary: Update a Customer
@@ -1658,6 +1735,177 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate a User
+      x-authenticated: false
+      description: Logs a User in and authorizes them to manage Store settings.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The User's email.
+                password:
+                  type: string
+                  description: The User's password.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.admin.auth.createSession({
+              email: 'user@example.com',
+              password: 'supersecret'
+            })
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://medusa-url.com/admin/auth' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+              "email": "user@example.com",
+              "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/incorrect_credentials'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteAuth
+      summary: Delete Session
+      x-authenticated: true
+      description: Deletes the current session for the logged in user.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.auth.deleteSession()
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE 'https://medusa-url.com/admin/auth'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      x-authenticated: true
+      description: Gets the currently logged in User.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.auth.getSession()
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/auth' \
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1710,6 +1958,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteDiscountsDiscountRegionsRegion
       summary: Remove Region availability
@@ -1763,6 +2023,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/{discount_id}/conditions':
     post:
       operationId: PostDiscountsDiscountConditions
@@ -1882,6 +2154,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /discounts:
     post:
       operationId: PostDiscounts
@@ -2096,6 +2380,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetDiscounts
       summary: List Discounts
@@ -2203,6 +2499,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/{id}/dynamic-codes':
     post:
       operationId: PostDiscountsDiscountDynamicCodes
@@ -2260,6 +2568,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -2357,6 +2677,18 @@ paths:
                   discount:
                     description: The Discount to which the condition used to belong
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetDiscountsDiscountConditionsCondition
       summary: Gets a DiscountCondition
@@ -2419,6 +2751,18 @@ paths:
                 properties:
                   discount_condition:
                     $ref: '#/components/schemas/discount_condition'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostDiscountsDiscountConditionsCondition
       summary: >-
@@ -2538,6 +2882,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/{id}':
     delete:
       operationId: DeleteDiscountsDiscount
@@ -2593,6 +2949,18 @@ paths:
                     type: boolean
                     description: Whether the discount was deleted successfully or not.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetDiscountsDiscount
       summary: Retrieve a Discount
@@ -2648,6 +3016,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostDiscountsDiscount
       summary: Update a Discount
@@ -2836,6 +3216,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/{id}/dynamic-codes/{code}':
     delete:
       operationId: DeleteDiscountsDiscountDynamicCodesCode
@@ -2888,6 +3280,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/discounts/code/{code}':
     get:
       operationId: GetDiscountsDiscountCode
@@ -2944,6 +3348,18 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -3024,6 +3440,18 @@ paths:
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteCustomerGroupsGroupCustomerBatch
       summary: 'Remove a list of customers from a customer group '
@@ -3103,6 +3531,18 @@ paths:
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customer-groups:
     post:
       operationId: PostCustomerGroups
@@ -3151,6 +3591,18 @@ paths:
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -3326,6 +3778,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customer-groups/{id}':
     delete:
       operationId: DeleteCustomerGroupsCustomerGroup
@@ -3383,6 +3847,18 @@ paths:
                       Whether the customer group was deleted successfully or
                       not.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetCustomerGroupsGroup
       summary: Retrieve a CustomerGroup
@@ -3442,6 +3918,18 @@ paths:
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomerGroupsGroup
       summary: Update a CustomerGroup
@@ -3506,6 +3994,18 @@ paths:
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customer-groups/{id}/customers':
     get:
       operationId: GetCustomerGroupsGroupCustomers
@@ -3563,6 +4063,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -3731,6 +4243,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetDraftOrders
       summary: List Draft Orders
@@ -3800,6 +4324,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/draft-orders/{id}/line-items':
     post:
       operationId: PostDraftOrdersDraftOrderLineItems
@@ -3881,6 +4417,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/draft-orders/{id}':
     delete:
       operationId: DeleteDraftOrdersDraftOrder
@@ -3936,6 +4484,18 @@ paths:
                     type: boolean
                     description: Whether the draft order was deleted successfully or not.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetDraftOrdersDraftOrder
       summary: Retrieve a Draft Order
@@ -3981,6 +4541,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/draft-orders/{id}/line-items/{line_id}':
     delete:
       operationId: DeleteDraftOrdersDraftOrderLineItemsItem
@@ -4034,6 +4606,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostDraftOrdersDraftOrderLineItemsItem
       summary: Update a Line Item for a Draft Order
@@ -4113,6 +4697,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/draft-orders/{id}/pay':
     post:
       summary: Registers a payment for a Draft Order
@@ -4159,6 +4755,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/admin/draft-orders/{id}':
     post:
       operationId: PostDraftOrdersDraftOrder
@@ -4257,6 +4865,18 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -4337,6 +4957,18 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetGiftCards
       summary: List Gift Cards
@@ -4404,6 +5036,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/gift-cards/{id}':
     delete:
       operationId: DeleteGiftCardsGiftCard
@@ -4459,6 +5103,18 @@ paths:
                     type: boolean
                     description: Whether the gift card was deleted successfully or not.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetGiftCardsGiftCard
       summary: Retrieve a Gift Card
@@ -4504,6 +5160,18 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostGiftCardsGiftCard
       summary: Create a Gift Card
@@ -4588,6 +5256,18 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /invites/accept:
     post:
       operationId: PostInvitesInviteAccept
@@ -4667,6 +5347,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /invites:
     post:
       operationId: PostInvites
@@ -4729,6 +5421,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetInvites
       summary: Lists all Invites
@@ -4769,6 +5473,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/invite'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/invites/{invite_id}':
     delete:
       operationId: DeleteInvitesInvite
@@ -4824,6 +5540,18 @@ paths:
                     type: boolean
                     description: Whether or not the Invite was deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/invites/{invite_id}/resend':
     post:
       operationId: PostInvitesInviteResend
@@ -4864,6 +5592,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /notes:
     post:
       operationId: PostNotes
@@ -4933,6 +5673,18 @@ paths:
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetNotes
       summary: List Notes
@@ -4998,6 +5750,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/notes/{id}':
     delete:
       operationId: DeleteNotesNote
@@ -5053,6 +5817,18 @@ paths:
                     type: boolean
                     description: Whether or not the Note was deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetNotesNote
       summary: Get Note
@@ -5098,6 +5874,18 @@ paths:
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostNotesNote
       summary: Updates a Note
@@ -5161,6 +5949,18 @@ paths:
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /notifications:
     get:
       operationId: GetNotifications
@@ -5257,6 +6057,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/notification'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/notifications/{id}/resend':
     post:
       operationId: PostNotificationsNotificationResend
@@ -5315,6 +6127,18 @@ paths:
                 properties:
                   notification:
                     $ref: '#/components/schemas/notification'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/shipping-methods':
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -5374,6 +6198,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
       requestBody:
         content:
           application/json:
@@ -5445,6 +6281,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/claims/{claim_id}/cancel':
     post:
       operationId: PostOrdersClaimCancel
@@ -5498,6 +6346,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersClaimFulfillmentsCancel
@@ -5558,6 +6418,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersSwapFulfillmentsCancel
@@ -5618,6 +6490,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersOrderFulfillmentsCancel
@@ -5671,6 +6555,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/cancel':
     post:
       operationId: PostOrdersOrderCancel
@@ -5720,6 +6616,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/swaps/{swap_id}/cancel':
     post:
       operationId: PostOrdersSwapCancel
@@ -5773,6 +6681,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/capture':
     post:
       operationId: PostOrdersOrderCapture
@@ -5819,6 +6739,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/complete':
     post:
       operationId: PostOrdersOrderComplete
@@ -5865,6 +6797,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/claims/{claim_id}/shipments':
     post:
       operationId: PostOrdersOrderClaimsClaimShipments
@@ -5941,6 +6885,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/order/{id}/claims':
     post:
       operationId: PostOrdersOrderClaims
@@ -6130,6 +7086,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/fulfillment':
     post:
       operationId: PostOrdersOrderFulfillments
@@ -6227,6 +7195,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/shipment':
     post:
       operationId: PostOrdersOrderShipment
@@ -6301,6 +7281,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/swaps/{swap_id}/shipments':
     post:
       operationId: PostOrdersOrderSwapsSwapShipments
@@ -6382,6 +7374,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/order/{id}/swaps':
     post:
       operationId: PostOrdersOrderSwaps
@@ -6530,6 +7534,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/claims/{claim_id}/fulfillments':
     post:
       operationId: PostOrdersOrderClaimsClaimFulfillments
@@ -6598,6 +7614,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/swaps/{swap_id}/fulfillments':
     post:
       operationId: PostOrdersOrderSwapsSwapFulfillments
@@ -6666,6 +7694,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}':
     get:
       operationId: GetOrdersOrder
@@ -6712,6 +7752,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrdersOrder
       summary: Update an order
@@ -6833,6 +7885,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /orders:
     get:
       operationId: GetOrders
@@ -7097,6 +8161,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/swaps/{swap_id}/process-payment':
     post:
       operationId: PostOrdersOrderSwapsSwapProcessPayment
@@ -7153,6 +8229,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/refund':
     post:
       operationId: PostOrdersOrderRefunds
@@ -7231,6 +8319,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/orders/{id}/return':
     post:
       operationId: PostOrdersOrderReturns
@@ -7356,6 +8456,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/order/{id}/claims/{claim_id}':
     post:
       operationId: PostOrdersOrderClaimsClaim
@@ -7509,6 +8621,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}/prices/batch':
     post:
       operationId: PostPriceListsPriceListPricesBatch
@@ -7622,6 +8746,18 @@ paths:
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeletePriceListsPriceListPricesBatch
       summary: Batch delete prices that belong to a Price List
@@ -7702,6 +8838,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /price-lists:
     post:
       operationId: PostPriceListsPriceList
@@ -7851,6 +8999,18 @@ paths:
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetPriceLists
       summary: List Price Lists
@@ -8041,6 +9201,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}':
     delete:
       operationId: DeletePriceListsPriceList
@@ -8096,6 +9268,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetPriceListsPriceList
       summary: Retrieve a Price List
@@ -8141,6 +9325,18 @@ paths:
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostPriceListsPriceListPriceList
       summary: Update a Price List
@@ -8274,6 +9470,18 @@ paths:
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}/products/{product_id}/prices':
     delete:
       operationId: DeletePriceListsPriceListProductsProductPrices
@@ -8341,6 +9549,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}/variants/{variant_id}/prices':
     delete:
       operationId: DeletePriceListsPriceListVariantsVariantPrices
@@ -8408,6 +9628,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}/products':
     get:
       operationId: GetPriceListsPriceListProducts
@@ -8631,6 +9863,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /product-tags:
     get:
       operationId: GetProductTags
@@ -8764,6 +10008,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /product-types:
     get:
       operationId: GetProductTypes
@@ -8897,6 +10153,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}/options':
     post:
       operationId: PostProductsProductOptions
@@ -8963,6 +10231,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /products:
     post:
       operationId: PostProducts
@@ -9253,6 +10533,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetProducts
       summary: List Product
@@ -9490,6 +10782,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}/variants':
     post:
       operationId: PostProductsProductVariants
@@ -9685,6 +10989,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetProductsProductVariants
       summary: List a Product's Product Variants
@@ -9752,6 +11068,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}/options/{option_id}':
     delete:
       operationId: DeleteProductsProductOptionsOption
@@ -9819,6 +11147,18 @@ paths:
                     default: true
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostProductsProductOptionsOption
       summary: Update a Product Option.
@@ -9888,6 +11228,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}':
     delete:
       operationId: DeleteProductsProduct
@@ -9943,6 +11295,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetProductsProduct
       summary: Retrieve a Product
@@ -9988,6 +11352,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostProductsProduct
       summary: Update a Product
@@ -10264,6 +11640,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}/variants/{variant_id}':
     delete:
       operationId: DeleteProductsProductVariantsVariant
@@ -10327,6 +11715,18 @@ paths:
                     default: true
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostProductsProductVariantsVariant
       summary: Update a Product Variant
@@ -10516,6 +11916,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /products/tag-usage:
     get:
       operationId: GetProductsTagUsage
@@ -10566,6 +11978,18 @@ paths:
                         value:
                           description: The value of the tag.
                           type: string
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /products/types:
     get:
       operationId: GetProductsTypes
@@ -10607,6 +12031,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_type'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/products/{id}/metadata':
     post:
       operationId: PostProductsProductMetadata
@@ -10678,6 +12114,18 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/countries':
     post:
       operationId: PostRegionsRegionCountries
@@ -10746,6 +12194,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/fulfillment-providers':
     post:
       operationId: PostRegionsRegionFulfillmentProviders
@@ -10810,6 +12270,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/payment-providers':
     post:
       operationId: PostRegionsRegionPaymentProviders
@@ -10874,6 +12346,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /regions:
     post:
       operationId: PostRegions
@@ -11000,6 +12484,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetRegions
       summary: List Regions
@@ -11088,6 +12584,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}':
     delete:
       operationId: DeleteRegionsRegion
@@ -11143,6 +12651,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetRegionsRegion
       summary: Retrieve a Region
@@ -11188,6 +12708,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostRegionsRegion
       summary: Update a Region
@@ -11298,6 +12830,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/fulfillment-options':
     get:
       operationId: GetRegionsRegionFulfillmentOptions
@@ -11356,6 +12900,18 @@ paths:
                             - id: manual-fulfillment
                             - id: manual-fulfillment-return
                               is_return: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/countries/{country_code}':
     delete:
       operationId: PostRegionsRegionCountriesCountry
@@ -11411,6 +12967,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/fulfillment-providers/{provider_id}':
     delete:
       operationId: PostRegionsRegionFulfillmentProvidersProvider
@@ -11464,6 +13032,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/regions/{id}/payment-providers/{provider_id}':
     delete:
       operationId: PostRegionsRegionPaymentProvidersProvider
@@ -11517,6 +13097,18 @@ paths:
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /return-reasons:
     post:
       operationId: PostReturnReasons
@@ -11593,6 +13185,18 @@ paths:
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetReturnReasons
       summary: List Return Reasons
@@ -11633,6 +13237,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/return-reasons/{id}':
     delete:
       operationId: DeleteReturnReason
@@ -11688,6 +13304,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetReturnReasonsReason
       summary: Retrieve a Return Reason
@@ -11733,6 +13361,18 @@ paths:
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostReturnReasonsReason
       summary: Update a Return Reason
@@ -11807,6 +13447,18 @@ paths:
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/returns/{id}/cancel':
     post:
       operationId: PostReturnsReturnCancel
@@ -11852,6 +13504,18 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /returns:
     get:
       operationId: GetReturns
@@ -11914,6 +13578,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/returns/{id}/receive':
     post:
       operationId: PostReturnsReturnReceive
@@ -12003,6 +13679,18 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/sales-channels/{id}/products/batch':
     post:
       operationId: PostSalesChannelsChannelProductsBatch
@@ -12083,6 +13771,18 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteSalesChannelsChannelProductsBatch
       summary: Remove a list of products from a sales channel
@@ -12162,6 +13862,18 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /sales-channels:
     post:
       operationId: PostSalesChannels
@@ -12226,6 +13938,18 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetSalesChannels
       summary: List sales channels
@@ -12393,6 +14117,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/sales-channels/{id}':
     delete:
       operationId: DeleteSalesChannelsSalesChannel
@@ -12448,6 +14184,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetSalesChannelsSalesChannel
       summary: Retrieve a sales channel
@@ -12493,6 +14241,18 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostSalesChannelsSalesChannel
       summary: Update a Sales Channel
@@ -12560,6 +14320,18 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -12691,6 +14463,18 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingOptions
       summary: List Shipping Options
@@ -12750,6 +14534,18 @@ paths:
                   count:
                     type: integer
                     description: The total number of items available
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/shipping-options/{id}':
     delete:
       operationId: DeleteShippingOptionsOption
@@ -12805,6 +14601,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingOptionsOption
       summary: Retrieve a Shipping Option
@@ -12850,6 +14658,18 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostShippingOptionsOption
       summary: Update Shipping Option
@@ -12958,6 +14778,18 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /shipping-profiles:
     post:
       operationId: PostShippingProfiles
@@ -13015,6 +14847,18 @@ paths:
                 properties:
                   shipping_profile:
                     $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingProfiles
       summary: List Shipping Profiles
@@ -13055,6 +14899,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/shipping-profiles/{id}':
     delete:
       operationId: DeleteShippingProfilesProfile
@@ -13110,6 +14966,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingProfilesProfile
       summary: Retrieve a Shipping Profile
@@ -13155,6 +15023,18 @@ paths:
                 properties:
                   shipping_profile:
                     $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostShippingProfilesProfile
       summary: Update a Shipping Profiles
@@ -13215,6 +15095,18 @@ paths:
                 properties:
                   shipping_profile:
                     $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/store/currencies/{code}':
     post:
       operationId: PostStoreCurrenciesCode
@@ -13264,6 +15156,18 @@ paths:
                 properties:
                   store:
                     $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteStoreCurrenciesCode
       summary: Remove a Currency Code
@@ -13312,6 +15216,18 @@ paths:
                 properties:
                   store:
                     $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /store:
     get:
       operationId: GetStore
@@ -13349,6 +15265,18 @@ paths:
                 properties:
                   store:
                     $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostStore
       summary: Update Store details.
@@ -13434,6 +15362,18 @@ paths:
                 properties:
                   store:
                     $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /store/payment-providers:
     get:
       operationId: GetStorePaymentProviders
@@ -13475,6 +15415,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/payment_provider'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /store/tax-providers:
     get:
       operationId: GetStoreTaxProviders
@@ -13516,6 +15468,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/tax_provider'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/swaps/{id}':
     get:
       operationId: GetSwapsSwap
@@ -13562,6 +15526,18 @@ paths:
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /swaps:
     get:
       operationId: GetSwaps
@@ -13623,6 +15599,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/tax-rates/{id}/product-types/batch':
     post:
       operationId: PostTaxRatesTaxRateProductTypes
@@ -13713,6 +15701,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateProductTypes
       summary: Remove Tax Rate from Product Types
@@ -13802,6 +15802,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/tax-rates/{id}/products/batch':
     post:
       operationId: PostTaxRatesTaxRateProducts
@@ -13890,6 +15902,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateProducts
       summary: Removes Tax Rate from Products
@@ -13979,6 +16003,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/tax-rates/{id}/shipping-options/batch':
     post:
       operationId: PostTaxRatesTaxRateShippingOptions
@@ -14070,6 +16106,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateShippingOptions
       summary: Removes a Tax Rate from Product Types
@@ -14160,6 +16208,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /tax-rates:
     post:
       operationId: PostTaxRates
@@ -14270,6 +16330,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetTaxRates
       summary: List Tax Rates
@@ -14393,6 +16465,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/tax-rates/{id}':
     delete:
       operationId: DeleteTaxRatesTaxRate
@@ -14448,6 +16532,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetTaxRatesTaxRate
       summary: Get Tax Rate
@@ -14511,6 +16607,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostTaxRatesTaxRate
       summary: Update a Tax Rate
@@ -14618,6 +16726,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /uploads:
     post:
       operationId: PostUploads
@@ -14677,6 +16797,18 @@ paths:
                           type: string
                           description: The URL of the uploaded file.
                           format: uri
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /users:
     post:
       operationId: PostUsers
@@ -14755,6 +16887,18 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetUsers
       summary: Retrieve all users
@@ -14793,6 +16937,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/users/{id}':
     delete:
       operationId: DeleteUsersUser
@@ -14848,6 +17004,18 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     get:
       operationId: GetUsersUser
       summary: Retrieve a User
@@ -14893,6 +17061,18 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
     post:
       operationId: PostUsersUser
       summary: Update a User
@@ -14972,6 +17152,18 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /users/password-token:
     post:
       operationId: PostUsersUserPasswordToken
@@ -15024,6 +17216,18 @@ paths:
       responses:
         '204':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /users/reset-password:
     post:
       operationId: PostUsersUserPassword
@@ -15092,6 +17296,18 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /variants:
     get:
       operationId: GetVariants
@@ -15160,7 +17376,151 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
 components:
+  responses:
+    default_error:
+      description: Default Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: unknown_error
+            message: An unknown error occurred.
+            type: unknown_error
+    invalid_state_error:
+      description: Invalid State Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: unknown_error
+            message: >-
+              The request conflicted with another request. You may retry the
+              request with the provided Idempotency-Key.
+            type: QueryRunnerAlreadyReleasedError
+    invalid_request_error:
+      description: Invalid Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            code: invalid_request_error
+            message: Discount with code TEST already exists.
+            type: duplicate_error
+    not_found_error:
+      description: Not Found Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            message: Entity with id 1 was not found
+            type: not_found
+    400_error:
+      description: Client Error or Multiple Errors
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/error'
+              - $ref: '#/components/schemas/multiple_errors'
+          examples:
+            not_allowed:
+              $ref: '#/components/examples/not_allowed_error'
+            invalid_data:
+              $ref: '#/components/examples/invalid_data_error'
+            multiple_errors:
+              $ref: '#/components/examples/multiple_errors'
+    500_error:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            database:
+              $ref: '#/components/examples/database_error'
+            unexpected_state:
+              $ref: '#/components/examples/unexpected_state_error'
+            invalid_argument:
+              $ref: '#/components/examples/invalid_argument_error'
+            default_error:
+              $ref: '#/components/examples/default_error'
+    unauthorized:
+      description: User is not authorized. Must log in first
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+    incorrect_credentials:
+      description: User does not exist or incorrect credentials
+      content:
+        text/plain:
+          schema:
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+  examples:
+    not_allowed_error:
+      summary: Not Allowed Error
+      value:
+        message: Discount must be set to dynamic
+        type: not_allowed
+    invalid_data_error:
+      summary: Invalid Data Error
+      value:
+        message: first_name must be a string
+        type: invalid_data
+    multiple_errors:
+      summary: Multiple Errors
+      value:
+        message: >-
+          Provided request body contains errors. Please check the data and retry
+          the request
+        errors:
+          - message: first_name must be a string
+            type: invalid_data
+          - message: Discount must be set to dynamic
+            type: not_allowed
+    database_error:
+      summary: Database Error
+      value:
+        code: api_error
+        message: An error occured while hashing password
+        type: database_error
+    unexpected_state_error:
+      summary: Unexpected State Error
+      value:
+        message: cart.total must be defined
+        type: unexpected_state
+    invalid_argument_error:
+      summary: Invalid Argument Error
+      value:
+        message: cart.total must be defined
+        type: unexpected_state
+    default_error:
+      summary: Default Error
+      value:
+        code: unknown_error
+        message: An unknown error occurred.
+        type: unknown_error
   securitySchemes:
     api_token:
       type: http
@@ -20211,3 +22571,30 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    multiple_errors:
+      title: Multiple Errors
+      x-resourceId: multiple_errors
+      properties:
+        errors:
+          type: array
+          description: Array of errors
+          items:
+            $ref: '#/components/schemas/error'
+        message:
+          type: string
+          default: >-
+            Provided request body contains errors. Please check the data and
+            retry the request
+    error:
+      title: Response Error
+      x-resourceId: error
+      properties:
+        code:
+          type: string
+          description: A slug code to indicate the type of the error.
+        message:
+          type: string
+          description: Description of the error that occurred.
+        type:
+          type: string
+          description: A slug indicating the type of the error.
