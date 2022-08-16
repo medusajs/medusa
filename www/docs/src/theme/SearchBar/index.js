@@ -13,7 +13,7 @@ export default function SearchBarWrapper(props) {
     if (isBrowser) {
 
       function trackSearch(e) {
-        if (!e.target.classList.contains('DocSearch-Input')) {
+        if (!e.target.classList.contains('DocSearch-Input') && !(e.target.tagName.toLowerCase() === "input" && e.target.getAttribute('type') === 'search')) {
           return;
         }
   
