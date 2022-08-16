@@ -90,7 +90,7 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends TransactionBaseService<TotalsService> {
+class TotalsService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 

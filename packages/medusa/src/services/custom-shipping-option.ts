@@ -11,7 +11,7 @@ type InjectedDependencies = {
   manager: EntityManager
   customShippingOptionRepository: typeof CustomShippingOptionRepository
 }
-class CustomShippingOptionService extends TransactionBaseService<CustomShippingOptionService> {
+class CustomShippingOptionService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected customShippingOptionRepository_: typeof CustomShippingOptionRepository

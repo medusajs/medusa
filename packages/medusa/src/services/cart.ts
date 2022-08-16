@@ -83,7 +83,7 @@ type TotalsConfig = {
 /* Provides layer to manipulate carts.
  * @implements BaseService
  */
-class CartService extends TransactionBaseService<CartService> {
+class CartService extends TransactionBaseService {
   static readonly Events = {
     CUSTOMER_UPDATED: "cart.customer_updated",
     CREATED: "cart.created",

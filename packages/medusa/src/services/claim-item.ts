@@ -11,7 +11,7 @@ import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
-class ClaimItemService extends BaseService<ClaimItemService> {
+class ClaimItemService extends BaseService {
   static Events = {
     CREATED: "claim_item.created",
     UPDATED: "claim_item.updated",
