@@ -228,9 +228,11 @@ describe("/store/carts", () => {
       payments = await manager.find(Payment, { cart_id: cartId })
       expect(payments).toHaveLength(2)
       expect(payments).toEqual(
-        expect.objectContaining({
-          canceled_at: null,
-        })
+        expect.arrayContaining([
+          expect.objectContaining({
+            canceled_at: null,
+          }),
+        ])
       )
     })
   })
