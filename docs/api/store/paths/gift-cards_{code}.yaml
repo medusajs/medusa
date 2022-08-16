@@ -1,0 +1,22 @@
+get:
+  operationId: GetGiftCardsCode
+  summary: Retrieve Gift Card by Code
+  description: Retrieves a Gift Card by its associated unqiue code.
+  parameters:
+    - in: path
+      name: code
+      required: true
+      description: The unique Gift Card code.
+      schema:
+        type: string
+  tags:
+    - Gift Card
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              gift_card:
+                $ref: ../components/schemas/gift_card.yaml

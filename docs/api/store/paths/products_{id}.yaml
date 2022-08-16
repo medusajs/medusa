@@ -1,0 +1,22 @@
+get:
+  operationId: GetProductsProduct
+  summary: Retrieves a Product
+  description: Retrieves a Product.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Product.
+      schema:
+        type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              product:
+                $ref: ../components/schemas/product.yaml

@@ -6,72 +6,72 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).PaymentStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### AWAITING
 
-• **AWAITING** = `"awaiting"`
+• **AWAITING** = ``"awaiting"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:39
+medusa/dist/models/order.d.ts:40
 
 ___
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:43
+medusa/dist/models/order.d.ts:44
 
 ___
 
 ### CAPTURED
 
-• **CAPTURED** = `"captured"`
+• **CAPTURED** = ``"captured"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:40
+medusa/dist/models/order.d.ts:41
 
 ___
 
 ### NOT\_PAID
 
-• **NOT\_PAID** = `"not_paid"`
+• **NOT\_PAID** = ``"not_paid"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:38
+medusa/dist/models/order.d.ts:39
 
 ___
 
 ### PARTIALLY\_REFUNDED
 
-• **PARTIALLY\_REFUNDED** = `"partially_refunded"`
+• **PARTIALLY\_REFUNDED** = ``"partially_refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:41
+medusa/dist/models/order.d.ts:42
 
 ___
 
 ### REFUNDED
 
-• **REFUNDED** = `"refunded"`
+• **REFUNDED** = ``"refunded"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:42
+medusa/dist/models/order.d.ts:43
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:44
+medusa/dist/models/order.d.ts:45

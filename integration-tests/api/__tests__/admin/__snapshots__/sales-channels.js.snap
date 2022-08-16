@@ -32,6 +32,72 @@ Object {
 }
 `;
 
+exports[`sales channels GET /admin/sales-channels should list the sales channel 1`] = `
+Object {
+  "count": 2,
+  "limit": 20,
+  "offset": 0,
+  "sales_channels": ArrayContaining [
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": "test description",
+      "id": Any<String>,
+      "is_disabled": false,
+      "name": "test name",
+      "updated_at": Any<String>,
+    },
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": "test description 2",
+      "id": Any<String>,
+      "is_disabled": false,
+      "name": "test name 2",
+      "updated_at": Any<String>,
+    },
+  ],
+}
+`;
+
+exports[`sales channels GET /admin/sales-channels should list the sales channel using free text search 1`] = `
+Object {
+  "count": 1,
+  "limit": 20,
+  "offset": 0,
+  "sales_channels": ArrayContaining [
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": "test description 2",
+      "id": Any<String>,
+      "is_disabled": false,
+      "name": "test name 2",
+      "updated_at": Any<String>,
+    },
+  ],
+}
+`;
+
+exports[`sales channels GET /admin/sales-channels should list the sales channel using properties filters 1`] = `
+Object {
+  "count": 1,
+  "limit": 20,
+  "offset": 0,
+  "sales_channels": ArrayContaining [
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": "test description",
+      "id": Any<String>,
+      "is_disabled": false,
+      "name": "test name",
+      "updated_at": Any<String>,
+    },
+  ],
+}
+`;
+
 exports[`sales channels GET /admin/sales-channels/:id should retrieve the requested sales channel 1`] = `
 Object {
   "created_at": Any<String>,
@@ -44,15 +110,12 @@ Object {
 }
 `;
 
-exports[`sales channels GET /store/cart/:id with saleschannel returns cart with sales channel for single cart 1`] = `
+exports[`sales channels POST /admin/sales-channels successfully creates a disabled sales channel 1`] = `
 Object {
-  "created_at": Any<String>,
-  "deleted_at": null,
-  "description": "test description",
-  "id": Any<String>,
-  "is_disabled": false,
-  "name": "test name",
-  "updated_at": Any<String>,
+  "sales_channel": ObjectContaining {
+    "is_disabled": true,
+    "name": "sales channel name",
+  },
 }
 `;
 

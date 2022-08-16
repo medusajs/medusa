@@ -1,0 +1,32 @@
+post:
+  operationId: PostOrdersOrderSwapsSwapProcessPayment
+  summary: Process a Swap difference
+  description: >-
+    When there are differences between the returned and shipped Products in a
+    Swap, the difference must be processed. Either a Refund will be issued or a
+    Payment will be captured.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: swap_id
+      required: true
+      description: The ID of the Swap.
+      schema:
+        type: string
+  tags:
+    - Swap
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

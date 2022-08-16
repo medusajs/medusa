@@ -3,70 +3,165 @@
   "info": {
     "version": "1.0.0",
     "title": "Medusa Admin API",
+    "description": "API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.",
     "license": {
-      "name": "MIT"
+      "name": "MIT",
+      "url": "https://github.com/medusajs/medusa/blob/master/LICENSE"
     }
   },
   "tags": [
     {
       "name": "Auth",
-      "description": "Auth endpoints allows authorization of admin Users and manages their sessions."
+      "description": "Auth endpoints that allow authorization of admin Users and manages their sessions."
+    },
+    {
+      "name": "App",
+      "description": "App endpoints that allow handling apps in Medusa.",
+      "x-resourceId": "OAuth"
+    },
+    {
+      "name": "Batch Job",
+      "description": "Batch Job endpoints that allow handling batch jobs in Medusa.",
+      "x-resourceId": "batch_job"
+    },
+    {
+      "name": "Claim",
+      "description": "Claim endpoints that allow handling claims in Medusa.",
+      "x-resourceId": "claim_order"
     },
     {
       "name": "Collection",
+      "description": "Collection endpoints that allow handling collections in Medusa.",
       "x-resourceId": "product_collection"
     },
     {
       "name": "Customer",
+      "description": "Customer endpoints that allow handling customers in Medusa.",
       "x-resourceId": "customer"
     },
     {
+      "name": "Customer Group",
+      "description": "Customer Group endpoints that allow handling customer groups in Medusa.",
+      "x-resourceId": "customer_group"
+    },
+    {
       "name": "Discount",
+      "description": "Discount endpoints that allow handling discounts in Medusa.",
       "x-resourceId": "discount"
     },
     {
+      "name": "Discount Condition",
+      "description": "Discount Condition endpoints that allow handling discount conditions in Medusa.",
+      "x-resourceId": "discount_condition"
+    },
+    {
+      "name": "Draft Order",
+      "description": "Draft Order endpoints that allow handling draft orders in Medusa.",
+      "x-resourceId": "draft-order"
+    },
+    {
       "name": "Gift Card",
+      "description": "Gift Card endpoints that allow handling gift cards in Medusa.",
       "x-resourceId": "gift_card"
     },
     {
+      "name": "Invite",
+      "description": "Invite endpoints that allow handling invites in Medusa.",
+      "x-resourceId": "invite"
+    },
+    {
+      "name": "Note",
+      "description": "Note endpoints that allow handling notes in Medusa.",
+      "x-resourceId": "note"
+    },
+    {
       "name": "Notification",
+      "description": "Notification endpoints that allow handling notifications in Medusa.",
       "x-resourceId": "notification"
     },
     {
       "name": "Order",
+      "description": "Order endpoints that allow handling orders in Medusa.",
       "x-resourceId": "order"
     },
     {
+      "name": "Price List",
+      "description": "Price List endpoints that allow handling price lists in Medusa.",
+      "x-resourceId": "price_list"
+    },
+    {
       "name": "Product",
+      "description": "Product endpoints that allow handling products in Medusa.",
       "x-resourceId": "product"
     },
     {
+      "name": "Product Tag",
+      "description": "Product Tag endpoints that allow handling product tags in Medusa.",
+      "x-resourceId": "product_tag"
+    },
+    {
+      "name": "Product Types",
+      "description": "Product Types endpoints that allow handling product types in Medusa.",
+      "x-resourceId": "product_type"
+    },
+    {
+      "name": "Product Variant",
+      "description": "Product Variant endpoints that allow handling product variants in Medusa.",
+      "x-resourceId": "product_variant"
+    },
+    {
       "name": "Region",
+      "description": "Region endpoints that allow handling regions in Medusa.",
       "x-resourceId": "region"
     },
     {
+      "name": "Return Reason",
+      "description": "Return Reason endpoints that allow handling return reasons in Medusa.",
+      "x-resourceId": "return_reason"
+    },
+    {
       "name": "Return",
+      "description": "Return endpoints that allow handling returns in Medusa.",
       "x-resourceId": "return"
     },
     {
+      "name": "Sales Channel",
+      "description": "Sales Channel endpoints that allow handling sales channels in Medusa.",
+      "x-resourceId": "sales_channel"
+    },
+    {
       "name": "Shipping Option",
+      "description": "Shipping Option endpoints that allow handling shipping options in Medusa.",
       "x-resourceId": "shipping_option"
     },
     {
       "name": "Shipping Profile",
+      "description": "Shipping Profile endpoints that allow handling shipping profiles in Medusa.",
       "x-resourceId": "shipping_profile"
     },
     {
+      "name": "Store",
+      "description": "Store endpoints that allow handling stores in Medusa.",
+      "x-resourceId": "store"
+    },
+    {
       "name": "Swap",
+      "description": "Swap endpoints that allow handling swaps in Medusa.",
       "x-resourceId": "swap"
     },
     {
-      "name": "Product Variant",
-      "x-resourceId": "product_variant"
+      "name": "Tax Rate",
+      "description": "Tax Rate endpoints that allow handling tax rates in Medusa.",
+      "x-resourceId": "tax_rate"
     },
     {
-      "name": "OAuth",
-      "x-resourceId": "OAuth"
+      "name": "Upload",
+      "description": "Upload endpoints that allow handling uploads in Medusa."
+    },
+    {
+      "name": "User",
+      "description": "User endpoints that allow handling users in Medusa.",
+      "x-resourceId": "user"
     }
   ],
   "servers": [

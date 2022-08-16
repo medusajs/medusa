@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Cart
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:134
+medusa/dist/models/cart.d.ts:138
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:135
+medusa/dist/models/cart.d.ts:139
 
 ___
 
@@ -40,7 +42,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:105
+medusa/dist/models/cart.d.ts:106
 
 ___
 
@@ -50,33 +52,33 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:104
+medusa/dist/models/cart.d.ts:105
 
 ___
 
 ### completed\_at
 
-• **completed\_at**: [`Date`](../modules/internal.md#date)
+• **completed\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:121
+medusa/dist/models/cart.d.ts:122
 
 ___
 
 ### context
 
-• **context**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **context**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:124
+medusa/dist/models/cart.d.ts:125
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -84,7 +86,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -94,7 +96,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:114
+medusa/dist/models/cart.d.ts:115
 
 ___
 
@@ -104,13 +106,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:113
+medusa/dist/models/cart.d.ts:114
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -118,7 +120,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -128,7 +130,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:127
+medusa/dist/models/cart.d.ts:130
 
 ___
 
@@ -138,7 +140,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:111
+medusa/dist/models/cart.d.ts:112
 
 ___
 
@@ -148,7 +150,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:103
+medusa/dist/models/cart.d.ts:104
+
+___
+
+### gift\_card\_tax\_total
+
+• `Optional` **gift\_card\_tax\_total**: `number`
+
+#### Defined in
+
+medusa/dist/models/cart.d.ts:137
 
 ___
 
@@ -158,7 +170,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:133
+medusa/dist/models/cart.d.ts:136
 
 ___
 
@@ -168,7 +180,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:112
+medusa/dist/models/cart.d.ts:113
 
 ___
 
@@ -182,7 +194,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -192,7 +204,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:123
+medusa/dist/models/cart.d.ts:124
 
 ___
 
@@ -202,17 +214,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:108
+medusa/dist/models/cart.d.ts:109
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:125
+medusa/dist/models/cart.d.ts:126
 
 ___
 
@@ -222,7 +234,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:102
+medusa/dist/models/cart.d.ts:103
 
 ___
 
@@ -232,17 +244,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:118
+medusa/dist/models/cart.d.ts:119
 
 ___
 
 ### payment\_authorized\_at
 
-• **payment\_authorized\_at**: [`Date`](../modules/internal.md#date)
+• **payment\_authorized\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:122
+medusa/dist/models/cart.d.ts:123
 
 ___
 
@@ -252,7 +264,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:117
+medusa/dist/models/cart.d.ts:118
 
 ___
 
@@ -262,7 +274,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:115
+medusa/dist/models/cart.d.ts:116
 
 ___
 
@@ -272,7 +284,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:116
+medusa/dist/models/cart.d.ts:117
 
 ___
 
@@ -282,7 +294,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:132
+medusa/dist/models/cart.d.ts:135
 
 ___
 
@@ -292,7 +304,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:129
+medusa/dist/models/cart.d.ts:132
 
 ___
 
@@ -302,7 +314,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:110
+medusa/dist/models/cart.d.ts:111
 
 ___
 
@@ -312,7 +324,27 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:109
+medusa/dist/models/cart.d.ts:110
+
+___
+
+### sales\_channel
+
+• **sales\_channel**: [`SalesChannel`](internal.SalesChannel.md)
+
+#### Defined in
+
+medusa/dist/models/cart.d.ts:128
+
+___
+
+### sales\_channel\_id
+
+• **sales\_channel\_id**: ``null`` \| `string`
+
+#### Defined in
+
+medusa/dist/models/cart.d.ts:127
 
 ___
 
@@ -322,7 +354,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:107
+medusa/dist/models/cart.d.ts:108
 
 ___
 
@@ -332,7 +364,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:106
+medusa/dist/models/cart.d.ts:107
 
 ___
 
@@ -342,7 +374,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:119
+medusa/dist/models/cart.d.ts:120
 
 ___
 
@@ -352,7 +384,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:126
+medusa/dist/models/cart.d.ts:129
 
 ___
 
@@ -362,7 +394,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:131
+medusa/dist/models/cart.d.ts:134
 
 ___
 
@@ -372,7 +404,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:128
+medusa/dist/models/cart.d.ts:131
 
 ___
 
@@ -382,7 +414,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:130
+medusa/dist/models/cart.d.ts:133
 
 ___
 
@@ -392,13 +424,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:120
+medusa/dist/models/cart.d.ts:121
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -406,4 +438,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7

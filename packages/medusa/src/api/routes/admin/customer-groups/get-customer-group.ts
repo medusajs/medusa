@@ -1,6 +1,7 @@
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups/{id}
@@ -9,9 +10,11 @@ import { Request, Response } from "express"
  * description: "Retrieves a Customer Group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group.
+ *   - (path) id=* {string} The ID of the Customer Group.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK

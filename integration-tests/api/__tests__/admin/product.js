@@ -386,16 +386,19 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          tags: [expect.objectContaining({ id: "tag3" })],
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          tags: [expect.objectContaining({ id: "tag3" })],
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            tags: [expect.objectContaining({ id: "tag3" })],
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            tags: [expect.objectContaining({ id: "tag3" })],
+          }),
+        ])
+      )
       for (const product of response.data.products) {
         for (const notExpect of notExpected) {
           expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))

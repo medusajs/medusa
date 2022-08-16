@@ -1,0 +1,34 @@
+post:
+  operationId: PostApps
+  summary: Generates a token for an application.
+  description: Generates a token for an application.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - application_name
+            - state
+            - code
+          properties:
+            application_name:
+              type: string
+              description: Name of the application for the token to be generated for.
+            state:
+              type: string
+              description: State of the application.
+            code:
+              type: string
+              description: The code for the generated token.
+  tags:
+    - App
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              apps:
+                $ref: ../components/schemas/OAuth.yaml

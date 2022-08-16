@@ -3,8 +3,10 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /return-reasons
@@ -26,8 +28,8 @@ import { validator } from "../../../../utils/validator"
  *           value:
  *             description: "The value that the Return Reason will be identified by. Must be unique."
  *             type: string
- *            parent_return_reason_id:
- *             description: "The id of the parent return reason."
+ *           parent_return_reason_id:
+ *             description: "The ID of the parent return reason."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."
@@ -53,7 +55,12 @@ export default async (req, res) => {
   const returnReasonService: ReturnReasonService = req.scope.resolve(
     "returnReasonService"
   )
-  const result = await returnReasonService.create(validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+    return await returnReasonService
+      .withTransaction(transactionManager)
+      .create(validated)
+  })
 
   const reason = await returnReasonService.retrieve(result.id, {
     select: defaultAdminReturnReasonsFields,
@@ -79,5 +86,5 @@ export class AdminPostReturnReasonsReq {
   description?: string
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

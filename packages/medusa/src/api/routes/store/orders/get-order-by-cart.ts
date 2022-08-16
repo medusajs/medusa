@@ -1,4 +1,5 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 
 /**
@@ -7,7 +8,7 @@ import { OrderService } from "../../../../services"
  * summary: Retrieves Order by Cart id
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
  * parameters:
- *   - (path) cart_id=* {string} The id of Cart.
+ *   - (path) cart_id=* {string} The ID of Cart.
  * tags:
  *   - Order
  * responses:

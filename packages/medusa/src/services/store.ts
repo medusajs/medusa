@@ -1,15 +1,14 @@
 import { MedusaError } from "medusa-core-utils"
-import { currencies, Currency } from "../utils/currencies"
 import { EntityManager } from "typeorm"
-import { StoreRepository } from "../repositories/store"
-import { CurrencyRepository } from "../repositories/currency"
-import EventBusService from "./event-bus"
-import { Store } from "../models"
-import { AdminPostStoreReq } from "../api/routes/admin/store"
-import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
+import { Store } from "../models"
+import { CurrencyRepository } from "../repositories/currency"
+import { StoreRepository } from "../repositories/store"
+import { FindConfig } from "../types/common"
 import { UpdateStoreInput } from "../types/store"
+import { buildQuery, setMetadata } from "../utils"
+import { currencies, Currency } from "../utils/currencies"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -90,24 +89,16 @@ class StoreService extends TransactionBaseService<StoreService> {
    * @return the store
    */
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
-          this.storeRepository_
-        )
-        const query = buildQuery({}, config)
-        const store = await storeRepo.findOne(query)
+    const manager = this.manager_
+    const storeRepo = manager.getCustomRepository(this.storeRepository_)
+    const query = buildQuery({}, config)
+    const store = await storeRepo.findOne(query)
 
-        if (!store) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            "Store does not exist"
-          )
-        }
+    if (!store) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store does not exist")
+    }
 
-        return store
-      }
-    )
+    return store
   }
 
   protected getDefaultCurrency_(code: string): Partial<Currency> {

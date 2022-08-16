@@ -11,7 +11,7 @@ class GiftCardsResource extends BaseResource {
    */
   retrieve(code: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreGiftCardsRes> {
     const path = `/store/gift-cards/${code}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

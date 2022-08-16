@@ -9,8 +9,9 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-import { DbAwareColumn } from "../utils/db-aware-column"
+
 import { CustomerGroup } from "./customer-group"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
@@ -139,10 +140,15 @@ export class DiscountCondition extends SoftDeletableEntity {
  * title: "Discount Condition"
  * description: "Holds rule conditions for when a discount is applicable"
  * x-resourceId: discount_condition
+ * required:
+ *   - type
+ *   - operator
+ *   - discount_rule_id
  * properties:
  *   id:
- *     description: "The id of the Discount Condition. Will be prefixed by `discon_`."
  *     type: string
+ *     description: The discount condition's ID
+ *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
  *     description: "The type of the Condition"
  *     type: string
@@ -152,19 +158,63 @@ export class DiscountCondition extends SoftDeletableEntity {
  *       - product_collections
  *       - product_tags
  *       - customer_groups
+ *   operator:
+ *     description: "The operator of the Condition"
+ *     type: string
+ *     enum:
+ *       - in
+ *       - not_in
+ *   discount_rule_id:
+ *     type: string
+ *     description: The ID of the discount rule associated with the condition
+ *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
+ *   discount_rule:
+ *     description: Available if the relation `discount_rule` is expanded.
+ *     $ref: "#/components/schemas/discount_rule"
+ *   products:
+ *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A product object.
+ *   product_types:
+ *     description: product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A product type object.
+ *   product_tags:
+ *     description: product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A product tag object.
+ *   product_collections:
+ *     description: product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A product collection object.
+ *   customer_groups:
+ *     description: customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A customer group object.
  *   created_at:
+ *     type: string
  *     description: "The date with timezone at which the resource was created."
- *     type: string
  *     format: date-time
- *   update_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *   updated_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

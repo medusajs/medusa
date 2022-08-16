@@ -1,5 +1,6 @@
-import { OrderService } from "../../../../services"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
+
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [get] /orders/{id}
@@ -17,8 +18,8 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
  *       application/json:
  *         schema:
  *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *             order:
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id } = req.params

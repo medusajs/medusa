@@ -16,8 +16,8 @@
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostInvitesInviteAcceptReq`](internal.AdminPostInvitesInviteAcceptReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostInvitesInviteAcceptReq`](internal-9.AdminPostInvitesInviteAcceptReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/invites.ts:10](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/invites.ts#L10)
+[medusa-js/src/resources/admin/invites.ts:10](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/invites.ts#L10)
 
 ___
 
@@ -37,8 +37,8 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostInvitesPayload`](../modules/internal.md#adminpostinvitespayload) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostInvitesPayload`](../modules/internal-9.md#adminpostinvitespayload) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -46,48 +46,48 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/invites.ts:15](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/invites.ts#L15)
+[medusa-js/src/resources/admin/invites.ts:18](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/invites.ts#L18)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal.md#deleteresponse)\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal.md#deleteresponse)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/invites.ts:20](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/invites.ts#L20)
+[medusa-js/src/resources/admin/invites.ts:26](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/invites.ts#L26)
 
 ___
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminListInvitesRes`](../modules/internal.md#adminlistinvitesres)\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminListInvitesRes`](../modules/internal-9.md#adminlistinvitesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminListInvitesRes`](../modules/internal.md#adminlistinvitesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminListInvitesRes`](../modules/internal-9.md#adminlistinvitesres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/invites.ts:25](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/invites.ts#L25)
+[medusa-js/src/resources/admin/invites.ts:34](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/invites.ts#L34)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -108,4 +108,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/invites.ts:30](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/invites.ts#L30)
+[medusa-js/src/resources/admin/invites.ts:41](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/invites.ts#L41)

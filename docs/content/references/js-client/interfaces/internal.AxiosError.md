@@ -15,7 +15,7 @@ displayed_sidebar: jsClientSidebar
 
 ## Hierarchy
 
-- [`Error`](../modules/internal.md#error)
+- `Error`
 
   ↳ **`AxiosError`**
 
@@ -27,7 +27,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:126
+medusa-js/node_modules/axios/index.d.ts:126
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:125
+medusa-js/node_modules/axios/index.d.ts:125
 
 ___
 
@@ -47,35 +47,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:129
-
-___
-
-### message
-
-• **message**: `string`
-
-#### Inherited from
-
-Error.message
-
-#### Defined in
-
-node_modules/typescript/lib/lib.es5.d.ts:1023
-
-___
-
-### name
-
-• **name**: `string`
-
-#### Inherited from
-
-Error.name
-
-#### Defined in
-
-node_modules/typescript/lib/lib.es5.d.ts:1022
+medusa-js/node_modules/axios/index.d.ts:129
 
 ___
 
@@ -85,7 +57,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:127
+medusa-js/node_modules/axios/index.d.ts:127
 
 ___
 
@@ -95,32 +67,22 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:128
+medusa-js/node_modules/axios/index.d.ts:128
 
 ___
 
-### stack
-
-• `Optional` **stack**: `string`
-
-#### Inherited from
-
-Error.stack
-
-#### Defined in
-
-node_modules/typescript/lib/lib.es5.d.ts:1024
-
-## Methods
-
 ### toJSON
 
-▸ **toJSON**(): `object`
+• **toJSON**: () => `object`
 
-#### Returns
+#### Type declaration
+
+▸ (): `object`
+
+##### Returns
 
 `object`
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:130
+medusa-js/node_modules/axios/index.d.ts:130

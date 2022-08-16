@@ -1,0 +1,318 @@
+post:
+  operationId: PostBatchJobs
+  summary: Create a Batch Job
+  description: Creates a Batch Job.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - type
+            - context
+          properties:
+            type:
+              type: string
+              description: The type of batch job to start.
+              example: product-export
+            context:
+              type: object
+              description: >-
+                Additional infomration regarding the batch to be used for
+                processing.
+              example:
+                shape:
+                  prices:
+                    - region: null
+                      currency_code: eur
+                  dynamicImageColumnCount: 4
+                  dynamicOptionColumnCount: 2
+                list_config:
+                  skip: 0
+                  take: 50
+                  order:
+                    created_at: DESC
+                  relations:
+                    - variants
+                    - variant.prices
+                    - images
+            dry_run:
+              type: boolean
+              description: >-
+                Set a batch job in dry_run mode to get some information on what
+                will be done without applying any modifications.
+              default: false
+  tags:
+    - Batch Job
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              batch_job:
+                $ref: ../components/schemas/batch_job.yaml
+get:
+  operationId: GetBatchJobs
+  summary: List Batch Jobs
+  description: Retrieve a list of Batch Jobs.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: The number of batch jobs to return.
+      schema:
+        type: integer
+        default: 10
+    - in: query
+      name: offset
+      description: The number of batch jobs to skip before results.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: id
+      style: form
+      explode: false
+      description: Filter by the batch ID
+      schema:
+        oneOf:
+          - type: string
+            description: batch job ID
+          - type: array
+            description: multiple batch job IDs
+            items:
+              type: string
+    - in: query
+      name: type
+      style: form
+      explode: false
+      description: Filter by the batch type
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: confirmed_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was confirmed, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: pre_processed_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was pre processed, i.e.
+        less than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: completed_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was completed, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: failed_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was failed, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: canceled_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was canceled, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: order
+      description: Field used to order retrieved batch jobs
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each order of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each order of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was created, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      style: form
+      explode: false
+      description: >-
+        Date comparison for when resulting collections was updated, i.e. less
+        than, greater than etc.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+  tags:
+    - Batch Job
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              batch_jobs:
+                type: array
+                items:
+                  $ref: ../components/schemas/batch_job.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

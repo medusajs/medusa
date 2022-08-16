@@ -1,0 +1,176 @@
+delete:
+  operationId: DeleteDiscountsDiscountConditionsCondition
+  summary: Delete a DiscountCondition
+  description: Deletes a DiscountCondition
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: discount_id
+      required: true
+      description: The ID of the Discount
+      schema:
+        type: string
+    - in: path
+      name: condition_id
+      required: true
+      description: The ID of the DiscountCondition
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  tags:
+    - Discount Condition
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted DiscountCondition
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: discount-condition
+              deleted:
+                type: boolean
+                description: >-
+                  Whether the discount condition was deleted successfully or
+                  not.
+                default: true
+              discount:
+                description: The Discount to which the condition used to belong
+                $ref: ../components/schemas/discount.yaml
+get:
+  operationId: GetDiscountsDiscountConditionsCondition
+  summary: Gets a DiscountCondition
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: discount_id
+      required: true
+      description: The ID of the Discount.
+      schema:
+        type: string
+    - in: path
+      name: condition_id
+      required: true
+      description: The ID of the DiscountCondition.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  description: Gets a DiscountCondition
+  tags:
+    - Discount Condition
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              discount_condition:
+                $ref: ../components/schemas/discount_condition.yaml
+post:
+  operationId: PostDiscountsDiscountConditionsCondition
+  summary: >-
+    Updates a DiscountCondition. Only one of `products`, `product_types`,
+    `product_collections`, `product_tags`, and `customer_groups` should be
+    provided.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: discount_id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: path
+      name: condition_id
+      required: true
+      description: The ID of the DiscountCondition.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each item of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each item of the
+        result.
+      schema:
+        type: string
+  description: Updates a DiscountCondition
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            products:
+              type: array
+              description: list of product IDs if the condition is applied on products.
+              items:
+                type: string
+            product_types:
+              type: array
+              description: >-
+                list of product type IDs if the condition is applied on product
+                types.
+              items:
+                type: string
+            product_collections:
+              type: array
+              description: >-
+                list of product collection IDs if the condition is applied on
+                product collections.
+              items:
+                type: string
+            product_tags:
+              type: array
+              description: >-
+                list of product tag IDs if the condition is applied on product
+                tags.
+              items:
+                type: string
+            customer_groups:
+              type: array
+              description: >-
+                list of customer group IDs if the condition is applied on
+                customer groups.
+              items:
+                type: string
+  tags:
+    - Discount
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              discount:
+                $ref: ../components/schemas/discount.yaml
