@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.3.6-next.0
+
+### Patch Changes
+
+- [#1959](https://github.com/medusajs/medusa/pull/1959) [`2a723dcd4`](https://github.com/medusajs/medusa/commit/2a723dcd4fb0074e7d34286c231ef248e907b1c4) Thanks [@richardwardza](https://github.com/richardwardza)! - Add Collection batch (remove, add) endpoints to medusa-react
+
+- Updated dependencies [[`15a5b029a`](https://github.com/medusajs/medusa/commit/15a5b029ae3bd954481c558beeac87ace7ab945d), [`900260c5b`](https://github.com/medusajs/medusa/commit/900260c5b9df4f4f927db5bb6921e5e139ff269a), [`42ed20951`](https://github.com/medusajs/medusa/commit/42ed209518bf0278d1bef3c4c47d0ee21cae84c8), [`aaebb38ea`](https://github.com/medusajs/medusa/commit/aaebb38eae883a225779b03556900ea813c991d2), [`152934f8b`](https://github.com/medusajs/medusa/commit/152934f8b07cb3095788091df6823f9665fdf43d), [`11fab121f`](https://github.com/medusajs/medusa/commit/11fab121f4c4b5ec3b6a3afccd4c44844bc5e3d9), [`40ae53567`](https://github.com/medusajs/medusa/commit/40ae53567a23ebe562e571fa22f1721eed174c82), [`c31290c91`](https://github.com/medusajs/medusa/commit/c31290c911450a06d5e4da3dc5e4e3977071a6ea), [`4b663cca3`](https://github.com/medusajs/medusa/commit/4b663cca3acf43b0e02a1fb94b8d4f14913bfe45), [`a88bf3c76`](https://github.com/medusajs/medusa/commit/a88bf3c76ea801d2b17227fb2eb8b8d8dbfe1262)]:
+  - @medusajs/medusa@1.3.6-next.0
+  - @medusajs/medusa-js@1.2.6-next.0
+
 ## 0.3.5
 
 ### Patch Changes

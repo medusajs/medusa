@@ -1,5 +1,31 @@
 # Change Log
 
+## 1.3.6-next.0
+
+### Patch Changes
+
+- [#2045](https://github.com/medusajs/medusa/pull/2045) [`15a5b029a`](https://github.com/medusajs/medusa/commit/15a5b029ae3bd954481c558beeac87ace7ab945d) Thanks [@srindom](https://github.com/srindom)! - Join tracking links to all fulfillments in admin/orders
+
+* [#2017](https://github.com/medusajs/medusa/pull/2017) [`900260c5b`](https://github.com/medusajs/medusa/commit/900260c5b9df4f4f927db5bb6921e5e139ff269a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Adds enabled features flags to tracking event in `medusa-telemetry`
+
+- [#1976](https://github.com/medusajs/medusa/pull/1976) [`42ed20951`](https://github.com/medusajs/medusa/commit/42ed209518bf0278d1bef3c4c47d0ee21cae84c8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert CollectionService to TypeScript
+
+* [#1995](https://github.com/medusajs/medusa/pull/1995) [`aaebb38ea`](https://github.com/medusajs/medusa/commit/aaebb38eae883a225779b03556900ea813c991d2) Thanks [@adrien2p](https://github.com/adrien2p)! - Convert IdempotencyKeyService to TypeScript
+  Add await to retrieve in lock method
+
+- [#1963](https://github.com/medusajs/medusa/pull/1963) [`152934f8b`](https://github.com/medusajs/medusa/commit/152934f8b07cb3095788091df6823f9665fdf43d) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert ShippingProfileService to TypeScript
+
+* [#1983](https://github.com/medusajs/medusa/pull/1983) [`11fab121f`](https://github.com/medusajs/medusa/commit/11fab121f4c4b5ec3b6a3afccd4c44844bc5e3d9) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert OauthService to TypeScript
+
+- [#1982](https://github.com/medusajs/medusa/pull/1982) [`40ae53567`](https://github.com/medusajs/medusa/commit/40ae53567a23ebe562e571fa22f1721eed174c82) Thanks [@chemicalkosek](https://github.com/chemicalkosek)! - Add payment providers Przelewy24 and Blik through Stripe
+
+* [#2024](https://github.com/medusajs/medusa/pull/2024) [`c31290c91`](https://github.com/medusajs/medusa/commit/c31290c911450a06d5e4da3dc5e4e3977071a6ea) Thanks [@adrien2p](https://github.com/adrien2p)! - Add new `isDefined` utility
+
+- [#1968](https://github.com/medusajs/medusa/pull/1968) [`4b663cca3`](https://github.com/medusajs/medusa/commit/4b663cca3acf43b0e02a1fb94b8d4f14913bfe45) Thanks [@adrien2p](https://github.com/adrien2p)! - Use transactions in CartCompletionStrategy phases
+
+- Updated dependencies []:
+  - @medusajs/medusa-cli@1.3.2-next.0
+
 ## 1.3.5
 
 ### Patch Changes

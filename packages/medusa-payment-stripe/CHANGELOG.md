@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.43-next.0
+
+### Patch Changes
+
+- [#1982](https://github.com/medusajs/medusa/pull/1982) [`40ae53567`](https://github.com/medusajs/medusa/commit/40ae53567a23ebe562e571fa22f1721eed174c82) Thanks [@chemicalkosek](https://github.com/chemicalkosek)! - Add payment providers Przelewy24 and Blik through Stripe
+
 ## 1.1.42
 
 ### Patch Changes
