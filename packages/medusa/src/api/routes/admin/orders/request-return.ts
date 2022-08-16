@@ -18,6 +18,7 @@ import { OrdersReturnItem } from "../../../../types/orders"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /orders/{id}/return
@@ -140,7 +141,7 @@ export default async (req, res) => {
                   returnObj.shipping_method = value.return_shipping
                 }
 
-                if (typeof value.refund !== "undefined" && value.refund < 0) {
+                if (isDefined(value.refund) && value.refund < 0) {
                   returnObj.refund_amount = 0
                 } else {
                   if (value.refund && value.refund >= 0) {

@@ -9,7 +9,7 @@ import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
@@ -22,7 +22,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate customers.
  */
-class CustomerService extends TransactionBaseService<CustomerService> {
+class CustomerService extends TransactionBaseService {
   protected readonly customerRepository_: typeof CustomerRepository
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly eventBusService_: EventBusService
@@ -324,7 +324,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
 
         if ("billing_address_id" in update || "billing_address" in update) {
           const address = billing_address_id || billing_address
-          if (typeof address !== "undefined") {
+          if (isDefined(address)) {
             await this.updateBillingAddress_(customer, address)
           }
         }
@@ -395,7 +395,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
 
       address.country_code = address.country_code?.toLowerCase()
 
-      if (typeof address?.id !== "undefined") {
+      if (isDefined(address?.id)) {
         customer.billing_address_id = address.id
       } else {
         if (customer.billing_address_id) {

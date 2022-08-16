@@ -1,5 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { isDefined } from "../utils"
 
 /**
  * Handles Returns
@@ -357,7 +358,7 @@ class ReturnService extends BaseService {
       )
 
       let toRefund = data.refund_amount
-      if (typeof toRefund !== "undefined") {
+      if (isDefined(toRefund)) {
         // Merchant wants to do a custom refund amount; we check if amount is
         // refundable
         const refundable = order.refundable_amount
@@ -624,22 +625,23 @@ class ReturnService extends BaseService {
 
       const result = await returnRepository.save(updateObj)
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       for (const i of returnObj.items) {
-        const lineItem = await this.lineItemService_
-          .withTransaction(manager)
-          .retrieve(i.item_id)
+        const lineItem = await lineItemServiceTx.retrieve(i.item_id)
         const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
-        await this.lineItemService_.withTransaction(manager).update(i.item_id, {
+        await lineItemServiceTx.update(i.item_id, {
           returned_quantity: returnedQuantity,
         })
       }
 
+      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
         if (orderItem) {
-          await this.inventoryService_
-            .withTransaction(manager)
-            .adjustInventory(orderItem.variant_id, line.received_quantity)
+          await inventoryServiceTx.adjustInventory(
+            orderItem.variant_id,
+            line.received_quantity
+          )
         }
       }
 

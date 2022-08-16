@@ -258,6 +258,7 @@ export const defaultAdminOrdersRelations = [
   "claims.shipping_address",
   "claims.additional_items",
   "claims.fulfillments",
+  "claims.fulfillments.tracking_links",
   "claims.claim_items",
   "claims.claim_items.item",
   "claims.claim_items.images",
@@ -269,6 +270,7 @@ export const defaultAdminOrdersRelations = [
   "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
+  "swaps.fulfillments.tracking_links",
 ]
 
 export const defaultAdminOrdersFields = [

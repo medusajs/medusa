@@ -11,6 +11,7 @@ import {
   Order,
   OrderStatus,
   Payment,
+  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
@@ -63,7 +64,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
 }
 
-class OrderService extends TransactionBaseService<OrderService> {
+class OrderService extends TransactionBaseService {
   static readonly Events = {
     GIFT_CARD_CREATED: "order.gift_card_created",
     PAYMENT_CAPTURED: "order.payment_captured",
@@ -478,10 +479,10 @@ class OrderService extends TransactionBaseService<OrderService> {
    */
   async createFromCart(cartId: string): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
-      const cartService = this.cartService_.withTransaction(manager)
-      const inventoryService = this.inventoryService_.withTransaction(manager)
+      const cartServiceTx = this.cartService_.withTransaction(manager)
+      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartService.retrieve(cartId, {
+      const cart = await cartServiceTx.retrieve(cartId, {
         select: ["subtotal", "total"],
         relations: [
           "region",
@@ -507,7 +508,7 @@ class OrderService extends TransactionBaseService<OrderService> {
 
       for (const item of cart.items) {
         try {
-          await inventoryService.confirmInventory(
+          await inventoryServiceTx.confirmInventory(
             item.variant_id,
             item.quantity
           )
@@ -517,7 +518,7 @@ class OrderService extends TransactionBaseService<OrderService> {
               .withTransaction(manager)
               .cancelPayment(payment)
           }
-          await cartService.update(cart.id, { payment_authorized_at: null })
+          await cartServiceTx.update(cart.id, { payment_authorized_at: null })
           throw err
         }
       }
@@ -533,7 +534,6 @@ class OrderService extends TransactionBaseService<OrderService> {
       // Would be the case if a discount code is applied that covers the item
       // total
       if (total !== 0) {
-        // Throw if payment method does not exist
         if (!payment) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -545,7 +545,6 @@ class OrderService extends TransactionBaseService<OrderService> {
           .withTransaction(manager)
           .getStatus(payment)
 
-        // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -621,13 +620,16 @@ class OrderService extends TransactionBaseService<OrderService> {
           .updateShippingMethod(method.id, { order_id: result.id })
       }
 
-      const lineItemService = this.lineItemService_.withTransaction(manager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       for (const item of cart.items) {
-        await lineItemService.update(item.id, { order_id: result.id })
+        await lineItemServiceTx.update(item.id, { order_id: result.id })
       }
 
       for (const item of cart.items) {
-        await inventoryService.adjustInventory(item.variant_id, -item.quantity)
+        await inventoryServiceTx.adjustInventory(
+          item.variant_id,
+          -item.quantity
+        )
       }
 
       await this.eventBus_
@@ -637,7 +639,7 @@ class OrderService extends TransactionBaseService<OrderService> {
           no_notification: result.no_notification,
         })
 
-      await cartService.update(cart.id, { completed_at: new Date() })
+      await cartServiceTx.update(cart.id, { completed_at: new Date() })
 
       return result
     })
@@ -700,6 +702,8 @@ class OrderService extends TransactionBaseService<OrderService> {
           no_notification: evaluatedNoNotification,
         })
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
       order.fulfillment_status = FulfillmentStatus.SHIPPED
       for (const item of order.items) {
         const shipped = shipmentRes.items.find((si) => si.item_id === item.id)
@@ -709,7 +713,7 @@ class OrderService extends TransactionBaseService<OrderService> {
             order.fulfillment_status = FulfillmentStatus.PARTIALLY_SHIPPED
           }
 
-          await this.lineItemService_.withTransaction(manager).update(item.id, {
+          await lineItemServiceTx.update(item.id, {
             shipped_quantity: shippedQty,
           })
         } else {
@@ -842,6 +846,9 @@ class OrderService extends TransactionBaseService<OrderService> {
         .withTransaction(manager)
         .createShippingMethod(optionId, data ?? {}, { order, ...config })
 
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
+
       const methods = [newMethod]
       if (shipping_methods.length) {
         for (const sm of shipping_methods) {
@@ -849,9 +856,7 @@ class OrderService extends TransactionBaseService<OrderService> {
             sm.shipping_option.profile_id ===
             newMethod.shipping_option.profile_id
           ) {
-            await this.shippingOptionService_
-              .withTransaction(manager)
-              .deleteShippingMethods(sm)
+            await shippingOptionServiceTx.deleteShippingMethods(sm)
           } else {
             methods.push(sm)
           }
@@ -930,9 +935,10 @@ class OrderService extends TransactionBaseService<OrderService> {
         order.no_notification = no_notification ?? false
       }
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       if (update.items) {
         for (const item of items as LineItem[]) {
-          await this.lineItemService_.withTransaction(manager).create({
+          await lineItemServiceTx.create({
             ...item,
             order_id: orderId,
           })
@@ -1007,16 +1013,15 @@ class OrderService extends TransactionBaseService<OrderService> {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
+      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
       for (const item of order.items) {
-        await this.inventoryService_
-          .withTransaction(manager)
-          .adjustInventory(item.variant_id, item.quantity)
+        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
       }
 
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(manager)
       for (const p of order.payments) {
-        await this.paymentProviderService_
-          .withTransaction(manager)
-          .cancelPayment(p)
+        await paymentProviderServiceTx.cancelPayment(p)
       }
 
       order.status = OrderStatus.CANCELED
@@ -1054,11 +1059,13 @@ class OrderService extends TransactionBaseService<OrderService> {
         )
       }
 
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(manager)
+
       const payments: Payment[] = []
       for (const p of order.payments) {
         if (p.captured_at === null) {
-          const result = await this.paymentProviderService_
-            .withTransaction(manager)
+          const result = await paymentProviderServiceTx
             .capturePayment(p)
             .catch((err) => {
               this.eventBus_
@@ -1254,14 +1261,13 @@ class OrderService extends TransactionBaseService<OrderService> {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
+      const eventBusTx = this.eventBus_.withTransaction(manager)
       for (const fulfillment of fulfillments) {
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(OrderService.Events.FULFILLMENT_CREATED, {
-            id: orderId,
-            fulfillment_id: fulfillment.id,
-            no_notification: evaluatedNoNotification,
-          })
+        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+          id: orderId,
+          fulfillment_id: fulfillment.id,
+          no_notification: evaluatedNoNotification,
+        })
       }
 
       return result
