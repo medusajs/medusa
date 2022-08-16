@@ -14,7 +14,7 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const { simpleRegionFactory, simpleProductFactory } = require("../../factories")
-const { MedusaError } = require("medusa-core-utils");
+const { MedusaError } = require("medusa-core-utils")
 
 jest.setTimeout(30000)
 
@@ -196,7 +196,9 @@ describe("/store/carts", () => {
 
       expect(responseFail.status).toEqual(409)
       expect(responseFail.data.type).toEqual("not_allowed")
-      expect(responseFail.data.code).toEqual(MedusaError.Codes.INSUFFICIENT_INVENTORY)
+      expect(responseFail.data.code).toEqual(
+        MedusaError.Codes.INSUFFICIENT_INVENTORY
+      )
 
       let payments = await manager.find(Payment, { cart_id: cartId })
       expect(payments).toHaveLength(1)
@@ -225,7 +227,7 @@ describe("/store/carts", () => {
 
       payments = await manager.find(Payment, { cart_id: cartId })
       expect(payments).toHaveLength(2)
-      expect(payments).toContainEqual(
+      expect(payments).toEqual(
         expect.objectContaining({
           canceled_at: null,
         })
@@ -274,7 +276,7 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      let payments = await manager.find(Payment, { cart_id: cartId })
+      const payments = await manager.find(Payment, { cart_id: cartId })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -290,7 +292,9 @@ describe("/store/carts", () => {
 
       expect(responseFail.status).toEqual(409)
       expect(responseFail.data.code).toEqual("cart_incompatible_state")
-      expect(responseFail.data.message).toEqual("Cart has already been completed")
+      expect(responseFail.data.message).toEqual(
+        "Cart has already been completed"
+      )
     })
   })
 })
