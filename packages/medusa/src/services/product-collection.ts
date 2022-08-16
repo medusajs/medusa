@@ -7,7 +7,7 @@ import { ProductCollectionRepository } from "../repositories/product-collection"
 import { ExtendedFindConfig, FindConfig, QuerySelector } from "../types/common"
 import {
   CreateProductCollection,
-  UpdateProductCollection
+  UpdateProductCollection,
 } from "../types/product-collection"
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
@@ -23,7 +23,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate product collections.
  */
-class ProductCollectionService extends TransactionBaseService<ProductCollectionService> {
+class ProductCollectionService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 

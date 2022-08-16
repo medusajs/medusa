@@ -29,7 +29,7 @@ type InjectedDependencies = {
  * Allows retrieval of prices.
  * @extends BaseService
  */
-class PricingService extends TransactionBaseService<PricingService> {
+class PricingService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly regionService: RegionService

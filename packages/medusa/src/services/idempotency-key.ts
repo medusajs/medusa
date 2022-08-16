@@ -13,7 +13,7 @@ type InjectedDependencies = {
   idempotencyKeyRepository: typeof IdempotencyKeyRepository
 }
 
-class IdempotencyKeyService extends TransactionBaseService<IdempotencyKeyService> {
+class IdempotencyKeyService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 

@@ -600,24 +600,28 @@ class SwapService extends BaseService {
         },
       })
 
+      const customShippingOptionServiceTx =
+        this.customShippingOptionService_.withTransaction(manager)
       for (const customShippingOption of customShippingOptions) {
-        await this.customShippingOptionService_
-          .withTransaction(manager)
-          .create({
-            cart_id: cart.id,
-            shipping_option_id: customShippingOption.option_id,
-            price: customShippingOption.price,
-          })
+        await customShippingOptionServiceTx.create({
+          cart_id: cart.id,
+          shipping_option_id: customShippingOption.option_id,
+          price: customShippingOption.price,
+        })
       }
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+      const lineItemAdjustmentServiceTx =
+        this.lineItemAdjustmentService_.withTransaction(manager)
       for (const item of swap.additional_items) {
-        await this.lineItemService_.withTransaction(manager).update(item.id, {
+        await lineItemServiceTx.update(item.id, {
           cart_id: cart.id,
         })
         // we generate adjustments in case the cart has any discounts that should be applied to the additional items
-        await this.lineItemAdjustmentService_
-          .withTransaction(manager)
-          .createAdjustmentForLineItem(cart, item)
+        await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
+          cart,
+          item
+        )
       }
 
       // If the swap has a return shipping method the price has to be added to
@@ -695,20 +699,23 @@ class SwapService extends BaseService {
       const items = cart.items
 
       if (!swap.allow_backorder) {
+        const inventoryServiceTx =
+          this.inventoryService_.withTransaction(manager)
+        const paymentProviderServiceTx =
+          this.paymentProviderService_.withTransaction(manager)
+        const cartServiceTx = this.cartService_.withTransaction(manager)
+
         for (const item of items) {
           try {
-            await this.inventoryService_
-              .withTransaction(manager)
-              .confirmInventory(item.variant_id, item.quantity)
+            await inventoryServiceTx.confirmInventory(
+              item.variant_id,
+              item.quantity
+            )
           } catch (err) {
             if (payment) {
-              await this.paymentProviderService_
-                .withTransaction(manager)
-                .cancelPayment(payment)
+              await paymentProviderServiceTx.cancelPayment(payment)
             }
-            await this.cartService_
-              .withTransaction(manager)
-              .update(cart.id, { payment_authorized_at: null })
+            await cartServiceTx.update(cart.id, { payment_authorized_at: null })
             throw err
           }
         }
@@ -743,10 +750,14 @@ class SwapService extends BaseService {
             order_id: swap.order_id,
           })
 
+        const inventoryServiceTx =
+          this.inventoryService_.withTransaction(manager)
+
         for (const item of items) {
-          await this.inventoryService_
-            .withTransaction(manager)
-            .adjustInventory(item.variant_id, -item.quantity)
+          await inventoryServiceTx.adjustInventory(
+            item.variant_id,
+            -item.quantity
+          )
         }
       }
 
@@ -760,12 +771,13 @@ class SwapService extends BaseService {
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
 
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
+
       for (const method of cart.shipping_methods) {
-        await this.shippingOptionService_
-          .withTransaction(manager)
-          .updateShippingMethod(method.id, {
-            swap_id: result.id,
-          })
+        await shippingOptionServiceTx.updateShippingMethod(method.id, {
+          swap_id: result.id,
+        })
       }
 
       this.eventBus_
@@ -936,6 +948,8 @@ class SwapService extends BaseService {
 
       swap.fulfillment_status = "fulfilled"
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
       // Update all line items to reflect fulfillment
       for (const item of swap.additional_items) {
         const fulfillmentItem = successfullyFulfilled.find(
@@ -947,7 +961,7 @@ class SwapService extends BaseService {
             (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
 
           // Update the fulfilled quantity
-          await this.lineItemService_.withTransaction(manager).update(item.id, {
+          await lineItemServiceTx.update(item.id, {
             fulfilled_quantity: fulfilledQuantity,
           })
 
@@ -1051,12 +1065,14 @@ class SwapService extends BaseService {
 
       swap.fulfillment_status = "shipped"
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
       // Go through all the additional items in the swap
       for (const i of swap.additional_items) {
         const shipped = shipment.items.find((si) => si.item_id === i.id)
         if (shipped) {
           const shippedQty = (i.shipped_quantity || 0) + shipped.quantity
-          await this.lineItemService_.withTransaction(manager).update(i.id, {
+          await lineItemServiceTx.update(i.id, {
             shipped_quantity: shippedQty,
           })
 

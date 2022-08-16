@@ -1,6 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
 import { InventoryServiceMock } from "../__mocks__/inventory"
+import { LineItemServiceMock } from "../__mocks__/line-item";
 
 describe("OrderService", () => {
   const totalsService = {
@@ -520,6 +521,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       eventBusService,
+      lineItemService: LineItemServiceMock
     })
 
     beforeEach(async () => {

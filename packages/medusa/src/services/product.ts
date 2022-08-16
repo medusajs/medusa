@@ -47,10 +47,7 @@ type InjectedDependencies = {
   featureFlagRouter: FlagRouter
 }
 
-class ProductService extends TransactionBaseService<
-  ProductService,
-  InjectedDependencies
-> {
+class ProductService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -658,10 +655,14 @@ class ProductService extends TransactionBaseService<
 
       await productOptionRepo.save(option)
 
+      const productVariantServiceTx =
+        this.productVariantService_.withTransaction(manager)
       for (const variant of product.variants) {
-        this.productVariantService_
-          .withTransaction(manager)
-          .addOptionValue(variant.id, option.id, "Default Value")
+        await productVariantServiceTx.addOptionValue(
+          variant.id,
+          option.id,
+          "Default Value"
+        )
       }
 
       const result = await this.retrieve(productId)
