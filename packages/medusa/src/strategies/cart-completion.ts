@@ -158,7 +158,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                     .withTransaction(manager)
                     .retrieve(id, {
                       select: ["total"],
-                      relations: ["payment", "payment_sessions"],
+                      relations: [
+                        "items",
+                        "items.adjustments",
+                        "payment",
+                        "payment_sessions",
+                      ],
                     })
 
                   // If cart is part of swap, we register swap as complete

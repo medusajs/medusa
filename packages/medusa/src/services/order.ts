@@ -1,25 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
-import CustomerService from "./customer"
-import { OrderRepository } from "../repositories/order"
-import PaymentProviderService from "./payment-provider"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import DiscountService from "./discount"
-import FulfillmentProviderService from "./fulfillment-provider"
-import FulfillmentService from "./fulfillment"
-import LineItemService from "./line-item"
-import TotalsService from "./totals"
-import RegionService from "./region"
-import CartService from "./cart"
-import { AddressRepository } from "../repositories/address"
-import GiftCardService from "./gift-card"
-import DraftOrderService from "./draft-order"
-import InventoryService from "./inventory"
-import EventBusService from "./event-bus"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   Address,
   ClaimOrder,
@@ -36,12 +17,31 @@ import {
   Swap,
   TrackingLink,
 } from "../models"
-import { UpdateOrderInput } from "../types/orders"
-import { CreateShippingMethodDto } from "../types/shipping-options"
+import { AddressRepository } from "../repositories/address"
+import { OrderRepository } from "../repositories/order"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
 } from "../types/fulfillment"
+import { UpdateOrderInput } from "../types/orders"
+import { CreateShippingMethodDto } from "../types/shipping-options"
+import { buildQuery, setMetadata } from "../utils"
+import CartService from "./cart"
+import CustomerService from "./customer"
+import DiscountService from "./discount"
+import DraftOrderService from "./draft-order"
+import EventBusService from "./event-bus"
+import FulfillmentService from "./fulfillment"
+import FulfillmentProviderService from "./fulfillment-provider"
+import GiftCardService from "./gift-card"
+import InventoryService from "./inventory"
+import LineItemService from "./line-item"
+import PaymentProviderService from "./payment-provider"
+import RegionService from "./region"
+import ShippingOptionService from "./shipping-option"
+import ShippingProfileService from "./shipping-profile"
+import TotalsService from "./totals"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -492,6 +492,8 @@ class OrderService extends TransactionBaseService {
           "discounts.rule",
           "gift_cards",
           "shipping_methods",
+          "items",
+          "items.adjustments",
         ],
       })
 
