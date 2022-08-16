@@ -16,9 +16,7 @@ export class multiPaymentCart1657880770264 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_aac4855eadda71aa1e4b6d7684"`
-    )
+    await queryRunner.query(`DROP INDEX "IDX_aac4855eadda71aa1e4b6d7684"`)
     await queryRunner.query(
       `ALTER TABLE "payment" ADD CONSTRAINT "REL_4665f17abc1e81dd58330e5854" UNIQUE ("cart_id")`
     )
