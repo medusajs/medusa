@@ -6,11 +6,11 @@ import {
   Repository,
 } from "typeorm"
 import { SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig, Selector } from "../types/common";
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends Repository<SalesChannel> {
-  public async getFreeTextSearchResultsAndCount(
+    public async getFreeTextSearchResultsAndCount(
     q: string,
     options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
       where: {},

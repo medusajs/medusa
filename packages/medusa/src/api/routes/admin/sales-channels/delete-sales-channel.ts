@@ -1,4 +1,6 @@
 import { Request, Response } from "express"
+
+import { EntityManager } from "typeorm"
 import { SalesChannelService } from "../../../../services/"
 
 /**
@@ -8,7 +10,7 @@ import { SalesChannelService } from "../../../../services/"
  * description: "Deletes the sales channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales channel.
+ *   - (path) id=* {string} The ID of the Sales channel.
  * tags:
  *   - Sales Channel
  * responses:
@@ -20,12 +22,15 @@ import { SalesChannelService } from "../../../../services/"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Sales Channel.
+ *               description: The ID of the deleted sales channel
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: sales-channel
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
@@ -33,7 +38,13 @@ export default async (req: Request, res: Response): Promise<void> => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
-  await salesChannelService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .delete(id)
+  })
+
   res.json({
     id,
     object: "sales-channel",

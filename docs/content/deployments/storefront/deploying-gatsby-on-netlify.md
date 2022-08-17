@@ -16,9 +16,8 @@ Additionally, this documentation does not cover how to deploy the Medusa server.
 
 ### Needed Accounts
 
-You need a Netlify account to deploy the Gatsby storefront. If you don’t have one, you can create one on [Netlify’s website](https://app.netlify.com/signup).
-
-Additionally, you need a GitHub account where you will host the repository for the Gatsby storefront. You can create it on [GitHub’s website](https://github.com/signup).
+- A [Netlify](https://app.netlify.com/signup) account to deploy the Gatsby storefront.
+- A [GitHub](https://github.com/signup) account where you will host the repository for the Gatsby storefront.
 
 :::tip
 
@@ -28,7 +27,7 @@ If you want to use another Git Provider, it’s possible to follow along with th
 
 ### Required Tools
 
-Git’s CLI tool is required while following along with this tutorial. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 
 ## Create GitHub Repository
 
@@ -110,6 +109,12 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 :::
 
 ![Environment Variable](https://i.imgur.com/DnutZfT.png)
+
+:::note
+
+If you use more environment variables in your storefront be sure to add them here.
+
+:::
 
 Once you’re done, scroll down and click on Deploy site.
 
@@ -237,6 +242,12 @@ netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
 ```
 
 Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+
+:::note
+
+If you use more environment variables in your storefront be sure to add them here.
+
+:::
 
 #### Check deployment status
 

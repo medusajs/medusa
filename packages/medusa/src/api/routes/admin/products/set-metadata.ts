@@ -1,6 +1,8 @@
-import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/metadata
@@ -9,7 +11,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Set metadata key/value pair for Product"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:
@@ -45,8 +47,11 @@ export default async (req, res) => {
   )
 
   const productService = req.scope.resolve("productService")
-  await productService.update(id, {
-    metadata: { [validated.key]: validated.value },
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productService.withTransaction(transactionManager).update(id, {
+      metadata: { [validated.key]: validated.value },
+    })
   })
 
   const product = await productService.retrieve(id, {

@@ -1,0 +1,29 @@
+post:
+  operationId: PostOrdersSwapCancel
+  summary: Cancels a Swap
+  description: Cancels a Swap
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: swap_id
+      required: true
+      description: The ID of the Swap.
+      schema:
+        type: string
+  tags:
+    - Swap
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

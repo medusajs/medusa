@@ -1,5 +1,6 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductService from "../product"
+import { FlagRouter } from "../../utils/flag-router";
 
 const eventBusService = {
   emit: jest.fn(),
@@ -51,6 +52,7 @@ describe("ProductService", () => {
     const productService = new ProductService({
       manager: MockManager,
       productRepository: productRepo,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -122,6 +124,7 @@ describe("ProductService", () => {
       productCollectionService,
       productTagRepository,
       productTypeRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -299,6 +302,7 @@ describe("ProductService", () => {
       eventBusService,
       cartRepository,
       priceSelectionStrategy,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -455,7 +459,7 @@ describe("ProductService", () => {
       manager: MockManager,
       eventBusService,
       productRepository,
-      eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -504,6 +508,7 @@ describe("ProductService", () => {
       productOptionRepository,
       productVariantService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -562,6 +567,7 @@ describe("ProductService", () => {
       manager: MockManager,
       productRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -629,6 +635,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -736,6 +743,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {

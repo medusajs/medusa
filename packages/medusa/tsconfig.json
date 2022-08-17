@@ -22,10 +22,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": [
-    "./src/**/*",
-    "index.d.ts"
-  ],
+  "include": ["./src/**/*", "index.d.ts"],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",

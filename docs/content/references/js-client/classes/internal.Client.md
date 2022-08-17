@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:29](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L29)
+[medusa-js/src/request.ts:29](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L29)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:30](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L30)
+[medusa-js/src/request.ts:30](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L30)
 
 ## Methods
 
@@ -48,7 +48,7 @@ and the exponential backoff approach.
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:146](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L146)
+[medusa-js/src/request.ts:146](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L146)
 
 ___
 
@@ -68,13 +68,13 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:83](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L83)
+[medusa-js/src/request.ts:83](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L83)
 
 ___
 
 ### normalizeHeaders
 
-▸ **normalizeHeaders**(`obj`): [`Record`](../modules/internal.md#record)<`string`, `any`\>
+▸ **normalizeHeaders**(`obj`): `Record`<`string`, `any`\>
 
 #### Parameters
 
@@ -84,37 +84,37 @@ ___
 
 #### Returns
 
-[`Record`](../modules/internal.md#record)<`string`, `any`\>
+`Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:71](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L71)
+[medusa-js/src/request.ts:71](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L71)
 
 ___
 
 ### request
 
-▸ **request**(`method`, `path`, `payload?`, `options?`, `customHeaders?`): [`Promise`](../modules/internal.md#promise)<`any`\>
+▸ **request**(`method`, `path`, `payload?`, `options?`, `customHeaders?`): `Promise`<`any`\>
 
 Axios request
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `method` | [`RequestMethod`](../modules/internal.md#requestmethod) | `undefined` | request method |
-| `path` | `string` | `undefined` | request path |
-| `payload` | ``null`` \| [`Record`](../modules/internal.md#record)<`string`, `any`\> | `null` | request payload |
-| `options` | [`RequestOptions`](../interfaces/internal.RequestOptions.md) | `{}` | axios configuration |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> | `{}` | custom request headers |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `method` | [`RequestMethod`](../modules/internal.md#requestmethod) | request method |
+| `path` | `string` | request path |
+| `payload` | `Record`<`string`, `any`\> | request payload |
+| `options` | [`RequestOptions`](../interfaces/internal.RequestOptions.md) | axios configuration |
+| `customHeaders` | `Record`<`string`, `any`\> | custom request headers |
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`any`\>
+`Promise`<`any`\>
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:183](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L183)
+[medusa-js/src/request.ts:183](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L183)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:92](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L92)
+[medusa-js/src/request.ts:92](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L92)
 
 ___
 
@@ -153,7 +153,7 @@ We add the idempotency key, if the request is configured to retry.
 | `userHeaders` | [`RequestOptions`](../interfaces/internal.RequestOptions.md) | user supplied headers |
 | `method` | [`RequestMethod`](../modules/internal.md#requestmethod) | request method |
 | `path` | `string` | request path |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> | user supplied headers |
+| `customHeaders` | `Record`<`string`, `any`\> | user supplied headers |
 
 #### Returns
 
@@ -161,7 +161,7 @@ We add the idempotency key, if the request is configured to retry.
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:108](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L108)
+[medusa-js/src/request.ts:108](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L108)
 
 ___
 
@@ -183,4 +183,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:40](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/request.ts#L40)
+[medusa-js/src/request.ts:40](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L40)

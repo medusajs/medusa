@@ -8,7 +8,6 @@ import {
   AdminPostRegionsRegionCountriesReq,
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
-  AdminPostRegionsRegionMetadata,
   AdminGetRegionsRegionFulfillmentOptionsRes,
 } from "@medusajs/medusa"
 import qs from "qs"
@@ -92,38 +91,6 @@ class AdminRegionsResource extends BaseResource {
     }
 
     return this.client.request("GET", path, undefined, {}, customHeaders)
-  }
-
-  /**
-   * @description adds metadata to a region
-   * @param id region id
-   * @param payload metadata
-   * @param customHeaders
-   * @returns updated region
-   */
-  setMetadata(
-    id: string,
-    payload: AdminPostRegionsRegionMetadata,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/metadata`
-    return this.client.request("POST", path, payload, {}, customHeaders)
-  }
-
-  /**
-   * @description delete a region's metadata key value pair
-   * @param id region id
-   * @param key metadata key
-   * @param customHeaders
-   * @returns updated region
-   */
-  deleteMetadata(
-    id: string,
-    key: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/metadata/${key}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**

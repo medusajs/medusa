@@ -27,6 +27,7 @@ const defaultRelations = [
   "claims.shipping_address",
   "claims.additional_items",
   "claims.fulfillments",
+  "claims.fulfillments.tracking_links",
   "claims.claim_items",
   "claims.claim_items.item",
   "claims.claim_items.images",
@@ -37,6 +38,7 @@ const defaultRelations = [
   "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
+  "swaps.fulfillments.tracking_links",
 ]
 
 const defaultFields = [

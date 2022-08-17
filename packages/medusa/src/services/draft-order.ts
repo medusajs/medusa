@@ -30,7 +30,7 @@ type InjectedDependencies = {
  * Handles draft orders
  * @implements {BaseService}
  */
-class DraftOrderService extends TransactionBaseService<DraftOrderService> {
+class DraftOrderService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "draft_order.created",
     UPDATED: "draft_order.updated",
@@ -266,20 +266,22 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
         const { shipping_methods, no_notification_order, items, ...rawCart } =
           data
 
+        const cartServiceTx =
+          this.cartService_.withTransaction(transactionManager)
+
         if (rawCart.discounts) {
           const { discounts } = rawCart
           rawCart.discounts = []
 
           for (const { code } of discounts) {
-            await this.cartService_
-              .withTransaction(transactionManager)
-              .applyDiscount(rawCart as Cart, code)
+            await cartServiceTx.applyDiscount(rawCart as Cart, code)
           }
         }
 
-        const createdCart = await this.cartService_
-          .withTransaction(transactionManager)
-          .create({ type: CartType.DRAFT_ORDER, ...rawCart })
+        const createdCart = await cartServiceTx.create({
+          type: CartType.DRAFT_ORDER,
+          ...rawCart,
+        })
 
         const draftOrder = draftOrderRepo.create({
           cart_id: createdCart.id,
@@ -293,22 +295,26 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
             id: result.id,
           })
 
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         for (const item of items) {
           if (item.variant_id) {
-            const line = await this.lineItemService_
-              .withTransaction(transactionManager)
-              .generate(item.variant_id, data.region_id, item.quantity, {
+            const line = await lineItemServiceTx.generate(
+              item.variant_id,
+              data.region_id,
+              item.quantity,
+              {
                 metadata: item?.metadata || {},
                 unit_price: item.unit_price,
                 cart: createdCart,
-              })
+              }
+            )
 
-            await this.lineItemService_
-              .withTransaction(transactionManager)
-              .create({
-                ...line,
-                cart_id: createdCart.id,
-              })
+            await lineItemServiceTx.create({
+              ...line,
+              cart_id: createdCart.id,
+            })
           } else {
             let price
             if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
@@ -318,23 +324,23 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
             }
 
             // custom line items can be added to a draft order
-            await this.lineItemService_
-              .withTransaction(transactionManager)
-              .create({
-                cart_id: createdCart.id,
-                has_shipping: true,
-                title: item.title || "Custom item",
-                allow_discounts: false,
-                unit_price: price,
-                quantity: item.quantity,
-              })
+            await lineItemServiceTx.create({
+              cart_id: createdCart.id,
+              has_shipping: true,
+              title: item.title || "Custom item",
+              allow_discounts: false,
+              unit_price: price,
+              quantity: item.quantity,
+            })
           }
         }
 
         for (const method of shipping_methods) {
-          await this.cartService_
-            .withTransaction(transactionManager)
-            .addShippingMethod(createdCart.id, method.option_id, method.data)
+          await cartServiceTx.addShippingMethod(
+            createdCart.id,
+            method.option_id,
+            method.data
+          )
         }
 
         return result

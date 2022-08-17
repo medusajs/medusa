@@ -173,31 +173,30 @@ class Client {
 
   /**
    * Axios request
-   * @param {Types.RequestMethod} method request method
-   * @param {string} path request path
-   * @param {object} payload request payload
-   * @param {RequestOptions} options axios configuration
-   * @param {object} customHeaders custom request headers
-   * @return {object}
+   * @param method request method
+   * @param path request path
+   * @param payload request payload
+   * @param options axios configuration
+   * @param customHeaders custom request headers
+   * @return
    */
   async request(
     method: RequestMethod,
     path: string,
-    payload: Record<string, any> | null = null,
+    payload: Record<string, any> = {},
     options: RequestOptions = {},
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
-    if (method === "POST" && !payload) {
-      payload = {}
-    }
-
     const reqOpts = {
       method,
       withCredentials: true,
       url: path,
-      data: payload,
       json: true,
       headers: this.setHeaders(options, method, path, customHeaders),
+    }
+
+    if (["POST", "DELETE"].includes(method)) {
+      reqOpts["data"] = payload
     }
 
     // e.g. data = { cart: { ... } }, response = { status, headers, ... }

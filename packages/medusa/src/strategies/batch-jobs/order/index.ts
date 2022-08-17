@@ -137,7 +137,7 @@ export const orderExportPropertiesDescriptors: OrderDescriptor[] = [
   {
     fieldName: "tax_total",
     title: "Tax Total",
-    accessor: (order: Order): string => order.tax_total.toString(),
+    accessor: (order: Order): string => order.tax_total?.toString() ?? "",
   },
   {
     fieldName: "total",

@@ -15,6 +15,9 @@ const eventBusService = {
 
 describe("CartService", () => {
   const totalsService = {
+    withTransaction: function () {
+      return this
+    },
     getTotal: (o) => {
       return o.total || 0
     },
@@ -58,6 +61,8 @@ describe("CartService", () => {
         undefined,
         {
           where: { id: IdMap.getId("emptyCart") },
+          select: undefined,
+          relations: undefined,
         }
       )
     })

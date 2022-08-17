@@ -1,29 +1,26 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models"
-import { SalesChannelRepository } from "../repositories/sales-channel"
-import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { buildQuery } from "../utils"
+import { FindConfig, QuerySelector } from "../types/common"
+
+import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
+import { MedusaError } from "medusa-core-utils"
+import { SalesChannel } from "../models"
+import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
-import { formatException, PostgresError } from "../utils/exception-formatter"
-import ProductService from "./product"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
-  productService: ProductService
 }
 
-class SalesChannelService extends TransactionBaseService<SalesChannelService> {
+class SalesChannelService extends TransactionBaseService {
   static Events = {
     UPDATED: "sales_channel.updated",
     CREATED: "sales_channel.created",
@@ -36,23 +33,25 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
-  protected readonly productService_: ProductService
 
   constructor({
     salesChannelRepository,
     eventBusService,
     manager,
     storeService,
-    productService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({
+      salesChannelRepository,
+      eventBusService,
+      manager,
+      storeService,
+    })
 
     this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
-    this.productService_ = productService
   }
 
   /**
@@ -182,7 +181,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @param salesChannelId - the id of the sales channel to delete
-   * @return Promise<void>
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
@@ -280,36 +278,15 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(
-      async (transactionManager) => {
-        const salesChannelRepo = transactionManager.getCustomRepository(
-          this.salesChannelRepository_
-        )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
 
-        await salesChannelRepo.addProducts(salesChannelId, productIds)
+      await salesChannelRepo.addProducts(salesChannelId, productIds)
 
-        return await this.retrieve(salesChannelId)
-      },
-      async (error: { code: string }) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          const existingProducts = await this.productService_.list({
-            id: productIds,
-          })
-
-          const nonExistingProducts = productIds.filter(
-            (cId) => existingProducts.findIndex((el) => el.id === cId) === -1
-          )
-
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following product ids do not exist: ${JSON.stringify(
-              nonExistingProducts.join(", ")
-            )}`
-          )
-        }
-        throw formatException(error)
-      }
-    )
+      return await this.retrieve(salesChannelId)
+    })
   }
 }
 

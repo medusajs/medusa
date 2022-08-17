@@ -23,6 +23,7 @@ import {
 } from "../types/totals"
 import TaxProviderService from "./tax-provider"
 import { EntityManager } from "typeorm"
+import { isDefined } from "../utils"
 
 type ShippingMethodTotals = {
   price: number
@@ -89,7 +90,7 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends TransactionBaseService<TotalsService> {
+class TotalsService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 
@@ -97,9 +98,9 @@ class TotalsService extends TransactionBaseService<TotalsService> {
   private taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
+    manager,
     taxProviderService,
     taxCalculationStrategy,
-    manager,
   }: TotalsServiceProps) {
     super({
       taxProviderService,
@@ -107,6 +108,7 @@ class TotalsService extends TransactionBaseService<TotalsService> {
       manager,
     })
 
+    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.taxCalculationStrategy_ = taxCalculationStrategy
     this.manager_ = manager
@@ -214,10 +216,9 @@ class TotalsService extends TransactionBaseService<TotalsService> {
 
           taxLines = shippingMethod.tax_lines
         } else {
-          const orderLines = await this.taxProviderService_.getTaxLines(
-            cartOrOrder.items,
-            calculationContext
-          )
+          const orderLines = await this.taxProviderService_
+            .withTransaction(this.manager_)
+            .getTaxLines(cartOrOrder.items, calculationContext)
 
           taxLines = orderLines.filter((ol) => {
             if ("shipping_method_id" in ol) {
@@ -315,8 +316,8 @@ class TotalsService extends TransactionBaseService<TotalsService> {
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     if (isOrder(cartOrOrder)) {
-      const taxLinesJoined = cartOrOrder.items.every(
-        (i) => typeof i.tax_lines !== "undefined"
+      const taxLinesJoined = cartOrOrder.items.every((i) =>
+        isDefined(i.tax_lines)
       )
       if (!taxLinesJoined) {
         throw new MedusaError(
@@ -343,10 +344,9 @@ class TotalsService extends TransactionBaseService<TotalsService> {
         )
       }
     } else {
-      taxLines = await this.taxProviderService_.getTaxLines(
-        cartOrOrder.items,
-        calculationContext
-      )
+      taxLines = await this.taxProviderService_
+        .withTransaction(this.manager_)
+        .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
         const returnTaxLines = cartOrOrder.items.flatMap((i) => {

@@ -2,7 +2,7 @@
 
 Provides layer to manipulate profiles.
 
-**`implements`** {BaseService}
+**`Implements`**
 
 ## Hierarchy
 
@@ -28,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/shipping-profile.js:12](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L12)
+[packages/medusa/src/services/shipping-profile.js:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L12)
 
 ## Methods
 
@@ -54,7 +54,7 @@ the result of update
 
 #### Defined in
 
-[services/shipping-profile.js:343](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L343)
+[packages/medusa/src/services/shipping-profile.js:343](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L343)
 
 ___
 
@@ -80,7 +80,7 @@ the result of the model update operation
 
 #### Defined in
 
-[services/shipping-profile.js:361](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L361)
+[packages/medusa/src/services/shipping-profile.js:361](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L361)
 
 ___
 
@@ -104,7 +104,7 @@ the result of the create operation
 
 #### Defined in
 
-[services/shipping-profile.js:235](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L235)
+[packages/medusa/src/services/shipping-profile.js:235](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L235)
 
 ___
 
@@ -122,7 +122,7 @@ the shipping profile
 
 #### Defined in
 
-[services/shipping-profile.js:167](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L167)
+[packages/medusa/src/services/shipping-profile.js:167](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L167)
 
 ___
 
@@ -141,7 +141,7 @@ the shipping profile
 
 #### Defined in
 
-[services/shipping-profile.js:209](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L209)
+[packages/medusa/src/services/shipping-profile.js:209](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L209)
 
 ___
 
@@ -167,7 +167,7 @@ return the decorated profile.
 
 #### Defined in
 
-[services/shipping-profile.js:379](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L379)
+[packages/medusa/src/services/shipping-profile.js:379](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L379)
 
 ___
 
@@ -191,7 +191,7 @@ the result of the delete operation.
 
 #### Defined in
 
-[services/shipping-profile.js:317](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L317)
+[packages/medusa/src/services/shipping-profile.js:317](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L317)
 
 ___
 
@@ -216,7 +216,7 @@ a list of the available shipping options
 
 #### Defined in
 
-[services/shipping-profile.js:425](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L425)
+[packages/medusa/src/services/shipping-profile.js:425](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L425)
 
 ___
 
@@ -237,7 +237,7 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:73](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L73)
+[packages/medusa/src/services/shipping-profile.js:73](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L73)
 
 ___
 
@@ -261,7 +261,7 @@ a list of product ids
 
 #### Defined in
 
-[services/shipping-profile.js:406](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L406)
+[packages/medusa/src/services/shipping-profile.js:406](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L406)
 
 ___
 
@@ -284,7 +284,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/shipping-profile.js:64](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L64)
+[packages/medusa/src/services/shipping-profile.js:64](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L64)
 
 ___
 
@@ -310,7 +310,7 @@ the profile document.
 
 #### Defined in
 
-[services/shipping-profile.js:121](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L121)
+[packages/medusa/src/services/shipping-profile.js:121](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L121)
 
 ___
 
@@ -324,7 +324,7 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:151](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L151)
+[packages/medusa/src/services/shipping-profile.js:151](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L151)
 
 ___
 
@@ -342,7 +342,7 @@ the shipping profile for gift cards
 
 #### Defined in
 
-[services/shipping-profile.js:192](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L192)
+[packages/medusa/src/services/shipping-profile.js:192](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L192)
 
 ___
 
@@ -369,7 +369,7 @@ resolves to the update result.
 
 #### Defined in
 
-[services/shipping-profile.js:263](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L263)
+[packages/medusa/src/services/shipping-profile.js:263](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L263)
 
 ___
 
@@ -389,4 +389,4 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:41](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/shipping-profile.js#L41)
+[packages/medusa/src/services/shipping-profile.js:41](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L41)

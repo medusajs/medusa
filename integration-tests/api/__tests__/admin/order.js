@@ -673,11 +673,14 @@ describe("/admin/orders", () => {
       )
 
       expect(status).toEqual(200)
-      expect(updateData.order.claims[0].shipping_methods).toEqual([
-        expect.objectContaining({
-          id: "test-method",
-        }),
-      ])
+      expect(updateData.order.claims[0].shipping_methods).toHaveLength(1)
+      expect(updateData.order.claims[0].shipping_methods).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-method",
+          }),
+        ])
+      )
     })
 
     it("updates claim items", async () => {
@@ -827,19 +830,21 @@ describe("/admin/orders", () => {
       claim = updateData.order.claims[0]
 
       expect(claim.claim_items.length).toEqual(1)
-      expect(claim.claim_items).toEqual([
-        expect.objectContaining({
-          id: claim.claim_items[0].id,
-          reason: "production_failure",
-          note: "Something new",
-          images: [],
-          // tags: expect.arrayContaining([
-          //   expect.objectContaining({ value: "completely" }),
-          //   expect.objectContaining({ value: "new" }),
-          //   expect.objectContaining({ value: "tags" }),
-          // ]),
-        }),
-      ])
+      expect(claim.claim_items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: claim.claim_items[0].id,
+            reason: "production_failure",
+            note: "Something new",
+            images: [],
+            // tags: expect.arrayContaining([
+            //   expect.objectContaining({ value: "completely" }),
+            //   expect.objectContaining({ value: "new" }),
+            //   expect.objectContaining({ value: "tags" }),
+            // ]),
+          }),
+        ])
+      )
     })
 
     it("fulfills a claim", async () => {
@@ -892,27 +897,34 @@ describe("/admin/orders", () => {
         }
       )
       expect(fulRes.status).toEqual(200)
-      expect(fulRes.data.order.claims).toEqual([
-        expect.objectContaining({
-          id: cid,
-          order_id: "test-order",
-          fulfillment_status: "fulfilled",
-        }),
-      ])
+      expect(fulRes.data.order.claims).toHaveLength(1)
+      expect(fulRes.data.order.claims).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: cid,
+            order_id: "test-order",
+            fulfillment_status: "fulfilled",
+          }),
+        ])
+      )
 
       const fid = fulRes.data.order.claims[0].fulfillments[0].id
       const iid = fulRes.data.order.claims[0].additional_items[0].id
-      expect(fulRes.data.order.claims[0].fulfillments).toEqual([
-        expect.objectContaining({
-          items: [
-            {
-              fulfillment_id: fid,
-              item_id: iid,
-              quantity: 1,
-            },
-          ],
-        }),
-      ])
+
+      expect(fulRes.data.order.claims[0].fulfillments).toHaveLength(1)
+      expect(fulRes.data.order.claims[0].fulfillments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            items: [
+              {
+                fulfillment_id: fid,
+                item_id: iid,
+                quantity: 1,
+              },
+            ],
+          }),
+        ])
+      )
     })
 
     it("creates a claim on a claim additional item", async () => {
@@ -1318,14 +1330,17 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.order.returns[0].refund_amount).toEqual(7200)
-      expect(response.data.order.returns[0].items).toEqual([
-        expect.objectContaining({
-          item_id: "test-item",
-          quantity: 1,
-          reason_id: rrId,
-          note: "TOO SMALL",
-        }),
-      ])
+      expect(response.data.order.returns[0].items).toHaveLength(1)
+      expect(response.data.order.returns[0].items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            item_id: "test-item",
+            quantity: 1,
+            reason_id: rrId,
+            note: "TOO SMALL",
+          }),
+        ])
+      )
     })
 
     it("increases inventory_quantity when return is received", async () => {
@@ -1420,28 +1435,31 @@ describe("/admin/orders", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-        }),
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+          }),
 
-        expect.objectContaining({
-          id: "test-order-w-c",
-        }),
+          expect.objectContaining({
+            id: "test-order-w-c",
+          }),
 
-        expect.objectContaining({
-          id: "test-order-w-s",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-f",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-r",
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-        }),
-      ])
+          expect.objectContaining({
+            id: "test-order-w-s",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-f",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-r",
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+          }),
+        ])
+      )
     })
 
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
@@ -1459,14 +1477,17 @@ describe("/admin/orders", () => {
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-        }),
-      ])
+      expect(response.data.orders).toHaveLength(2)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+          }),
+        ])
+      )
     })
 
     it("fails to lists all orders with an invalid status", async () => {
@@ -1502,12 +1523,15 @@ describe("/admin/orders", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-          email: "test@email.com",
-        }),
-      ])
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+            email: "test@email.com",
+          }),
+        ])
+      )
     })
 
     it("list all orders with matching shipping_address first name", async () => {
@@ -1546,27 +1570,30 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-c",
-        }),
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-c",
+          }),
 
-        expect.objectContaining({
-          id: "test-order-w-s",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-f",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-r",
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-        }),
-      ])
+          expect.objectContaining({
+            id: "test-order-w-s",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-f",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-r",
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+          }),
+        ])
+      )
     })
 
     it("successfully lists no orders with greater than", async () => {
@@ -1598,27 +1625,30 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-c",
-        }),
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-c",
+          }),
 
-        expect.objectContaining({
-          id: "test-order-w-s",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-f",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-r",
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-        }),
-      ])
+          expect.objectContaining({
+            id: "test-order-w-s",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-f",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-r",
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+          }),
+        ])
+      )
     })
 
     it("successfully lists no orders with less than", async () => {
@@ -1650,27 +1680,30 @@ describe("/admin/orders", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "test-order",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-c",
-        }),
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-c",
+          }),
 
-        expect.objectContaining({
-          id: "test-order-w-s",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-f",
-        }),
-        expect.objectContaining({
-          id: "test-order-w-r",
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-        }),
-      ])
+          expect.objectContaining({
+            id: "test-order-w-s",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-f",
+          }),
+          expect.objectContaining({
+            id: "test-order-w-r",
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+          }),
+        ])
+      )
     })
 
     it.each([
@@ -1864,11 +1897,14 @@ describe("/admin/orders", () => {
             const cart = response.data.cart
             const items = cart.items
             const [returnItem] = items.filter((i) => i.is_return)
-            expect(returnItem.adjustments).toEqual([
-              expect.objectContaining({
-                amount: -800,
-              }),
-            ])
+            expect(returnItem.adjustments).toHaveLength(1)
+            expect(returnItem.adjustments).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  amount: -800,
+                }),
+              ])
+            )
             expect(cart.total).toBe(7200)
           })
         })

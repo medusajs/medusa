@@ -5,9 +5,13 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
+import { TrackingLink } from "../../../../models"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
@@ -15,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Registers a Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.
@@ -53,12 +57,22 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.createShipment(
-    id,
-    validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-    { no_notification: validated.no_notification }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .createShipment(
+        id,
+        validated.fulfillment_id,
+        validated.tracking_numbers?.map((n) => ({
+          tracking_number: n,
+        })) as TrackingLink[],
+        {
+          metadata: {},
+          no_notification: validated.no_notification,
+        }
+      )
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

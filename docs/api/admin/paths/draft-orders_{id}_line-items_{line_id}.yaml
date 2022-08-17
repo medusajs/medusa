@@ -1,0 +1,77 @@
+delete:
+  operationId: DeleteDraftOrdersDraftOrderLineItemsItem
+  summary: Delete a Line Item
+  description: Removes a Line Item from a Draft Order.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Draft Order.
+      schema:
+        type: string
+    - in: path
+      name: line_id
+      required: true
+      description: The ID of the Draft Order.
+      schema:
+        type: string
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              draft_order:
+                $ref: ../components/schemas/draft-order.yaml
+post:
+  operationId: PostDraftOrdersDraftOrderLineItemsItem
+  summary: Update a Line Item for a Draft Order
+  description: Updates a Line Item for a Draft Order
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Draft Order.
+      schema:
+        type: string
+    - in: path
+      name: line_id
+      required: true
+      description: The ID of the Line Item.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            unit_price:
+              description: The potential custom price of the item.
+              type: integer
+            title:
+              description: The potential custom title of the item.
+              type: string
+            quantity:
+              description: The quantity of the Line Item.
+              type: integer
+            metadata:
+              description: >-
+                The optional key-value map with additional details about the
+                Line Item.
+              type: object
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              draft_order:
+                $ref: ../components/schemas/draft-order.yaml

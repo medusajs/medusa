@@ -1,12 +1,12 @@
-import { getListConfig, pickByConfig } from "./utils/get-query-config"
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
-import { Type } from "class-transformer"
-import { omit, pickBy, identity } from "lodash"
+import { getListConfig, pickByConfig } from "./utils/get-query-config"
+import { identity, omit, pickBy } from "lodash"
 
-import { TaxRate } from "../../../.."
-import { NumericalComparisonOperator } from "../../../../types/common"
-import { TaxRateService } from "../../../../services"
 import { IsType } from "../../../../utils/validators/is-type"
+import { NumericalComparisonOperator } from "../../../../types/common"
+import { TaxRate } from "../../../.."
+import { TaxRateService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -16,18 +16,63 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a list of TaxRates"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching orders.
- *   - (query) id {string} Id of the order to search for.
- *   - (query) region_id {string} to search for.
- *   - (query) code {string} to search for.
- *   - (query) rate {string} to search for.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many orders to skip in the result.
- *   - (query) limit {string} Limit the number of orders returned.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) name {string} Name of tax rate to retrieve
+ *   - in: query
+ *     name: region_id
+ *     style: form
+ *     explode: false
+ *     description: Filter by Region ID
+ *     schema:
+ *       oneOf:
+ *        - type: string
+ *        - type: array
+ *          items:
+ *            type: string
+ *   - (query) code {string} code to search for.
+ *   - in: query
+ *     name: rate
+ *     style: form
+ *     explode: false
+ *     description: Filter by Rate
+ *     schema:
+ *       oneOf:
+ *        - type: number
+ *        - type: object
+ *          properties:
+ *            lt:
+ *              type: number
+ *              description: filter by rates less than this number
+ *            gt:
+ *              type: number
+ *              description: filter by rates greater than this number
+ *            lte:
+ *              type: number
+ *              description: filter by rates less than or equal to this number
+ *            gte:
+ *              type: number
+ *              description: filter by rates greater than or equal to this number
+ *   - (query) offset=0 {integer} How many tax rates to skip before retrieving the result.
+ *   - (query) limit=50 {integer} Limit the number of tax rates returned.
+ *   - in: query
+ *     name: fields
+ *     description: "Which fields should be included in each item."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: expand
+ *     description: "Which fields should be expanded and retrieved for each item."
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * tags:
- *   - Order
+ *   - Tax Rate
  * responses:
  *   200:
  *     description: OK
@@ -35,10 +80,19 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             orders:
+ *             tax_rates:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/order"
+ *                 $ref: "#/components/schemas/tax_rate"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const value = await validator(AdminGetTaxRatesParams, req.query)

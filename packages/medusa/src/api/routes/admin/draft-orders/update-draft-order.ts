@@ -8,10 +8,12 @@ import {
   ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
 } from "."
+import { DraftOrderStatus } from "../../../../models"
 import { CartService, DraftOrderService } from "../../../../services"
 import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
@@ -24,7 +26,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * description: "Updates a Draft Order."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Draft Order.
+ *   - (path) id=* {string} The ID of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,10 +34,17 @@ import { IsType } from "../../../../utils/validators/is-type"
  *         properties:
  *           region_id:
  *             type: string
- *             description: The id of the Region to create the Draft Order in.
+ *             description: The ID of the Region to create the Draft Order in.
+ *           country_code:
+ *             type: string
+ *             description: "The 2 character ISO code for the Country."
+ *             externalDocs:
+ *                url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *                description: See a list of codes.
  *           email:
  *             type: string
  *             description: "An email to be used on the Draft Order."
+ *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
@@ -50,6 +59,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             description: "An array of Discount codes to add to the Draft Order."
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: "The code that a Discount is identifed by."
@@ -58,7 +70,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             description: "An optional flag passed to the resulting order to determine use of notifications."
  *             type: boolean
  *           customer_id:
- *             description: "The id of the Customer to associate the Draft Order with."
+ *             description: "The ID of the Customer to associate the Draft Order with."
  *             type: string
  * tags:
  *   - Draft Order
@@ -85,37 +97,42 @@ export default async (req, res) => {
 
   const draftOrder = await draftOrderService.retrieve(id)
 
-  if (draftOrder.status === "completed") {
+  if (draftOrder.status === DraftOrderStatus.COMPLETED) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
       "You are only allowed to update open draft orders"
     )
   }
 
-  if (validated.no_notification_order !== undefined) {
-    await draftOrderService.update(draftOrder.id, {
-      no_notification_order: validated.no_notification_order,
-    })
-    delete validated.no_notification_order
-  }
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    if (validated.no_notification_order !== undefined) {
+      await draftOrderService
+        .withTransaction(transactionManager)
+        .update(draftOrder.id, {
+          no_notification_order: validated.no_notification_order,
+        })
+      delete validated.no_notification_order
+    }
 
-  const { shipping_address, billing_address, ...rest } = validated
+    const { shipping_address, billing_address, ...rest } = validated
 
-  const cartDataToUpdate: CartUpdateProps = { ...rest }
+    const cartDataToUpdate: CartUpdateProps = { ...rest }
 
-  if (typeof shipping_address === "string") {
-    cartDataToUpdate.shipping_address_id = shipping_address
-  } else {
-    cartDataToUpdate.shipping_address = shipping_address
-  }
+    if (typeof shipping_address === "string") {
+      cartDataToUpdate.shipping_address_id = shipping_address
+    } else {
+      cartDataToUpdate.shipping_address = shipping_address
+    }
 
-  if (typeof billing_address === "string") {
-    cartDataToUpdate.billing_address_id = billing_address
-  } else {
-    cartDataToUpdate.billing_address = billing_address
-  }
+    if (typeof billing_address === "string") {
+      cartDataToUpdate.billing_address_id = billing_address
+    } else {
+      cartDataToUpdate.billing_address = billing_address
+    }
 
-  await cartService.update(draftOrder.cart_id, cartDataToUpdate)
+    await cartService.update(draftOrder.cart_id, cartDataToUpdate)
+  })
 
   draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
     relations: defaultAdminDraftOrdersCartRelations,

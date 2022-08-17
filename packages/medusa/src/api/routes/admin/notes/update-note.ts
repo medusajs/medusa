@@ -1,6 +1,7 @@
 import { IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /notes/{id}
@@ -9,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * description: "Updates a Note associated with some resource"
  * parameters:
- *   - (path) id=* {string} The id of the Note to update
+ *   - (path) id=* {string} The ID of the Note to update
  * requestBody:
  *  content:
  *    application/json:
@@ -39,7 +40,12 @@ export default async (req, res) => {
   const validated = await validator(AdminPostNotesNoteReq, req.body)
 
   const noteService: NoteService = req.scope.resolve("noteService")
-  const note = await noteService.update(id, validated.value)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const note = await manager.transaction(async (transactionManager) => {
+    return await noteService
+      .withTransaction(transactionManager)
+      .update(id, validated.value)
+  })
 
   res.status(200).json({ note })
 }

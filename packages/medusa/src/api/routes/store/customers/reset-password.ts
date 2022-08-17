@@ -1,18 +1,35 @@
 import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
+
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers/reset-password
+ * @oas [post] /customers/password-reset
  * operationId: PostCustomersResetPassword
  * summary: Resets Customer password
  * description: "Resets a Customer's password using a password token created by a previous /password-token request."
- * parameters:
- *   - (body) email=* {string} The Customer's email.
- *   - (body) token=* {string} The password token created by a /password-token request.
- *   - (body) password=* {string} The new password to set for the Customer.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - email
+ *           - password
+ *           - token
+ *         properties:
+ *           email:
+ *             description: "The email of the customer."
+ *             type: string
+ *             format: email
+ *           password:
+ *             description: "The Customer's password."
+ *             type: string
+ *             format: password
+ *           token:
+ *             description: "The reset password token"
+ *             type: string
  * tags:
  *   - Customer
  * responses:
