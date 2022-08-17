@@ -1,5 +1,0 @@
-summary: Database Error
-value:
-  code: api_error
-  message: An error occured while hashing password
-  type: database_error
