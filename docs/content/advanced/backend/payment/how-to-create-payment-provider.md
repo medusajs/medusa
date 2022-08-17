@@ -8,7 +8,7 @@ A Payment Provider is the payment method used to authorize, capture, and refund 
 
 By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
 
-Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `PaymentService` from `medusa-interfaces`.
+Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
 
 Payment Provider Services must have a static property `identifier`. It is the name that will be used to install and refer to the Payment Provider in the Medusa server.
 
@@ -58,7 +58,7 @@ export default MyPaymentService;
 
 Where `MyPaymentService` is the name of your Payment Provider service. For example, Stripe’s Payment Provider Service is called `StripeProviderService`.
 
-Payment Providers must extend `PaymentService` from `medusa-interfaces`.
+Payment Providers must extend `AbstractPaymentService` from the core Medusa package `@medusajs/medusa`.
 
 :::tip
 
