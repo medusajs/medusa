@@ -1,4 +1,0 @@
-summary: Not Allowed Error
-value:
-  message: Discount must be set to dynamic
-  type: not_allowed
