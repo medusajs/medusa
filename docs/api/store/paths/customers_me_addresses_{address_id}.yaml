@@ -10,19 +10,6 @@ delete:
       description: The id of the Address to remove.
       schema:
         type: string
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/customers_me_addresses_{address_id}/deleteundefined
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: >-
-          ../code_samples/Shell/customers_me_addresses_{address_id}/deleteundefined
-  security:
-    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -34,18 +21,6 @@ delete:
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostCustomersCustomerAddressesAddress
   summary: Update a Shipping Address
@@ -64,19 +39,6 @@ post:
         schema:
           anyOf:
             - $ref: ../components/schemas/address.yaml
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: >-
-          ../code_samples/JavaScript/customers_me_addresses_{address_id}/postundefined
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: >-
-          ../code_samples/Shell/customers_me_addresses_{address_id}/postundefined
-  security:
-    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -88,15 +50,3 @@ post:
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml

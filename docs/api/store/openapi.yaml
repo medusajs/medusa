@@ -2,19 +2,9 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Storefront API
-  description: >
+  description: >-
     API reference for Medusa's Storefront endpoints. All endpoints are prefixed
     with `/store`.
-
-
-    ## Authentication
-
-
-    To send requests as an authenticated customer, you must use the Cookie
-    Session ID.
-
-
-    <!-- ReDoc-Inject: <SecurityDefinitions> -->
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
@@ -70,30 +60,6 @@ paths:
     $ref: paths/collections_{id}.yaml
   /collections:
     $ref: paths/collections.yaml
-  /carts/{id}/shipping-methods:
-    $ref: paths/carts_{id}_shipping-methods.yaml
-  /carts/{id}/taxes:
-    $ref: paths/carts_{id}_taxes.yaml
-  /carts/{id}/complete:
-    $ref: paths/carts_{id}_complete.yaml
-  /carts:
-    $ref: paths/carts.yaml
-  /carts/{id}/line-items:
-    $ref: paths/carts_{id}_line-items.yaml
-  /carts/{id}/payment-sessions:
-    $ref: paths/carts_{id}_payment-sessions.yaml
-  /carts/{id}/discounts/{code}:
-    $ref: paths/carts_{id}_discounts_{code}.yaml
-  /carts/{id}/line-items/{line_id}:
-    $ref: paths/carts_{id}_line-items_{line_id}.yaml
-  /carts/{id}/payment-sessions/{provider_id}:
-    $ref: paths/carts_{id}_payment-sessions_{provider_id}.yaml
-  /carts/{id}:
-    $ref: paths/carts_{id}.yaml
-  /carts/{id}/payment-sessions/{provider_id}/refresh:
-    $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
-  /carts/{id}/payment-session:
-    $ref: paths/carts_{id}_payment-session.yaml
   /gift-cards/{code}:
     $ref: paths/gift-cards_{code}.yaml
   /customers/me/addresses:
@@ -118,6 +84,30 @@ paths:
     $ref: paths/orders_{id}.yaml
   /orders:
     $ref: paths/orders.yaml
+  /carts/{id}/shipping-methods:
+    $ref: paths/carts_{id}_shipping-methods.yaml
+  /carts/{id}/taxes:
+    $ref: paths/carts_{id}_taxes.yaml
+  /carts/{id}/complete:
+    $ref: paths/carts_{id}_complete.yaml
+  /carts:
+    $ref: paths/carts.yaml
+  /carts/{id}/line-items:
+    $ref: paths/carts_{id}_line-items.yaml
+  /carts/{id}/payment-sessions:
+    $ref: paths/carts_{id}_payment-sessions.yaml
+  /carts/{id}/discounts/{code}:
+    $ref: paths/carts_{id}_discounts_{code}.yaml
+  /carts/{id}/line-items/{line_id}:
+    $ref: paths/carts_{id}_line-items_{line_id}.yaml
+  /carts/{id}/payment-sessions/{provider_id}:
+    $ref: paths/carts_{id}_payment-sessions_{provider_id}.yaml
+  /carts/{id}:
+    $ref: paths/carts_{id}.yaml
+  /carts/{id}/payment-sessions/{provider_id}/refresh:
+    $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
+  /carts/{id}/payment-session:
+    $ref: paths/carts_{id}_payment-session.yaml
   /products/{id}:
     $ref: paths/products_{id}.yaml
   /products:
@@ -146,71 +136,3 @@ paths:
     $ref: paths/variants_{variant_id}.yaml
   /variants:
     $ref: paths/variants.yaml
-components:
-  securitySchemes:
-    cookie_auth:
-      type: apiKey
-      x-displayName: Cookie Session ID
-      in: cookie
-      name: connect.sid
-      description: >
-        Use a cookie session to send authenticated requests.
-
-
-        ### How to Obtain the Cookie Session
-
-
-        If you're sending requests through a browser, using JS Client, or using
-        tools like Postman, the cookie session should be automatically set when
-        the customer is logged in.
-
-
-        If you're sending requests using cURL, you must set the Session ID in
-        the cookie manually.
-
-
-        To do that, send a request to [authenticate the
-        customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
-
-
-        ```bash
-
-        curl -v --location --request POST 'https://medusa-url.com/store/auth' \
-
-        --header 'Content-Type: application/json' \
-
-        --data-raw '{
-          "email": "user@example.com",
-          "password": "supersecret"
-        }'
-
-        ```
-
-
-        The headers will be logged in the terminal as well as the response. You
-        should find in the headers a Cookie header similar to this:
-
-
-        ```bash
-
-        Set-Cookie:
-        connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
-
-        ```
-
-
-        Copy the value after `connect.sid` (without the `;` at the end) and pass
-        it as a cookie in subsequent requests as the following:
-
-
-        ```bash
-
-        curl --location --request GET
-        'https://medusa-url.com/store/customers/me/orders' \
-
-        --header 'Cookie: connect.sid={sid}'
-
-        ```
-
-
-        Where `{sid}` is the value of `connect.sid` that you copied.
