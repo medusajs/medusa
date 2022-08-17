@@ -10,18 +10,6 @@ delete:
       description: The ID of the Note to delete.
       schema:
         type: string
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/notes_{id}/deleteundefined
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/notes_{id}/deleteundefined
-  security:
-    - api_token: []
-    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -42,18 +30,6 @@ delete:
                 type: boolean
                 description: Whether or not the Note was deleted.
                 default: true
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetNotesNote
   summary: Get Note
@@ -66,18 +42,6 @@ get:
       description: The ID of the note to retrieve.
       schema:
         type: string
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/notes_{id}/getundefined
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/notes_{id}/getundefined
-  security:
-    - api_token: []
-    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -89,18 +53,6 @@ get:
             properties:
               note:
                 $ref: ../components/schemas/note.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostNotesNote
   summary: Updates a Note
@@ -123,18 +75,6 @@ post:
             value:
               type: string
               description: The updated description of the Note.
-  x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/notes_{id}/postundefined
-    - lang: Shell
-      label: cURL
-      source:
-        $ref: ../code_samples/Shell/notes_{id}/postundefined
-  security:
-    - api_token: []
-    - cookie_auth: []
   tags:
     - Note
   responses:
@@ -146,15 +86,3 @@ post:
             properties:
               note:
                 $ref: ../components/schemas/note.yaml
-    '400':
-      $ref: ../components/responses/400_error.yaml
-    '401':
-      $ref: ../components/responses/unauthorized.yaml
-    '404':
-      $ref: ../components/responses/not_found_error.yaml
-    '409':
-      $ref: ../components/responses/invalid_state_error.yaml
-    '422':
-      $ref: ../components/responses/invalid_request_error.yaml
-    '500':
-      $ref: ../components/responses/500_error.yaml
