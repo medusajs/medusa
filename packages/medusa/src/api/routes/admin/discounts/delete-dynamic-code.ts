@@ -1,5 +1,7 @@
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import DiscountService from "../../../../services/discount"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /discounts/{id}/dynamic-codes/{code}
@@ -8,8 +10,8 @@ import DiscountService from "../../../../services/discount"
  * description: "Deletes a dynamic code from a Discount."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount
- *   - (path) code=* {string} The id of the Discount
+ *   - (path) id=* {string} The ID of the Discount
+ *   - (path) code=* {string} The ID of the Discount
  * tags:
  *   - Discount
  * responses:
@@ -26,7 +28,12 @@ export default async (req, res) => {
   const { discount_id, code } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  await discountService.deleteDynamicCode(discount_id, code)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .deleteDynamicCode(discount_id, code)
+  })
 
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,

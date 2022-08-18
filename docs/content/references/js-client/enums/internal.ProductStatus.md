@@ -6,42 +6,42 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ProductStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### DRAFT
 
-• **DRAFT** = `"draft"`
+• **DRAFT** = ``"draft"``
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:54
+medusa/dist/models/product.d.ts:11
 
 ___
 
 ### PROPOSED
 
-• **PROPOSED** = `"proposed"`
+• **PROPOSED** = ``"proposed"``
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:55
+medusa/dist/models/product.d.ts:12
 
 ___
 
 ### PUBLISHED
 
-• **PUBLISHED** = `"published"`
+• **PUBLISHED** = ``"published"``
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:56
+medusa/dist/models/product.d.ts:13
 
 ___
 
 ### REJECTED
 
-• **REJECTED** = `"rejected"`
+• **REJECTED** = ``"rejected"``
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:57
+medusa/dist/models/product.d.ts:14

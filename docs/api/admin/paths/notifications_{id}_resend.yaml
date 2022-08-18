@@ -1,0 +1,35 @@
+post:
+  operationId: PostNotificationsNotificationResend
+  summary: Resend Notification
+  description: >-
+    Resends a previously sent notifications, with the same data but optionally
+    to a different address
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Notification
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            to:
+              description: >-
+                A new address or user identifier that the Notification should be
+                sent to
+              type: string
+  tags:
+    - Notification
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              notification:
+                $ref: ../components/schemas/notification.yaml

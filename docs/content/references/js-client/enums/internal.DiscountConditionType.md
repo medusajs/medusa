@@ -6,52 +6,52 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).DiscountConditionType
 
-## Enumeration members
+## Enumeration Members
 
 ### CUSTOMER\_GROUPS
 
-• **CUSTOMER\_GROUPS** = `"customer_groups"`
+• **CUSTOMER\_GROUPS** = ``"customer_groups"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-condition.d.ts:13
+medusa/dist/models/discount-condition.d.ts:13
 
 ___
 
 ### PRODUCTS
 
-• **PRODUCTS** = `"products"`
+• **PRODUCTS** = ``"products"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-condition.d.ts:9
+medusa/dist/models/discount-condition.d.ts:9
 
 ___
 
 ### PRODUCT\_COLLECTIONS
 
-• **PRODUCT\_COLLECTIONS** = `"product_collections"`
+• **PRODUCT\_COLLECTIONS** = ``"product_collections"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-condition.d.ts:11
+medusa/dist/models/discount-condition.d.ts:11
 
 ___
 
 ### PRODUCT\_TAGS
 
-• **PRODUCT\_TAGS** = `"product_tags"`
+• **PRODUCT\_TAGS** = ``"product_tags"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-condition.d.ts:12
+medusa/dist/models/discount-condition.d.ts:12
 
 ___
 
 ### PRODUCT\_TYPES
 
-• **PRODUCT\_TYPES** = `"product_types"`
+• **PRODUCT\_TYPES** = ``"product_types"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-condition.d.ts:10
+medusa/dist/models/discount-condition.d.ts:10

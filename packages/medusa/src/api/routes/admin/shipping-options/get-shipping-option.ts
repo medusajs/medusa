@@ -5,7 +5,7 @@
  * description: "Retrieves a Shipping Option."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * tags:
  *   - Shipping Option
  * responses:

@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.3.5
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+- Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`8c283ac3b`](https://github.com/medusajs/medusa/commit/8c283ac3b03dea09203ac1b4c8d806efbc092290), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b), [`dafbfa779`](https://github.com/medusajs/medusa/commit/dafbfa7799410a95f9a1ca02d1db718d1f8693eb), [`df6637853`](https://github.com/medusajs/medusa/commit/df66378535727152bb329c71c38d614e5b642599), [`716297231`](https://github.com/medusajs/medusa/commit/71629723185739a97fc2cf8eaa9029f7963bb120), [`0e0b13148`](https://github.com/medusajs/medusa/commit/0e0b13148892b073a1b46900c6eb1b0d8e05cc37), [`c148064b4`](https://github.com/medusajs/medusa/commit/c148064b4abdc4447d8216a6de0a6ce84e3a061c)]:
+  - @medusajs/medusa@1.3.5
+  - @medusajs/medusa-js@1.2.4
+
 ## 0.3.4
 
 ### Patch Changes

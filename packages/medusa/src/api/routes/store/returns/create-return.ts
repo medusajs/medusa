@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNotEmpty,
@@ -8,12 +7,15 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { MedusaError } from "medusa-core-utils"
 import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm";
 
 /**
  * @oas [post] /returns
@@ -24,36 +26,42 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - order_id
+ *           - items
  *         properties:
  *           order_id:
  *             type: string
- *             description: The id of the Order to create the Return from.
+ *             description: The ID of the Order to create the Return from.
  *           items:
  *             description: "The items to include in the Return."
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item from the Order.
+ *                   description: The ID of the Line Item from the Order.
  *                   type: string
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *               required:
- *                 - item_id
- *                 - quantity
+ *                 reason_id:
+ *                   description: The ID of the return reason.
+ *                   type: string
+ *                 note:
+ *                   description: A note to add to the item returned.
+ *                   type: string
  *           return_shipping:
  *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
  *             type: object
+ *             required:
+ *               - option_id
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
- *             required:
- *               - option_id
- *         required:
- *           - order_id
- *           - items
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
  * tags:
  *   - Return
  * responses:
@@ -72,17 +80,20 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
   let idempotencyKey
   try {
-    idempotencyKey = await idempotencyKeyService.initializeRequest(
-      headerKey,
-      req.method,
-      req.params,
-      req.path
-    )
+    await manager.transaction(async (transactionManager) => {
+      idempotencyKey = await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
+        headerKey,
+        req.method,
+        req.params,
+        req.path
+      )
+    })
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
     return
@@ -102,91 +113,99 @@ export default async (req, res) => {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          const { key, error } = await idempotencyKeyService.workStage(
-            idempotencyKey.idempotency_key,
-            async (manager) => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(returnDto.order_id, {
-                  select: ["refunded_total", "total"],
-                  relations: ["items"],
-                })
+          await manager.transaction(async (transactionManager) => {
+            const { key, error } = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(
+                idempotencyKey.idempotency_key,
+                async (manager) => {
+                  const order = await orderService
+                    .withTransaction(manager)
+                    .retrieve(returnDto.order_id, {
+                      select: ["refunded_total", "total"],
+                      relations: ["items"],
+                    })
 
-              const returnObj: any = {
-                order_id: returnDto.order_id,
-                idempotency_key: idempotencyKey.idempotency_key,
-                items: returnDto.items,
-              }
+                  const returnObj: any = {
+                    order_id: returnDto.order_id,
+                    idempotency_key: idempotencyKey.idempotency_key,
+                    items: returnDto.items,
+                  }
 
-              if (returnDto.return_shipping) {
-                returnObj.shipping_method = returnDto.return_shipping
-              }
+                  if (returnDto.return_shipping) {
+                    returnObj.shipping_method = returnDto.return_shipping
+                  }
 
-              const createdReturn = await returnService
-                .withTransaction(manager)
-                .create(returnObj)
+                  const createdReturn = await returnService
+                    .withTransaction(manager)
+                    .create(returnObj)
 
-              if (returnDto.return_shipping) {
-                await returnService
-                  .withTransaction(manager)
-                  .fulfill(createdReturn.id)
-              }
+                  if (returnDto.return_shipping) {
+                    await returnService
+                      .withTransaction(manager)
+                      .fulfill(createdReturn.id)
+                  }
 
-              await eventBus
-                .withTransaction(manager)
-                .emit("order.return_requested", {
-                  id: returnDto.order_id,
-                  return_id: createdReturn.id,
-                })
+                  await eventBus
+                    .withTransaction(manager)
+                    .emit("order.return_requested", {
+                      id: returnDto.order_id,
+                      return_id: createdReturn.id,
+                    })
 
-              return {
-                recovery_point: "return_requested",
-              }
+                  return {
+                    recovery_point: "return_requested",
+                  }
+                }
+              )
+
+            if (error) {
+              inProgress = false
+              err = error
+            } else {
+              idempotencyKey = key
             }
-          )
-
-          if (error) {
-            inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
+          })
           break
         }
 
         case "return_requested": {
-          const { key, error } = await idempotencyKeyService.workStage(
-            idempotencyKey.idempotency_key,
-            async (manager) => {
-              let ret = await returnService.withTransaction(manager).list(
-                {
-                  idempotency_key: idempotencyKey.idempotency_key,
-                },
-                {
-                  relations: ["items", "items.reason"],
+          await manager.transaction(async (transactionManager) => {
+            const { key, error } = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(
+                idempotencyKey.idempotency_key,
+                async (manager) => {
+                  let ret = await returnService.withTransaction(manager).list(
+                    {
+                      idempotency_key: idempotencyKey.idempotency_key,
+                    },
+                    {
+                      relations: ["items", "items.reason"],
+                    }
+                  )
+                  if (!ret.length) {
+                    throw new MedusaError(
+                      MedusaError.Types.INVALID_DATA,
+                      `Return not found`
+                    )
+                  }
+                  ret = ret[0]
+
+                  return {
+                    response_code: 200,
+                    response_body: { return: ret },
+                  }
                 }
               )
-              if (!ret.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  `Return not found`
-                )
-              }
-              ret = ret[0]
 
-              return {
-                response_code: 200,
-                response_body: { return: ret },
-              }
+            if (error) {
+              inProgress = false
+              err = error
+            } else {
+              idempotencyKey = key
             }
-          )
-
-          if (error) {
-            inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
+          })
           break
         }
 
@@ -196,14 +215,18 @@ export default async (req, res) => {
         }
 
         default:
-          idempotencyKey = await idempotencyKeyService.update(
-            idempotencyKey.idempotency_key,
-            {
-              recovery_point: "finished",
-              response_code: 500,
-              response_body: { message: "Unknown recovery point" },
-            }
-          )
+          await manager.transaction(async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .update(
+                idempotencyKey.idempotency_key,
+                {
+                  recovery_point: "finished",
+                  response_code: 500,
+                  response_body: { message: "Unknown recovery point" },
+                }
+              )
+          })
           break
       }
     }

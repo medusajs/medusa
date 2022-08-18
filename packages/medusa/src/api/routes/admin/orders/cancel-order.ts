@@ -1,5 +1,7 @@
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/cancel
@@ -8,7 +10,7 @@ import { OrderService } from "../../../../services"
  * description: "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * tags:
  *   - Order
  * responses:
@@ -25,7 +27,10 @@ export default async (req, res) => {
   const { id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  await orderService.cancel(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService.withTransaction(transactionManager).cancel(id)
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

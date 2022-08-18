@@ -1,6 +1,7 @@
+import { EntityManager } from "typeorm";
 import { ICartCompletionStrategy } from "../../../../interfaces"
-import { IdempotencyKeyService } from "../../../../services"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { IdempotencyKeyService } from "../../../../services"
 
 /**
  * @oas [post] /carts/{id}/complete
@@ -25,19 +26,30 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *     content:
  *       application/json:
  *         schema:
- *           oneOf:
- *            - type: object
- *              properties:
- *                order:
- *                  $ref: "#/components/schemas/order"
- *            - type: object
- *              properties:
- *                cart:
- *                  $ref: "#/components/schemas/cart"
- *            - type: object
- *              properties:
- *                cart:
- *                  $ref: "#/components/schemas/swap"
+ *           properties:
+ *             type:
+ *               type: string
+ *               description: The type of the data property.
+ *               enum: [order, cart, swap]
+ *             data:
+ *               type: object
+ *               description: The data of the result object. Its type depends on the type field.
+ *               oneOf:
+ *                 - type: object
+ *                   description: Cart was successfully authorized and order was placed successfully.
+ *                   properties:
+ *                     order:
+ *                       $ref: "#/components/schemas/order"
+ *                 - type: object
+ *                   description: Cart was successfully authorized but requires further actions.
+ *                   properties:
+ *                     cart:
+ *                       $ref: "#/components/schemas/cart"
+ *                 - type: object
+ *                   description: When cart is used for a swap and it has been completed successfully.
+ *                   properties:
+ *                     cart:
+ *                       $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
   const { id } = req.params
@@ -50,12 +62,15 @@ export default async (req, res) => {
 
   let idempotencyKey: IdempotencyKey
   try {
-    idempotencyKey = await idempotencyKeyService.initializeRequest(
-      headerKey,
-      req.method,
-      req.params,
-      req.path
-    )
+    const manager: EntityManager = req.scope.resolve("manager")
+    idempotencyKey = await manager.transaction(async (transactionManager) => {
+      return await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
+        headerKey,
+        req.method,
+        req.params,
+        req.path
+      )
+    })
   } catch (error) {
     console.log(error)
     res.status(409).send("Failed to create idempotency key")

@@ -1,5 +1,6 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import { Discount } from "../../../../models"
 import DiscountService from "../../../../services/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
@@ -12,6 +13,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The code of the Discount
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
  *   - Discount
  * responses:

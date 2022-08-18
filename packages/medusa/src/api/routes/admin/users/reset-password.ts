@@ -1,13 +1,15 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
-import jwt from "jsonwebtoken"
-import _ from "lodash"
+
 import { MedusaError } from "medusa-core-utils"
 import { User } from "../../../.."
 import UserService from "../../../../services/user"
+import _ from "lodash"
+import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/password-token
+ * @oas [post] /users/reset-password
  * operationId: "PostUsersUserPassword"
  * summary: "Set the password for a User."
  * description: "Sets the password for a User given the correct token."
@@ -17,21 +19,22 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         required:
- *           - email
  *           - token
  *           - password
  *         properties:
  *           email:
  *             description: "The Users email."
  *             type: string
+ *             format: email
  *           token:
  *             description: "The token generated from the 'password-token' endpoint."
  *             type: string
  *           password:
  *             description: "The Users new password."
  *             type: string
+ *             format: password
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK
@@ -71,10 +74,12 @@ export default async (req, res) => {
       return
     }
 
-    const userResult = await userService.setPassword_(
-      user.id,
-      validated.password
-    )
+    const manager: EntityManager = req.scope.resolve("manager")
+    const userResult = await manager.transaction(async (transactionManager) => {
+      return await userService
+        .withTransaction(transactionManager)
+        .setPassword_(user.id, validated.password)
+    })
 
     res.status(200).json({ user: _.omit(userResult, ["password_hash"]) })
   } catch (error) {

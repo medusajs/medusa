@@ -1,0 +1,28 @@
+delete:
+  operationId: DeleteCartsCartDiscountsDiscount
+  description: Removes a Discount from a Cart.
+  summary: Remove Discount from Cart
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart.
+      schema:
+        type: string
+    - in: path
+      name: code
+      required: true
+      description: The unique Discount code.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml

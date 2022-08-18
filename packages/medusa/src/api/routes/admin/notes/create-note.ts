@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsString } from "class-validator"
+
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /notes
@@ -12,10 +14,14 @@ import { validator } from "../../../../utils/validator"
  *  content:
  *    application/json:
  *      schema:
+ *        required:
+ *          - resource_id
+ *          - resource_type
+ *          - value
  *        properties:
  *          resource_id:
  *            type: string
- *            description: The id of the resource which the Note relates to.
+ *            description: The ID of the resource which the Note relates to.
  *          resource_type:
  *            type: string
  *            description: The type of resource which the Note relates to.
@@ -42,11 +48,14 @@ export default async (req, res) => {
 
   const noteService: NoteService = req.scope.resolve("noteService")
 
-  const result = await noteService.create({
-    resource_id: validated.resource_id,
-    resource_type: validated.resource_type,
-    value: validated.value,
-    author_id: userId,
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+    return await noteService.withTransaction(transactionManager).create({
+      resource_id: validated.resource_id,
+      resource_type: validated.resource_type,
+      value: validated.value,
+      author_id: userId,
+    })
   })
 
   res.status(200).json({ note: result })

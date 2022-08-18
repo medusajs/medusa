@@ -42,7 +42,7 @@ Medusa comes with a set of building blocks that allow you to create unique digit
 
 You can follow our [quickstart guide](quickstart/quick-start.md) to install and run a Medusa server.
 
-It's also recommended to learn how to [set up your development environment](tutorial/set-up-your-development-environment) with the requirements tools and services to run a Medusa server, then [configure your Medusa server](usage/configurations.md).
+It's also recommended to learn how to [set up your development environment](tutorial/set-up-your-development-environment) with the required tools and services to run a Medusa server, then [configure your Medusa server](usage/configurations.md).
 
 ### The Medusa Admin
 

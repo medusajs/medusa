@@ -1,0 +1,17 @@
+post:
+  operationId: PostInvitesInviteResend
+  summary: Resend an Invite
+  description: Resends an Invite by triggering the 'invite' created event again
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: invite_id
+      required: true
+      description: The ID of the Invite
+      schema:
+        type: string
+  tags:
+    - Invite
+  responses:
+    '200':
+      description: OK

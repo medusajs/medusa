@@ -1,0 +1,29 @@
+delete:
+  operationId: DeleteDiscountsDiscountDynamicCodesCode
+  summary: Delete a dynamic code
+  description: Deletes a dynamic code from a Discount.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Discount
+      schema:
+        type: string
+    - in: path
+      name: code
+      required: true
+      description: The ID of the Discount
+      schema:
+        type: string
+  tags:
+    - Discount
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              discount:
+                $ref: ../components/schemas/discount.yaml
