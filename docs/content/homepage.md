@@ -56,7 +56,7 @@ The final step is to set up a storefront to sell your products.
 
 Medusa provides 2 starter storefronts, one built with [Next.js](./starters/nextjs-medusa-starter.md) and one with [Gatsby](./starters/gatsby-medusa-starter.md), that you can use to quickly set up your store and start selling.
 
-Alternatively, you can build your own storefront with any frontend framework of your choice just by connecting to your server with the [Storefront REST APIs](https://docs.medusajs.com/api/store/collection).
+Alternatively, you can build your own storefront with any frontend framework of your choice just by connecting to your server with the [Storefront REST APIs](https://docs.medusajs.com/api/store/).
 
 ## What’s Next 🚀
 
