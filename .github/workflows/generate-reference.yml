@@ -1,4 +1,4 @@
-name: Generate Reference
+name: Generate Services Reference
 on: 
   push:
     branches:
