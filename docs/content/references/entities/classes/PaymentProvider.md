@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/payment-provider.ts:6](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment-provider.ts#L6)
+[models/payment-provider.ts:6](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment-provider.ts#L6)
 
 ___
 
@@ -28,4 +28,4 @@ ___
 
 #### Defined in
 
-[models/payment-provider.ts:9](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment-provider.ts#L9)
+[models/payment-provider.ts:9](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment-provider.ts#L9)

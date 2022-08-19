@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/gift-card.ts:26](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L26)
+[models/gift-card.ts:26](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L26)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:20](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L20)
+[models/gift-card.ts:20](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L20)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:51](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L51)
+[models/gift-card.ts:51](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L51)
 
 ___
 
@@ -90,7 +90,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:45](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L45)
+[models/gift-card.ts:45](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L45)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:54](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L54)
+[models/gift-card.ts:54](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L54)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:42](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L42)
+[models/gift-card.ts:42](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L42)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:38](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L38)
+[models/gift-card.ts:38](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L38)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:34](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L34)
+[models/gift-card.ts:34](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L34)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:30](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L30)
+[models/gift-card.ts:30](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L30)
 
 ___
 
@@ -164,7 +164,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:23](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L23)
+[models/gift-card.ts:23](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L23)
 
 ## Methods
 
@@ -188,4 +188,4 @@ ___
 
 #### Defined in
 
-[models/gift-card.ts:56](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/gift-card.ts#L56)
+[models/gift-card.ts:56](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/gift-card.ts#L56)
