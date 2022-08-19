@@ -137,7 +137,7 @@ export class FilterableProductTypeProps {
 export type CreateProductInput = {
   title: string
   subtitle?: string
-  profile_id?: string
+  profile_id: string
   description?: string
   is_giftcard?: boolean
   discountable?: boolean

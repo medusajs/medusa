@@ -341,6 +341,13 @@ class ProductService extends TransactionBaseService {
    * @return resolves to the creation result.
    */
   async create(productObject: CreateProductInput): Promise<Product> {
+    if (!isDefined(productObject.profile_id)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "the property profile_id should appear as part of the payload"
+      )
+    }
+
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productTagRepo = manager.getCustomRepository(
@@ -468,7 +475,7 @@ class ProductService extends TransactionBaseService {
         if (isDefined(update.sales_channels)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            "the property sales_channels should no appears as part of the payload"
+            "the property sales_channels should not appear as part of the payload"
           )
         }
       }
