@@ -1,9 +1,4 @@
 import {
-  EventBusService,
-  OrderService,
-  ReturnService,
-} from "../../../../services"
-import {
   IsArray,
   IsBoolean,
   IsInt,
@@ -12,14 +7,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import {
+  EventBusService,
+  OrderService,
+  ReturnService,
+} from "../../../../services"
 
-import { MedusaError } from "medusa-core-utils"
-import { OrdersReturnItem } from "../../../../types/orders"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { Return } from "../../../../models"
-import { Order } from "../../../../models"
+import { Order, Return } from "../../../../models"
+import { OrdersReturnItem } from "../../../../types/orders"
+import { isDefined } from "../../../../utils"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/return
@@ -142,7 +142,7 @@ export default async (req, res) => {
                   returnObj.shipping_method = value.return_shipping
                 }
 
-                if (typeof value.refund !== "undefined" && value.refund < 0) {
+                if (isDefined(value.refund) && value.refund < 0) {
                   returnObj.refund_amount = 0
                 } else {
                   if (value.refund && value.refund >= 0) {

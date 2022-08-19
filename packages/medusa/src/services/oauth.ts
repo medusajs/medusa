@@ -15,7 +15,7 @@ type InjectedDependencies = MedusaContainer & {
   oauthRepository: typeof OauthRepository
 }
 
-class Oauth extends TransactionBaseService<Oauth> {
+class Oauth extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   static Events = {

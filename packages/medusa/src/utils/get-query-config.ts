@@ -2,6 +2,7 @@ import { pick } from "lodash"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { isDefined } from "."
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -26,14 +27,14 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
   expand?: string[]
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
       typeof field === "string" ? field.trim() : field
     ) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand.map((expandRelation) => expandRelation.trim())
   }
 
@@ -53,7 +54,7 @@ export function getListConfig<TModel extends BaseEntity>(
   order?: { [k: symbol]: "DESC" | "ASC" }
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     const fieldSet = new Set(fields)
     // Ensure created_at is included, since we are sorting on this
     fieldSet.add("created_at")
@@ -62,7 +63,7 @@ export function getListConfig<TModel extends BaseEntity>(
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand
   }
 
@@ -96,7 +97,7 @@ export function prepareListQuery<
   }
 
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
-  if (typeof order !== "undefined") {
+  if (isDefined(order)) {
     let orderField = order
     if (order.startsWith("-")) {
       const [, field] = order.split("-")

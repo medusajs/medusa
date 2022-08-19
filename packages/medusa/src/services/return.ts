@@ -1,29 +1,30 @@
+import { isDefined } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import TotalsService from "./totals"
-import LineItemService from "./line-item"
-import { ReturnRepository } from "../repositories/return"
-import { ReturnItemRepository } from "../repositories/return-item"
-import ShippingOptionService from "./shipping-option"
-import ReturnReasonService from "./return-reason"
-import TaxProviderService from "./tax-provider"
-import FulfillmentProviderService from "./fulfillment-provider"
-import InventoryService from "./inventory"
-import OrderService from "./order"
 import { TransactionBaseService } from "../interfaces"
 import {
   FulfillmentStatus,
   LineItem,
+  Order,
   PaymentStatus,
   Return,
   ReturnItem,
   ReturnStatus,
-  Order,
 } from "../models"
+import { ReturnRepository } from "../repositories/return"
+import { ReturnItemRepository } from "../repositories/return-item"
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
-import { CreateReturnInput, UpdateReturnInput } from "../types/return"
 import { OrdersReturnItem } from "../types/orders"
+import { CreateReturnInput, UpdateReturnInput } from "../types/return"
+import { buildQuery, setMetadata } from "../utils"
+import FulfillmentProviderService from "./fulfillment-provider"
+import InventoryService from "./inventory"
+import LineItemService from "./line-item"
+import OrderService from "./order"
+import ReturnReasonService from "./return-reason"
+import ShippingOptionService from "./shipping-option"
+import TaxProviderService from "./tax-provider"
+import TotalsService from "./totals"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -45,7 +46,7 @@ type Transformer = (
   additional?: OrdersReturnItem
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
-class ReturnService extends TransactionBaseService<ReturnService> {
+class ReturnService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -401,12 +402,12 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       )
 
       let toRefund = data.refund_amount
-      if (typeof toRefund !== "undefined") {
+      if (isDefined(toRefund)) {
         // Merchant wants to do a custom refund amount; we check if amount is
         // refundable
         const refundable = order.refundable_amount
 
-        if (toRefund > refundable) {
+        if (toRefund! > refundable) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "Cannot refund more than the original payment"
@@ -423,7 +424,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
       const returnObject = {
         ...data,
         status: ReturnStatus.REQUESTED,
-        refund_amount: Math.floor(toRefund),
+        refund_amount: Math.floor(toRefund!),
       }
 
       const returnReasons = await this.returnReasonService_
@@ -483,7 +484,7 @@ class ReturnService extends TransactionBaseService<ReturnService> {
           )
 
         if (typeof data.refund_amount === "undefined") {
-          result.refund_amount = toRefund - shippingTotal
+          result.refund_amount = toRefund! - shippingTotal
           return await returnRepository.save(result)
         }
       }
@@ -665,22 +666,23 @@ class ReturnService extends TransactionBaseService<ReturnService> {
 
       const result = await returnRepository.save(updateObj)
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       for (const i of returnObj.items) {
-        const lineItem = await this.lineItemService_
-          .withTransaction(manager)
-          .retrieve(i.item_id)
+        const lineItem = await lineItemServiceTx.retrieve(i.item_id)
         const returnedQuantity = (lineItem.returned_quantity || 0) + i.quantity
-        await this.lineItemService_.withTransaction(manager).update(i.item_id, {
+        await lineItemServiceTx.update(i.item_id, {
           returned_quantity: returnedQuantity,
         })
       }
 
+      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
         if (orderItem) {
-          await this.inventoryService_
-            .withTransaction(manager)
-            .adjustInventory(orderItem.variant_id, line.received_quantity)
+          await inventoryServiceTx.adjustInventory(
+            orderItem.variant_id,
+            line.received_quantity
+          )
         }
       }
 
