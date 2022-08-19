@@ -1,5 +1,6 @@
-import { IdempotencyKey } from "../models/idempotency-key"
+import { IdempotencyKey } from "../models"
 import { RequestContext } from "../types/request"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export type CartCompletionResponse = {
   /** The response code for the completion request */
@@ -25,9 +26,19 @@ export interface ICartCompletionStrategy {
   ): Promise<CartCompletionResponse>
 }
 
-export function isCartCompletionStrategy(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  object: any
-): object is ICartCompletionStrategy {
-  return typeof object.complete === "function"
+export abstract class AbstractCartCompletionStrategy
+  implements ICartCompletionStrategy
+{
+  abstract complete(
+    cartId: string,
+    idempotencyKey: IdempotencyKey,
+    context: RequestContext
+  ): Promise<CartCompletionResponse>
+}
+
+export function isCartCompletionStrategy(obj: unknown): boolean {
+  return (
+    typeof (obj as AbstractCartCompletionStrategy).complete === "function" ||
+    obj instanceof AbstractCartCompletionStrategy
+  )
 }

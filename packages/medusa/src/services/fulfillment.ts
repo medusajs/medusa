@@ -13,7 +13,7 @@ import {
   FulfillmentItemPartition,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
 import TotalsService from "./totals"
@@ -32,7 +32,7 @@ type InjectedDependencies = {
 /**
  * Handles Fulfillments
  */
-class FulfillmentService extends TransactionBaseService<FulfillmentService> {
+class FulfillmentService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -274,12 +274,12 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
 
       fulfillment.canceled_at = new Date()
 
-      const lineItemService = this.lineItemService_.withTransaction(manager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       for (const fItem of fulfillment.items) {
-        const item = await lineItemService.retrieve(fItem.item_id)
+        const item = await lineItemServiceTx.retrieve(fItem.item_id)
         const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity
-        await lineItemService.update(item.id, {
+        await lineItemServiceTx.update(item.id, {
           fulfilled_quantity: fulfilledQuantity,
         })
       }
@@ -336,7 +336,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
         trackingLinkRepo.create(tl)
       )
 
-      if (typeof no_notification !== "undefined") {
+      if (isDefined(no_notification)) {
         fulfillment.no_notification = no_notification
       }
 

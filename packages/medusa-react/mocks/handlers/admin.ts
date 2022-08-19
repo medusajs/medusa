@@ -108,6 +108,29 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/collections/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        collection: {
+          ...fixtures.get("product_collection"),
+          products: [fixtures.get("product")]
+        }
+      })
+    )
+  }),
+
+  rest.delete("/admin/collections/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "product-collection",
+        removed_products: [fixtures.get("product").id]
+      })
+    )
+  }),
+
   rest.post("/admin/gift-cards/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(

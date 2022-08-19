@@ -10,6 +10,7 @@ import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /returns/{id}/receive
@@ -68,7 +69,7 @@ export default async (req, res) => {
   await entityManager.transaction(async (manager) => {
     let refundAmount = validated.refund
 
-    if (typeof validated.refund !== "undefined" && validated.refund < 0) {
+    if (isDefined(validated.refund) && validated.refund < 0) {
       refundAmount = 0
     }
 
