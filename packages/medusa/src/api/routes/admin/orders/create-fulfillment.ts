@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,17 +8,21 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { Transform, Type } from "class-transformer"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
- * @oas [post] /orders/{id}/fulfillments
+ * @oas [post] /orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,9 +34,12 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items to include in the Fulfillment.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of Line Item to fulfill.
+ *                   description: The ID of Line Item to fulfill.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item to fulfill.
@@ -45,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  * tags:
- *   - Order
+ *   - Fulfillment
  * responses:
  *   200:
  *     description: OK
@@ -66,9 +72,14 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.createFulfillment(id, validated.items, {
-    metadata: validated.metadata,
-    no_notification: validated.no_notification,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .createFulfillment(id, validated.items, {
+        metadata: validated.metadata,
+        no_notification: validated.no_notification,
+      })
   })
 
   const order = await orderService.retrieve(id, {
@@ -92,7 +103,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 class Item {

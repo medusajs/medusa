@@ -1,0 +1,24 @@
+get:
+  operationId: GetAuthEmail
+  summary: Check if email has account
+  description: Checks if a Customer with the given email has signed up.
+  parameters:
+    - in: path
+      name: email
+      schema:
+        type: string
+        format: email
+      required: true
+      description: The email to check if exists.
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              exists:
+                type: boolean
+                description: Whether email exists or not.

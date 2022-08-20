@@ -1,5 +1,9 @@
 # Class: ShippingProfileService
 
+Provides layer to manipulate profiles.
+
+**`Implements`**
+
 ## Hierarchy
 
 - `"medusa-interfaces"`
@@ -24,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/shipping-profile.js:12](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L12)
+[packages/medusa/src/services/shipping-profile.js:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L12)
 
 ## Methods
 
@@ -32,20 +36,25 @@ BaseService.constructor
 
 ▸ **addProduct**(`profileId`, `productId`): `Promise`<`any`\>
 
+Adds a product to a profile. The method is idempotent, so multiple calls
+with the same product variant will have the same result.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profileId` | `string` |  |
-| `productId` | `string` |  |
+| `profileId` | `string` | the profile to add the product to. |
+| `productId` | `string` | the product to add. |
 
 #### Returns
 
 `Promise`<`any`\>
 
+the result of update
+
 #### Defined in
 
-[services/shipping-profile.js:343](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L343)
+[packages/medusa/src/services/shipping-profile.js:343](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L343)
 
 ___
 
@@ -53,20 +62,25 @@ ___
 
 ▸ **addShippingOption**(`profileId`, `optionId`): `Promise`<`any`\>
 
+Adds a shipping option to the profile. The shipping option can be used to
+fulfill the products in the products field.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profileId` | `string` |  |
-| `optionId` | `string` |  |
+| `profileId` | `string` | the profile to apply the shipping option to |
+| `optionId` | `string` | the option to add to the profile |
 
 #### Returns
 
 `Promise`<`any`\>
 
+the result of the model update operation
+
 #### Defined in
 
-[services/shipping-profile.js:361](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L361)
+[packages/medusa/src/services/shipping-profile.js:361](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L361)
 
 ___
 
@@ -74,19 +88,23 @@ ___
 
 ▸ **create**(`profile`): `Promise`<`any`\>
 
+Creates a new shipping profile.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profile` | `ShippingProfile` |  |
+| `profile` | `ShippingProfile` | the shipping profile to create from |
 
 #### Returns
 
 `Promise`<`any`\>
 
+the result of the create operation
+
 #### Defined in
 
-[services/shipping-profile.js:235](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L235)
+[packages/medusa/src/services/shipping-profile.js:235](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L235)
 
 ___
 
@@ -94,13 +112,17 @@ ___
 
 ▸ **createDefault**(): `Promise`<`ShippingProfile`\>
 
+Creates a default shipping profile, if this does not already exist.
+
 #### Returns
 
 `Promise`<`ShippingProfile`\>
 
+the shipping profile
+
 #### Defined in
 
-[services/shipping-profile.js:167](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L167)
+[packages/medusa/src/services/shipping-profile.js:167](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L167)
 
 ___
 
@@ -108,13 +130,18 @@ ___
 
 ▸ **createGiftCardDefault**(): `Promise`<`ShippingProfile`\>
 
+Creates a default shipping profile, for gift cards if unless it already
+exists.
+
 #### Returns
 
 `Promise`<`ShippingProfile`\>
 
+the shipping profile
+
 #### Defined in
 
-[services/shipping-profile.js:209](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L209)
+[packages/medusa/src/services/shipping-profile.js:209](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L209)
 
 ___
 
@@ -122,21 +149,25 @@ ___
 
 ▸ **decorate**(`profile`, `fields`, `expandFields?`): `Profile`
 
+Decorates a profile.
+
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `profile` | `Profile` | `undefined` |  |
-| `fields` | `string`[] | `undefined` |  |
-| `expandFields` | `string`[] | `[]` |  |
+| `profile` | `Profile` | `undefined` | the profile to decorate. |
+| `fields` | `string`[] | `undefined` | the fields to include. |
+| `expandFields` | `string`[] | `[]` | fields to expand. |
 
 #### Returns
 
 `Profile`
 
+return the decorated profile.
+
 #### Defined in
 
-[services/shipping-profile.js:379](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L379)
+[packages/medusa/src/services/shipping-profile.js:379](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L379)
 
 ___
 
@@ -144,19 +175,23 @@ ___
 
 ▸ **delete**(`profileId`): `Promise`<`any`\>
 
+Deletes a profile with a given profile id.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profileId` | `string` |  |
+| `profileId` | `string` | the id of the profile to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
 `Promise`<`any`\>
 
+the result of the delete operation.
+
 #### Defined in
 
-[services/shipping-profile.js:317](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L317)
+[packages/medusa/src/services/shipping-profile.js:317](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L317)
 
 ___
 
@@ -164,19 +199,24 @@ ___
 
 ▸ **fetchCartOptions**(`cart`): `Promise`<[`ShippingOption`]\>
 
+Finds all the shipping profiles that cover the products in a cart, and
+validates all options that are available for the cart.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cart` | `Cart` |  |
+| `cart` | `Cart` | the cart object to find shipping options for |
 
 #### Returns
 
 `Promise`<[`ShippingOption`]\>
 
+a list of the available shipping options
+
 #### Defined in
 
-[services/shipping-profile.js:425](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L425)
+[packages/medusa/src/services/shipping-profile.js:425](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L425)
 
 ___
 
@@ -197,7 +237,7 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:73](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L73)
+[packages/medusa/src/services/shipping-profile.js:73](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L73)
 
 ___
 
@@ -205,19 +245,23 @@ ___
 
 ▸ **getProfilesInCart_**(`cart`): [`string`]
 
+Returns a list of all the productIds in the cart.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cart` | `Cart` |  |
+| `cart` | `Cart` | the cart to extract products from |
 
 #### Returns
 
 [`string`]
 
+a list of product ids
+
 #### Defined in
 
-[services/shipping-profile.js:406](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L406)
+[packages/medusa/src/services/shipping-profile.js:406](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L406)
 
 ___
 
@@ -229,16 +273,18 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` |  |
-| `config` | `any` |  |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config object for find |
 
 #### Returns
 
 `Promise`<`any`\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/shipping-profile.js:64](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L64)
+[packages/medusa/src/services/shipping-profile.js:64](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L64)
 
 ___
 
@@ -246,20 +292,25 @@ ___
 
 ▸ **retrieve**(`profileId`, `options?`): `Promise`<`Product`\>
 
+Gets a profile by id.
+Throws in case of DB Error and if profile was not found.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profileId` | `string` |  |
-| `options` | `any` |  |
+| `profileId` | `string` | the id of the profile to get. |
+| `options` | `any` | options opf the query. |
 
 #### Returns
 
 `Promise`<`Product`\>
 
+the profile document.
+
 #### Defined in
 
-[services/shipping-profile.js:121](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L121)
+[packages/medusa/src/services/shipping-profile.js:121](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L121)
 
 ___
 
@@ -273,7 +324,7 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:151](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L151)
+[packages/medusa/src/services/shipping-profile.js:151](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L151)
 
 ___
 
@@ -281,13 +332,17 @@ ___
 
 ▸ **retrieveGiftCardDefault**(): `any`
 
+Retrieves the default gift card profile
+
 #### Returns
 
 `any`
 
+the shipping profile for gift cards
+
 #### Defined in
 
-[services/shipping-profile.js:192](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L192)
+[packages/medusa/src/services/shipping-profile.js:192](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L192)
 
 ___
 
@@ -295,20 +350,26 @@ ___
 
 ▸ **update**(`profileId`, `update`): `Promise`<`any`\>
 
+Updates a profile. Metadata updates and product updates should use
+dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
+will throw errors if metadata or product updates are attempted.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `profileId` | `string` |  |
-| `update` | `any` |  |
+| `profileId` | `string` | the id of the profile. Must be a string that   can be casted to an ObjectId |
+| `update` | `any` | an object with the update values. |
 
 #### Returns
 
 `Promise`<`any`\>
 
+resolves to the update result.
+
 #### Defined in
 
-[services/shipping-profile.js:263](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L263)
+[packages/medusa/src/services/shipping-profile.js:263](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L263)
 
 ___
 
@@ -328,4 +389,4 @@ ___
 
 #### Defined in
 
-[services/shipping-profile.js:41](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/shipping-profile.js#L41)
+[packages/medusa/src/services/shipping-profile.js:41](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/shipping-profile.js#L41)

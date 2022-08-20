@@ -6,52 +6,52 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).OrderStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### ARCHIVED
 
-• **ARCHIVED** = `"archived"`
+• **ARCHIVED** = ``"archived"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:22
+medusa/dist/models/order.d.ts:23
 
 ___
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:23
+medusa/dist/models/order.d.ts:24
 
 ___
 
 ### COMPLETED
 
-• **COMPLETED** = `"completed"`
+• **COMPLETED** = ``"completed"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:21
+medusa/dist/models/order.d.ts:22
 
 ___
 
 ### PENDING
 
-• **PENDING** = `"pending"`
+• **PENDING** = ``"pending"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:20
+medusa/dist/models/order.d.ts:21
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:24
+medusa/dist/models/order.d.ts:25

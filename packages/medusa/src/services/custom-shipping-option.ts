@@ -37,24 +37,23 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
     id: string,
     config: FindConfig<CustomShippingOption> = {}
   ): Promise<CustomShippingOption> {
-    return await this.atomicPhase_(async (manager) => {
-      const customShippingOptionRepo = manager.getCustomRepository(
-        this.customShippingOptionRepository_
+    const manager = this.manager_
+    const customShippingOptionRepo = manager.getCustomRepository(
+      this.customShippingOptionRepository_
+    )
+
+    const query = buildQuery({ id }, config)
+
+    const customShippingOption = await customShippingOptionRepo.findOne(query)
+
+    if (!customShippingOption) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Custom shipping option with id: ${id} was not found.`
       )
+    }
 
-      const query = buildQuery({ id }, config)
-
-      const customShippingOption = await customShippingOptionRepo.findOne(query)
-
-      if (!customShippingOption) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Custom shipping option with id: ${id} was not found.`
-        )
-      }
-
-      return customShippingOption
-    })
+    return customShippingOption
   }
 
   /** Fetches all custom shipping options based on the given selector
@@ -70,15 +69,14 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
       relations: [],
     }
   ): Promise<CustomShippingOption[]> {
-    return await this.atomicPhase_(async (manager) => {
-      const customShippingOptionRepo = manager.getCustomRepository(
-        this.customShippingOptionRepository_
-      )
+    const manager = this.manager_
+    const customShippingOptionRepo = manager.getCustomRepository(
+      this.customShippingOptionRepository_
+    )
 
-      const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-      return await customShippingOptionRepo.find(query)
-    })
+    return await customShippingOptionRepo.find(query)
   }
 
   /**
@@ -92,19 +90,18 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
   ): Promise<CustomShippingOption> {
     const { cart_id, shipping_option_id, price, metadata } = data
 
-    return await this.atomicPhase_(async (manager) => {
-      const customShippingOptionRepo = manager.getCustomRepository(
-        this.customShippingOptionRepository_
-      )
+    const manager = this.manager_
+    const customShippingOptionRepo = manager.getCustomRepository(
+      this.customShippingOptionRepository_
+    )
 
-      const customShippingOption = await customShippingOptionRepo.create({
-        cart_id,
-        shipping_option_id,
-        price,
-        metadata,
-      })
-      return await customShippingOptionRepo.save(customShippingOption)
+    const customShippingOption = customShippingOptionRepo.create({
+      cart_id,
+      shipping_option_id,
+      price,
+      metadata,
     })
+    return await customShippingOptionRepo.save(customShippingOption)
   }
 }
 

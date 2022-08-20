@@ -6,42 +6,42 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ReturnStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:11
+medusa/dist/models/return.d.ts:11
 
 ___
 
 ### RECEIVED
 
-• **RECEIVED** = `"received"`
+• **RECEIVED** = ``"received"``
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:9
+medusa/dist/models/return.d.ts:9
 
 ___
 
 ### REQUESTED
 
-• **REQUESTED** = `"requested"`
+• **REQUESTED** = ``"requested"``
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:8
+medusa/dist/models/return.d.ts:8
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:10
+medusa/dist/models/return.d.ts:10

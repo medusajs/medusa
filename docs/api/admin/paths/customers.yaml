@@ -1,0 +1,98 @@
+post:
+  operationId: PostCustomers
+  summary: Create a Customer
+  description: Creates a Customer.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - email
+            - first_name
+            - last_name
+            - password
+          properties:
+            email:
+              type: string
+              description: The customer's email.
+              format: email
+            first_name:
+              type: string
+              description: The customer's first name.
+            last_name:
+              type: string
+              description: The customer's last name.
+            password:
+              type: string
+              description: The customer's password.
+              format: password
+            phone:
+              type: string
+              description: The customer's phone number.
+            metadata:
+              description: >-
+                An optional set of key-value pairs to hold additional
+                information.
+              type: object
+  tags:
+    - Customer
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+get:
+  operationId: GetCustomers
+  summary: List Customers
+  description: Retrieves a list of Customers.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: The number of items to return.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: offset
+      description: The items to skip before result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in each customer.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: a search term to search email, first_name, and last_name.
+      schema:
+        type: string
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customers:
+                type: array
+                items:
+                  $ref: ../components/schemas/customer.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

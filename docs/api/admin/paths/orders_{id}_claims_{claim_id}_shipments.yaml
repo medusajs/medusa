@@ -1,0 +1,44 @@
+post:
+  operationId: PostOrdersOrderClaimsClaimShipments
+  summary: Create Claim Shipment
+  description: Registers a Claim Fulfillment as shipped.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: claim_id
+      required: true
+      description: The ID of the Claim.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - fulfillment_id
+          properties:
+            fulfillment_id:
+              description: The ID of the Fulfillment.
+              type: string
+            tracking_numbers:
+              description: The tracking numbers for the shipment.
+              type: array
+              items:
+                type: string
+  tags:
+    - Claim
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

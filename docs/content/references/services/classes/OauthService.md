@@ -24,7 +24,7 @@ OauthService.constructor
 
 #### Defined in
 
-[services/oauth.js:10](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L10)
+[packages/medusa/src/services/oauth.js:10](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L10)
 
 ## Properties
 
@@ -34,7 +34,7 @@ OauthService.constructor
 
 #### Defined in
 
-[services/oauth.js:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L15)
+[packages/medusa/src/services/oauth.js:15](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L15)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:17](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L17)
+[packages/medusa/src/services/oauth.js:17](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L17)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L14)
+[packages/medusa/src/services/oauth.js:14](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L14)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L16)
+[packages/medusa/src/services/oauth.js:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L16)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:5](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L5)
+[packages/medusa/src/services/oauth.js:5](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L5)
 
 ## Methods
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:32](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L32)
+[packages/medusa/src/services/oauth.js:32](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L32)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:66](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L66)
+[packages/medusa/src/services/oauth.js:66](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L66)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L27)
+[packages/medusa/src/services/oauth.js:27](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L27)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:96](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L96)
+[packages/medusa/src/services/oauth.js:96](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L96)
 
 ___
 
@@ -183,7 +183,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:56](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L56)
+[packages/medusa/src/services/oauth.js:56](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L56)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[services/oauth.js:20](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L20)
+[packages/medusa/src/services/oauth.js:20](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L20)
 
 ___
 
@@ -224,4 +224,4 @@ ___
 
 #### Defined in
 
-[services/oauth.js:45](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/oauth.js#L45)
+[packages/medusa/src/services/oauth.js:45](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L45)

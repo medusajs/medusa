@@ -1,17 +1,17 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models"
-import { SalesChannelRepository } from "../repositories/sales-channel"
-import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
+import { FindConfig, QuerySelector } from "../types/common"
+
+import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
-import { buildQuery } from "../utils"
+import { MedusaError } from "medusa-core-utils"
+import { SalesChannel } from "../models"
+import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -41,7 +41,12 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     storeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({
+      salesChannelRepository,
+      eventBusService,
+      manager,
+      storeService,
+    })
 
     this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
@@ -60,36 +65,63 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
-        this.salesChannelRepository_
+    const manager = this.manager_
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const query = buildQuery(
+      {
+        id: salesChannelId,
+      },
+      config
+    )
+
+    const salesChannel = await salesChannelRepo.findOne(query)
+
+    if (!salesChannel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id ${salesChannelId} was not found`
       )
+    }
 
-      const query = buildQuery(
-        {
-          id: salesChannelId,
-        },
-        config
-      )
-
-      const salesChannel = await salesChannelRepo.findOne(query)
-
-      if (!salesChannel) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Sales channel with id ${salesChannelId} was not found`
-        )
-      }
-
-      return salesChannel
-    })
+    return salesChannel
   }
 
+  /**
+   * Lists sales channels based on the provided parameters and includes the count of
+   * sales channels that match the query.
+   * @return an array containing the sales channels as
+   *   the first element and the total count of sales channels that matches the query
+   *   as the second element.
+   */
   async listAndCount(
-    selector: QuerySelector<any> = {},
-    config: FindConfig<any> = { relations: [], skip: 0, take: 10 }
+    selector: QuerySelector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
   ): Promise<[SalesChannel[], number]> {
-    throw new Error("Method not implemented.")
+    const manager = this.manager_
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const selector_ = { ...selector }
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery(selector_, config)
+
+    if (q) {
+      return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
+    }
+
+    return await salesChannelRepo.findAndCount(query)
   }
 
   /**
@@ -149,7 +181,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @param salesChannelId - the id of the sales channel to delete
-   * @return Promise<void>
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
@@ -163,6 +194,17 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
       if (!salesChannel) {
         return
+      }
+
+      const store = await this.storeService_.retrieve({
+        select: ["default_sales_channel_id"],
+      })
+
+      if (salesChannel.id === store?.default_sales_channel_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You cannot delete the default sales channel"
+        )
       }
 
       await salesChannelRepo.softRemove(salesChannel)
@@ -202,6 +244,48 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
       })
 
       return defaultSalesChannel
+    })
+  }
+
+  /**
+   * Remove a batch of product from a sales channel
+   * @param salesChannelId - The id of the sales channel on which to remove the products
+   * @param productIds - The products ids to remove from the sales channel
+   * @return the sales channel on which the products have been removed
+   */
+  async removeProducts(
+    salesChannelId: string,
+    productIds: string[]
+  ): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      await salesChannelRepo.removeProducts(salesChannelId, productIds)
+
+      return await this.retrieve(salesChannelId)
+    })
+  }
+
+  /**
+   * Add a batch of product to a sales channel
+   * @param salesChannelId - The id of the sales channel on which to add the products
+   * @param productIds - The products ids to attach to the sales channel
+   * @return the sales channel on which the products have been added
+   */
+  async addProducts(
+    salesChannelId: string,
+    productIds: string[]
+  ): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      await salesChannelRepo.addProducts(salesChannelId, productIds)
+
+      return await this.retrieve(salesChannelId)
     })
   }
 }

@@ -1,0 +1,26 @@
+post:
+  operationId: PostOrdersOrderCancel
+  summary: Cancel an Order
+  description: >-
+    Registers an Order as canceled. This triggers a flow that will cancel any
+    created Fulfillments and Payments, may fail if the Payment or Fulfillment
+    Provider is unable to cancel the Payment/Fulfillment.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

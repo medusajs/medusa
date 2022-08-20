@@ -1,0 +1,86 @@
+post:
+  operationId: PostDiscountsDiscountConditions
+  summary: >-
+    Creates a DiscountCondition. Only one of `products`, `product_types`,
+    `product_collections`, `product_tags`, and `customer_groups` should be
+    provided.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: discount_id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each product of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each product of the
+        result.
+      schema:
+        type: string
+  description: Creates a DiscountCondition
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - operator
+          properties:
+            operator:
+              description: Operator of the condition
+              type: string
+              enum:
+                - in
+                - not_in
+            products:
+              type: array
+              description: list of product IDs if the condition is applied on products.
+              items:
+                type: string
+            product_types:
+              type: array
+              description: >-
+                list of product type IDs if the condition is applied on product
+                types.
+              items:
+                type: string
+            product_collections:
+              type: array
+              description: >-
+                list of product collection IDs if the condition is applied on
+                product collections.
+              items:
+                type: string
+            product_tags:
+              type: array
+              description: >-
+                list of product tag IDs if the condition is applied on product
+                tags.
+              items:
+                type: string
+            customer_groups:
+              type: array
+              description: >-
+                list of customer group IDs if the condition is applied on
+                customer groups.
+              items:
+                type: string
+  tags:
+    - Discount Condition
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              discount:
+                $ref: ../components/schemas/discount.yaml

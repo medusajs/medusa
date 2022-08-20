@@ -6,42 +6,42 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ClaimReason
 
-## Enumeration members
+## Enumeration Members
 
 ### MISSING\_ITEM
 
-• **MISSING\_ITEM** = `"missing_item"`
+• **MISSING\_ITEM** = ``"missing_item"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-item.d.ts:8
+medusa/dist/models/claim-item.d.ts:8
 
 ___
 
 ### OTHER
 
-• **OTHER** = `"other"`
+• **OTHER** = ``"other"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-item.d.ts:11
+medusa/dist/models/claim-item.d.ts:11
 
 ___
 
 ### PRODUCTION\_FAILURE
 
-• **PRODUCTION\_FAILURE** = `"production_failure"`
+• **PRODUCTION\_FAILURE** = ``"production_failure"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-item.d.ts:10
+medusa/dist/models/claim-item.d.ts:10
 
 ___
 
 ### WRONG\_ITEM
 
-• **WRONG\_ITEM** = `"wrong_item"`
+• **WRONG\_ITEM** = ``"wrong_item"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-item.d.ts:9
+medusa/dist/models/claim-item.d.ts:9

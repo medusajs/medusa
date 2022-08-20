@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { ProductService } from "../../../../services"
 
 /**
@@ -7,7 +8,7 @@ import { ProductService } from "../../../../services"
  * description: "Deletes a Product and it's associated Product Variants."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * tags:
  *   - Product
  * responses:
@@ -19,18 +20,25 @@ import { ProductService } from "../../../../services"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Product.
+ *               description: The ID of the deleted Product.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: product
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *               default: true
  */
 export default async (req, res) => {
   const { id } = req.params
 
   const productService: ProductService = req.scope.resolve("productService")
-  await productService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productService.withTransaction(transactionManager).delete(id)
+  })
+
   res.json({
     id,
     object: "product",

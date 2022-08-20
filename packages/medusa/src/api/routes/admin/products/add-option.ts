@@ -1,7 +1,9 @@
-import { IsString } from "class-validator"
+import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, PricingService } from "../../../../services"
+
+import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/options
@@ -10,7 +12,7 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * description: "Adds a Product Option to a Product"
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * requestBody:
  *   content:
  *     application/json:
@@ -44,7 +46,13 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  await productService.addOption(id, validated.title)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await productService
+      .withTransaction(transactionManager)
+      .addOption(id, validated.title)
+  })
+
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,

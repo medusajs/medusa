@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-provider.d.ts:2
+medusa/dist/models/fulfillment-provider.d.ts:2
 
 ___
 
@@ -24,4 +24,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/fulfillment-provider.d.ts:3
+medusa/dist/models/fulfillment-provider.d.ts:3

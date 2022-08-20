@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Region
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:16
+medusa/dist/models/region.d.ts:16
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:23
+medusa/dist/models/region.d.ts:23
 
 ___
 
@@ -40,13 +42,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:17
+medusa/dist/models/region.d.ts:17
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -54,7 +56,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -64,7 +66,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:11
+medusa/dist/models/region.d.ts:11
 
 ___
 
@@ -74,13 +76,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:10
+medusa/dist/models/region.d.ts:10
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -88,7 +90,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -98,7 +100,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:21
+medusa/dist/models/region.d.ts:21
 
 ___
 
@@ -108,7 +110,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:15
+medusa/dist/models/region.d.ts:15
 
 ___
 
@@ -122,17 +124,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:22
+medusa/dist/models/region.d.ts:22
 
 ___
 
@@ -142,7 +144,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:9
+medusa/dist/models/region.d.ts:9
 
 ___
 
@@ -152,7 +154,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:20
+medusa/dist/models/region.d.ts:20
 
 ___
 
@@ -162,7 +164,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:14
+medusa/dist/models/region.d.ts:14
 
 ___
 
@@ -172,7 +174,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:19
+medusa/dist/models/region.d.ts:19
 
 ___
 
@@ -182,7 +184,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:18
+medusa/dist/models/region.d.ts:18
 
 ___
 
@@ -192,7 +194,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:12
+medusa/dist/models/region.d.ts:12
 
 ___
 
@@ -202,13 +204,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/region.d.ts:13
+medusa/dist/models/region.d.ts:13
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -216,4 +218,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7

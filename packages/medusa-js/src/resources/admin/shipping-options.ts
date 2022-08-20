@@ -47,9 +47,12 @@ class AdminShippingOptionsResource extends BaseResource {
    * @param customHeaders
    * @returns deleted response
    */
-  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminShippingOptionsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminShippingOptionsDeleteRes> {
     const path = `/admin/shipping-options/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -58,9 +61,12 @@ class AdminShippingOptionsResource extends BaseResource {
    * @param customHeaders
    * @returns the shipping option with the given id
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminShippingOptionsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminShippingOptionsRes> {
     const path = `/admin/shipping-options/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -80,7 +86,7 @@ class AdminShippingOptionsResource extends BaseResource {
       path = `/admin/shipping-options?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

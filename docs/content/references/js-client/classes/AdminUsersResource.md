@@ -10,104 +10,112 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
-**`description`** creates a user with the provided information
+**`Description`**
+
+creates a user with the provided information
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminCreateUserPayload`](../modules/internal.md#admincreateuserpayload) | user creation request body |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminCreateUserPayload`](../modules/internal-27.md#admincreateuserpayload) | user creation request body |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
 created user
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:61](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L61)
+[medusa-js/src/resources/admin/users.ts:64](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L64)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal.md#deleteresponse)\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
-**`description`** deletes a user
+**`Description`**
+
+deletes a user
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the user to be deleted |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal.md#deleteresponse)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
 delete response
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:88](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L88)
+[medusa-js/src/resources/admin/users.ts:94](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L94)
 
 ___
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUsersListRes`](../modules/internal.md#adminuserslistres)\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUsersListRes`](../modules/internal-27.md#adminuserslistres)\>
 
-**`description`** lists all users
+**`Description`**
+
+lists all users
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUsersListRes`](../modules/internal.md#adminuserslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUsersListRes`](../modules/internal-27.md#adminuserslistres)\>
 
 a list of all users
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:97](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L97)
+[medusa-js/src/resources/admin/users.ts:106](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L106)
 
 ___
 
 ### resetPassword
 
-▸ **resetPassword**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+▸ **resetPassword**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
-**`description`** resets the users password given the correct token.
+**`Description`**
+
+resets the users password given the correct token.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminResetPasswordRequest`](internal.AdminResetPasswordRequest.md) | reset password information. |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminResetPasswordRequest`](internal-27.AdminResetPasswordRequest.md) | reset password information. |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:36](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L36)
+[medusa-js/src/resources/admin/users.ts:36](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L36)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
 Retrieves a given user
 
@@ -116,17 +124,17 @@ Retrieves a given user
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the user |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
 the user
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:50](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L50)
+[medusa-js/src/resources/admin/users.ts:50](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L50)
 
 ___
 
@@ -134,14 +142,16 @@ ___
 
 ▸ **sendResetPasswordToken**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
 
-**`description`** resets password by re-sending password token.
+**`Description`**
+
+resets password by re-sending password token.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminResetPasswordTokenRequest`](internal.AdminResetPasswordTokenRequest.md) | payload for generating reset-password token. |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminResetPasswordTokenRequest`](internal-27.AdminResetPasswordTokenRequest.md) | payload for generating reset-password token. |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
@@ -149,30 +159,32 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:22](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L22)
+[medusa-js/src/resources/admin/users.ts:22](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L22)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
-**`description`** updates a given user
+**`Description`**
+
+updates a given user
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the user to update |
-| `payload` | [`AdminUpdateUserPayload`](../modules/internal.md#adminupdateuserpayload) | user update request body |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminUpdateUserPayload`](../modules/internal-27.md#adminupdateuserpayload) | user update request body |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal.md#adminuserres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUserRes`](../modules/internal-27.md#adminuserres)\>
 
 the updated user
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/users.ts:73](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/users.ts#L73)
+[medusa-js/src/resources/admin/users.ts:79](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/users.ts#L79)

@@ -1,0 +1,29 @@
+delete:
+  operationId: PostRegionsRegionFulfillmentProvidersProvider
+  summary: Remove Fulfillment Provider
+  description: Removes a Fulfillment Provider.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Region.
+      schema:
+        type: string
+    - in: path
+      name: provider_id
+      required: true
+      description: The ID of the Fulfillment Provider.
+      schema:
+        type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml

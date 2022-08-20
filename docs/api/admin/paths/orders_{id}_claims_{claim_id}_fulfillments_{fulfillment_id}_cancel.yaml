@@ -1,0 +1,35 @@
+post:
+  operationId: PostOrdersClaimFulfillmentsCancel
+  summary: Cancels a fulfilmment related to a Claim
+  description: Registers a Fulfillment as canceled.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order which the Claim relates to.
+      schema:
+        type: string
+    - in: path
+      name: claim_id
+      required: true
+      description: The ID of the Claim which the Fulfillment relates to.
+      schema:
+        type: string
+    - in: path
+      name: fulfillment_id
+      required: true
+      description: The ID of the Fulfillment.
+      schema:
+        type: string
+  tags:
+    - Fulfillment
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

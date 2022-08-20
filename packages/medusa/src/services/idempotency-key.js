@@ -1,12 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { v4 } from "uuid"
+import { TransactionBaseService } from "../interfaces"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
-class IdempotencyKeyService extends BaseService {
+class IdempotencyKeyService extends TransactionBaseService {
   constructor({ manager, idempotencyKeyRepository }) {
-    super()
+    super({ manager, idempotencyKeyRepository })
 
     /** @private @constant {EntityManager} */
     this.manager_ = manager

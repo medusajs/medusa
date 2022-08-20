@@ -1,6 +1,8 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/cancel
@@ -9,8 +11,8 @@ import { OrderService, SwapService } from "../../../../services"
  * description: "Cancels a Swap"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * tags:
  *   - Swap
  * responses:
@@ -21,7 +23,7 @@ import { OrderService, SwapService } from "../../../../services"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/swap"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, swap_id } = req.params
@@ -38,7 +40,10 @@ export default async (req, res) => {
     )
   }
 
-  await swapService.cancel(swap_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await swapService.withTransaction(transactionManager).cancel(swap_id)
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

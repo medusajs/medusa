@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
 /**
@@ -7,8 +8,8 @@ import PriceListService from "../../../../services/price-list"
  * description: "Delete all the prices related to a specific product in a price list"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) product_id=* {string} The id of the product from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
+ *   - (path) product_id=* {string} The ID of the product from which the money amount will be deleted.
  * tags:
  *   - Price List
  * responses:
@@ -19,16 +20,18 @@ import PriceListService from "../../../../services/price-list"
  *         schema:
  *           properties:
  *              ids:
- *               type: number
+ *               type: array
  *               description: The price ids that have been deleted.
- *             count:
- *               type: number
- *               description: The number of prices that have been deleted.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *             deleted:
- *               type: boolean
+ *               items:
+ *                 type: string
+ *              object:
+ *                type: string
+ *                description: The type of the object that was deleted.
+ *                default: money-amount
+ *              deleted:
+ *                type: boolean
+ *                description: Whether or not the items were deleted.
+ *                default: true
  */
 export default async (req, res) => {
   const { id, product_id } = req.params
@@ -36,9 +39,14 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const [deletedPriceIds] = await priceListService.deleteProductPrices(id, [
-    product_id,
-  ])
+  const manager: EntityManager = req.scope.resolve("manager")
+  const [deletedPriceIds] = await manager.transaction(
+    async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .deleteProductPrices(id, [product_id])
+    }
+  )
 
   return res.json({
     ids: deletedPriceIds,
