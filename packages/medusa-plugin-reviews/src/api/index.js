@@ -1,10 +1,8 @@
 import { Router } from "express"
-import store from "./routes"
+import routes from "./routes"
 
 export default (container) => {
   const app = Router()
-
-  store(app)
-
+  routes(app)
   return app
 }

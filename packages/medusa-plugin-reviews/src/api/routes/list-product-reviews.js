@@ -1,8 +1,4 @@
-import { Type } from "class-transformer"
-import { IsInt, IsOptional, IsString, ValidateNested } from "class-validator"
-import ProductReviewService from "../../services/product-review"
-import { validator } from "@medusajs/medusa/dist/utils/validator"
-import { DateComparisonOperator } from "@medusajs/medusa/dist/types/common"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
  * @oas [get] /reviews
@@ -29,12 +25,29 @@ import { DateComparisonOperator } from "@medusajs/medusa/dist/types/common"
  *              $ref: "#/components/schemas/product_review"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetProductReviewsParams, req.query)
-  const { limit, offset, ...filterableFields } = validated
+  const schema = Validator.object().keys({
+    limit: Validator.number().optional().default(10),
+    offset: Validator.number().optional().default(0),
+    created_at: Validator.date().optional(),
+    updated_at: Validator.date().optional(),
+    product_id: Validator.string().optional(),
+    email: Validator.string().optional(),
+  })
 
-  const productReviewService: ProductReviewService = req.scope.resolve(
-    "productReviewService"
-  )
+  const { value, error } = schema.validate(req.query)
+
+  if (error) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      error.details.join(", ")
+    )
+  }
+
+  console.log(value)
+
+  const { limit, offset, ...filterableFields } = value
+
+  const productReviewService = req.scope.resolve("productReviewService")
 
   const listConfig = {
     skip: offset,
@@ -47,36 +60,4 @@ export default async (req, res) => {
   )
 
   res.status(200).json({ reviews, count, limit, offset })
-}
-
-export class StoreGetProductReviewsParams {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit?: number = 10
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  offset?: number = 0
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  @Type(() => String)
-  product_id?: string
-
-  @IsString()
-  @IsOptional()
-  @Type(() => String)
-  email?: string
 }

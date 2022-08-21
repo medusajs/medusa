@@ -1,13 +1,5 @@
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity, Product } from "@medusajs/medusa"
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-} from "typeorm"
-import { generateEntityId } from "@medusajs/medusa/dist/utils"
 
 @Entity()
 export class ProductReview extends BaseEntity {
@@ -30,11 +22,6 @@ export class ProductReview extends BaseEntity {
 
   @Column()
   name: string
-
-  @BeforeInsert()
-  private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "prev")
-  }
 }
 
 /**

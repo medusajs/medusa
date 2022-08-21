@@ -1,8 +1,4 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator"
-import { Request, Response } from "express"
-import ProductReviewService from "../../services/product-review"
-import { CreateProductReviewInput } from "../../types/product-review"
-import { validator } from "@medusajs/medusa/dist/utils/validator"
+import { MedusaError, Validator } from "medusa-core-utils"
 
 /**
  * @oas [post] /reviews
@@ -46,37 +42,28 @@ import { validator } from "@medusajs/medusa/dist/utils/validator"
  *            review:
  *              $ref: "#/components/schemas/product_review"
  */
-export default async (req: Request, res: Response) => {
-  const validatedBody = await validator(StorePostProductReviewsReq, req)
+export default async (req, res) => {
+  const schema = Validator.object().keys({
+    product_id: Validator.string().required(),
+    rating: Validator.number().required(),
+    body: Validator.string().optional(),
+    email: Validator.string().required(),
+    name: Validator.string().optional(),
+  })
 
-  const productReviewService: ProductReviewService = req.scope.resolve(
-    "productReviewService"
-  )
+  const { value, error } = schema.validate(req.body)
 
-  const productReview = await productReviewService.create(
-    validatedBody as CreateProductReviewInput
-  )
+  if (error) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      error.details.join(", ")
+    )
+  }
+
+  console.log(value)
+
+  const productReviewService = req.scope.resolve("productReviewService")
+
+  const productReview = await productReviewService.create(value)
   res.status(200).json({ productReview })
-}
-
-export class StorePostProductReviewsReq {
-  @IsString()
-  @IsNotEmpty()
-  product_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  rating: number
-
-  @IsString()
-  @IsOptional()
-  body?: string
-
-  @IsString()
-  @IsNotEmpty()
-  email: string
-
-  @IsString()
-  @IsOptional()
-  name?: string
 }

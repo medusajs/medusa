@@ -1,51 +1,28 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import {
-  FindWithoutRelationsOptions,
-  ProductReviewRepository,
-} from "../repositories/product-review"
-import { ProductReview } from "../models/product-review"
-import {
-  CreateProductReviewInput,
-  FilterableProductReviewProps,
-  FindProductReviewConfig,
-} from "../types/product-review"
-import { EventBusService, TransactionBaseService } from "@medusajs/medusa"
-import { Selector } from "@medusajs/medusa/dist/types/common"
-import { buildQuery } from "@medusajs/medusa/dist/utils"
-import { formatException } from "@medusajs/medusa/dist/utils/exception-formatter"
+import { BaseService } from "medusa-interfaces"
+import { buildQuery } from "../utils/build-query"
 
-type InjectedDependencies = {
-  manager: EntityManager
-  productReviewRepository: typeof ProductReviewRepository
-  eventBusService: EventBusService
-}
-
-class ProductReviewService extends TransactionBaseService<
-  ProductReviewService
-> {
-  static readonly IndexName = `product-reviews`
-
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
-  protected readonly productReviewRepository_: typeof ProductReviewRepository
-  protected readonly eventBus_: EventBusService
-
-  constructor({
-    manager,
-    productReviewRepository,
-    eventBusService,
-  }: InjectedDependencies) {
-    super({
-      manager,
-      productReviewRepository,
-      eventBusService,
-    })
+class ProductReviewService extends BaseService {
+  constructor({ manager, productReviewModel }) {
+    super()
 
     this.manager_ = manager
-    this.productReviewRepository_ = productReviewRepository
-    this.eventBus_ = eventBusService
+    this.productReviewModel_ = productReviewModel
+  }
+
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new ProductReviewService({
+      manager: transactionManager,
+      productReviewModel: this.productReviewModel_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -57,17 +34,15 @@ class ProductReviewService extends TransactionBaseService<
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductReviewProps | Selector<ProductReview> = {},
-    config: FindProductReviewConfig = {
+    selector = {},
+    config = {
       relations: [],
       skip: 0,
       take: 20,
     }
-  ): Promise<ProductReview[]> {
-    return await this.atomicPhase_(async (manager) => {
-      const repository = manager.getCustomRepository(
-        this.productReviewRepository_
-      )
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      const repository = manager.getRepository(this.productReviewModel_)
 
       const { q, query, relations } = this.prepareListQuery_(selector, config)
       if (q) {
@@ -95,17 +70,15 @@ class ProductReviewService extends TransactionBaseService<
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductReviewProps | Selector<ProductReview>,
-    config: FindProductReviewConfig = {
+    selector = {},
+    config = {
       relations: [],
       skip: 0,
       take: 20,
     }
-  ): Promise<[ProductReview[], number]> {
-    return await this.atomicPhase_(async (manager) => {
-      const repository = manager.getCustomRepository(
-        this.productReviewRepository_
-      )
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      const repository = manager.getRepository(this.productReviewModel_)
 
       const { q, query, relations } = this.prepareListQuery_(selector, config)
 
@@ -126,11 +99,10 @@ class ProductReviewService extends TransactionBaseService<
    * @param {object} selector - the selector to choose customer product reviews by
    * @return {Promise} the result of the count operation
    */
-  async count(selector: Selector<ProductReview> = {}): Promise<number> {
-    return await this.atomicPhase_(async (manager) => {
-      const repository = manager.getCustomRepository(
-        this.productReviewRepository_
-      )
+  async count(selector = {}) {
+    return this.atomicPhase_(async (manager) => {
+      const repository = manager.getRepository(this.productReviewModel_)
+
       const query = buildQuery(selector)
       return await repository.count(query)
     })
@@ -140,17 +112,11 @@ class ProductReviewService extends TransactionBaseService<
    * Gets a customer product review by product_id.
    * Throws in case of DB Error and if customer product reviews was not found.
    * @param productId - id of the product to get.
-   * @param config - object that defines what should be included in the
-   *   query response
    * @return the result of the find one operation.
    */
-  async retrieve(
-    productId: string,
-    config: FindProductReviewConfig = {}
-  ): Promise<ProductReview> {
-    return await this.atomicPhase_(async () => {
-      return await this.retrieve_({ product_id: productId }, config)
-    })
+  async retrieve(productId) {
+    const repository = this.manager_.getRepository(this.productReviewModel_)
+    return await repository.findOne({ where: { product_id: productId } })
   }
 
   /**
@@ -160,13 +126,8 @@ class ProductReviewService extends TransactionBaseService<
    * @param config - details about what to get from the product
    * @return the result of the find one operation.
    */
-  async retrieveByEmail(
-    email: string,
-    config: FindProductReviewConfig = {}
-  ): Promise<ProductReview> {
-    return await this.atomicPhase_(async () => {
-      return await this.retrieve_({ email: email }, config)
-    })
+  async retrieveByEmail(email, config = {}) {
+    return await this.retrieve_({ email: email }, config)
   }
 
   /**
@@ -177,20 +138,15 @@ class ProductReviewService extends TransactionBaseService<
    *   query response
    * @return the result of the find one operation.
    */
-  async retrieve_(
-    selector: Selector<ProductReview>,
-    config: FindProductReviewConfig = {}
-  ): Promise<ProductReview> {
-    return await this.atomicPhase_(async (manager) => {
-      const repository = manager.getCustomRepository(
-        this.productReviewRepository_
-      )
+  async retrieve_(selector, config = {}) {
+    return this.atomicPhase_(async (manager) => {
+      const repository = manager.getRepository(this.productReviewModel_)
 
       const { relations, ...query } = buildQuery(selector, config)
 
       const productReview = await repository.findOneWithRelations(
         relations,
-        query as FindWithoutRelationsOptions
+        query
       )
 
       if (!productReview) {
@@ -213,13 +169,9 @@ class ProductReviewService extends TransactionBaseService<
    * @param productReviewObject - the product to create
    * @return resolves to the creation result.
    */
-  async create(
-    productReviewObject: CreateProductReviewInput
-  ): Promise<ProductReview> {
-    return await this.atomicPhase_(async (manager) => {
-      const repository = manager.getCustomRepository(
-        this.productReviewRepository_
-      )
+  async create(productReviewObject) {
+    return this.atomicPhase_(async (manager) => {
+      const repository = manager.getRepository(this.productReviewModel_)
 
       const { ...rest } = productReviewObject
 
@@ -229,7 +181,7 @@ class ProductReviewService extends TransactionBaseService<
 
         return await this.retrieve(productReview.id)
       } catch (error) {
-        throw formatException(error)
+        console.log(error)
       }
     })
   }
@@ -241,14 +193,7 @@ class ProductReviewService extends TransactionBaseService<
    * @return an object containing the query, relations and free-text
    *   search param.
    */
-  protected prepareListQuery_(
-    selector: FilterableProductReviewProps | Selector<ProductReview>,
-    config: FindProductReviewConfig
-  ): {
-    q: string
-    relations: (keyof ProductReview)[]
-    query: FindWithoutRelationsOptions
-  } {
+  prepareListQuery_(selector, config) {
     let q
     if ("q" in selector) {
       q = selector.q
@@ -265,12 +210,12 @@ class ProductReviewService extends TransactionBaseService<
       query.select = config.select
     }
 
-    const rels = query.relations
+    const relations = query.relations
     delete query.relations
 
     return {
-      query: query as FindWithoutRelationsOptions,
-      relations: rels as (keyof ProductReview)[],
+      query: query,
+      relations: relations,
       q,
     }
   }
