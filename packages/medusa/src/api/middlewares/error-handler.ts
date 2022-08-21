@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
 import { NextFunction, Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { Logger } from "../../types/global"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
@@ -33,6 +33,7 @@ export default () => {
       case QUERY_RUNNER_RELEASED:
       case TRANSACTION_STARTED:
       case TRANSACTION_NOT_STARTED:
+      case MedusaError.Types.CONFLICT:
         statusCode = 409
         errObj.code = INVALID_STATE_ERROR
         errObj.message =

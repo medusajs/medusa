@@ -1,9 +1,11 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+
 import { AddressPayload } from "../../../../types/common"
+import CustomerService from "../../../../services/customer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/me
@@ -26,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
  *               - $ref: "#/components/schemas/address"
+ *                 description: The full billing address object
+ *               - type: string
+ *                 description: The ID of an existing billing address
  *           password:
  *             description: "The Customer's password."
  *             type: string
@@ -56,7 +61,12 @@ export default async (req, res) => {
   const validated = await validator(StorePostCustomersCustomerReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  await customerService.update(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .update(id, validated)
+  })
 
   const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,

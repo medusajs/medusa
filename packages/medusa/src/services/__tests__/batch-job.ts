@@ -22,7 +22,7 @@ describe('BatchJobService', () => {
     manager: MockManager,
     eventBusService: eventBusServiceMock,
     batchJobRepository: batchJobRepositoryMock
-  })
+  } as any)
 
   afterEach(() => {
     jest.clearAllMocks()

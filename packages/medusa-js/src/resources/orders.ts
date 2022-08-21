@@ -10,9 +10,12 @@ class OrdersResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreOrdersRes>}
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreOrdersRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreOrdersRes> {
     const path = `/store/orders/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -21,9 +24,12 @@ class OrdersResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreOrdersRes>}
    */
-  retrieveByCartId(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreOrdersRes> {
+  retrieveByCartId(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreOrdersRes> {
     const path = `/store/orders/cart/${cart_id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -32,7 +38,10 @@ class OrdersResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreOrdersRes>}
    */
-  lookupOrder(payload: StoreGetOrdersParams, customHeaders: Record<string, any> = {}): ResponsePromise<StoreOrdersRes> {
+  lookupOrder(
+    payload: StoreGetOrdersParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreOrdersRes> {
     let path = `/store/orders?`
 
     const queryString = qs.stringify(payload)

@@ -2,11 +2,9 @@
 
 Provides layer to manipulate customers.
 
-**`implements`** {BaseService}
-
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`CustomerService`](CustomerService.md)\>
 
   ↳ **`CustomerService`**
 
@@ -20,17 +18,103 @@ Provides layer to manipulate customers.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;CustomerService\&gt;.constructor
 
 #### Defined in
 
-[services/customer.js:20](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L20)
+[packages/medusa/src/services/customer.ts:39](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L39)
 
 ## Properties
+
+### addressRepository\_
+
+• `Protected` `Readonly` **addressRepository\_**: typeof `AddressRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:27](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L27)
+
+___
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+
+___
+
+### customerRepository\_
+
+• `Protected` `Readonly` **customerRepository\_**: typeof `CustomerRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:26](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L26)
+
+___
+
+### eventBusService\_
+
+• `Protected` `Readonly` **eventBusService\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:28](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L28)
+
+___
+
+### manager\_
+
+• `Protected` `Readonly` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:30](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L30)
+
+___
+
+### transactionManager\_
+
+• `Protected` `Readonly` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:31](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L31)
+
+___
 
 ### Events
 
@@ -46,52 +130,91 @@ BaseService.constructor
 
 #### Defined in
 
-[services/customer.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L14)
+[packages/medusa/src/services/customer.ts:33](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L33)
 
 ## Methods
 
 ### addAddress
 
-▸ **addAddress**(`customerId`, `address`): `Promise`<`any`\>
+▸ **addAddress**(`customerId`, `address`): `Promise`<`Address` \| `Customer`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customerId` | `any` |
-| `address` | `any` |
+| `customerId` | `string` |
+| `address` | `AddressCreatePayload` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Address` \| `Customer`\>
 
 #### Defined in
 
-[services/customer.js:479](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L479)
+[packages/medusa/src/services/customer.ts:461](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L461)
+
+___
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
 
 ___
 
 ### count
 
-▸ **count**(): `Promise`<`any`\>
+▸ **count**(): `Promise`<`number`\>
 
 Return the total number of documents in database
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`number`\>
 
 the result of the count operation
 
 #### Defined in
 
-[services/customer.js:192](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L192)
+[packages/medusa/src/services/customer.ts:158](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L158)
 
 ___
 
 ### create
 
-▸ **create**(`customer`): `Promise`<`any`\>
+▸ **create**(`customer`): `Promise`<`Customer`\>
 
 Creates a customer from an email - customers can have accounts associated,
 e.g. to login and view order history, etc. If a password is provided the
@@ -102,49 +225,23 @@ used to hold details of customers.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `customer` | `any` | the customer to create |
+| `customer` | `CreateCustomerInput` | the customer to create |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Customer`\>
 
 the result of create
 
 #### Defined in
 
-[services/customer.js:290](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L290)
-
-___
-
-### decorate
-
-▸ **decorate**(`customer`, `fields?`, `expandFields?`): `Customer`
-
-Decorates a customer.
-
-#### Parameters
-
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `customer` | `Customer` | `undefined` | the cart to decorate. |
-| `fields` | `string`[] | `[]` | the fields to include. |
-| `expandFields` | `string`[] | `[]` | fields to expand. |
-
-#### Returns
-
-`Customer`
-
-return the decorated customer.
-
-#### Defined in
-
-[services/customer.js:547](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L547)
+[packages/medusa/src/services/customer.ts:245](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L245)
 
 ___
 
 ### delete
 
-▸ **delete**(`customerId`): `Promise`<`any`\>
+▸ **delete**(`customerId`): `Promise`<`void` \| `Customer`\>
 
 Deletes a customer from a given customer id.
 
@@ -156,19 +253,19 @@ Deletes a customer from a given customer id.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void` \| `Customer`\>
 
 the result of the delete operation.
 
 #### Defined in
 
-[services/customer.js:523](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L523)
+[packages/medusa/src/services/customer.ts:509](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L509)
 
 ___
 
 ### generateResetPasswordToken
 
-▸ **generateResetPasswordToken**(`customerId`): `string`
+▸ **generateResetPasswordToken**(`customerId`): `Promise`<`string`\>
 
 Generate a JSON Web token, that will be sent to a customer, that wishes to
 reset password.
@@ -184,13 +281,13 @@ which is always 15 minutes.
 
 #### Returns
 
-`string`
+`Promise`<`string`\>
 
 the generated JSON web token
 
 #### Defined in
 
-[services/customer.js:67](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L67)
+[packages/medusa/src/services/customer.ts:64](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L64)
 
 ___
 
@@ -214,74 +311,74 @@ hashed password
 
 #### Defined in
 
-[services/customer.js:277](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L277)
+[packages/medusa/src/services/customer.ts:232](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L232)
 
 ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<`any`\>
+▸ **list**(`selector?`, `config?`): `Promise`<`Customer`[]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the config object containing query settings |
+| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } | the query object for find |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Customer`[]\>
 
 the result of the find operation
 
 #### Defined in
 
-[services/customer.js:106](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L106)
+[packages/medusa/src/services/customer.ts:107](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L107)
 
 ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<`any`\>
+▸ **listAndCount**(`selector`, `config?`): `Promise`<[`Customer`[], `number`]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
+| `selector` | `Selector`<`Customer`\> & { `q?`: `string`  } | the query object for find |
 | `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<[`Customer`[], `number`]\>
 
 the result of the find operation
 
 #### Defined in
 
-[services/customer.js:147](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L147)
+[packages/medusa/src/services/customer.ts:131](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L131)
 
 ___
 
 ### removeAddress
 
-▸ **removeAddress**(`customerId`, `addressId`): `Promise`<`any`\>
+▸ **removeAddress**(`customerId`, `addressId`): `Promise`<`void`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customerId` | `any` |
-| `addressId` | `any` |
+| `customerId` | `string` |
+| `addressId` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 #### Defined in
 
-[services/customer.js:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L460)
+[packages/medusa/src/services/customer.ts:444](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L444)
 
 ___
 
@@ -296,7 +393,7 @@ Gets a customer by id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `customerId` | `string` | the id of the customer to get. |
-| `config` | `any` | the config object containing query settings |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
@@ -306,7 +403,7 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:205](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L205)
+[packages/medusa/src/services/customer.ts:220](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L220)
 
 ___
 
@@ -321,7 +418,7 @@ Gets a customer by email.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `email` | `string` | the email of the customer to get. |
-| `config` | `any` | the config object containing query settings |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
@@ -331,7 +428,7 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:230](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L230)
+[packages/medusa/src/services/customer.ts:194](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L194)
 
 ___
 
@@ -346,7 +443,7 @@ Gets a customer by phone.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `phone` | `string` | the phone of the customer to get. |
-| `config` | `any` | the config object containing query settings |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
@@ -356,13 +453,58 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:254](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L254)
+[packages/medusa/src/services/customer.ts:207](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L207)
+
+___
+
+### retrieve\_
+
+▸ `Private` **retrieve_**(`selector`, `config?`): `Promise`<`Customer`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `selector` | `Selector`<`Customer`\> |
+| `config` | `FindConfig`<`Customer`\> |
+
+#### Returns
+
+`Promise`<`Customer`\>
+
+#### Defined in
+
+[packages/medusa/src/services/customer.ts:164](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L164)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
 ### update
 
-▸ **update**(`customerId`, `update`): `Promise`<`any`\>
+▸ **update**(`customerId`, `update`): `Promise`<`Customer`\>
 
 Updates a customer.
 
@@ -371,45 +513,45 @@ Updates a customer.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `customerId` | `string` | the id of the variant. Must be a string that   can be casted to an ObjectId |
-| `update` | `any` | an object with the update values. |
+| `update` | `UpdateCustomerInput` | an object with the update values. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Customer`\>
 
 resolves to the update result.
 
 #### Defined in
 
-[services/customer.js:346](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L346)
+[packages/medusa/src/services/customer.ts:300](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L300)
 
 ___
 
 ### updateAddress
 
-▸ **updateAddress**(`customerId`, `addressId`, `address`): `Promise`<`any`\>
+▸ **updateAddress**(`customerId`, `addressId`, `address`): `Promise`<`Address`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customerId` | `any` |
-| `addressId` | `any` |
-| `address` | `any` |
+| `customerId` | `string` |
+| `addressId` | `string` |
+| `address` | `StorePostCustomersCustomerAddressesAddressReq` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Address`\>
 
 #### Defined in
 
-[services/customer.js:441](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L441)
+[packages/medusa/src/services/customer.ts:416](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L416)
 
 ___
 
 ### updateBillingAddress\_
 
-▸ **updateBillingAddress_**(`customer`, `addressOrId`, `addrRepo`): `Promise`<`any`\>
+▸ **updateBillingAddress_**(`customer`, `addressOrId`): `Promise`<`void`\>
 
 Updates the customers' billing address.
 
@@ -418,35 +560,38 @@ Updates the customers' billing address.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `customer` | `Customer` | the Customer to update |
-| `addressOrId` | `any` | the value to set the billing address to |
-| `addrRepo` | `any` | address repository |
+| `addressOrId` | `undefined` \| `string` \| { `address_1?`: ``null`` \| `string` ; `address_2?`: ``null`` \| `string` ; `city?`: ``null`` \| `string` ; `company?`: ``null`` \| `string` ; `country?`: ``null`` \| { id?: number \| undefined; iso\_2?: string \| undefined; iso\_3?: string \| undefined; num\_code?: number \| undefined; name?: string \| undefined; display\_name?: string \| undefined; region\_id?: string \| ... 1 more ... \| undefined; region?: { ...; } \| undefined; } ; `country_code?`: ``null`` \| `string` ; `created_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `customer?`: ``null`` \| { email?: string \| undefined; first\_name?: string \| undefined; last\_name?: string \| undefined; billing\_address\_id?: string \| null \| undefined; billing\_address?: { customer\_id?: string \| null \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 10 more ...; updated\_at?: { ...; } \| undef... ; `customer_id?`: ``null`` \| `string` ; `deleted_at?`: ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } ; `first_name?`: ``null`` \| `string` ; `id?`: `string` ; `last_name?`: ``null`` \| `string` ; `metadata?`: { [x: string]: unknown; } ; `phone?`: ``null`` \| `string` ; `postal_code?`: ``null`` \| `string` ; `province?`: ``null`` \| `string` ; `updated_at?`: { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; }  } | the value to set the billing address to |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 the result of the update operation
 
 #### Defined in
 
-[services/customer.js:408](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L408)
+[packages/medusa/src/services/customer.ts:364](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/customer.ts#L364)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`CustomerService`](CustomerService.md)
+▸ **withTransaction**(`transactionManager?`): [`CustomerService`](CustomerService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `any` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`CustomerService`](CustomerService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/customer.js:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L41)
+[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

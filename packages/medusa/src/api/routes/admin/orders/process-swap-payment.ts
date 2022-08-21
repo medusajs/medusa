@@ -1,6 +1,7 @@
-import { EntityManager } from "typeorm"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
@@ -9,10 +10,10 @@ import { OrderService, SwapService } from "../../../../services"
  * description: "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

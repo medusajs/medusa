@@ -1,6 +1,4 @@
-import { Request, Response } from "express"
 import { Type } from "class-transformer"
-import { MedusaError } from "medusa-core-utils"
 import {
   IsEnum,
   IsNumber,
@@ -8,6 +6,8 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import {
   FulfillmentStatus,
   OrderStatus,
@@ -37,10 +37,10 @@ import { DateComparisonOperator } from "../../../../types/common"
  *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (query) limit {integer} How many addresses to return.
- *   - (query) offset {integer} The offset in the resulting addresses.
- *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting addresses.
- *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting addresses.
+ *   - (query) limit=10 {integer} How many orders to return.
+ *   - (query) offset=0 {integer} The offset in the resulting orders.
+ *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
+ *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
  * tags:
  *   - Customer
  * responses:
@@ -50,19 +50,19 @@ import { DateComparisonOperator } from "../../../../types/common"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The total number of Orders.
- *               type: integer
- *             offset:
- *               description: The offset for pagination.
- *               type: integer
- *             limit:
- *               description: The maxmimum number of Orders to return,
- *               type: integer
  *             orders:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/orders"
+ *                 $ref: "#/components/schemas/order"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res: Response) => {
   const id: string | undefined = req.user?.customer_id

@@ -1,5 +1,4 @@
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, PricingService } from "../../../../services"
+import { PricingService, ProductService } from "../../../../services"
 
 /**
  * @oas [get] /products/{id}
@@ -8,7 +7,7 @@ import { ProductService, PricingService } from "../../../../services"
  * description: "Retrieves a Product."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
+ *   - (path) id=* {string} The ID of the Product.
  * tags:
  *   - Product
  * responses:
@@ -27,10 +26,7 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
 
   const [product] = await pricingService.setProductPrices([rawProduct])
 

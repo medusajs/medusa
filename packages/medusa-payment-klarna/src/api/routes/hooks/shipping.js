@@ -16,6 +16,7 @@ export default async (req, res) => {
         "shipping_methods",
         "shipping_methods.shipping_option",
         "items",
+        "items.adjustments",
         "items.variant",
         "items.variant.product",
       ],
@@ -27,21 +28,19 @@ export default async (req, res) => {
     )
 
     const ids = selected_shipping_option.id.split(".")
-    await Promise.all(
-      ids.map(async (id) => {
-        const option = shippingOptions.find((so) => so.id === id)
-
-        if (option) {
-          await cartService.addShippingMethod(cart.id, option.id, option.data)
-        }
-      })
-    )
+    for (const id of ids) {
+      const option = shippingOptions.find((so) => so.id === id)
+      if (option) {
+        await cartService.addShippingMethod(cart.id, option.id, option.data)
+      }
+    }
 
     const newCart = await cartService.retrieve(cart.id, {
       select: [
         "gift_card_total",
         "subtotal",
         "total",
+        "shipping_total",
         "tax_total",
         "discount_total",
         "subtotal",
@@ -53,12 +52,14 @@ export default async (req, res) => {
         "shipping_methods.shipping_option",
         "region",
         "items",
+        "items.adjustments",
         "items.variant",
         "items.variant.product",
       ],
     })
 
     const order = await klarnaProviderService.cartToKlarnaOrder(newCart)
+
     res.json(order)
   } catch (error) {
     throw error

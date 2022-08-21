@@ -24,9 +24,12 @@ type UserServiceProps = {
  * Provides layer to manipulate users.
  * @extends BaseService
  */
-class UserService extends TransactionBaseService<UserService> {
+class UserService extends TransactionBaseService {
   static Events = {
     PASSWORD_RESET: "user.password_reset",
+    CREATED: "user.created",
+    UPDATED: "user.updated",
+    DELETED: "user.deleted",
   }
 
   protected manager_: EntityManager
@@ -66,12 +69,9 @@ class UserService extends TransactionBaseService<UserService> {
    * @return {Promise} the result of the find operation
    */
   async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const userRepo = transactionManager.getCustomRepository(
-        this.userRepository_
-      )
-      return await userRepo.find(buildQuery(selector, config))
-    })
+    const manager = this.manager_
+    const userRepo = manager.getCustomRepository(this.userRepository_)
+    return await userRepo.find(buildQuery(selector, config))
   }
 
   /**
@@ -82,23 +82,20 @@ class UserService extends TransactionBaseService<UserService> {
    * @return {Promise<User>} the user document.
    */
   async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const userRepo = transactionManager.getCustomRepository(
-        this.userRepository_
+    const manager = this.manager_
+    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const query = buildQuery({ id: userId }, config)
+
+    const user = await userRepo.findOne(query)
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with id: ${userId} was not found`
       )
-      const query = buildQuery({ id: userId }, config)
+    }
 
-      const user = await userRepo.findOne(query)
-
-      if (!user) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `User with id: ${userId} was not found`
-        )
-      }
-
-      return user
-    })
+    return user
   }
 
   /**
@@ -112,25 +109,22 @@ class UserService extends TransactionBaseService<UserService> {
     apiToken: string,
     relations: string[] = []
   ): Promise<User> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const userRepo = transactionManager.getCustomRepository(
-        this.userRepository_
-      )
+    const manager = this.manager_
+    const userRepo = manager.getCustomRepository(this.userRepository_)
 
-      const user = await userRepo.findOne({
-        where: { api_token: apiToken },
-        relations,
-      })
-
-      if (!user) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `User with api token: ${apiToken} was not found`
-        )
-      }
-
-      return user
+    const user = await userRepo.findOne({
+      where: { api_token: apiToken },
+      relations,
     })
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with api token: ${apiToken} was not found`
+      )
+    }
+
+    return user
   }
 
   /**
@@ -144,23 +138,20 @@ class UserService extends TransactionBaseService<UserService> {
     email: string,
     config: FindConfig<User> = {}
   ): Promise<User> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const userRepo = transactionManager.getCustomRepository(
-        this.userRepository_
+    const manager = this.manager_
+    const userRepo = manager.getCustomRepository(this.userRepository_)
+
+    const query = buildQuery({ email: email.toLowerCase() }, config)
+    const user = await userRepo.findOne(query)
+
+    if (!user) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User with email: ${email} was not found`
       )
+    }
 
-      const query = buildQuery({ email: email.toLowerCase() }, config)
-      const user = await userRepo.findOne(query)
-
-      if (!user) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `User with email: ${email} was not found`
-        )
-      }
-
-      return user
-    })
+    return user
   }
 
   /**
@@ -198,7 +189,13 @@ class UserService extends TransactionBaseService<UserService> {
 
       const created = userRepo.create(createData)
 
-      return await userRepo.save(created)
+      const newUser = await userRepo.save(created)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.CREATED, { id: newUser.id })
+
+      return newUser
     })
   }
 
@@ -238,7 +235,13 @@ class UserService extends TransactionBaseService<UserService> {
         user[key as keyof User] = value
       }
 
-      return await userRepo.save(user)
+      const updatedUser = await userRepo.save(user)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.UPDATED, { id: updatedUser.id })
+
+      return updatedUser
     })
   }
 
@@ -260,6 +263,8 @@ class UserService extends TransactionBaseService<UserService> {
       }
 
       await userRepo.softRemove(user)
+
+      await this.eventBus_.emit(UserService.Events.DELETED, { id: user.id })
 
       return Promise.resolve()
     })

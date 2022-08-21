@@ -1,0 +1,22 @@
+get:
+  operationId: GetRegionsRegion
+  summary: Retrieves a Region
+  description: Retrieves a Region.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Region.
+      schema:
+        type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml

@@ -18,7 +18,7 @@ function medusaRequest(
 }
 
 export const createClient = (options: MedusaPluginOptions): any => {
-  const { storeUrl, authToken } = options as any
+  const { storeUrl, apiKey } = options
 
   /**
    * @param {string} _date used fetch products updated since the specified date
@@ -41,6 +41,12 @@ export const createClient = (options: MedusaPluginOptions): any => {
       })
     } while (products.length < count)
 
+    if (!products.length && !_date) {
+      console.warn(
+        "[gatsby-source-medusa]: 📣 No products were retrieved. If this is a new store, please ensure that you have at least one published product in your store. You can create a product by using the Medusa admin dashboard."
+      )
+    }
+
     return products
   }
 
@@ -58,6 +64,13 @@ export const createClient = (options: MedusaPluginOptions): any => {
     const regions = await medusaRequest(storeUrl, path).then(({ data }) => {
       return data.regions
     })
+
+    if (!regions.length && !_date) {
+      console.warn(
+        "[gatsby-source-medusa]: 📣 No regions were retrieved. If this is a new store, please ensure that you have configured at least one region in the Medusa admin dashboard."
+      )
+    }
+
     return regions
   }
 
@@ -68,14 +81,14 @@ export const createClient = (options: MedusaPluginOptions): any => {
    */
   async function orders(_date?: string): Promise<any[]> {
     const orders = await medusaRequest(storeUrl, `/admin/orders`, {
-      Authorization: `Bearer ${authToken}`,
+      Authorization: `Bearer ${apiKey}`,
     })
       .then(({ data }) => {
         return data.orders
       })
       .catch((error) => {
         console.warn(`
-            The following error status was produced while attempting to fetch orders: ${error}. \n
+            📣 The following error status was produced while attempting to fetch orders: ${error}. \n
             Make sure that the auth token you provided is valid.
       `)
         return []
@@ -103,6 +116,12 @@ export const createClient = (options: MedusaPluginOptions): any => {
         offset = data.collections.length
       })
     } while (collections.length < count)
+
+    if (!collections.length && !_date) {
+      console.warn(
+        "[gatsby-source-medusa]: 📣 No collections were retrieved. You can create collections using the Medusa admin dasbboard."
+      )
+    }
 
     return collections
   }

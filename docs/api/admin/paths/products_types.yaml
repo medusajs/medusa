@@ -1,0 +1,18 @@
+get:
+  operationId: GetProductsTypes
+  summary: List Product Types
+  description: Retrieves a list of Product Types.
+  x-authenticated: true
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              types:
+                type: array
+                items:
+                  $ref: ../components/schemas/product_type.yaml

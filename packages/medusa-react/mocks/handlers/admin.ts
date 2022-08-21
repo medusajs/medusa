@@ -108,6 +108,29 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/collections/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        collection: {
+          ...fixtures.get("product_collection"),
+          products: [fixtures.get("product")]
+        }
+      })
+    )
+  }),
+
+  rest.delete("/admin/collections/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "product-collection",
+        removed_products: [fixtures.get("product").id]
+      })
+    )
+  }),
+
   rest.post("/admin/gift-cards/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
@@ -1669,6 +1692,78 @@ export const adminHandlers = [
       ctx.status(200),
       ctx.json({
         download_url: fixtures.get("upload").url,
+      })
+    )
+  }),
+
+  rest.get("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+      })
+    )
+  }),
+
+  rest.get("/admin/sales-channels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        count: 1,
+        limit: 20,
+        offset: 20,
+        sales_channels: fixtures.get("sales_channels"),
+      })
+    )
+  }),
+
+  rest.post("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: {
+          ...fixtures.get("sales_channel"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/sales-channels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+        ...(req.body as Record<string, unknown>),
+      })
+    )
+  }),
+
+  rest.delete("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "sales-channel",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/sales-channels/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+      })
+    )
+  }),
+
+  rest.post("/admin/sales-channels/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
       })
     )
   }),

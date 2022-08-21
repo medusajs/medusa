@@ -30,6 +30,8 @@ class CartSubscriber {
         "shipping_address",
         "region",
         "region.payment_providers",
+        "items",
+        "items.adjustments",
         "payment_sessions",
         "customer",
       ],
@@ -44,7 +46,7 @@ class CartSubscriber {
     )
 
     if (session) {
-      return this.paymentProviderService_.updateSession(session, cart)
+      return await this.paymentProviderService_.updateSession(session, cart)
     }
   }
 }

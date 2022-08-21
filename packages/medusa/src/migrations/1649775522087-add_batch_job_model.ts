@@ -5,7 +5,7 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-        `CREATE TABLE "batch_job"
+      `CREATE TABLE "batch_job"
          (
              "id"                       character varying                NOT NULL,
              "type"                     text                             NOT NULL,
@@ -27,14 +27,14 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
     )
 
     await queryRunner.query(
-        `ALTER TABLE "batch_job"
+      `ALTER TABLE "batch_job"
                 ADD CONSTRAINT "FK_fa53ca4f5fd90605b532802a626" FOREIGN KEY ("created_by") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-        `ALTER TABLE "batch_job"
+      `ALTER TABLE "batch_job"
                 DROP CONSTRAINT "FK_fa53ca4f5fd90605b532802a626"`
     )
     await queryRunner.query(`DROP TABLE "batch_job"`)

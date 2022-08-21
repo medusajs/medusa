@@ -1,25 +1,29 @@
 # Redis not emitting events
 
-When you create a new Medusa project, Redis is disabled by default. Instead, we use a fake Redis server, that allows you to start your project, but holds no functionality.
+When you create a new Medusa server, Redis is disabled by default. Instead, a fake Redis server is used that allows you to start your project but does not actually emit any events.
 
-To enable a real Redis server, you need to install and start it up on your PC. Install it directly from their [website](https://redis.io/download) or use Homebrew and run the following commands:
+To enable a real Redis server, you need to install Redis on your machine and configure it with Medusa.
 
-```bash
-brew install redis
-brew services start redis
-```
+You can learn how to [install Redis in the Set Up your Development Environment documentation](../tutorial/0-set-up-your-development-environment.mdx#redis).
 
-Additonally, ensure that `redis_url` is not commented out in your project configuration in the bottom of your `medusa-config.js`.
+After installing it, make sure to configure your Medusa server to use Redis:
 
 ```jsx
 module.exports = {
   projectConfig: {
-    redis_url: REDIS_URL, // <-- Enables a real Redis server
-    database_url: DATABASE_URL,
-    database_type: "postgres",
-    store_cors: STORE_CORS,
-    admin_cors: ADMIN_CORS,
+    //...
+    redis_url: REDIS_URL,
   },
-  plugins,
 }
 ```
+
+By default, Medusa connects to Redis over the URL `redis://localhost:6379`. If you need to change that URL, set the following environment variable:
+
+```bash
+REDIS_URL=<YOUR_REDIS_URL>
+```
+
+## Additional Resources
+
+- Learn how to [set up your development environment](../tutorial/0-set-up-your-development-environment.mdx).
+- Learn how to [configure your server](../usage/configurations.md).

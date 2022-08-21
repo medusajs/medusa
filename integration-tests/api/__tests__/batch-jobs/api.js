@@ -95,25 +95,25 @@ describe("/admin/batch-jobs", () => {
             id: "job_5",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             id: "job_3",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             id: "job_2",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             id: "job_1",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
         ],
       })
@@ -121,7 +121,10 @@ describe("/admin/batch-jobs", () => {
 
     it("lists batch jobs created by the user and where completed_at is null ", async () => {
       const api = useApi()
-      const response = await api.get("/admin/batch-jobs?completed_at=null", adminReqConfig)
+      const response = await api.get(
+        "/admin/batch-jobs?completed_at=null",
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.batch_jobs.length).toEqual(3)

@@ -115,8 +115,7 @@ html[data-theme="dark"] footer:not(.theme-doc-footer) {
 }
 
 html[data-theme="dark"] .card {
-  border: 1px solid #fff;
-  color: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-primary);
 }
 
 .navbar {
@@ -144,7 +143,7 @@ article {
 }
 
 @media screen and (min-width: 966px) {
-  article {
+  [class*=docItemContainer] > article {
     margin-left: 50px;
     margin-right: 50px;
     max-width: none
@@ -204,7 +203,8 @@ a.menu__link.menu__link--active.active {
   padding-left: 16px;
 }
 
-a.menu__link--sublist::after {
+a.menu__link--sublist::after,
+.menu__caret:before {
   background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 2rem;
 }
 
@@ -284,8 +284,8 @@ details summary {
   cursor: pointer;
 }
 
-.theme-doc-markdown a:not(.box-link):hover {
-  color: var(--ifm-color-primary-darkest);
+[data-theme="dark"] .theme-doc-markdown a.card:hover {
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
 }
 
@@ -317,4 +317,13 @@ details summary {
   max-width: 100%;
   word-break: break-word;
   white-space: break-spaces;
+}
+
+/* API Reference Styling */
+html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-medusa-gray);
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
 }

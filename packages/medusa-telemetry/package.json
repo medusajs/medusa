@@ -26,13 +26,12 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__ --extensions \".ts,.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\"",
+    "build": "babel src -d dist --extensions \".ts,.js\"",
     "serve": "node dist/app.js",
     "postinstall": "node dist/postinstall.js || true",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "axios": "^0.21.1",

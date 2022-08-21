@@ -73,6 +73,7 @@ export default async (req, res) => {
               "gift_card_total",
               "subtotal",
               "total",
+              "shipping_total",
               "tax_total",
               "discount_total",
               "subtotal",

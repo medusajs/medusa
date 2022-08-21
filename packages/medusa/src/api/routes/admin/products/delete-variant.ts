@@ -1,9 +1,11 @@
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
-  ProductService,
   PricingService,
+  ProductService,
   ProductVariantService,
 } from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /products/{id}/variants/{variant_id}
@@ -12,8 +14,8 @@ import {
  * description: "Deletes a Product Variant."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) variant_id=* {string} The id of the Product Variant.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) variant_id=* {string} The ID of the Product Variant.
  * tags:
  *   - Product
  * responses:
@@ -23,14 +25,19 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             id:
+ *             variant_id:
  *               type: string
- *               description: The id of the deleted Product Variant.
+ *               description: The ID of the deleted Product Variant.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: variant
  *             deleted:
  *               type: boolean
+ *               description: Whether or not the items were deleted.
+ *               default: true
+ *             product:
+ *               $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
   const { id, variant_id } = req.params
@@ -41,12 +48,18 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  await productVariantService.delete(variant_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await productVariantService
+      .withTransaction(transactionManager)
+      .delete(variant_id)
+  })
 
   const data = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
   const [product] = await pricingService.setProductPrices([data])
 
   res.json({

@@ -27,7 +27,7 @@ type InjectedDependencies = {
  * Provides layer to manipulate discount conditions.
  * @implements {BaseService}
  */
-class DiscountConditionService extends TransactionBaseService<DiscountConditionService> {
+class DiscountConditionService extends TransactionBaseService {
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
@@ -50,24 +50,23 @@ class DiscountConditionService extends TransactionBaseService<DiscountConditionS
     conditionId: string,
     config?: FindConfig<DiscountCondition>
   ): Promise<DiscountCondition | never> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const conditionRepo = manager.getCustomRepository(
-        this.discountConditionRepository_
+    const manager = this.manager_
+    const conditionRepo = manager.getCustomRepository(
+      this.discountConditionRepository_
+    )
+
+    const query = buildQuery({ id: conditionId }, config)
+
+    const condition = await conditionRepo.findOne(query)
+
+    if (!condition) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `DiscountCondition with id ${conditionId} was not found`
       )
+    }
 
-      const query = buildQuery({ id: conditionId }, config)
-
-      const condition = await conditionRepo.findOne(query)
-
-      if (!condition) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `DiscountCondition with id ${conditionId} was not found`
-        )
-      }
-
-      return condition
-    })
+    return condition
   }
 
   protected static resolveConditionType_(data: UpsertDiscountConditionInput):

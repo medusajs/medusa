@@ -13,7 +13,7 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -762,7 +762,7 @@ describe("DiscountService", () => {
 
     beforeEach(async () => {
       discountService = new DiscountService({
-        manager: MockManager
+        manager: MockManager,
       })
       const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
       const isDisabledMock = jest.fn().mockImplementation(() => false)
@@ -1067,7 +1067,7 @@ describe("DiscountService", () => {
     })
 
     const discountService = new DiscountService({
-      manager: MockManager
+      manager: MockManager,
     })
     discountService.retrieve = retrieveMock
 
@@ -1161,6 +1161,9 @@ describe("DiscountService", () => {
     }
 
     const customerService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: jest.fn().mockImplementation((id) => {
         if (id === "customer-no-groups") {
           return Promise.resolve({ id: "customer-no-groups" })

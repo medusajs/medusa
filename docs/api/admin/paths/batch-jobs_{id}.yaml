@@ -1,0 +1,23 @@
+get:
+  operationId: GetBatchJobsBatchJob
+  summary: Retrieve a Batch Job
+  description: Retrieves a Batch Job.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Batch Job
+      schema:
+        type: string
+  tags:
+    - Batch Job
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              batch_job:
+                $ref: ../components/schemas/batch_job.yaml

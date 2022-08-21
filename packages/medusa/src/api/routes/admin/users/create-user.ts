@@ -1,8 +1,10 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
-import _ from "lodash"
+
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
+import _ from "lodash"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /users
@@ -21,6 +23,7 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             description: "The Users email."
  *             type: string
+ *             format: email
  *           first_name:
  *             description: "The name of the User."
  *             type: string
@@ -30,11 +33,13 @@ import { validator } from "../../../../utils/validator"
  *           role:
  *             description: "Userrole assigned to the user."
  *             type: string
+ *             enum: [admin, member, developer]
  *           password:
  *             description: "The Users password."
  *             type: string
+ *             format: password
  * tags:
- *   - Users
+ *   - User
  * responses:
  *   200:
  *     description: OK
@@ -51,7 +56,12 @@ export default async (req, res) => {
   const userService: UserService = req.scope.resolve("userService")
   const data = _.omit(validated, ["password"])
 
-  const user = await userService.create(data, validated.password)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const user = await manager.transaction(async (transactionManager) => {
+    return await userService
+      .withTransaction(transactionManager)
+      .create(data, validated.password)
+  })
 
   res.status(200).json({ user: _.omit(user, ["password_hash"]) })
 }
