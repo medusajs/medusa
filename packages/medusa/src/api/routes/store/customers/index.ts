@@ -1,7 +1,12 @@
 import { Router } from "express"
 import { Customer, Order } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
+import {
+  defaultStoreOrdersRelations,
+  defaultStoreOrdersFields,
+} from "../orders"
 
 const route = Router()
 
@@ -34,7 +39,15 @@ export default (app, container) => {
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))
 
-  route.get("/me/orders", middlewares.wrap(require("./list-orders").default))
+  route.get(
+    "/me/orders",
+    transformQuery(StoreGetCustomersCustomerOrdersParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-orders").default)
+  )
 
   route.post(
     "/me/addresses",
