@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,10 +7,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantService,
+} from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, ProductVariantService } from "../../../../services"
+
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/variants/{variant_id}
@@ -20,8 +27,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Update a Product Variant."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (path) variant_id=* {string} The id of the Product Variant.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (path) variant_id=* {string} The ID of the Product Variant.
  * requestBody:
  *   content:
  *     application/json:
@@ -56,16 +63,16 @@ import { validator } from "../../../../utils/validator"
  *             type: boolean
  *           weight:
  *             description: The wieght of the Product Variant.
- *             type: string
+ *             type: number
  *           length:
  *             description: The length of the Product Variant.
- *             type: string
+ *             type: number
  *           height:
  *             description: The height of the Product Variant.
- *             type: string
+ *             type: number
  *           width:
  *             description: The width of the Product Variant.
- *             type: string
+ *             type: number
  *           origin_country:
  *             description: The country of origin of the Product Variant.
  *             type: string
@@ -81,16 +88,21 @@ import { validator } from "../../../../utils/validator"
  *           prices:
  *             type: array
  *             items:
+ *               required:
+ *                 - amount
  *               properties:
  *                 id:
- *                   description: The id of the price.
+ *                   description: The ID of the price.
  *                   type: string
  *                 region_id:
- *                   description: The id of the Region for which the price is used.
+ *                   description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
  *                   type: string
  *                 currency_code:
- *                   description: The 3 character ISO currency code for which the price will be used.
+ *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
  *                   type: string
+ *                   externalDocs:
+ *                     url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                     description: See a list of codes.
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
@@ -103,9 +115,12 @@ import { validator } from "../../../../utils/validator"
  *           options:
  *             type: array
  *             items:
+ *               required:
+ *                 - option_id
+ *                 - value
  *               properties:
  *                 option_id:
- *                   description: The id of the Product Option to set the value for.
+ *                   description: The ID of the Product Option to set the value for.
  *                   type: string
  *                 value:
  *                   description: The value to give for the Product Option.
@@ -130,20 +145,31 @@ export default async (req, res) => {
     req.body
   )
 
+  const validatedQueryParams = await validator(PriceSelectionParams, req.query)
+
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
 
-  await productVariantService.update(variant_id, {
-    product_id: id,
-    ...validated,
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await productVariantService
+      .withTransaction(transactionManager)
+      .update(variant_id, {
+        product_id: id,
+        ...validated,
+      })
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
+    ...validatedQueryParams,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

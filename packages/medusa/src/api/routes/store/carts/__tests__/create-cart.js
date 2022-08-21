@@ -25,12 +25,12 @@ describe("POST /store/carts", () => {
     it("calls CartService create", () => {
       expect(CartServiceMock.create).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.create).toHaveBeenCalledWith({
-        region_id: IdMap.getId("testRegion"),
         context: {
           ip: "::ffff:127.0.0.1",
           user_agent: "node-superagent/3.8.3",
           clientId: "test",
         },
+        region_id: IdMap.getId("testRegion"),
       })
     })
 
@@ -101,12 +101,14 @@ describe("POST /store/carts", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("testVariant"),
         IdMap.getId("testRegion"),
-        3
+        3,
+        { customer_id: undefined }
       )
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         IdMap.getId("testVariant1"),
         IdMap.getId("testRegion"),
-        1
+        1,
+        { customer_id: undefined }
       )
       expect(CartServiceMock.addLineItem).toHaveBeenCalledTimes(2)
     })

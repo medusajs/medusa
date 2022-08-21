@@ -9,9 +9,11 @@ class AdminAuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<AdminAuthRes>}
    */
-  getSession(customHeaders: Record<string, any> = {}): ResponsePromise<AdminAuthRes> {
+  getSession(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminAuthRes> {
     const path = `/admin/auth`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -19,9 +21,11 @@ class AdminAuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<void>}
    */
-  deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
+  deleteSession(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<void> {
     const path = `/admin/auth`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -30,7 +34,10 @@ class AdminAuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<AdminAuthRes>}
    */
-  createSession(payload: AdminPostAuthReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminAuthRes> {
+  createSession(
+    payload: AdminPostAuthReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminAuthRes> {
     const path = `/admin/auth`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

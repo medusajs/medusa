@@ -1,0 +1,32 @@
+post:
+  operationId: PostUploads
+  summary: Uploads a file
+  description: Uploads a file to the specific fileservice that is installed in Medusa.
+  x-authenticated: true
+  tags:
+    - Upload
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            files:
+              type: string
+              format: binary
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              uploads:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: The URL of the uploaded file.
+                      format: uri

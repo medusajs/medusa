@@ -1,10 +1,15 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
-import { MoneyAmount } from ".."
+import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+} from "../interfaces/price-selection-strategy"
+import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
 import { ProductVariant } from "../models/product-variant"
+import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
@@ -12,15 +17,17 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "../services/event-bus"
-import RegionService from "../services/region"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
+  GetRegionPriceContext,
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
+import { isDefined } from "../utils"
 
 /**
  * Provides layer to manipulate product variants.
@@ -38,8 +45,10 @@ class ProductVariantService extends BaseService {
   private productRepository_: typeof ProductRepository
   private eventBus_: EventBusService
   private regionService_: RegionService
+  private priceSelectionStrategy_: IPriceSelectionStrategy
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private productOptionValueRepository_: typeof ProductOptionValueRepository
+  private cartRepository_: typeof CartRepository
 
   constructor({
     manager,
@@ -49,6 +58,8 @@ class ProductVariantService extends BaseService {
     regionService,
     moneyAmountRepository,
     productOptionValueRepository,
+    cartRepository,
+    priceSelectionStrategy,
   }) {
     super()
 
@@ -70,6 +81,10 @@ class ProductVariantService extends BaseService {
     this.moneyAmountRepository_ = moneyAmountRepository
 
     this.productOptionValueRepository_ = productOptionValueRepository
+
+    this.cartRepository_ = cartRepository
+
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   withTransaction(transactionManager: EntityManager): ProductVariantService {
@@ -85,6 +100,8 @@ class ProductVariantService extends BaseService {
       regionService: this.regionService_,
       moneyAmountRepository: this.moneyAmountRepository_,
       productOptionValueRepository: this.productOptionValueRepository_,
+      cartRepository: this.cartRepository_,
+      priceSelectionStrategy: this.priceSelectionStrategy_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -100,12 +117,15 @@ class ProductVariantService extends BaseService {
    */
   async retrieve(
     variantId: string,
-    config: FindConfig<ProductVariant> = {}
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      include_discount_prices: false,
+    }
   ): Promise<ProductVariant> {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
     const validatedId = this.validateId_(variantId)
+
     const query = this.buildQuery_({ id: validatedId }, config)
     const variant = await variantRepo.findOne(query)
 
@@ -127,11 +147,20 @@ class ProductVariantService extends BaseService {
    */
   async retrieveBySKU(
     sku: string,
-    config: FindConfig<ProductVariant> = {}
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      include_discount_prices: false,
+    }
   ): Promise<ProductVariant> {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = this.buildQuery_({ sku }, config)
     const variant = await variantRepo.findOne(query)
 
@@ -254,6 +283,7 @@ class ProductVariantService extends BaseService {
    * The function will throw, if price updates are attempted.
    * @param {string | ProductVariant} variantOrVariantId - variant or id of a variant.
    * @param {object} update - an object with the update values.
+   * @param {object} config - an object with the config values for returning the variant.
    * @return {Promise} resolves to the update result.
    */
   async update(
@@ -267,7 +297,17 @@ class ProductVariantService extends BaseService {
 
       let variant = variantOrVariantId as ProductVariant
       if (typeof variant === `string`) {
-        variant = await this.retrieve(variantOrVariantId as string)
+        const variantRes = await variantRepo.findOne({
+          where: { id: variantOrVariantId as string },
+        })
+        if (typeof variant === "undefined") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Variant with id ${variantOrVariantId} was not found`
+          )
+        } else {
+          variant = variantRes as ProductVariant
+        }
       } else if (!variant.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -291,12 +331,12 @@ class ProductVariantService extends BaseService {
         }
       }
 
-      if (metadata) {
-        variant.metadata = this.setMetadata_(variant, metadata)
+      if (typeof metadata === "object") {
+        variant.metadata = this.setMetadata_(variant, metadata as object)
       }
 
       if (typeof inventory_quantity === "number") {
-        variant.inventory_quantity = inventory_quantity
+        variant.inventory_quantity = inventory_quantity as number
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -312,6 +352,7 @@ class ProductVariantService extends BaseService {
           product_id: result.product_id,
           fields: Object.keys(update),
         })
+
       return result
     })
   }
@@ -358,41 +399,29 @@ class ProductVariantService extends BaseService {
    * exists the function will try to use a currency price. If no default
    * currency price exists the function will throw an error.
    * @param {string} variantId - the id of the variant to get price from
-   * @param {string} regionId - the id of the region to get price for
+   * @param {GetRegionPriceContext} context - context for getting region price
    * @return {number} the price specific to the region
    */
-  async getRegionPrice(variantId: string, regionId: string): Promise<number> {
+  async getRegionPrice(
+    variantId: string,
+    context: GetRegionPriceContext
+  ): Promise<number> {
     return this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(
-        this.moneyAmountRepository_
-      )
-
       const region = await this.regionService_
         .withTransaction(manager)
-        .retrieve(regionId)
+        .retrieve(context.regionId)
 
-      // Find region price based on region id
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: { region_id: regionId, variant_id: variantId },
-      })
-
-      // If no price could be find based on region id, we try to fetch
-      // based on the region currency code
-      if (!moneyAmount) {
-        moneyAmount = await moneyAmountRepo.findOne({
-          where: { variant_id: variantId, currency_code: region.currency_code },
+      const prices = await this.priceSelectionStrategy_
+        .withTransaction(manager)
+        .calculateVariantPrice(variantId, {
+          region_id: context.regionId,
+          currency_code: region.currency_code,
+          quantity: context.quantity,
+          customer_id: context.customer_id,
+          include_discount_prices: !!context.include_discount_prices,
         })
-      }
 
-      // Still, if no price is found, we throw
-      if (!moneyAmount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `A price for region: ${region.name} could not be found`
-        )
-      }
-
-      return moneyAmount.amount
+      return prices.calculatedPrice
     })
   }
 
@@ -554,7 +583,12 @@ class ProductVariantService extends BaseService {
    */
   async listAndCount(
     selector: FilterableProductVariantProps,
-    config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      relations: [],
+      skip: 0,
+      take: 20,
+      include_discount_prices: false,
+    }
   ): Promise<[ProductVariant[], number]> {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
@@ -571,10 +605,16 @@ class ProductVariantService extends BaseService {
         raw.map((i) => i.id),
         query.withDeleted ?? false
       )
+
       return [variants, count]
     }
 
-    return await variantRepo.findWithRelationsAndCount(relations, query)
+    const [variants, count] = await variantRepo.findWithRelationsAndCount(
+      relations,
+      query
+    )
+
+    return [variants, count]
   }
 
   /**
@@ -584,11 +624,21 @@ class ProductVariantService extends BaseService {
    */
   async list(
     selector: FilterableProductVariantProps,
-    config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      relations: [],
+      skip: 0,
+      take: 20,
+    }
   ): Promise<ProductVariant[]> {
     const productVariantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
 
     let q: string | undefined
     if ("q" in selector) {
@@ -638,7 +688,7 @@ class ProductVariantService extends BaseService {
 
       const variant = await variantRepo.findOne({
         where: { id: variantId },
-        relations: ["prices"],
+        relations: ["prices", "options"],
       })
 
       if (!variant) {
@@ -702,7 +752,7 @@ class ProductVariantService extends BaseService {
     config: FindConfig<ProductVariant>
   ): { query: FindWithRelationsOptions; relations: string[]; q?: string } {
     let q: string | undefined
-    if (typeof selector.q !== "undefined") {
+    if (isDefined(selector.q)) {
       q = selector.q
       delete selector.q
     }

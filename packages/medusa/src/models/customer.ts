@@ -1,30 +1,24 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
   Column,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
+  Entity,
+  Index,
   JoinColumn,
-  ManyToMany,
   JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Customer {
-  @PrimaryColumn()
-  id: string
-
+export class Customer extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   email: string
@@ -37,7 +31,7 @@ export class Customer {
 
   @Index()
   @Column({ nullable: true })
-  billing_address_id: string
+  billing_address_id: string | null
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })
@@ -74,25 +68,12 @@ export class Customer {
   })
   groups: CustomerGroup[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cus_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cus")
   }
 }
 
@@ -101,38 +82,70 @@ export class Customer {
  * title: "Customer"
  * description: "Represents a customer"
  * x-resourceId: customer
+ * required:
+ *   - email
  * properties:
  *   id:
  *     type: string
+ *     description: The customer's ID
+ *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   email:
  *     type: string
+ *     description: The customer's email
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     description: The customer's first name
+ *     example: Arno
+ *   last_name:
+ *     type: string
+ *     description: The customer's first name
+ *     example: Willms
  *   billing_address_id:
  *     type: string
+ *     description: The customer's billing address ID
+ *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: "The Customer's billing address."
- *     anyOf:
- *       - $ref: "#/components/schemas/address"
+ *     description: Available if the relation `billing_address` is expanded.
+ *     $ref: "#/components/schemas/address"
  *   shipping_addresses:
+ *     description: Available if the relation `shipping_addresses` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/address"
- *   first_name:
- *     type: string
- *   last_name:
- *     type: string
  *   phone:
  *     type: string
+ *     description: The customer's phone number
+ *     example: 16128234334802
  *   has_account:
  *     type: boolean
+ *     description: Whether the customer has an account or not
+ *     default: false
+ *   orders:
+ *     description: Available if the relation `orders` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: An order object.
+ *   groups:
+ *     description: The customer groups the customer belongs to. Available if the relation `groups` is expanded.
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/customer_group"
  *   created_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

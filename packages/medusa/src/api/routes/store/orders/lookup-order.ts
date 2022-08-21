@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsEmail,
   IsNumber,
@@ -7,17 +6,38 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
- * description: "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned."
+ * description: "Look up an order using filters."
  * parameters:
  *   - (query) display_id=* {number} The display id given to the Order.
- *   - (query) email=* {string} The email of the Order with the given display_id.
+ *   - in: query
+ *     name: email
+ *     style: form
+ *     explode: false
+ *     description: The email associated with this order.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       format: email
+ *   - in: query
+ *     name: shipping_address
+ *     style: form
+ *     explode: false
+ *     description: The shipping address associated with this order.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         postal_code:
+ *           type: string
+ *           description: The postal code of the shipping address
  * tags:
  *   - Order
  * responses:

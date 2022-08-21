@@ -58,7 +58,22 @@ describe("/store/customers", () => {
       expect(response.data.customer).not.toHaveProperty("password_hash")
     })
 
-    it("responds 409 on duplicate", async () => {
+    it("normalizes email", async () => {
+      const api = useApi()
+
+      const response = await api.post("/store/customers", {
+        first_name: "James",
+        last_name: "Bond",
+        email: "James@Bond.com",
+        password: "test",
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).not.toHaveProperty("password_hash")
+      expect(response.data.customer.email).toEqual("james@bond.com")
+    })
+
+    it("responds 422 on duplicate", async () => {
       const api = useApi()
 
       const response = await api
@@ -70,7 +85,7 @@ describe("/store/customers", () => {
         })
         .catch((err) => err.response)
 
-      expect(response.status).toEqual(402)
+      expect(response.status).toEqual(422)
     })
   })
 

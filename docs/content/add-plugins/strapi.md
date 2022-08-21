@@ -18,7 +18,7 @@ Both projects are open-source, headless, and built with Node.js. They use a very
 
 ## Installation
 
-The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
+The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
 
 ### Setting up Medusa
 
@@ -28,26 +28,31 @@ First, create a Medusa project using your favorite package manager. You can go a
 `npx create-medusa-app` will allow you to create a Medusa store engine, a storefront, and Medusa admin in a single command
 
 ```bash
-# using npx
 npx create-medusa-app
+```
 
-# using yarn
+Alternatively, using Yarn:
+
+```bash
 yarn create medusa-app
 ```
 
-> When choosing `npx` you are shown different store engine options as part of the setup. For this Strapi tutorial, you should choose `medusa-starter-default`. Optionally, pick a storefront.
+:::note
+
+When choosing `npx` you are shown different store engine options as part of the setup. For this Strapi tutorial, you should choose `medusa-starter-default`. Optionally, pick a storefront.
+
+:::
 
 **Use `medusa-cli`**
-`@medusajs/medusa-cli` is our Command Line Tool for creating the Medusa store engine (alongside many other powerful commands). Use it as such:
+`@medusajs/medusa-cli` is our Command Line Tool for creating the Medusa store engine (alongside many other powerful commands). First, install it:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+```
+
+Then, initialize a Medusa project:
 
 ```bash
-# using yarn
-yarn global add @medusajs/medusa-cli
-
-# using npm
-npm install -g @medusajs/medusa-cli
-
-# initialise a Medusa project
 medusa new my-medusa-store
 ```
 
@@ -87,22 +92,14 @@ Additionally, add Strapi to your list of plugins:
 
 And finally, install the plugin using your package manager:
 
-```bash
-#using yarn
-yarn add medusa-plugin-strapi
-
-# using npm
+```bash npm2yarn
 npm install medusa-plugin-strapi
 ```
 
 You've now successfully installed and configured your Medusa store engine. Seed it with data and start it up by running:
 
-```bash
-# using npm
-npm run seed && npm start
-
-# using yarn
-yarn seed && yarn start
+```bash npm2yarn
+npm run seed && npm run start
 ```
 
 We'll now turn to the Strapi side of things.
@@ -111,21 +108,31 @@ We'll now turn to the Strapi side of things.
 
 Similar to how you installed Medusa, you can install Strapi using your favorite package manager. Use the `strapi-medusa-template` to create your project. The template is a custom Strapi implementation required for the two systems to work together.
 
+You can use NPX:
+
 ```bash
-# using npx
 npx create-strapi-app@3.6.8 strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
+```
 
-# using yarn
+Alternatively, using Yarn:
+
+```bash
 yarn global add create-strapi-app@3.6.8
-
 create-strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
 ```
-> Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
+:::note
 
+The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
+
+:::
 
 After running the command, you have a full Strapi project configured to synchronize with Medusa. Upon the initial start of the Strapi server, all the required models will be created. They will correlate with models from Medusa to allow for two-way synchronization.
 
-> Note: The Strapi template starter uses SQLite as the default database. There is a known bug related to `knex.js` that comes from multiple write connections. Restarting the Strapi server should make the error disappear.
+:::caution
+
+The Strapi template starter uses SQLite as the default database. There is a known bug related to `knex.js` that comes from multiple write connections. Restarting the Strapi server should make the error disappear.
+
+:::
 
 **Synchronization**
 
@@ -137,7 +144,11 @@ When products are created in Medusa, the two-way communication ensures that data
 **Variants**: title
 **Region**: name
 
-> Further down the road, the support for synchronizing more entities is expected to be introduced
+:::note
+
+Further down the road, the support for synchronizing more entities is expected to be introduced
+
+:::
 
 **Using Postgres in Medusa (optional)**
 
@@ -161,7 +172,11 @@ projectConfig: {
 },
 ```
 
-> Note: the `DATABASE_URL` variable should use the Postgres database created in the previous step
+:::tip
+
+The `DATABASE_URL` variable should use the Postgres database created in the previous step
+
+:::
 
 ## Summary and next steps
 

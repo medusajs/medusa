@@ -1,0 +1,29 @@
+delete:
+  operationId: PostRegionsRegionPaymentProvidersProvider
+  summary: Remove Payment Provider
+  description: Removes a Payment Provider.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Region.
+      schema:
+        type: string
+    - in: path
+      name: provider_id
+      required: true
+      description: The ID of the Payment Provider.
+      schema:
+        type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml

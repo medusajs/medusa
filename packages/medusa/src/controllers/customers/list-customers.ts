@@ -1,16 +1,16 @@
 import { omit, pickBy } from "lodash"
-import { AdminGetCustomersParams } from "../../api/routes/admin/customers/list-customers"
+import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
 import { AdminCustomersListRes } from "../../api"
 import { CustomerService } from "../../services"
 import { FindConfig } from "../../types/common"
 import { validator } from "../../utils/validator"
 import { Customer } from "../../models/customer"
+import { isDefined } from "../../utils"
 
 const listAndCount = async (
   scope,
   query,
-  body,
-  context = {}
+  body
 ): Promise<AdminCustomersListRes> => {
   const validatedQueryParams = await validator(AdminGetCustomersParams, query)
 
@@ -34,7 +34,7 @@ const listAndCount = async (
   ])
 
   const [customers, count] = await customerService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    pickBy(filterableFields, (val) => isDefined(val)),
     listConfig
   )
 

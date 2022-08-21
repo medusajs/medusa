@@ -1,15 +1,8 @@
-import {
-  Entity,
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, Index } from "typeorm"
+
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -18,10 +11,7 @@ export enum UserRoles {
 }
 
 @Entity()
-export class User {
-  @PrimaryColumn()
-  id: string
-
+export class User extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: UserRoles,
@@ -46,23 +36,12 @@ export class User {
   @Column({ nullable: true })
   api_token: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `usr_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "usr")
   }
 }
 
@@ -71,28 +50,43 @@ export class User {
  * title: "User"
  * description: "Represents a User who can manage store settings."
  * x-resourceId: user
+ * required:
+ *   - email
  * properties:
  *   id:
- *     description: "The unique id of the User. This will be prefixed with `usr_`"
  *     type: string
+ *     description: The user's ID
+ *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   email:
  *     description: "The email of the User"
  *     type: string
+ *     format: email
  *   first_name:
+ *     description: "The first name of the User"
  *     type: string
+ *     example: Levi
  *   last_name:
- *     description: "The Customer's billing address."
- *     anyOf:
- *       - $ref: "#/components/schemas/address"
+ *     description: "The last name of the User"
+ *     type: string
+ *     example: Bogan
+ *   api_token:
+ *     description: An API token associated with the user.
+ *     type: string
+ *     example: null
  *   created_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

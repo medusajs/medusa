@@ -1,7 +1,9 @@
 import { IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -12,12 +14,12 @@ import { validator } from "../../../../utils/validator"
  * tags:
  *   - Cart
  * parameters:
- *   - (path) id=* {String} The cart id.
- *   - (body) option_id=* {String} id of the shipping option to create the method from
+ *   - (path) id=* {string} The cart ID.
+ *   - (body) option_id=* {string} ID of the shipping option to create the method from
  *   - (body) data {Object} Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
  * responses:
  *  "200":
- *    description: "A successful response"
+ *    description: OK
  *    content:
  *      application/json:
  *        schema:
@@ -59,7 +61,9 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: updatedCart })
+  const data = await decorateLineItemsWithTotals(updatedCart, req)
+
+  res.status(200).json({ cart: data })
 }
 
 export class StorePostCartsCartShippingMethodReq {

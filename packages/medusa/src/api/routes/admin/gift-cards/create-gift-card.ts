@@ -1,8 +1,10 @@
-import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
+
 import { GiftCardService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /gift-cards
@@ -14,6 +16,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - region_id
  *         properties:
  *           value:
  *             type: integer
@@ -26,10 +30,8 @@ import { validator } from "../../../../utils/validator"
  *             format: date-time
  *             description: The time at which the Gift Card should no longer be available.
  *           region_id:
- *             description: The id of the Region in which the Gift Card can be used.
- *             type: array
- *             items:
- *               type: string
+ *             description: The ID of the Region in which the Gift Card can be used.
+ *             type: string
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -50,9 +52,12 @@ export default async (req, res) => {
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const newly = await giftCardService.create({
-    ...validated,
-    balance: validated.value,
+  const manager: EntityManager = req.scope.resolve("manager")
+  const newly = await manager.transaction(async (transactionManager) => {
+    return await giftCardService.withTransaction(transactionManager).create({
+      ...validated,
+      balance: validated.value,
+    })
   })
 
   const giftCard = await giftCardService.retrieve(newly.id, {
@@ -77,10 +82,9 @@ export class AdminPostGiftCardsReq {
   @IsBoolean()
   is_disabled?: boolean
 
-  @IsOptional()
   @IsString()
-  region_id?: string
+  region_id: string
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

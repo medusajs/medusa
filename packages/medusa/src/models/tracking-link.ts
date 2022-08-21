@@ -1,29 +1,12 @@
-import {
-  Entity,
-  Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Fulfillment } from "./fulfillment"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class TrackingLink {
-  @PrimaryColumn()
-  id: string
-
+export class TrackingLink extends SoftDeletableEntity {
   @Column({ nullable: true })
   url: string
 
@@ -33,33 +16,19 @@ export class TrackingLink {
   @Column()
   fulfillment_id: string
 
-  @ManyToOne(
-    () => Fulfillment,
-    ful => ful.tracking_links
-  )
+  @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
   fulfillment: Fulfillment
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
 
   @Column({ nullable: true })
   idempotency_key: string
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
+
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `tlink_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "tlink")
   }
 }
 
@@ -68,32 +37,49 @@ export class TrackingLink {
  * title: "Tracking Link"
  * description: "Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment."
  * x-resourceId: tracking_link
+ * required:
+ *   - tracking_number
+ *   - fulfillment_id
  * properties:
  *   id:
- *     description: "The id of the Tracking Link. This value will be prefixed with `tlink_`."
  *     type: string
+ *     description: The tracking link's ID
+ *     example: tlink_01G8ZH853Y6TFXWPG5EYE81X63
  *   url:
  *     description: "The URL at which the status of the shipment can be tracked."
  *     type: string
+ *     format: uri
  *   tracking_number:
  *     description: "The tracking number given by the shipping carrier."
  *     type: string
+ *     format: RH370168054CN
  *   fulfillment_id:
+ *     type: string
  *     description: "The id of the Fulfillment that the Tracking Link references."
+ *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
+ *   fulfillment:
+ *     description: Available if the relation `fulfillment` is expanded.
+ *     $ref: "#/components/schemas/fulfillment"
+ *   idempotency_key:
  *     type: string
+ *     description: Randomly generated key used to continue the completion of a process in case of failure.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       description: Learn more how to use the idempotency key.
  *   created_at:
- *     description: "The date with timezone at which the resource was created."
  *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

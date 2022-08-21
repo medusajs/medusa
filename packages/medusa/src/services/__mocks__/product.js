@@ -63,7 +63,7 @@ export const products = {
 }
 
 export const ProductServiceMock = {
-  withTransaction: function () {
+  withTransaction: function() {
     return this
   },
   create: jest.fn().mockImplementation((data) => {
@@ -106,11 +106,16 @@ export const ProductServiceMock = {
   deleteOption: jest
     .fn()
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
-  retrieveVariants: jest
-    .fn()
-    .mockReturnValue(
-      Promise.resolve([{ id: IdMap.getId("1") }, { id: IdMap.getId("2") }])
-    ),
+  retrieveVariants: jest.fn().mockImplementation((productId) => {
+    if (productId === IdMap.getId("product1")) {
+      return Promise.resolve([
+        { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+        { id: IdMap.getId("2"), product_id: IdMap.getId("product1") },
+      ])
+    }
+
+    return []
+  }),
   retrieve: jest.fn().mockImplementation((productId) => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
@@ -136,6 +141,9 @@ export const ProductServiceMock = {
     return Promise.resolve(products.product1)
   }),
   listAndCount: jest.fn().mockImplementation((data) => {
+    if (data?.id?.includes("sales_channel_1_product_1")) {
+      return Promise.resolve([[{ id: "sales_channel_1_product_1" }], 1])
+    }
     return Promise.resolve([[products.product1, products.product2], 2])
   }),
   list: jest.fn().mockImplementation((data) => {

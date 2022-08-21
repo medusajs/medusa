@@ -1,7 +1,10 @@
-import { Type } from "class-transformer"
-import { ValidateNested } from "class-validator"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
+import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
+import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -11,10 +14,26 @@ import { validator } from "../../../../utils/validator"
  * description: "Removes a list of customers, represented by id's, from a customer group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
- *   - (body) customers=* {{id: string }[]} ids of the customers to remove
+ *   - (path) id=* {string} The ID of the customer group.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - customer_ids
+ *         properties:
+ *           customer_ids:
+ *             description: "The ids of the customers to remove"
+ *             type: array
+ *             items:
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   description: ID of the customer
+ *                   type: string
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -22,11 +41,11 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *             customer_group:
+ *               $ref: "#/components/schemas/customer_group"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
   const validated = await validator(
     AdminDeleteCustomerGroupsGroupCustomerBatchReq,
@@ -37,10 +56,18 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.removeCustomer(
-    id,
-    validated.customer_ids.map(({ id }) => id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const customer_group = await manager.transaction(
+    async (transactionManager) => {
+      return await customerGroupService
+        .withTransaction(transactionManager)
+        .removeCustomer(
+          id,
+          validated.customer_ids.map(({ id }) => id)
+        )
+    }
   )
+
   res.status(200).json({ customer_group })
 }
 

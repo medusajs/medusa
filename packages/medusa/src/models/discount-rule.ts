@@ -1,19 +1,9 @@
-import {
-  Entity,
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
-  Column,
-  PrimaryColumn,
-  ManyToMany,
-  JoinTable,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
 
-import { Product } from "./product"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { DiscountCondition } from "./discount-condition"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum DiscountRuleType {
   FIXED = "fixed",
@@ -27,10 +17,7 @@ export enum AllocationType {
 }
 
 @Entity()
-export class DiscountRule {
-  @PrimaryColumn()
-  id: string
-
+export class DiscountRule extends SoftDeletableEntity {
   @Column({ nullable: true })
   description: string
 
@@ -50,36 +37,15 @@ export class DiscountRule {
   })
   allocation: AllocationType
 
-  @ManyToMany(() => Product, { cascade: true })
-  @JoinTable({
-    name: "discount_rule_products",
-    joinColumn: {
-      name: "discount_rule_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "product_id",
-      referencedColumnName: "id",
-    },
-  })
-  valid_for: Product[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
+  conditions: DiscountCondition[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    const id = ulid()
-    this.id = `dru_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "dru")
   }
 }
 
@@ -88,10 +54,14 @@ export class DiscountRule {
  * title: "Discount Rule"
  * description: "Holds the rules that governs how a Discount is calculated when applied to a Cart."
  * x-resourceId: discount_rule
+ * required:
+ *   - type
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the Discount Rule. Will be prefixed by `dru_`."
  *     type: string
+ *     description: The discount rule's ID
+ *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   type:
  *     description: "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
  *     type: string
@@ -99,36 +69,42 @@ export class DiscountRule {
  *       - fixed
  *       - percentage
  *       - free_shipping
+ *     example: percentage
  *   description:
  *     description: "A short description of the discount"
  *     type: string
+ *     example: 10 Percent
  *   value:
  *     description: "The value that the discount represents; this will depend on the type of the discount"
  *     type: integer
+ *     example: 10
  *   allocation:
  *     description: "The scope that the discount should apply to."
  *     type: string
  *     enum:
  *       - total
  *       - item
- *   valid_for:
- *     description: "A set of Products that the discount can be used for."
+ *     example: total
+ *   conditions:
+ *     description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product"
+ *       type: object
+ *       description: A discount condition object.
  *   created_at:
+ *     type: string
  *     description: "The date with timezone at which the resource was created."
- *     type: string
  *     format: date-time
- *   update_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *   updated_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

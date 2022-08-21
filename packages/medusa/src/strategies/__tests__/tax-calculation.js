@@ -64,7 +64,7 @@ const toTest = [
      * Taxline 2 = 180 * 0.125 = 23
      * Total tax = 38
      */
-    expected: 38,
+    expected: 40,
     items: [
       {
         id: "item_1",

@@ -427,6 +427,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
@@ -752,6 +753,7 @@ Object {
   "external_id": null,
   "fulfillment_status": "canceled",
   "fulfillments": Array [],
+  "gift_card_tax_total": 0,
   "gift_card_total": "0.00 USD",
   "gift_card_transactions": Array [],
   "gift_cards": Array [],
@@ -761,6 +763,7 @@ Object {
   "idempotency_key": null,
   "items": Array [
     Object {
+      "adjustments": Array [],
       "allow_discounts": true,
       "cart_id": null,
       "claim_order_id": null,
@@ -973,6 +976,7 @@ Object {
   "external_id": null,
   "fulfillment_status": "fulfilled",
   "fulfillments": Array [],
+  "gift_card_tax_total": 0,
   "gift_card_total": "0.00 USD",
   "gift_card_transactions": Array [],
   "gift_cards": Array [],
@@ -982,6 +986,7 @@ Object {
   "idempotency_key": null,
   "items": Array [
     Object {
+      "adjustments": Array [],
       "allow_discounts": true,
       "cart_id": null,
       "claim_order_id": null,
@@ -1241,6 +1246,7 @@ Object {
         "updated_at": Any<Date>,
       },
     ],
+    "gift_card_tax_total": 0,
     "gift_card_total": 0,
     "gift_card_transactions": Array [],
     "gift_cards": Array [],
@@ -1248,6 +1254,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
@@ -1569,6 +1576,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
@@ -2384,9 +2392,9 @@ Object {
       "created_at": Any<Date>,
       "customer_id": null,
       "deleted_at": null,
-      "first_name": null,
+      "first_name": "Chyna",
       "id": Any<String>,
-      "last_name": null,
+      "last_name": "Osinski",
       "metadata": null,
       "phone": "12353245",
       "postal_code": "1234",

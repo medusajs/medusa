@@ -1,4 +1,3 @@
-import { TotalsService } from "@medusajs/medusa"
 import { humanizeAmount } from "medusa-core-utils"
 import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
@@ -114,13 +113,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     const fromOrder = await this.orderService_.retrieve(orderId, {
       select: ["total"],
-      relations: [
-        "discounts",
-        "discounts.rule",
-        "discounts.rule.valid_for",
-        "shipping_address",
-        "returns",
-      ],
+      relations: ["discounts", "discounts.rule", "shipping_address", "returns"],
     })
 
     const methodData = returnOrder.shipping_method.data
@@ -145,7 +138,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       }
     }
 
-    let docs = []
+    const docs = []
     if (this.invoiceGenerator_) {
       const base64Invoice = await this.invoiceGenerator_.createReturnInvoice(
         fromOrder,
@@ -294,19 +287,21 @@ class WebshipperFulfillmentService extends FulfillmentService {
           fulfillmentItems
         )
 
-        invoice = await this.client_.documents
-          .create({
-            type: "documents",
-            attributes: {
-              document_size: this.options_.document_size || "A4",
-              document_format: "PDF",
-              base64: base64Invoice,
-              document_type: "invoice",
-            },
-          })
-          .catch((err) => {
-            throw err
-          })
+        if (base64Invoice) {
+          invoice = await this.client_.documents
+            .create({
+              type: "documents",
+              attributes: {
+                document_size: this.options_.document_size || "A4",
+                document_format: "PDF",
+                base64: base64Invoice,
+                document_type: "invoice",
+              },
+            })
+            .catch((err) => {
+              throw err
+            })
+        }
 
         const cooCountries = this.options_.coo_countries
         if (
@@ -338,7 +333,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
         }
       }
 
-      let id = fulfillment.id
+      const id = fulfillment.id
       let visible_ref = `${fromOrder.display_id}-${id.substr(id.length - 4)}`
       let ext_ref = `${fromOrder.id}.${fulfillment.id}`
 
@@ -628,19 +623,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
       return Promise.resolve()
     }
 
-    if (order) {
-      if (
-        order.data.attributes.status !== "pending" &&
-        order.data.attributes.status !== "missing_rate"
-      ) {
-        if (order.data.attributes.status === "cancelled") {
-          return Promise.resolve(order)
-        }
-        throw new Error("Cannot cancel order")
-      }
+    if (this.options_.delete_on_cancel) {
+      return await this.client_.orders.delete(data.id)
     }
 
-    return this.client_.orders.delete(data.id)
+    return await this.client_.orders.update(data.id, {
+      id: data.id,
+      type: "orders",
+      attributes: {
+        status: "cancelled",
+      },
+    })
   }
 }
 

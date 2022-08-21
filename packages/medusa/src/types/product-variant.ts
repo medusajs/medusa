@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsInt,
-  IsNumber,
   IsOptional,
   IsString,
   Validate,
@@ -23,6 +22,13 @@ export type ProductVariantPrice = {
   amount: number
   min_quantity?: number
   max_quantity?: number
+}
+
+export type GetRegionPriceContext = {
+  regionId: string
+  quantity?: number
+  customer_id?: string
+  include_discount_prices?: boolean
 }
 
 export type ProductVariantOption = {
@@ -56,7 +62,7 @@ export type CreateProductVariantInput = {
 
 export type UpdateProductVariantInput = {
   title?: string
-  product_id: string
+  product_id?: string
   sku?: string
   barcode?: string
   ean?: string
@@ -66,14 +72,15 @@ export type UpdateProductVariantInput = {
   manage_inventory?: boolean
   hs_code?: string
   origin_country?: string
+  variant_rank?: number
   mid_code?: string
   material?: string
   weight?: number
   length?: number
   height?: number
   width?: number
-  options: ProductVariantOption[]
-  prices: ProductVariantPrice[]
+  options?: ProductVariantOption[]
+  prices?: ProductVariantPrice[]
   metadata?: object
 }
 

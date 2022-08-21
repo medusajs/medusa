@@ -1,0 +1,52 @@
+delete:
+  operationId: DeleteCustomersCustomerAddressesAddress
+  summary: Delete an Address
+  description: Removes an Address from the Customer's saved addresses.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: address_id
+      required: true
+      description: The id of the Address to remove.
+      schema:
+        type: string
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+post:
+  operationId: PostCustomersCustomerAddressesAddress
+  summary: Update a Shipping Address
+  description: Updates a Customer's saved Shipping Address.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: address_id
+      required: true
+      description: The id of the Address to update.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          anyOf:
+            - $ref: ../components/schemas/address.yaml
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml

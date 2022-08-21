@@ -6,13 +6,13 @@ describe("FulfillmentService", () => {
     const fulfillmentRepository = MockRepository({})
 
     const fulfillmentProviderService = {
-      createFulfillment: jest.fn().mockImplementation(data => {
+      createFulfillment: jest.fn().mockImplementation((data) => {
         return Promise.resolve(data)
       }),
     }
 
     const shippingProfileService = {
-      retrieve: jest.fn().mockImplementation(data => {
+      retrieve: jest.fn().mockImplementation((data) => {
         return Promise.resolve({
           id: IdMap.getId("default"),
           name: "default_profile",
@@ -22,11 +22,18 @@ describe("FulfillmentService", () => {
       }),
     }
 
+    const lineItemRepository = {
+      create: jest.fn().mockImplementation((data) => {
+        return data
+      }),
+    }
+
     const fulfillmentService = new FulfillmentService({
       manager: MockManager,
       fulfillmentProviderService,
       fulfillmentRepository,
       shippingProfileService,
+      lineItemRepository,
     })
 
     beforeEach(async () => {
@@ -101,7 +108,7 @@ describe("FulfillmentService", () => {
           canceled_at: new Date(),
           items: [{ item_id: 1, quantity: 2 }],
         }),
-      save: f => f,
+      save: (f) => f,
     })
 
     const lineItemService = {
@@ -111,13 +118,13 @@ describe("FulfillmentService", () => {
           Promise.resolve({ id: 1, fulfilled_quantity: 2 })
         ),
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const fulfillmentProviderService = {
-      cancelFulfillment: f => f,
+      cancelFulfillment: (f) => f,
     }
 
     const fulfillmentService = new FulfillmentService({
@@ -150,9 +157,9 @@ describe("FulfillmentService", () => {
   })
 
   describe("createShipment", () => {
-    const trackingLinkRepository = MockRepository({ create: c => c })
+    const trackingLinkRepository = MockRepository({ create: (c) => c })
     const fulfillmentRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("canceled"):
             return Promise.resolve({ canceled_at: new Date() })

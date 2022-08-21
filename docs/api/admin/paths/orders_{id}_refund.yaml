@@ -1,0 +1,45 @@
+post:
+  operationId: PostOrdersOrderRefunds
+  summary: Create a Refund
+  description: Issues a Refund.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - amount
+            - reason
+          properties:
+            amount:
+              description: The amount to refund.
+              type: integer
+            reason:
+              description: The reason for the Refund.
+              type: string
+            note:
+              description: A note with additional details about the Refund.
+              type: string
+            no_notification:
+              description: >-
+                If set to true no notification will be send related to this
+                Refund.
+              type: boolean
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

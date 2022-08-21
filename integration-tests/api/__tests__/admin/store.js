@@ -32,7 +32,7 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      await db.teardown()
+      await db.teardown({ forceDelete: ["store"] })
       await medusaProcess.kill()
     })
 
@@ -50,6 +50,12 @@ describe("/admin/store", () => {
         currencies: [
           {
             code: "usd",
+          },
+        ],
+        feature_flags: [
+          {
+            key: "sales_channels",
+            value: false,
           },
         ],
         default_currency_code: "usd",

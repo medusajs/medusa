@@ -1,0 +1,105 @@
+delete:
+  operationId: DeleteGiftCardsGiftCard
+  summary: Delete a Gift Card
+  description: Deletes a Gift Card
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Gift Card to delete.
+      schema:
+        type: string
+  tags:
+    - Gift Card
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted Gift Card
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: gift-card
+              deleted:
+                type: boolean
+                description: Whether the gift card was deleted successfully or not.
+                default: true
+get:
+  operationId: GetGiftCardsGiftCard
+  summary: Retrieve a Gift Card
+  description: Retrieves a Gift Card.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Gift Card.
+      schema:
+        type: string
+  tags:
+    - Gift Card
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              gift_card:
+                $ref: ../components/schemas/gift_card.yaml
+post:
+  operationId: PostGiftCardsGiftCard
+  summary: Create a Gift Card
+  description: >-
+    Creates a Gift Card that can redeemed by its unique code. The Gift Card is
+    only valid within 1 region.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Gift Card.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            balance:
+              type: integer
+              description: The value (excluding VAT) that the Gift Card should represent.
+            is_disabled:
+              type: boolean
+              description: >-
+                Whether the Gift Card is disabled on creation. You will have to
+                enable it later to make it available to Customers.
+            ends_at:
+              type: string
+              format: date-time
+              description: The time at which the Gift Card should no longer be available.
+            region_id:
+              description: The ID of the Region in which the Gift Card can be used.
+              type: string
+            metadata:
+              description: >-
+                An optional set of key-value pairs to hold additional
+                information.
+              type: object
+  tags:
+    - Gift Card
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              gift_card:
+                $ref: ../components/schemas/gift_card.yaml

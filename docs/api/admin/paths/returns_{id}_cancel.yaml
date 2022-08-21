@@ -1,0 +1,22 @@
+post:
+  operationId: PostReturnsReturnCancel
+  summary: Cancel a Return
+  description: Registers a Return as canceled.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Return.
+      schema:
+        type: string
+  tags:
+    - Return
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

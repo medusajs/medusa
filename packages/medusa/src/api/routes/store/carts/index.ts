@@ -1,14 +1,21 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
+import middlewares, { transformBody, transformQuery } from "../../../middlewares"
+import { StorePostCartsCartReq } from "./update-cart";
+import { StorePostCartReq } from "./create-cart";
 const route = Router()
 
 export default (app, container) => {
   const middlewareService = container.resolve("middlewareService")
+  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   app.use("/carts", route)
+
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    defaultStoreCartRelations.push("sales_channel")
+  }
 
   // Inject plugin routes
   const routers = middlewareService.getRouters("store/carts")
@@ -16,15 +23,28 @@ export default (app, container) => {
     route.use("/", router)
   }
 
-  route.get("/:id", middlewares.wrap(require("./get-cart").default))
+  route.get(
+    "/:id",
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: defaultStoreCartRelations,
+      defaultFields: defaultStoreCartFields,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-cart").default)
+  )
 
   route.post(
     "/",
     middlewareService.usePreCartCreation(),
+    transformBody(StorePostCartReq),
     middlewares.wrap(require("./create-cart").default)
   )
 
-  route.post("/:id", middlewares.wrap(require("./update-cart").default))
+  route.post(
+    "/:id",
+    transformBody(StorePostCartsCartReq),
+    middlewares.wrap(require("./update-cart").default)
+  )
 
   route.post(
     "/:id/complete",
@@ -82,11 +102,6 @@ export default (app, container) => {
     middlewares.wrap(require("./set-payment-session").default)
   )
 
-  route.post(
-    "/:id/payment-method",
-    middlewares.wrap(require("./update-payment-method").default)
-  )
-
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
@@ -115,6 +130,7 @@ export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",
+  "items.adjustments",
   "payment",
   "shipping_address",
   "billing_address",
@@ -125,23 +141,25 @@ export const defaultStoreCartRelations = [
   "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
 ]
 
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 
-export type StoreCompleteCartRes = {
-  type: "cart"
-  data: Cart
-} | {
-  type: "order"
-  data: Order
-} | {
-  type: "swap"
-  data: Swap
-}
+export type StoreCompleteCartRes =
+  | {
+      type: "cart"
+      data: Cart
+    }
+  | {
+      type: "order"
+      data: Order
+    }
+  | {
+      type: "swap"
+      data: Swap
+    }
 
 export type StoreCartsDeleteRes = DeleteResponse
 
@@ -152,5 +170,4 @@ export * from "./create-payment-sessions"
 export * from "./set-payment-session"
 export * from "./update-cart"
 export * from "./update-line-item"
-export * from "./update-payment-method"
 export * from "./update-payment-session"

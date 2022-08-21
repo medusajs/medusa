@@ -1,10 +1,11 @@
+import { IsEmail, IsNotEmpty, IsString } from "class-validator"
+
+import AuthService from "../../../../services/auth"
+import { EntityManager } from "typeorm";
+import { MedusaError } from "medusa-core-utils"
 import _ from "lodash"
 import jwt from "jsonwebtoken"
-import config from "../../../../config"
 import { validator } from "../../../../utils/validator"
-import { IsEmail, IsNotEmpty, IsString } from "class-validator"
-import AuthService from "../../../../services/auth"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /auth
@@ -15,6 +16,22 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (body) email=* {string} The User's email.
  *   - (body) password=* {string} The User's password.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - email
+ *           - password
+ *         properties:
+ *           email:
+ *             type: string
+ *             description: The User's email.
+ *             format: email
+ *           password:
+ *             type: string
+ *             description: The User's password.
+ *             format: password
  * tags:
  *   - Auth
  * responses:
@@ -26,25 +43,31 @@ import { MedusaError } from "medusa-core-utils"
  *          properties:
  *            user:
  *              $ref: "#/components/schemas/user"
+ *  "401":
+ *    description: The user doesn't exist or the credentials are incorrect.
  */
 export default async (req, res) => {
-  if (!config.jwtSecret) {
+  const { projectConfig: { jwt_secret } } = req.scope.resolve('configModule')
+  if (!jwt_secret) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      "Please configure jwtSecret in your environment"
+      "Please configure jwt_secret in your environment"
     )
   }
   const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
-  const result = await authService.authenticate(
-    validated.email,
-    validated.password
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+     return await authService.withTransaction(transactionManager).authenticate(
+      validated.email,
+      validated.password
+    )
+  })
 
   if (result.success && result.user) {
     // Add JWT to cookie
-    req.session.jwt = jwt.sign({ userId: result.user.id }, config.jwtSecret, {
+    req.session.jwt = jwt.sign({ userId: result.user.id }, jwt_secret, {
       expiresIn: "24h",
     })
 

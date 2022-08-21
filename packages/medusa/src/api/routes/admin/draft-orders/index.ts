@@ -46,11 +46,17 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminDraftOrdersRelations = ["order", "cart"]
+export const defaultAdminDraftOrdersRelations = [
+  "order",
+  "cart",
+  "cart.items",
+  "cart.items.adjustments",
+]
 
 export const defaultAdminDraftOrdersCartRelations = [
   "region",
   "items",
+  "items.adjustments",
   "payment",
   "shipping_address",
   "billing_address",
@@ -59,6 +65,7 @@ export const defaultAdminDraftOrdersCartRelations = [
   "payment_sessions",
   "shipping_methods.shipping_option",
   "discounts",
+  "customer",
   "discounts.rule",
 ]
 
@@ -71,7 +78,7 @@ export const defaultAdminDraftOrdersCartFields: (keyof Cart)[] = [
   "total",
 ]
 
-export const defaultAdminDraftOrdersFields = [
+export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
   "id",
   "status",
   "display_id",

@@ -39,7 +39,6 @@ export const defaultStoreOrdersRelations = [
   "shipping_methods",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
   "customer",
   "payments",
   "region",
@@ -66,7 +65,7 @@ export const defaultStoreOrdersFields = [
   "gift_card_total",
   "subtotal",
   "total",
-]
+] as (keyof Order)[]
 
 export const allowedStoreOrdersRelations = [
   "shipping_address",
@@ -79,7 +78,6 @@ export const allowedStoreOrdersRelations = [
   "shipping_methods",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
   "customer",
   "payments",
   "region",

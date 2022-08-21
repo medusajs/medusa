@@ -22,6 +22,7 @@ export const StripeMock = {
           id: "pi_lebron",
           amount: 100,
           customer: "cus_123456789_new",
+          description: data?.description,
         })
       }
       if (data.customer === "cus_lebron") {
@@ -29,6 +30,7 @@ export const StripeMock = {
           id: "pi_lebron",
           amount: 100,
           customer: "cus_lebron",
+          description: data?.description,
         })
       }
     }),

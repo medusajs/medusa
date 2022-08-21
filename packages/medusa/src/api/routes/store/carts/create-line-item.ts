@@ -3,6 +3,8 @@ import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -30,11 +32,14 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
+  const customerId = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const manager: EntityManager = req.scope.resolve("manager")
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -43,9 +48,14 @@ export default async (req, res) => {
     const line = await lineItemService
       .withTransaction(m)
       .generate(validated.variant_id, cart.region_id, validated.quantity, {
+        customer_id: customerId || cart.customer_id,
         metadata: validated.metadata,
       })
-    await txCartService.addLineItem(id, line)
+
+    await txCartService.addLineItem(id, line, {
+      validateSalesChannels:
+        featureFlagRouter.isFeatureEnabled("sales_channels"),
+    })
 
     const updated = await txCartService.retrieve(id, {
       relations: ["payment_sessions"],
@@ -61,7 +71,9 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart })
+  const data = await decorateLineItemsWithTotals(cart, req)
+
+  res.status(200).json({ cart: data })
 }
 
 export class StorePostCartsCartLineItemsReq {
@@ -72,5 +84,5 @@ export class StorePostCartsCartLineItemsReq {
   quantity: number
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown> | undefined
 }

@@ -1,6 +1,7 @@
 import { IsString } from "class-validator"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-profiles
@@ -36,7 +37,12 @@ export default async (req, res) => {
   const profileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"
   )
-  const data = await profileService.create(validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const data = await manager.transaction(async (transactionManager) => {
+    return await profileService
+      .withTransaction(transactionManager)
+      .create(validated)
+  })
 
   res.status(200).json({ shipping_profile: data })
 }
