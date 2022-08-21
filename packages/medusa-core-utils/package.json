@@ -33,5 +33,9 @@
     "prettier": "^1.19.1",
     "typescript": "^4.4.4"
   },
+  "dependencies": {
+    "joi": "^17.3.0",
+    "joi-objectid": "^3.0.1"
+  },
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }
