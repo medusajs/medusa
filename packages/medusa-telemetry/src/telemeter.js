@@ -1,15 +1,15 @@
-import os from "os"
 import fs from "fs"
-import { join, sep } from "path"
 import isDocker from "is-docker"
+import os from "os"
+import { join, sep } from "path"
 import { v4 as uuidv4 } from "uuid"
 
+import Store from "./store"
 import createFlush from "./util/create-flush"
 import getTermProgram from "./util/get-term-program"
+import { getCIName, isCI } from "./util/is-ci"
 import isTruthy from "./util/is-truthy"
 import showAnalyticsNotification from "./util/show-notification"
-import { isCI, getCIName } from "./util/is-ci"
-import Store from "./store"
 
 const MEDUSA_TELEMETRY_VERBOSE = process.env.MEDUSA_TELEMETRY_VERBOSE || false
 
@@ -24,6 +24,8 @@ class Telemeter {
 
     this.queueSize_ = this.store_.getQueueSize()
     this.queueCount_ = this.store_.getQueueCount()
+
+    this.featureFlags_ = new Set()
   }
 
   getMachineId() {
@@ -130,6 +132,7 @@ class Telemeter {
       os_info: this.getOsInfo(),
       medusa_version: this.getMedusaVersion(),
       cli_version: this.getCliVersion(),
+      feature_flags: Array.from(this.featureFlags_),
     }
 
     this.store_.addEvent(event)
@@ -150,6 +153,12 @@ class Telemeter {
       if (flush) {
         this.timer = setTimeout(flush, this.flushInterval)
       }
+    }
+  }
+
+  trackFeatureFlag(flag) {
+    if (flag) {
+      this.featureFlags_.add(flag)
     }
   }
 }

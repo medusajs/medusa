@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:9
+medusa/dist/models/gift-card-transaction.d.ts:9
 
 ___
 
@@ -24,17 +24,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:11
+medusa/dist/models/gift-card-transaction.d.ts:13
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:10
+medusa/dist/models/gift-card-transaction.d.ts:10
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:6
+medusa/dist/models/gift-card-transaction.d.ts:6
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:5
+medusa/dist/models/gift-card-transaction.d.ts:5
 
 ___
 
@@ -64,7 +64,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:4
+medusa/dist/models/gift-card-transaction.d.ts:4
+
+___
+
+### is\_taxable
+
+• **is\_taxable**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/gift-card-transaction.d.ts:11
 
 ___
 
@@ -74,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:8
+medusa/dist/models/gift-card-transaction.d.ts:8
 
 ___
 
@@ -84,4 +94,14 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/gift-card-transaction.d.ts:7
+medusa/dist/models/gift-card-transaction.d.ts:7
+
+___
+
+### tax\_rate
+
+• **tax\_rate**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/gift-card-transaction.d.ts:12

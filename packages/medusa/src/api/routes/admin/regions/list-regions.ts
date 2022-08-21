@@ -1,11 +1,12 @@
-import { validator } from "../../../../utils/validator"
+import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import _, { identity } from "lodash"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
+import { DateComparisonOperator } from "../../../../types/common"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { Type } from "class-transformer"
-import _, { identity } from "lodash"
-import { DateComparisonOperator } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /regions
@@ -18,30 +19,32 @@ import { DateComparisonOperator } from "../../../../types/common"
  *    name: limit
  *    schema:
  *      type: integer
+ *      default: 50
  *    required: false
  *    description: limit the number of regions in response
  *  - in: query
  *    name: offset
  *    schema:
  *      type: integer
+ *      default: 0
  *    required: false
  *    description: Offset of regions in response (used for pagination)
- * - in: query
+ *  - in: query
  *    name: created_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was created, i.e. less than, greater than etc.
- * - in: query
+ *  - in: query
  *    name: updated_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was updated, i.e. less than, greater than etc.
- * - in: query
+ *  - in: query
  *    name: deleted_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
  * tags:
@@ -57,6 +60,15 @@ import { DateComparisonOperator } from "../../../../types/common"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/region"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetRegionsParams, req.query)

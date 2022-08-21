@@ -5,9 +5,12 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
@@ -15,8 +18,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Registers a Swap Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) swap_id=* {string} The id of the Swap.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) swap_id=* {string} The ID of the Swap.
  * requestBody:
  *   content:
  *     application/json:
@@ -25,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.
@@ -36,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *             description: If set to true no notification will be send related to this Claim.
  *             type: boolean
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK
@@ -58,12 +61,15 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  await swapService.createShipment(
-    swap_id,
-    validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-    { no_notification: validated.no_notification }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await swapService.withTransaction(transactionManager).createShipment(
+      swap_id,
+      validated.fulfillment_id,
+      validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
+      { no_notification: validated.no_notification }
+    )
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

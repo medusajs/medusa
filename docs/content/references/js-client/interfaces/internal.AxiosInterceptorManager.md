@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:166
+medusa-js/node_modules/axios/index.d.ts:166
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `onFulfilled?` | (`value`: `V`) => `T` \| [`Promise`](../modules/internal.md#promise)<`T`\> |
+| `onFulfilled?` | (`value`: `V`) => `T` \| `Promise`<`T`\> |
 | `onRejected?` | (`error`: `any`) => `any` |
 
 #### Returns
@@ -57,4 +57,4 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:165
+medusa-js/node_modules/axios/index.d.ts:165

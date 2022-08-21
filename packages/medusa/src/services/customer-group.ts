@@ -9,6 +9,7 @@ import {
   CustomerGroupUpdate,
   FilterableCustomerGroupProps,
 } from "../types/customer-groups"
+import { isDefined } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 
 type CustomerGroupConstructorProps = {
@@ -173,12 +174,12 @@ class CustomerGroupService extends BaseService {
       const customerGroup = await this.retrieve(customerGroupId)
 
       for (const key in properties) {
-        if (typeof properties[key] !== "undefined") {
+        if (isDefined(properties[key])) {
           customerGroup[key] = properties[key]
         }
       }
 
-      if (typeof metadata !== "undefined") {
+      if (isDefined(metadata)) {
         customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
       }
       return await cgRepo.save(customerGroup)

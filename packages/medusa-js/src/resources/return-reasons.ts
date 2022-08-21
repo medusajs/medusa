@@ -14,7 +14,7 @@ class ReturnReasonsResource extends BaseResource {
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsRes> {
     const path = `/store/return-reasons/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -24,7 +24,7 @@ class ReturnReasonsResource extends BaseResource {
    */
   list(customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsListRes> {
     const path = `/store/return-reasons`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

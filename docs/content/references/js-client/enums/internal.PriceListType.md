@@ -6,22 +6,22 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).PriceListType
 
-## Enumeration members
+## Enumeration Members
 
 ### OVERRIDE
 
-• **OVERRIDE** = `"override"`
+• **OVERRIDE** = ``"override"``
 
 #### Defined in
 
-packages/medusa/dist/types/price-list.d.ts:5
+medusa/dist/types/price-list.d.ts:5
 
 ___
 
 ### SALE
 
-• **SALE** = `"sale"`
+• **SALE** = ``"sale"``
 
 #### Defined in
 
-packages/medusa/dist/types/price-list.d.ts:4
+medusa/dist/types/price-list.d.ts:4

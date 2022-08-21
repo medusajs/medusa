@@ -63,7 +63,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-env-variables`,
       options: {
-        allowList: ["ALGOLIA_API_KEY"],
+        allowList: ["ALGOLIA_API_KEY", "ALGOLIA_APP_ID"],
       },
     },
     {

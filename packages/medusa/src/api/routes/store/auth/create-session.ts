@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /auth
@@ -28,10 +29,13 @@ export default async (req, res) => {
   const validated = await validator(StorePostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
-  const result = await authService.authenticateCustomer(
-    validated.email,
-    validated.password
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+    return await authService
+      .withTransaction(transactionManager)
+      .authenticateCustomer(validated.email, validated.password)
+  })
+
   if (!result.success) {
     res.sendStatus(401)
     return

@@ -34,7 +34,7 @@ export type CartFactoryData = {
 export const simpleCartFactory = async (
   connection: Connection,
   data: CartFactoryData = {},
-  seed: number
+  seed?: number
 ): Promise<Cart> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)

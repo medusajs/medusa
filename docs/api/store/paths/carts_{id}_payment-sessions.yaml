@@ -1,0 +1,24 @@
+post:
+  operationId: PostCartsCartPaymentSessions
+  summary: Initialize Payment Sessions
+  description: >-
+    Creates Payment Sessions for each of the available Payment Providers in the
+    Cart's Region.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml

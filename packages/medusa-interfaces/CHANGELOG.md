@@ -1,51 +1,39 @@
 # Change Log
 
+## 1.3.2
+
+### Patch Changes
+
+- [#1914](https://github.com/medusajs/medusa/pull/1914) [`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68) Thanks [@fPolic](https://github.com/fPolic)! - Version bump due to missing changesets in merged PRs
+
+* [#1874](https://github.com/medusajs/medusa/pull/1874) [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b) Thanks [@adrien2p](https://github.com/adrien2p)! - Move search indexing into a separate subscriber to defer the work load
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [1.3.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.3.0...medusa-interfaces@1.3.1) (2022-07-05)
 
-
 ### Bug Fixes
 
-* **medusa:** Remove deps `mongoose` + `mongodb`  ([#1218](https://github.com/medusajs/medusa/issues/1218)) ([c76e23e](https://github.com/medusajs/medusa/commit/c76e23e84dd8cb08c3c709f9f95c4c17b9685439))
-
-
-
-
+- **medusa:** Remove deps `mongoose` + `mongodb` ([#1218](https://github.com/medusajs/medusa/issues/1218)) ([c76e23e](https://github.com/medusajs/medusa/commit/c76e23e84dd8cb08c3c709f9f95c4c17b9685439))
 
 # [1.3.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.2.1...medusa-interfaces@1.3.0) (2022-05-01)
 
-
 ### Bug Fixes
 
-* ensures no duplicate tax lines when completing cart ([#1262](https://github.com/medusajs/medusa/issues/1262)) ([607a382](https://github.com/medusajs/medusa/commit/607a382b4ee190c25eafa345674b55b74a7d6349))
-
-
-
-
+- ensures no duplicate tax lines when completing cart ([#1262](https://github.com/medusajs/medusa/issues/1262)) ([607a382](https://github.com/medusajs/medusa/commit/607a382b4ee190c25eafa345674b55b74a7d6349))
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.34...medusa-interfaces@1.2.1) (2022-02-28)
 
-
 ### Bug Fixes
 
-* atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([f983cfa](https://github.com/medusajs/medusa/commit/f983cfada675b9c2ad89f1dea37f862673383f54))
-
-
-
-
+- atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([f983cfa](https://github.com/medusajs/medusa/commit/f983cfada675b9c2ad89f1dea37f862673383f54))
 
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.34...medusa-interfaces@1.2.0) (2022-02-25)
 
-
 ### Bug Fixes
 
-* atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([62c263c](https://github.com/medusajs/medusa/commit/62c263c36080541023fda5ae33a458c58cbaeb1e))
-
-
-
-
+- atomic phase error handler ([#1104](https://github.com/medusajs/medusa/issues/1104)) ([62c263c](https://github.com/medusajs/medusa/commit/62c263c36080541023fda5ae33a458c58cbaeb1e))
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.33...medusa-interfaces@1.1.34) (2022-02-06)
 

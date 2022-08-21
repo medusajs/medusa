@@ -166,16 +166,19 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          status: "proposed",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          status: "published",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            status: "proposed",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            status: "published",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -205,16 +208,19 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          status: "proposed",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          status: "published",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            status: "proposed",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            status: "published",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -238,11 +244,14 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_4",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_4",
+          }),
+        ])
+      )
     })
 
     it("returns a list of products with free text query and limit", async () => {
@@ -323,11 +332,14 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_4",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_4",
+          }),
+        ])
+      )
     })
 
     it("returns a list of products in collection", async () => {
@@ -349,16 +361,19 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          collection_id: "test-collection1",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_3",
-          collection_id: "test-collection1",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            collection_id: "test-collection1",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_3",
+            collection_id: "test-collection1",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -387,16 +402,19 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          tags: [expect.objectContaining({ id: "tag3" })],
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          tags: [expect.objectContaining({ id: "tag3" })],
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            tags: [expect.objectContaining({ id: "tag3" })],
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            tags: [expect.objectContaining({ id: "tag3" })],
+          }),
+        ])
+      )
       for (const product of response.data.products) {
         for (const notExpect of notExpected) {
           expect(product.tags).toEqual(expect.not.arrayContaining([notExpect]))
@@ -429,13 +447,16 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_3",
-          collection_id: "test-collection1",
-          tags: [expect.objectContaining({ id: "tag4" })],
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_3",
+            collection_id: "test-collection1",
+            tags: [expect.objectContaining({ id: "tag4" })],
+          }),
+        ])
+      )
 
       for (const notExpect of notExpectedCollections) {
         expect(response.data.products).toEqual(

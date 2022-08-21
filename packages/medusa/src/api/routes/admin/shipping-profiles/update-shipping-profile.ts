@@ -1,6 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
+
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-profiles/{id}
@@ -8,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Update a Shipping Profiles"
  * description: "Updates a Shipping Profile"
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Profile.
+ *   - (path) id=* {string} The ID of the Shipping Profile.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             shipping_profiles:
+ *             shipping_profile:
  *               $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {
@@ -41,7 +43,12 @@ export default async (req, res) => {
     "shippingProfileService"
   )
 
-  await profileService.update(profile_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await profileService
+      .withTransaction(transactionManager)
+      .update(profile_id, validated)
+  })
 
   const data = await profileService.retrieve(profile_id)
   res.status(200).json({ shipping_profile: data })

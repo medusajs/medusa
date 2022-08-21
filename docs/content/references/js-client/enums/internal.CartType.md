@@ -6,52 +6,52 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).CartType
 
-## Enumeration members
+## Enumeration Members
 
 ### CLAIM
 
-• **CLAIM** = `"claim"`
+• **CLAIM** = ``"claim"``
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:99
+medusa/dist/models/cart.d.ts:100
 
 ___
 
 ### DEFAULT
 
-• **DEFAULT** = `"default"`
+• **DEFAULT** = ``"default"``
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:95
+medusa/dist/models/cart.d.ts:96
 
 ___
 
 ### DRAFT\_ORDER
 
-• **DRAFT\_ORDER** = `"draft_order"`
+• **DRAFT\_ORDER** = ``"draft_order"``
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:97
+medusa/dist/models/cart.d.ts:98
 
 ___
 
 ### PAYMENT\_LINK
 
-• **PAYMENT\_LINK** = `"payment_link"`
+• **PAYMENT\_LINK** = ``"payment_link"``
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:98
+medusa/dist/models/cart.d.ts:99
 
 ___
 
 ### SWAP
 
-• **SWAP** = `"swap"`
+• **SWAP** = ``"swap"``
 
 #### Defined in
 
-packages/medusa/dist/models/cart.d.ts:96
+medusa/dist/models/cart.d.ts:97

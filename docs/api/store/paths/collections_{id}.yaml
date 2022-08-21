@@ -1,0 +1,22 @@
+get:
+  operationId: GetCollectionsCollection
+  summary: Retrieve a Product Collection
+  description: Retrieves a Product Collection.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Product Collection
+      schema:
+        type: string
+  tags:
+    - Collection
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              collection:
+                $ref: ../components/schemas/product_collection.yaml

@@ -1,0 +1,54 @@
+get:
+  operationId: GetCustomersCustomerOrders
+  summary: Retrieve Customer Orders
+  description: Retrieves a list of a Customer's Orders.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: How many orders to return.
+      schema:
+        type: integer
+        default: 10
+    - in: query
+      name: offset
+      description: The offset in the resulting orders.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated string) Which fields should be included in the
+        resulting orders.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated string) Which relations should be expanded in the
+        resulting orders.
+      schema:
+        type: string
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              orders:
+                type: array
+                items:
+                  $ref: ../components/schemas/order.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

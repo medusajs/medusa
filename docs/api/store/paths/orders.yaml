@@ -1,0 +1,42 @@
+get:
+  operationId: GetOrders
+  summary: Look Up an Order
+  description: Look up an order using filters.
+  parameters:
+    - in: query
+      name: display_id
+      required: true
+      description: The display id given to the Order.
+      schema:
+        type: number
+    - in: query
+      name: email
+      style: form
+      explode: false
+      description: The email associated with this order.
+      required: true
+      schema:
+        type: string
+        format: email
+    - in: query
+      name: shipping_address
+      style: form
+      explode: false
+      description: The shipping address associated with this order.
+      schema:
+        type: object
+        properties:
+          postal_code:
+            type: string
+            description: The postal code of the shipping address
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

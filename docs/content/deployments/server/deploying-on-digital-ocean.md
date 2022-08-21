@@ -1,22 +1,49 @@
-# Deploying on DigitalOcean App Platform
+# Deploy Your Medusa Server to DigitalOcean Apps
 
-This is a guide for deploying a Medusa project on DigitalOcean App Platform.
+In this document, you'll learn how to deploy your Medusa server to a DigitalOcean App.
 
-:::note
+DigitalOcean is a reliable hosting provider that provides different ways to host websites and servers. One way to host a server is using their DigitalOcean App Platform.
 
-It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../../usage/create-medusa-app.mdx) for a small walkthrough.
+## Prerequisites
+
+### Medusa Server
+
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow our [quickstart guide](../../quickstart/quick-start.md).
+
+Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
+
+### Needed Accounts
+
+- A [DigitalOcean](https://cloud.digitalocean.com/registrations/new) account. You need to provide a payment method on sign up.
+- A [GitHub](https://github.com/) account to create a repository to host your server’s codebase.
+
+:::tip
+
+If you want to use another Git Provider supported by DigitalOcean, it’s possible to follow along with this guide but you’ll have to perform the equivalent steps in your Git Provider.
 
 :::
 
-### 1. Configure Medusa
+### Required Tools
 
-Before jumping into DigitalOcean, your Medusa application needs to be configured.
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 
-#### Update `medusa-config.js`
+## Changes to package.json
 
-Instead of using a single environment variable for the database, `DATABASE_URL`, set `DB_*` variables and declare `DATABASE_URL` like so:
+Change the `start` script in `package.json` to the following:
 
-```javascript=
+```json
+"start": "medusa migrations run && medusa start"
+```
+
+This ensures that Migrations are run everytime the Medusa server is restarted.
+
+## Changes to medusa-config.js
+
+In `medusa-config.js`, the `DATABASE_URL` variable is set to the environment variable `DATABASE_URL`. This needs to be changed as DigitalOcean provides the different details of the database connection separately.
+
+Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
+
+```js
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_HOST = process.env.DB_HOST;
@@ -24,156 +51,231 @@ const DB_PORT = process.env.DB_PORT;
 const DB_DATABASE = process.env.DB_DATABASE;
 
 const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
-
 ```
 
-Update `module.exports` to include the following:
+In addition, you must add to `projectConfig` in the exported object a new property `database_extra`:
 
-```javascript=
+```js
 module.exports = {
   projectConfig: {
-    redis_url: REDIS_URL,
-    database_url: DATABASE_URL,
-    database_type: "postgres",
-    store_cors: STORE_CORS,
-    admin_cors: ADMIN_CORS,
+    //...
     database_extra: { ssl: { rejectUnauthorized: false } }
   },
-  plugins,
 };
 ```
 
-#### Update `package.json`
+## Create GitHub Repository
 
-Update `scripts` to have the following:
+Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
 
-```json=
-...
-"scripts": {
-    "serve": "medusa start",
-    "start": "medusa migrations run && medusa develop",
-    "build": "babel src -d dist --extensions \".ts,.js\""
-}
-...
+On GitHub, click the plus icon at the top right, then click New Repository.
+
+![Click plus then choose new repository from dropdown](https://i.imgur.com/0YlxBRi.png)
+
+You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
+
+![New repository form](https://i.imgur.com/YPYXAF2.png)
+
+### Push Code to GitHub Repository
+
+The next step is to push the code to the GitHub repository you just created.
+
+After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
+
+![GitHub repository's URL](https://i.imgur.com/pHfSTuT.png)
+
+Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
+
+```bash
+git init
+git remote add origin <GITHUB_URL>
 ```
 
-Add a newer version of node to `engines`:
+Where `<GITHUB_URL>` is the URL you just copied.
 
-```json=
-...
-"engines": {
-    "node": "14.x"
-}
-...
-```
+Then, add, commit, and push the changes into the repository:
 
-#### Push changes to your repository
-
-```shell=
+```bash
 git add .
-git commit -m "chore: DigitalOcean setup"
+git commit -m "initial commit"
 git push origin master
 ```
 
-### 2. [DigitalOcean](https://cloud.digitalocean.com/login)
+After pushing the changes, you can find the files in your GitHub repository.
 
-[Sign in](https://cloud.digitalocean.com/login) to your DigitalOcean Account or [create a new one](https://cloud.digitalocean.com/registrations/new).
+## Deploy to DigitalOcean App
 
-### 3. Create an App
+After logging into your account, click on the Create button at the top right, then choose App.
 
-Navigate to the top-right dropdown **Create** and select **Apps**.
+![Click Create button then choose Apps](https://i.imgur.com/PQgPZ0q.png)
 
-### 4. Connect you Git repository
+### Choose Repository
 
-Choose **GitHub** or **GitLab** and select the repository that holds your Medusa project. Check **Autodeploy code changes**, if you want DigitalOcean to deploy on every push to your repository.
+In the Create App page, choose GitHub from the Service Provider list.
 
-:::tip
+![Choose GitHub from list of providers](https://i.imgur.com/nBY9wGE.png)
 
-It's important, that DigitalOcean is pointing to the directory holding the Medusa store engine as it is only this which that will be deployed (If you followed the quickstart guide this will simply be the created project, and if you used the npx command this will be the backend folder inside of the newly created project).
+If you haven’t given DigitalOcean access before, click on Manage Access under Source Code. You’ll then be redirected to GitHub to give DigitalOcean access.
 
-:::
+Once DigitalOcean have access to your GitHub account, you should see a Repository input. Click on it and search for the repository you created earlier.
 
-### 5. Configure environment variables
+Additional inputs will show up to choose the Branch, Source Directory, and Autodeploy options.
 
-The default settings for your app should be sufficient. We only need to change environment variables to hold the following:
+![Enter master for Branch input, backslash for Source Directory, and check Autodeploy](https://i.imgur.com/kjk9E2B.png)
 
-```shell=
+If you host your Medusa server in a monorepo, you should change the Source Directory to the directory the server is available in the repository. Otherwise, it can be left as is.
+
+Once you’re done, click Next to move on to the next step.
+
+### Specify Web Service Resources
+
+In the next step, you’ll see the resources to create.
+
+![List of resources showing a docker resource and web service resource](https://i.imgur.com/6TlpWB9.png)
+
+If you have a Dockerfile available in the server’s codebase (which is available by default), you’ll have two resources showing. You can remove it by clicking on the trash icon at the right of the resource.
+
+By default, DigitalOcean hosts the web service in a sub-path of the domain name of the created App. To change it to the root of the domain, click on the edit icon at the right of the Web Service resource.
+
+Then, scroll to HTTP Request Routes and expand it by clicking on Edit at its right. Change the value of the Routes input to `/`.
+
+![Enter backslash for Routes](https://i.imgur.com/ta0jHh4.png)
+
+Once you’re done click Save. You’ll be taken back to the Resources page.
+
+### Specify Database Resources
+
+On the same page, expand the Add Resources section, choose Database, then click Add.
+
+![Choose Database](https://i.imgur.com/MfK9E8o.png)
+
+In the new page, you’ll be shown a PostgreSQL database to be created. Notice that it’s important to choose a name that you’ll remember as you’ll need the name in next steps. You can leave the name as is if it’s not necessary to change it.
+
+![Enter db for Choose Name input](https://i.imgur.com/jYxENhr.png)
+
+Once you’re done, click Create and Attach. You’ll be redirected back to the previous page with the database added to the resources.
+
+![Database showing in the list of resources with web service](https://i.imgur.com/jNZ7rxg.png)
+
+Once you’re done, click Next to move on to the next step.
+
+### Set Environment Variables
+
+In this section, you’ll add environment variables that are essential to your Medusa server.
+
+You should see 2 ways to add environment variables: Global or specific to the Web Service.
+
+![Global environment variables and web service environment variables](https://i.imgur.com/VOYykPT.png)
+
+Click Edit on the second row to add environment variables specific to the Web Service. Add the following environment variables:
+
+```bash
 DB_USERNAME=${db.USERNAME}
 DB_PASSWORD=${db.PASSWORD}
 DB_HOST=${db.HOSTNAME}
 DB_PORT=${db.PORT}
 DB_DATABASE=${db.DATABASE}
 REDIS_URL=${redis.DATABASE_URL}
-JWT_SECRET=your-jwt-secret
-COOKIE_SECRET=your-cookie-secret
+JWT_SECRET=secret
+COOKIE_SECRET=secret
+NPM_CONFIG_PRODUCTION=false
+NODE_ENV=production
 ```
 
-:::tip
+Notice how for database environment variables you access the values from the database you created earlier `db`. If you changed the name of the database, you must change `db` here to the name you supplied to the PostgreSQL database.
 
-Make sure to use actual secrets in a production environment
+Another thing to note here is that you added a `REDIS_URL` environment variable that uses a `redis` resource to retrieve the URL. You’ll be creating this resource in a later section.
+
+:::caution
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
 
 :::
 
-### 6. Set up a Database
+Once you’re done click Save.
 
-Click **Add a Database**. If you named your database instance something different than `db`, make sure your environment variable reflect this. See our use of `db` below.
+### Finalize App
 
-```shell=
-DB_USERNAME=${db.USERNAME}
+In the next section, you’ll be shown the app info and the region it will be deployed to. You can leave it all as is or make changes if you find it necessary.
+
+![App info and region details](https://i.imgur.com/XVS0yej.png)
+
+Once you’re done, click Next to go to the next step.
+
+In the final step, you can see a review of everything you created. If everything looks good, scroll down and click Create Resource.
+
+### Create Redis Resource
+
+While the server is being deployed, you can create the Redis resource.
+
+Click the Create button at the top right and choose Database from the dropdown.
+
+![Click Create then choose Databases](https://i.imgur.com/8BzUzuO.png)
+
+In the new page under Choose a database engine, choose Redis.
+
+![For the Choose a database engine input choose Redis](https://i.imgur.com/lninWzJ.png)
+
+Then, scroll down to the “Choose a name” input. Since you used the name `redis` in the `REDIS_URL` environment variables, change the value to `redis` here.
+
+![For the choose a name input set the value to redis](https://i.imgur.com/E81Qc4l.png)
+
+Once you’re done, click on Create Database Cluster.
+
+### Attach Redis Database
+
+Once the Redis database is created go back to the App you created earlier by choose Apps in the sidebar then clicking on the App name.
+
+Click at the white Create button at the top right and choose Create/Attach Database.
+
+![Click at the create button and choose create/attach database](https://i.imgur.com/jdh702G.png)
+
+In the new page, click on the Previously Created DigitalOcean Database radio button. Then, under Database Cluster select the Redis database you just created.
+
+![Choose Previously Created DigitalOcean Database then under Database Cluster choose redis](https://i.imgur.com/aBJ2z0B.png)
+
+Once you’re done click Attach Database. This will add the Redis database to the list of resources of your App and will trigger a redeploy of the App.
+
+## Test your Server
+
+Once the redeployment is complete, copy the URL of the App which can be found under the App’s name.
+
+![Copy URL under the app name](https://i.imgur.com/i3ws777.png)
+
+Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, you should receive a JSON response.
+
+![JSON response with list of products](https://i.imgur.com/5xTdMbY.png)
+
+## Run Commands on Your Server
+
+To run commands on your server, you can access the console on the App’s page by choosing the Console tab. This opens a console in your browser where you can run commands on your server.
+
+For example, you can run the following commands to create a new admin user:
+
+```bash
+npm install @medusajs/medusa-cli -g
+medusa user --email <EMAIL> --password <PASSWORD>
 ```
 
-### 7. Give your app a name
+Make sure to replace `<EMAIL>` and `<PASSWORD>` with the credentials you want to give the user.
 
-Enter a name for your app and select the most suitable region for your setup.
+![Console in the DigitalOcean App](https://i.imgur.com/9RMfD4C.png)
 
-### 8. Finalize the setup
+## Add Environment Variables
 
-Choose a plan for your App. For just getting started, the Basic plan should be sufficient. For a production environment, the **Pro plan** is recommended.
+You’ll likely need to add environment variables later such as Admin CORS and Store CORS variables. 
 
-Finally, launch the app.
+To add environment variables, on the App’s page click on Settings and choose the Web Service component.
 
-### 9. Add a Redis Database
+![Choose the Settings tab then choose the web service container](https://i.imgur.com/qLPARaV.png)
 
-The following steps will add a Redis database to your Medusa setup.
+Then, scroll down and find Environment Variables. You can expand the environment variables by clicking Edit on the right. Here, you can edit, add, and remove environment variables.
 
-1. Navigate to the top-right dropdown **Create** and select **Databases**
-2. Select **Redis**
-3. Select the same region you chose for your App
-4. Leave VPC Network as it is
-5. Choose a name for your Redis Database
+![Expand the Environment Variables section by clicking edit](https://i.imgur.com/4x6JGjX.png)
 
-Similarly to our other database, if you choose to name Redis something different than `redis`, you should udpdate the environment variable as well. See our use of `redis` below.
+Once you click Save, the environment variables will be saved and a redeployment will be triggered.
 
-```shell=
-REDIS_URL=${redis.DATABASE_URL}
-```
+## What’s Next 🚀
 
-6.  Create the Redis database for your project
-
-### 10. Configure Redis for your App
-
-1. In the navbar on the left, click **Apps** and select your Medusa App
-2. Select **Settings** ➜ **Add component** ➜ **Database**
-3. Select **Previously Created DigitalOcean Database**
-4. Select the Redis Cluster created in the previous step
-
-### 11. Deploy Medusa
-
-If you haven't already, make sure to rebuild and deploy your Medusa App.
-
-### 12. Try it out!
-
-In DigitalOcean, navigate to your App overview and access your endpoint to try out your new setup.
-
-```
-https://your-endpoint.ondigitalocean.app/health
-```
-
-### What's next?
-
-You now have an application running on DigitalOcean. This can be scaled and configured to fit your business needs.
-
-Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
-
-- [Deploy Admin on Netlify](../admin/deploying-on-netlify.md)
-- Deploy Admin on Gatsby Cloud (Coming soon)
+- Learn [how to deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
+- Learn [how to deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).

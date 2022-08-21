@@ -1,0 +1,45 @@
+get:
+  operationId: GetVariants
+  summary: List Product Variants.
+  description: Retrieves a list of Product Variants
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: Query used for searching variants.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many variants to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of variants returned.
+      schema:
+        type: integer
+        default: 20
+  tags:
+    - Product Variant
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              variants:
+                type: array
+                items:
+                  $ref: ../components/schemas/product_variant.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

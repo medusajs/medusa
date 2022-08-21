@@ -1,4 +1,10 @@
-import { Brackets, DeleteResult, EntityRepository, In, Repository } from "typeorm"
+import {
+  Brackets,
+  DeleteResult,
+  EntityRepository,
+  In,
+  Repository,
+} from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig, Selector } from "../types/common";
 
@@ -6,7 +12,9 @@ import { ExtendedFindConfig, Selector } from "../types/common";
 export class SalesChannelRepository extends Repository<SalesChannel> {
     public async getFreeTextSearchResultsAndCount(
     q: string,
-    options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = { where: {} },
+    options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
+      where: {},
+    }
   ): Promise<[SalesChannel[], number]> {
     const options_ = { ...options }
     delete options_?.where?.name
@@ -17,8 +25,9 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
       .where(options_.where)
       .andWhere(
         new Brackets((qb) => {
-          qb.where(`sales_channel.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
+          qb.where(`sales_channel.description ILIKE :q`, {
+            q: `%${q}%`,
+          }).orWhere(`sales_channel.name ILIKE :q`, { q: `%${q}%` })
         })
       )
       .skip(options.skip)

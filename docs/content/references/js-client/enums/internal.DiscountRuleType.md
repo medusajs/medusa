@@ -6,32 +6,32 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).DiscountRuleType
 
-## Enumeration members
+## Enumeration Members
 
 ### FIXED
 
-• **FIXED** = `"fixed"`
+• **FIXED** = ``"fixed"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-rule.d.ts:4
+medusa/dist/models/discount-rule.d.ts:4
 
 ___
 
 ### FREE\_SHIPPING
 
-• **FREE\_SHIPPING** = `"free_shipping"`
+• **FREE\_SHIPPING** = ``"free_shipping"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-rule.d.ts:6
+medusa/dist/models/discount-rule.d.ts:6
 
 ___
 
 ### PERCENTAGE
 
-• **PERCENTAGE** = `"percentage"`
+• **PERCENTAGE** = ``"percentage"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-rule.d.ts:5
+medusa/dist/models/discount-rule.d.ts:5

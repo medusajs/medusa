@@ -1,0 +1,132 @@
+post:
+  operationId: PostRegions
+  summary: Create a Region
+  description: Creates a Region
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - name
+            - currency_code
+            - tax_rate
+            - payment_providers
+            - fulfillment_providers
+            - countries
+          properties:
+            name:
+              description: The name of the Region
+              type: string
+            currency_code:
+              description: The 3 character ISO currency code to use for the Region.
+              type: string
+              externalDocs:
+                url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+                description: See a list of codes.
+            tax_code:
+              description: An optional tax code the Region.
+              type: string
+            tax_rate:
+              description: The tax rate to use on Orders in the Region.
+              type: number
+            payment_providers:
+              description: >-
+                A list of Payment Provider IDs that should be enabled for the
+                Region
+              type: array
+              items:
+                type: string
+            fulfillment_providers:
+              description: >-
+                A list of Fulfillment Provider IDs that should be enabled for
+                the Region
+              type: array
+              items:
+                type: string
+            countries:
+              description: >-
+                A list of countries' 2 ISO Characters that should be included in
+                the Region.
+              example:
+                - US
+              type: array
+              items:
+                type: string
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              region:
+                $ref: ../components/schemas/region.yaml
+get:
+  operationId: GetRegions
+  summary: List Regions
+  description: Retrieves a list of Regions.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      schema:
+        type: integer
+        default: 50
+      required: false
+      description: limit the number of regions in response
+    - in: query
+      name: offset
+      schema:
+        type: integer
+        default: 0
+      required: false
+      description: Offset of regions in response (used for pagination)
+    - in: query
+      name: created_at
+      schema:
+        type: object
+      required: false
+      description: >-
+        Date comparison for when resulting region was created, i.e. less than,
+        greater than etc.
+    - in: query
+      name: updated_at
+      schema:
+        type: object
+      required: false
+      description: >-
+        Date comparison for when resulting region was updated, i.e. less than,
+        greater than etc.
+    - in: query
+      name: deleted_at
+      schema:
+        type: object
+      required: false
+      description: >-
+        Date comparison for when resulting region was deleted, i.e. less than,
+        greater than etc.
+  tags:
+    - Region
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              regions:
+                type: array
+                items:
+                  $ref: ../components/schemas/region.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page
