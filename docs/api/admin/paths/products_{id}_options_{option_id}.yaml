@@ -1,0 +1,82 @@
+delete:
+  operationId: DeleteProductsProductOptionsOption
+  summary: Delete a Product Option
+  description: >-
+    Deletes a Product Option. Before a Product Option can be deleted all Option
+    Values for the Product Option must be the same. You may, for example, have
+    to delete some of your variants prior to deleting the Product Option
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: path
+      name: option_id
+      required: true
+      description: The ID of the Product Option.
+      schema:
+        type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              option_id:
+                type: string
+                description: The ID of the deleted Product Option
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: option
+              deleted:
+                type: boolean
+                description: Whether or not the items were deleted.
+                default: true
+              product:
+                $ref: ../components/schemas/product.yaml
+post:
+  operationId: PostProductsProductOptionsOption
+  summary: Update a Product Option.
+  description: Updates a Product Option
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Product.
+      schema:
+        type: string
+    - in: path
+      name: option_id
+      required: true
+      description: The ID of the Product Option.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - title
+          properties:
+            title:
+              description: The title of the Product Option
+              type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              product:
+                $ref: ../components/schemas/product.yaml

@@ -1,0 +1,77 @@
+get:
+  operationId: GetVariants
+  summary: Retrieve Product Variants
+  description: Retrieves a list of Product Variants
+  parameters:
+    - in: query
+      name: ids
+      description: A comma separated list of Product Variant ids to filter by.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: A comma separated list of Product Variant relations to load.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many product variants to skip in the result.
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: limit
+      description: Maximum number of Product Variants to return.
+      schema:
+        type: number
+        default: '100'
+    - in: query
+      name: title
+      style: form
+      explode: false
+      description: product variant title to search for.
+      schema:
+        oneOf:
+          - type: string
+            description: a single title to search by
+          - type: array
+            description: multiple titles to search by
+            items:
+              type: string
+    - in: query
+      name: inventory_quantity
+      description: Filter by available inventory quantity
+      schema:
+        oneOf:
+          - type: number
+            description: a specific number to search by.
+          - type: object
+            description: search using less and greater than comparisons.
+            properties:
+              lt:
+                type: number
+                description: filter by inventory quantity less than this number
+              gt:
+                type: number
+                description: filter by inventory quantity greater than this number
+              lte:
+                type: number
+                description: filter by inventory quantity less than or equal to this number
+              gte:
+                type: number
+                description: >-
+                  filter by inventory quantity greater than or equal to this
+                  number
+  tags:
+    - Product Variant
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              variants:
+                type: array
+                items:
+                  $ref: ../components/schemas/product_variant.yaml

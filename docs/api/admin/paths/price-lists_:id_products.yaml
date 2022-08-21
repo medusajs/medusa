@@ -1,0 +1,194 @@
+get:
+  operationId: GetPriceListsPriceListProducts
+  summary: List Product in a Price List
+  description: Retrieves a list of Product that are part of a Price List
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: >-
+        Query used for searching product title and description, variant title
+        and sku, and collection title.
+      schema:
+        type: string
+    - in: query
+      name: id
+      description: ID of the product to search for.
+      schema:
+        type: string
+    - in: query
+      name: status
+      description: Product status to search for
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - draft
+            - proposed
+            - published
+            - rejected
+    - in: query
+      name: collection_id
+      description: Collection IDs to search for
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: tags
+      description: Tag IDs to search for
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: title
+      description: product title to search for.
+      schema:
+        type: string
+    - in: query
+      name: description
+      description: product description to search for.
+      schema:
+        type: string
+    - in: query
+      name: handle
+      description: product handle to search for.
+      schema:
+        type: string
+    - in: query
+      name: is_giftcard
+      description: Search for giftcards using is_giftcard=true.
+      schema:
+        type: string
+    - in: query
+      name: type
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: order
+      description: field to sort results by.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting products were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting products were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: deleted_at
+      description: Date comparison for when resulting products were deleted.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: offset
+      description: How many products to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of products returned.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in each product of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in each product of the
+        result.
+      schema:
+        type: string
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              products:
+                type: array
+                items:
+                  $ref: ../components/schemas/product.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

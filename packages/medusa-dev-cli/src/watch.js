@@ -1,27 +1,27 @@
-const chokidar = require(`chokidar`);
-const _ = require(`lodash`);
-const del = require(`del`);
-const fs = require(`fs-extra`);
-const path = require(`path`);
-const findWorkspaceRoot = require(`find-yarn-workspace-root`);
+const chokidar = require(`chokidar`)
+const _ = require(`lodash`)
+const del = require(`del`)
+const fs = require(`fs-extra`)
+const path = require(`path`)
+const findWorkspaceRoot = require(`find-yarn-workspace-root`)
 
-const { publishPackagesLocallyAndInstall } = require(`./local-npm-registry`);
-const { checkDepsChanges } = require(`./utils/check-deps-changes`);
-const { getDependantPackages } = require(`./utils/get-dependant-packages`);
+const { publishPackagesLocallyAndInstall } = require(`./local-npm-registry`)
+const { checkDepsChanges } = require(`./utils/check-deps-changes`)
+const { getDependantPackages } = require(`./utils/get-dependant-packages`)
 const {
   setDefaultSpawnStdio,
   promisifiedSpawn,
-} = require(`./utils/promisified-spawn`);
-const { traversePackagesDeps } = require(`./utils/traverse-package-deps`);
+} = require(`./utils/promisified-spawn`)
+const { traversePackagesDeps } = require(`./utils/traverse-package-deps`)
 
-let numCopied = 0;
+let numCopied = 0
 
 const quit = () => {
-  console.log(`Copied ${numCopied} files`);
-  process.exit();
-};
+  console.log(`Copied ${numCopied} files`)
+  process.exit()
+}
 
-const MAX_COPY_RETRIES = 3;
+const MAX_COPY_RETRIES = 3
 
 /*
  * non-existent packages break on('ready')
@@ -30,76 +30,89 @@ const MAX_COPY_RETRIES = 3;
 async function watch(
   root,
   packages,
-  { scanOnce, quiet, forceInstall, monoRepoPackages, localPackages }
+  {
+    scanOnce,
+    quiet,
+    forceInstall,
+    monoRepoPackages,
+    localPackages,
+    packageNameToPath,
+    externalRegistry,
+  }
 ) {
-  setDefaultSpawnStdio(quiet ? `ignore` : `inherit`);
+  setDefaultSpawnStdio(quiet ? `ignore` : `inherit`)
   // determine if in yarn workspace - if in workspace, force using verdaccio
   // as current logic of copying files will not work correctly.
-  const yarnWorkspaceRoot = findWorkspaceRoot();
+  const yarnWorkspaceRoot = findWorkspaceRoot()
   if (yarnWorkspaceRoot && process.env.NODE_ENV !== `test`) {
-    console.log(`Yarn workspace found.`);
-    forceInstall = true;
+    console.log(`Yarn workspace found.`)
+    forceInstall = true
   }
 
-  let afterPackageInstallation = false;
-  let queuedCopies = [];
+  let afterPackageInstallation = false
+  let queuedCopies = []
 
   const realCopyPath = (arg) => {
-    const { oldPath, newPath, quiet, resolve, reject, retry = 0 } = arg;
+    const { oldPath, newPath, quiet, resolve, reject, retry = 0 } = arg
     fs.copy(oldPath, newPath, (err) => {
       if (err) {
         if (retry >= MAX_COPY_RETRIES) {
-          console.error(err);
-          reject(err);
-          return;
+          console.error(err)
+          reject(err)
+          return
         } else {
           setTimeout(
             () => realCopyPath({ ...arg, retry: retry + 1 }),
             500 * Math.pow(2, retry)
-          );
-          return;
+          )
+          return
         }
       }
 
       // When the medusa binary is copied over, it is not setup with the executable
       // permissions that it is given when installed via yarn.
-      // This fixes the issue where after running meduas-dev, running `yarn medusa develop`
+      // This fixes the issue where after running medusa-dev, running `yarn medusa develop`
       // fails with a permission issue.
-      if (/(bin\/meduas.js|medusa(-cli)?\/cli.js)$/.test(newPath)) {
-        fs.chmodSync(newPath, `0755`);
+      // @fixes https://github.com/medusajs/medusa/issues/18809
+      // Binary files we target:
+      // - medusa/bin/medusa.js
+      //  -medusa/cli.js
+      //  -medusa-cli/cli.js
+      if (/(bin\/medusa.js|medusa(-cli)?\/cli.js)$/.test(newPath)) {
+        fs.chmodSync(newPath, `0755`)
       }
 
-      numCopied += 1;
+      numCopied += 1
       if (!quiet) {
-        console.log(`Copied ${oldPath} to ${newPath}`);
+        console.log(`Copied ${oldPath} to ${newPath}`)
       }
-      resolve();
-    });
-  };
+      resolve()
+    })
+  }
 
   const copyPath = (oldPath, newPath, quiet, packageName) =>
     new Promise((resolve, reject) => {
-      const argObj = { oldPath, newPath, quiet, packageName, resolve, reject };
+      const argObj = { oldPath, newPath, quiet, packageName, resolve, reject }
       if (afterPackageInstallation) {
-        realCopyPath(argObj);
+        realCopyPath(argObj)
       } else {
-        queuedCopies.push(argObj);
+        queuedCopies.push(argObj)
       }
-    });
+    })
 
   const runQueuedCopies = () => {
-    afterPackageInstallation = true;
-    queuedCopies.forEach((argObj) => realCopyPath(argObj));
-    queuedCopies = [];
-  };
+    afterPackageInstallation = true
+    queuedCopies.forEach((argObj) => realCopyPath(argObj))
+    queuedCopies = []
+  }
 
   const clearJSFilesFromNodeModules = async () => {
     const packagesToClear = queuedCopies.reduce((acc, { packageName }) => {
       if (packageName) {
-        acc.add(packageName);
+        acc.add(packageName)
       }
-      return acc;
-    }, new Set());
+      return acc
+    }, new Set())
 
     await Promise.all(
       [...packagesToClear].map(
@@ -110,65 +123,64 @@ async function watch(
             `!node_modules/${packageToClear}/src/**/*.{js,js.map}`,
           ])
       )
-    );
-  };
+    )
+  }
   // check packages deps and if they depend on other packages from monorepo
   // add them to packages list
   const { seenPackages, depTree } = traversePackagesDeps({
     root,
     packages: _.uniq(localPackages),
     monoRepoPackages,
-  });
+    packageNameToPath,
+  })
 
   const allPackagesToWatch = packages
     ? _.intersection(packages, seenPackages)
-    : seenPackages;
+    : seenPackages
 
-  const ignoredPackageJSON = new Map();
+  const ignoredPackageJSON = new Map()
   const ignorePackageJSONChanges = (packageName, contentArray) => {
-    ignoredPackageJSON.set(packageName, contentArray);
+    ignoredPackageJSON.set(packageName, contentArray)
 
     return () => {
-      ignoredPackageJSON.delete(packageName);
-    };
-  };
+      ignoredPackageJSON.delete(packageName)
+    }
+  }
 
   if (forceInstall) {
     try {
       if (allPackagesToWatch.length > 0) {
         await publishPackagesLocallyAndInstall({
           packagesToPublish: allPackagesToWatch,
-          root,
+          packageNameToPath,
           localPackages,
           ignorePackageJSONChanges,
           yarnWorkspaceRoot,
-        });
+          externalRegistry,
+        })
       } else {
         // run `yarn`
-        const yarnInstallCmd = [`yarn`];
+        const yarnInstallCmd = [`yarn`]
 
-        console.log(`Installing packages from public NPM registry`);
-        await promisifiedSpawn(yarnInstallCmd);
-        console.log(`Installation complete`);
+        console.log(`Installing packages from public NPM registry`)
+        await promisifiedSpawn(yarnInstallCmd)
+        console.log(`Installation complete`)
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
 
-    process.exit();
+    process.exit()
   }
 
   if (allPackagesToWatch.length === 0) {
-    console.error(`There are no packages to watch.`);
-    return;
+    console.error(`There are no packages to watch.`)
+    return
   }
 
-  const cleanToWatch = allPackagesToWatch.map((pkgName) => {
-    if (pkgName.startsWith(`@medusajs`)) {
-      return pkgName.split("/")[1];
-    }
-    return pkgName;
-  });
+  const allPackagesIgnoringThemesToWatch = allPackagesToWatch.filter(
+    (pkgName) => !pkgName.startsWith(`medusa-theme`)
+  )
 
   const ignored = [
     /[/\\]node_modules[/\\]/i,
@@ -178,63 +190,70 @@ async function watch(
     /[/\\]__mocks__[/\\]/i,
     /\.npmrc/i,
   ].concat(
-    cleanToWatch.map((p) => new RegExp(`${p}[\\/\\\\]src[\\/\\\\]`, `i`))
-  );
+    allPackagesIgnoringThemesToWatch.map(
+      (p) => new RegExp(`${p}[\\/\\\\]src[\\/\\\\]`, `i`)
+    )
+  )
   const watchers = _.uniq(
-    cleanToWatch
-      .map((p) => path.join(root, `/packages/`, p))
+    allPackagesToWatch
+      .map((p) => path.join(packageNameToPath.get(p)))
       .filter((p) => fs.existsSync(p))
-  );
+  )
 
-  let allCopies = [];
-  const packagesToPublish = new Set();
-  let isInitialScan = true;
-  let isPublishing = false;
+  let allCopies = []
+  const packagesToPublish = new Set()
+  let isInitialScan = true
+  let isPublishing = false
 
-  const waitFor = new Set();
-  let anyPackageNotInstalled = false;
+  const waitFor = new Set()
+  let anyPackageNotInstalled = false
 
-  const watchEvents = [`change`, `add`];
-
+  const watchEvents = [`change`, `add`]
+  const packagePathMatchingEntries = Array.from(packageNameToPath.entries())
   chokidar
     .watch(watchers, {
       ignored: [(filePath) => _.some(ignored, (reg) => reg.test(filePath))],
     })
     .on(`all`, async (event, filePath) => {
       if (!watchEvents.includes(event)) {
-        return;
+        return
       }
 
-      const [pack] = filePath
-        .split(/packages[/\\]/)
-        .pop()
-        .split(/[/\\]/);
+      // match against paths
+      let packageName
 
-      const sourcePkg = JSON.parse(
-        fs.readFileSync(path.join(root, `/packages/`, pack, `package.json`))
-      );
-      const packageName = sourcePkg.name;
+      for (const [_packageName, packagePath] of packagePathMatchingEntries) {
+        const relativeToThisPackage = path.relative(packagePath, filePath)
+        if (!relativeToThisPackage.startsWith(`..`)) {
+          packageName = _packageName
+          break
+        }
+      }
 
-      const prefix = path.join(root, `/packages/`, pack);
+      if (!packageName) {
+        return
+      }
+
+      const prefix = packageNameToPath.get(packageName)
 
       // Copy it over local version.
       // Don't copy over the medusa bin file as that breaks the NPM symlink.
       if (_.includes(filePath, `dist/medusa-cli.js`)) {
-        return;
+        return
       }
 
-      const relativePackageFile = path.relative(prefix, filePath);
+      const relativePackageFile = path.relative(prefix, filePath)
 
       const newPath = path.join(
         `./node_modules/${packageName}`,
         relativePackageFile
-      );
+      )
 
       if (relativePackageFile === `package.json`) {
         // package.json files will change during publish to adjust version of package (and dependencies), so ignore
         // changes during this process
         if (isPublishing) {
-          return;
+          return
         }
 
         // Compare dependencies with local version
@@ -243,10 +262,10 @@ async function watch(
           newPath,
           packageName,
           monoRepoPackages,
-          root,
+          packageNameToPath,
           isInitialScan,
           ignoredPackageJSON,
-        });
+        })
 
         if (isInitialScan) {
           // normally checkDepsChanges would be sync,
@@ -255,21 +274,19 @@ async function watch(
           // keep track of it to make sure all of it
           // finish before installing
 
-          waitFor.add(didDepsChangedPromise);
+          waitFor.add(didDepsChangedPromise)
         }
 
-        const {
-          didDepsChanged,
-          packageNotInstalled,
-        } = await didDepsChangedPromise;
+        const { didDepsChanged, packageNotInstalled } =
+          await didDepsChangedPromise
 
         if (packageNotInstalled) {
-          anyPackageNotInstalled = true;
+          anyPackageNotInstalled = true
         }
 
         if (didDepsChanged) {
           if (isInitialScan) {
-            waitFor.delete(didDepsChangedPromise);
+            waitFor.delete(didDepsChangedPromise)
             // handle dependency change only in initial scan - this is for sure doable to
             // handle this in watching mode correctly - but for the sake of shipping
             // this I limit more work/time consuming edge cases.
@@ -287,66 +304,67 @@ async function watch(
             }).forEach((packageToPublish) => {
               // scheduling publish - we will publish when `ready` is emitted
               // as we can do single publish then
-              packagesToPublish.add(packageToPublish);
-            });
+              packagesToPublish.add(packageToPublish)
+            })
           }
         }
 
         // don't ever copy package.json as this will mess up any future dependency
         // changes checks
-        return;
+        return
       }
 
-      const localCopies = [copyPath(filePath, newPath, quiet, packageName)];
+      const localCopies = [copyPath(filePath, newPath, quiet, packageName)]
 
       // If this is from "cache-dir" also copy it into the site's .cache
       if (_.includes(filePath, `cache-dir`)) {
         const newCachePath = path.join(
           `.cache/`,
           path.relative(path.join(prefix, `cache-dir`), filePath)
-        );
-        localCopies.push(copyPath(filePath, newCachePath, quiet));
+        )
+        localCopies.push(copyPath(filePath, newCachePath, quiet))
       }
 
-      allCopies = allCopies.concat(localCopies);
+      allCopies = allCopies.concat(localCopies)
     })
     .on(`ready`, async () => {
       // wait for all async work needed to be done
       // before publishing / installing
-      await Promise.all(Array.from(waitFor));
+      await Promise.all(Array.from(waitFor))
 
       if (isInitialScan) {
-        isInitialScan = false;
+        isInitialScan = false
         if (packagesToPublish.size > 0) {
-          isPublishing = true;
+          isPublishing = true
           await publishPackagesLocallyAndInstall({
             packagesToPublish: Array.from(packagesToPublish),
-            root,
+            packageNameToPath,
             localPackages,
             ignorePackageJSONChanges,
-          });
-          packagesToPublish.clear();
-          isPublishing = false;
+            externalRegistry,
+          })
+          packagesToPublish.clear()
+          isPublishing = false
         } else if (anyPackageNotInstalled) {
           // run `yarn`
-          const yarnInstallCmd = [`yarn`];
+          const yarnInstallCmd = [`yarn`]
 
-          console.log(`Installing packages from public NPM registry`);
-          await promisifiedSpawn(yarnInstallCmd);
-          console.log(`Installation complete`);
+          console.log(`Installing packages from public NPM registry`)
+          await promisifiedSpawn(yarnInstallCmd)
+          console.log(`Installation complete`)
         }
 
-        await clearJSFilesFromNodeModules();
-        runQueuedCopies();
+        await clearJSFilesFromNodeModules()
+        runQueuedCopies()
       }
 
       // all files watched, quit once all files are copied if necessary
       Promise.all(allCopies).then(() => {
         if (scanOnce) {
-          quit();
+          quit()
         }
-      });
-    });
+      })
+    })
 }
 
-module.exports = watch;
+module.exports = watch

@@ -97,6 +97,12 @@ Where `database_type` is `sqlite` and `database_database` is the location you wa
 
 ### PostgreSQL Configurations
 
+:::note
+
+Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+
+:::
+
 For PostgreSQL you mainly need 2 configurations:
 
 ```jsx
@@ -110,6 +116,14 @@ module.exports = {
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
+
+It is recommended to set the Database URL as an environment variable:
+
+```bash
+DATABASE_URL=<YOUR_DATABASE_URL>
+```
+
+Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
 
 ### Common Configuration
 
@@ -145,13 +159,21 @@ module.exports = {
 
 Where `REDIS_URL` is the URL used to connect to Redis. The format of the connection string is `redis[s]://[[username][:password]@][host][:port][/db-number]`.
 
+If you omit this configuration, events will not be emitted and subscribers will not work.
+
 :::tip
 
 By default, the Redis connection string should be `redis://localhost:6379` unless you made any changes to the default configurations during the installation.
 
 :::
 
-If you omit this configuration, events will not be emitted and subscribers will not work.
+It is recommended to set the Redis URL as an environment variable:
+
+```bash
+REDIS_URL=<YOUR_REDIS_URL>
+```
+
+Where `<YOUR_REDIS_URL>` is the URL of your Redis server.
 
 :::info
 
@@ -174,6 +196,14 @@ module.exports = {
 
 Where `jwt_secret` is the secret used to create the tokens. The more secure it is the better.
 
+It is recommended to set the JWT Secret as an environment variable:
+
+```bash
+JWT_SECRET=<YOUR_JWT_SECRETL>
+```
+
+Where `<YOUR_JWT_SECRETL>` is the JWT secret you want to use.
+
 :::caution
 
 In a development environment, if this option is not set the default secret is “supersecret”. However, in production, if this option is not set an error will be thrown and your server will crash.
@@ -194,6 +224,14 @@ module.exports = {
 ```
 
 Where `cookie_secret` is the secret used to create the tokens. The more secure it is the better.
+
+It is recommended to set the Cookie secret as an environment variable:
+
+```bash
+COOKIE_SECRET=<YOUR_COOKIE_SECRETL>
+```
+
+Where `<YOUR_COOKIE_SECRETL>` is the Cookie secret you want to use.
 
 :::caution
 
@@ -216,6 +254,20 @@ module.exports = {
 
 Where `ADMIN_CORS` is the URL of your admin dashboard. By default, it’s `http://localhost:7000,http://localhost:7001`.
 
+It is recommended to set the Admin CORS as an environment variable:
+
+```bash
+ADMIN_CORS=<YOUR_ADMIN_CORS>
+```
+
+Where `<YOUR_ADMIN_CORS>` is the URL of your admin dashboard.
+
+:::tip
+
+Make sure that the URL is without a backslash at the end. For example, you should use `http://localhost:7000` instead of `http://localhost:7000/`.
+
+:::
+
 ## Storefront CORS
 
 Medusa uses CORS to only allow specific origins to access the server. To make sure your Storefront dashboard can access the Medusa server, set this configuration:
@@ -230,6 +282,20 @@ module.exports = {
 ```
 
 Where `STORE_CORS` is the URL of your storefront. By default, it’s `http://localhost:8000`.
+
+It is recommended to set the Storefront CORS as an environment variable:
+
+```bash
+STORE_CORS=<YOUR_STORE_CORS>
+```
+
+Where `<YOUR_STORE_CORS>` is the URL of your storefront.
+
+:::tip
+
+Make sure that the URL is without a backslash at the end. For example, you should use `http://localhost:8000` instead of `http://localhost:8000/`.
+
+:::
 
 ## Plugins
 
@@ -279,8 +345,14 @@ const plugins = [
 ];
 ```
 
+:::tip
+
+It is recommended to use environment variables to store values of options instead of hardcoding them in `medusa-config.js`.
+
+:::
+
 ## What’s Next 🚀
 
 - Check out our [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
 - Install the [Medusa admin](../admin/quickstart.md).
-- Learn about [deploying the Medusa server on Heroku](../how-to/deploying-on-heroku.md).
+- Learn about [deploying the Medusa server](../deployments/server/index.mdx).

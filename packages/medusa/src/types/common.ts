@@ -14,16 +14,16 @@ import {
   OrderByCondition,
 } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity } from "../interfaces"
+import { ClassConstructor } from "./global"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
  */
-export type WithRequiredProperty<T, K extends keyof T> = T &
-  {
-    // -? removes 'optional' from a property
-    [Property in K]-?: T[Property]
-  }
+export type WithRequiredProperty<T, K extends keyof T> = T & {
+  // -? removes 'optional' from a property
+  [Property in K]-?: T[Property]
+}
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -67,6 +67,7 @@ export type TotalField =
   | "subtotal"
   | "refundable_amount"
   | "gift_card_total"
+  | "gift_card_tax_total"
 
 export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
@@ -78,10 +79,9 @@ export interface FindConfig<Entity> {
 
 export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
   select?: FindManyOptions<TModel>["select"]
-  where?: FindManyOptions<TModel>["where"] &
-    {
-      [P in InKeys]?: TModel[P][]
-    }
+  where?: FindManyOptions<TModel>["where"] & {
+    [P in InKeys]?: TModel[P][]
+  }
   order?: OrderByCondition
   skip?: number
   take?: number
@@ -110,6 +110,8 @@ export type DeleteResponse = {
   object: string
   deleted: boolean
 }
+
+export class EmptyQueryParams {}
 
 export class DateComparisonOperator {
   @IsOptional()
@@ -266,4 +268,38 @@ export class FindParams {
   @IsString()
   @IsOptional()
   fields?: string
+}
+
+export class FindPaginationParams {
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  offset?: number = 0
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  limit?: number = 20
+}
+
+export function extendedFindParamsMixin({
+  limit,
+  offset,
+}: {
+  limit?: number
+  offset?: number
+} = {}): ClassConstructor<FindParams & FindPaginationParams> {
+  class FindExtendedPaginationParams extends FindParams {
+    @IsNumber()
+    @IsOptional()
+    @Type(() => Number)
+    offset?: number = offset ?? 0
+
+    @IsNumber()
+    @IsOptional()
+    @Type(() => Number)
+    limit?: number = limit ?? 20
+  }
+
+  return FindExtendedPaginationParams
 }

@@ -1,8 +1,10 @@
-import { IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm";
+import { IsString } from "class-validator"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/payment-session
@@ -10,8 +12,8 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (body) provider_id=* {string} The id of the Payment Provider.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (body) provider_id=* {string} The ID of the Payment Provider.
  * tags:
  *   - Cart
  * responses:
@@ -34,8 +36,12 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
 
-  let cart = await cartService.setPaymentSession(id, validated.provider_id)
-  cart = await cartService.retrieve(id, {
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await cartService.withTransaction(transactionManager).setPaymentSession(id, validated.provider_id)
+  })
+
+  const cart = await cartService.retrieve(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })

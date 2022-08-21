@@ -21,6 +21,7 @@ import productRoutes from "./products"
 import regionRoutes from "./regions"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
+import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import storeRoutes from "./store"
@@ -43,6 +44,8 @@ export default (app, container, config) => {
     })
   )
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+
   // Unauthenticated routes
   authRoutes(route)
 
@@ -63,32 +66,33 @@ export default (app, container, config) => {
   middlewareService.usePostAuthentication(app)
 
   appRoutes(route)
-  productRoutes(route)
   batchRoutes(route)
-  userRoutes(route)
-  regionRoutes(route)
-  shippingOptionRoutes(route)
-  shippingProfileRoutes(route)
-  discountRoutes(route)
-  giftCardRoutes(route)
-  orderRoutes(route)
-  storeRoutes(route)
-  uploadRoutes(route)
-  customerRoutes(route)
-  swapRoutes(route)
-  returnRoutes(route)
-  variantRoutes(route)
-  draftOrderRoutes(route)
   collectionRoutes(route)
+  customerGroupRoutes(route)
+  customerRoutes(route)
+  discountRoutes(route)
+  draftOrderRoutes(route)
+  giftCardRoutes(route)
+  inviteRoutes(route)
+  noteRoutes(route)
   notificationRoutes(route)
-  returnReasonRoutes(route)
+  orderRoutes(route, featureFlagRouter)
+  priceListRoutes(route)
+  productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
-  noteRoutes(route)
-  inviteRoutes(route)
+  regionRoutes(route)
+  returnReasonRoutes(route)
+  returnRoutes(route)
+  salesChannelRoutes(route)
+  shippingOptionRoutes(route)
+  shippingProfileRoutes(route)
+  storeRoutes(route)
+  swapRoutes(route)
   taxRateRoutes(route)
-  customerGroupRoutes(route)
-  priceListRoutes(route)
+  uploadRoutes(route)
+  userRoutes(route)
+  variantRoutes(route)
 
   return app
 }

@@ -1,8 +1,10 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import { defaultAdminCustomerGroupsRelations } from "."
+import { Request, Response } from "express"
 
 import { CustomerGroupService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -12,11 +14,20 @@ import { validator } from "../../../../utils/validator"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the customer group.
- *   - (body) name=* {string} Name of the customer group
- *   - (body) metadata {object} Metadata for the customer.
+ *   - (path) id=* {string} The ID of the customer group.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           name:
+ *             description: "Name of the customer group"
+ *             type: string
+ *           metadata:
+ *             description: "Metadata for the customer."
+ *             type: object
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -28,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer_group"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const validatedBody = await validator(
@@ -41,7 +52,12 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  await customerGroupService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerGroupService
+      .withTransaction(transactionManager)
+      .update(id, validatedBody)
+  })
 
   let expandFields: string[] = []
   if (validatedQuery.expand) {

@@ -1,6 +1,7 @@
 import { AwilixContainer } from "awilix"
-import { Logger as _Logger } from "winston"
+import { Request } from "express"
 import { LoggerOptions } from "typeorm"
+import { Logger as _Logger } from "winston"
 import { Customer, User } from "../models"
 import { FindConfig, RequestQueryFields } from "./common"
 
@@ -15,9 +16,12 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
+      errors: string[]
     }
   }
 }
+
+export type ExtendedRequest<TEntity> = Request & { resource: TEntity }
 
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T
@@ -51,6 +55,7 @@ export type ConfigModule = {
     store_cors?: string
     admin_cors?: string
   }
+  featureFlags: Record<string, boolean | string>
   plugins: (
     | {
         resolve: string

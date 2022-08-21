@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
@@ -23,26 +24,31 @@ export class ClaimTag extends SoftDeletableEntity {
  * title: "Claim Tag"
  * description: "Claim Tags are user defined tags that can be assigned to claim items for easy filtering and grouping."
  * x-resourceId: claim_tag
+ * required:
+ *   - value
  * properties:
  *   id:
- *     description: "The id of the claim tag. Will be prefixed by `ctag_`."
  *     type: string
+ *     description: The claim tag's ID
+ *     example: ctag_01G8ZCC5Y63B95V6B5SHBZ91S4
  *   value:
  *     description: "The value that the claim tag holds"
  *     type: string
+ *     example: Damaged
  *   created_at:
+ *     type: string
  *     description: "The date with timezone at which the resource was created."
- *     type: string
  *     format: date-time
- *   update_at:
- *     description: "The date with timezone at which the resource was last updated."
+ *   updated_at:
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

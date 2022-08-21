@@ -8,6 +8,9 @@ export const PricingServiceMock = {
   setVariantPrices: jest.fn().mockImplementation((variant) => {
     return Promise.resolve(variant)
   }),
+  setShippingOptionPrices: jest.fn().mockImplementation((opts) => {
+    return Promise.resolve(opts)
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

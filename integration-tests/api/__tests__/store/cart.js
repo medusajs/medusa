@@ -16,7 +16,13 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
-const { simpleCartFactory, simpleLineItemFactory } = require("../../factories")
+const {
+  simpleCartFactory,
+  simpleRegionFactory,
+  simpleProductFactory,
+  simpleShippingOptionFactory,
+  simpleLineItemFactory,
+} = require("../../factories")
 const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
@@ -42,7 +48,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: false })
     } catch (error) {
       console.log(error)
     }
@@ -149,17 +155,20 @@ describe("/store/carts", () => {
       response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
       expect(response.status).toEqual(200)
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          variant_id: "test-variant_1",
-          quantity: 1,
-        }),
-        expect.objectContaining({
-          variant_id: "test-variant-sale",
-          quantity: 2,
-          unit_price: 800,
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(2)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant_1",
+            quantity: 1,
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant-sale",
+            quantity: 2,
+            unit_price: 800,
+          }),
+        ])
+      )
 
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
@@ -229,15 +238,18 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 1,
-          adjustments: [],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 1,
+            adjustments: [],
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart containing a total fixed discount", async () => {
@@ -254,21 +266,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-total-fixed-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 2,
-          adjustments: [
-            expect.objectContaining({
-              amount: 100,
-              discount_id: "total-fixed-100",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-total-fixed-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+            adjustments: [
+              expect.objectContaining({
+                amount: 100,
+                discount_id: "total-fixed-100",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart containing a total percentage discount", async () => {
@@ -285,21 +300,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-total-percentage-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 2,
-          adjustments: [
-            expect.objectContaining({
-              amount: 200,
-              discount_id: "10Percent",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-total-percentage-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+            adjustments: [
+              expect.objectContaining({
+                amount: 200,
+                discount_id: "10Percent",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart containing an item fixed discount", async () => {
@@ -316,21 +334,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-item-fixed-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 2,
-          adjustments: [
-            expect.objectContaining({
-              amount: 400,
-              discount_id: "item-fixed-200",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-item-fixed-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+            adjustments: [
+              expect.objectContaining({
+                amount: 400,
+                discount_id: "item-fixed-200",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart containing an item percentage discount", async () => {
@@ -347,21 +368,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-item-percentage-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 2,
-          adjustments: [
-            expect.objectContaining({
-              amount: 300,
-              discount_id: "item-percentage-15",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-item-percentage-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+            adjustments: [
+              expect.objectContaining({
+                amount: 300,
+                discount_id: "item-percentage-15",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart time limited sale", async () => {
@@ -378,14 +402,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 800,
-          variant_id: "test-variant-sale",
-          quantity: 1,
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 800,
+            variant_id: "test-variant-sale",
+            quantity: 1,
+          }),
+        ])
+      )
     })
 
     it("adds line item to cart time customer pricing", async () => {
@@ -416,14 +443,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 700,
-          variant_id: "test-variant-sale-customer",
-          quantity: 1,
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 700,
+            variant_id: "test-variant-sale-customer",
+            quantity: 1,
+          }),
+        ])
+      )
     })
 
     it("adds line item with quantity to cart with quantity discount", async () => {
@@ -440,14 +470,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 800,
-          variant_id: "test-variant-quantity",
-          quantity: 90,
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 800,
+            variant_id: "test-variant-quantity",
+            quantity: 90,
+          }),
+        ])
+      )
     })
 
     it("adds line item with quantity to cart with quantity discount no ceiling", async () => {
@@ -464,14 +497,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 700,
-          variant_id: "test-variant-quantity",
-          quantity: 900,
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 700,
+            variant_id: "test-variant-quantity",
+            quantity: 900,
+          }),
+        ])
+      )
     })
 
     describe("ensures correct line item adjustment generation", () => {
@@ -676,17 +712,19 @@ describe("/store/carts", () => {
           .catch((err) => console.log(err))
 
         expect(response.data.cart.items.length).toEqual(1)
-        expect(response.data.cart.items).toEqual([
-          expect.objectContaining({
-            adjustments: [
-              expect.objectContaining({
-                item_id: "line-item-2",
-                amount: 185,
-                discount_id: "medusa-185",
-              }),
-            ],
-          }),
-        ])
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "line-item-2",
+                  amount: 185,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+          ])
+        )
       })
     })
   })
@@ -755,21 +793,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-total-fixed-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 3,
-          adjustments: [
-            expect.objectContaining({
-              amount: 100,
-              discount_id: "total-fixed-100",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-total-fixed-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 3,
+            adjustments: [
+              expect.objectContaining({
+                amount: 100,
+                discount_id: "total-fixed-100",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("updates line item of a cart containing a total percentage discount", async () => {
@@ -795,21 +836,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-total-percentage-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 10,
-          adjustments: [
-            expect.objectContaining({
-              amount: 1000,
-              discount_id: "10Percent",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-total-percentage-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 10,
+            adjustments: [
+              expect.objectContaining({
+                amount: 1000,
+                discount_id: "10Percent",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("updates line item of a cart containing an item fixed discount", async () => {
@@ -835,21 +879,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-item-fixed-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 4,
-          adjustments: [
-            expect.objectContaining({
-              amount: 800,
-              discount_id: "item-fixed-200",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-item-fixed-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 4,
+            adjustments: [
+              expect.objectContaining({
+                amount: 800,
+                discount_id: "item-fixed-200",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("updates line item of a cart containing an item percentage discount", async () => {
@@ -875,21 +922,24 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-w-item-percentage-discount",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 3,
-          adjustments: [
-            expect.objectContaining({
-              amount: 450,
-              discount_id: "item-percentage-15",
-              description: "discount",
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.cart.items).toHaveLength(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-w-item-percentage-discount",
+            unit_price: 1000,
+            variant_id: "test-variant-quantity",
+            quantity: 3,
+            adjustments: [
+              expect.objectContaining({
+                amount: 450,
+                discount_id: "item-percentage-15",
+                description: "discount",
+              }),
+            ],
+          }),
+        ])
+      )
     })
   })
 
@@ -1376,7 +1426,7 @@ describe("/store/carts", () => {
       )
     })
 
-    it("updates prices when cart region id is updated", async () => {
+    it("on region update: updates line item prices", async () => {
       const api = useApi()
 
       const beforeUpdate = await api
@@ -1394,7 +1444,108 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.cart.region_id).toEqual("test-region-multiple")
-      expect(response.data.cart.items[0].unit_price).toEqual(700)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            unit_price: 2000,
+            variant_id: "test-variant",
+          }),
+          expect.objectContaining({
+            unit_price: 700,
+            variant_id: "test-variant-sale-cg",
+          }),
+        ])
+      )
+    })
+
+    it("on region update: refreshes line item adjustments", async () => {
+      const api = useApi()
+
+      const usdRegion = await api
+        .post(`/store/carts/test-cart-3/`, {
+          discounts: [{ code: "10PERCENT" }],
+        })
+        .catch((error) => console.log(error))
+
+      // current state of the cart:
+      // - currency -> USD
+      // - items -> [{ unit_price: 8000, ... }, { unit_price: 8000, ... }]
+      // - discount -> 10%
+      // - discount total -> 1600
+
+      expect(usdRegion.data.cart.region_id).toEqual("test-region")
+      expect(usdRegion.data.cart.discount_total).toEqual(1600)
+
+      // now, we change the region to one operating in EUR
+      // this should trigger a refresh of the line item adjustments
+      const eurRegion = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "eur-region",
+        })
+        .catch((error) => console.log(error))
+
+      // state of the cart after update:
+      // - currency -> EUR
+      // - items -> [{ unit_price: 2000, ... }, { unit_price: 700, ... }]
+      // - discount -> 10%
+      // - discount total -> 270
+
+      expect(eurRegion.data.cart.region_id).toEqual("eur-region")
+      expect(eurRegion.data.cart.discount_total).toEqual(270)
+    })
+
+    it("on region update: removes line item adjustment if discount is not applicable in region", async () => {
+      const api = useApi()
+
+      const withDiscount = await api
+        .post(`/store/carts/test-cart-3/`, {
+          discounts: [{ code: "15PERCENT" }],
+        })
+        .catch((error) => console.log(error))
+
+      expect(withDiscount.data.cart.region_id).toEqual("test-region")
+      expect(withDiscount.data.cart.discount_total).toEqual(2400)
+      expect(withDiscount.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+        ])
+      )
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "eur-region",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.data.cart.region_id).toEqual("eur-region")
+      expect(response.data.cart.discount_total).toEqual(0)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            adjustments: [],
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant",
+            adjustments: [],
+          }),
+        ])
+      )
     })
 
     it("updates address using string id", async () => {
@@ -1473,6 +1624,36 @@ describe("/store/carts", () => {
       await api.post(`/store/carts/test-cart-3`, {
         gift_cards: [{ code: "GC_TEST" }],
       })
+
+      const getRes = await api
+        .post(`/store/carts/test-cart-3/complete`)
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(getRes.status).toEqual(200)
+      expect(getRes.data.type).toEqual("order")
+    })
+
+    it("complete cart with 100% discount", async () => {
+      await simpleDiscountFactory(dbConnection, {
+        code: "100PERCENT",
+        rule: {
+          type: "percentage",
+          value: 100,
+        },
+        regions: ["test-region"],
+      })
+
+      const api = useApi()
+
+      await api
+        .post(`/store/carts/test-cart-3`, {
+          discounts: [{ code: "100PERCENT" }],
+        })
+        .catch((err) => {
+          console.log(err.response.data)
+        })
 
       const getRes = await api
         .post(`/store/carts/test-cart-3/complete`)
@@ -2000,6 +2181,86 @@ describe("/store/carts", () => {
 
       expect(status).toEqual(200)
       expect(data.cart.shipping_address).toEqual(null)
+    })
+  })
+
+  describe("calculated prices for shipping option", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("it fetches prices with calculated amount", async () => {
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "calculated",
+        data: { price: 123 },
+      })
+
+      const api = useApi()
+
+      const { data, status } = await api
+        .get(`/store/shipping-options/${cart.id}`)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.shipping_options[0].amount).toEqual(123)
+    })
+  })
+
+  describe("mix of calculated and flat rate prices", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("it fetches prices with calculated amount", async () => {
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "flat_rate",
+        data: { price: 123 },
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "calculated",
+        data: { price: 123 },
+      })
+
+      const api = useApi()
+
+      const { data, status } = await api
+        .get(`/store/shipping-options/${cart.id}`)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 123,
+            price_type: "calculated",
+          }),
+          expect.objectContaining({
+            amount: 500,
+            price_type: "flat_rate",
+          }),
+        ])
+      )
     })
   })
 })

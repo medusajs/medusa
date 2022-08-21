@@ -1,6 +1,6 @@
-import { defaultAdminCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { FindParams } from "../../../../types/common"
+import { defaultAdminCustomersRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -10,7 +10,9 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a Customer."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ *   - (path) id=* {string} The ID of the Customer.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the customer.
  * tags:
  *   - Customer
  * responses:

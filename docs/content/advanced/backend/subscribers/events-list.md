@@ -96,6 +96,115 @@ Object of the following format:
 </td>
 </tr>
 
+<tr>
+<td>
+
+`batch.pre_processed`
+
+</td>
+<td>
+
+Triggered after the `preProcessBatchJob` of a batch job stategy is done executing.
+
+</td>
+<td>
+Object of the following format:
+
+```js
+{
+  id //string ID of batch job
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`batch.confirmed`
+
+</td>
+<td>
+
+Triggered after the batch job is done pre-processing and the batch job is not in dry-run mode.
+
+</td>
+<td>
+Object of the following format:
+
+```js
+{
+  id //string ID of batch job
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`batch.processing`
+
+</td>
+<td>
+Triggered when a batch job starts processing after it's confirmed.
+</td>
+<td>
+Object of the following format:
+
+```js
+{
+  id //string ID of batch job
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`batch.completed`
+
+</td>
+<td>
+Triggered when a batch job is done processing and is completed.
+</td>
+<td>
+Object of the following format:
+
+```js
+{
+  id //string ID of batch job
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`batch.failed`
+
+</td>
+<td>
+Triggered when an error occurs while running a batch job and the batch job fails.
+</td>
+<td>
+Object of the following format:
+
+```js
+{
+  id //string ID of batch job
+}
+```
+
+</td>
+</tr>
+
 </tbody>
 </table>
 
@@ -167,7 +276,7 @@ Triggered when a cart and data associated with it (payment sessions, shipping me
 </td>
 <td>
 
-The entire cart as an object. You can refer to the [Cart entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
+An object with at least the ID of the cart, however, in most cases the entire cart model is available. You can refer to the [Cart entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -915,7 +1024,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  no_notification //(optional) boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1145,7 +1254,7 @@ Object of the following format:
 {
   id, //string ID of order
   return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+  no_notification //(optional) boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1340,6 +1449,15 @@ Triggered when a product and data associated with it (options, variant orders, e
 
 The entire product passed as an object. You can refer to the [Product entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
 
+In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
+
+```js
+{
+  id, //id of product
+  fields //an array of field names that were updated
+}
+```
+
 </td>
 </tr>
 
@@ -1459,7 +1577,7 @@ Object of the following format:
 {
   id, //string ID of variant
   product_id, //string ID of product
-  metadata //object of additional data
+  metadata //object of the `metadata` field of the variant
 }
 ```
 
@@ -1555,6 +1673,111 @@ Object of the following format:
 ```js
 {
   id //string ID of region
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+## Sales Channel Events
+
+This section holds all events related to sales channels.
+
+:::note
+
+As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag. To use Sales Channels, add the following environment variable:
+
+```bash
+MEDUSA_FF_SALES_CHANNELS=true
+```
+
+Then, run the [migrations](../migrations.md#how-to-run-migrations).
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`sales_channel.created`
+
+</td>
+<td>
+
+Triggered when a sales channel is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of sales channel
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`sales_channel.updated`
+
+</td>
+<td>
+
+Triggered when a sales channel is updated
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id, //string ID of sales channel
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`sales_channel.deleted`
+
+</td>
+<td>
+
+Triggered when a sales channel is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of sales channel
 }
 ```
 
@@ -1835,6 +2058,54 @@ Event Data Payload
 <tr>
 <td>
 
+`user.created`
+
+</td>
+<td>
+
+Triggered when a user is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`user.updated`
+
+</td>
+<td>
+
+Triggered when a user is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
 `user.password_reset`
 
 </td>
@@ -1851,6 +2122,30 @@ Object of the following format:
 {
   email, //string email of user requesting to reset their password
   token //token create to reset the password
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`user.deleted`
+
+</td>
+<td>
+
+Triggered when a user is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js
+{
+  id //string ID of user
 }
 ```
 

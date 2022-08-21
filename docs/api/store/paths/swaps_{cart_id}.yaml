@@ -1,0 +1,22 @@
+get:
+  operationId: GetSwapsSwapCartId
+  summary: Retrieve Swap by Cart id
+  description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+  parameters:
+    - in: path
+      name: cart_id
+      required: true
+      description: The id of the Cart
+      schema:
+        type: string
+  tags:
+    - Swap
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              swap:
+                $ref: ../components/schemas/swap.yaml

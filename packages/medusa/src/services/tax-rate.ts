@@ -16,6 +16,7 @@ import {
   TaxRateListByConfig,
   UpdateTaxRateInput,
 } from "../types/tax-rate"
+import { isDefined } from "../utils"
 
 class TaxRateService extends BaseService {
   private manager_: EntityManager
@@ -85,20 +86,19 @@ class TaxRateService extends BaseService {
     id: string,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      const query = this.buildQuery_({ id }, config)
+    const manager = this.manager_
+    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const query = this.buildQuery_({ id }, config)
 
-      const taxRate = await taxRateRepo.findOneWithResolution(query)
-      if (!taxRate) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `TaxRate with ${id} was not found`
-        )
-      }
+    const taxRate = await taxRateRepo.findOneWithResolution(query)
+    if (!taxRate) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `TaxRate with ${id} was not found`
+      )
+    }
 
-      return taxRate
-    })
+    return taxRate
   }
 
   async create(data: CreateTaxRateInput): Promise<TaxRate> {
@@ -123,7 +123,7 @@ class TaxRateService extends BaseService {
       const taxRate = await this.retrieve(id)
 
       for (const [k, v] of Object.entries(data)) {
-        if (typeof v !== "undefined") {
+        if (isDefined(v)) {
           taxRate[k] = v
         }
       }
@@ -323,20 +323,15 @@ class TaxRateService extends BaseService {
     config: TaxRateListByConfig
   ): Promise<TaxRate[]> {
     // Check both ProductTaxRate + ProductTypeTaxRate
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      return await taxRateRepo.listByProduct(productId, config)
-    })
+    const manager = this.manager_
+    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    return await taxRateRepo.listByProduct(productId, config)
   }
 
-  async listByShippingOption(
-    shippingOptionId: string,
-    config: TaxRateListByConfig
-  ): Promise<TaxRate[]> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      return await taxRateRepo.listByShippingOption(shippingOptionId, config)
-    })
+  async listByShippingOption(shippingOptionId: string): Promise<TaxRate[]> {
+    const manager = this.manager_
+    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    return await taxRateRepo.listByShippingOption(shippingOptionId)
   }
 }
 

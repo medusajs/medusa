@@ -1,5 +1,5 @@
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import ProductService from "../../../../services/product"
+import { PricingService, ProductService } from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
 
@@ -33,6 +33,7 @@ export default async (req, res) => {
     (validated.product_ids && validated.product_ids.split(",")) || []
   const regionId = validated.region_id
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
     "shippingOptionService"
   )
@@ -59,7 +60,9 @@ export default async (req, res) => {
     relations: ["requirements"],
   })
 
-  res.status(200).json({ shipping_options: options })
+  const data = await pricingService.setShippingOptionPrices(options)
+
+  res.status(200).json({ shipping_options: data })
 }
 
 export class StoreGetShippingOptionsParams {

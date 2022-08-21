@@ -22,7 +22,7 @@ class SwapsResource extends BaseResource {
    */
   retrieveByCartId(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreSwapsRes> {
     const path = `/store/swaps/${cart_id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
-import { Brackets, EntityManager, FindOneOptions } from "typeorm"
+import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { GiftCard } from "../models"
@@ -17,7 +17,7 @@ import {
   CreateGiftCardTransactionInput,
   UpdateGiftCardInput,
 } from "../types/gift-card"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import RegionService from "./region"
 
 type InjectedDependencies = {
@@ -30,7 +30,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate gift cards.
  */
-class GiftCardService extends TransactionBaseService<GiftCardService> {
+class GiftCardService extends TransactionBaseService {
   protected readonly giftCardRepository_: typeof GiftCardRepository
   protected readonly giftCardTransactionRepo_: typeof GiftCardTransactionRepository
   protected readonly regionService_: RegionService
@@ -81,40 +81,67 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @param config - the configuration used to find the objects. contains relations, skip, and take.
    * @return the result of the find operation
    */
+  async listAndCount(
+    selector: QuerySelector<GiftCard> = {},
+    config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[GiftCard[], number]> {
+    const manager = this.manager_
+    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+
+    let q: string | undefined
+    if (isDefined(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query: ExtendedFindConfig<
+      GiftCard,
+      QuerySelector<GiftCard>
+    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+
+    const rels = query.relations
+    delete query.relations
+
+    return await giftCardRepo.listGiftCardsAndCount(query, rels, q)
+  }
+
+  /**
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
   async list(
     selector: QuerySelector<GiftCard> = {},
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<GiftCard[]> {
-    return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const manager = this.manager_
+    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
-      let q
-      if ("q" in selector) {
-        q = selector.q
-        delete selector.q
-      }
+    let q: string | undefined
+    if (isDefined(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
 
-      const query: ExtendedFindConfig<
-        GiftCard,
-        QuerySelector<GiftCard>
-      > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+    const query: ExtendedFindConfig<
+      GiftCard,
+      QuerySelector<GiftCard>
+    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
 
-      const rels = query.relations
-      delete query.relations
+    const rels = query.relations
+    delete query.relations
 
-      return await giftCardRepo.listGiftCards(query, rels, q)
-    })
+    return await giftCardRepo.listGiftCards(query, rels, q)
   }
 
   async createTransaction(
     data: CreateGiftCardTransactionInput
   ): Promise<string> {
-    return await this.atomicPhase_(async (manager) => {
-      const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
-      const created = gctRepo.create(data)
-      const saved = await gctRepo.save(created)
-      return saved.id
-    })
+    const manager = this.manager_
+    const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
+    const created = gctRepo.create(data)
+    const saved = await gctRepo.save(created)
+    return saved.id
   }
 
   /**
@@ -156,29 +183,28 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     selector: Selector<GiftCard>,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
-    return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const manager = this.manager_
+    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
-      const { relations, ...query } = buildQuery(selector, config)
+    const { relations, ...query } = buildQuery(selector, config)
 
-      const giftCard = await giftCardRepo.findOneWithRelations(
-        relations as (keyof GiftCard)[],
-        query
+    const giftCard = await giftCardRepo.findOneWithRelations(
+      relations as (keyof GiftCard)[],
+      query
+    )
+
+    if (!giftCard) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Gift card with ${selectorConstraints} was not found`
       )
+    }
 
-      if (!giftCard) {
-        const selectorConstraints = Object.entries(selector)
-          .map((key, value) => `${key}: ${value}`)
-          .join(", ")
-
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Gift card with ${selectorConstraints} was not found`
-        )
-      }
-
-      return giftCard
-    })
+    return giftCard
   }
 
   /**
@@ -191,18 +217,14 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     giftCardId: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
-    return await this.atomicPhase_(async () => {
-      return await this.retrieve_({ id: giftCardId }, config)
-    })
+    return await this.retrieve_({ id: giftCardId }, config)
   }
 
   async retrieveByCode(
     code: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
-    return await this.atomicPhase_(async () => {
-      return await this.retrieve_({ code }, config)
-    })
+    return await this.retrieve_({ code }, config)
   }
 
   /**
@@ -223,7 +245,9 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
       const { region_id, metadata, balance, ...rest } = update
 
       if (region_id && region_id !== giftCard.region_id) {
-        const region = await this.regionService_.retrieve(region_id)
+        const region = await this.regionService_
+          .withTransaction(manager)
+          .retrieve(region_id)
         giftCard.region_id = region.id
       }
 
@@ -231,7 +255,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
         giftCard.metadata = setMetadata(giftCard, metadata)
       }
 
-      if (typeof balance !== "undefined") {
+      if (isDefined(balance)) {
         if (balance < 0 || giftCard.value < balance) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -256,17 +280,16 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @return the result of the delete operation
    */
   async delete(giftCardId: string): Promise<GiftCard | void> {
-    return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const manager = this.manager_
+    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
-      const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
+    const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 
-      if (!giftCard) {
-        return
-      }
+    if (!giftCard) {
+      return
+    }
 
-      return await giftCardRepo.softRemove(giftCard)
-    })
+    return await giftCardRepo.softRemove(giftCard)
   }
 }
 

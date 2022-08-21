@@ -67,6 +67,16 @@ async getProductCount() {
 
 You can use your custom service throughout your Medusa server just like you would use any of the core services.
 
+:::note
+
+Before using your service, make sure you run the `build` command:
+
+```bash npm2yarn
+npm run build
+```
+
+:::
+
 ### In a Service
 
 To use your custom service in another custom service, you can have easy access to it in the dependencies injected to the constructor of your service:

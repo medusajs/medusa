@@ -363,10 +363,13 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.price_lists.length).toEqual(2)
-      expect(response.data.price_lists).toEqual([
-        expect.objectContaining({ id: "test-list-cgroup-1" }),
-        expect.objectContaining({ id: "test-list-cgroup-2" }),
-      ])
+      expect(response.data.price_lists).toHaveLength(2)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-list-cgroup-1" }),
+          expect.objectContaining({ id: "test-list-cgroup-2" }),
+        ])
+      )
     })
   })
 
@@ -471,7 +474,7 @@ describe("/admin/price-lists", () => {
         status: "draft",
         starts_at: "2022-09-01T00:00:00.000Z",
         ends_at: "2022-12-31T00:00:00.000Z",
-        prices: [
+        prices: expect.arrayContaining([
           {
             id: expect.any(String),
             amount: 100,
@@ -483,6 +486,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -495,6 +499,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -507,6 +512,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -534,7 +540,7 @@ describe("/admin/price-lists", () => {
             updated_at: expect.any(String),
             deleted_at: null,
           },
-        ],
+        ]),
         customer_groups: [
           {
             id: "customer-group-1",
@@ -1174,52 +1180,55 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-prod-1",
-          variants: [
-            expect.objectContaining({
-              id: "test-variant-1",
-              prices: [
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 150,
-                  price_list_id: "test-list",
-                }),
-              ],
-            }),
-            expect.objectContaining({
-              id: "test-variant-2",
-              prices: [
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ],
-            }),
-          ],
-        }),
-        expect.objectContaining({
-          id: "test-prod-2",
-          variants: [
-            expect.objectContaining({
-              id: "test-variant-3",
-              prices: [
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ],
-            }),
-            expect.objectContaining({
-              id: "test-variant-4",
-              prices: [
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 150,
-                  price_list_id: "test-list",
-                }),
-              ],
-            }),
-          ],
-        }),
-      ])
+      expect(response.data.products).toHaveLength(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-prod-1",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant-1",
+                prices: [
+                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 150,
+                    price_list_id: "test-list",
+                  }),
+                ],
+              }),
+              expect.objectContaining({
+                id: "test-variant-2",
+                prices: [
+                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                ],
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-prod-2",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant-3",
+                prices: [
+                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                ],
+              }),
+              expect.objectContaining({
+                id: "test-variant-4",
+                prices: [
+                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                  expect.objectContaining({
+                    currency_code: "usd",
+                    amount: 150,
+                    price_list_id: "test-list",
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("lists only product 2", async () => {
@@ -1237,9 +1246,38 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({ id: "test-prod-2" }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-prod-2" }),
+        ])
+      )
+    })
+
+    it("lists products using free text search", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/price-lists/test-list/products?q=MedusaHeadphones`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-prod-1",
+            title: "MedusaHeadphones",
+          }),
+        ])
+      )
     })
   })
 

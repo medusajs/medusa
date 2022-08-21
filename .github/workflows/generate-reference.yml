@@ -1,8 +1,15 @@
-name: Generate References
+name: Generate Reference
 on: 
   push:
     branches:
-      - 'master'
+      - "master"
+    paths:
+      - packages/medusa/src/services/**
+  pull_request:
+    types:
+      - closed
+    branches:
+      - "master"
     paths:
       - packages/medusa/src/services/**
 jobs:
@@ -24,11 +31,11 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-        
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
-          extension: unit-tests
+          extension: reference
 
       - name: Build Packages
         run: yarn build
@@ -36,8 +43,11 @@ jobs:
       - name: Generate Services Reference
         run: yarn generate:services
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with: 
-          commit_message: Automatically Generated Services Reference
-          file_pattern: docs/content/*
-          skip_dirty_check: false
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'chore(docs): Generated Services Reference (automated)'
+          base: 'master'
+          title: 'chore(docs): Generated Services Reference (automated)'
+          labels: 'type: chore'
+          add-paths: docs/content/references/services/**

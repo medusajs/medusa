@@ -1,7 +1,9 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+
 import { AddressPayload } from "../../../../types/common"
+import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}
@@ -15,11 +17,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           address:
- *             description: "The updated Address."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *         anyOf:
+ *           - $ref: "#/components/schemas/address"
  * tags:
  *   - Customer
  * responses:
@@ -45,7 +44,12 @@ export default async (req, res) => {
     "customerService"
   ) as CustomerService
 
-  await customerService.updateAddress(id, address_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .updateAddress(id, address_id, validated)
+  })
 
   const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,

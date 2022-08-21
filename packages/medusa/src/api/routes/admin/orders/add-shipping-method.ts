@@ -6,8 +6,10 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/shipping-methods
@@ -16,10 +18,10 @@ import { validator } from "../../../../utils/validator"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
- *   - (body) option_id=* {string} The id of the Shipping Option to create the Shipping Method from.
- *   - (body) data=* {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ *   - (body) option_id=* {string} The ID of the Shipping Option to create the Shipping Method from.
+ *   - (body) data {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
  * tags:
  *   - Order
  * responses:
@@ -42,14 +44,14 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.addShippingMethod(
-    id,
-    validated.option_id,
-    validated.data,
-    {
-      price: validated.price,
-    }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .addShippingMethod(id, validated.option_id, validated.data, {
+        price: validated.price,
+      })
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

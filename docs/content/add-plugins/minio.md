@@ -105,6 +105,12 @@ Finally, configure your `medusa-config.js` to include the plugin with the requ
 },
 ```
 
+:::caution
+
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
+
+:::
+
 ## Test it Out
 
 Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in a MinIO server.

@@ -12,3 +12,16 @@ Array [
 ",
 ]
 `;
+
+exports[`Product export strategy with sales channels should process the batch job and generate the appropriate output 1`] = `
+Array [
+  "Product ID;Product Handle;Product Title;Product Subtitle;Product Description;Product Status;Product Thumbnail;Product Weight;Product Length;Product Width;Product Height;Product HS Code;Product Origin Country;Product MID Code;Product Material;Product Collection Title;Product Collection Handle;Product Type;Product Tags;Product Discountable;Product External ID;Product Profile Name;Product Profile Type;Variant ID;Variant Title;Variant SKU;Variant Barcode;Variant Inventory Quantity;Variant Allow backorder;Variant Manage inventory;Variant Weight;Variant Length;Variant Width;Variant Height;Variant HS Code;Variant Origin Country;Variant MID Code;Variant Material;Price france [USD];Price USD;Price denmark [DKK];Price Denmark [DKK];Option 1 Name;Option 1 Value;Option 2 Name;Option 2 Value;Image 1 Url;Sales channel 1 Name;Sales channel 1 Description;Sales channel 2 Name;Sales channel 2 Description
+",
+  "product-export-strategy-product-1;test-product-product-1;Test product;;test-product-description-1;draft;;;;;;;;;;Test collection 1;test-collection1;test-type-1;123_1;true;;profile_1;profile_type_1;product-export-strategy-variant-1;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;100;110;130;;test-option-1;option 1 value 1;test-option-2;option 2 value 1;test-image.png;SC 1;SC 1;;
+",
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-2;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;;;110;test-option;Option 1 value 1;;;test-image.png;SC 1;SC 1;SC 2;SC 2
+",
+  "product-export-strategy-product-2;test-product-product-2;Test product;;test-product-description;draft;;;;;;;;;;Test collection;test-collection2;test-type;123;true;;profile_2;profile_type_2;product-export-strategy-variant-3;Test variant;test-sku;test-barcode;10;false;true;;;;;;;;;;120;;;test-option;Option 1 Value 1;;;test-image.png;SC 1;SC 1;SC 2;SC 2
+",
+]
+`;

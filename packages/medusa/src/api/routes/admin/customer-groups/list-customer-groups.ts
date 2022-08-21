@@ -1,12 +1,9 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import omit from "lodash/omit"
-import { defaultAdminCustomerGroupsRelations } from "."
-import { CustomerGroup } from "../../../../models/customer-group"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
-import { FindConfig } from "../../../../types/common"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { validator } from "../../../../utils/validator"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /customer-groups
@@ -15,18 +12,96 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieve a list of customer groups."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching user group names.
- *   - (query) offset {string} How many groups to skip in the result.
- *   - (query) id {string} Ids of the groups to search for.
- *   - (query) order {string} to retrieve customer groups in.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting customer group was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many customer groups to skip in the result.
- *   - (query) limit {string} Limit the number of customer groups returned.
+ *   - (query) q {string} Query used for searching customer group names.
+ *   - (query) offset=0 {integer} How many groups to skip in the result.
+ *   - (query) order {string} the field used to order the customer groups.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by the customer group ID
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: customer group ID
+ *         - type: array
+ *           description: multiple customer group IDs
+ *           items:
+ *             type: string
+ *         - type: object
+ *           properties:
+ *             lt:
+ *               type: string
+ *               description: filter by IDs less than this ID
+ *             gt:
+ *               type: string
+ *               description: filter by IDs greater than this ID
+ *             lte:
+ *               type: string
+ *               description: filter by IDs less than or equal to this ID
+ *             gte:
+ *               type: string
+ *               description: filter by IDs greater than or equal to this ID
+ *   - in: query
+ *     name: name
+ *     style: form
+ *     explode: false
+ *     description: Filter by the customer group name
+ *     schema:
+ *       type: array
+ *       description: multiple customer group names
+ *       items:
+ *         type: string
+ *         description: customer group name
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting customer groups were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting customer groups were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) limit=10 {integer} Limit the number of customer groups returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
 
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -34,56 +109,36 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customer_group"
+ *             customer_groups:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/customer_group"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
-export default async (req, res) => {
-  const validated = await validator(AdminGetCustomerGroupsParams, req.query)
-
+export default async (req: Request, res: Response) => {
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig: FindConfig<CustomerGroup> = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminCustomerGroupsRelations,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" } as { [k: string]: "DESC" },
-  }
-
-  if (typeof validated.order !== "undefined") {
-    if (validated.order.startsWith("-")) {
-      const [, field] = validated.order.split("-")
-      listConfig.order = { [field]: "DESC" }
-    } else {
-      listConfig.order = { [validated.order]: "ASC" }
-    }
-  }
-
-  const filterableFields = omit(validated, [
-    "limit",
-    "offset",
-    "expand",
-    "order",
-  ])
-
   const [data, count] = await customerGroupService.listAndCount(
-    filterableFields,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
+  const { limit, offset } = req.validatedQuery
   res.json({
     count,
     customer_groups: data,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset,
+    limit,
   })
 }
 

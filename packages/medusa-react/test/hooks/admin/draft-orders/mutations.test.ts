@@ -1,20 +1,33 @@
+import { renderHook } from "@testing-library/react-hooks"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCreateDraftOrder,
-  useAdminUpdateDraftOrder,
   useAdminDeleteDraftOrder,
   useAdminDraftOrderAddLineItem,
   useAdminDraftOrderRegisterPayment,
   useAdminDraftOrderRemoveLineItem,
   useAdminDraftOrderUpdateLineItem,
+  useAdminUpdateDraftOrder,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateDraftOrder hook", () => {
   test("creates a draft order and returns it", async () => {
     const draftOrder = {
       email: "lebron@james.com",
+      items: [
+        {
+          variant_id: "variant_01FGKMYKJVY3DYDZWCRB2GZS0G",
+          quantity: 1,
+        },
+      ],
+      shipping_methods: [
+        {
+          option_id: "opt_01FGKMYKJWQZCZANRNHR3XVRN3",
+          price: 0,
+        },
+      ],
+      region_id: "reg_01FGKMYKKG6ACZANRNHR3XVRN3",
     }
 
     const { result, waitFor } = renderHook(() => useAdminCreateDraftOrder(), {

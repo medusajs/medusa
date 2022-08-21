@@ -4,6 +4,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -34,9 +35,11 @@ export default async (req, res) => {
   const customerId = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const manager: EntityManager = req.scope.resolve("manager")
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -48,7 +51,11 @@ export default async (req, res) => {
         customer_id: customerId || cart.customer_id,
         metadata: validated.metadata,
       })
-    await txCartService.addLineItem(id, line)
+
+    await txCartService.addLineItem(id, line, {
+      validateSalesChannels:
+        featureFlagRouter.isFeatureEnabled("sales_channels"),
+    })
 
     const updated = await txCartService.retrieve(id, {
       relations: ["payment_sessions"],

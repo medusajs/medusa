@@ -14,6 +14,7 @@ import { LineItem } from "../models/line-item"
 import LineItemAdjustmentService from "./line-item-adjustment"
 import { Cart } from "../models/cart"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
+import { FindConfig } from "../types/common"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -89,17 +90,16 @@ class LineItemService extends BaseService {
 
   async list(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config: FindConfig<LineItem> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
   ): Promise<LineItem[]> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const lineItemRepo = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-        const query = this.buildQuery_(selector, config)
-        return await lineItemRepo.find(query)
-      }
-    )
+    const manager = this.manager_
+    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+    const query = this.buildQuery_(selector, config)
+    return await lineItemRepo.find(query)
   }
 
   /**
@@ -109,27 +109,24 @@ class LineItemService extends BaseService {
    * @return {Promise<LineItem | never>} the line item
    */
   async retrieve(id: string, config = {}): Promise<LineItem | never> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-
-        const validatedId = this.validateId_(id)
-        const query = this.buildQuery_({ id: validatedId }, config)
-
-        const lineItem = await lineItemRepository.findOne(query)
-
-        if (!lineItem) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Line item with ${id} was not found`
-          )
-        }
-
-        return lineItem
-      }
+    const manager = this.manager_
+    const lineItemRepository = manager.getCustomRepository(
+      this.lineItemRepository_
     )
+
+    const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const lineItem = await lineItemRepository.findOne(query)
+
+    if (!lineItem) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Line item with ${id} was not found`
+      )
+    }
+
+    return lineItem
   }
 
   /**

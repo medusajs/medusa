@@ -22,6 +22,10 @@ Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Med
 
 By convention, all plugin names start with `medusa` followed by a descriptive name of what the plugin does. For example, the Stripe plugin is named `medusa-payment-stripe`.
 
+### Rename Project Name
+
+Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
+
 ### Project Structure
 
 The command above creates a new directory `medusa-plugin-custom` that holds essentially the same codebase you would have for a Medusa server. This is because a plugin has the same directory structure as a Medusa server.
@@ -49,7 +53,6 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
   "medusa-interfaces": "^1.3.0",
   "medusa-payment-manual": "^1.0.16",
   "medusa-payment-stripe": "^1.1.38",
-  "mongoose": "^5.13.3",
   "typeorm": "^0.2.36"
 },
 "devDependencies": {
@@ -169,10 +172,10 @@ const plugins = [
   {
     resolve: `medusa-plugin-custom`,
     options: {
-      name: 'My Store'
-    }
-  }
-];
+      name: "My Store",
+    },
+  },
+]
 ```
 
 Then, you can have access to your plugin configuration in the constructor of services in your plugin:
@@ -195,11 +198,11 @@ export default (rootDirectory, options) => {
 
   router.get("/hello-world", (req, res) => {
     res.json({
-      message: `Welcome to ${options.name ? options.name : 'Medusa'}!`
+      message: `Welcome to ${options.name ? options.name : "Medusa"}!`,
     })
   })
 
-  return router;
+  return router
 }
 ```
 
@@ -249,10 +252,10 @@ const plugins = [
     resolve: `medusa-plugin-custom`,
     //if your plugin has configurations
     options: {
-      name: 'My Store'
-    }
-  }
-];
+      name: "My Store",
+    },
+  },
+]
 ```
 
 :::note
@@ -267,9 +270,53 @@ Finally, start your server and test your plugin’s functionalities:
 npm run start
 ```
 
+### Troubleshoot Errors
+
+#### Error: The class must be a valid service implementation
+
+Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix:
+
+```bash npm2yarn
+cd <SERVER_PATH>/node_modules/medusa-interfaces
+npm link
+cd <PLUGIN_PATH>
+rm -rf node_modules/medusa-interfaces
+npm link medusa-interfaces
+npm link
+cd <SERVER_PATH>
+npm link your-plugin
+```
+
+Where `<SERVER_PATH>` is the path to your Medusa server and `<PLUGIN_PATH>` is the path to your plugin.
+
+This links the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
+
+#### APIs not loading
+
+If the APIs you added to your Medussa server are not loading then please try the following steps:
+
+```bash npm2yarn
+cd <PLUGIN_PATH>
+rm -rf node_modules
+cd <SERVER_PATH>/node_modules/<PLUGIN_NAME>
+npm install
+cd <PLUGIN_PATH>
+npm build
+cd <SERVER_PATH>
+npm start
+```
+
+Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
+
+:::note
+
+It is safe to ignore any `cross-env: command not found` error you may receive.
+
+:::
+
 ## NPM Ignore File
 
-Not all files that you use while developing your plugin are necessary to be published. 
+Not all files that you use while developing your plugin are necessary to be published.
 
 For example, the files you add in the `src` directory are compiled to a `dist` directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files under the `dist` directory.
 

@@ -17,7 +17,7 @@ import { PaymentProviderService } from "../../../../services"
  *             payment_providers:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/store"
+ *                 $ref: "#/components/schemas/payment_provider"
  */
 export default async (req, res) => {
   const paymentProviderService: PaymentProviderService = req.scope.resolve(

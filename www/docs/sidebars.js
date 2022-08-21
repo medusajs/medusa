@@ -68,36 +68,81 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "how-to/create-medusa-app",
+          id: "usage/create-medusa-app",
         },
         {
           type: "category",
           label: "Deployment",
           items: [
             {
-              type: "doc",
-              id: "how-to/deploying-on-heroku",
-              label: "Deploy: Heroku",
+              type: "category",
+              label: "Server",
+              link: {
+                type: "doc",
+                id: "deployments/server/index"
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-heroku",
+                  label: "Deploy on Heroku",
+                  customProps: {
+                    image: 'https://i.imgur.com/xNvxSkf.png'
+                  }
+                },
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-digital-ocean",
+                  label: "Deploy on DigitalOcean",
+                  customProps: {
+                    image: 'https://i.imgur.com/aahqJp4.png'
+                  }
+                },
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-qovery",
+                  label: "Deploy on Qovery",
+                  customProps: {
+                    image: 'https://i.imgur.com/qOvY2dN.png'
+                  }
+                }
+              ]
             },
             {
-              type: "doc",
-              id: "how-to/deploying-on-qovery",
-              label: "Deploy: Qovery",
+              type: "category",
+              label: "Admin",
+              link: {
+                type: "doc",
+                id: "deployments/admin/index"
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "deployments/admin/deploying-on-netlify",
+                  label: "Deploy on Netlify",
+                  customProps: {
+                    image: 'https://i.imgur.com/gCbsCvX.png'
+                  }
+                },
+              ]
             },
             {
-              type: "doc",
-              id: "how-to/deploying-on-digital-ocean",
-              label: "Deploy: DigitalOcean",
-            },
-            {
-              type: "doc",
-              id: "how-to/deploying-admin-on-netlify",
-              label: "Deploy: Admin on Netlify",
-            },
-            {
-              type: "doc",
-              id: "how-to/deploying-gatsby-on-netlify",
-              label: "Deploy: Gatsby on Netlify",
+              type: "category",
+              label: "Storefront",
+              link: {
+                type: "doc",
+                id: "deployments/storefront/index"
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "deployments/storefront/deploying-gatsby-on-netlify",
+                  label: "Deploy Gatsby on Netlify",
+                  customProps: {
+                    image: 'https://i.imgur.com/gCbsCvX.png'
+                  }
+                },
+              ]
             },
           ],
         },
@@ -281,42 +326,27 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Bot",
-          items: [
-            {
-              type: "doc",
-              id: "add-plugins/slack",
-              label: "Slack",
-            },
-          ],
-        },
-        {
-          type: "category",
           label: "CMS",
           items: [
             {
-              type: "doc",
-              id: "add-plugins/contentful",
+              type: "category",
               label: "Contentful",
+              link: {
+                type: "doc",
+                id: "add-plugins/contentful/index",
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "add-plugins/contentful/customize-contentful",
+                  label: "Customize Contentful Integration",
+                },
+              ]
             },
             {
               type: "doc",
               id: "add-plugins/strapi",
               label: "Strapi",
-            },
-            {
-              type: "category",
-              label: "Gatsby + Contentful + Medusa",
-              items: [
-                {
-                  type: "doc",
-                  id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
-                },
-                {
-                  type: "doc",
-                  id: "how-to/making-your-store-more-powerful-with-contentful",
-                },
-              ],
             },
           ],
         },
@@ -338,6 +368,11 @@ module.exports = {
               type: "doc",
               id: "add-plugins/twilio-sms",
               label: "Twilio SMS",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/slack",
+              label: "Slack",
             },
           ],
         },
@@ -432,10 +467,20 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/s3-acl-error",
+          label: "S3 Plugin ACL Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/documentation-error",
           label: "Documentation Error",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "cli/reference",
+      label: "CLI Reference",
     },
     {
       type: "doc",
@@ -448,5 +493,263 @@ module.exports = {
       type: 'autogenerated',
       dirName: 'references/services/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
     },
+  ],
+  jsClientSidebar: [
+    {
+      type: "doc",
+      id: "js-client/overview",
+      label: "Overview",
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Resources",
+      items: [
+        {
+          type: "category",
+          label: "admin",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/Admin",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminAuthResource",
+              label: "auth",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCollectionsResource",
+              label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCustomerGroupsResource",
+              label: "customerGroups",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCustomersResource",
+              label: "customers",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminDiscountsResource",
+              label: "discounts",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminDraftOrdersResource",
+              label: "draftOrders",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminGiftCardsResource",
+              label: "giftCards",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminInvitesResource",
+              label: "invites",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminNotesResource",
+              label: "notes",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminNotificationsResource",
+              label: "notifications",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminOrdersResource",
+              label: "orders",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminPriceListResource",
+              label: "priceLists",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductsResource",
+              label: "products",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductTagsResource",
+              label: "productTags",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminProductTypesResource",
+              label: "productTypes",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminRegionsResource",
+              label: "regions",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminReturnReasonsResource",
+              label: "returnReasons",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminReturnsResource",
+              label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminShippingOptionsResource",
+              label: "shippingOptions",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminShippingProfilesResource",
+              label: "shippingProfiles",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminStoresResource",
+              label: "store",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSwapsResource",
+              label: "swaps",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminTaxRatesResource",
+              label: "taxRates",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminUploadsResource",
+              label: "uploads",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminUsersResource",
+              label: "users",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminVariantsResource",
+              label: "variants",
+            },
+          ]
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/AuthResource",
+          label: "auth",
+        },
+        {
+          type: "category",
+          label: "carts",
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/CartsResource",
+          },
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/LineItemsResource",
+              label: "lineItems",
+            }
+          ]
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/CollectionsResource",
+          label: "collections",
+        },
+        {
+          type: "category",
+          label: "customers",
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/CustomerResource",
+          },
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/AddressesResource",
+              label: "addresses"
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/PaymentMethodsResource",
+              label: "paymentMethods"
+            }
+          ]
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/GiftCardsResource",
+          label: "giftCards",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/OrdersResource",
+          label: "orders",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/PaymentMethodsResource",
+          label: "paymentMethods",
+        },
+        {
+          type: "category",
+          label: "products",
+          link: {
+            type: "doc",
+            id: "references/js-client/classes/ProductsResource",
+          },
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "references/js-client/classes/ProductVariantsResource",
+              label: "variants",
+            }
+          ]
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/RegionsResource",
+          label: "regions",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ReturnReasonsResource",
+          label: "returnReason",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ReturnsResource",
+          label: "returns",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ShippingOptionsResource",
+          label: "shippingOptions",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/SwapsResource",
+          label: "swaps",
+        },
+      ]
+    }
   ]
 }
