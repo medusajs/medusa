@@ -68,7 +68,7 @@ describe("SalesChannelService", () => {
     }),
   }
 
-  describe("create default", async () => {
+  describe("create default", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
