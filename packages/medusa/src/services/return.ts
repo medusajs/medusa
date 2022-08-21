@@ -1,12 +1,66 @@
+import { isDefined } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { isDefined } from "../utils"
+import { DeepPartial, EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import {
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentStatus,
+  Return,
+  ReturnItem,
+  ReturnStatus,
+} from "../models"
+import { ReturnRepository } from "../repositories/return"
+import { ReturnItemRepository } from "../repositories/return-item"
+import { FindConfig, Selector } from "../types/common"
+import { OrdersReturnItem } from "../types/orders"
+import { CreateReturnInput, UpdateReturnInput } from "../types/return"
+import { buildQuery, setMetadata } from "../utils"
+import FulfillmentProviderService from "./fulfillment-provider"
+import InventoryService from "./inventory"
+import LineItemService from "./line-item"
+import OrderService from "./order"
+import ReturnReasonService from "./return-reason"
+import ShippingOptionService from "./shipping-option"
+import TaxProviderService from "./tax-provider"
+import TotalsService from "./totals"
 
-/**
- * Handles Returns
- * @extends BaseService
- */
-class ReturnService extends BaseService {
+type InjectedDependencies = {
+  manager: EntityManager
+  totalsService: TotalsService
+  lineItemService: LineItemService
+  returnRepository: typeof ReturnRepository
+  returnItemRepository: typeof ReturnItemRepository
+  shippingOptionService: ShippingOptionService
+  returnReasonService: ReturnReasonService
+  taxProviderService: TaxProviderService
+  fulfillmentProviderService: FulfillmentProviderService
+  inventoryService: InventoryService
+  orderService: OrderService
+}
+
+type Transformer = (
+  item?: LineItem,
+  quantity?: number,
+  additional?: OrdersReturnItem
+) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
+
+class ReturnService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly totalsService_: TotalsService
+  protected readonly returnRepository_: typeof ReturnRepository
+  protected readonly returnItemRepository_: typeof ReturnItemRepository
+  protected readonly lineItemService_: LineItemService
+  protected readonly taxProviderService_: TaxProviderService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly returnReasonService_: ReturnReasonService
+  protected readonly inventoryService_: InventoryService
+  protected readonly orderService_: OrderService
+
   constructor({
     manager,
     totalsService,
@@ -19,75 +73,54 @@ class ReturnService extends BaseService {
     fulfillmentProviderService,
     inventoryService,
     orderService,
-  }) {
-    super()
-
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
-
-    /** @private @const {ReturnRepository} */
-    this.returnRepository_ = returnRepository
-
-    /** @private @const {ReturnItemRepository} */
-    this.returnItemRepository_ = returnItemRepository
-
-    /** @private @const {ReturnItemRepository} */
-    this.lineItemService_ = lineItemService
-
-    this.taxProviderService_ = taxProviderService
-
-    /** @private @const {ShippingOptionService} */
-    this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {FulfillmentProviderService} */
-    this.fulfillmentProviderService_ = fulfillmentProviderService
-
-    this.returnReasonService_ = returnReasonService
-
-    this.inventoryService_ = inventoryService
-
-    /** @private @const {OrderService} */
-    this.orderService_ = orderService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new ReturnService({
-      manager: transactionManager,
-      totalsService: this.totalsService_,
-      lineItemService: this.lineItemService_,
-      returnRepository: this.returnRepository_,
-      taxProviderService: this.taxProviderService_,
-      returnItemRepository: this.returnItemRepository_,
-      shippingOptionService: this.shippingOptionService_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-      returnReasonService: this.returnReasonService_,
-      inventoryService: this.inventoryService_,
-      orderService: this.orderService_,
+  }: InjectedDependencies) {
+    super({
+      manager,
+      totalsService,
+      lineItemService,
+      returnRepository,
+      returnItemRepository,
+      shippingOptionService,
+      returnReasonService,
+      taxProviderService,
+      fulfillmentProviderService,
+      inventoryService,
+      orderService,
     })
 
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.manager_ = manager
+    this.totalsService_ = totalsService
+    this.returnRepository_ = returnRepository
+    this.returnItemRepository_ = returnItemRepository
+    this.lineItemService_ = lineItemService
+    this.taxProviderService_ = taxProviderService
+    this.shippingOptionService_ = shippingOptionService
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.returnReasonService_ = returnReasonService
+    this.inventoryService_ = inventoryService
+    this.orderService_ = orderService
   }
 
   /**
    * Retrieves the order line items, given an array of items
-   * @param {Order} order - the order to get line items from
-   * @param {{ item_id: string, quantity: number }} items - the items to get
-   * @param {function} transformer - a function to apply to each of the items
+   * @param order - the order to get line items from
+   * @param items - the items to get
+   * @param transformer - a function to apply to each of the items
    *    retrieved from the order, should return a line item. If the transformer
    *    returns an undefined value the line item will be filtered from the
    *    returned array.
-   * @return {Promise<Array<LineItem>>} the line items generated by the transformer.
+   * @return the line items generated by the transformer.
    */
-  async getFulfillmentItems_(order, items, transformer) {
+  protected async getFulfillmentItems(
+    order: Order,
+    items: OrdersReturnItem[],
+    transformer: Transformer
+  ): Promise<
+    (LineItem & {
+      reason_id?: string
+      note?: string
+    })[]
+  > {
     let merged = [...order.items]
 
     // merge items from order with items from order swaps
@@ -110,33 +143,37 @@ class ReturnService extends BaseService {
       })
     )
 
-    return toReturn.filter((i) => !!i)
+    return toReturn.filter((i) => !!i) as (LineItem & OrdersReturnItem)[]
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {object} config - the config object for find
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
    */
   list(
-    selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    selector: Selector<Return>,
+    config: FindConfig<Return> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<Return[]> {
     const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return returnRepo.find(query)
   }
 
   /**
    * Cancels a return if possible. Returns can be canceled if it has not been received.
-   * @param {string} returnId - the id of the return to cancel.
-   * @return {Promise<Return>} the updated Return
+   * @param returnId - the id of the return to cancel.
+   * @return the updated Return
    */
-  async cancel(returnId) {
-    return this.atomicPhase_(async (manager) => {
+  async cancel(returnId: string): Promise<Return | never> {
+    return await this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
-      if (ret.status === "received") {
+      if (ret.status === ReturnStatus.RECEIVED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Can't cancel a return which has been returned"
@@ -145,10 +182,9 @@ class ReturnService extends BaseService {
 
       const retRepo = manager.getCustomRepository(this.returnRepository_)
 
-      ret.status = "canceled"
+      ret.status = ReturnStatus.CANCELED
 
-      const result = retRepo.save(ret)
-      return result
+      return await retRepo.save(ret)
     })
   }
 
@@ -156,13 +192,13 @@ class ReturnService extends BaseService {
    * Checks that an order has the statuses necessary to complete a return.
    * fulfillment_status cannot be not_fulfilled or returned.
    * payment_status must be captured.
-   * @param {Order} order - the order to check statuses on
+   * @param order - the order to check statuses on
    * @throws when statuses are not sufficient for returns.
    */
-  validateReturnStatuses_(order) {
+  protected validateReturnStatuses(order: Order): void | never {
     if (
-      order.fulfillment_status === "not_fulfilled" ||
-      order.fulfillment_status === "returned"
+      order.fulfillment_status === FulfillmentStatus.NOT_FULFILLED ||
+      order.fulfillment_status === FulfillmentStatus.RETURNED
     ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -170,7 +206,7 @@ class ReturnService extends BaseService {
       )
     }
 
-    if (order.payment_status !== "captured") {
+    if (order.payment_status !== PaymentStatus.CAPTURED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Can't return an order with payment unprocessed"
@@ -182,14 +218,18 @@ class ReturnService extends BaseService {
    * Checks that a given quantity of a line item can be returned. Fails if the
    * item is undefined or if the returnable quantity of the item is lower, than
    * the quantity that is requested to be returned.
-   * @param {LineItem?} item - the line item to check has sufficient returnable
+   * @param item - the line item to check has sufficient returnable
    *   quantity.
-   * @param {number} quantity - the quantity that is requested to be returned.
-   * @param {object} additional - the quantity that is requested to be returned.
-   * @return {LineItem} a line item where the quantity is set to the requested
+   * @param quantity - the quantity that is requested to be returned.
+   * @param additional - the quantity that is requested to be returned.
+   * @return a line item where the quantity is set to the requested
    *   return quantity.
    */
-  validateReturnLineItem_(item, quantity, additional) {
+  protected validateReturnLineItem(
+    item?: LineItem,
+    quantity = 0,
+    additional: { reason_id?: string; note?: string } = {}
+  ): DeepPartial<LineItem> {
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -205,13 +245,13 @@ class ReturnService extends BaseService {
       )
     }
 
-    const toReturn = {
+    const toReturn: DeepPartial<ReturnItem> = {
       ...item,
       quantity,
     }
 
     if ("reason_id" in additional) {
-      toReturn.reason_id = additional.reason_id
+      toReturn.reason_id = additional.reason_id as string
     }
 
     if ("note" in additional) {
@@ -223,17 +263,19 @@ class ReturnService extends BaseService {
 
   /**
    * Retrieves a return by its id.
-   * @param {string} id - the id of the return to retrieve
-   * @param {object} config - the config object
-   * @return {Return} the return
+   * @param id - the id of the return to retrieve
+   * @param config - the config object
+   * @return the return
    */
-  async retrieve(id, config = {}) {
+  async retrieve(
+    id: string,
+    config: FindConfig<Return> = {}
+  ): Promise<Return | never> {
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )
 
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
 
     const returnObj = await returnRepository.findOne(query)
 
@@ -246,16 +288,17 @@ class ReturnService extends BaseService {
     return returnObj
   }
 
-  async retrieveBySwap(swapId, relations = []) {
+  async retrieveBySwap(
+    swapId: string,
+    relations: string[] = []
+  ): Promise<Return | never> {
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )
 
-    const validatedId = this.validateId_(swapId)
-
     const returnObj = await returnRepository.findOne({
       where: {
-        swap_id: validatedId,
+        swap_id: swapId,
       },
       relations,
     })
@@ -266,11 +309,12 @@ class ReturnService extends BaseService {
         `Return with swa_id: ${swapId} was not found`
       )
     }
+
     return returnObj
   }
 
-  async update(returnId, update) {
-    return this.atomicPhase_(async (manager) => {
+  async update(returnId: string, update: UpdateReturnInput): Promise<Return> {
+    return await this.atomicPhase_(async (manager) => {
       const ret = await this.retrieve(returnId)
 
       if (ret.status === "canceled") {
@@ -283,7 +327,7 @@ class ReturnService extends BaseService {
       const { metadata, ...rest } = update
 
       if (metadata) {
-        ret.metadata = this.setMetadata_(ret, metadata)
+        ret.metadata = setMetadata(ret, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -291,8 +335,7 @@ class ReturnService extends BaseService {
       }
 
       const retRepo = manager.getCustomRepository(this.returnRepository_)
-      const result = await retRepo.save(ret)
-      return result
+      return await retRepo.save(ret)
     })
   }
 
@@ -300,26 +343,27 @@ class ReturnService extends BaseService {
    * Creates a return request for an order, with given items, and a shipping
    * method. If no refund amount is provided the refund amount is calculated from
    * the return lines and the shipping cost.
-   * @param {object} data - data to use for the return e.g. shipping_method,
+   * @param data - data to use for the return e.g. shipping_method,
    *    items or refund_amount
-   * @param {object} orderLike - order object
-   * @return {Promise<Return>} the created return
+   * @return the created return
    */
-  async create(data) {
-    return this.atomicPhase_(async (manager) => {
+  async create(data: CreateReturnInput): Promise<Return | never> {
+    return await this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
 
       const orderId = data.order_id
       if (data.swap_id) {
-        delete data.order_id
+        delete (data as Partial<CreateReturnInput>).order_id
       }
 
-      for (const item of data.items) {
-        const line = await this.lineItemService_.retrieve(item.item_id, {
-          relations: ["order", "swap", "claim_order"],
-        })
+      for (const item of data.items ?? []) {
+        const line = await this.lineItemService_
+          .withTransaction(manager)
+          .retrieve(item.item_id, {
+            relations: ["order", "swap", "claim_order"],
+          })
 
         if (
           line.order?.canceled_at ||
@@ -351,10 +395,10 @@ class ReturnService extends BaseService {
           ],
         })
 
-      const returnLines = await this.getFulfillmentItems_(
+      const returnLines = await this.getFulfillmentItems(
         order,
-        data.items,
-        this.validateReturnLineItem_
+        data.items ?? [],
+        this.validateReturnLineItem
       )
 
       let toRefund = data.refund_amount
@@ -363,7 +407,7 @@ class ReturnService extends BaseService {
         // refundable
         const refundable = order.refundable_amount
 
-        if (toRefund > refundable) {
+        if (toRefund! > refundable) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "Cannot refund more than the original payment"
@@ -371,7 +415,7 @@ class ReturnService extends BaseService {
         }
       } else {
         // Merchant hasn't specified refund amount so we calculate it
-        toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
+        toRefund = this.totalsService_.getRefundTotal(order, returnLines)
       }
 
       const method = data.shipping_method
@@ -379,14 +423,16 @@ class ReturnService extends BaseService {
 
       const returnObject = {
         ...data,
-        status: "requested",
-        refund_amount: Math.floor(toRefund),
+        status: ReturnStatus.REQUESTED,
+        refund_amount: Math.floor(toRefund!),
       }
 
-      const returnReasons = await this.returnReasonService_.list(
-        { id: [...returnLines.map((rl) => rl.reason_id)] },
-        { relations: ["return_reason_children"] }
-      )
+      const returnReasons = await this.returnReasonService_
+        .withTransaction(manager)
+        .list(
+          { id: [...returnLines.map((rl) => rl.reason_id as string)] },
+          { relations: ["return_reason_children"] }
+        )
 
       if (returnReasons.some((rr) => rr.return_reason_children?.length > 0)) {
         throw new MedusaError(
@@ -404,14 +450,13 @@ class ReturnService extends BaseService {
           reason_id: i.reason_id,
           note: i.note,
           metadata: i.metadata,
-          no_notification: data.no_notification,
         })
       )
 
-      const created = await returnRepository.create(returnObject)
+      const created = (await returnRepository.create(returnObject)) as Return
       const result = await returnRepository.save(created)
 
-      if (method) {
+      if (method && method.option_id) {
         const shippingMethod = await this.shippingOptionService_
           .withTransaction(manager)
           .createShippingMethod(
@@ -439,7 +484,7 @@ class ReturnService extends BaseService {
           )
 
         if (typeof data.refund_amount === "undefined") {
-          result.refund_amount = toRefund - shippingTotal
+          result.refund_amount = toRefund! - shippingTotal
           return await returnRepository.save(result)
         }
       }
@@ -448,8 +493,8 @@ class ReturnService extends BaseService {
     })
   }
 
-  fulfill(returnId) {
-    return this.atomicPhase_(async (manager) => {
+  async fulfill(returnId: string): Promise<Return | never> {
+    return await this.atomicPhase_(async (manager) => {
       const returnOrder = await this.retrieve(returnId, {
         relations: [
           "items",
@@ -470,7 +515,7 @@ class ReturnService extends BaseService {
 
       const returnData = { ...returnOrder }
 
-      const items = await this.lineItemService_.list(
+      const items = await this.lineItemService_.withTransaction(manager).list(
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
@@ -482,7 +527,7 @@ class ReturnService extends BaseService {
         return {
           ...item,
           item: found,
-        }
+        } as ReturnItem
       })
 
       if (returnOrder.shipping_data) {
@@ -496,14 +541,11 @@ class ReturnService extends BaseService {
         return returnOrder
       }
 
-      const fulfillmentData =
+      returnOrder.shipping_data =
         await this.fulfillmentProviderService_.createReturn(returnData)
 
-      returnOrder.shipping_data = fulfillmentData
-
       const returnRepo = manager.getCustomRepository(this.returnRepository_)
-      const result = await returnRepo.save(returnOrder)
-      return result
+      return await returnRepo.save(returnOrder)
     })
   }
 
@@ -515,29 +557,29 @@ class ReturnService extends BaseService {
    * retuned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
-   * @param {string} return_id - the orderId to return to
-   * @param {Item[]} received_items - the items received after return.
-   * @param {number | undefined} refund_amount - the amount to return
-   * @param {bool} allow_mismatch - whether to ignore return/received
+   * @param returnId - the orderId to return to
+   * @param receivedItems - the items received after return.
+   * @param refundAmount - the amount to return
+   * @param allowMismatch - whether to ignore return/received
    * product mismatch
-   * @return {Promise} the result of the update operation
+   * @return the result of the update operation
    */
   async receive(
-    return_id,
-    received_items,
-    refund_amount,
-    allow_mismatch = false
-  ) {
-    return this.atomicPhase_(async (manager) => {
+    returnId: string,
+    receivedItems: OrdersReturnItem[],
+    refundAmount?: number,
+    allowMismatch = false
+  ): Promise<Return | never> {
+    return await this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
         this.returnRepository_
       )
 
-      const returnObj = await this.retrieve(return_id, {
+      const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
       })
 
-      if (returnObj.status === "canceled") {
+      if (returnObj.status === ReturnStatus.CANCELED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot receive a canceled return"
@@ -569,17 +611,17 @@ class ReturnService extends BaseService {
           ],
         })
 
-      if (returnObj.status === "received") {
+      if (returnObj.status === ReturnStatus.RECEIVED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Return with id ${return_id} has already been received`
+          `Return with id ${returnId} has already been received`
         )
       }
 
-      const returnLines = await this.getFulfillmentItems_(
+      const returnLines = await this.getFulfillmentItems(
         order,
-        received_items,
-        this.validateReturnLineItem_
+        receivedItems,
+        this.validateReturnLineItem
       )
 
       const newLines = returnLines.map((l) => {
@@ -604,15 +646,14 @@ class ReturnService extends BaseService {
         }
       })
 
-      let returnStatus = "received"
+      let returnStatus = ReturnStatus.RECEIVED
 
       const isMatching = newLines.every((l) => l.is_requested)
-      if (!isMatching && !allow_mismatch) {
-        // Should update status
-        returnStatus = "requires_action"
+      if (!isMatching && !allowMismatch) {
+        returnStatus = ReturnStatus.REQUIRES_ACTION
       }
 
-      const totalRefundableAmount = refund_amount || returnObj.refund_amount
+      const totalRefundableAmount = refundAmount || returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
