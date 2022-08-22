@@ -25,7 +25,7 @@ module.exports = {
     // redis_url: REDIS_URL,
     database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
     database_type: "postgres",
-    jwt_secret: 'test',
-    cookie_secret: 'test'
+    jwt_secret: "test",
+    cookie_secret: "test",
   },
 }

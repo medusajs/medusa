@@ -12,8 +12,5 @@ const pgGodCredentials = {
 }
 
 afterAll(async () => {
-  await dropDatabase(
-    { databaseName: DB_NAME },
-    pgGodCredentials
-  )
+  await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
 })
