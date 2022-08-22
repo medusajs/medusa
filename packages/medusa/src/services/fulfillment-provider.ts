@@ -14,7 +14,10 @@ import {
 } from "../models"
 import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
 import { CreateFulfillmentOrder } from "../types/fulfillment"
-import { FulfillmentOptions } from "../types/fulfillment-provider"
+import {
+  CreateReturnType,
+  FulfillmentOptions,
+} from "../types/fulfillment-provider"
 import { MedusaContainer } from "../types/global"
 
 type FulfillmentProviderKey = `fp_${string}`
@@ -156,7 +159,9 @@ class FulfillmentProviderService extends TransactionBaseService {
     return provider.validateOption(option.data) as unknown as boolean
   }
 
-  async createReturn(returnOrder: Return): Promise<Record<string, unknown>> {
+  async createReturn(
+    returnOrder: CreateReturnType
+  ): Promise<Record<string, unknown>> {
     const option = returnOrder.shipping_method.shipping_option
     const provider = this.retrieveProvider(option.provider_id)
     return provider.createReturn(returnOrder) as unknown as Record<
