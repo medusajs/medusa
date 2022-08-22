@@ -65,11 +65,6 @@ module.exports = {
           label: "Docs"
         },
         {
-          type: "docSidebar",
-          sidebarId: "userGuideSidebar",
-          label: "User Guide"
-        },
-        {
           type: 'dropdown',
           label: 'REST API Reference',
           items: [
