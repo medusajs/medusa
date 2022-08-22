@@ -122,7 +122,7 @@ If your fulfillment provider does not need to run any validation, you can simply
 
 When the customer chooses a shipping option on checkout, the shipping option and its data are validated before the shipping method is created.
 
-`validateFulfillmentOption` is called when a `POST` request is sent to `[/carts/:id/shipping-methods](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod)`.
+`validateFulfillmentOption` is called when a `POST` request is sent to [`/carts/:id/shipping-methods`](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
 This method accepts 3 parameters:
 
