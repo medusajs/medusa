@@ -493,7 +493,19 @@ module.exports = {
       type: "doc",
       id: "user-guide/index",
       label: "Introduction"
-    }
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Orders",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/orders/index",
+          label: "Introduction"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
