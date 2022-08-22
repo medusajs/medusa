@@ -3,28 +3,23 @@ import aws from "aws-sdk"
 import { AbstractFileService } from '@medusajs/medusa'
 
 class S3Service extends AbstractFileService {
-  constructor({}, options) {
+  constructor({ }, options) {
     super({}, options)
 
     this.bucket_ = options.bucket
-    this.s3Url_ = options.s3_url
-    this.accessKeyId_ = options.access_key_id
-    this.secretAccessKey_ = options.secret_access_key
-    this.region_ = options.region
-    this.endpoint_ = options.endpoint
+
+    // Remove parameters not supported by aws-sdk
+    delete options.bucket
+
+    this.awsOptions_ = options
   }
 
   upload(file) {
     aws.config.setPromisesDependency(null)
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
-    }, true)
+    aws.config.update(this.awsOptions_, true)
 
     const s3 = new aws.S3()
-    var params = {
+    const params = {
       ACL: "public-read",
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
@@ -45,15 +40,10 @@ class S3Service extends AbstractFileService {
 
   async delete(file) {
     aws.config.setPromisesDependency(null)
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
-    }, true)
+    aws.config.update(this.awsOptions_, true)
 
     const s3 = new aws.S3()
-    var params = {
+    const params = {
       Bucket: this.bucket_,
       Key: `${file}`,
     }
@@ -68,7 +58,7 @@ class S3Service extends AbstractFileService {
       })
     })
   }
-  
+
   async getUploadStreamDescriptor(fileData) {
     throw new Error("Method not implemented.")
   }
