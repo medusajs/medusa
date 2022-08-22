@@ -1,5 +1,4 @@
 const path = require("path")
-require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
 const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
