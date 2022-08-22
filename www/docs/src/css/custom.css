@@ -342,3 +342,9 @@ kbd {
   
   font: 100% var(--ifm-font-family-monospace) !important;
 }
+
+.ui-icon {
+  vertical-align: sub;
+  width: 20px;
+  height: 20px;
+}
