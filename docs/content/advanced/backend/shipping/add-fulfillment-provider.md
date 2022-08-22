@@ -102,7 +102,7 @@ For that reason, the fulfillment option does not have any required structure and
 
 ### validateOption
 
-Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to `[/admin/shipping-options](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions)`.
+Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to [`/admin/shipping-options`](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions).
 
 This method accepts the `data` object that is sent in the body of the request. You can use this data to validate the shipping option before it is saved.
 
