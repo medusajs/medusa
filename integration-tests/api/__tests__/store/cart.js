@@ -1635,6 +1635,36 @@ describe("/store/carts", () => {
       expect(getRes.data.type).toEqual("order")
     })
 
+    it("complete cart with 100% discount", async () => {
+      await simpleDiscountFactory(dbConnection, {
+        code: "100PERCENT",
+        rule: {
+          type: "percentage",
+          value: 100,
+        },
+        regions: ["test-region"],
+      })
+
+      const api = useApi()
+
+      await api
+        .post(`/store/carts/test-cart-3`, {
+          discounts: [{ code: "100PERCENT" }],
+        })
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      const getRes = await api
+        .post(`/store/carts/test-cart-3/complete`)
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(getRes.status).toEqual(200)
+      expect(getRes.data.type).toEqual("order")
+    })
+
     it("complete cart with items inventory covered", async () => {
       const api = useApi()
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`)

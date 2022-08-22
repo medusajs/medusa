@@ -10,7 +10,6 @@ import {
   FileService,
   FulfillmentService,
   OauthService,
-  PaymentService,
 } from "medusa-interfaces"
 import path from "path"
 import { EntitySchema } from "typeorm"
@@ -20,6 +19,7 @@ import {
   isCartCompletionStrategy,
   isFileService,
   isNotificationService,
+  isPaymentService,
   isPriceSelectionStrategy,
   isSearchService,
   isTaxCalculationStrategy,
@@ -366,7 +366,7 @@ export async function registerServices(
         throw new Error(message)
       }
 
-      if (loaded.prototype instanceof PaymentService) {
+      if (isPaymentService(loaded.prototype)) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",

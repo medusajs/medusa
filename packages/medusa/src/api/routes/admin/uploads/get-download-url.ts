@@ -31,7 +31,7 @@ import { IsString } from "class-validator"
  *               description: The Download URL of the file
  */
 export default async (req, res) => {
-  const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
+  const fileService: AbstractFileService = req.scope.resolve("fileService")
 
   const url = await fileService.getPresignedDownloadUrl({
     fileKey: (req.validatedBody as AdminPostUploadsDownloadUrlReq).file_key,

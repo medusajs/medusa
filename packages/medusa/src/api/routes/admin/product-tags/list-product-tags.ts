@@ -17,6 +17,7 @@ import { ProductTag } from "../../../../models/product-tag"
 import ProductTagService from "../../../../services/product-tag"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [get] /product-tags
@@ -124,7 +125,7 @@ export default async (req, res) => {
     take: validated.limit,
   }
 
-  if (typeof validated.order !== "undefined") {
+  if (isDefined(validated.order)) {
     let orderField = validated.order
     if (validated.order.startsWith("-")) {
       const [, field] = validated.order.split("-")
