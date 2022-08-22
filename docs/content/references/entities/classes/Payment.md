@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/payment.ts:46](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L46)
+[models/payment.ts:46](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L46)
 
 ___
 
@@ -38,27 +38,27 @@ ___
 
 #### Defined in
 
-[models/payment.ts:56](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L56)
+[models/payment.ts:56](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L56)
 
 ___
 
 ### canceled\_at
 
-• **canceled\_at**: `Date`
+• **canceled\_at**: `string` \| `Date`
 
 #### Defined in
 
-[models/payment.ts:69](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L69)
+[models/payment.ts:69](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L69)
 
 ___
 
 ### captured\_at
 
-• **captured\_at**: `Date`
+• **captured\_at**: `string` \| `Date`
 
 #### Defined in
 
-[models/payment.ts:66](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L66)
+[models/payment.ts:66](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L66)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:35](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L35)
+[models/payment.ts:35](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L35)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:31](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L31)
+[models/payment.ts:31](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L31)
 
 ___
 
@@ -92,7 +92,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:53](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L53)
+[models/payment.ts:53](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L53)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:49](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L49)
+[models/payment.ts:49](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L49)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:63](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L63)
+[models/payment.ts:63](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L63)
 
 ___
 
@@ -136,7 +136,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:75](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L75)
+[models/payment.ts:75](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L75)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:72](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L72)
+[models/payment.ts:72](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L72)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:43](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L43)
+[models/payment.ts:43](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L43)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:39](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L39)
+[models/payment.ts:39](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L39)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:60](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L60)
+[models/payment.ts:60](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L60)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:27](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L27)
+[models/payment.ts:27](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L27)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 #### Defined in
 
-[models/payment.ts:23](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L23)
+[models/payment.ts:23](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L23)
 
 ___
 
@@ -220,7 +220,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -234,4 +234,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/payment.ts:77](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/payment.ts#L77)
+[models/payment.ts:77](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/payment.ts#L77)

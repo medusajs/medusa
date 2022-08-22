@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/shipping-method.ts:59](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L59)
+[models/shipping-method.ts:59](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L59)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:55](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L55)
+[models/shipping-method.ts:55](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L55)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:51](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L51)
+[models/shipping-method.ts:51](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L51)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:47](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L47)
+[models/shipping-method.ts:47](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L47)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:90](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L90)
+[models/shipping-method.ts:90](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L90)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:31](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L31)
+[models/shipping-method.ts:31](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L31)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:43](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L43)
+[models/shipping-method.ts:43](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L43)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:39](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L39)
+[models/shipping-method.ts:39](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L39)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:87](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L87)
+[models/shipping-method.ts:87](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L87)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:71](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L71)
+[models/shipping-method.ts:71](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L71)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:75](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L75)
+[models/shipping-method.ts:75](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L75)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:79](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L79)
+[models/shipping-method.ts:79](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L79)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:35](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L35)
+[models/shipping-method.ts:35](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L35)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:67](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L67)
+[models/shipping-method.ts:67](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L67)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:63](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L63)
+[models/shipping-method.ts:63](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L63)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:84](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L84)
+[models/shipping-method.ts:84](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L84)
 
 ## Methods
 
@@ -182,4 +182,4 @@ ___
 
 #### Defined in
 
-[models/shipping-method.ts:92](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/shipping-method.ts#L92)
+[models/shipping-method.ts:92](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/shipping-method.ts#L92)

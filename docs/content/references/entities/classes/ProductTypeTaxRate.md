@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:31](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L31)
+[models/product-type-tax-rate.ts:31](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L31)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:37](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L37)
+[models/product-type-tax-rate.ts:37](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L37)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L24)
+[models/product-type-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L24)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L17)
+[models/product-type-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L17)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L20)
+[models/product-type-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L20)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:28](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L28)
+[models/product-type-tax-rate.ts:28](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L28)
 
 ___
 
@@ -78,4 +78,4 @@ ___
 
 #### Defined in
 
-[models/product-type-tax-rate.ts:34](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/product-type-tax-rate.ts#L34)
+[models/product-type-tax-rate.ts:34](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/product-type-tax-rate.ts#L34)

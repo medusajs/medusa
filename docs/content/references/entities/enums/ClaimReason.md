@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/claim-item.ts:23](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/claim-item.ts#L23)
+[models/claim-item.ts:23](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L23)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:26](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/claim-item.ts#L26)
+[models/claim-item.ts:26](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L26)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:25](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/claim-item.ts#L25)
+[models/claim-item.ts:25](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L25)
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:24](https://github.com/medusajs/medusa/blob/0703dd94e/packages/medusa/src/models/claim-item.ts#L24)
+[models/claim-item.ts:24](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L24)
