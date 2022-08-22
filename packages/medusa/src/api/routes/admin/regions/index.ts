@@ -58,7 +58,7 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminRegionFields = [
+export const defaultAdminRegionFields: (keyof Region)[] = [
   "id",
   "name",
   "automatic_taxes",
