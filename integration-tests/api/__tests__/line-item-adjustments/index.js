@@ -101,10 +101,6 @@ describe("Line Item Adjustments", () => {
       await doAfterEach()
     })
 
-    afterEach(async () => {
-      await doAfterEach()
-    })
-
     describe("Given an existing line item, a discount, and a line item adjustment for both", () => {
       describe("When creating an adjustment for another line item w. same discount", () => {
         test("Then should create an adjustment", async () => {
