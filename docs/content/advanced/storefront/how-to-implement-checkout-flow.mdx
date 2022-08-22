@@ -16,7 +16,7 @@ It’s recommended to go through the [Shipping Architecture Overview](../backend
 
 ## Prerequisites
 
-This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](https://docs.medusajs.com/api/store/cart/create-a-cart) for the customer with at least [one product in it](https://docs.medusajs.com/api/store/cart/add-a-line-item).
+This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
 
@@ -34,7 +34,7 @@ In this step, the customer generally enters their shipping info, then chooses th
 
 ### Add Shipping Address
 
-After the customer enters their shipping address information, you must send a `POST` request to the [Update a Cart](https://docs.medusajs.com/api/store/cart/update-a-cart) API endpoint passing it the new shipping address:
+After the customer enters their shipping address information, you must send a `POST` request to the [Update a Cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCart) API endpoint passing it the new shipping address:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -94,7 +94,7 @@ You can have access to the updated cart in `response.cart`, which now has the sh
 
 ### List Shipping Options
 
-After updating the cart with the customer’s address, the list of available [shipping options](../backend/shipping/overview.md#shipping-option) for that cart might change. So, you should retrieve the updated list of options by sending a `GET` request to the [Retrieve Shipping Options for Cart API](https://docs.medusajs.com/api/store/shipping-option/retrieve-shipping-options-for-cart) endpoint:
+After updating the cart with the customer’s address, the list of available [shipping options](../backend/shipping/overview.md#shipping-option) for that cart might change. So, you should retrieve the updated list of options by sending a `GET` request to the [Retrieve Shipping Options for Cart API](https://docs.medusajs.com/api/store/#tag/Shipping-Option/operation/GetShippingOptionsCartId) endpoint:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -120,13 +120,13 @@ fetch(`<SERVER_URL>/store/shipping-options/${cart.id}`)
 </TabItem>
 </Tabs>
 
-You can access all shipping options available with their info in `response.shipping_options` which is an array of [shipping options](https://docs.medusajs.com/api/store/shipping-option). Typically you would display those options to the customer to choose from.
+You can access all shipping options available with their info in `response.shipping_options` which is an array of [shipping options](https://docs.medusajs.com/api/store/#tag/Shipping-Option/operation/GetShippingOptions). Typically you would display those options to the customer to choose from.
 
 ### Choose Shipping Option
 
-Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](https://docs.medusajs.com/api/store/cart/add-a-shipping-method) API endpoint. This will create a [shipping method](../backend/shipping/overview.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
+Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod) API endpoint. This will create a [shipping method](../backend/shipping/overview.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -168,7 +168,7 @@ In this step, the customer generally chooses a payment method to complete their 
 
 When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](./../backend/payment/overview.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
 
-To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](https://docs.medusajs.com/api/store/cart/initialize-payment-sessions) API endpoint:
+To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -199,7 +199,7 @@ You can then access the initialized payment sessions under the `payment_sessions
 
 ### Select Payment Session
 
-When the customer chooses the payment provider they want to complete purchase with, you should select the payment session associated with that payment provider. To do that, send a `POST` request to the [Select a Payment Session](https://docs.medusajs.com/api/store/cart/select-a-payment-session) API endpoint:
+When the customer chooses the payment provider they want to complete purchase with, you should select the payment session associated with that payment provider. To do that, send a `POST` request to the [Select a Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) API endpoint:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -245,7 +245,7 @@ If you have one payment provider or if only one payment provider is available fo
 
 This step is optional and is only necessary for some payment providers. As mentioned in the [Payment Architecture](../backend/payment/overview.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Provider to perform payment operations such as capturing payment.
 
-If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) API endpoint passing it the updated data object:
+If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) API endpoint passing it the updated data object:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
@@ -293,7 +293,7 @@ You can have access to the updated data in the payment session in `response.cart
 
 The last step is to place the order by completing the cart. When you complete the cart, your Medusa server will try to authorize the payment first, then place the order if the authorization is successful. So, you should perform any necessary action with your payment provider first to make sure the authorization is successful when you send the request to complete the cart.
 
-To complete a cart, send a `POST` request to the [Complete a Cart](https://docs.medusajs.com/api/store/cart/complete-a-cart) API endpoint:
+To complete a cart, send a `POST` request to the [Complete a Cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) API endpoint:
 
 <Tabs groupId="request-tyoe">
 <TabItem value="client" label="Medusa JS Client" default>
