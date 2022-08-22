@@ -16,7 +16,7 @@ import FulfillmentProviderService from "./fulfillment-provider"
 import { Country, Currency, Region } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { PaymentProviderService } from "./index"
 
 type InjectedDependencies = {
@@ -451,8 +451,7 @@ class RegionService extends TransactionBaseService<RegionService> {
       this.regionRepository_
     )
 
-    const validatedId = validateId(regionId)
-    const query = buildQuery({ id: validatedId }, config)
+    const query = buildQuery({ id: regionId }, config)
     const region = await regionRepository.findOne(query)
 
     if (!region) {
