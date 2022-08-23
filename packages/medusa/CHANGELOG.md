@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.5-product-import.0
+
+### Patch Changes
+
+- [#1843](https://github.com/medusajs/medusa/pull/1843) [`716297231`](https://github.com/medusajs/medusa/commit/71629723185739a97fc2cf8eaa9029f7963bb120) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Fixes free text search for PriceList Products
+
 ## 1.3.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.33-product-import.0
+
+### Patch Changes
+
+- Updated dependencies [[`716297231`](https://github.com/medusajs/medusa/commit/71629723185739a97fc2cf8eaa9029f7963bb120)]:
+  - @medusajs/medusa@1.3.5-product-import.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

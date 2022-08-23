@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.2-product-import.0
+
+### Patch Changes
+
+- [#1840](https://github.com/medusajs/medusa/pull/1840) [`c20d72004`](https://github.com/medusajs/medusa/commit/c20d72004041d946feda5897920df7d66aad5228) Thanks [@srindom](https://github.com/srindom)! - Bug fixed where the free shipping tax rate was incorrect due to division by zero.
+
 ## 1.3.1
 
 ### Patch Changes
