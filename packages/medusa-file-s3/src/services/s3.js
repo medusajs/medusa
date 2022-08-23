@@ -8,6 +8,16 @@ class S3Service extends AbstractFileService {
 
     this.bucket_ = options.bucket
 
+    // user is using legacy configuration
+    // mapping it as per new options
+    if (options.access_key_id) {
+      options.accessKeyId = options.access_key_id
+      options.secretAccessKey = options.secret_access_key
+      delete options.access_key_id
+      delete options.secret_access_key
+      delete options.s3_url
+    }
+
     // Remove parameters not supported by aws-sdk
     delete options.bucket
 
