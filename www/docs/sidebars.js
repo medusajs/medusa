@@ -501,8 +501,18 @@ module.exports = {
       items: [
         {
           type: "doc",
-          id: "user-guide/orders/index",
-          label: "Introduction"
+          id: "user-guide/orders/index"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Products",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/products/index"
         }
       ]
     },
