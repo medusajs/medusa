@@ -501,8 +501,7 @@ module.exports = {
       items: [
         {
           type: "doc",
-          id: "user-guide/orders/index",
-          label: "Overview"
+          id: "user-guide/orders/index"
         }
       ]
     },
@@ -513,8 +512,7 @@ module.exports = {
       items: [
         {
           type: "doc",
-          id: "user-guide/products/index",
-          label: "Overview"
+          id: "user-guide/products/index"
         }
       ]
     },
