@@ -527,6 +527,17 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Discounts",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/discounts/index"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
