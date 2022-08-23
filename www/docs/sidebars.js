@@ -502,7 +502,19 @@ module.exports = {
         {
           type: "doc",
           id: "user-guide/orders/index",
-          label: "Introduction"
+          label: "Overview"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Products",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/products/index",
+          label: "Overview"
         }
       ]
     },
