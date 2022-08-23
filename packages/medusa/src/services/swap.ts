@@ -1,15 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { isDefined } from "../utils"
-
-import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 
+import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+
 import LineItemAdjustmentService from "./line-item-adjustment"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { FindConfig, QuerySelector } from "../types/common"
-import { buildQuery, setMetadata, validateId } from "../utils"
 import { SwapRepository } from "../repositories/swap"
 import CartService from "./cart"
 import {
@@ -31,6 +28,7 @@ import {
   LineItem,
   LineItemTaxLine,
   Order,
+  PaymentSessionStatus,
   ReturnItem,
   ReturnStatus,
   Swap,
@@ -38,6 +36,7 @@ import {
   SwapPaymentStatus,
 } from "../models"
 import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
 
 type InjectedProps = {
   manager: EntityManager
@@ -63,7 +62,7 @@ type InjectedProps = {
 /**
  * Handles swaps
  */
-class SwapService extends TransactionBaseService<SwapService> {
+class SwapService extends TransactionBaseService {
   static Events = {
     CREATED: "swap.created",
     RECEIVED: "swap.received",
@@ -419,7 +418,7 @@ class SwapService extends TransactionBaseService<SwapService> {
       await this.returnService_.withTransaction(manager).create({
         swap_id: result.id,
         order_id: order.id,
-        items: returnItems,
+        items: returnItems as OrdersReturnItem[],
         shipping_method: returnShipping,
         no_notification: evaluatedNoNotification,
       })
@@ -805,7 +804,11 @@ class SwapService extends TransactionBaseService<SwapService> {
           .getStatus(payment)
 
         // If payment status is not authorized, we throw
-        if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
+        if (
+          paymentStatus !== PaymentSessionStatus.AUTHORIZED &&
+          // @ts-ignore TODO: check why this is not in the enum
+          paymentStatus !== "succeeded"
+        ) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
             "Payment method is not authorized"
