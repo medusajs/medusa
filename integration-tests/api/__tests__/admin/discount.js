@@ -2233,7 +2233,6 @@ describe("/admin/discounts", () => {
         })
 
       const cond = discountCondition.data.discount_condition
-      console.log(cond.products)
 
       expect(discountCondition.status).toEqual(200)
       expect(cond).toMatchSnapshot({
