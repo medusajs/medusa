@@ -1,11 +1,12 @@
 import React from 'react';
-import {useColorMode} from '@docusaurus/theme-common';
+import ThemedImage from '@theme/ThemedImage';
 
 export default function UiIcon ({ lightIcon, darkIcon = '', alt = '' }) {
-  const {colorMode} = useColorMode();
-  const icon = colorMode === 'dark' && darkIcon ? darkIcon : lightIcon;
 
   return (
-    <img src={icon} className="ui-icon" alt={alt} />
+    <ThemedImage alt={alt} sources={{
+      light: lightIcon,
+      dark: darkIcon || lightIcon
+    }} className="ui-icon" />
   )
 }
