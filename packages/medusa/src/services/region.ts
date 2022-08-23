@@ -438,16 +438,20 @@ class RegionService extends TransactionBaseService {
 
   /**
    * Retrieves a region by name.
-   * @param {string} name - the name of the region to retrieve
-   * @param {object} config - configuration settings
-   * @return {Region} - region with the matching name
+   *
+   * @param name - the name of the region to retrieve
+   * @param config - configuration settings
+   * @return region with the matching name
    */
-  async retrieveByName(name, config = {}) {
+  async retrieveByName(
+    name: string,
+    config: FindConfig<Region> = {}
+  ): Promise<Region | never> {
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )
 
-    const query = this.buildQuery_({ name }, config)
+    const query = buildQuery({ name }, config)
 
     const region = await regionRepository.findOne(query)
 
