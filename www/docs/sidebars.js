@@ -516,6 +516,17 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Customers",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/customers/index"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
