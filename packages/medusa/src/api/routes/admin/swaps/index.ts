@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { Swap } from "../../../.."
-import { FindConfig, PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
