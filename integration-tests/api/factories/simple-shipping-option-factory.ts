@@ -37,14 +37,14 @@ export const simpleShippingOptionFactory = async (
 
   const created = manager.create(ShippingOption, {
     id: `simple-so-${Math.random() * 1000}`,
-    name: data?.name || "Test Method",
-    is_return: data?.is_return ?? false,
-    region_id: data?.region_id,
+    name: data.name || "Test Method",
+    is_return: data.is_return ?? false,
+    region_id: data.region_id,
     provider_id: "test-ful",
-    profile_id: data?.is_giftcard ? gcProfile.id : defaultProfile.id,
-    price_type: data?.price_type ?? ShippingOptionPriceType.FLAT_RATE,
-    data: data?.data ?? {},
-    amount: typeof data?.price !== "undefined" ? data.price : 500,
+    profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
+    price_type: data.price_type ?? ShippingOptionPriceType.FLAT_RATE,
+    data: data.data ?? {},
+    amount: typeof data.price !== "undefined" ? data.price : 500,
   })
   const option = await manager.save(created)
   return option
