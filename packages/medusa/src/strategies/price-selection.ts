@@ -121,7 +121,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
 
       if (
         isValidQuantity(ma, context.quantity) &&
-        isValidAMount(ma.amount, result, isTaxInclusive, context.tax_rate) &&
+        isValidAmount(ma.amount, result, isTaxInclusive, context.tax_rate) &&
         ((context.currency_code &&
           ma.currency_code === context.currency_code) ||
           (context.region_id && ma.region_id === context.region_id))
@@ -211,7 +211,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   }
 }
 
-const isValidAMount = (
+const isValidAmount = (
   amount: number,
   result: PriceSelectionResult,
   isTaxInclusive: boolean,
