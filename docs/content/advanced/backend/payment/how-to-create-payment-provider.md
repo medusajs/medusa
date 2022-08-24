@@ -24,7 +24,7 @@ The Payment Provider service is also required to implement the following methods
 2. `retrievePayment`: Used to retrieve payment data from the third-party provider, if there’s any.
 3. `getStatus`: Used to get the status of a Payment or Payment Session.
 4. `updatePayment`: Used to update the Payment Session whenever the cart and its related data are updated.
-5. `updatePaymentData`: Used to update the `data` field of Payment Sessions. Specifically called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) endpoint.
+5. `updatePaymentData`: Used to update the `data` field of Payment Sessions. Specifically called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint.
 6. `deletePayment`: Used to perform any action necessary before a Payment Session is deleted.
 7. `authorizePayment`: Used to authorize the payment amount of the cart before the order or swap is created.
 8. `getPaymentData`: Used to retrieve the data that should be stored in the `data` field of a new  Payment instance after the payment amount has been authorized.
@@ -72,7 +72,7 @@ As mentioned in the overview, Payment Providers should have a static `identifie
 
 The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
-The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/cart/select-a-payment-session).
+The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
 
 ### constructor
 
@@ -90,7 +90,7 @@ constructor({}, options) {
 
 ### createPayment
 
-This method is called during checkout when [Payment Sessions are initialized](https://docs.medusajs.com/api/store/cart/initialize-payment-sessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to initialize a Payment Intent for the customer.
+This method is called during checkout when [Payment Sessions are initialized](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to initialize a Payment Intent for the customer.
 
 The method receives the cart as an object for its first parameter. It holds all the necessary information you need to know about the cart and the customer that owns this cart.
 
@@ -155,7 +155,7 @@ This code block assumes the status is stored in the `data` field as demonstrated
 
 ### updatePayment
 
-This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store/cart/add-a-line-item) or when a [shipping method is selected](https://docs.medusajs.com/api/store/cart/add-a-shipping-method).
+This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartLineItems) or when a [shipping method is selected](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
 :::tip
 
@@ -179,7 +179,7 @@ async updatePayment(sessionData, cart) {
 
 ### updatePaymentData
 
-This method is used to update the `data` field of a Payment Session. Particularly, it is called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) endpoint. This endpoint receives a `data` object in the body of the request that should be used to update the existing `data` field of the Payment Session.
+This method is used to update the `data` field of a Payment Session. Particularly, it is called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) endpoint. This endpoint receives a `data` object in the body of the request that should be used to update the existing `data` field of the Payment Session.
 
 This method accepts the current `data` field of the Payment Session as the first parameter, and the new `data` field sent in the body request as the second parameter.
 
@@ -199,8 +199,8 @@ async updatePaymentData(sessionData, updatedData) {
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
 
-1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store/cart/delete-a-payment-session).
-2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store/cart/refresh-a-payment-session). The Payment Session is deleted so that a newer one is initialized instead.
+1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/DeleteCartsCartPaymentSessionsSession).
+2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionsSession). The Payment Session is deleted so that a newer one is initialized instead.
 3. When the Payment Provider is no longer available. This generally happens when the store operator removes it from the available Payment Provider in the admin.
 4. When the region of the store is changed based on the cart information and the Payment Provider is not available in the new region.
 
@@ -218,7 +218,7 @@ async deletePayment(paymentSession) {
 
 ### authorizePayment
 
-This method is used to authorize payment using the Payment Session for an order. This is called when the [cart is completed](https://docs.medusajs.com/api/store/cart/complete-a-cart) and before the order is created.
+This method is used to authorize payment using the Payment Session for an order. This is called when the [cart is completed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) and before the order is created.
 
 This method is also used for authorizing payments of a swap of an order.
 
@@ -347,7 +347,7 @@ async cancelPayment(payment) {
 
 This method can be added to your Payment Provider service if your third-party provider supports saving the customer’s payment methods. Please note that in Medusa there is no way to save payment methods.
 
-This method is called when a request is sent to [Retrieve Saved Payment Methods](https://docs.medusajs.com/api/store/customer/retrieve-saved-payment-methods).
+This method is called when a request is sent to [Retrieve Saved Payment Methods](https://docs.medusajs.com/api/store/#tag/Customer/operation/GetCustomersCustomerPaymentMethods).
 
 This method accepts the customer as an object for its first parameter.
 

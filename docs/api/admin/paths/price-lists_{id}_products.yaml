@@ -4,6 +4,12 @@ get:
   description: Retrieves a list of Product that are part of a Price List
   x-authenticated: true
   parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the price list.
+      schema:
+        type: string
     - in: query
       name: q
       description: >-
