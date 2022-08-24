@@ -6,11 +6,12 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /tax-rates/:id
+ * @oas [get] /tax-rates/{id}
  * operationId: "GetTaxRatesTaxRate"
  * summary: "Get Tax Rate"
  * description: "Retrieves a TaxRate"
  * parameters:
+ *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
  *     description: "Which fields should be included in the result."

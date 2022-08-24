@@ -25,5 +25,6 @@ module.exports = {
     `.cache`,
   ],
   transform: { "^.+\\.[jt]s$": `<rootDir>/jest-transformer.js` },
+  setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
   setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }

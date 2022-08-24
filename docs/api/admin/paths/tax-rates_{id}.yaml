@@ -30,3 +30,117 @@ delete:
                 type: boolean
                 description: Whether or not the items were deleted.
                 default: true
+get:
+  operationId: GetTaxRatesTaxRate
+  summary: Get Tax Rate
+  description: Retrieves a TaxRate
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the tax rate.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Which fields should be included in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: Which fields should be expanded and retrieved in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  x-authenticated: true
+  tags:
+    - Tax Rate
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              tax_rate:
+                $ref: ../components/schemas/tax_rate.yaml
+post:
+  operationId: PostTaxRatesTaxRate
+  summary: Update a Tax Rate
+  description: Updates a Tax Rate
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the tax rate.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Which fields should be included in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: Which fields should be expanded and retrieved in the result.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            code:
+              type: string
+              description: A code to identify the tax type by
+            name:
+              type: string
+              description: A human friendly name for the tax
+            region_id:
+              type: string
+              description: The ID of the Region that the rate belongs to
+            rate:
+              type: number
+              description: The numeric rate to charge
+            products:
+              type: array
+              description: The IDs of the products associated with this tax rate
+              items:
+                type: string
+            shipping_options:
+              type: array
+              description: The IDs of the shipping options associated with this tax rate
+              items:
+                type: string
+            product_types:
+              type: array
+              description: The IDs of the types of products associated with this tax rate
+              items:
+                type: string
+  tags:
+    - Tax Rate
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              tax_rate:
+                $ref: ../components/schemas/tax_rate.yaml

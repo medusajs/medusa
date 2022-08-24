@@ -213,5 +213,5 @@ You can learn more about development with Next.js through [their documentation](
 
 ## What’s Next 🚀
 
-- Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
+- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
 - Learn [how to install Medusa Admin](../admin/quickstart.md).

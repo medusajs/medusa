@@ -154,7 +154,7 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 ### resendNotification
 
-Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin/notification/resend-notification), an admin user can resend a Notification to the customer. The [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
+Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
 This method receives 3 parameters:
 
@@ -236,7 +236,7 @@ Then, start by running your Medusa server:
 npm run start
 ```
 
-Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/store/auth) or using the storefront.
+Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the storefront.
 
 :::tip
 
@@ -248,17 +248,17 @@ After placing an order, you can see in your console the message “Notification 
 
 ## Test Resending Notifications with your Notification Provider
 
-To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](https://docs.medusajs.com/api/admin/notification/list-notifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
+To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/GetNotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
 
 :::tip
 
-You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User](https://docs.medusajs.com/api/admin/auth/) endpoint to get authenticated.
+You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User](https://docs.medusajs.com/api/admin) endpoint to get authenticated.
 
 :::
 
 ![List Notifications Request](https://i.imgur.com/iF1rZX1.png)
 
-Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin/notification/resend-notification) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
+Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
 
 ![Resend Notifications Request](https://i.imgur.com/0zFfPed.png)
 
