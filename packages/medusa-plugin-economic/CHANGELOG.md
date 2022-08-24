@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.38-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557)]:
+  - medusa-interfaces@1.3.3-next.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +14,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-economic
 
-
-
-
-
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.35...medusa-plugin-economic@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-economic
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.34...medusa-plugin-economic@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-economic
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.33...medusa-plugin-economic@1.1.34) (2021-12-08)
 
