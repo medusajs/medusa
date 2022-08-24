@@ -75,7 +75,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       }
     }
 
-    const taxRate = context.tax_rates.reduce(
+    const taxRate = context.tax_rates?.reduce(
       (accRate: number, nextTaxRate: TaxServiceRate) => {
         return accRate + (nextTaxRate.rate || 0) / 100
       },
