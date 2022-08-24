@@ -138,14 +138,16 @@ class SwapService extends TransactionBaseService {
    * @param config parsed swap find config
    * @return transformed find swap config
    */
-  protected transformQueryForCart(config): FindConfig<Swap> & {
+  protected transformQueryForCart(
+    config: FindConfig<Swap> & { select?: string[] }
+  ): FindConfig<Swap> & {
     cartSelects: FindConfig<Cart>["select"]
     cartRelations: FindConfig<Cart>["relations"]
   } {
     let { select, relations } = config
 
-    let cartSelects = null
-    let cartRelations = null
+    let cartSelects: FindConfig<Cart>["select"]
+    let cartRelations: FindConfig<Cart>["relations"]
 
     if (isDefined(relations) && relations.includes("cart")) {
       const [swapRelations, cartRels] = relations.reduce(
@@ -163,7 +165,7 @@ class SwapService extends TransactionBaseService {
 
           return acc
         },
-        [[], []]
+        [[] as string[], [] as string[]]
       )
 
       relations = swapRelations
@@ -185,11 +187,13 @@ class SwapService extends TransactionBaseService {
 
             return acc
           },
-          [[], []]
+          [[] as string[], [] as string[]]
         )
 
-        select = foundCartId ? swapSelects : [...swapSelects, "cart_id"]
-        cartSelects = cartSels
+        ;(select as string[]) = foundCartId
+          ? swapSelects
+          : [...swapSelects, "cart_id"]
+        cartSelects = cartSels as FindConfig<Cart>["select"]
       }
     }
 
@@ -211,7 +215,7 @@ class SwapService extends TransactionBaseService {
    */
   async retrieve(
     id: string,
-    config: Omit<FindConfig<Swap>, "select"> & { select?: string[] } = {}
+    config: FindConfig<Swap> & { select?: string[] } = {}
   ): Promise<Swap | never> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
