@@ -18,8 +18,8 @@ export type InjectedProps = {
   batchJobService: BatchJobService
   productService: ProductService
   productVariantService: ProductVariantService
-  shippingProfileService: typeof ShippingProfileService
-  regionService: typeof RegionService
+  shippingProfileService: ShippingProfileService
+  regionService: RegionService
   fileService: typeof FileService
 
   productOptionRepository: typeof ProductOptionRepository

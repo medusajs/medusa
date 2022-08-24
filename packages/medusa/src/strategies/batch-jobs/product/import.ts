@@ -1,7 +1,6 @@
 /* eslint-disable valid-jsdoc */
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { FileService } from "medusa-interfaces"
 
 import { ProductOptionRepository } from "../../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
@@ -37,7 +36,7 @@ const BATCH_SIZE = 100
 /**
  * Default strategy class used for a batch import of products/variants.
  */
-class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrategy> {
+class ProductImportStrategy extends AbstractBatchJobStrategy {
   static identifier = "product-import"
 
   static batchType = "product_import"
@@ -47,13 +46,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly fileService_: IFileService<typeof FileService>
+  protected readonly fileService_: IFileService
 
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
   protected readonly productVariantService_: ProductVariantService
-  protected readonly shippingProfileService_: typeof ShippingProfileService
-  protected readonly regionService_: typeof RegionService
+  protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly regionService_: RegionService
 
   protected readonly productOptionRepo_: typeof ProductOptionRepository
 
@@ -141,7 +140,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       // save only first occurrence
       if (!seenProducts[row["product.handle"] as string]) {
-        row["product.profile_id"] = shippingProfile
+        row["product.profile_id"] = shippingProfile!.id
         if (row["product.product.id"]) {
           productsUpdate.push(row)
         } else {
