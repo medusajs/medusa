@@ -538,6 +538,17 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Gift Cards",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/gift-cards/index"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
