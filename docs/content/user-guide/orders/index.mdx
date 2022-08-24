@@ -1,0 +1,121 @@
+import UiIcon from '@site/src/components/UiIcon';
+
+# Orders Overview
+
+In this document, you’ll get an overview of the orders listing page and all the things you can do with it.
+
+## View List of Orders
+
+You can view the list of available orders in your ecommerce store by clicking on Orders from the sidebar menu.
+
+![Orders List](https://i.imgur.com/dRBQpZW.png)
+
+In the list, you can see order details such as the ID, date, customer, fulfillment and payment status, total, and the country of the shipping address.
+
+:::tip
+
+If there are more than 15 orders, the list will be split into multiple pages. You can navigate between pages by clicking the arrows at the bottom of the list.
+
+:::
+
+## View List of Draft Orders
+
+You can view the list of draft orders on the Orders page by clicking on the grey Drafts headline next to the Orders headline.
+
+![Draft Orders List](https://i.imgur.com/jvNVbbI.png)
+
+In the list, you can see order details such as ID, the ID of the order the draft order belongs to, the date, the customer, and the status of the draft order.
+
+:::tip
+
+If there are more than 15 orders, the list will be split into multiple pages. You can navigate between pages by clicking the arrows at the bottom of the list.
+
+:::
+
+## Filter Orders
+
+You can use filters to retrieve only orders matching specific criteria.
+
+### Quick Filters
+
+On the Orders list page, you’ll find quick filters such as “Complete” and “Incomplete” at the top of the list. These filters show the complete and incomplete orders respectively.
+
+You can click on one of these filters to quickly filter the orders.
+
+![Activated quick filter](https://i.imgur.com/FPW8tCY.png)
+
+### Advanced Filters
+
+You can use advanced filters to furthermore limit the orders shown based on specific criteria. For example, you can filter orders to only show pending orders created in a specific region.
+
+To use advanced filters:
+
+- Click on the <UiIcon lightIcon="https://i.imgur.com/alMqdZW.png" darkIcon="https://i.imgur.com/He8m6qd.png" alt="plus" /> icon next to Filters. This will toggle a dropdown with categories for different fields.
+- You can click on a field name to expand it and choose a filter for that field.
+- Click on the Apply button at the top of the dropdown.
+
+This will retrieve the orders based on the filters you’ve selected.
+
+![Advanced filters dropdown with more than one filter selected](https://i.imgur.com/7N1OELc.png)
+
+### Save Advanced Filters as Quick Filters
+
+If there are filters that you need to use frequently, you can give the set of filters a name and save them to be used later. For example, you can save the filters used in the previous example as “European Orders”.
+
+To save an advanced filter:
+
+- Click on the <UiIcon lightIcon="https://i.imgur.com/alMqdZW.png" darkIcon="https://i.imgur.com/He8m6qd.png" alt="plus" /> icon next to Filters.
+- Choose your filters from the dropdown.
+- Choose a name for the filters in the input at the end of the dropdown.
+- Click the Save button.
+
+![Give the filters a name and click Save](https://i.imgur.com/HhLVYkh.png)
+
+Once you click Save, you should see the new filter you added next to the Quick Filters at the top of the orders list.
+
+![Saved Filter shows as a quick filter](https://i.imgur.com/1ep3hVy.png)
+
+To apply a saved quick filter, just click on it.
+
+### Delete Saved Quick Filters
+
+You can delete any saved filter you’ve created. To do that, simply click on the <UiIcon lightIcon="https://i.imgur.com/FFwnF0m.png" darkIcon="https://i.imgur.com/ZZN7BfE.png" alt="X" /> icon next to the quick filter’s name, and it will be deleted.
+
+### Clear Filters
+
+To clear all applied filters:
+
+- Click on the + icon next to Filters.
+- Click on the Clear button.
+
+![Click clear button in the advanced filters dropdown](https://i.imgur.com/1ra8L7o.png)
+
+:::info
+
+Clearing filters does not delete saved quick filters. You can still apply them by clicking on them.
+
+:::
+
+## Search Orders
+
+You can search for orders by clicking the <UiIcon lightIcon="https://i.imgur.com/efyG8WQ.png" darkIcon="https://i.imgur.com/NgocLvX.png" alt="magnifier" /> icon at the top right of the order list. When you search orders, you are searching by the first name supplied in the shipping address, the email associated with the order, and the order ID.
+
+![Search orders by customer name](https://i.imgur.com/Z09rbmQ.png)
+
+## Search Draft Orders
+
+You can search for draft orders by clicking the <UiIcon lightIcon="https://i.imgur.com/efyG8WQ.png" darkIcon="https://i.imgur.com/NgocLvX.png" alt="magnifier" /> icon at the top right of the draft order list. When you search draft orders, you are searching by the email associated with the draft order and the draft order’s ID.
+
+![Search draft orders by email](https://i.imgur.com/el0Y9WS.png)
+
+## What More Can you Do with Orders?
+
+The Orders pages in the Medusa Admin include many functionalities including:
+
+- Manage and View Order’s Details
+- Manage Order’s Payment
+- Manage Order’s Fulfillment
+- Create a Draft Order
+- Manage Order Returns
+- Manage Order Claims
+- Manage Order Exchanges and Swaps

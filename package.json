@@ -71,6 +71,7 @@
     "openapi:generate": "node ./scripts/build-openapi.js",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
+    "generate:entities": "typedoc --options typedoc.entities.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"
   },
   "dependencies": {
