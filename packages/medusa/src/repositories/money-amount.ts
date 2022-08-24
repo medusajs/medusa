@@ -1,5 +1,4 @@
 import partition from "lodash/partition"
-import { MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityRepository,
@@ -7,6 +6,7 @@ import {
   IsNull,
   Not,
   Repository,
+  WhereExpressionBuilder,
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 import {
@@ -126,7 +126,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .leftJoinAndSelect("ma.price_list", "price_list")
       .where("ma.variant_id = :variant_id", { variant_id })
 
-    const getAndWhere = (subQb) => {
+    const getAndWhere = (subQb): WhereExpressionBuilder => {
       const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
         price_list_id,
       })
@@ -152,14 +152,13 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
 
     const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect("ma.price_list", "price_list")
+      .leftJoinAndSelect("ma.currency", "currency")
+      .leftJoinAndSelect("ma.region", "region")
       .where({ variant_id: variant_id })
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
-      .andWhere(
-        "(price_list.ends_at is null OR price_list.ends_at > :date)",
-        {
-          date: date.toUTCString(),
-        }
-      )
+      .andWhere("(price_list.ends_at is null OR price_list.ends_at > :date)", {
+        date: date.toUTCString(),
+      })
       .andWhere(
         "(price_list.starts_at is null OR price_list.starts_at < :date)",
         {
@@ -181,14 +180,21 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
 
     if (customer_id) {
       qb.leftJoin("price_list.customer_groups", "cgroup")
-        .leftJoin("customer_group_customers", "cgc", "cgc.customer_group_id = cgroup.id")
-        .andWhere("(cgc.customer_group_id is null OR cgc.customer_id = :customer_id)", {
-          customer_id,
-        })
+        .leftJoin(
+          "customer_group_customers",
+          "cgc",
+          "cgc.customer_group_id = cgroup.id"
+        )
+        .andWhere(
+          "(cgc.customer_group_id is null OR cgc.customer_id = :customer_id)",
+          {
+            customer_id,
+          }
+        )
     } else {
-      qb
-        .leftJoin("price_list.customer_groups", "cgroup")
-        .andWhere("cgroup.id is null")
+      qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
+        "cgroup.id is null"
+      )
     }
     return await qb.getManyAndCount()
   }

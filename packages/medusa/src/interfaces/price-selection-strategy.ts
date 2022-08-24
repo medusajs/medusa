@@ -55,6 +55,7 @@ export type PriceSelectionContext = {
   region_id?: string
   currency_code?: string
   include_discount_prices?: boolean
+  tax_rate?: number
 }
 
 enum DefaultPriceType {
@@ -67,7 +68,9 @@ export const PriceType = { ...DefaultPriceType, ...PriceListType }
 
 export type PriceSelectionResult = {
   originalPrice: number | null
+  originalPriceIncludesTax?: boolean
   calculatedPrice: number | null
+  calculatedPriceIncludesTax?: boolean
   calculatedPriceType?: PriceType
   prices: MoneyAmount[] // prices is an array of all possible price for the input customer and region prices
 }
