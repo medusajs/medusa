@@ -24,65 +24,60 @@ class DatabaseFactory {
   }
 
   async createTemplateDb_({ cwd }) {
-    try {
-      // const cwd = path.resolve(path.join(__dirname, ".."))
-      const connection = await this.getMasterConnection()
-      const migrationDir = path.resolve(
-        path.join(
-          cwd,
-          `node_modules`,
-          `@medusajs`,
-          `medusa`,
-          `dist`,
-          `migrations`,
-          `*.js`
-        )
-      )
-
-      const { getEnabledMigrations } = require(path.join(
+    // const cwd = path.resolve(path.join(__dirname, ".."))
+    const connection = await this.getMasterConnection()
+    const migrationDir = path.resolve(
+      path.join(
         cwd,
         `node_modules`,
         `@medusajs`,
         `medusa`,
         `dist`,
-        `commands`,
-        `utils`,
-        `get-migrations`
-      ))
-
-      // filter migrations to only include those that dont have feature flags
-      const enabledMigrations = await getEnabledMigrations(
-        [migrationDir],
-        (flag) => false
+        `migrations`,
+        `*.js`
       )
+    )
 
-      await dropDatabase(
-        {
-          databaseName: this.templateDbName,
-          errorIfNonExist: false,
-        },
-        pgGodCredentials
-      )
-      await createDatabase(
-        { databaseName: this.templateDbName },
-        pgGodCredentials
-      )
+    const { getEnabledMigrations } = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `commands`,
+      `utils`,
+      `get-migrations`
+    ))
 
-      const templateDbConnection = await createConnection({
-        type: "postgres",
-        name: "templateConnection",
-        url: `${DB_URL}/${this.templateDbName}`,
-        migrations: enabledMigrations,
-      })
+    // filter migrations to only include those that dont have feature flags
+    const enabledMigrations = await getEnabledMigrations(
+      [migrationDir],
+      (flag) => false
+    )
 
-      await templateDbConnection.runMigrations()
-      await templateDbConnection.close()
+    await dropDatabase(
+      {
+        databaseName: this.templateDbName,
+        errorIfNonExist: false,
+      },
+      pgGodCredentials
+    )
+    await createDatabase(
+      { databaseName: this.templateDbName },
+      pgGodCredentials
+    )
 
-      return connection
-    } catch (err) {
-      console.log("error in createTemplateDb_")
-      console.log(err)
-    }
+    const templateDbConnection = await createConnection({
+      type: "postgres",
+      name: "templateConnection",
+      url: `${DB_URL}/${this.templateDbName}`,
+      migrations: enabledMigrations,
+    })
+
+    await templateDbConnection.runMigrations()
+    await templateDbConnection.close()
+
+    return connection
   }
 
   async getMasterConnection() {

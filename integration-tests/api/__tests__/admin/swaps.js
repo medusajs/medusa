@@ -28,13 +28,9 @@ describe("/admin/swaps", () => {
 
   describe("GET /admin/swaps/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -106,13 +102,9 @@ describe("/admin/swaps", () => {
 
   describe("GET /admin/swaps/", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {

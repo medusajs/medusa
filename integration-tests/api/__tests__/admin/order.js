@@ -44,13 +44,8 @@ describe("/admin/orders", () => {
 
   describe("GET /admin/orders", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -129,14 +124,9 @@ describe("/admin/orders", () => {
 
   describe("GET /admin/orders", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await swapSeeder(dbConnection)
 
       const manager = dbConnection.manager
 
@@ -276,14 +266,9 @@ describe("/admin/orders", () => {
 
   describe("POST /admin/orders/:id/swaps", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await claimSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await claimSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -318,14 +303,9 @@ describe("/admin/orders", () => {
 
   describe("POST /admin/orders/:id/claims", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await claimSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await claimSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1216,14 +1196,9 @@ describe("/admin/orders", () => {
 
   describe("POST /admin/orders/:id/claims", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1272,21 +1247,16 @@ describe("/admin/orders", () => {
   describe("POST /admin/orders/:id/return", () => {
     let rrId
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
 
-        const created = dbConnection.manager.create(ReturnReason, {
-          value: "too_big",
-          label: "Too Big",
-        })
-        const result = await dbConnection.manager.save(created)
+      const created = dbConnection.manager.create(ReturnReason, {
+        value: "too_big",
+        label: "Too Big",
+      })
+      const result = await dbConnection.manager.save(created)
 
-        rrId = result.id
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      rrId = result.id
     })
 
     afterEach(async () => {
@@ -1392,17 +1362,12 @@ describe("/admin/orders", () => {
 
   describe("GET /admin/orders", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        // Manually insert date for filtering
-        const createdAt = new Date("26 January 1997 12:00 UTC")
-        await orderSeeder(dbConnection, {
-          created_at: createdAt.toISOString(),
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      // Manually insert date for filtering
+      const createdAt = new Date("26 January 1997 12:00 UTC")
+      await orderSeeder(dbConnection, {
+        created_at: createdAt.toISOString(),
+      })
     })
 
     afterEach(async () => {
@@ -1729,14 +1694,9 @@ describe("/admin/orders", () => {
 
   describe("POST /admin/orders/:id/swaps", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await orderSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -2139,34 +2099,29 @@ describe("/admin/orders", () => {
     })
 
     it("Only allows canceling swap after canceling fulfillments", async () => {
-      try {
-        const swap_id = "swap-w-f"
+      const swap_id = "swap-w-f"
 
-        const swap = await callGet({
-          path: `/admin/swaps/${swap_id}`,
-          get: "swap",
-        })
+      const swap = await callGet({
+        path: `/admin/swaps/${swap_id}`,
+        get: "swap",
+      })
 
-        const { order_id } = swap
+      const { order_id } = swap
 
-        const expectCancelToReturn = partial(expectPostCallToReturn, {
-          path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
-        })
+      const expectCancelToReturn = partial(expectPostCallToReturn, {
+        path: `/admin/orders/${order_id}/swaps/${swap_id}/cancel`,
+      })
 
-        await expectCancelToReturn({ code: 400 })
+      await expectCancelToReturn({ code: 400 })
 
-        await expectAllPostCallsToReturn({
-          code: 200,
-          col: swap.fulfillments,
-          pathf: (f) =>
-            `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
-        })
+      await expectAllPostCallsToReturn({
+        code: 200,
+        col: swap.fulfillments,
+        pathf: (f) =>
+          `/admin/orders/${order_id}/swaps/${swap_id}/fulfillments/${f.id}/cancel`,
+      })
 
-        await expectCancelToReturn({ code: 200 })
-      } catch (e) {
-        console.log(e)
-        throw e
-      }
+      await expectCancelToReturn({ code: 200 })
     })
 
     it("Only allows canceling swap after canceling return", async () => {

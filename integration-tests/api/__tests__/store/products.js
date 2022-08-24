@@ -26,13 +26,8 @@ describe("/store/products", () => {
 
   describe("GET /store/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -233,13 +228,8 @@ describe("/store/products", () => {
 
   describe("list params", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -332,32 +322,27 @@ describe("/store/products", () => {
 
   describe("list params", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "testprod",
-            status: "published",
-            variants: [{ title: "test-variant" }],
-          },
-          11
-        )
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "testprod",
+          status: "published",
+          variants: [{ title: "test-variant" }],
+        },
+        11
+      )
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "testprod3",
-            status: "published",
-            variants: [{ title: "test-variant1" }],
-          },
-          12
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "testprod3",
+          status: "published",
+          variants: [{ title: "test-variant1" }],
+        },
+        12
+      )
     })
 
     afterEach(async () => {
@@ -400,13 +385,8 @@ describe("/store/products", () => {
 
   describe("/store/products/:id", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {

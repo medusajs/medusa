@@ -52,16 +52,11 @@ describe("sales channels", () => {
     let salesChannel
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await adminSeeder(dbConnection)
+      salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
     })
 
     afterEach(async () => {
@@ -93,20 +88,15 @@ describe("sales channels", () => {
     let salesChannel2
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
-        salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name 2",
-          description: "test description 2",
-        })
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await adminSeeder(dbConnection)
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 2",
+        description: "test description 2",
+      })
     })
 
     afterEach(async () => {
@@ -209,16 +199,11 @@ describe("sales channels", () => {
     let sc
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        sc = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      sc = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
     })
 
     afterEach(async () => {
@@ -259,12 +244,7 @@ describe("sales channels", () => {
 
   describe("POST /admin/sales-channels", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -328,22 +308,17 @@ describe("sales channels", () => {
     let salesChannel
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
+      await adminSeeder(dbConnection)
+      salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
 
-        await simpleSalesChannelFactory(dbConnection, {
-          name: "Default channel",
-          id: "test-channel",
-          is_default: true,
-        })
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "test-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -459,19 +434,14 @@ describe("sales channels", () => {
   describe("GET /admin/orders/:id", () => {
     let order
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        order = await simpleOrderFactory(dbConnection, {
-          sales_channel: {
-            name: "test name",
-            description: "test description",
-          },
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      order = await simpleOrderFactory(dbConnection, {
+        sales_channel: {
+          name: "test name",
+          description: "test description",
+        },
+      })
     })
 
     afterEach(async () => {
@@ -501,19 +471,14 @@ describe("sales channels", () => {
 
   describe("GET /admin/orders?expand=sales_channels", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        await simpleOrderFactory(dbConnection, {
-          sales_channel: {
-            name: "test name",
-            description: "test description",
-          },
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleOrderFactory(dbConnection, {
+        sales_channel: {
+          name: "test name",
+          description: "test description",
+        },
+      })
     })
 
     afterEach(async () => {
@@ -544,25 +509,20 @@ describe("sales channels", () => {
   describe("GET /admin/product/:id", () => {
     let product
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        product = await simpleProductFactory(dbConnection, {
-          sales_channels: [
-            {
-              name: "webshop",
-              description: "Webshop sales channel",
-            },
-            {
-              name: "amazon",
-              description: "Amazon sales channel",
-            },
-          ],
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      product = await simpleProductFactory(dbConnection, {
+        sales_channels: [
+          {
+            name: "webshop",
+            description: "Webshop sales channel",
+          },
+          {
+            name: "amazon",
+            description: "Amazon sales channel",
+          },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -597,25 +557,20 @@ describe("sales channels", () => {
 
   describe("GET /admin/products?expand[]=sales_channels", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        await simpleProductFactory(dbConnection, {
-          sales_channels: [
-            {
-              name: "webshop",
-              description: "Webshop sales channel",
-            },
-            {
-              name: "amazon",
-              description: "Amazon sales channel",
-            },
-          ],
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(dbConnection, {
+        sales_channels: [
+          {
+            name: "webshop",
+            description: "Webshop sales channel",
+          },
+          {
+            name: "amazon",
+            description: "Amazon sales channel",
+          },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -654,21 +609,16 @@ describe("sales channels", () => {
     let product
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        product = await simpleProductFactory(dbConnection, {
-          id: "product_1",
-          title: "test title",
-        })
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-          products: [product],
-        })
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await adminSeeder(dbConnection)
+      product = await simpleProductFactory(dbConnection, {
+        id: "product_1",
+        title: "test title",
+      })
+      salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+        products: [product],
+      })
     })
 
     afterEach(async () => {
@@ -740,20 +690,15 @@ describe("sales channels", () => {
     let product
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
-        product = await simpleProductFactory(dbConnection, {
-          id: "product_1",
-          title: "test title",
-        })
-      } catch (e) {
-        console.error(e)
-        throw e
-      }
+      await adminSeeder(dbConnection)
+      salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+      product = await simpleProductFactory(dbConnection, {
+        id: "product_1",
+        title: "test title",
+      })
     })
 
     afterEach(async () => {
@@ -809,19 +754,14 @@ describe("sales channels", () => {
       let order
 
       beforeEach(async () => {
-        try {
-          await adminSeeder(dbConnection)
-          order = await simpleOrderFactory(dbConnection, {
-            sales_channel: {
-              name: "test name",
-              description: "test description",
-            },
-          })
-          await orderSeeder(dbConnection)
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
+        await adminSeeder(dbConnection)
+        order = await simpleOrderFactory(dbConnection, {
+          sales_channel: {
+            name: "test name",
+            description: "test description",
+          },
+        })
+        await orderSeeder(dbConnection)
       })
 
       afterEach(async () => {
@@ -861,19 +801,14 @@ describe("sales channels", () => {
       let salesChannel
 
       beforeEach(async () => {
-        try {
-          await productSeeder(dbConnection)
-          await adminSeeder(dbConnection)
-          const product = await simpleProductFactory(dbConnection, productData)
-          salesChannel = await simpleSalesChannelFactory(dbConnection, {
-            name: "test name",
-            description: "test description",
-            products: [product],
-          })
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+        const product = await simpleProductFactory(dbConnection, productData)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+          products: [product],
+        })
       })
 
       afterEach(async () => {
@@ -911,17 +846,12 @@ describe("sales channels", () => {
       let salesChannel
 
       beforeEach(async () => {
-        try {
-          await productSeeder(dbConnection)
-          await adminSeeder(dbConnection)
-          salesChannel = await simpleSalesChannelFactory(dbConnection, {
-            name: "test name",
-            description: "test description",
-          })
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
       })
 
       afterEach(async () => {
@@ -976,17 +906,12 @@ describe("sales channels", () => {
       let salesChannel
 
       beforeEach(async () => {
-        try {
-          await productSeeder(dbConnection)
-          await adminSeeder(dbConnection)
-          salesChannel = await simpleSalesChannelFactory(dbConnection, {
-            name: "test name",
-            description: "test description",
-          })
-        } catch (err) {
-          console.log(err)
-          throw err
-        }
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
       })
 
       afterEach(async () => {

@@ -49,30 +49,25 @@ describe("sales channels", () => {
     let disabledSalesChannel
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await simpleRegionFactory(dbConnection, {
-          name: "Test region",
-          tax_rate: 0,
-        })
-        await simpleSalesChannelFactory(dbConnection, {
-          name: "Default Sales Channel",
-          description: "Created by Medusa",
-          is_default: true,
-        })
-        disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "disabled cart sales channel",
-          description: "disabled cart sales channel description",
-          is_disabled: true,
-        })
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "cart sales channel",
-          description: "cart sales channel description",
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await simpleRegionFactory(dbConnection, {
+        name: "Test region",
+        tax_rate: 0,
+      })
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default Sales Channel",
+        description: "Created by Medusa",
+        is_default: true,
+      })
+      disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "disabled cart sales channel",
+        description: "disabled cart sales channel description",
+        is_disabled: true,
+      })
+      salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "cart sales channel",
+        description: "cart sales channel description",
+      })
     })
 
     afterEach(async () => {
@@ -136,73 +131,68 @@ describe("sales channels", () => {
     let cart
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await simpleRegionFactory(dbConnection, {
-          name: "Test region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+      await adminSeeder(dbConnection)
+      await simpleRegionFactory(dbConnection, {
+        name: "Test region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
 
-        salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
-          name: "salesChannel1",
-          description: "salesChannel1",
-        })
-        salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
-          name: "salesChannel2",
-          description: "salesChannel2",
-        })
-        disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "disabled cart sales channel",
-          description: "disabled cart sales channel description",
-          is_disabled: true,
-        })
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel1",
+        description: "salesChannel1",
+      })
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel2",
+        description: "salesChannel2",
+      })
+      disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "disabled cart sales channel",
+        description: "disabled cart sales channel description",
+        is_disabled: true,
+      })
 
-        product1 = await simpleProductFactory(dbConnection, {
-          title: "prod 1",
-          sales_channels: [salesChannel1],
-          variants: [
-            {
-              id: "test-variant",
-              prices: [
-                {
-                  amount: 50,
-                  currency: "usd",
-                  variant_id: "test-variant",
-                },
-              ],
-            },
-          ],
-        })
-        product2 = await simpleProductFactory(dbConnection, {
-          sales_channels: [salesChannel2],
-          variants: [
-            {
-              id: "test-variant-2",
-              prices: [
-                {
-                  amount: 100,
-                  currency: "usd",
-                  variant_id: "test-variant-2",
-                },
-              ],
-            },
-          ],
-        })
+      product1 = await simpleProductFactory(dbConnection, {
+        title: "prod 1",
+        sales_channels: [salesChannel1],
+        variants: [
+          {
+            id: "test-variant",
+            prices: [
+              {
+                amount: 50,
+                currency: "usd",
+                variant_id: "test-variant",
+              },
+            ],
+          },
+        ],
+      })
+      product2 = await simpleProductFactory(dbConnection, {
+        sales_channels: [salesChannel2],
+        variants: [
+          {
+            id: "test-variant-2",
+            prices: [
+              {
+                amount: 100,
+                currency: "usd",
+                variant_id: "test-variant-2",
+              },
+            ],
+          },
+        ],
+      })
 
-        cart = await simpleCartFactory(dbConnection, {
-          sales_channel: salesChannel1,
-          line_items: [
-            {
-              variant_id: "test-variant",
-              unit_price: 50,
-            },
-          ],
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      cart = await simpleCartFactory(dbConnection, {
+        sales_channel: salesChannel1,
+        line_items: [
+          {
+            variant_id: "test-variant",
+            unit_price: 50,
+          },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -268,19 +258,14 @@ describe("sales channels", () => {
     let cart
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        cart = await simpleCartFactory(dbConnection, {
-          sales_channel: {
-            name: "test name",
-            description: "test description",
-          },
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      cart = await simpleCartFactory(dbConnection, {
+        sales_channel: {
+          name: "test name",
+          description: "test description",
+        },
+      })
     })
 
     afterEach(async () => {
