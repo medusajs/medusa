@@ -138,11 +138,11 @@ describe("Product import strategy", () => {
     batchJobService: batchJobServiceMock as unknown as BatchJobService,
     productService: productServiceMock as unknown as ProductService,
     shippingProfileService:
-      shippingProfileServiceMock as unknown as typeof ShippingProfileService,
+      shippingProfileServiceMock as unknown as ShippingProfileService,
     productVariantService:
       productVariantServiceMock as unknown as ProductVariantService,
-    regionService: regionServiceMock as unknown as typeof RegionService,
-  } as InjectedProps)
+    regionService: regionServiceMock as unknown as RegionService,
+  } as unknown as InjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
     const getImportInstructionsSpy = jest.spyOn(
