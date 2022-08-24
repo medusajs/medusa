@@ -1,14 +1,20 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
-import {
-  allowedStoreOrdersFields,
-  allowedStoreOrdersRelations,
-} from "../orders"
-import { FindConfig } from "../../../../types/common"
-import { Order } from "../../../../models"
-
-import OrderService from "../../../../services/order"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
+import {
+  FulfillmentStatus,
+  OrderStatus,
+  PaymentStatus,
+} from "../../../../models/order"
+import OrderService from "../../../../services/order"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /customers/me/orders
@@ -17,6 +23,20 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
  * parameters:
+ *   - (query) q {string} Query used for searching orders.
+ *   - (query) id {string} Id of the order to search for.
+ *   - (query) status {string[]} Status to search for.
+ *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
+ *   - (query) payment_status {string[]} Payment status to search for.
+ *   - (query) display_id {string} Display id to search for.
+ *   - (query) cart_id {string} to search for.
+ *   - (query) email {string} to search for.
+ *   - (query) region_id {string} to search for.
+ *   - (query) currency_code {string} to search for.
+ *   - (query) tax_rate {string} to search for.
+ *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
  *   - (query) limit=10 {integer} How many orders to return.
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
@@ -44,50 +64,34 @@ import { validator } from "../../../../utils/validator"
  *               type: integer
  *               description: The number of items per page
  */
-export default async (req, res) => {
-  const id: string = req.user.customer_id
+export default async (req: Request, res: Response) => {
+  const id: string | undefined = req.user?.customer_id
+
+  if (!id) {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Not authorized to list orders"
+    )
+  }
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const selector = {
+  req.filterableFields = {
+    ...req.filterableFields,
     customer_id: id,
   }
 
-  const validated = await validator(
-    StoreGetCustomersCustomerOrdersParams,
-    req.query
+  const [orders, count] = await orderService.listAndCount(
+    req.filterableFields,
+    req.listConfig
   )
 
-  let includeFields: string[] = []
-  if (validated.fields) {
-    includeFields = validated.fields.split(",")
-    includeFields = includeFields.filter((f) =>
-      allowedStoreOrdersFields.includes(f)
-    )
-  }
+  const { limit, offset } = req.validatedQuery
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-    expandFields = expandFields.filter((f) =>
-      allowedStoreOrdersRelations.includes(f)
-    )
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : allowedStoreOrdersFields,
-    relations: expandFields.length ? expandFields : allowedStoreOrdersRelations,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" },
-  } as FindConfig<Order>
-
-  const [orders, count] = await orderService.listAndCount(selector, listConfig)
-
-  res.json({ orders, count, offset: validated.offset, limit: validated.limit })
+  res.json({ orders, count, offset: offset, limit: limit })
 }
 
-export class StoreGetCustomersCustomerOrdersParams {
+export class StoreGetCustomersCustomerOrdersPaginationParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
@@ -105,4 +109,65 @@ export class StoreGetCustomersCustomerOrdersParams {
   @IsOptional()
   @IsString()
   expand?: string
+}
+
+export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCustomerOrdersPaginationParams {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  @IsOptional()
+  @IsEnum(OrderStatus, { each: true })
+  status?: OrderStatus[]
+
+  @IsOptional()
+  @IsEnum(FulfillmentStatus, { each: true })
+  fulfillment_status?: FulfillmentStatus[]
+
+  @IsOptional()
+  @IsEnum(PaymentStatus, { each: true })
+  payment_status?: PaymentStatus[]
+
+  @IsString()
+  @IsOptional()
+  display_id?: string
+
+  @IsString()
+  @IsOptional()
+  cart_id?: string
+
+  @IsString()
+  @IsOptional()
+  email?: string
+
+  @IsString()
+  @IsOptional()
+  region_id?: string
+
+  @IsString()
+  @IsOptional()
+  currency_code?: string
+
+  @IsString()
+  @IsOptional()
+  tax_rate?: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  canceled_at?: DateComparisonOperator
 }

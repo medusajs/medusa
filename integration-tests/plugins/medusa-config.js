@@ -1,6 +1,7 @@
-const DB_USERNAME = process.env.DB_USERNAME || "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
 
 module.exports = {
   plugins: [
@@ -22,9 +23,9 @@ module.exports = {
   ],
   projectConfig: {
     // redis_url: REDIS_URL,
-    database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration-${workerId}`,
+    database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
     database_type: "postgres",
-    jwt_secret: 'test',
-    cookie_secret: 'test'
+    jwt_secret: "test",
+    cookie_secret: "test",
   },
 }

@@ -1,17 +1,18 @@
 import { IsArray, IsOptional } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
+import { EntityManager } from "typeorm"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /tax-rates/:id/products/batch
+ * @oas [post] /tax-rates/{id}/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add Tax Rate to Products"
  * description: "Associates a Tax Rate with a list of Products"
  * parameters:
+ *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
  *     description: "Which fields should be included in the result."

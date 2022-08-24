@@ -182,6 +182,11 @@ class OrderService extends TransactionBaseService {
     )
   }
 
+  /**
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
   async listAndCount(
     selector: QuerySelector<Order>,
     config: FindConfig<Order> = {

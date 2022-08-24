@@ -360,7 +360,7 @@ class ProductVariantService extends BaseService {
   /**
    * Updates a variant's prices.
    * Deletes any prices that are not in the update object, and is not associated with a price list.
-   * @param variantId - the id of variant variant
+   * @param variantId - the id of variant
    * @param prices - the update prices
    * @returns {Promise<void>} empty promise
    */
