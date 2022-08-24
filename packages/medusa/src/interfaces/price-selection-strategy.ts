@@ -68,9 +68,9 @@ export const PriceType = { ...DefaultPriceType, ...PriceListType }
 
 export type PriceSelectionResult = {
   originalPrice: number | null
-  originalPriceIncludesTax?: boolean
+  originalPriceIncludesTax: boolean | null
   calculatedPrice: number | null
-  calculatedPriceIncludesTax?: boolean
+  calculatedPriceIncludesTax: boolean | null
   calculatedPriceType?: PriceType
   prices: MoneyAmount[] // prices is an array of all possible price for the input customer and region prices
 }

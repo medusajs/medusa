@@ -146,6 +146,8 @@ class PricingService extends TransactionBaseService<PricingService> {
       original_price: pricing.originalPrice,
       calculated_price: pricing.calculatedPrice,
       calculated_price_type: pricing.calculatedPriceType,
+      original_price_includes_tax: pricing.originalPriceIncludesTax,
+      calculated_price_includes_tax: pricing.calculatedPriceIncludesTax,
       original_price_incl_tax: null,
       calculated_price_incl_tax: null,
       original_tax: null,

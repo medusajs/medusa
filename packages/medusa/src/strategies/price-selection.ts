@@ -69,6 +69,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       return {
         originalPrice: null,
         calculatedPrice: null,
+        originalPriceIncludesTax: null,
+        calculatedPriceIncludesTax: null,
         prices: [],
       }
     }
@@ -77,8 +79,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       originalPrice: null,
       calculatedPrice: null,
       prices,
-      originalPriceIncludesTax: false,
-      calculatedPriceIncludesTax: false,
+      originalPriceIncludesTax: null,
+      calculatedPriceIncludesTax: null,
     }
 
     if (!context) {
@@ -151,6 +153,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       return {
         originalPrice: null,
         calculatedPrice: null,
+        originalPriceIncludesTax: null,
+        calculatedPriceIncludesTax: null,
         prices: [],
       }
     }
@@ -159,6 +163,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       originalPrice: null,
       calculatedPrice: null,
       prices,
+      originalPriceIncludesTax: null,
+      calculatedPriceIncludesTax: null,
     }
 
     if (!context) {
