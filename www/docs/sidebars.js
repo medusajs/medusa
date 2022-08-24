@@ -549,6 +549,17 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Price Lists",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/price-lists/index"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
