@@ -67,7 +67,7 @@ export default async (req, res) => {
       swap_id,
       validated.fulfillment_id,
       validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-      { no_notification: !!validated.no_notification }
+      { no_notification: validated.no_notification }
     )
   })
 

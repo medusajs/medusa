@@ -6,7 +6,7 @@ import { TransactionBaseService } from "../interfaces"
 
 import LineItemAdjustmentService from "./line-item-adjustment"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
-import { FindConfig, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import { SwapRepository } from "../repositories/swap"
 import CartService from "./cart"
 import {
@@ -215,15 +215,13 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
-    const validatedId = validateId(id)
-
     const {
       cartSelects,
       cartRelations,
       ...newConfig
     } = this.transformQueryForCart(config)
 
-    const query = buildQuery({ id: validatedId }, newConfig)
+    const query = buildQuery({ id }, newConfig)
 
     const relations = query.relations as (keyof Swap)[]
     delete query.relations
@@ -281,13 +279,13 @@ class SwapService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: QuerySelector<Swap>,
+    selector: Selector<Swap>,
     config: FindConfig<Swap> = {
       skip: 0,
       take: 50,
       order: { created_at: "DESC" },
     }
-  ): Promise<Swap[] | never> {
+  ): Promise<Swap[]> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
 
@@ -391,11 +389,9 @@ class SwapService extends TransactionBaseService {
       if (additionalItems) {
         newItems = await Promise.all(
           additionalItems.map(({ variant_id, quantity }) => {
-            return this.lineItemService_.generate(
-              variant_id,
-              order.region_id,
-              quantity
-            )
+            return this.lineItemService_
+              .withTransaction(manager)
+              .generate(variant_id, order.region_id, quantity)
           })
         )
       }
