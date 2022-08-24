@@ -488,6 +488,9 @@ describe("SwapService", () => {
             }
           }),
         retrieve: () => Promise.resolve({}),
+        withTransaction: function () {
+          return this
+        },
       } as unknown as LineItemService
 
       const returnService = {
