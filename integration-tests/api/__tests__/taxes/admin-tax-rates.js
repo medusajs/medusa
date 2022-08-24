@@ -31,6 +31,7 @@ describe("/admin/tax-rates", () => {
       medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
+      throw error
     }
   })
 

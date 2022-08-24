@@ -1521,16 +1521,18 @@ describe("/admin/orders", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
-      expect(response.data.orders).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          id: "test-order",
-          shipping_address: expect.objectContaining({ first_name: "lebron" }),
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-          shipping_address: expect.objectContaining({ first_name: "lebron" }),
-        }),
-      ]))
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+            shipping_address: expect.objectContaining({ first_name: "lebron" }),
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+            shipping_address: expect.objectContaining({ first_name: "lebron" }),
+          }),
+        ])
+      )
     })
 
     it("successfully lists orders with greater than", async () => {
@@ -2163,6 +2165,7 @@ describe("/admin/orders", () => {
         await expectCancelToReturn({ code: 200 })
       } catch (e) {
         console.log(e)
+        throw e
       }
     })
 

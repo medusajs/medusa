@@ -30,6 +30,7 @@ describe("Swaps", () => {
       medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
+      throw error
     }
   })
 

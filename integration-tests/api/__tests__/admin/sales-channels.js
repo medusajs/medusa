@@ -60,6 +60,7 @@ describe("sales channels", () => {
         })
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 
@@ -104,6 +105,7 @@ describe("sales channels", () => {
         })
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 
@@ -215,6 +217,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -260,6 +263,7 @@ describe("sales channels", () => {
         await adminSeeder(dbConnection)
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 
@@ -338,6 +342,7 @@ describe("sales channels", () => {
         })
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 
@@ -465,6 +470,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -506,6 +512,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -554,6 +561,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -606,6 +614,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -658,6 +667,7 @@ describe("sales channels", () => {
         })
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 
@@ -742,6 +752,7 @@ describe("sales channels", () => {
         })
       } catch (e) {
         console.error(e)
+        throw e
       }
     })
 

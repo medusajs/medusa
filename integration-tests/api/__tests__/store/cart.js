@@ -51,6 +51,7 @@ describe("/store/carts", () => {
       medusaProcess = await setupServer({ cwd, verbose: false })
     } catch (error) {
       console.log(error)
+      throw error
     }
   })
 
@@ -545,6 +546,7 @@ describe("/store/carts", () => {
             .add(discount)
         } catch (err) {
           console.log(err)
+          throw err
         }
       })
 
@@ -1742,6 +1744,7 @@ describe("/store/carts", () => {
         await api.post(`/store/carts/swap-cart/complete-cart`)
       } catch (error) {
         console.log(error)
+        throw error
       }
 
       // check to see if payment is authorized and cart is completed
@@ -1781,6 +1784,7 @@ describe("/store/carts", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 

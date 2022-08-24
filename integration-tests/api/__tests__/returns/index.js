@@ -28,6 +28,7 @@ describe("/admin/orders", () => {
       medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
+      throw error
     }
   })
 

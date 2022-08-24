@@ -30,6 +30,7 @@ describe("Line Item - Sales Channel", () => {
       medusaProcess = process
     } catch (error) {
       console.log(error)
+      throw error
     }
   })
 

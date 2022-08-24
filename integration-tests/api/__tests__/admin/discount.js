@@ -2154,6 +2154,7 @@ describe("/admin/discounts", () => {
         await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
+        throw err
       }
 
       const prod = await simpleProductFactory(dbConnection, {

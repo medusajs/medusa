@@ -42,6 +42,7 @@ describe("/admin/notes", () => {
         await manager.insert(Note, note)
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -77,6 +78,7 @@ describe("/admin/notes", () => {
         await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -133,6 +135,7 @@ describe("/admin/notes", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -184,6 +187,7 @@ describe("/admin/notes", () => {
         await manager.insert(Note, note)
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -232,6 +236,7 @@ describe("/admin/notes", () => {
         await manager.insert(Note, note)
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 

@@ -6,7 +6,9 @@ const { useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simpleSalesChannelFactory,
-  simpleCartFactory, simpleRegionFactory, simpleProductFactory,
+  simpleCartFactory,
+  simpleRegionFactory,
+  simpleProductFactory,
 } = require("../../factories")
 
 const startServerWithEnvironment =
@@ -56,7 +58,7 @@ describe("sales channels", () => {
         await simpleSalesChannelFactory(dbConnection, {
           name: "Default Sales Channel",
           description: "Created by Medusa",
-          is_default: true
+          is_default: true,
         })
         disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
           name: "disabled cart sales channel",
@@ -69,6 +71,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -94,7 +97,11 @@ describe("sales channels", () => {
     it("returns a cart with the given sales channel", async () => {
       const api = useApi()
 
-      const response = await api.post(`/store/carts`, { sales_channel_id: salesChannel.id }, adminReqConfig)
+      const response = await api.post(
+        `/store/carts`,
+        { sales_channel_id: salesChannel.id },
+        adminReqConfig
+      )
 
       expect(response.data.cart.sales_channel).toBeTruthy()
       expect(response.data.cart.sales_channel).toEqual(
@@ -108,14 +115,18 @@ describe("sales channels", () => {
     it("throw if the given sales channel is disabled", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        `/store/carts`,
-        { sales_channel_id: disabledSalesChannel.id },
-        adminReqConfig
-      ).catch(err => err)
+      const err = await api
+        .post(
+          `/store/carts`,
+          { sales_channel_id: disabledSalesChannel.id },
+          adminReqConfig
+        )
+        .catch((err) => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe(`Unable to assign the cart to a disabled Sales Channel "disabled cart sales channel"`)
+      expect(err.response.data.message).toBe(
+        `Unable to assign the cart to a disabled Sales Channel "disabled cart sales channel"`
+      )
     })
   })
 
@@ -147,58 +158,50 @@ describe("sales channels", () => {
           is_disabled: true,
         })
 
-        product1 = await simpleProductFactory(
-          dbConnection,
-          {
-            title: "prod 1",
-            sales_channels: [salesChannel1],
-            variants: [
-              {
-                id: "test-variant",
-                prices: [
-                  {
-                    amount: 50,
-                    currency: "usd",
-                    variant_id: "test-variant",
-                  },
-                ],
-              },
-            ],
-          },
-        )
-        product2 = await simpleProductFactory(
-          dbConnection,
-          {
-            sales_channels: [salesChannel2],
-            variants: [
-              {
-                id: "test-variant-2",
-                prices: [
-                  {
-                    amount: 100,
-                    currency: "usd",
-                    variant_id: "test-variant-2",
-                  },
-                ],
-              },
-            ],
-          },
-        )
+        product1 = await simpleProductFactory(dbConnection, {
+          title: "prod 1",
+          sales_channels: [salesChannel1],
+          variants: [
+            {
+              id: "test-variant",
+              prices: [
+                {
+                  amount: 50,
+                  currency: "usd",
+                  variant_id: "test-variant",
+                },
+              ],
+            },
+          ],
+        })
+        product2 = await simpleProductFactory(dbConnection, {
+          sales_channels: [salesChannel2],
+          variants: [
+            {
+              id: "test-variant-2",
+              prices: [
+                {
+                  amount: 100,
+                  currency: "usd",
+                  variant_id: "test-variant-2",
+                },
+              ],
+            },
+          ],
+        })
 
-        cart = await simpleCartFactory(
-          dbConnection,
-          {
-            sales_channel: salesChannel1,
-            line_items: [
-              {
-                variant_id: "test-variant",
-                unit_price: 50,
-              },
-            ],
-          },
-        )
+        cart = await simpleCartFactory(dbConnection, {
+          sales_channel: salesChannel1,
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 50,
+            },
+          ],
+        })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
@@ -207,52 +210,57 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it(
-        "updates a cart sales channels should remove the items that does not belongs to the new sales channel",
-        async () => {
-        const api = useApi()
+    it("updates a cart sales channels should remove the items that does not belongs to the new sales channel", async () => {
+      const api = useApi()
 
-        let response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
+      let response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
 
-        expect(response.data.cart.sales_channel).toBeTruthy()
-        expect(response.data.cart.sales_channel).toEqual(
-          expect.objectContaining({
-            name: salesChannel1.name,
-            description: salesChannel1.description,
-          })
-        )
-        expect(response.data.cart.items.length).toBe(1)
-        expect(response.data.cart.items[0].variant.product).toEqual(
-          expect.objectContaining({
-            id: product1.id,
-            title: product1.title,
-          })
-        )
+      expect(response.data.cart.sales_channel).toBeTruthy()
+      expect(response.data.cart.sales_channel).toEqual(
+        expect.objectContaining({
+          name: salesChannel1.name,
+          description: salesChannel1.description,
+        })
+      )
+      expect(response.data.cart.items.length).toBe(1)
+      expect(response.data.cart.items[0].variant.product).toEqual(
+        expect.objectContaining({
+          id: product1.id,
+          title: product1.title,
+        })
+      )
 
-        response = await api.post(`/store/carts/${cart.id}`, { sales_channel_id: salesChannel2.id }, adminReqConfig)
+      response = await api.post(
+        `/store/carts/${cart.id}`,
+        { sales_channel_id: salesChannel2.id },
+        adminReqConfig
+      )
 
-        expect(response.data.cart.sales_channel).toBeTruthy()
-        expect(response.data.cart.sales_channel).toEqual(
-          expect.objectContaining({
-            name: salesChannel2.name,
-            description: salesChannel2.description,
-          })
-        )
-        expect(response.data.cart.items.length).toBe(0)
-      }
-    )
+      expect(response.data.cart.sales_channel).toBeTruthy()
+      expect(response.data.cart.sales_channel).toEqual(
+        expect.objectContaining({
+          name: salesChannel2.name,
+          description: salesChannel2.description,
+        })
+      )
+      expect(response.data.cart.items.length).toBe(0)
+    })
 
     it("throw if the given sales channel is disabled", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        `/store/carts/${cart.id}`,
-        { sales_channel_id: disabledSalesChannel.id },
-        adminReqConfig
-      ).catch(err => err)
+      const err = await api
+        .post(
+          `/store/carts/${cart.id}`,
+          { sales_channel_id: disabledSalesChannel.id },
+          adminReqConfig
+        )
+        .catch((err) => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe("Unable to assign the cart to a disabled Sales Channel \"disabled cart sales channel\"")
+      expect(err.response.data.message).toBe(
+        `Unable to assign the cart to a disabled Sales Channel "disabled cart sales channel"`
+      )
     })
   })
 
@@ -271,6 +279,7 @@ describe("sales channels", () => {
         })
       } catch (err) {
         console.log(err)
+        throw err
       }
     })
 
