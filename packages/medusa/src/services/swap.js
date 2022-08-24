@@ -184,8 +184,11 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { cartSelects, cartRelations, ...newConfig } =
-      this.transformQueryForCart_(config)
+    const {
+      cartSelects,
+      cartRelations,
+      ...newConfig
+    } = this.transformQueryForCart_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
@@ -600,8 +603,9 @@ class SwapService extends BaseService {
         },
       })
 
-      const customShippingOptionServiceTx =
-        this.customShippingOptionService_.withTransaction(manager)
+      const customShippingOptionServiceTx = this.customShippingOptionService_.withTransaction(
+        manager
+      )
       for (const customShippingOption of customShippingOptions) {
         await customShippingOptionServiceTx.create({
           cart_id: cart.id,
@@ -611,8 +615,9 @@ class SwapService extends BaseService {
       }
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      const lineItemAdjustmentServiceTx =
-        this.lineItemAdjustmentService_.withTransaction(manager)
+      const lineItemAdjustmentServiceTx = this.lineItemAdjustmentService_.withTransaction(
+        manager
+      )
       for (const item of swap.additional_items) {
         await lineItemServiceTx.update(item.id, {
           cart_id: cart.id,
@@ -691,7 +696,12 @@ class SwapService extends BaseService {
 
       const cart = await this.cartService_.retrieve(swap.cart_id, {
         select: ["total"],
-        relations: ["payment", "shipping_methods", "items"],
+        relations: [
+          "payment",
+          "shipping_methods",
+          "items",
+          "items.adjustments",
+        ],
       })
 
       const { payment } = cart
@@ -699,10 +709,12 @@ class SwapService extends BaseService {
       const items = cart.items
 
       if (!swap.allow_backorder) {
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
-        const paymentProviderServiceTx =
-          this.paymentProviderService_.withTransaction(manager)
+        const inventoryServiceTx = this.inventoryService_.withTransaction(
+          manager
+        )
+        const paymentProviderServiceTx = this.paymentProviderService_.withTransaction(
+          manager
+        )
         const cartServiceTx = this.cartService_.withTransaction(manager)
 
         for (const item of items) {
@@ -750,8 +762,9 @@ class SwapService extends BaseService {
             order_id: swap.order_id,
           })
 
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
+        const inventoryServiceTx = this.inventoryService_.withTransaction(
+          manager
+        )
 
         for (const item of items) {
           await inventoryServiceTx.adjustInventory(
@@ -771,8 +784,9 @@ class SwapService extends BaseService {
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
       const result = await swapRepo.save(swap)
 
-      const shippingOptionServiceTx =
-        this.shippingOptionService_.withTransaction(manager)
+      const shippingOptionServiceTx = this.shippingOptionService_.withTransaction(
+        manager
+      )
 
       for (const method of cart.shipping_methods) {
         await shippingOptionServiceTx.updateShippingMethod(method.id, {

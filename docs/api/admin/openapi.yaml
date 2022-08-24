@@ -109,6 +109,10 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
+  /apps:
+    $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
   /batch-jobs/{id}/cancel:
@@ -133,10 +137,6 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions:
@@ -153,10 +153,10 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
-  /apps/authorizations:
-    $ref: paths/apps_authorizations.yaml
-  /apps:
-    $ref: paths/apps.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/{id}:
+    $ref: paths/customers_{id}.yaml
   /draft-orders:
     $ref: paths/draft-orders.yaml
   /draft-orders/{id}/line-items:
@@ -249,8 +249,8 @@ paths:
     $ref: paths/price-lists_{id}_products_{product_id}_prices.yaml
   /price-lists/{id}/variants/{variant_id}/prices:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
-  /price-lists/:id/products:
-    $ref: paths/price-lists_:id_products.yaml
+  /price-lists/{id}/products:
+    $ref: paths/price-lists_{id}_products.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -327,18 +327,16 @@ paths:
     $ref: paths/swaps_{id}.yaml
   /swaps:
     $ref: paths/swaps.yaml
-  /tax-rates/:id/product-types/batch:
-    $ref: paths/tax-rates_:id_product-types_batch.yaml
-  /tax-rates/:id/products/batch:
-    $ref: paths/tax-rates_:id_products_batch.yaml
-  /tax-rates/:id/shipping-options/batch:
-    $ref: paths/tax-rates_:id_shipping-options_batch.yaml
+  /tax-rates/{id}/product-types/batch:
+    $ref: paths/tax-rates_{id}_product-types_batch.yaml
+  /tax-rates/{id}/products/batch:
+    $ref: paths/tax-rates_{id}_products_batch.yaml
+  /tax-rates/{id}/shipping-options/batch:
+    $ref: paths/tax-rates_{id}_shipping-options_batch.yaml
   /tax-rates:
     $ref: paths/tax-rates.yaml
   /tax-rates/{id}:
     $ref: paths/tax-rates_{id}.yaml
-  /tax-rates/:id:
-    $ref: paths/tax-rates_:id.yaml
   /uploads:
     $ref: paths/uploads.yaml
   /users:

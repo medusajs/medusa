@@ -47,7 +47,7 @@ As mentioned in the overview, fulfillment providers should have a static `identi
 
 The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class will be used when the fulfillment provider is created in the database.
 
-The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/region/add-fulfillment-provider) to a region.
+The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/#tag/Region/operation/PostRegionsRegionFulfillmentProviders) to a region.
 
 ```jsx
 import { FulfillmentService } from "medusa-interfaces"
@@ -102,7 +102,7 @@ For that reason, the fulfillment option does not have any required structure and
 
 ### validateOption
 
-Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to `[/admin/shipping-options](https://docs.medusajs.com/api/admin/shipping-option/create-shipping-option)`.
+Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to [`/admin/shipping-options`](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions).
 
 This method accepts the `data` object that is sent in the body of the request. You can use this data to validate the shipping option before it is saved.
 
@@ -122,7 +122,7 @@ If your fulfillment provider does not need to run any validation, you can simply
 
 When the customer chooses a shipping option on checkout, the shipping option and its data are validated before the shipping method is created.
 
-`validateFulfillmentOption` is called when a `POST` request is sent to `[/carts/:id/shipping-methods](https://docs.medusajs.com/api/store/cart/add-a-shipping-method)`.
+`validateFulfillmentOption` is called when a `POST` request is sent to [`/carts/:id/shipping-methods`](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
 This method accepts 3 parameters:
 
@@ -196,7 +196,7 @@ If this method returns `true`, that means that the price should be calculated dy
 
 If the method returns `false`, an error is thrown as it means the selected shipping option can only be chosen if the price type is set to `flat_rate`.
 
-This method receives as a parameter the `data` object sent with the request that [creates the shipping option.](https://docs.medusajs.com/api/admin/shipping-option/create-shipping-option) You can use this data to determine whether the shipping option should be calculated or not. This is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.
+This method receives as a parameter the `data` object sent with the request that [creates the shipping option.](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions) You can use this data to determine whether the shipping option should be calculated or not. This is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.
 
 For example:
 
@@ -213,7 +213,7 @@ This method is called on checkout when the shipping method is being created if t
 This method receives 3 parameters:
 
 1. The `data` parameter of the selected shipping option.
-2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/cart/add-a-shipping-method).
+2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 3. The customer’s cart data.
 
 If your fulfillment provider does not provide any dynamically calculated rates you can keep the function empty:
@@ -236,7 +236,7 @@ calculatePrice (optionData, data, cart) {
 
 Fulfillment providers can also be used to return products. A shipping option can be used for returns if the `is_return` property is `true` or if an admin creates a Return Shipping Option from the settings.
 
-This method is called when the admin [creates a return request](https://docs.medusajs.com/api/admin/order/request-a-return) for an order or when the customer [creates a return of their order](https://docs.medusajs.com/api/store/return/create-return).
+This method is called when the admin [creates a return request](https://docs.medusajs.com/api/admin/#tag/Order/operation/PostOrdersOrderReturns) for an order or when the customer [creates a return of their order](https://docs.medusajs.com/api/store/#tag/Return/operation/PostReturns).
 
 It gives you access to the return being created in case you need to perform any additional actions with the third-party provider.
 
