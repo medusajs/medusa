@@ -139,8 +139,8 @@ class SwapService extends TransactionBaseService {
    * @return transformed find swap config
    */
   protected transformQueryForCart(
-    config: FindConfig<Swap> & { select?: string[] }
-  ): FindConfig<Swap> & {
+    config: Omit<FindConfig<Swap>, "select"> & { select?: string[] }
+  ): Omit<FindConfig<Swap>, "select"> & { select?: string[] } & {
     cartSelects: FindConfig<Cart>["select"]
     cartRelations: FindConfig<Cart>["relations"]
   } {
@@ -215,7 +215,7 @@ class SwapService extends TransactionBaseService {
    */
   async retrieve(
     id: string,
-    config: FindConfig<Swap> & { select?: string[] } = {}
+    config: Omit<FindConfig<Swap>, "select"> & { select?: string[] } = {}
   ): Promise<Swap | never> {
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
@@ -230,7 +230,10 @@ class SwapService extends TransactionBaseService {
     const relations = query.relations as (keyof Swap)[]
     delete query.relations
 
-    const swap = await swapRepo.findOneWithRelations(relations, query)
+    const swap = await swapRepo.findOneWithRelations(
+      relations,
+      query as FindConfig<Swap>
+    )
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
