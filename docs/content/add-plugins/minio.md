@@ -117,6 +117,74 @@ Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to t
 
 ![Image Uploaded on Admin](https://i.imgur.com/alabX2i.png)
 
+## Additional Configuration for Exports
+
+Medusa v1.3.3 introduced the Export API. For example, you can now export your products from the Medusa Admin on the Products page.
+
+![Export button in Products page in Medusa Admin](https://i.imgur.com/uyK4id8.png)
+
+:::note
+
+Exports require using Redis to handle the event queue, and using PostgreSQL for the database. If you don’t use Redis or PostgreSQL, you can follow [this documentation to install](../tutorial/0-set-up-your-development-environment.mdx#postgresql) and then [configure them on your Medusa server](../usage/configurations.md#postgresql-configurations).
+
+:::
+
+When using MinIO, you must create a private bucket that will store these product exports. To do that, follow along the [steps mentioned earlier to create a bucket](#create-a-minio-bucket), but keep Access Policy set to private.
+
+Then, add the following environment variable on your Medusa server:
+
+```bash
+MINIO_PRIVATE_BUCKET=exports
+```
+
+Finally, add a new option to the plugin’s options in `medusa-config.js`:
+
+```jsx
+{
+    resolve: `medusa-file-minio`,
+    options: {
+        //...
+        private_bucket: process.env.MINIO_PRIVATE_BUCKET
+    },
+},
+```
+
+If you start your Medusa server now and click on Export Products on the Medusa admin, the export will run in the background. When ready, it should be available for download.
+
+![Export is available for download on the Medusa Admin](https://i.imgur.com/Xc61Wg1.png)
+
+:::tip
+
+If you face any errors, make sure you have the latest version of the plugin installed.
+
+:::
+
+### Use Different Secret and Access Keys
+
+If you only add the `private_bucket` option, the same secret and access keys that you used for the public bucket will be used to access the private bucket.
+
+If you want to use different keys, set the following environment variables:
+
+```bash
+MINIO_PRIVATE_ACCESS_KEY=<YOUR_PRIVATE_ACCESS_KEY>
+MINIO_PRIVATE_SECRET_KEY=<YOUR_PRIVATE_SECRET_KEY>
+```
+
+Where `<YOUR_PRIVATE_ACCESS_KEY>` and `<YOUR_PRIVATE_SECRET_KEY>` are the access key and secret access key that have access to the private MinIO bucket.
+
+Then, add two new options to the plugin’s options in `medusa-config.js`:
+
+```jsx
+{
+    resolve: `medusa-file-minio`,
+    options: {
+        //...
+        private_access_key_id: process.env.MINIO_PRIVATE_ACCESS_KEY,
+        private_secret_access_key: process.env.MINIO_PRIVATE_SECRET_KEY
+    },
+},
+```
+
 ## Next.js Storefront Configuration
 
 If you’re using a [Next.js](../starters/nextjs-medusa-starter.md) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO server.

@@ -299,6 +299,10 @@ details summary {
   text-decoration: none;
 }
 
+[data-theme="dark"] a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .DocSearch-Container {
   z-index: 1001 !important;
 }
@@ -326,4 +330,21 @@ html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
 
 .redocusaurus a {
   color: var(--ifm-link-color) !important;
+}
+
+/* User Guide Styling */
+html[data-theme="dark"] kbd {
+  --ifm-color-emphasis-0: var(--ifm-color-gray-200);
+}
+
+kbd {
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  
+  font: 100% var(--ifm-font-family-monospace) !important;
+}
+
+.ui-icon {
+  vertical-align: sub;
+  width: 20px;
+  height: 20px;
 }
