@@ -137,6 +137,9 @@ class PricingService extends TransactionBaseService<PricingService> {
     context: PricingContext
   ): Promise<ProductVariantPricing> {
     const transactionManager = this.transactionManager_ ?? this.manager_
+
+    context.price_selection.tax_rates = taxRates
+
     const pricing = await this.priceSelectionStrategy
       .withTransaction(transactionManager)
       .calculateVariantPrice(variantId, context.price_selection)

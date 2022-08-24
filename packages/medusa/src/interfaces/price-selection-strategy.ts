@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import { MoneyAmount } from ".."
 import { PriceListType } from "../types/price-list"
+import { TaxServiceRate } from "../types/tax-service"
 
 export interface IPriceSelectionStrategy {
   /**
@@ -55,7 +56,7 @@ export type PriceSelectionContext = {
   region_id?: string
   currency_code?: string
   include_discount_prices?: boolean
-  tax_rate?: number
+  tax_rates?: TaxServiceRate[]
 }
 
 enum DefaultPriceType {

@@ -9,6 +9,7 @@ import { MoneyAmountRepository } from "../repositories/money-amount"
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { TaxServiceRate } from "../types/tax-service"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
@@ -74,6 +75,13 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       }
     }
 
+    const taxRate = context.tax_rates.reduce(
+      (accRate: number, nextTaxRate: TaxServiceRate) => {
+        return accRate + (nextTaxRate.rate || 0) / 100
+      },
+      0
+    )
+
     const result: PriceSelectionResult = {
       originalPrice: null,
       calculatedPrice: null,
@@ -121,7 +129,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
 
       if (
         isValidQuantity(ma, context.quantity) &&
-        isValidAmount(ma.amount, result, isTaxInclusive, context.tax_rate) &&
+        isValidAmount(ma.amount, result, isTaxInclusive, taxRate) &&
         ((context.currency_code &&
           ma.currency_code === context.currency_code) ||
           (context.region_id && ma.region_id === context.region_id))
