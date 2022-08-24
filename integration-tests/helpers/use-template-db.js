@@ -1,16 +1,19 @@
 const path = require("path")
-require("dotenv").config({ path: path.join(__dirname, "../.env") })
+
+require("dotenv").config({ path: path.join(__dirname, "../.env.test") })
 
 const { createDatabase, dropDatabase } = require("pg-god")
 const { createConnection, getConnection } = require("typeorm")
 
-const DB_USERNAME = process.env.DB_USERNAME || "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost`
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
+  host: DB_HOST,
 }
 
 class DatabaseFactory {
