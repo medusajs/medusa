@@ -587,9 +587,6 @@ const taxInclusiveTesting = [
               min_quantity: null,
               price_list_id: null,
               region_id: "test-region",
-              region: {
-                includes_tax: true,
-              },
             },
             {
               amount: 120,
@@ -597,9 +594,6 @@ const taxInclusiveTesting = [
               max_quantity: null,
               min_quantity: null,
               price_list_id: null,
-              currency: {
-                includes_tax: true,
-              },
             },
           ],
         })
@@ -642,9 +636,6 @@ const taxInclusiveTesting = [
             {
               amount: 100,
               currency_code: "dkk",
-              currency: {
-                includes_tax: true,
-              },
               max_quantity: null,
               min_quantity: null,
               price_list_id: null,
@@ -683,9 +674,6 @@ const taxInclusiveTesting = [
             {
               amount: 100,
               region_id: "test-region",
-              region: {
-                includes_tax: true,
-              },
               max_quantity: null,
               min_quantity: null,
               price_list_id: null,
@@ -734,9 +722,6 @@ const taxInclusiveTesting = [
               max_quantity: null,
               min_quantity: null,
               price_list_id: null,
-              region: {
-                includes_tax: false,
-              },
             },
             {
               amount: 95,
@@ -799,9 +784,6 @@ const taxInclusiveTesting = [
               max_quantity: null,
               min_quantity: null,
               price_list_id: null,
-              region: {
-                includes_tax: false,
-              },
             },
             {
               amount: 95,

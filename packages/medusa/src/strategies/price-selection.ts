@@ -9,7 +9,6 @@ import { MoneyAmountRepository } from "../repositories/money-amount"
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { MedusaError } from "medusa-core-utils"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
@@ -94,6 +93,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         ma.price_list?.includes_tax
       )
 
+      delete ma.currency
+      delete ma.region
+
       if (
         context.region_id &&
         ma.region_id === context.region_id &&
@@ -153,8 +155,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       return {
         originalPrice: null,
         calculatedPrice: null,
-        originalPriceIncludesTax: null,
-        calculatedPriceIncludesTax: null,
         prices: [],
       }
     }
@@ -163,8 +163,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       originalPrice: null,
       calculatedPrice: null,
       prices,
-      originalPriceIncludesTax: null,
-      calculatedPriceIncludesTax: null,
     }
 
     if (!context) {
@@ -172,6 +170,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     for (const ma of prices) {
+      delete ma.currency
+      delete ma.region
+
       if (
         context.region_id &&
         ma.region_id === context.region_id &&
