@@ -47,7 +47,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
-  protected readonly redis_: Redis
+  protected readonly redis_: Redis.Redis
   protected readonly eventBus_: EventBusService
 
   constructor(container: AwilixContainer) {
