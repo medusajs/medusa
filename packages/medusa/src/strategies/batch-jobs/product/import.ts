@@ -2,7 +2,6 @@
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
-import { ProductOptionRepository } from "../../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
