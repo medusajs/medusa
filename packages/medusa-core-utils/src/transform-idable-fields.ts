@@ -8,7 +8,7 @@
  * @param {Array<String>} fields - the fields to apply transformation to
  * @returns {Object} the transformed object
  */
-export const transformIdableFields = (obj: Object, fields: string[]) => {
+export const transformIdableFields = <T>(obj: Object, fields: string[]): T => {
   const ret = { ...obj }
 
   for (const key of fields) {
@@ -18,5 +18,5 @@ export const transformIdableFields = (obj: Object, fields: string[]) => {
     }
   }
 
-  return ret
+  return ret as T
 }

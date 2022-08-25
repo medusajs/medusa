@@ -132,7 +132,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostDraftOrdersReq, req.body)
 
-  const value = transformIdableFields(validated, [
+  const value = transformIdableFields<AdminPostDraftOrdersReq>(validated, [
     "shipping_address",
     "billing_address",
   ])
