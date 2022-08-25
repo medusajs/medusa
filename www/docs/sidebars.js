@@ -595,6 +595,21 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Sales Channels",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/sales-channels/manage"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {

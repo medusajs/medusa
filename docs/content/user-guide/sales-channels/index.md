@@ -60,4 +60,4 @@ In the edit page of a product, you can find the sales channels the product belon
 
 ## What More Can you Do with Sales Channels?
 
-In the Medusa admin, you can manage the details of sales channels, their products, and more. You can learn more in this guide.
+In the Medusa admin, you can manage the details of sales channels, their products, and more. You can learn more in [this guide](./manage.mdx).
