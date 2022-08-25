@@ -25867,7 +25867,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@^0.0.12-test.0, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@npm:^0.0.12-test.0":
+  version: 0.0.12
+  resolution: "medusa-telemetry@npm:0.0.12"
+  dependencies:
+    axios: ^0.21.1
+    axios-retry: ^3.1.9
+    boxen: ^5.0.1
+    ci-info: ^3.2.0
+    configstore: 5.0.1
+    global: ^4.4.0
+    is-docker: ^2.2.1
+    remove-trailing-slash: ^0.1.1
+    uuid: ^8.3.2
+  checksum: 46a4ddffe65d02d9c133c30dadfb13e668418635cf73304770a2cec6229f8f29c9d05f2c5c5584422b69939c3bd19f2697f519efa75742aacfc81b1d24c5ce55
+  languageName: node
+  linkType: hard
+
+"medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:

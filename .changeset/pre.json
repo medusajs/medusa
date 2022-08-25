@@ -41,6 +41,7 @@
     "medusa-test-utils": "1.1.37"
   },
   "changesets": [
+    "bump-medusa-telemetry",
     "cyan-years-complain",
     "eighty-coats-joke",
     "eighty-onions-share",

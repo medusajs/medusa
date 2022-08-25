@@ -1,0 +1,3 @@
+---
+"medusa-telemetry": patch
+---
