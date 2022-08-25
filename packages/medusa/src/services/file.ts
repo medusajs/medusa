@@ -8,7 +8,7 @@ import {
   UploadStreamDescriptorType,
 } from "../interfaces"
 
-class DefaultFileService extends AbstractFileService<any> {
+class DefaultFileService extends AbstractFileService {
   upload(fileData: Express.Multer.File): Promise<FileServiceUploadResult> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,

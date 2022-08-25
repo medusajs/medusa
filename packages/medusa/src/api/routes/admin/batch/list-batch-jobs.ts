@@ -6,6 +6,7 @@ import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 import { pickBy } from "lodash"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [get] /batch-jobs
@@ -238,9 +239,8 @@ export default async (req: Request, res) => {
   const created_by = req.user?.id || req.user?.userId
 
   const [jobs, count] = await batchService.listAndCount(
-    pickBy(
-      { created_by, ...(req.filterableFields ?? {}) },
-      (val) => typeof val !== "undefined"
+    pickBy({ created_by, ...(req.filterableFields ?? {}) }, (val) =>
+      isDefined(val)
     ),
     req.listConfig
   )

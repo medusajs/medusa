@@ -1,10 +1,11 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
 import { InventoryServiceMock } from "../__mocks__/inventory"
+import { LineItemServiceMock } from "../__mocks__/line-item"
 
 describe("OrderService", () => {
   const totalsService = {
-    withTransaction: function () {
+    withTransaction: function() {
       return this
     },
     getLineItemRefund: () => {},
@@ -39,7 +40,7 @@ describe("OrderService", () => {
 
   const eventBusService = {
     emit: jest.fn(),
-    withTransaction: function () {
+    withTransaction: function() {
       return this
     },
   }
@@ -55,20 +56,20 @@ describe("OrderService", () => {
     })
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
     const shippingOptionService = {
       updateShippingMethod: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
     const giftCardService = {
       update: jest.fn(),
       createTransaction: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -80,7 +81,7 @@ describe("OrderService", () => {
       cancelPayment: jest.fn().mockImplementation((payment) => {
         return Promise.resolve({ ...payment, status: "cancelled" })
       }),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -119,7 +120,7 @@ describe("OrderService", () => {
           total: 100,
         })
       }),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -209,6 +210,8 @@ describe("OrderService", () => {
           "discounts.rule",
           "gift_cards",
           "shipping_methods",
+          "items",
+          "items.adjustments",
         ],
       })
 
@@ -520,6 +523,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       eventBusService,
+      lineItemService: LineItemServiceMock,
     })
 
     beforeEach(async () => {
@@ -613,14 +617,14 @@ describe("OrderService", () => {
 
     const fulfillmentService = {
       cancelFulfillment: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
 
     const paymentProviderService = {
       cancelPayment: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -717,7 +721,7 @@ describe("OrderService", () => {
             ? Promise.reject()
             : Promise.resolve({ ...p, captured_at: "notnull" })
         ),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -822,7 +826,7 @@ describe("OrderService", () => {
 
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -835,7 +839,7 @@ describe("OrderService", () => {
           },
         ])
       }),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1002,7 +1006,7 @@ describe("OrderService", () => {
             })
         }
       }),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1071,7 +1075,7 @@ describe("OrderService", () => {
         .mockImplementation((p) =>
           p.id === "payment_fail" ? Promise.reject() : Promise.resolve()
         ),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1212,7 +1216,7 @@ describe("OrderService", () => {
         .fn()
         .mockImplementation(() => Promise.resolve({})),
 
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1346,7 +1350,7 @@ describe("OrderService", () => {
 
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1369,7 +1373,7 @@ describe("OrderService", () => {
             ],
           })
         }),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1396,7 +1400,9 @@ describe("OrderService", () => {
       )
 
       expect(fulfillmentService.createShipment).toHaveBeenCalledTimes(1)
-      expect(fulfillmentService.createShipment).toHaveBeenCalledWith(
+      expect(
+        fulfillmentService.createShipment
+      ).toHaveBeenCalledWith(
         IdMap.getId("fulfillment"),
         [{ tracking_number: "1234" }, { tracking_number: "2345" }],
         { metadata: undefined, no_notification: true }
@@ -1488,7 +1494,7 @@ describe("OrderService", () => {
       refundPayment: jest
         .fn()
         .mockImplementation((p) => Promise.resolve({ id: "ref" })),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }

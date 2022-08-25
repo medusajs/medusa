@@ -23,6 +23,7 @@ import {
 } from "../types/totals"
 import TaxProviderService from "./tax-provider"
 import { EntityManager } from "typeorm"
+import { isDefined } from "../utils"
 
 type ShippingMethodTotals = {
   price: number
@@ -89,7 +90,7 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends TransactionBaseService<TotalsService> {
+class TotalsService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 
@@ -315,8 +316,8 @@ class TotalsService extends TransactionBaseService<TotalsService> {
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     if (isOrder(cartOrOrder)) {
-      const taxLinesJoined = cartOrOrder.items.every(
-        (i) => typeof i.tax_lines !== "undefined"
+      const taxLinesJoined = cartOrOrder.items.every((i) =>
+        isDefined(i.tax_lines)
       )
       if (!taxLinesJoined) {
         throw new MedusaError(

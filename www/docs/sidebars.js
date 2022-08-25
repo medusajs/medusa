@@ -287,6 +287,11 @@ module.exports = {
                   id: "advanced/backend/upgrade-guides/1-3-0",
                   label: "v1.3.0"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/upgrade-guides/1-3-6",
+                  label: "v1.3.6"
+                },
               ]
             },
           ]
@@ -572,6 +577,21 @@ module.exports = {
         {
           type: "doc",
           id: "user-guide/regions/manage"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Taxes",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/taxes/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/taxes/manage"
         }
       ]
     },

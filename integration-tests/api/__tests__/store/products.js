@@ -50,12 +50,15 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          collection_id: "test-collection2",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            collection_id: "test-collection2",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -76,12 +79,15 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          collection_id: "test-collection1",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            collection_id: "test-collection1",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -101,12 +107,14 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.products.length).toEqual(1)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "giftcard",
-          is_giftcard: true,
-        }),
-      ])
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "giftcard",
+            is_giftcard: true,
+          }),
+        ])
+      )
     })
 
     it("returns non gift card products", async () => {
@@ -139,12 +147,15 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          collection_id: "test-collection1",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            collection_id: "test-collection1",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -167,12 +178,15 @@ describe("/store/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          handle: "test-product_filtering_2",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            handle: "test-product_filtering_2",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -196,27 +210,29 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.products.length).toEqual(5)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product1",
-          collection_id: "test-collection",
-        }),
-        expect.objectContaining({
-          id: "test-product",
-          collection_id: "test-collection",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          collection_id: "test-collection2",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          collection_id: "test-collection1",
-        }),
-        expect.objectContaining({
-          id: "giftcard",
-        }),
-      ])
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product1",
+            collection_id: "test-collection",
+          }),
+          expect.objectContaining({
+            id: "test-product",
+            collection_id: "test-collection",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            collection_id: "test-collection2",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            collection_id: "test-collection1",
+          }),
+          expect.objectContaining({
+            id: "giftcard",
+          }),
+        ])
+      )
 
       for (const notExpect of notExpected) {
         expect(response.data.products).toEqual(
@@ -246,77 +262,80 @@ describe("/store/products", () => {
           console.log(err)
         })
 
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: "test-product1",
-          collection_id: "test-collection",
-        }),
-        expect.objectContaining({
-          id: "test-product",
-          collection_id: "test-collection",
-          variants: [
-            expect.objectContaining({
-              original_price: 100,
-              calculated_price: 80,
-              prices: [
-                expect.objectContaining({
-                  id: "test-price",
-                  currency_code: "usd",
-                  amount: 100,
-                }),
-                expect.objectContaining({
-                  id: "test-price-discount",
-                  currency_code: "usd",
-                  amount: 80,
-                }),
-              ],
-            }),
-            expect.objectContaining({
-              original_price: 100,
-              calculated_price: 80,
-              prices: [
-                expect.objectContaining({
-                  id: "test-price2",
-                  currency_code: "usd",
-                  amount: 100,
-                }),
-                expect.objectContaining({
-                  id: "test-price2-discount",
-                  currency_code: "usd",
-                  amount: 80,
-                }),
-              ],
-            }),
-            expect.objectContaining({
-              original_price: 100,
-              calculated_price: 80,
-              prices: [
-                expect.objectContaining({
-                  id: "test-price1",
-                  currency_code: "usd",
-                  amount: 100,
-                }),
-                expect.objectContaining({
-                  id: "test-price1-discount",
-                  currency_code: "usd",
-                  amount: 80,
-                }),
-              ],
-            }),
-          ],
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_2",
-          collection_id: "test-collection2",
-        }),
-        expect.objectContaining({
-          id: "test-product_filtering_1",
-          collection_id: "test-collection1",
-        }),
-        expect.objectContaining({
-          id: "giftcard",
-        }),
-      ])
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product1",
+            collection_id: "test-collection",
+          }),
+          expect.objectContaining({
+            id: "test-product",
+            collection_id: "test-collection",
+            variants: [
+              expect.objectContaining({
+                original_price: 100,
+                calculated_price: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              }),
+              expect.objectContaining({
+                original_price: 100,
+                calculated_price: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price2",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price2-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              }),
+              expect.objectContaining({
+                original_price: 100,
+                calculated_price: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price1",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price1-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+            collection_id: "test-collection2",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+            collection_id: "test-collection1",
+          }),
+          expect.objectContaining({
+            id: "giftcard",
+          }),
+        ])
+      )
     })
   })
 
