@@ -17,6 +17,13 @@ const adminReqConfig = {
 
 jest.setTimeout(1000000)
 
+function cleanTempData() {
+  // cleanup tmp ops files
+  const opsFiles = path.resolve("__tests__", "batch-jobs", "product", "imports")
+
+  fs.rmSync(opsFiles, { recursive: true, force: true })
+}
+
 describe("Product import batch job", () => {
   let medusaProcess
   let dbConnection
@@ -24,6 +31,8 @@ describe("Product import batch job", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
+
+    cleanTempData() // cleanup if previous process didn't manage to do it
 
     medusaProcess = await setupServer({
       cwd,
@@ -37,15 +46,7 @@ describe("Product import batch job", () => {
     const db = useDb()
     await db.shutdown()
 
-    // cleanup tmp ops files
-    const opsFiles = path.resolve(
-      "__tests__",
-      "batch-jobs",
-      "product",
-      "imports"
-    )
-
-    fs.rmSync(opsFiles, { recursive: true, force: true })
+    cleanTempData()
 
     medusaProcess.kill()
   })
