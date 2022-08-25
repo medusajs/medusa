@@ -477,6 +477,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       readableStream.on("end", () => {
         resolve(JSON.parse(data))
       })
+      readableStream.on("error", () =>
+        resolve([] as TParsedProductImportRowData[])
+      )
     })
   }
 

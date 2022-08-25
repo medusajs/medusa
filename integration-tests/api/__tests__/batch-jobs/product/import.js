@@ -100,8 +100,6 @@ describe("Product import batch job", () => {
 
       batchJob = res.data.batch_job
 
-      console.log(batchJob.status)
-
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )
