@@ -1,3 +1,4 @@
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../../utils/flag-router"
 import PriceSelectionStrategy from "../price-selection"
 
@@ -261,15 +262,30 @@ const toTest = [
           }
         }
 
-        expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
-        ).toHaveBeenCalledWith(
-          "test-basic-variant",
-          "test-region",
-          "dkk",
-          undefined,
-          undefined
-        )
+        if (
+          featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
+        ) {
+          expect(
+            mockMoneyAmountRepository.findManyForVariantInRegion
+          ).toHaveBeenCalledWith(
+            "test-basic-variant",
+            "test-region",
+            "dkk",
+            undefined,
+            undefined,
+            true
+          )
+        } else {
+          expect(
+            mockMoneyAmountRepository.findManyForVariantInRegion
+          ).toHaveBeenCalledWith(
+            "test-basic-variant",
+            "test-region",
+            "dkk",
+            undefined,
+            undefined
+          )
+        }
         expect(value).toEqual({
           ...ffFields,
           originalPrice: 100,
@@ -315,16 +331,31 @@ const toTest = [
         currency_code: "dkk",
         customer_id: "test-customer-1",
       },
-      validate: (value, { mockMoneyAmountRepository }) => {
-        expect(
-          mockMoneyAmountRepository.findManyForVariantInRegion
-        ).toHaveBeenCalledWith(
-          "test-variant",
-          "test-region",
-          "dkk",
-          "test-customer-1",
-          undefined
-        )
+      validate: (value, { mockMoneyAmountRepository, featureFlagRouter }) => {
+        if (
+          featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)
+        ) {
+          expect(
+            mockMoneyAmountRepository.findManyForVariantInRegion
+          ).toHaveBeenCalledWith(
+            "test-variant",
+            "test-region",
+            "dkk",
+            "test-customer-1",
+            undefined,
+            true
+          )
+        } else {
+          expect(
+            mockMoneyAmountRepository.findManyForVariantInRegion
+          ).toHaveBeenCalledWith(
+            "test-variant",
+            "test-region",
+            "dkk",
+            "test-customer-1",
+            undefined
+          )
+        }
       },
     },
   ],
@@ -572,7 +603,8 @@ const taxInclusiveTesting = [
           "test-region",
           "dkk",
           undefined,
-          undefined
+          undefined,
+          true
         )
         expect(value).toEqual({
           originalPrice: 100,
@@ -617,7 +649,8 @@ const taxInclusiveTesting = [
           "test-region",
           "dkk",
           undefined,
-          undefined
+          undefined,
+          true
         )
         expect(value).toEqual({
           originalPrice: 100,
@@ -662,7 +695,8 @@ const taxInclusiveTesting = [
           "test-region",
           "dkk",
           undefined,
-          undefined
+          undefined,
+          true
         )
         expect(value).toEqual({
           originalPrice: 100,
@@ -707,7 +741,8 @@ const taxInclusiveTesting = [
           "test-region",
           "dkk",
           undefined,
-          undefined
+          undefined,
+          true
         )
         expect(value).toEqual({
           originalPrice: 100,
@@ -769,7 +804,8 @@ const taxInclusiveTesting = [
           "test-region",
           "dkk",
           undefined,
-          undefined
+          undefined,
+          true
         )
         expect(value).toEqual({
           originalPrice: 100,
