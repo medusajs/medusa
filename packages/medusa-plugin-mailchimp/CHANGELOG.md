@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.43-nxt.0
+
+### Patch Changes
+
+- Updated dependencies [[`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557)]:
+  - medusa-interfaces@1.3.3-nxt.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +14,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 
-
-
-
-
 ## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.39...medusa-plugin-mailchimp@1.1.41) (2022-06-19)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 
-
-
-
-
 ## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.39...medusa-plugin-mailchimp@1.1.40) (2022-05-31)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
-
-
-
-
 
 ## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.38...medusa-plugin-mailchimp@1.1.39) (2022-02-06)
 
