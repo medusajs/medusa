@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-contentful",
-  "version": "1.2.3",
+  "version": "1.2.4-test-release.0",
   "description": "Contentful plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -32,7 +32,7 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.3.3-test-release.0"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
