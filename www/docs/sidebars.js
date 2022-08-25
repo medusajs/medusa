@@ -560,6 +560,21 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Regions",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/regions/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/regions/manage"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
