@@ -6,8 +6,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductTaxRateFactory,
-  simpleShippingTaxRateFactory,
-  simpleShippingOptionFactory,
   simpleCartFactory,
   simpleRegionFactory,
   simpleProductFactory,

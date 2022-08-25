@@ -20,7 +20,7 @@ type InjectedDependencies = {
   storeService: StoreService
 }
 
-class SalesChannelService extends TransactionBaseService<SalesChannelService> {
+class SalesChannelService extends TransactionBaseService {
   static Events = {
     UPDATED: "sales_channel.updated",
     CREATED: "sales_channel.created",

@@ -157,17 +157,20 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
-      expect(response.data.regions).toEqual([
-        expect.objectContaining({
-          id: "test-region-updated-1",
-        }),
-        expect.objectContaining({
-          id: "test-region",
-        }),
-        expect.objectContaining({
-          id: "test-region-updated",
-        }),
-      ])
+      expect(response.data.regions).toHaveLength(3)
+      expect(response.data.regions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-region-updated-1",
+          }),
+          expect.objectContaining({
+            id: "test-region",
+          }),
+          expect.objectContaining({
+            id: "test-region-updated",
+          }),
+        ])
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -184,14 +187,17 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
-      expect(response.data.regions).toEqual([
-        expect.objectContaining({
-          id: "test-region",
-        }),
-        expect.objectContaining({
-          id: "test-region-updated",
-        }),
-      ])
+      expect(response.data.regions).toHaveLength(2)
+      expect(response.data.regions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-region",
+          }),
+          expect.objectContaining({
+            id: "test-region-updated",
+          }),
+        ])
+      )
       expect(response.status).toEqual(200)
     })
   })

@@ -2,14 +2,15 @@ import {
   IsArray,
   IsBoolean,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
 import { EntityManager } from "typeorm"
-import RegionService from "../../../../services/region"
+
 import { validator } from "../../../../utils/validator"
+import RegionService from "../../../../services/region"
+import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
  * @oas [post] /regions/{id}
@@ -139,4 +140,8 @@ export class AdminPostRegionsRegionReq {
   @IsString({ each: true })
   @IsOptional()
   countries?: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }

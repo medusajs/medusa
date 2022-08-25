@@ -68,13 +68,16 @@ describe("/admin/orders", () => {
      * 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1125)
-    expect(response.data.order.returns[0].items).toEqual([
-      expect.objectContaining({
-        item_id: "test-item",
-        quantity: 1,
-        note: "TOO SMALL",
-      }),
-    ])
+    expect(response.data.order.returns[0].items).toHaveLength(1)
+    expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
   })
 
   test("creates a return w. new tax system", async () => {
@@ -109,13 +112,16 @@ describe("/admin/orders", () => {
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1200)
 
-    expect(response.data.order.returns[0].items).toEqual([
-      expect.objectContaining({
-        item_id: "test-item",
-        quantity: 1,
-        note: "TOO SMALL",
-      }),
-    ])
+    expect(response.data.order.returns[0].items).toHaveLength(1)
+    expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
   })
 
   test("creates a return w. new tax system + shipping", async () => {
@@ -159,20 +165,26 @@ describe("/admin/orders", () => {
      * shipping method will have 12.5 rate 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(75)
-    expect(response.data.order.returns[0].shipping_method.tax_lines).toEqual([
-      expect.objectContaining({
-        rate: 12.5,
-        name: "default",
-        code: "default",
-      }),
-    ])
-    expect(response.data.order.returns[0].items).toEqual([
-      expect.objectContaining({
-        item_id: "test-item",
-        quantity: 1,
-        note: "TOO SMALL",
-      }),
-    ])
+    expect(response.data.order.returns[0].shipping_method.tax_lines).toHaveLength(1)
+    expect(response.data.order.returns[0].shipping_method.tax_lines).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          rate: 12.5,
+          name: "default",
+          code: "default",
+        }),
+      ])
+    )
+    expect(response.data.order.returns[0].items).toHaveLength(1)
+    expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
   })
 
   test("creates a return w. discount", async () => {
@@ -210,13 +222,16 @@ describe("/admin/orders", () => {
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1080)
 
-    expect(response.data.order.returns[0].items).toEqual([
-      expect.objectContaining({
-        item_id: "test-item",
-        quantity: 1,
-        note: "TOO SMALL",
-      }),
-    ])
+    expect(response.data.order.returns[0].items).toHaveLength(1)
+    expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
   })
 
   test("receives a return with a claimed line item", async () => {

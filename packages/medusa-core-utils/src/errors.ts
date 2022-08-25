@@ -11,6 +11,7 @@ export const MedusaErrorTypes = {
   NOT_FOUND: "not_found",
   NOT_ALLOWED: "not_allowed",
   UNEXPECTED_STATE: "unexpected_state",
+  CONFLICT: "conflict",
 }
 
 export const MedusaErrorCodes = {

@@ -14,7 +14,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
 }
 
-class NoteService extends TransactionBaseService<NoteService> {
+class NoteService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "note.created",
     UPDATED: "note.updated",

@@ -3,6 +3,7 @@ import path from "path"
 import { asFunction } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
 import { ConfigModule, MedusaContainer } from "../types/global"
+import { isDefined } from "../utils"
 
 type Options = {
   container: MedusaContainer;
@@ -15,7 +16,7 @@ type Options = {
  */
 export default ({ container, configModule, isTest }: Options): void => {
   const useMock =
-    typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
+    isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock ? "../services/__mocks__/*.js" : "../services/*.js"
   const coreFull = path.join(__dirname, corePath)
