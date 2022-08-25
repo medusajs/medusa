@@ -153,7 +153,6 @@ describe("Product import strategy", () => {
     await productImportStrategy.preProcessBatchJob(fakeJob.id)
 
     expect(getImportInstructionsSpy).toBeCalledTimes(1)
-    expect(getImportInstructionsSpy).toMatchSnapshot()
 
     expect(fileServiceMock.getUploadStreamDescriptor).toBeCalledTimes(2)
 
