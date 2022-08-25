@@ -437,6 +437,25 @@ class RegionService extends TransactionBaseService {
   }
 
   /**
+   * Retrieves a region by name.
+   *
+   * @param name - the name of the region to retrieve
+   * @return region with the matching name
+   */
+  async retrieveByName(name: string): Promise<Region | never> {
+    const [region] = await this.list({ name }, { take: 1 })
+
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Region "${name}" was not found`
+      )
+    }
+
+    return region
+  }
+
+  /**
    * Retrieves a region by its id.
    *
    * @param regionId - the id of the region to retrieve
