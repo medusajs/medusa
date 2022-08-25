@@ -1,6 +1,6 @@
 import _ from "lodash"
 
-function compareObjectsByProp(object1, object2, prop) {
+function compareObjectsByProp(object1: Object, object2: Object, prop: string) {
   if (Array.isArray(object1[prop])) {
     object2[prop] = object2[prop].map(({ _id, ...rest }) => rest)
     return (

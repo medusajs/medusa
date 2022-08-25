@@ -1,5 +1,20 @@
-import Joi from "joi"
+import JoiBase, { AlternativesSchema, ObjectSchema } from "joi"
 
+type JoiBaseType = typeof JoiBase
+interface JoiType extends JoiBaseType {
+  objectId: any
+  address(): AlternativesSchema
+  dateFilter(): ObjectSchema<{
+    lt: AlternativesSchema
+    gt: AlternativesSchema
+    gte: AlternativesSchema
+    lte: AlternativesSchema
+  }>,
+  orderFilter(): ObjectSchema<any>,
+  productFilter(): ObjectSchema<any>,
+}
+
+const Joi = JoiBase as JoiType
 Joi.objectId = require("joi-objectid")(Joi)
 
 // if address is a string, we assume that it is an id
