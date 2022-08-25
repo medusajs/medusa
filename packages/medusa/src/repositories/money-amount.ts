@@ -152,8 +152,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
 
     const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect("ma.price_list", "price_list")
-      .leftJoinAndSelect("ma.currency", "currency")
-      .leftJoinAndSelect("ma.region", "region")
+      .leftJoin("ma.currency", "currency")
+      .leftJoin("ma.region", "region")
+      .addSelect(["currency.includes_tax", "region.includes_tax"])
       .where({ variant_id: variant_id })
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
       .andWhere("(price_list.ends_at is null OR price_list.ends_at > :date)", {
