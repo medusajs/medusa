@@ -440,20 +440,10 @@ class RegionService extends TransactionBaseService {
    * Retrieves a region by name.
    *
    * @param name - the name of the region to retrieve
-   * @param config - configuration settings
    * @return region with the matching name
    */
-  async retrieveByName(
-    name: string,
-    config: FindConfig<Region> = {}
-  ): Promise<Region | never> {
-    const regionRepository = this.manager_.getCustomRepository(
-      this.regionRepository_
-    )
-
-    const query = buildQuery({ name }, config)
-
-    const region = await regionRepository.findOne(query)
+  async retrieveByName(name: string): Promise<Region | never> {
+    const [region] = await this.list({ name }, { take: 1 })
 
     if (!region) {
       throw new MedusaError(
