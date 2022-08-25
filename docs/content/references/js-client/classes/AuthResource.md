@@ -29,7 +29,31 @@ Authenticates a customer using email and password combination
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:16](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/auth.ts#L16)
+[medusa-js/src/resources/auth.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/auth.ts#L16)
+
+___
+
+### deleteSession
+
+▸ **deleteSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
+
+**`Description`**
+
+Removes authentication session
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
+
+#### Defined in
+
+[medusa-js/src/resources/auth.ts:25](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/auth.ts#L25)
 
 ___
 
@@ -54,7 +78,7 @@ Check if email exists
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:38](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/auth.ts#L38)
+[medusa-js/src/resources/auth.ts:47](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/auth.ts#L47)
 
 ___
 
@@ -79,4 +103,4 @@ Usually used to check if authenticated session is alive.
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:27](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/auth.ts#L27)
+[medusa-js/src/resources/auth.ts:36](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/auth.ts#L36)

@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:14](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/uploads.ts#L14)
+[medusa-js/src/resources/admin/uploads.ts:14](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/uploads.ts#L14)
 
 ## Methods
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:18](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/uploads.ts#L18)
+[medusa-js/src/resources/admin/uploads.ts:18](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/uploads.ts#L18)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:27](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/uploads.ts#L27)
+[medusa-js/src/resources/admin/uploads.ts:27](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/uploads.ts#L27)
 
 ___
 
@@ -82,4 +82,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:36](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/uploads.ts#L36)
+[medusa-js/src/resources/admin/uploads.ts:36](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/uploads.ts#L36)

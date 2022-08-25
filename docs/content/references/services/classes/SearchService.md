@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `AbstractSearchService`<[`SearchService`](SearchService.md)\>
+- `AbstractSearchService`
 
   ↳ **`SearchService`**
 
@@ -21,39 +21,39 @@
 
 #### Overrides
 
-AbstractSearchService&lt;DefaultSearchService\&gt;.constructor
+AbstractSearchService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:18](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L18)
+[packages/medusa/src/services/search.ts:18](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L18)
 
 ## Properties
 
-### configModule
+### \_\_configModule\_\_
 
-• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
 
 #### Inherited from
 
-AbstractSearchService.configModule
+AbstractSearchService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
-### container
+### \_\_container\_\_
 
-• `Protected` `Readonly` **container**: `unknown`
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
 
 #### Inherited from
 
-AbstractSearchService.container
+AbstractSearchService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -67,7 +67,7 @@ AbstractSearchService.isDefault
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L11)
+[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L11)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:15](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L15)
+[packages/medusa/src/services/search.ts:15](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L15)
 
 ___
 
@@ -91,7 +91,7 @@ AbstractSearchService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L13)
+[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L13)
 
 ___
 
@@ -105,7 +105,7 @@ AbstractSearchService.options\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L16)
+[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L16)
 
 ___
 
@@ -119,7 +119,7 @@ AbstractSearchService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L14)
+[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L14)
 
 ## Accessors
 
@@ -137,7 +137,7 @@ AbstractSearchService.options
 
 #### Defined in
 
-[packages/medusa/src/interfaces/search-service.ts:84](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/search-service.ts#L84)
+[packages/medusa/src/interfaces/search-service.ts:82](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/search-service.ts#L82)
 
 ## Methods
 
@@ -163,7 +163,7 @@ AbstractSearchService.addDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:43](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L43)
+[packages/medusa/src/services/search.ts:43](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L43)
 
 ___
 
@@ -202,7 +202,7 @@ AbstractSearchService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -227,7 +227,7 @@ AbstractSearchService.createIndex
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:31](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L31)
+[packages/medusa/src/services/search.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L31)
 
 ___
 
@@ -251,7 +251,7 @@ AbstractSearchService.deleteAllDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:61](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L61)
+[packages/medusa/src/services/search.ts:61](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L61)
 
 ___
 
@@ -276,7 +276,7 @@ AbstractSearchService.deleteDocument
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:55](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L55)
+[packages/medusa/src/services/search.ts:55](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L55)
 
 ___
 
@@ -300,7 +300,7 @@ AbstractSearchService.getIndex
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:37](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L37)
+[packages/medusa/src/services/search.ts:37](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L37)
 
 ___
 
@@ -326,7 +326,7 @@ AbstractSearchService.replaceDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:49](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L49)
+[packages/medusa/src/services/search.ts:49](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L49)
 
 ___
 
@@ -356,7 +356,7 @@ AbstractSearchService.search
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:67](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L67)
+[packages/medusa/src/services/search.ts:67](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L67)
 
 ___
 
@@ -380,7 +380,7 @@ AbstractSearchService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -405,7 +405,7 @@ AbstractSearchService.updateSettings
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:78](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/search.ts#L78)
+[packages/medusa/src/services/search.ts:78](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/search.ts#L78)
 
 ___
 
@@ -429,4 +429,4 @@ AbstractSearchService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

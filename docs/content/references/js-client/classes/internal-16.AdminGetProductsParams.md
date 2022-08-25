@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/list-products.d.ts:56
+medusa/dist/api/routes/admin/products/list-products.d.ts:172
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/list-products.d.ts:57
+medusa/dist/api/routes/admin/products/list-products.d.ts:173
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/list-products.d.ts:55
+medusa/dist/api/routes/admin/products/list-products.d.ts:171
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/list-products.d.ts:54
+medusa/dist/api/routes/admin/products/list-products.d.ts:170
 
 ___
 

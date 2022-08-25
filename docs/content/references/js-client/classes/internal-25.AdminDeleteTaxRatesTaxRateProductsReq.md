@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/remove-from-products.d.ts:24
+medusa/dist/api/routes/admin/tax-rates/remove-from-products.d.ts:54

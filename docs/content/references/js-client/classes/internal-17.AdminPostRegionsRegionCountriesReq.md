@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/add-country.d.ts:34
+medusa/dist/api/routes/admin/regions/add-country.d.ts:37

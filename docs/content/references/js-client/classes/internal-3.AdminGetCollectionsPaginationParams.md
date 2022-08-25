@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:32
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:107
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:33
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:108

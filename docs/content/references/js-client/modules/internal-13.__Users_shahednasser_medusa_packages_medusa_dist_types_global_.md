@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:26
+medusa/dist/types/global.d.ts:27
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:37
+medusa/dist/types/global.d.ts:38
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:23
+medusa/dist/types/global.d.ts:24
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:32
+medusa/dist/types/global.d.ts:33
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:29
+medusa/dist/types/global.d.ts:30
