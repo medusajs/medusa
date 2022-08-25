@@ -1,4 +1,8 @@
-import { Type } from "class-transformer"
+import {
+  FulfillmentStatus,
+  OrderStatus,
+  PaymentStatus,
+} from "../../../../models/order"
 import {
   IsEnum,
   IsNumber,
@@ -7,14 +11,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Request, Response } from "express"
-import { MedusaError } from "medusa-core-utils"
-import {
-  FulfillmentStatus,
-  OrderStatus,
-  PaymentStatus,
-} from "../../../../models/order"
-import OrderService from "../../../../services/order"
+
 import { DateComparisonOperator } from "../../../../types/common"
+import { MedusaError } from "medusa-core-utils"
+import OrderService from "../../../../services/order"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /customers/me/orders
@@ -25,18 +26,105 @@ import { DateComparisonOperator } from "../../../../types/common"
  * parameters:
  *   - (query) q {string} Query used for searching orders.
  *   - (query) id {string} Id of the order to search for.
- *   - (query) status {string[]} Status to search for.
- *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
- *   - (query) payment_status {string[]} Payment status to search for.
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Status to search for.
+ *     schema:
+ *         type: array
+ *         items:
+ *           type: string
+ *   - in: query
+ *     name: fulfillment_status
+ *     style: form
+ *     explode: false
+ *     description: Fulfillment status to search for.
+ *     schema:
+ *         type: array
+ *         items:
+ *           type: string
+ *   - in: query
+ *     name: payment_status
+ *     style: form
+ *     explode: false
+ *     description: Payment status to search for.
+ *     schema:
+ *         type: array
+ *         items:
+ *           type: string
  *   - (query) display_id {string} Display id to search for.
  *   - (query) cart_id {string} to search for.
  *   - (query) email {string} to search for.
  *   - (query) region_id {string} to search for.
  *   - (query) currency_code {string} to search for.
  *   - (query) tax_rate {string} to search for.
- *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting collections were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting collections were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: canceled_at
+ *     description: Date comparison for when resulting collections were canceled.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  *   - (query) limit=10 {integer} How many orders to return.
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
