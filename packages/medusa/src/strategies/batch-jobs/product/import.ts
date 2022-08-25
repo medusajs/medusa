@@ -5,7 +5,6 @@ import { MedusaError } from "medusa-core-utils"
 import { ProductOptionRepository } from "../../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
-import { ProductOption } from "../../../models"
 import {
   BatchJobService,
   ProductService,
@@ -54,8 +53,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly shippingProfileService_: ShippingProfileService
   protected readonly regionService_: RegionService
 
-  protected readonly productOptionRepo_: typeof ProductOptionRepository
-
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
     Record<string, string>,
@@ -65,7 +62,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   constructor({
     batchJobService,
     productService,
-    productOptionRepository,
     productVariantService,
     shippingProfileService,
     regionService,
@@ -84,8 +80,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
-
-    this.productOptionRepo_ = productOptionRepository
   }
 
   buildTemplate(): Promise<string> {
@@ -374,18 +368,22 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    */
   private async updateVariants(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
-    const productOptionRepo = this.manager_.getCustomRepository(
-      this.productOptionRepo_
-    )
 
     const variantOps = await this.downloadImportOpsFile(
       batchJobId,
       OperationType.VariantUpdate
     )
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
+
     for (const variantOp of variantOps) {
       try {
-        await this.prepareVariantOptions(variantOp, productOptionRepo)
+        const product = await productServiceTx.retrieveByHandle(
+          variantOp["product.handle"] as string
+        )
+
+        await this.prepareVariantOptions(variantOp, product.id)
 
         await this.productVariantService_
           .withTransaction(transactionManager)
@@ -405,20 +403,20 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * Extend records used for creating variant options with corresponding product option ids.
    *
    * @param variantOp - Parsed row data form CSV
-   * @param productOptionRepo - ProductOption repository
+   * @param productId - id of variant's product
    */
   protected async prepareVariantOptions(
     variantOp,
-    productOptionRepo: ProductOptionRepository
+    productId: string
   ): Promise<void> {
     const productOptions = variantOp["variant.options"] || []
 
     for (const o of productOptions) {
-      const { id } = (await productOptionRepo.findOne({
-        where: { title: o._title },
-      })) as ProductOption
-
-      o.option_id = id
+      const option = await this.productService_.retrieveOptionByTitle(
+        o._title,
+        productId
+      )
+      o.option_id = option?.id
     }
   }
 

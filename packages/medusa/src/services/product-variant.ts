@@ -523,8 +523,8 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * Adds option value to a varaint.
-   * Fails when product with variant does not exists or
+   * Adds option value to a variant.
+   * Fails when product with variant does not exist or
    * if that product does not have an option with the given
    * option id. Fails if given variant is not found.
    * Option value must be of type string or number.

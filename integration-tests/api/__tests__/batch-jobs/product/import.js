@@ -28,7 +28,7 @@ describe("Product import batch job", () => {
     medusaProcess = await setupServer({
       cwd,
       uploadDir: __dirname,
-      verbose: false,
+      verbose: true,
     })
   })
 
@@ -72,6 +72,7 @@ describe("Product import batch job", () => {
     const response = await api.post(
       "/admin/batch-jobs",
       {
+        dry_run: false,
         type: "product_import",
         context: {
           fileKey: "product-import.csv",
@@ -98,6 +99,8 @@ describe("Product import batch job", () => {
       })
 
       batchJob = res.data.batch_job
+
+      console.log(batchJob.status)
 
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"

@@ -22,7 +22,6 @@ export type InjectedProps = {
   regionService: RegionService
   fileService: typeof FileService
 
-  productOptionRepository: typeof ProductOptionRepository
   manager: EntityManager
 }
 
