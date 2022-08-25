@@ -46,12 +46,8 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: false })
-    } catch (error) {
-      console.log(error)
-    }
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: false })
   })
 
   afterAll(async () => {
@@ -207,13 +203,8 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/line-items", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -495,57 +486,49 @@ describe("/store/carts", () => {
       let discountCart
       let discount
       beforeEach(async () => {
-        try {
-          discount = await simpleDiscountFactory(
-            dbConnection,
-            discountData,
-            100
-          )
-          discountCart = await simpleCartFactory(
-            dbConnection,
-            {
-              id: "discount-cart",
-              customer: "test-customer",
-              region: "test-region",
-              shipping_address: {
-                address_1: "next door",
-                first_name: "lebron",
-                last_name: "james",
-                country_code: "dk",
-                postal_code: "100",
-              },
-              line_items: [
-                {
-                  id: "test-li",
-                  variant_id: "test-variant",
-                  quantity: 1,
-                  unit_price: 100,
-                  adjustments: [
-                    {
-                      amount: 185,
-                      description: "discount",
-                      discount_id: "medusa-185",
-                    },
-                  ],
-                },
-              ],
-              shipping_methods: [
-                {
-                  shipping_option: "test-option",
-                  price: 1000,
-                },
-              ],
+        discount = await simpleDiscountFactory(dbConnection, discountData, 100)
+        discountCart = await simpleCartFactory(
+          dbConnection,
+          {
+            id: "discount-cart",
+            customer: "test-customer",
+            region: "test-region",
+            shipping_address: {
+              address_1: "next door",
+              first_name: "lebron",
+              last_name: "james",
+              country_code: "dk",
+              postal_code: "100",
             },
-            100
-          )
-          await dbConnection.manager
-            .createQueryBuilder()
-            .relation(Cart, "discounts")
-            .of(discountCart)
-            .add(discount)
-        } catch (err) {
-          console.log(err)
-        }
+            line_items: [
+              {
+                id: "test-li",
+                variant_id: "test-variant",
+                quantity: 1,
+                unit_price: 100,
+                adjustments: [
+                  {
+                    amount: 185,
+                    description: "discount",
+                    discount_id: "medusa-185",
+                  },
+                ],
+              },
+            ],
+            shipping_methods: [
+              {
+                shipping_option: "test-option",
+                price: 1000,
+              },
+            ],
+          },
+          100
+        )
+        await dbConnection.manager
+          .createQueryBuilder()
+          .relation(Cart, "discounts")
+          .of(discountCart)
+          .add(discount)
       })
 
       afterEach(async () => {
@@ -699,13 +682,8 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/line-items/:line_id", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -901,13 +879,8 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1738,11 +1711,7 @@ describe("/store/carts", () => {
 
       const api = useApi()
 
-      try {
-        await api.post(`/store/carts/swap-cart/complete-cart`)
-      } catch (error) {
-        console.log(error)
-      }
+      await api.post(`/store/carts/swap-cart/complete-cart`)
 
       // check to see if payment is authorized and cart is completed
       const res = await api.get(`/store/carts/swap-cart`)
@@ -1753,35 +1722,31 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/shipping-methods", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        const manager = dbConnection.manager
+      await cartSeeder(dbConnection)
+      const manager = dbConnection.manager
 
-        const _cart = await manager.create(Cart, {
-          id: "test-cart-with-cso",
-          customer_id: "some-customer",
-          email: "some-customer@email.com",
-          shipping_address: {
-            id: "test-shipping-address",
-            first_name: "lebron",
-            country_code: "us",
-          },
-          region_id: "test-region",
-          currency_code: "usd",
-          type: "swap",
-        })
+      const _cart = await manager.create(Cart, {
+        id: "test-cart-with-cso",
+        customer_id: "some-customer",
+        email: "some-customer@email.com",
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        type: "swap",
+      })
 
-        const cartWithCustomSo = await manager.save(_cart)
+      const cartWithCustomSo = await manager.save(_cart)
 
-        await manager.insert(CustomShippingOption, {
-          id: "another-cso-test",
-          cart_id: "test-cart-with-cso",
-          shipping_option_id: "test-option",
-          price: 5,
-        })
-      } catch (err) {
-        console.log(err)
-      }
+      await manager.insert(CustomShippingOption, {
+        id: "another-cso-test",
+        cart_id: "test-cart-with-cso",
+        shipping_option_id: "test-option",
+        price: 5,
+      })
     })
 
     afterEach(async () => {
@@ -2059,12 +2024,7 @@ describe("/store/carts", () => {
 
   describe("shipping address + region updates", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
     })
 
     afterEach(async () => {

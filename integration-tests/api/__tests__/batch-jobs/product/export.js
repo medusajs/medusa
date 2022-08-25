@@ -47,14 +47,9 @@ describe("Batch job of product-export type", () => {
   })
 
   beforeEach(async () => {
-    try {
-      await productSeeder(dbConnection)
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+    await productSeeder(dbConnection)
+    await adminSeeder(dbConnection)
+    await userSeeder(dbConnection)
   })
 
   afterEach(async () => {

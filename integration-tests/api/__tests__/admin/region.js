@@ -27,23 +27,18 @@ describe("/admin/regions", () => {
 
   describe("Remove region from country on delete", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        const manager = dbConnection.manager
-        await manager.insert(Region, {
-          id: "test-region",
-          name: "Test Region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+      await adminSeeder(dbConnection)
+      const manager = dbConnection.manager
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
 
-        await manager.query(
-          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await manager.query(
+        `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+      )
     })
 
     afterEach(async () => {
@@ -203,23 +198,18 @@ describe("/admin/regions", () => {
 
   describe("DELETE /admin/regions/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        const manager = dbConnection.manager
-        await manager.insert(Region, {
-          id: "test-region",
-          name: "Test Region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+      await adminSeeder(dbConnection)
+      const manager = dbConnection.manager
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
 
-        await manager.query(
-          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await manager.query(
+        `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+      )
     })
 
     afterEach(async () => {
