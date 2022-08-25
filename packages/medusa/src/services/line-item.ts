@@ -41,7 +41,7 @@ class LineItemService extends BaseService {
   protected readonly cartRepository_: typeof CartRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
-  protected readonly pricingSerivce_: PricingService
+  protected readonly pricingService_: PricingService
   protected readonly regionService_: RegionService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
@@ -198,6 +198,7 @@ class LineItemService extends BaseService {
     quantity: number,
     context: {
       unit_price?: number
+      includes_tax?: boolean
       metadata?: Record<string, unknown>
       customer_id?: string
       cart?: Cart
@@ -218,7 +219,12 @@ class LineItemService extends BaseService {
 
         let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
 
-        let tax_inclusive_obj = {}
+        let tax_inclusive_obj = this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+          ? { includes_tax: context.includes_tax }
+          : {}
+
         let shouldMerge = false
 
         if (context.unit_price === undefined || context.unit_price === null) {
@@ -235,7 +241,8 @@ class LineItemService extends BaseService {
             TaxInclusivePricingFeatureFlag.key
           )
             ? {
-                includes_tax: variantPricing.calculated_price_includes_tax,
+                includes_tax:
+                  variantPricing.calculated_price_includes_tax ?? undefined,
               }
             : {}
           unit_price = variantPricing.calculated_price ?? undefined
