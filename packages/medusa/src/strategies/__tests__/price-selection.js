@@ -607,7 +607,7 @@ const taxInclusiveTesting = [
       context: {
         region_id: "test-region",
         currency_code: "dkk",
-        tax_rate: 0.25,
+        tax_rates: [{ rate: 25 }],
       },
       validate: (value, { mockMoneyAmountRepository, featureFlagRouter }) => {
         expect(
@@ -652,7 +652,7 @@ const taxInclusiveTesting = [
       context: {
         region_id: "test-region",
         currency_code: "dkk",
-        tax_rate: 0.25,
+        tax_rates: [{ rate: 25 }],
       },
       validate: (value, { mockMoneyAmountRepository, featureFlagRouter }) => {
         expect(
@@ -697,7 +697,7 @@ const taxInclusiveTesting = [
       context: {
         region_id: "test-region",
         currency_code: "dkk",
-        tax_rate: 0.25,
+        tax_rates: [{ rate: 25 }],
       },
       validate: (value, { mockMoneyAmountRepository }) => {
         expect(

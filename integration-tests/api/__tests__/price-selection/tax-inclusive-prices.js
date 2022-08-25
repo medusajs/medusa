@@ -95,6 +95,10 @@ describe("tax inclusive prices", () => {
           calculated_price_type: "sale",
           original_price_includes_tax: false,
           calculated_price_includes_tax: true,
+          calculated_price_incl_tax: 110,
+          calculated_tax: 22,
+          original_price_incl_tax: 125,
+          original_tax: 25,
         })
       )
     })
@@ -157,6 +161,10 @@ describe("tax inclusive prices", () => {
           calculated_price_type: "default",
           original_price_includes_tax: false,
           calculated_price_includes_tax: false,
+          original_tax: 25,
+          calculated_tax: 25,
+          original_price_incl_tax: 125,
+          calculated_price_incl_tax: 125,
         })
       )
     })

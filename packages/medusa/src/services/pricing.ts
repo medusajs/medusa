@@ -115,20 +115,43 @@ class PricingService extends TransactionBaseService<PricingService> {
     }
 
     if (variantPricing.calculated_price !== null) {
-      const taxAmount = Math.round(variantPricing.calculated_price * rate)
+      const taxAmount = variantPricing.calculated_price_includes_tax
+        ? this.calculateTaxInclusiveTaxAmount(
+            rate,
+            variantPricing.calculated_price
+          )
+        : Math.round(variantPricing.calculated_price * rate)
       taxedPricing.calculated_tax = taxAmount
+
       taxedPricing.calculated_price_incl_tax =
-        variantPricing.calculated_price + taxAmount
+        variantPricing.calculated_price_includes_tax
+          ? variantPricing.calculated_price
+          : variantPricing.calculated_price + taxAmount
     }
 
     if (variantPricing.original_price !== null) {
-      const taxAmount = Math.round(variantPricing.original_price * rate)
+      const taxAmount = variantPricing.original_price_includes_tax
+        ? this.calculateTaxInclusiveTaxAmount(
+            rate,
+            variantPricing.original_price
+          )
+        : Math.round(variantPricing.original_price * rate)
       taxedPricing.original_tax = taxAmount
+
       taxedPricing.original_price_incl_tax =
-        variantPricing.original_price + taxAmount
+        variantPricing.original_price_includes_tax
+          ? variantPricing.original_price
+          : variantPricing.original_price + taxAmount
     }
 
     return taxedPricing
+  }
+
+  private calculateTaxInclusiveTaxAmount(
+    taxRate: number,
+    taxInclusivePrice: number
+  ): number {
+    return (taxRate * taxInclusivePrice) / (1 + taxRate)
   }
 
   private async getProductVariantPricing_(
