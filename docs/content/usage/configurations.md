@@ -99,7 +99,7 @@ Where `database_type` is `sqlite` and `database_database` is the location you wa
 
 :::note
 
-Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html). You can also spin up a quick, barebone PostgreSQL with Docker following the instruction [here](../tutorial/0-set-up-your-development-environment.mdx/#set-up-postgresql-with-docker)
 
 :::
 
