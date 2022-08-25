@@ -146,15 +146,13 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     region_id?: string,
     currency_code?: string,
     customer_id?: string,
-    include_discount_prices?: boolean
+    include_discount_prices?: boolean,
+    include_tax_inclusive_pricing = false
   ): Promise<[MoneyAmount[], number]> {
     const date = new Date()
 
     const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect("ma.price_list", "price_list")
-      .leftJoin("ma.currency", "currency")
-      .leftJoin("ma.region", "region")
-      .addSelect(["currency.includes_tax", "region.includes_tax"])
       .where({ variant_id: variant_id })
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
       .andWhere("(price_list.ends_at is null OR price_list.ends_at > :date)", {
@@ -167,6 +165,11 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         }
       )
 
+    if (include_tax_inclusive_pricing) {
+      qb.leftJoin("ma.currency", "currency")
+        .leftJoin("ma.region", "region")
+        .addSelect(["currency.includes_tax", "region.includes_tax"])
+    }
     if (region_id || currency_code) {
       qb.andWhere(
         new Brackets((qb) =>

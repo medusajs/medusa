@@ -62,7 +62,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       context.region_id,
       context.currency_code,
       context.customer_id,
-      context.include_discount_prices
+      context.include_discount_prices,
+      true
     )
 
     if (!count) {

@@ -16,6 +16,7 @@ import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
+import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -23,6 +24,7 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   regionService: RegionService
   priceSelectionStrategy: IPriceSelectionStrategy
+  featureFlagRouter: FlagRouter
 }
 
 /**
@@ -36,6 +38,7 @@ class PricingService extends TransactionBaseService<PricingService> {
   protected readonly taxProviderService: TaxProviderService
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
+  protected readonly featureFlagRouter: FlagRouter
 
   constructor({
     manager,
@@ -43,6 +46,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     taxProviderService,
     regionService,
     priceSelectionStrategy,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -52,6 +56,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
+    this.featureFlagRouter = featureFlagRouter
   }
 
   /**
@@ -115,12 +120,14 @@ class PricingService extends TransactionBaseService<PricingService> {
     }
 
     if (variantPricing.calculated_price !== null) {
-      const taxAmount = variantPricing.calculated_price_includes_tax
-        ? this.calculateTaxInclusiveTaxAmount(
-            rate,
-            variantPricing.calculated_price
-          )
-        : Math.round(variantPricing.calculated_price * rate)
+      const taxAmount =
+        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
+        variantPricing.calculated_price_includes_tax
+          ? this.calculateTaxInclusiveTaxAmount(
+              rate,
+              variantPricing.calculated_price
+            )
+          : Math.round(variantPricing.calculated_price * rate)
       taxedPricing.calculated_tax = taxAmount
 
       taxedPricing.calculated_price_incl_tax =
@@ -130,12 +137,14 @@ class PricingService extends TransactionBaseService<PricingService> {
     }
 
     if (variantPricing.original_price !== null) {
-      const taxAmount = variantPricing.original_price_includes_tax
-        ? this.calculateTaxInclusiveTaxAmount(
-            rate,
-            variantPricing.original_price
-          )
-        : Math.round(variantPricing.original_price * rate)
+      const taxAmount =
+        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
+        variantPricing.original_price_includes_tax
+          ? this.calculateTaxInclusiveTaxAmount(
+              rate,
+              variantPricing.original_price
+            )
+          : Math.round(variantPricing.original_price * rate)
       taxedPricing.original_tax = taxAmount
 
       taxedPricing.original_price_incl_tax =
