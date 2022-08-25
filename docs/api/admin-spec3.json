@@ -4608,164 +4608,6 @@
         }
       }
     },
-    "/notifications": {
-      "get": {
-        "operationId": "GetNotifications",
-        "summary": "List Notifications",
-        "description": "Retrieves a list of Notifications.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of notifications to skip before starting to collect the notifications set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of notifications to return",
-            "schema": {
-              "type": "integer",
-              "default": 50
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "Comma separated fields to include in the result set",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "Comma separated fields to populate",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "event_name",
-            "description": "The name of the event that the notification was sent for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "resource_type",
-            "description": "The type of resource that the Notification refers to.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "resource_id",
-            "description": "The ID of the resource that the Notification refers to.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "to",
-            "description": "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "include_resends",
-            "description": "A boolean indicating whether the result set should include resent notifications or not",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Notification"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "notifications": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/notification"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/notifications/{id}/resend": {
-      "post": {
-        "operationId": "PostNotificationsNotificationResend",
-        "summary": "Resend Notification",
-        "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Notification",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "to": {
-                    "description": "A new address or user identifier that the Notification should be sent to",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Notification"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "notification": {
-                      "$ref": "#/components/schemas/notification"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/notes": {
       "post": {
         "operationId": "PostNotes",
@@ -5017,6 +4859,164 @@
                   "properties": {
                     "note": {
                       "$ref": "#/components/schemas/note"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "operationId": "GetNotifications",
+        "summary": "List Notifications",
+        "description": "Retrieves a list of Notifications.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of notifications to skip before starting to collect the notifications set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of notifications to return",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Comma separated fields to include in the result set",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Comma separated fields to populate",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "event_name",
+            "description": "The name of the event that the notification was sent for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resource_type",
+            "description": "The type of resource that the Notification refers to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resource_id",
+            "description": "The ID of the resource that the Notification refers to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_resends",
+            "description": "A boolean indicating whether the result set should include resent notifications or not",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "notifications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/notification"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{id}/resend": {
+      "post": {
+        "operationId": "PostNotificationsNotificationResend",
+        "summary": "Resend Notification",
+        "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Notification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "to": {
+                    "description": "A new address or user identifier that the Notification should be sent to",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "notification": {
+                      "$ref": "#/components/schemas/notification"
                     }
                   }
                 }
@@ -7141,167 +7141,6 @@
         }
       }
     },
-    "/product-tags": {
-      "get": {
-        "operationId": "GetProductTags",
-        "summary": "List Product Tags",
-        "description": "Retrieve a list of Product Tags.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of tags to return.",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of items to skip before the results.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "The field to sort items by.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "value",
-            "style": "form",
-            "explode": false,
-            "description": "The tag values to search for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "q",
-            "description": "A query string to search values for",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "style": "form",
-            "explode": false,
-            "description": "The tag IDs to search for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting product tags were created.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting product tags were updated.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "lt": {
-                  "type": "string",
-                  "description": "filter by dates less than this date",
-                  "format": "date"
-                },
-                "gt": {
-                  "type": "string",
-                  "description": "filter by dates greater than this date",
-                  "format": "date"
-                },
-                "lte": {
-                  "type": "string",
-                  "description": "filter by dates less than or equal to this date",
-                  "format": "date"
-                },
-                "gte": {
-                  "type": "string",
-                  "description": "filter by dates greater than or equal to this date",
-                  "format": "date"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Product Tag"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product_tags": {
-                      "$ref": "#/components/schemas/product_tag"
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/price-lists/{id}/prices/batch": {
       "post": {
         "operationId": "PostPriceListsPriceListPricesBatch",
@@ -8445,6 +8284,167 @@
                       "items": {
                         "$ref": "#/components/schemas/product"
                       }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product-tags": {
+      "get": {
+        "operationId": "GetProductTags",
+        "summary": "List Product Tags",
+        "description": "Retrieve a list of Product Tags.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of tags to return.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of items to skip before the results.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "The field to sort items by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "style": "form",
+            "explode": false,
+            "description": "The tag values to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "description": "A query string to search values for",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "style": "form",
+            "explode": false,
+            "description": "The tag IDs to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting product tags were created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting product tags were updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Product Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product_tags": {
+                      "$ref": "#/components/schemas/product_tag"
                     },
                     "count": {
                       "type": "integer",
@@ -11203,178 +11203,6 @@
         }
       }
     },
-    "/returns/{id}/cancel": {
-      "post": {
-        "operationId": "PostReturnsReturnCancel",
-        "summary": "Cancel a Return",
-        "description": "Registers a Return as canceled.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns": {
-      "get": {
-        "operationId": "GetReturns",
-        "summary": "List Returns",
-        "description": "Retrieves a list of Returns",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The upper limit for the amount of responses returned.",
-            "schema": {
-              "type": "number",
-              "default": "50"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset of the list returned.",
-            "schema": {
-              "type": "number",
-              "default": "0"
-            }
-          }
-        ],
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "returns": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/return"
-                      }
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns/{id}/receive": {
-      "post": {
-        "operationId": "PostReturnsReturnReceive",
-        "summary": "Receive a Return",
-        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "items"
-                ],
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "item_id",
-                        "quantity"
-                      ],
-                      "properties": {
-                        "item_id": {
-                          "description": "The ID of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "number"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return": {
-                      "$ref": "#/components/schemas/return"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/return-reasons": {
       "post": {
         "operationId": "PostReturnReasons",
@@ -11602,6 +11430,178 @@
                   "properties": {
                     "return_reason": {
                       "$ref": "#/components/schemas/return_reason"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns/{id}/cancel": {
+      "post": {
+        "operationId": "PostReturnsReturnCancel",
+        "summary": "Cancel a Return",
+        "description": "Registers a Return as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "get": {
+        "operationId": "GetReturns",
+        "summary": "List Returns",
+        "description": "Retrieves a list of Returns",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The upper limit for the amount of responses returned.",
+            "schema": {
+              "type": "number",
+              "default": "50"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of the list returned.",
+            "schema": {
+              "type": "number",
+              "default": "0"
+            }
+          }
+        ],
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "returns": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns/{id}/receive": {
+      "post": {
+        "operationId": "PostReturnsReturnReceive",
+        "summary": "Receive a Return",
+        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "items"
+                ],
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "item_id": {
+                          "description": "The ID of the Line Item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "refund": {
+                    "description": "The amount to refund.",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -12144,212 +12144,6 @@
         }
       }
     },
-    "/shipping-profiles": {
-      "post": {
-        "operationId": "PostShippingProfiles",
-        "summary": "Create a Shipping Profile",
-        "description": "Creates a Shipping Profile",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "description": "The name of the Shipping Profile",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Shipping Profile"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_profile": {
-                      "$ref": "#/components/schemas/shipping_profile"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetShippingProfiles",
-        "summary": "List Shipping Profiles",
-        "description": "Retrieves a list of Shipping Profile.",
-        "x-authenticated": true,
-        "tags": [
-          "Shipping Profile"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_profiles": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/shipping_profile"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/shipping-profiles/{id}": {
-      "delete": {
-        "operationId": "DeleteShippingProfilesProfile",
-        "summary": "Delete a Shipping Profile",
-        "description": "Deletes a Shipping Profile.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Shipping Profile.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Shipping Profile"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The ID of the deleted Shipping Profile."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted.",
-                      "default": "shipping_profile"
-                    },
-                    "deleted": {
-                      "type": "boolean",
-                      "description": "Whether or not the items were deleted.",
-                      "default": true
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetShippingProfilesProfile",
-        "summary": "Retrieve a Shipping Profile",
-        "description": "Retrieves a Shipping Profile.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Shipping Profile.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Shipping Profile"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_profile": {
-                      "$ref": "#/components/schemas/shipping_profile"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostShippingProfilesProfile",
-        "summary": "Update a Shipping Profiles",
-        "description": "Updates a Shipping Profile",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The ID of the Shipping Profile.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Shipping Profile",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Shipping Profile"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "shipping_profile": {
-                      "$ref": "#/components/schemas/shipping_profile"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/shipping-options": {
       "post": {
         "operationId": "PostShippingOptions",
@@ -12691,6 +12485,212 @@
                   "properties": {
                     "shipping_option": {
                       "$ref": "#/components/schemas/shipping_option"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-profiles": {
+      "post": {
+        "operationId": "PostShippingProfiles",
+        "summary": "Create a Shipping Profile",
+        "description": "Creates a Shipping Profile",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "description": "The name of the Shipping Profile",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Shipping Profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_profile": {
+                      "$ref": "#/components/schemas/shipping_profile"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetShippingProfiles",
+        "summary": "List Shipping Profiles",
+        "description": "Retrieves a list of Shipping Profile.",
+        "x-authenticated": true,
+        "tags": [
+          "Shipping Profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_profiles": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/shipping_profile"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipping-profiles/{id}": {
+      "delete": {
+        "operationId": "DeleteShippingProfilesProfile",
+        "summary": "Delete a Shipping Profile",
+        "description": "Deletes a Shipping Profile.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Shipping Profile.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Shipping Profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the deleted Shipping Profile."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted.",
+                      "default": "shipping_profile"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether or not the items were deleted.",
+                      "default": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetShippingProfilesProfile",
+        "summary": "Retrieve a Shipping Profile",
+        "description": "Retrieves a Shipping Profile.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Shipping Profile.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Shipping Profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_profile": {
+                      "$ref": "#/components/schemas/shipping_profile"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostShippingProfilesProfile",
+        "summary": "Update a Shipping Profiles",
+        "description": "Updates a Shipping Profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the Shipping Profile.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Shipping Profile",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Shipping Profile"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "shipping_profile": {
+                      "$ref": "#/components/schemas/shipping_profile"
                     }
                   }
                 }
