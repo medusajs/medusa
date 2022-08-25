@@ -575,6 +575,21 @@ module.exports = {
         }
       ]
     },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Taxes",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/taxes/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/taxes/manage"
+        }
+      ]
+    },
   ],
   servicesSidebar: [
     {
