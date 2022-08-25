@@ -27,8 +27,9 @@ describe("Product import batch job", () => {
 
     medusaProcess = await setupServer({
       cwd,
+      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: true,
+      verbose: false,
     })
   })
 
@@ -72,7 +73,6 @@ describe("Product import batch job", () => {
     const response = await api.post(
       "/admin/batch-jobs",
       {
-        dry_run: false,
         type: "product_import",
         context: {
           fileKey: "product-import.csv",
