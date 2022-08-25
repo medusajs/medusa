@@ -1,3 +1,4 @@
+const { Currency } = require("@medusajs/medusa")
 const path = require("path")
 
 const startServerWithEnvironment =
@@ -37,136 +38,427 @@ describe("tax inclusive prices", () => {
     medusaProcess.kill()
   })
 
-  describe("getting product with mixed prices preferring tax inclusive prices", () => {
-    let regionId
-    let productId
+  describe("region tax inclusive", () => {
+    describe("getting product with mixed prices preferring tax inclusive prices", () => {
+      let regionId
+      let productId
 
-    beforeEach(async () => {
-      const region = await simpleRegionFactory(dbConnection, {
-        includes_tax: true,
-      })
-
-      const product = await simpleProductFactory(dbConnection, {
-        variants: [{ id: "var_1", prices: [{ currency: "usd", amount: 100 }] }],
-      })
-
-      regionId = region.id
-      productId = product.id
-
-      await simpleProductTaxRateFactory(dbConnection, {
-        product_id: product.id,
-        rate: {
-          region_id: region.id,
-          rate: 25,
-        },
-      })
-
-      await simplePriceListFactory(dbConnection, {
-        status: "active",
-        type: "sale",
-        prices: [
-          {
-            variant_id: "var_1",
-            amount: 110,
-            currency_code: "usd",
-            region_id: region.id,
-          },
-        ],
-      })
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("test", async () => {
-      const api = useApi()
-      const res = await api
-        .get(`/store/products/${productId}?region_id=${regionId}`)
-        .catch((error) => console.log(error))
-
-      const variant = res.data.product.variants[0]
-
-      expect(variant).toEqual(
-        expect.objectContaining({
-          original_price: 100,
-          calculated_price: 110,
-          calculated_price_type: "sale",
-          original_price_includes_tax: false,
-          calculated_price_includes_tax: true,
-          calculated_price_incl_tax: 110,
-          calculated_tax: 22,
-          original_price_incl_tax: 125,
-          original_tax: 25,
+      beforeEach(async () => {
+        const region = await simpleRegionFactory(dbConnection, {
+          includes_tax: true,
         })
-      )
+
+        const product = await simpleProductFactory(dbConnection, {
+          variants: [
+            { id: "var_1", prices: [{ currency: "usd", amount: 100 }] },
+          ],
+        })
+
+        regionId = region.id
+        productId = product.id
+
+        await simpleProductTaxRateFactory(dbConnection, {
+          product_id: product.id,
+          rate: {
+            region_id: region.id,
+            rate: 25,
+          },
+        })
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: "var_1",
+              amount: 110,
+              currency_code: "usd",
+              region_id: region.id,
+            },
+          ],
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("test", async () => {
+        const api = useApi()
+        const res = await api
+          .get(`/store/products/${productId}?region_id=${regionId}`)
+          .catch((error) => console.log(error))
+
+        const variant = res.data.product.variants[0]
+
+        expect(variant).toEqual(
+          expect.objectContaining({
+            original_price: 100,
+            calculated_price: 110,
+            calculated_price_type: "sale",
+            original_price_includes_tax: false,
+            calculated_price_includes_tax: true,
+            calculated_price_incl_tax: 110,
+            calculated_tax: 22,
+            original_price_incl_tax: 125,
+            original_tax: 25,
+            prices: [
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                price_list_id: null,
+              }),
+              expect.objectContaining({
+                amount: 110,
+                currency_code: "usd",
+                price_list_id: expect.any(String),
+              }),
+            ],
+          })
+        )
+      })
+    })
+
+    describe("getting product with mixed prices preferring tax exclusive prices", () => {
+      let regionId
+      let productId
+
+      beforeEach(async () => {
+        const region = await simpleRegionFactory(dbConnection, {
+          includes_tax: true,
+        })
+
+        const product = await simpleProductFactory(dbConnection, {
+          variants: [
+            { id: "var_1", prices: [{ currency: "usd", amount: 100 }] },
+          ],
+        })
+
+        regionId = region.id
+        productId = product.id
+
+        await simpleProductTaxRateFactory(dbConnection, {
+          product_id: product.id,
+          rate: {
+            region_id: region.id,
+            rate: 25,
+          },
+        })
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          prices: [
+            {
+              variant_id: "var_1",
+              amount: 130,
+              currency_code: "usd",
+              region_id: region.id,
+            },
+          ],
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("test", async () => {
+        const api = useApi()
+        const res = await api
+          .get(`/store/products/${productId}?region_id=${regionId}`)
+          .catch((error) => console.log(error))
+
+        const variant = res.data.product.variants[0]
+
+        expect(variant).toEqual(
+          expect.objectContaining({
+            original_price: 100,
+            calculated_price: 100,
+            calculated_price_type: "default",
+            original_price_includes_tax: false,
+            calculated_price_includes_tax: false,
+            original_tax: 25,
+            calculated_tax: 25,
+            original_price_incl_tax: 125,
+            calculated_price_incl_tax: 125,
+            prices: [
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                price_list_id: null,
+              }),
+              expect.objectContaining({
+                amount: 130,
+                currency_code: "usd",
+                price_list_id: expect.any(String),
+              }),
+            ],
+          })
+        )
+      })
     })
   })
 
-  describe("getting product with mixed prices preferring tax exclusive prices", () => {
-    let regionId
-    let productId
+  describe("currency tax inclusive", () => {
+    describe("getting product with mixed prices preferring tax inclusive prices", () => {
+      let regionId
+      let productId
 
-    beforeEach(async () => {
-      const region = await simpleRegionFactory(dbConnection, {
-        includes_tax: true,
-      })
+      beforeEach(async () => {
+        const manager = dbConnection.manager
 
-      const product = await simpleProductFactory(dbConnection, {
-        variants: [{ id: "var_1", prices: [{ currency: "usd", amount: 100 }] }],
-      })
-
-      regionId = region.id
-      productId = product.id
-
-      await simpleProductTaxRateFactory(dbConnection, {
-        product_id: product.id,
-        rate: {
-          region_id: region.id,
-          rate: 25,
-        },
-      })
-
-      await simplePriceListFactory(dbConnection, {
-        status: "active",
-        prices: [
-          {
-            variant_id: "var_1",
-            amount: 130,
-            currency_code: "usd",
-            region_id: region.id,
-          },
-        ],
-      })
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("test", async () => {
-      const api = useApi()
-      const res = await api
-        .get(`/store/products/${productId}?region_id=${regionId}`)
-        .catch((error) => console.log(error))
-
-      const variant = res.data.product.variants[0]
-
-      expect(variant).toEqual(
-        expect.objectContaining({
-          original_price: 100,
-          calculated_price: 100,
-          calculated_price_type: "default",
-          original_price_includes_tax: false,
-          calculated_price_includes_tax: false,
-          original_tax: 25,
-          calculated_tax: 25,
-          original_price_incl_tax: 125,
-          calculated_price_incl_tax: 125,
+        const currency = await manager.findOne(Currency, {
+          where: { code: "usd" },
         })
-      )
+
+        currency.includes_tax = true
+
+        await manager.save(currency)
+
+        const region = await simpleRegionFactory(dbConnection, {})
+
+        const product = await simpleProductFactory(dbConnection, {
+          variants: [
+            { id: "var_1", prices: [{ currency: "usd", amount: 110 }] },
+          ],
+        })
+
+        regionId = region.id
+        productId = product.id
+
+        await simpleProductTaxRateFactory(dbConnection, {
+          product_id: product.id,
+          rate: {
+            region_id: region.id,
+            rate: 25,
+          },
+        })
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: "var_1",
+              amount: 100,
+              currency_code: "usd",
+              region_id: region.id,
+            },
+          ],
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+
+        const currency = await dbConnection.manager.findOne(Currency, {
+          where: { code: "usd" },
+        })
+
+        currency.includes_tax = false
+
+        await dbConnection.manager.save(currency)
+
+        await db.teardown()
+      })
+
+      it("test", async () => {
+        const api = useApi()
+        const res = await api
+          .get(`/store/products/${productId}?region_id=${regionId}`)
+          .catch((error) => console.log(error))
+
+        const variant = res.data.product.variants[0]
+
+        expect(variant).toEqual(
+          expect.objectContaining({
+            original_price: 110,
+            calculated_price: 100,
+            calculated_price_type: "sale",
+            original_price_includes_tax: true,
+            calculated_price_includes_tax: true,
+            calculated_price_incl_tax: 100,
+            calculated_tax: 20,
+            original_price_incl_tax: 110,
+            original_tax: 22,
+            prices: [
+              expect.objectContaining({
+                amount: 110,
+                currency_code: "usd",
+                price_list_id: null,
+              }),
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                price_list_id: expect.any(String),
+              }),
+            ],
+          })
+        )
+      })
+    })
+  })
+
+  describe("pricelist tax inclusive", () => {
+    describe("getting product with mixed prices preferring tax inclusive prices", () => {
+      let regionId
+      let productId
+
+      beforeEach(async () => {
+        const region = await simpleRegionFactory(dbConnection, {})
+
+        const product = await simpleProductFactory(dbConnection, {
+          variants: [
+            { id: "var_1", prices: [{ currency: "usd", amount: 100 }] },
+          ],
+        })
+
+        regionId = region.id
+        productId = product.id
+
+        await simpleProductTaxRateFactory(dbConnection, {
+          product_id: product.id,
+          rate: {
+            region_id: region.id,
+            rate: 25,
+          },
+        })
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          includes_tax: true,
+          prices: [
+            {
+              variant_id: "var_1",
+              amount: 110,
+              currency_code: "usd",
+              region_id: region.id,
+            },
+          ],
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("test", async () => {
+        const api = useApi()
+        const res = await api
+          .get(`/store/products/${productId}?region_id=${regionId}`)
+          .catch((error) => console.log(error))
+
+        const variant = res.data.product.variants[0]
+
+        expect(variant).toEqual(
+          expect.objectContaining({
+            original_price: 100,
+            calculated_price: 110,
+            calculated_price_type: "sale",
+            original_price_includes_tax: false,
+            calculated_price_includes_tax: true,
+            calculated_price_incl_tax: 110,
+            calculated_tax: 22,
+            original_price_incl_tax: 125,
+            original_tax: 25,
+            prices: [
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                price_list_id: null,
+              }),
+              expect.objectContaining({
+                amount: 110,
+                currency_code: "usd",
+                price_list_id: expect.any(String),
+              }),
+            ],
+          })
+        )
+      })
+    })
+
+    describe("getting product with mixed prices preferring tax exclusive prices", () => {
+      let regionId
+      let productId
+
+      beforeEach(async () => {
+        const region = await simpleRegionFactory(dbConnection, {})
+
+        const product = await simpleProductFactory(dbConnection, {
+          variants: [
+            { id: "var_1", prices: [{ currency: "usd", amount: 100 }] },
+          ],
+        })
+
+        regionId = region.id
+        productId = product.id
+
+        await simpleProductTaxRateFactory(dbConnection, {
+          product_id: product.id,
+          rate: {
+            region_id: region.id,
+            rate: 25,
+          },
+        })
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          includes_tax: true,
+          prices: [
+            {
+              variant_id: "var_1",
+              amount: 130,
+              currency_code: "usd",
+              region_id: region.id,
+            },
+          ],
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("test", async () => {
+        const api = useApi()
+        const res = await api
+          .get(`/store/products/${productId}?region_id=${regionId}`)
+          .catch((error) => console.log(error))
+
+        const variant = res.data.product.variants[0]
+
+        expect(variant).toEqual(
+          expect.objectContaining({
+            original_price: 100,
+            calculated_price: 100,
+            calculated_price_type: "default",
+            original_price_includes_tax: false,
+            calculated_price_includes_tax: false,
+            original_tax: 25,
+            calculated_tax: 25,
+            original_price_incl_tax: 125,
+            calculated_price_incl_tax: 125,
+            prices: [
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "usd",
+                price_list_id: null,
+              }),
+              expect.objectContaining({
+                amount: 130,
+                currency_code: "usd",
+                price_list_id: expect.any(String),
+              }),
+            ],
+          })
+        )
+      })
     })
   })
 
