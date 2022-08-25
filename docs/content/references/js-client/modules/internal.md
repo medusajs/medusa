@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/request.ts:21](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/request.ts#L21)
+[medusa-js/src/request.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/request.ts#L21)
 
 ___
 
@@ -169,7 +169,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:17](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/typings.ts#L17)
+[medusa-js/src/typings.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L17)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:21](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/typings.ts#L21)
+[medusa-js/src/typings.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L21)
 
 ___
 

@@ -26,4 +26,4 @@ Lists customer payment methods
 
 #### Defined in
 
-[medusa-js/src/resources/payment-methods.ts:12](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/payment-methods.ts#L12)
+[medusa-js/src/resources/payment-methods.ts:12](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/payment-methods.ts#L12)

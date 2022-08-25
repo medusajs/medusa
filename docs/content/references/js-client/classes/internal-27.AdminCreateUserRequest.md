@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/create-user.d.ts:46
+medusa/dist/api/routes/admin/users/create-user.d.ts:49
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/create-user.d.ts:47
+medusa/dist/api/routes/admin/users/create-user.d.ts:50
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/create-user.d.ts:48
+medusa/dist/api/routes/admin/users/create-user.d.ts:51
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/create-user.d.ts:50
+medusa/dist/api/routes/admin/users/create-user.d.ts:53
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/create-user.d.ts:49
+medusa/dist/api/routes/admin/users/create-user.d.ts:52

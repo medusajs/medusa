@@ -30,7 +30,7 @@ Adds region to discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:24](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L24)
+[medusa-js/src/resources/admin/discounts.ts:24](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L24)
 
 ___
 
@@ -55,7 +55,7 @@ Creates discounts
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:36](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L36)
+[medusa-js/src/resources/admin/discounts.ts:36](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L36)
 
 ___
 
@@ -82,7 +82,7 @@ creates a discount condition
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:145](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L145)
+[medusa-js/src/resources/admin/discounts.ts:145](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L145)
 
 ___
 
@@ -108,7 +108,7 @@ Creates a dynamic discount code
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:59](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L59)
+[medusa-js/src/resources/admin/discounts.ts:59](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L59)
 
 ___
 
@@ -133,7 +133,7 @@ Deletes a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:71](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L71)
+[medusa-js/src/resources/admin/discounts.ts:71](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L71)
 
 ___
 
@@ -159,7 +159,7 @@ Removes a condition from a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:184](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L184)
+[medusa-js/src/resources/admin/discounts.ts:184](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L184)
 
 ___
 
@@ -185,7 +185,7 @@ Deletes a dynamic discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:82](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L82)
+[medusa-js/src/resources/admin/discounts.ts:82](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L82)
 
 ___
 
@@ -212,7 +212,7 @@ Gets a condition from a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:196](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L196)
+[medusa-js/src/resources/admin/discounts.ts:196](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L196)
 
 ___
 
@@ -237,7 +237,7 @@ Lists discounts
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:116](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L116)
+[medusa-js/src/resources/admin/discounts.ts:116](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L116)
 
 ___
 
@@ -263,7 +263,7 @@ Removes a region from a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:133](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L133)
+[medusa-js/src/resources/admin/discounts.ts:133](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L133)
 
 ___
 
@@ -288,7 +288,7 @@ Retrieves a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:94](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L94)
+[medusa-js/src/resources/admin/discounts.ts:94](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L94)
 
 ___
 
@@ -313,7 +313,7 @@ Retrieves a discount by code
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:105](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L105)
+[medusa-js/src/resources/admin/discounts.ts:105](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L105)
 
 ___
 
@@ -339,7 +339,7 @@ Updates discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:47](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L47)
+[medusa-js/src/resources/admin/discounts.ts:47](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L47)
 
 ___
 
@@ -367,4 +367,4 @@ Updates a discount condition
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:164](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/discounts.ts#L164)
+[medusa-js/src/resources/admin/discounts.ts:164](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L164)

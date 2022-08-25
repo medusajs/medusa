@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:24
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:77
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:25
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:78
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:30
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:83
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:28
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:81
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:27
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:80
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:26
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:79
 
 ___
 
@@ -70,4 +70,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:29
+medusa/dist/api/routes/admin/tax-rates/create-tax-rate.d.ts:82

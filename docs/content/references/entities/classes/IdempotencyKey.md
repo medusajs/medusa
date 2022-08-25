@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L23)
+[models/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L23)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:16](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L16)
+[models/idempotency-key.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L16)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L20)
+[models/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L20)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:26](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L26)
+[models/idempotency-key.ts:26](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L26)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:44](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L44)
+[models/idempotency-key.ts:44](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L44)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:29](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L29)
+[models/idempotency-key.ts:29](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L29)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:32](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L32)
+[models/idempotency-key.ts:32](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L32)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:35](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L35)
+[models/idempotency-key.ts:35](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L35)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L41)
+[models/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L41)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:38](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L38)
+[models/idempotency-key.ts:38](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L38)
 
 ## Methods
 
@@ -122,4 +122,4 @@ ___
 
 #### Defined in
 
-[models/idempotency-key.ts:46](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/idempotency-key.ts#L46)
+[models/idempotency-key.ts:46](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/idempotency-key.ts#L46)
