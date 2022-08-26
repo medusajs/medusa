@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:138
+medusa/dist/models/cart.d.ts:224
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:139
+medusa/dist/models/cart.d.ts:225
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:106
+medusa/dist/models/cart.d.ts:192
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:105
+medusa/dist/models/cart.d.ts:191
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:122
+medusa/dist/models/cart.d.ts:208
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:125
+medusa/dist/models/cart.d.ts:211
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:115
+medusa/dist/models/cart.d.ts:201
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:114
+medusa/dist/models/cart.d.ts:200
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:130
+medusa/dist/models/cart.d.ts:216
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:112
+medusa/dist/models/cart.d.ts:198
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:104
+medusa/dist/models/cart.d.ts:190
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:137
+medusa/dist/models/cart.d.ts:223
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:136
+medusa/dist/models/cart.d.ts:222
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:113
+medusa/dist/models/cart.d.ts:199
 
 ___
 
@@ -204,7 +204,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:124
+medusa/dist/models/cart.d.ts:210
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:109
+medusa/dist/models/cart.d.ts:195
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:126
+medusa/dist/models/cart.d.ts:212
 
 ___
 
@@ -234,7 +234,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:103
+medusa/dist/models/cart.d.ts:189
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:119
+medusa/dist/models/cart.d.ts:205
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:123
+medusa/dist/models/cart.d.ts:209
 
 ___
 
@@ -264,7 +264,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:118
+medusa/dist/models/cart.d.ts:204
 
 ___
 
@@ -274,7 +274,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:116
+medusa/dist/models/cart.d.ts:202
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:117
+medusa/dist/models/cart.d.ts:203
 
 ___
 
@@ -294,7 +294,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:135
+medusa/dist/models/cart.d.ts:221
 
 ___
 
@@ -304,7 +304,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:132
+medusa/dist/models/cart.d.ts:218
 
 ___
 
@@ -314,7 +314,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:111
+medusa/dist/models/cart.d.ts:197
 
 ___
 
@@ -324,7 +324,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:110
+medusa/dist/models/cart.d.ts:196
 
 ___
 
@@ -334,7 +334,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:128
+medusa/dist/models/cart.d.ts:214
 
 ___
 
@@ -344,7 +344,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:127
+medusa/dist/models/cart.d.ts:213
 
 ___
 
@@ -354,7 +354,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:108
+medusa/dist/models/cart.d.ts:194
 
 ___
 
@@ -364,7 +364,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:107
+medusa/dist/models/cart.d.ts:193
 
 ___
 
@@ -374,7 +374,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:120
+medusa/dist/models/cart.d.ts:206
 
 ___
 
@@ -384,7 +384,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:129
+medusa/dist/models/cart.d.ts:215
 
 ___
 
@@ -394,7 +394,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:134
+medusa/dist/models/cart.d.ts:220
 
 ___
 
@@ -404,7 +404,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:131
+medusa/dist/models/cart.d.ts:217
 
 ___
 
@@ -414,7 +414,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:133
+medusa/dist/models/cart.d.ts:219
 
 ___
 
@@ -424,7 +424,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:121
+medusa/dist/models/cart.d.ts:207
 
 ___
 

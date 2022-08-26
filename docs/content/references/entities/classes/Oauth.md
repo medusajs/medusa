@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/oauth.ts:16](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L16)
+[models/oauth.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L16)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:25](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L25)
+[models/oauth.ts:25](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L25)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:12](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L12)
+[models/oauth.ts:12](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L12)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:9](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L9)
+[models/oauth.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L9)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:19](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L19)
+[models/oauth.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L19)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:22](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L22)
+[models/oauth.ts:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L22)
 
 ## Methods
 
@@ -82,4 +82,4 @@ ___
 
 #### Defined in
 
-[models/oauth.ts:27](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/oauth.ts#L27)
+[models/oauth.ts:27](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/oauth.ts#L27)

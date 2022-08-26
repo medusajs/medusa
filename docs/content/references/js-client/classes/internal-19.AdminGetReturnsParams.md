@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/returns/list-returns.d.ts:26
+medusa/dist/api/routes/admin/returns/list-returns.d.ts:35
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/returns/list-returns.d.ts:27
+medusa/dist/api/routes/admin/returns/list-returns.d.ts:36

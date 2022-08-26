@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/get-condition.d.ts:29
+medusa/dist/api/routes/admin/discounts/get-condition.d.ts:28
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/get-condition.d.ts:30
+medusa/dist/api/routes/admin/discounts/get-condition.d.ts:29

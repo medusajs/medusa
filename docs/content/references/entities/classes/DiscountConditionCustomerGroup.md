@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:20](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L20)
+[models/discount-condition-customer-group.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L20)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:31](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L31)
+[models/discount-condition-customer-group.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L31)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:24](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L24)
+[models/discount-condition-customer-group.ts:24](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L24)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:17](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L17)
+[models/discount-condition-customer-group.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L17)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:28](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L28)
+[models/discount-condition-customer-group.ts:28](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L28)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:37](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L37)
+[models/discount-condition-customer-group.ts:37](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L37)
 
 ___
 
@@ -78,4 +78,4 @@ ___
 
 #### Defined in
 
-[models/discount-condition-customer-group.ts:34](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/discount-condition-customer-group.ts#L34)
+[models/discount-condition-customer-group.ts:34](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/discount-condition-customer-group.ts#L34)

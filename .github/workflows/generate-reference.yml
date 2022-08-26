@@ -51,3 +51,5 @@ jobs:
           title: 'chore(docs): Generated Services Reference (automated)'
           labels: 'type: chore'
           add-paths: docs/content/references/services/**
+          branch: 'chore/generate-services'
+          branch-suffix: 'timestamp'

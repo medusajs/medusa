@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:86
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:97
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:84
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:95
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:82
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:93
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:87
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:98
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:88
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:99
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:78
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:89
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:83
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:94
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:81
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:92
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:80
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:91
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:79
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:90
 
 ___
 
@@ -110,4 +110,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:85
+medusa/dist/api/routes/admin/shipping-options/create-shipping-option.d.ts:96

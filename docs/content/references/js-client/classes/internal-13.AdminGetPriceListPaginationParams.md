@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:37
+medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:140
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:36
+medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:139
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:35
+medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:138
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:38
+medusa/dist/api/routes/admin/price-lists/list-price-lists.d.ts:141
 
 ___
 

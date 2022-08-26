@@ -2,10 +2,12 @@
 
 ## Classes
 
+- [AdminDeleteProductsFromCollectionReq](../classes/internal-3.AdminDeleteProductsFromCollectionReq.md)
 - [AdminGetCollectionsPaginationParams](../classes/internal-3.AdminGetCollectionsPaginationParams.md)
 - [AdminGetCollectionsParams](../classes/internal-3.AdminGetCollectionsParams.md)
 - [AdminPostCollectionsCollectionReq](../classes/internal-3.AdminPostCollectionsCollectionReq.md)
 - [AdminPostCollectionsReq](../classes/internal-3.AdminPostCollectionsReq.md)
+- [AdminPostProductsToCollectionReq](../classes/internal-3.AdminPostProductsToCollectionReq.md)
 
 ## Type Aliases
 

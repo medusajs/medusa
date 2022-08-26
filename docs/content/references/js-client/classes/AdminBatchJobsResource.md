@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/batch-jobs.ts:35](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/batch-jobs.ts#L35)
+[medusa-js/src/resources/admin/batch-jobs.ts:35](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/batch-jobs.ts#L35)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/batch-jobs.ts:43](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/batch-jobs.ts#L43)
+[medusa-js/src/resources/admin/batch-jobs.ts:43](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/batch-jobs.ts#L43)
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/batch-jobs.ts:13](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/batch-jobs.ts#L13)
+[medusa-js/src/resources/admin/batch-jobs.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/batch-jobs.ts#L13)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/batch-jobs.ts:21](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/batch-jobs.ts#L21)
+[medusa-js/src/resources/admin/batch-jobs.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/batch-jobs.ts#L21)
 
 ___
 
@@ -109,4 +109,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/batch-jobs.ts:51](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/batch-jobs.ts#L51)
+[medusa-js/src/resources/admin/batch-jobs.ts:51](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/batch-jobs.ts#L51)
