@@ -28,6 +28,11 @@ import { validator } from "../../../../utils/validator"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
  * tags:
  *   - Product Variant
  * responses:
@@ -39,6 +44,16 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             variant:
  *               $ref: "#/components/schemas/product_variant"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { id } = req.params
