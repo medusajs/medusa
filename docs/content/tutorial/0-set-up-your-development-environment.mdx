@@ -216,15 +216,13 @@ Make sure the Docker Desktop app is running, then run the following command to q
 docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
 ```
 
-`--name` creates a new container named `postgres`.
+Where:
 
-`-e` creates environment variables POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DB. These will be used to set up a database named `medusa-docker` with username and password being `postgres`.
-
-`-p` maps the container port 5432 to the external host 5432. This allows you to connect to the database server from the outside.
-
-`-d` enables Docker to run the container in the background.
-
-The last seciton of the command, `postgres` grabs the latest postgres image from the Docker hub.
+- `--name` creates a new container named `postgres`.
+- `-e` creates environment variables `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. These will be used to set up a database named `medusa-docker` with the username and password being `postgres`.
+- `-p` maps the container port `5432` to the external host `5432`. This allows you to connect to the database server from outside of the container.
+- `-d` enables Docker to run the container in the background.
+- The last section of the command, `postgres` grabs the latest postgres image from the Docker hub.
 
 </TabItem>
 </Tabs>
