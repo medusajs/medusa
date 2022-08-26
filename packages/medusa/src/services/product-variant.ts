@@ -40,15 +40,15 @@ class ProductVariantService extends BaseService {
     DELETED: "product-variant.deleted",
   }
 
-  private manager_: EntityManager
-  private productVariantRepository_: typeof ProductVariantRepository
-  private productRepository_: typeof ProductRepository
-  private eventBus_: EventBusService
-  private regionService_: RegionService
-  private priceSelectionStrategy_: IPriceSelectionStrategy
-  private moneyAmountRepository_: typeof MoneyAmountRepository
-  private productOptionValueRepository_: typeof ProductOptionValueRepository
-  private cartRepository_: typeof CartRepository
+  protected manager_: EntityManager
+  protected productVariantRepository_: typeof ProductVariantRepository
+  protected productRepository_: typeof ProductRepository
+  protected eventBus_: EventBusService
+  protected regionService_: RegionService
+  protected priceSelectionStrategy_: IPriceSelectionStrategy
+  protected moneyAmountRepository_: typeof MoneyAmountRepository
+  protected productOptionValueRepository_: typeof ProductOptionValueRepository
+  protected cartRepository_: typeof CartRepository
 
   constructor({
     manager,
@@ -63,19 +63,19 @@ class ProductVariantService extends BaseService {
   }) {
     super()
 
-    /** @private @const {EntityManager} */
+    /** @protected @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {ProductVariantModel} */
+    /** @protected @const {ProductVariantModel} */
     this.productVariantRepository_ = productVariantRepository
 
-    /** @private @const {ProductModel} */
+    /** @protected @const {ProductModel} */
     this.productRepository_ = productRepository
 
-    /** @private @const {EventBus} */
+    /** @protected @const {EventBus} */
     this.eventBus_ = eventBusService
 
-    /** @private @const {RegionService} */
+    /** @protected @const {RegionService} */
     this.regionService_ = regionService
 
     this.moneyAmountRepository_ = moneyAmountRepository
@@ -140,10 +140,10 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * Gets a product variant by id.
+   * Gets a product variant by sku.
    * @param {string} sku - The unique stock keeping unit used to identify the product variant.
    * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval.
-   * @return {Promise<Product>} the product document.
+   * @return {Promise<ProductVariant>} the product variant document.
    */
   async retrieveBySKU(
     sku: string,
@@ -168,6 +168,41 @@ class ProductVariantService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Variant with sku: ${sku} was not found`
+      )
+    }
+
+    return variant
+  }
+
+  /**
+   * Gets a product variant by barcode.
+   * @param {string} barcode - The unique barcode used to identify the product variant.
+   * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval.
+   * @return {Promise<ProductVariant>} the product variant document.
+   */
+  async retrieveByBarcode(
+    barcode: string,
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      include_discount_prices: false,
+    }
+  ): Promise<ProductVariant> {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
+    const query = this.buildQuery_({ barcode }, config)
+    const variant = await variantRepo.findOne(query)
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with barcode: ${barcode} was not found`
       )
     }
 
