@@ -1,4 +1,4 @@
-const { Currency } = require("@medusajs/medusa")
+const { Currency, Region } = require("@medusajs/medusa")
 const path = require("path")
 
 const startServerWithEnvironment =
@@ -38,78 +38,103 @@ describe("tax inclusive prices", () => {
     medusaProcess.kill()
   })
 
-  describe("region tax inclusive", () => {
-    describe("Create line item with tax inclusive pricing", () => {
-      let regionId
-      let productId
+  describe("Create line item with tax inclusive pricing", () => {
+    let region
+    let productId
 
-      beforeEach(async () => {
-        const region = await simpleRegionFactory(dbConnection, {
-          includes_tax: true,
-        })
-
-        const product = await simpleProductFactory(dbConnection, {
-          variants: [
-            { id: "var_1", prices: [{ currency: "usd", amount: 100 }] },
-          ],
-        })
-
-        regionId = region.id
-        productId = product.id
-
-        await simpleProductTaxRateFactory(dbConnection, {
-          product_id: product.id,
-          rate: {
-            region_id: region.id,
-            rate: 25,
-          },
-        })
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: "var_1",
-              amount: 110,
-              currency_code: "usd",
-              region_id: region.id,
-            },
-          ],
-        })
+    beforeEach(async () => {
+      region = await simpleRegionFactory(dbConnection, {
+        includes_tax: true,
       })
 
-      afterEach(async () => {
-        const db = useDb()
-        await db.teardown()
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "var_1", prices: [{ currency: "usd", amount: 100 }] }],
+      })
+      productId = product.id
+
+      await simpleProductTaxRateFactory(dbConnection, {
+        product_id: product.id,
+        rate: {
+          region_id: region.id,
+          rate: 25,
+        },
       })
 
-      it("creates a line item with tax inclusive pricing when variant is tax inclusive", async () => {
-        const api = useApi()
-        const res = await api
-          .get(`/store/products/${productId}?region_id=${regionId}`)
-          .catch((error) => console.log(error))
-
-        const variant = res.data.product.variants[0]
-
-        const response = await api.post("/store/carts", {
-          region_id: regionId,
-        })
-
-        const lineItemResp = await api.post(
-          `/store/carts/${response.data.cart.id}/line-items`,
+      await simplePriceListFactory(dbConnection, {
+        status: "active",
+        type: "sale",
+        prices: [
           {
-            variant_id: variant.id,
-            quantity: 2,
-          }
-        )
-
-        expect(lineItemResp.data.cart.items).toEqual([
-          expect.objectContaining({ includes_tax: true }),
-        ])
+            variant_id: "var_1",
+            amount: 110,
+            currency_code: "usd",
+            region_id: region.id,
+          },
+        ],
       })
     })
 
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("creates a line item with tax inclusive pricing when variant is tax inclusive", async () => {
+      const api = useApi()
+      const res = await api
+        .get(`/store/products/${productId}?region_id=${region.id}`)
+        .catch((error) => console.log(error))
+
+      const variant = res.data.product.variants[0]
+
+      const response = await api.post("/store/carts", {
+        region_id: region.id,
+      })
+
+      const lineItemResp = await api.post(
+        `/store/carts/${response.data.cart.id}/line-items`,
+        {
+          variant_id: variant.id,
+          quantity: 2,
+        }
+      )
+
+      expect(lineItemResp.data.cart.items).toEqual([
+        expect.objectContaining({ includes_tax: true }),
+      ])
+    })
+
+    it("creates a line item without tax inclusive pricing when variant is not tax inclusive", async () => {
+      await dbConnection.manager.save(Region, {
+        ...region,
+        includes_tax: false,
+      })
+
+      const api = useApi()
+      const res = await api
+        .get(`/store/products/${productId}?region_id=${region.id}`)
+        .catch((error) => console.log(error))
+
+      const variant = res.data.product.variants[0]
+
+      const response = await api.post("/store/carts", {
+        region_id: region.id,
+      })
+
+      const lineItemResp = await api.post(
+        `/store/carts/${response.data.cart.id}/line-items`,
+        {
+          variant_id: variant.id,
+          quantity: 2,
+        }
+      )
+
+      expect(lineItemResp.data.cart.items).toEqual([
+        expect.objectContaining({ includes_tax: false }),
+      ])
+    })
+  })
+  describe("region tax inclusive", () => {
     describe("getting product with mixed prices preferring tax inclusive prices", () => {
       let regionId
       let productId
