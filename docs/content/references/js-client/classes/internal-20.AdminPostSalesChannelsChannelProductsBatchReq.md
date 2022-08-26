@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/add-product-batch.d.ts:27
+medusa/dist/api/routes/admin/sales-channels/add-product-batch.d.ts:44

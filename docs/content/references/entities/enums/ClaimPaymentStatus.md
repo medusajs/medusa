@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/claim-order.ts:32](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-order.ts#L32)
+[models/claim-order.ts:32](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-order.ts#L32)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:33](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-order.ts#L33)
+[models/claim-order.ts:33](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-order.ts#L33)
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:34](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-order.ts#L34)
+[models/claim-order.ts:34](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-order.ts#L34)

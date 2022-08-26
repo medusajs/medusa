@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/notifications.ts#L12)
+[medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/notifications.ts#L12)
 
 ___
 
@@ -47,4 +47,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/notifications.ts#L26)
+[medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/notifications.ts#L26)

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:28
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:52
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:29
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:53
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:30
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:54
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:33
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:57
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:31
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:55
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/create-customer.d.ts:32
+medusa/dist/api/routes/admin/customers/create-customer.d.ts:56

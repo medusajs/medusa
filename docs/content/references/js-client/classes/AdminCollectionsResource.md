@@ -8,6 +8,32 @@
 
 ## Methods
 
+### addProducts
+
+▸ **addProducts**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
+
+**`Description`**
+
+Updates products associated with a Product Collection
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the Collection |
+| `payload` | [`AdminPostProductsToCollectionReq`](internal-3.AdminPostProductsToCollectionReq.md) | an object which contains an array of Product IDs to add to the Product Collection |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
+
+#### Defined in
+
+[medusa-js/src/resources/admin/collections.ts:100](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L100)
+
+___
+
 ### create
 
 ▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
@@ -31,7 +57,7 @@ Created collection.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/collections.ts:20](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/collections.ts#L20)
+[medusa-js/src/resources/admin/collections.ts:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L22)
 
 ___
 
@@ -58,7 +84,7 @@ Deleted response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/collections.ts:50](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/collections.ts#L50)
+[medusa-js/src/resources/admin/collections.ts:52](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L52)
 
 ___
 
@@ -85,7 +111,33 @@ a list of collections matching the query.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/collections.ts:78](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/collections.ts#L78)
+[medusa-js/src/resources/admin/collections.ts:80](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L80)
+
+___
+
+### removeProducts
+
+▸ **removeProducts**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+
+**`Description`**
+
+Removes products associated with a Product Collection
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the Collection |
+| `payload` | [`AdminDeleteProductsFromCollectionReq`](internal-3.AdminDeleteProductsFromCollectionReq.md) | an object which contains an array of Product IDs to add to the Product Collection |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+
+#### Defined in
+
+[medusa-js/src/resources/admin/collections.ts:115](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L115)
 
 ___
 
@@ -112,7 +164,7 @@ the collection with the given id
 
 #### Defined in
 
-[medusa-js/src/resources/admin/collections.ts:64](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/collections.ts#L64)
+[medusa-js/src/resources/admin/collections.ts:66](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L66)
 
 ___
 
@@ -140,4 +192,4 @@ the updated collection.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/collections.ts:35](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/collections.ts#L35)
+[medusa-js/src/resources/admin/collections.ts:37](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/collections.ts#L37)

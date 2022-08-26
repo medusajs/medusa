@@ -43,4 +43,4 @@ medusa/dist/api/routes/admin/sales-channels/index.d.ts:6
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:47
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:110
