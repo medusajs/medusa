@@ -7,6 +7,7 @@ import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
+  ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
@@ -767,6 +768,26 @@ class ProductService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductService.Events.UPDATED, product)
       return product
+    })
+  }
+
+  /**
+   * Retrieve product's option by title.
+   *
+   * @param title - title of the option
+   * @param productId - id of a product
+   * @return product option
+   */
+  async retrieveOptionByTitle(
+    title: string,
+    productId: string
+  ): Promise<ProductOption | undefined> {
+    const productOptionRepo = this.manager_.getCustomRepository(
+      this.productOptionRepository_
+    )
+
+    return productOptionRepo.findOne({
+      where: { title, product_id: productId },
     })
   }
 
