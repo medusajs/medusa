@@ -383,7 +383,7 @@ describe("LineItemService", () => {
         jest.clearAllMocks()
       })
 
-      it("successfully create a line item", async () => {
+      it("successfully create a line item with tax inclusive set to true", async () => {
         await lineItemService.generate(
           IdMap.getId("test-variant"),
           IdMap.getId("test-region"),
@@ -403,6 +403,117 @@ describe("LineItemService", () => {
           metadata: {},
           should_merge: true,
           includes_tax: true,
+        })
+      })
+    })
+    describe("generate", () => {
+      const lineItemRepository = MockRepository({
+        create: (data) => data,
+      })
+
+      const cartRepository = MockRepository({
+        findOne: () =>
+          Promise.resolve({
+            region_id: IdMap.getId("test-region"),
+          }),
+      })
+
+      const regionService = {
+        withTransaction: function () {
+          return this
+        },
+        retrieve: () => {
+          return {
+            id: IdMap.getId("test-region"),
+          }
+        },
+      }
+
+      const productVariantService = {
+        withTransaction: function () {
+          return this
+        },
+        retrieve: (query) => {
+          if (query === IdMap.getId("test-giftcard")) {
+            return {
+              id: IdMap.getId("test-giftcard"),
+              title: "Test variant",
+              product: {
+                title: "Test product",
+                thumbnail: "",
+                is_giftcard: true,
+                discountable: false,
+              },
+            }
+          }
+          return {
+            id: IdMap.getId("test-variant"),
+            title: "Test variant",
+            product: {
+              title: "Test product",
+              thumbnail: "",
+            },
+          }
+        },
+        getRegionPrice: () => 100,
+      }
+
+      const pricingService = {
+        withTransaction: function () {
+          return this
+        },
+        getProductVariantPricingById: () => {
+          return {
+            calculated_price: 100,
+            calculated_price_includes_tax: false,
+          }
+        },
+        getProductVariantPricing: () => {
+          return {
+            calculated_price: 100,
+            calculated_price_includes_tax: false,
+          }
+        },
+      }
+
+      const featureFlagRouter = new FlagRouter({
+        tax_inclusive_pricing: true,
+      })
+
+      const lineItemService = new LineItemService({
+        manager: MockManager,
+        pricingService,
+        lineItemRepository,
+        productVariantService,
+        regionService,
+        cartRepository,
+        featureFlagRouter,
+      })
+
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully create a line item with tax inclusive set to false", async () => {
+        await lineItemService.generate(
+          IdMap.getId("test-variant"),
+          IdMap.getId("test-region"),
+          1
+        )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: false,
         })
       })
     })
