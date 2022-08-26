@@ -19,6 +19,18 @@ post:
             is_disabled:
               description: Whether the Sales Channel is disabled or not.
               type: boolean
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -30,6 +42,18 @@ post:
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetSalesChannels
   summary: List sales channels
@@ -153,6 +177,18 @@ get:
         of the result.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/sales-channels/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -175,3 +211,15 @@ get:
               limit:
                 type: integer
                 description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

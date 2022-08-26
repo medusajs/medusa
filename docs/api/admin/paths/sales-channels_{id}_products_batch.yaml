@@ -28,6 +28,19 @@ post:
                   id:
                     type: string
                     description: The ID of the product
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/sales-channels_{id}_products_batch/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/sales-channels_{id}_products_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -39,6 +52,18 @@ post:
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteSalesChannelsChannelProductsBatch
   summary: Remove a list of products from a sales channel
@@ -69,6 +94,20 @@ delete:
                   id:
                     description: The ID of a product
                     type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/sales-channels_{id}_products_batch/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/sales-channels_{id}_products_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Sales Channel
   responses:
@@ -80,3 +119,15 @@ delete:
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
