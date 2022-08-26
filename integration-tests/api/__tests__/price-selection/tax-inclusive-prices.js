@@ -103,19 +103,22 @@ describe("tax inclusive prices", () => {
             calculated_tax: 22,
             original_price_incl_tax: 125,
             original_tax: 25,
-            prices: [
-              expect.objectContaining({
-                amount: 100,
-                currency_code: "usd",
-                price_list_id: null,
-              }),
-              expect.objectContaining({
-                amount: 110,
-                currency_code: "usd",
-                price_list_id: expect.any(String),
-              }),
-            ],
           })
+        )
+
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              amount: 100,
+              currency_code: "usd",
+              price_list_id: null,
+            }),
+            expect.objectContaining({
+              amount: 110,
+              currency_code: "usd",
+              price_list_id: expect.any(String),
+            }),
+          ])
         )
       })
     })
@@ -183,19 +186,22 @@ describe("tax inclusive prices", () => {
             calculated_tax: 25,
             original_price_incl_tax: 125,
             calculated_price_incl_tax: 125,
-            prices: [
-              expect.objectContaining({
-                amount: 100,
-                currency_code: "usd",
-                price_list_id: null,
-              }),
-              expect.objectContaining({
-                amount: 130,
-                currency_code: "usd",
-                price_list_id: expect.any(String),
-              }),
-            ],
           })
+        )
+
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              amount: 100,
+              currency_code: "usd",
+              price_list_id: null,
+            }),
+            expect.objectContaining({
+              amount: 130,
+              currency_code: "usd",
+              price_list_id: expect.any(String),
+            }),
+          ])
         )
       })
     })
@@ -283,19 +289,22 @@ describe("tax inclusive prices", () => {
             calculated_tax: 20,
             original_price_incl_tax: 110,
             original_tax: 22,
-            prices: [
-              expect.objectContaining({
-                amount: 110,
-                currency_code: "usd",
-                price_list_id: null,
-              }),
-              expect.objectContaining({
-                amount: 100,
-                currency_code: "usd",
-                price_list_id: expect.any(String),
-              }),
-            ],
           })
+        )
+
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              amount: 110,
+              currency_code: "usd",
+              price_list_id: null,
+            }),
+            expect.objectContaining({
+              amount: 100,
+              currency_code: "usd",
+              price_list_id: expect.any(String),
+            }),
+          ])
         )
       })
     })
@@ -365,19 +374,21 @@ describe("tax inclusive prices", () => {
             calculated_tax: 22,
             original_price_incl_tax: 125,
             original_tax: 25,
-            prices: [
-              expect.objectContaining({
-                amount: 100,
-                currency_code: "usd",
-                price_list_id: null,
-              }),
-              expect.objectContaining({
-                amount: 110,
-                currency_code: "usd",
-                price_list_id: expect.any(String),
-              }),
-            ],
           })
+        )
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              amount: 100,
+              currency_code: "usd",
+              price_list_id: null,
+            }),
+            expect.objectContaining({
+              amount: 110,
+              currency_code: "usd",
+              price_list_id: expect.any(String),
+            }),
+          ])
         )
       })
     })
@@ -444,19 +455,21 @@ describe("tax inclusive prices", () => {
             calculated_tax: 25,
             original_price_incl_tax: 125,
             calculated_price_incl_tax: 125,
-            prices: [
-              expect.objectContaining({
-                amount: 100,
-                currency_code: "usd",
-                price_list_id: null,
-              }),
-              expect.objectContaining({
-                amount: 130,
-                currency_code: "usd",
-                price_list_id: expect.any(String),
-              }),
-            ],
           })
+        )
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              amount: 100,
+              currency_code: "usd",
+              price_list_id: null,
+            }),
+            expect.objectContaining({
+              amount: 130,
+              currency_code: "usd",
+              price_list_id: expect.any(String),
+            }),
+          ])
         )
       })
     })
