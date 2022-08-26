@@ -210,7 +210,7 @@ You can download PostgreSQL on your macOS using [the installer on their website]
 </TabItem>
 <TabItem value="docker" label="Docker">
 
-If you have Docker installed, you can quickly spin up a PostgreSQL instance with the following command:
+Make sure the Docker Desktop app is running, then run the following command to quickly spin up a PostgreSQL instance:
 
 ```bash
 docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
