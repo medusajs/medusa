@@ -40,6 +40,9 @@ describe("BaseService", () => {
     })
 
     it("throws if decorator is not a function", () => {
+      /* 
+      We need to pass here not a function to check if this will throw an error
+      @ts-ignore */
       expect(() => baseService.addDecorator("not a function")).toThrow(
         "Decorators must be of type function"
       )

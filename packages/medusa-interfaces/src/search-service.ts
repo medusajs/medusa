@@ -5,6 +5,8 @@ import BaseService from "./base-service"
  * @interface
  */
 class SearchService extends BaseService {
+  options_: Object
+  
   constructor() {
     super()
   }

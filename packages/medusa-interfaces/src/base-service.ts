@@ -1,11 +1,16 @@
 import { MedusaError } from "medusa-core-utils"
-import { FindOperator, In, Raw } from "typeorm"
+import { FindConditions, FindOperator, In, Raw, ObjectLiteral, FindManyOptions, EntityManager, TransactionManager, QueryRunner} from "typeorm"
+import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 
 /**
  * Common functionality for Services
  * @interface
  */
 class BaseService {
+  decorators_: Array<Function>
+  manager_: EntityManager
+  transactionManager_?: EntityManager
+
   constructor() {
     this.decorators_ = []
   }
@@ -18,7 +23,7 @@ class BaseService {
   /**
    * Used to build TypeORM queries.
    */
-  buildQuery_(selector, config = {}) {
+  buildQuery_(selector, config: FindConditions<ObjectLiteral> = {}) {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
         // Undefined values indicate that they have no significance to the query.
@@ -31,12 +36,12 @@ class BaseService {
             acc[key] = value
             break
           case Array.isArray(value):
-            acc[key] = In([...value])
+            acc[key] = In([...(value as Array<any>)])
             break
           case value !== null && typeof value === "object":
-            const subquery = []
+            const subquery: Array<{operator: string, value: any}> = []
 
-            Object.entries(value).map(([modifier, val]) => {
+            Object.entries(value as Object).map(([modifier, val]) => {
               switch (modifier) {
                 case "lt":
                   subquery.push({ operator: "<", value: val })
@@ -77,7 +82,7 @@ class BaseService {
       return where
     }
 
-    const query = {
+    const query: FindManyOptions = {
       where: build(selector),
     }
 
@@ -116,7 +121,7 @@ class BaseService {
    * @param {object?} config - optional config
    * @returns {string} the rawId given that nothing failed
    */
-  validateId_(rawId, config = {}) {
+  validateId_(rawId: string, config: FindConditions<ObjectLiteral> = {}) {
     const { prefix, length } = config
     if (!rawId) {
       throw new MedusaError(
@@ -145,7 +150,7 @@ class BaseService {
     return rawId
   }
 
-  shouldRetryTransaction(err) {
+  shouldRetryTransaction(err: MedusaError) {
     const code = typeof err === "object" ? String(err.code) : null
     return code === "40001" || code === "40P01"
   }
@@ -159,12 +164,12 @@ class BaseService {
    * @return {any} the result of the transactional work
    */
   async atomicPhase_(
-    work,
-    isolationOrErrorHandler,
-    maybeErrorHandlerOrDontFail
+    work: Function,
+    isolationOrErrorHandler: IsolationLevel | Function,
+    maybeErrorHandlerOrDontFail: Function
   ) {
     let errorHandler = maybeErrorHandlerOrDontFail
-    let isolation = isolationOrErrorHandler
+    let isolation: IsolationLevel | null = isolationOrErrorHandler as IsolationLevel
     let dontFail = false
     if (typeof isolationOrErrorHandler === "function") {
       isolation = null
@@ -181,8 +186,8 @@ class BaseService {
           return result
         } catch (error) {
           if (errorHandler) {
-            const queryRunner = this.transactionManager_.queryRunner
-            if (queryRunner.isTransactionActive) {
+            const queryRunner = this.transactionManager_?.queryRunner
+            if (queryRunner?.isTransactionActive) {
               await queryRunner.rollbackTransaction()
             }
 
@@ -248,7 +253,7 @@ class BaseService {
    * @param {object} metadata - the metadata to set
    * @return {Promise} resolves to the updated result.
    */
-  setMetadata_(obj, metadata) {
+  setMetadata_(obj: ObjectLiteral, metadata: ObjectLiteral) {
     const existing = obj.metadata || {}
     const newData = {}
     for (const [key, value] of Object.entries(metadata)) {
@@ -274,7 +279,7 @@ class BaseService {
    * return a decorated object.
    * @param {function} fn - the decorator to add to the service
    */
-  addDecorator(fn) {
+  addDecorator(fn: Function) {
     if (typeof fn !== "function") {
       throw Error("Decorators must be of type function")
     }
@@ -289,7 +294,7 @@ class BaseService {
    * @param {object} obj - the object to decorate.
    * @return {object} the decorated object.
    */
-  runDecorators_(obj, fields = [], expandFields = []) {
+  runDecorators_(obj: ObjectLiteral, fields: Array<string> = [], expandFields: Array<string> = []) {
     return this.decorators_.reduce(async (acc, next) => {
       return acc.then((res) => next(res, fields, expandFields)).catch(() => acc)
     }, Promise.resolve(obj))

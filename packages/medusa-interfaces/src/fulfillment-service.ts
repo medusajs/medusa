@@ -12,7 +12,7 @@ class BaseFulfillmentService extends BaseService {
   }
 
   getIdentifier() {
-    return this.constructor.identifier
+    return (this.constructor as any).identifier
   }
 
   /**
