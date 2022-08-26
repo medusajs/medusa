@@ -12,7 +12,7 @@ type InjectedDependencies = {
   returnReasonRepository: typeof ReturnReasonRepository
 }
 
-class ReturnReasonService extends TransactionBaseService<ReturnReasonService> {
+class ReturnReasonService extends TransactionBaseService {
   protected readonly retReasonRepo_: typeof ReturnReasonRepository
 
   protected manager_: EntityManager

@@ -7,8 +7,7 @@ type ReturnedData = {
   data: Record<string, unknown>
 }
 
-export interface INotificationService<T extends TransactionBaseService<never>>
-  extends TransactionBaseService<T> {
+export interface INotificationService extends TransactionBaseService {
   sendNotification(
     event: string,
     data: unknown,
@@ -22,11 +21,9 @@ export interface INotificationService<T extends TransactionBaseService<never>>
   ): Promise<ReturnedData>
 }
 
-export abstract class AbstractNotificationService<
-    T extends TransactionBaseService<never>
-  >
-  extends TransactionBaseService<T>
-  implements INotificationService<T>
+export abstract class AbstractNotificationService
+  extends TransactionBaseService
+  implements INotificationService
 {
   static identifier: string
 

@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/create-product.d.ts:202
+medusa/dist/api/routes/admin/products/create-product.d.ts:232

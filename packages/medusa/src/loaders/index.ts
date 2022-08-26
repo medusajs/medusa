@@ -1,24 +1,3 @@
-import loadConfig from "./config"
-import "reflect-metadata"
-import Logger from "./logger"
-import apiLoader from "./api"
-import featureFlagsLoader from "./feature-flags"
-import databaseLoader from "./database"
-import defaultsLoader from "./defaults"
-import expressLoader from "./express"
-import modelsLoader from "./models"
-import passportLoader from "./passport"
-import pluginsLoader, { registerPluginModels } from "./plugins"
-import redisLoader from "./redis"
-import repositoriesLoader from "./repositories"
-import requestIp from "request-ip"
-import searchIndexLoader from "./search-index"
-import servicesLoader from "./services"
-import strategiesLoader from "./strategies"
-import subscribersLoader from "./subscribers"
-import { ClassOrFunctionReturning } from "awilix/lib/container"
-import { Connection, getManager } from "typeorm"
-import { Express, NextFunction, Request, Response } from "express"
 import {
   asFunction,
   asValue,
@@ -26,8 +5,29 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
+import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
+import "reflect-metadata"
+import requestIp from "request-ip"
+import { Connection, getManager } from "typeorm"
 import { MedusaContainer } from "../types/global"
+import apiLoader from "./api"
+import loadConfig from "./config"
+import databaseLoader from "./database"
+import defaultsLoader from "./defaults"
+import expressLoader from "./express"
+import featureFlagsLoader from "./feature-flags"
+import Logger from "./logger"
+import modelsLoader from "./models"
+import passportLoader from "./passport"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+import redisLoader from "./redis"
+import repositoriesLoader from "./repositories"
+import searchIndexLoader from "./search-index"
+import servicesLoader from "./services"
+import strategiesLoader from "./strategies"
+import subscribersLoader from "./subscribers"
 
 type Options = {
   directory: string
@@ -82,6 +82,7 @@ export default async ({
   })
 
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  track("FEATURE_FLAGS_LOADED")
 
   container.register({
     logger: asValue(Logger),
@@ -179,7 +180,8 @@ export default async ({
   const searchActivity = Logger.activity("Initializing search engine indexing")
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
-  const searchAct = Logger.success(searchActivity, "Indexing event emitted") || {}
+  const searchAct =
+    Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }

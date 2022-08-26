@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:56
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:122
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:60
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:126
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:58
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:124
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:64
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:130
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:63
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:129
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:57
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:123
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:59
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:125
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:62
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:128
 
 ___
 
@@ -90,4 +90,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:61
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:127

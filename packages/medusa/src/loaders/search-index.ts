@@ -22,7 +22,7 @@ export default async ({
   container: MedusaContainer
 }): Promise<void> => {
   const searchService =
-    container.resolve<AbstractSearchService<never>>("searchService")
+    container.resolve<AbstractSearchService>("searchService")
   const logger = container.resolve<Logger>("logger")
   if (searchService.isDefault) {
     logger.warn(

@@ -7,26 +7,19 @@ type InjectedDependencies = {
   [key: string]: unknown
 }
 
-export default class StrategyResolver extends TransactionBaseService<
-  StrategyResolver,
-  InjectedDependencies
-> {
+export default class StrategyResolver extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  constructor(container: InjectedDependencies) {
+  constructor(protected readonly container: InjectedDependencies) {
     super(container)
     this.manager_ = container.manager
   }
 
-  resolveBatchJobByType<T extends TransactionBaseService<never>>(
-    type: string
-  ): AbstractBatchJobStrategy<T> {
-    let resolved: AbstractBatchJobStrategy<T>
+  resolveBatchJobByType(type: string): AbstractBatchJobStrategy {
+    let resolved: AbstractBatchJobStrategy
     try {
-      resolved = this.container[
-        `batchType_${type}`
-      ] as AbstractBatchJobStrategy<T>
+      resolved = this.container[`batchType_${type}`] as AbstractBatchJobStrategy
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

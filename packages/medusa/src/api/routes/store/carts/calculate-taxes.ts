@@ -49,7 +49,8 @@ export default async (req, res) => {
 
   const headerKey = req.get("Idempotency-Key") || ""
 
-  let idempotencyKey!: IdempotencyKey
+  let idempotencyKey
+
   try {
     await manager.transaction(async (transactionManager) => {
       idempotencyKey = await idempotencyKeyService
@@ -73,7 +74,7 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
 
   let inProgress = true
-  let err = false
+  let err: unknown = false
 
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {

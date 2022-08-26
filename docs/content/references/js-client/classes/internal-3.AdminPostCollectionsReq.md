@@ -16,7 +16,7 @@ ___
 
 ### metadata
 
-• `Optional` **metadata**: `object`
+• `Optional` **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 

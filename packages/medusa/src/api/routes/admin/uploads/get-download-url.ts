@@ -68,7 +68,7 @@ import { IsString } from "class-validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
+  const fileService: AbstractFileService = req.scope.resolve("fileService")
 
   const url = await fileService.getPresignedDownloadUrl({
     fileKey: (req.validatedBody as AdminPostUploadsDownloadUrlReq).file_key,

@@ -66,7 +66,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
-  const { validatedBody } = req as { validatedBody: AdminPostProductsToCollectionReq }
+  const { validatedBody } = req as {
+    validatedBody: AdminPostProductsToCollectionReq
+  }
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
@@ -74,10 +76,9 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const collection = await manager.transaction(async (transactionManager) => {
-    return await productCollectionService.withTransaction(transactionManager).addProducts(
-      id,
-      validatedBody.product_ids
-    )
+    return await productCollectionService
+      .withTransaction(transactionManager)
+      .addProducts(id, validatedBody.product_ids)
   })
 
   res.status(200).json({ collection })

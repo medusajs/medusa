@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/delete-prices-batch.d.ts:42
+medusa/dist/api/routes/admin/price-lists/delete-prices-batch.d.ts:45

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/invites/accept-invite.d.ts:43
+medusa/dist/api/routes/admin/invites/accept-invite.d.ts:44
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/invites/accept-invite.d.ts:44
+medusa/dist/api/routes/admin/invites/accept-invite.d.ts:45
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/invites/accept-invite.d.ts:45
+medusa/dist/api/routes/admin/invites/accept-invite.d.ts:46

@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/claim-item.ts:42](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L42)
+[models/claim-item.ts:42](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L42)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:38](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L38)
+[models/claim-item.ts:38](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L38)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -80,7 +80,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:34](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L34)
+[models/claim-item.ts:34](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L34)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:50](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L50)
+[models/claim-item.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L50)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:46](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L46)
+[models/claim-item.ts:46](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L46)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:84](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L84)
+[models/claim-item.ts:84](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L84)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:64](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L64)
+[models/claim-item.ts:64](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L64)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:67](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L67)
+[models/claim-item.ts:67](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L67)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:61](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L61)
+[models/claim-item.ts:61](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L61)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:81](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L81)
+[models/claim-item.ts:81](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L81)
 
 ___
 
@@ -174,7 +174,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:58](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L58)
+[models/claim-item.ts:58](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L58)
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:54](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L54)
+[models/claim-item.ts:54](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L54)
 
 ## Methods
 
@@ -208,4 +208,4 @@ ___
 
 #### Defined in
 
-[models/claim-item.ts:86](https://github.com/medusajs/medusa/blob/aada5327e/packages/medusa/src/models/claim-item.ts#L86)
+[models/claim-item.ts:86](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/claim-item.ts#L86)

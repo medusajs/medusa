@@ -86,5 +86,5 @@ export default async (req, res) => {
 
 export class StorePostCartsCartPaymentSessionUpdateReq {
   @IsObject()
-  data: object
+  data: Record<string, unknown>
 }

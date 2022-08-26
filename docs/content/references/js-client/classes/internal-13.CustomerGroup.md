@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:77
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:99

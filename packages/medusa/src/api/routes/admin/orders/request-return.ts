@@ -11,12 +11,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Order, Return } from "../../../../models"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { Type } from "class-transformer"
+import { isDefined } from "../../../../utils"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -187,7 +189,7 @@ export default async (req, res) => {
                   returnObj.shipping_method = value.return_shipping
                 }
 
-                if (typeof value.refund !== "undefined" && value.refund < 0) {
+                if (isDefined(value.refund) && value.refund < 0) {
                   returnObj.refund_amount = 0
                 } else {
                   if (value.refund && value.refund >= 0) {
@@ -243,7 +245,7 @@ export default async (req, res) => {
             const { key, error } = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                let order = await orderService
+                let order: Order | Return = await orderService
                   .withTransaction(manager)
                   .retrieve(id, { relations: ["returns"] })
 
@@ -252,22 +254,24 @@ export default async (req, res) => {
                  * and register it as received.
                  */
                 if (value.receive_now) {
-                  let ret = await returnService.withTransaction(manager).list({
-                    idempotency_key: idempotencyKey.idempotency_key,
-                  })
+                  const returns = await returnService
+                    .withTransaction(manager)
+                    .list({
+                      idempotency_key: idempotencyKey.idempotency_key,
+                    })
 
-                  if (!ret.length) {
+                  if (!returns.length) {
                     throw new MedusaError(
                       MedusaError.Types.INVALID_DATA,
                       `Return not found`
                     )
                   }
 
-                  ret = ret[0]
+                  const returnOrder = returns[0]
 
                   order = await returnService
                     .withTransaction(manager)
-                    .receive(ret.id, value.items, value.refund)
+                    .receive(returnOrder.id, value.items, value.refund)
                 }
 
                 order = await orderService
@@ -324,7 +328,7 @@ export default async (req, res) => {
 }
 
 type ReturnObj = {
-  order_id?: string
+  order_id: string
   idempotency_key?: string
   items?: OrdersReturnItem[]
   shipping_method?: ReturnShipping

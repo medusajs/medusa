@@ -5,6 +5,139 @@ get:
   x-authenticated: true
   parameters:
     - in: query
+      name: q
+      description: Query used for searching orders.
+      schema:
+        type: string
+    - in: query
+      name: id
+      description: Id of the order to search for.
+      schema:
+        type: string
+    - in: query
+      name: status
+      style: form
+      explode: false
+      description: Status to search for.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: fulfillment_status
+      style: form
+      explode: false
+      description: Fulfillment status to search for.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: payment_status
+      style: form
+      explode: false
+      description: Payment status to search for.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: display_id
+      description: Display id to search for.
+      schema:
+        type: string
+    - in: query
+      name: cart_id
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: email
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: tax_rate
+      description: to search for.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting collections were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting collections were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: canceled_at
+      description: Date comparison for when resulting collections were canceled.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
       name: limit
       description: How many orders to return.
       schema:

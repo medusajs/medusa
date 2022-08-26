@@ -1,69 +1,83 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import RegionService from "../region"
+import {
+  EventBusService,
+  FulfillmentProviderService,
+  PaymentProviderService,
+  StoreService,
+} from "../index"
+import { CreateRegionInput } from "../../types/region"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-}
+} as unknown as EventBusService
 
 describe("RegionService", () => {
+  const regionRepository = MockRepository({})
+
+  const ppRepository = MockRepository({
+    findOne: (query) => {
+      if (query.where.id === "should_fail") {
+        return Promise.resolve(undefined)
+      }
+      return Promise.resolve({
+        id: "default_provider",
+      })
+    },
+  })
+  const fpRepository = MockRepository({
+    findOne: (query) => {
+      if (query.where.id === "should_fail") {
+        return Promise.resolve(undefined)
+      }
+      return Promise.resolve({
+        id: "default_provider",
+      })
+    },
+  })
+  const countryRepository = MockRepository({
+    findOne: (query) => {
+      if (query.where.iso_2 === "dk") {
+        return Promise.resolve({
+          id: IdMap.getId("dk"),
+          name: "Denmark",
+          display_name: "Denmark",
+          region_id: IdMap.getId("dk-reg"),
+        })
+      }
+      return Promise.resolve({
+        id: IdMap.getId("test-country"),
+        name: "World",
+      })
+    },
+  })
+
+  const currencyRepository = MockRepository({
+    findOne: () => Promise.resolve({ code: "usd" }),
+  })
+
+  const storeService = {
+    withTransaction: function () {
+      return this
+    },
+    retrieve: () => {
+      return {
+        id: IdMap.getId("test-store"),
+        currencies: [{ code: "dkk" }, { code: "usd" }, { code: "eur" }],
+      }
+    },
+  } as unknown as StoreService
+
+  const taxProviderRepository = MockRepository({})
+
+  const fulfillmentProviderService = {} as FulfillmentProviderService
+
+  const paymentProviderService = {} as PaymentProviderService
+
   describe("create", () => {
-    const regionRepository = MockRepository({})
-    const ppRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const fpRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const countryRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.iso_2 === "dk") {
-          return Promise.resolve({
-            id: IdMap.getId("dk"),
-            name: "Denmark",
-            display_name: "Denmark",
-            region_id: IdMap.getId("dk-reg"),
-          })
-        }
-        return Promise.resolve({
-          id: IdMap.getId("test-country"),
-          name: "World",
-        })
-      },
-    })
-
-    const currencyRepository = MockRepository({
-      findOne: () => Promise.resolve({ code: "usd" }),
-    })
-
-    const storeService = {
-      withTransaction: function() {
-        return this
-      },
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-store"),
-          currencies: [{ code: "dkk" }, { code: "usd" }, { code: "eur" }],
-        }
-      },
-    }
-
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
@@ -73,6 +87,9 @@ describe("RegionService", () => {
       regionRepository,
       countryRepository,
       storeService,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
     })
 
     beforeEach(async () => {
@@ -85,7 +102,7 @@ describe("RegionService", () => {
         currency_code: "USD",
         tax_rate: 0.25,
         countries: ["US"],
-      })
+      } as CreateRegionInput)
 
       expect(regionRepository.create).toHaveBeenCalledTimes(1)
       expect(regionRepository.create).toHaveBeenCalledWith({
@@ -106,7 +123,7 @@ describe("RegionService", () => {
           currency_code: "EUR",
           tax_rate: 0.25,
           countries: ["DK"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe(
           `Denmark already exists in region ${IdMap.getId("dk-reg")}`
@@ -149,7 +166,7 @@ describe("RegionService", () => {
           tax_rate: 0.25,
           countries: ["US"],
           payment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe("Payment provider not found")
       }
@@ -163,7 +180,7 @@ describe("RegionService", () => {
           tax_rate: 0.25,
           countries: ["US"],
           fulfillment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       } catch (error) {
         expect(error.message).toBe("Fulfillment provider not found")
       }
@@ -179,6 +196,14 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
+      fulfillmentProviderRepository: fpRepository,
+      paymentProviderRepository: ppRepository,
+      currencyRepository,
+      countryRepository,
+      storeService,
     })
 
     beforeEach(async () => {
@@ -196,27 +221,6 @@ describe("RegionService", () => {
   })
 
   describe("validateFields_", () => {
-    const regionRepository = MockRepository({})
-    const ppRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const fpRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
     const countryRepository = MockRepository({
       findOne: (query) => {
         if (query.where.iso_2 === "dk") {
@@ -234,24 +238,16 @@ describe("RegionService", () => {
       },
     })
 
-    const storeService = {
-      withTransaction: function() {
-        return this
-      },
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-store"),
-          currencies: [{ code: "dkk" }, { code: "usd" }, { code: "eur" }],
-        }
-      },
-    }
-
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
+      regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
-      regionRepository,
+      currencyRepository,
       countryRepository,
       storeService,
     })
@@ -262,13 +258,19 @@ describe("RegionService", () => {
 
     it("throws on invalid country code", async () => {
       await expect(
-        regionService.validateFields_({ countries: ["ddd"] })
+        // @ts-ignore
+        regionService.validateFields({
+          countries: ["ddd"],
+        } as CreateRegionInput)
       ).rejects.toThrow("Invalid country code")
     })
 
     it("throws on in use country code", async () => {
       await expect(
-        regionService.validateFields_({ countries: ["DK"] })
+        // @ts-ignore
+        regionService.validateFields({
+          countries: ["DK"],
+        } as CreateRegionInput)
       ).rejects.toThrow(
         `Denmark already exists in region ${IdMap.getId("dk-reg")}`
       )
@@ -276,15 +278,19 @@ describe("RegionService", () => {
 
     it("throws on unknown payment providers", async () => {
       await expect(
-        regionService.validateFields_({ payment_providers: ["should_fail"] })
+        // @ts-ignore
+        regionService.validateFields({
+          payment_providers: ["should_fail"],
+        } as CreateRegionInput)
       ).rejects.toThrow("Payment provider not found")
     })
 
     it("throws on unknown fulfillment providers", async () => {
       await expect(
-        regionService.validateFields_({
+        // @ts-ignore
+        regionService.validateFields({
           fulfillment_providers: ["should_fail"],
-        })
+        } as CreateRegionInput)
       ).rejects.toThrow("Fulfillment provider not found")
     })
   })
@@ -293,66 +299,18 @@ describe("RegionService", () => {
     const regionRepository = MockRepository({
       findOne: () => Promise.resolve({ id: IdMap.getId("test-region") }),
     })
-    const ppRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const fpRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const countryRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.iso_2 === "dk") {
-          return Promise.resolve({
-            id: IdMap.getId("dk"),
-            name: "Denmark",
-            region_id: IdMap.getId("dk-reg"),
-          })
-        }
-        return Promise.resolve({
-          id: IdMap.getId("test-country"),
-          name: "World",
-        })
-      },
-    })
-
-    const storeService = {
-      withTransaction: function() {
-        return this
-      },
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-store"),
-          currencies: [{ code: "dkk" }, { code: "usd" }, { code: "eur" }],
-        }
-      },
-    }
-
-    const currencyRepository = MockRepository({
-      findOne: () => Promise.resolve({ code: "eur" }),
-    })
 
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
+      regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
-      regionRepository,
-      countryRepository,
       currencyRepository,
+      countryRepository,
       storeService,
     })
 
@@ -395,14 +353,21 @@ describe("RegionService", () => {
         }),
     })
     const countryRepository = MockRepository({
-      findOne: (query) => Promise.resolve(),
+      findOne: () => Promise.resolve(),
     })
 
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
       regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
+      fulfillmentProviderRepository: fpRepository,
+      paymentProviderRepository: ppRepository,
+      currencyRepository,
       countryRepository,
+      storeService,
     })
 
     beforeEach(async () => {
@@ -434,6 +399,7 @@ describe("RegionService", () => {
         return Promise.resolve({ id: IdMap.getId("region") })
       },
     })
+
     const countryRepository = MockRepository({
       findOne: (query) => {
         if (query.where.iso_2 === "dk") {
@@ -454,7 +420,14 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
+      fulfillmentProviderRepository: fpRepository,
+      paymentProviderRepository: ppRepository,
+      currencyRepository,
       countryRepository,
+      storeService,
     })
 
     beforeEach(async () => {
@@ -499,7 +472,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -524,33 +497,19 @@ describe("RegionService", () => {
           payment_providers: [{ id: "sweden_provider" }],
         }),
     })
-    const ppRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
-    const fpRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.id === "should_fail") {
-          return Promise.resolve(undefined)
-        }
-        return Promise.resolve({
-          id: "default_provider",
-        })
-      },
-    })
 
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
+      regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
       fulfillmentProviderRepository: fpRepository,
       paymentProviderRepository: ppRepository,
-      regionRepository,
+      currencyRepository,
+      countryRepository,
+      storeService,
     })
 
     beforeEach(async () => {
@@ -609,8 +568,15 @@ describe("RegionService", () => {
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
-      fulfillmentProviderRepository: fpRepository,
       regionRepository,
+      fulfillmentProviderService,
+      taxProviderRepository,
+      paymentProviderService,
+      fulfillmentProviderRepository: fpRepository,
+      paymentProviderRepository: ppRepository,
+      currencyRepository,
+      countryRepository,
+      storeService,
     })
 
     beforeEach(async () => {
@@ -660,7 +626,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()
@@ -695,7 +661,7 @@ describe("RegionService", () => {
       manager: MockManager,
       eventBusService,
       regionRepository,
-    })
+    } as any)
 
     beforeEach(async () => {
       jest.clearAllMocks()

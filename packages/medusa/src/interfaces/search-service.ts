@@ -1,7 +1,7 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import { SearchService } from "medusa-interfaces"
 
-export interface ISearchService<T extends TransactionBaseService<never>> {
+export interface ISearchService {
   options: Record<string, unknown>
 
   /**
@@ -72,11 +72,9 @@ export interface ISearchService<T extends TransactionBaseService<never>> {
   updateSettings(indexName: string, settings: unknown): unknown
 }
 
-export abstract class AbstractSearchService<
-    T extends TransactionBaseService<never>
-  >
-  extends TransactionBaseService<T>
-  implements ISearchService<T>
+export abstract class AbstractSearchService
+  extends TransactionBaseService
+  implements ISearchService
 {
   abstract readonly isDefault
   protected readonly options_: Record<string, unknown>
