@@ -38,11 +38,11 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ### 3. Start your Medusa server
 
-If you use PostgreSQL instead of SQLite databases, please remember to run the migration before starting the server.
+If you use PostgreSQL, please remember to [run migrations](../advanced/backend/migrations.md) after installing and before starting the server.
 
    ```bash
    cd my-medusa-store
-   medusa migrations server # Only for PostgreSQL
+   yarn run seed # Only for PostgreSQL
    medusa develop
    ```
 
