@@ -1,0 +1,9 @@
+303 warn complete Waiting for 2 child processes to exit. CTRL-C to exit immediately.
+304 error Error: Command failed: git tag medusa-dev-cli@0.0.25 -m medusa-dev-cli@0.0.25
+304 error fatal: tag 'medusa-dev-cli@0.0.25' already exists
+304 error
+304 error     at makeError (/Users/oliverjuhl/Desktop/medusa/core/node_modules/@lerna/child-process/node_modules/execa/index.js:174:9)
+304 error     at /Users/oliverjuhl/Desktop/medusa/core/node_modules/@lerna/child-process/node_modules/execa/index.js:278:16
+304 error     at runMicrotasks (<anonymous>)
+304 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
+304 error     at async Promise.all (index 1)
