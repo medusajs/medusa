@@ -63,27 +63,14 @@ class ProductVariantService extends BaseService {
   }) {
     super()
 
-    /** @protected @const {EntityManager} */
     this.manager_ = manager
-
-    /** @protected @const {ProductVariantModel} */
     this.productVariantRepository_ = productVariantRepository
-
-    /** @protected @const {ProductModel} */
     this.productRepository_ = productRepository
-
-    /** @protected @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @protected @const {RegionService} */
     this.regionService_ = regionService
-
     this.moneyAmountRepository_ = moneyAmountRepository
-
     this.productOptionValueRepository_ = productOptionValueRepository
-
     this.cartRepository_ = cartRepository
-
     this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
@@ -203,6 +190,78 @@ class ProductVariantService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Variant with barcode: ${barcode} was not found`
+      )
+    }
+
+    return variant
+  }
+
+
+  /**
+   * Gets a product variant by ean.
+   * @param {string} ean - The unique ean used to identify the product variant.
+   * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval.
+   * @return {Promise<ProductVariant>} the product variant document.
+   */
+  async retrieveByEan(
+    ean: string,
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      include_discount_prices: false,
+    }
+  ): Promise<ProductVariant> {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
+    const query = this.buildQuery_({ ean }, config)
+    const variant = await variantRepo.findOne(query)
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with ean: ${ean} was not found`
+      )
+    }
+
+    return variant
+  }
+
+
+  /**
+   * Gets a product variant by upc.
+   * @param {string} upc - The unique upc used to identify the product variant.
+   * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval.
+   * @return {Promise<ProductVariant>} the product variant document.
+   */
+  async retrieveByUpc(
+    upc: string,
+    config: FindConfig<ProductVariant> & PriceSelectionContext = {
+      include_discount_prices: false,
+    }
+  ): Promise<ProductVariant> {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
+    const query = this.buildQuery_({ upc }, config)
+    const variant = await variantRepo.findOne(query)
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variant with upc: ${upc} was not found`
       )
     }
 
