@@ -284,15 +284,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const salesChannels: SalesChannel[] = []
 
     for (const input of data) {
-      let sc = await salesChannelServiceTx.retrieveByName(input.name)
-
-      if (!sc) {
-        sc = await salesChannelServiceTx.create(
-          input as CreateSalesChannelInput
-        )
-      }
-
-      salesChannels.push(sc)
+      salesChannels.push(
+        (await salesChannelServiceTx.retrieveByName(input.name)) as SalesChannel
+      )
     }
 
     return salesChannels

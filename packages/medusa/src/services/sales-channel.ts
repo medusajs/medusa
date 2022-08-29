@@ -98,14 +98,23 @@ class SalesChannelService extends TransactionBaseService {
   async retrieveByName(
     name: string,
     config: FindConfig<SalesChannel> = {}
-  ): Promise<SalesChannel | undefined> {
+  ): Promise<SalesChannel | unknown> {
     const manager = this.manager_
     const salesChannelRepo = manager.getCustomRepository(
       this.salesChannelRepository_
     )
 
     const query = buildQuery({ name }, config)
-    return await salesChannelRepo.findOne(query)
+    const salesChannel = await salesChannelRepo.findOne(query)
+
+    if (!salesChannel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with name: "${name}" was not found`
+      )
+    }
+
+    return salesChannel
   }
 
   /**
