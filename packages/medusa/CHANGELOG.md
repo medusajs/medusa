@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.7
+
+### Patch Changes
+
+- [#2105](https://github.com/medusajs/medusa/pull/2105) [`846ae637e`](https://github.com/medusajs/medusa/commit/846ae637e2be6d557df37f45421da689127b9da6) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix development hot reload on Windows
+
 ## 1.3.6
 
 ### Patch Changes
