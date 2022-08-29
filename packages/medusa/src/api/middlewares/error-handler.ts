@@ -58,9 +58,9 @@ export default () => {
       case MedusaError.Types.INVALID_ARGUMENT:
         break
       default:
-        // errObj.code = "unknown_error"
-        // errObj.message = "An unknown error occurred."
-        // errObj.type = "unknown_error"
+        errObj.code = "unknown_error"
+        errObj.message = "An unknown error occurred."
+        errObj.type = "unknown_error"
         break
     }
 
