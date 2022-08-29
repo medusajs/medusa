@@ -1,11 +1,11 @@
-import { Connection } from "typeorm"
-import faker from "faker"
 import {
+  ShippingOption,
   ShippingOptionPriceType,
   ShippingProfile,
-  ShippingOption,
   ShippingProfileType,
 } from "@medusajs/medusa"
+import faker from "faker"
+import { Connection } from "typeorm"
 
 export type ShippingOptionFactoryData = {
   name?: string

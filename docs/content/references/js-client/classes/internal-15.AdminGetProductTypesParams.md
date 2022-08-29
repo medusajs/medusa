@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:37
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:106
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:34
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:103
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:30
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:99
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:31
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:100
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:39
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:108
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:35
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:104
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:38
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:107
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:36
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:105

@@ -34,13 +34,8 @@ describe("/admin/products", () => {
 
   describe("GET /admin/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -870,13 +865,8 @@ describe("/admin/products", () => {
 
   describe("POST /admin/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1445,13 +1435,8 @@ describe("/admin/products", () => {
 
   describe("GET /admin/products/:id/variants", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1499,14 +1484,9 @@ describe("/admin/products", () => {
 
   describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1773,7 +1753,7 @@ describe("/admin/products", () => {
     })
   })
 
-  describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
+  describe("variant creation", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -1782,6 +1762,75 @@ describe("/admin/products", () => {
         console.log(err)
         throw err
       }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("create a product variant with prices (regional and currency)", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "New variant",
+        sku: "new-sku",
+        ean: "new-ean",
+        upc: "new-upc",
+        barcode: "new-barcode",
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 100,
+          },
+          {
+            region_id: "test-region",
+            amount: 200,
+          },
+        ],
+        options: [{ option_id: "test-option", value: "inserted value" }],
+      }
+
+      const res = await api
+        .post("/admin/products/test-product/variants", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => console.log(err))
+
+      const insertedVariant = res.data.product.variants.find(
+        (v) => v.sku === "new-sku"
+      )
+
+      expect(res.status).toEqual(200)
+
+      expect(insertedVariant.prices).toEqual([
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          variant_id: insertedVariant.id,
+          region_id: null,
+        }),
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: null,
+          variant_id: insertedVariant.id,
+          region_id: "test-region",
+        }),
+      ])
+    })
+  })
+
+  describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
+    beforeEach(async () => {
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -2274,13 +2323,8 @@ describe("/admin/products", () => {
 
   describe("GET /admin/products/tag-usage", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {

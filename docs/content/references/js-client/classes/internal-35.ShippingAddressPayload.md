@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/orders/lookup-order.d.ts:24
+medusa/dist/api/routes/store/orders/lookup-order.d.ts:43

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:84
+medusa/dist/api/routes/store/carts/update-cart.d.ts:97
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:89
+medusa/dist/api/routes/store/carts/update-cart.d.ts:102
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:82
+medusa/dist/api/routes/store/carts/update-cart.d.ts:95
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:88
+medusa/dist/api/routes/store/carts/update-cart.d.ts:101
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:87
+medusa/dist/api/routes/store/carts/update-cart.d.ts:100
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:83
+medusa/dist/api/routes/store/carts/update-cart.d.ts:96
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:86
+medusa/dist/api/routes/store/carts/update-cart.d.ts:99
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:81
+medusa/dist/api/routes/store/carts/update-cart.d.ts:94
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:90
+medusa/dist/api/routes/store/carts/update-cart.d.ts:103
 
 ___
 
@@ -100,4 +100,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-cart.d.ts:85
+medusa/dist/api/routes/store/carts/update-cart.d.ts:98

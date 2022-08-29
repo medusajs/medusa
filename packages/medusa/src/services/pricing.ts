@@ -64,7 +64,7 @@ class PricingService extends TransactionBaseService {
     context: PriceSelectionContext
   ): Promise<PricingContext> {
     let automaticTaxes = false
-    let taxRate = null
+    let taxRate: number | null = null
     let currencyCode = context.currency_code
 
     if (context.region_id) {

@@ -436,13 +436,8 @@ describe("/admin/discounts", () => {
 
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await discountSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -2226,11 +2221,7 @@ describe("/admin/discounts", () => {
 
   describe("GET /admin/discounts/:id/conditions/:condition_id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
 
       const prod = await simpleProductFactory(dbConnection, {
         type: "pants",
@@ -2309,7 +2300,6 @@ describe("/admin/discounts", () => {
         })
 
       const cond = discountCondition.data.discount_condition
-      console.log(cond.products)
 
       expect(discountCondition.status).toEqual(200)
       expect(cond).toMatchSnapshot({

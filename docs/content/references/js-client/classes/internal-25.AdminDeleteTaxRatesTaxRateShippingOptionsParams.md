@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/remove-from-shipping-options.d.ts:27
+medusa/dist/api/routes/admin/tax-rates/remove-from-shipping-options.d.ts:57
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/remove-from-shipping-options.d.ts:28
+medusa/dist/api/routes/admin/tax-rates/remove-from-shipping-options.d.ts:58

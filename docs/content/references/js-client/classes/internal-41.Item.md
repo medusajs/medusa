@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/create-return.d.ts:58
+medusa/dist/api/routes/store/returns/create-return.d.ts:64
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/create-return.d.ts:61
+medusa/dist/api/routes/store/returns/create-return.d.ts:67
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/create-return.d.ts:59
+medusa/dist/api/routes/store/returns/create-return.d.ts:65
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/create-return.d.ts:60
+medusa/dist/api/routes/store/returns/create-return.d.ts:66

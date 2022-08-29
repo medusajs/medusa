@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:24
+medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:37
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:25
+medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:38
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:26
+medusa/dist/api/routes/admin/gift-cards/list-gift-cards.d.ts:39

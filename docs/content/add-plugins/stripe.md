@@ -171,10 +171,10 @@ This section will go over how to add Stripe into a React-based framework. The in
 
 The integration with stripe must have the following workflow:
 
-1. During checkout when the user reaches the payment section, you should [create payment sessions](https://docs.medusajs.com/api/store/cart/initialize-payment-sessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment providers.
-2. If Stripe is available as a payment provider, you should select Stripe as [the payment session](https://docs.medusajs.com/api/store/cart/select-a-payment-session) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
+1. During checkout when the user reaches the payment section, you should [create payment sessions](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment providers.
+2. If Stripe is available as a payment provider, you should select Stripe as [the payment session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
 3. After the user enters their card details and submits the form, confirm the payment with Stripe.
-4. If the payment is confirmed successfully, [complete the order](https://docs.medusajs.com/api/store/cart/complete-a-cart) in Medusa. Otherwise show an error.
+4. If the payment is confirmed successfully, [complete the order](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) in Medusa. Otherwise show an error.
 
 #### Install Dependencies
 

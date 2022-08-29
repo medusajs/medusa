@@ -28,7 +28,15 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+    ignore: [
+      "**/__fixtures__/**",
+      "**/index.js",
+      "**/index.ts",
+      "**/utils.js",
+      "**/utils.ts",
+      "**/types.js",
+      "**/types.ts",
+    ],
   })
 
   core.forEach((fn) => {

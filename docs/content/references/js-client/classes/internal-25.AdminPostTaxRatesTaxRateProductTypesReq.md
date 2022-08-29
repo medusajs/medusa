@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/add-to-product-types.d.ts:24
+medusa/dist/api/routes/admin/tax-rates/add-to-product-types.d.ts:54

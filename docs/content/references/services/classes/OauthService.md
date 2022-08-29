@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`OauthService`**
 
@@ -16,55 +16,111 @@
 
 | Name | Type |
 | :------ | :------ |
-| `cradle` | `any` |
+| `cradle` | `InjectedDependencies` |
 
 #### Overrides
 
-OauthService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:10](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L10)
+[packages/medusa/src/services/oauth.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L31)
 
 ## Properties
 
-### container\_
+### \_\_configModule\_\_
 
-• **container\_**: `any`
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:15](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### container\_
+
+• `Protected` **container\_**: `InjectedDependencies`
+
+#### Defined in
+
+[packages/medusa/src/services/oauth.ts:27](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L27)
 
 ___
 
 ### eventBus\_
 
-• **eventBus\_**: `any`
+• `Protected` **eventBus\_**: [`EventBusService`](EventBusService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:17](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L17)
+[packages/medusa/src/services/oauth.ts:29](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L29)
 
 ___
 
 ### manager
 
-• **manager**: `any`
+• `Protected` **manager**: `EntityManager`
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:14](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L14)
+[packages/medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L26)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L19)
 
 ___
 
 ### oauthRepository\_
 
-• **oauthRepository\_**: `any`
+• `Protected` **oauthRepository\_**: typeof `OauthRepository`
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:16](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L16)
+[packages/medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L28)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/oauth.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L20)
 
 ___
 
@@ -81,147 +137,254 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:5](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L5)
+[packages/medusa/src/services/oauth.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L21)
 
 ## Methods
 
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+
+___
+
 ### create
 
-▸ **create**(`data`): `Promise`<`any`\>
+▸ **create**(`data`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `any` |
+| `data` | `CreateOauthInput` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:32](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L32)
+[packages/medusa/src/services/oauth.ts:81](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L81)
 
 ___
 
 ### generateToken
 
-▸ **generateToken**(`appName`, `code`, `state`): `Promise`<`any`\>
+▸ **generateToken**(`appName`, `code`, `state`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appName` | `any` |
-| `code` | `any` |
-| `state` | `any` |
+| `appName` | `string` |
+| `code` | `string` |
+| `state` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:66](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L66)
+[packages/medusa/src/services/oauth.ts:119](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L119)
 
 ___
 
 ### list
 
-▸ **list**(`selector`): `any`
+▸ **list**(`selector`): `Promise`<`Oauth`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `selector` | `any` |
+| `selector` | `Selector`<`Oauth`\> |
 
 #### Returns
 
-`any`
+`Promise`<`Oauth`[]\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:27](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L27)
+[packages/medusa/src/services/oauth.ts:73](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L73)
 
 ___
 
 ### refreshToken
 
-▸ **refreshToken**(`appName`): `Promise`<`any`\>
+▸ **refreshToken**(`appName`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appName` | `any` |
+| `appName` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:96](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L96)
+[packages/medusa/src/services/oauth.ts:153](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L153)
 
 ___
 
 ### registerOauthApp
 
-▸ **registerOauthApp**(`appDetails`): `Promise`<`any`\>
+▸ **registerOauthApp**(`appDetails`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appDetails` | `any` |
+| `appDetails` | `CreateOauthInput` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:56](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L56)
+[packages/medusa/src/services/oauth.ts:109](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L109)
+
+___
+
+### retrieve
+
+▸ **retrieve**(`oauthId`): `Promise`<`Oauth`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `oauthId` | `string` |
+
+#### Returns
+
+`Promise`<`Oauth`\>
+
+#### Defined in
+
+[packages/medusa/src/services/oauth.ts:57](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L57)
 
 ___
 
 ### retrieveByName
 
-▸ **retrieveByName**(`appName`): `any`
+▸ **retrieveByName**(`appName`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appName` | `any` |
+| `appName` | `string` |
 
 #### Returns
 
-`any`
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:20](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L20)
+[packages/medusa/src/services/oauth.ts:41](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L41)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `update`): `Promise`<`any`\>
+▸ **update**(`id`, `update`): `Promise`<`Oauth`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `any` |
-| `update` | `any` |
+| `id` | `string` |
+| `update` | `UpdateOauthInput` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Oauth`\>
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.js:45](https://github.com/medusajs/medusa/blob/f406c8d4/packages/medusa/src/services/oauth.js#L45)
+[packages/medusa/src/services/oauth.ts:96](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/oauth.ts#L96)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`OauthService`](OauthService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+[`OauthService`](OauthService.md)
+
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

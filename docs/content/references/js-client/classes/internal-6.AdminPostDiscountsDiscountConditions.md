@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-condition.d.ts:53
+medusa/dist/api/routes/admin/discounts/create-condition.d.ts:65
 
 ___
 

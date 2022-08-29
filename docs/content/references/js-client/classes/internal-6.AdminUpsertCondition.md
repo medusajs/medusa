@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:74
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:140
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/update-discount.d.ts:75
+medusa/dist/api/routes/admin/discounts/update-discount.d.ts:141
 
 ___
 

@@ -109,6 +109,60 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
+  /apps/authorizations:
+    post:
+      operationId: PostApps
+      summary: Generates a token for an application.
+      description: Generates a token for an application.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - application_name
+                - state
+                - code
+              properties:
+                application_name:
+                  type: string
+                  description: Name of the application for the token to be generated for.
+                state:
+                  type: string
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
+  /apps:
+    get:
+      operationId: GetApps
+      summary: List applications
+      description: Retrieve a list of applications.
+      x-authenticated: true
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  apps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OAuth'
   /auth:
     post:
       operationId: PostAuth
@@ -1564,7 +1618,8 @@ paths:
   '/discounts/{discount_id}/conditions':
     post:
       operationId: PostDiscountsDiscountConditions
-      summary: >-
+      summary: Create a DiscountCondition
+      description: >-
         Creates a DiscountCondition. Only one of `products`, `product_types`,
         `product_collections`, `product_tags`, and `customer_groups` should be
         provided.
@@ -1590,7 +1645,6 @@ paths:
             the result.
           schema:
             type: string
-      description: Creates a DiscountCondition
       requestBody:
         content:
           application/json:
@@ -2044,7 +2098,8 @@ paths:
                     $ref: '#/components/schemas/discount_condition'
     post:
       operationId: PostDiscountsDiscountConditionsCondition
-      summary: >-
+      summary: Update a DiscountCondition
+      description: >-
         Updates a DiscountCondition. Only one of `products`, `product_types`,
         `product_collections`, `product_tags`, and `customer_groups` should be
         provided.
@@ -2076,7 +2131,6 @@ paths:
             the result.
           schema:
             type: string
-      description: Updates a DiscountCondition
       requestBody:
         content:
           application/json:
@@ -2414,60 +2468,6 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /apps/authorizations:
-    post:
-      operationId: PostApps
-      summary: Generates a token for an application.
-      description: Generates a token for an application.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - application_name
-                - state
-                - code
-              properties:
-                application_name:
-                  type: string
-                  description: Name of the application for the token to be generated for.
-                state:
-                  type: string
-                  description: State of the application.
-                code:
-                  type: string
-                  description: The code for the generated token.
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-  /apps:
-    get:
-      operationId: GetApps
-      summary: List applications
-      description: Retrieve a list of applications.
-      x-authenticated: true
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  apps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OAuth'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -3061,9 +3061,9 @@ paths:
                     $ref: '#/components/schemas/gift_card'
     post:
       operationId: PostGiftCardsGiftCard
-      summary: Create a Gift Card
+      summary: Update a Gift Card
       description: >-
-        Creates a Gift Card that can redeemed by its unique code. The Gift Card
+        Update a Gift Card that can redeemed by its unique code. The Gift Card
         is only valid within 1 region.
       x-authenticated: true
       parameters:
@@ -5657,13 +5657,19 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
-  '/price-lists/:id/products':
+  '/price-lists/{id}/products':
     get:
       operationId: GetPriceListsPriceListProducts
       summary: List Product in a Price List
       description: Retrieves a list of Product that are part of a Price List
       x-authenticated: true
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the price list.
+          schema:
+            type: string
         - in: query
           name: q
           description: >-
@@ -9170,12 +9176,18 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  '/tax-rates/:id/product-types/batch':
+  '/tax-rates/{id}/product-types/batch':
     post:
       operationId: PostTaxRatesTaxRateProductTypes
       summary: Add Tax Rate to Product Types
       description: Associates a Tax Rate with a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9225,6 +9237,12 @@ paths:
       summary: Remove Tax Rate from Product Types
       description: Removes a Tax Rate from a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9269,12 +9287,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
-  '/tax-rates/:id/products/batch':
+  '/tax-rates/{id}/products/batch':
     post:
       operationId: PostTaxRatesTaxRateProducts
       summary: Add Tax Rate to Products
       description: Associates a Tax Rate with a list of Products
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9322,6 +9346,12 @@ paths:
       summary: Removes Tax Rate from Products
       description: Removes a Tax Rate from a list of Products
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9366,12 +9396,18 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
-  '/tax-rates/:id/shipping-options/batch':
+  '/tax-rates/{id}/shipping-options/batch':
     post:
       operationId: PostTaxRatesTaxRateShippingOptions
       summary: Add Tax Rate to Product Types
       description: Associates a Tax Rate with a list of Shipping Options
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9421,6 +9457,12 @@ paths:
       summary: Removes a Tax Rate from Product Types
       description: Removes a Tax Rate from a list of Product Types
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9675,12 +9717,17 @@ paths:
                     type: boolean
                     description: Whether or not the items were deleted.
                     default: true
-  '/tax-rates/:id':
     get:
       operationId: GetTaxRatesTaxRate
       summary: Get Tax Rate
       description: Retrieves a TaxRate
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -9716,6 +9763,12 @@ paths:
       summary: Update a Tax Rate
       description: Updates a Tax Rate
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the tax rate.
+          schema:
+            type: string
         - in: query
           name: fields
           description: Which fields should be included in the result.
@@ -14152,10 +14205,10 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
-    sales_channel_tax_line:
-      title: Sales Channel
-      description: A Sales Channel
-      x-resourceId: sales_channel_tax_line
+    shipping_method_tax_line:
+      title: Shipping Method Tax Line
+      description: Shipping Method Tax Line
+      x-resourceId: shipping_method_tax_line
       required:
         - shipping_method_id
         - rate
@@ -14265,7 +14318,7 @@ components:
           type: array
           description: Available if the relation `tax_lines` is expanded.
           items:
-            $ref: '#/components/schemas/tax_line'
+            $ref: '#/components/schemas/shipping_method_tax_line'
         price:
           description: >-
             The amount to charge for the Shipping Method. The currency of the

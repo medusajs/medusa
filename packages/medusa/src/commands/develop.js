@@ -5,7 +5,7 @@ import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
 
-export default async function ({ port, directory }) {
+export default async function({ port, directory }) {
   const args = process.argv
   args.shift()
   args.shift()
@@ -28,6 +28,11 @@ export default async function ({ port, directory }) {
   chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
     Logger.info(`${f} changed: restarting...`)
+
+    if (process.platform === "win32") {
+      execSync(`taskkill /PID ${child.pid} /F /T`)
+    }
+
     child.kill("SIGINT")
 
     execSync(`${babelPath} src -d dist --extensions \".ts,.js\"`, {
