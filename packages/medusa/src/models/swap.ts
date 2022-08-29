@@ -191,7 +191,7 @@ export class Swap extends SoftDeletableEntity {
  *     description: Available if the relation `shipping_address` is expanded.
  *     $ref: "#/components/schemas/address"
  *   shipping_methods:
- *     description: The Shipping Methods used to fulfill the addtional items purchased. Available if the relation `shipping_methods` is expanded.
+ *     description: The Shipping Methods used to fulfill the additional items purchased. Available if the relation `shipping_methods` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/shipping_method"

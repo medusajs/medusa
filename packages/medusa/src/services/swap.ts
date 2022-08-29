@@ -5,8 +5,7 @@ import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 
 import LineItemAdjustmentService from "./line-item-adjustment"
-import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import { SwapRepository } from "../repositories/swap"
 import CartService from "./cart"
 import {
@@ -26,7 +25,6 @@ import {
   CartType,
   FulfillmentItem,
   LineItem,
-  LineItemTaxLine,
   Order,
   PaymentSessionStatus,
   ReturnItem,
@@ -37,12 +35,12 @@ import {
 } from "../models"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 
 type InjectedProps = {
   manager: EntityManager
 
   swapRepository: typeof SwapRepository
-  shippingMethodTaxLineRepository: typeof ShippingMethodTaxLineRepository
 
   cartService: CartService
   eventBus: EventBusService
@@ -79,7 +77,6 @@ class SwapService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly swapRepository_: typeof SwapRepository
-  protected readonly shippingTaxLineRepo_: typeof ShippingMethodTaxLineRepository
 
   protected readonly cartService_: CartService
   protected readonly eventBus_: EventBusService
@@ -103,7 +100,6 @@ class SwapService extends TransactionBaseService {
     returnService,
     lineItemService,
     paymentProviderService,
-    shippingMethodTaxLineRepository,
     shippingOptionService,
     fulfillmentService,
     orderService,
@@ -127,7 +123,6 @@ class SwapService extends TransactionBaseService {
     this.shippingOptionService_ = shippingOptionService
     this.inventoryService_ = inventoryService
     this.eventBus_ = eventBusService
-    this.shippingTaxLineRepo_ = shippingMethodTaxLineRepository
     this.customShippingOptionService_ = customShippingOptionService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
   }
@@ -685,9 +680,6 @@ class SwapService extends TransactionBaseService {
       // If the swap has a return shipping method the price has to be added to
       // the cart.
       if (swap.return_order && swap.return_order.shipping_method) {
-        const shippingTaxLineRepo = this.manager_.getCustomRepository(
-          this.shippingTaxLineRepo_
-        )
         await this.lineItemService_.withTransaction(manager).create({
           cart_id: cart.id,
           title: "Return shipping",
@@ -697,12 +689,12 @@ class SwapService extends TransactionBaseService {
           unit_price: swap.return_order.shipping_method.price,
           is_return: true,
           tax_lines: swap.return_order.shipping_method.tax_lines.map((tl) => {
-            return shippingTaxLineRepo.create({
+            return lineItemServiceTx.createTaxLine({
               name: tl.name,
               code: tl.code,
               rate: tl.rate,
               metadata: tl.metadata,
-            }) as unknown as LineItemTaxLine // TODO: should we create LineItemTaxLine here
+            })
           }),
         })
       }

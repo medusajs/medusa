@@ -19,7 +19,6 @@ import CartService from "../cart"
 import { Order, ReturnItem, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import LineItemAdjustmentService from "../line-item-adjustment"
-import { ShippingMethodTaxLineRepository } from "../../repositories/shipping-method-tax-line"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
@@ -29,10 +28,6 @@ const swapRepo = MockRepository({
     return Object.assign(new Swap(), data)
   }),
 })
-
-const shippingMethodTaxLineRepository = MockRepository(
-  {}
-) as unknown as typeof ShippingMethodTaxLineRepository
 
 /* ******************** DEFAULT SERVICE MOCKS ******************** */
 
@@ -113,7 +108,6 @@ const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 const defaultProps = {
   manager: MockManager,
   swapRepository: swapRepo,
-  shippingMethodTaxLineRepository: shippingMethodTaxLineRepository,
 
   cartService: cartService,
   eventBus: eventBusService,
