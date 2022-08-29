@@ -371,8 +371,9 @@ class SwapService extends TransactionBaseService {
         )
       }
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       for (const item of returnItems) {
-        const line = await this.lineItemService_.retrieve(item.item_id!, {
+        const line = await lineItemServiceTx.retrieve(item.item_id!, {
           relations: ["order", "swap", "claim_order"],
         })
 
@@ -748,15 +749,17 @@ class SwapService extends TransactionBaseService {
         )
       }
 
-      const cart = await this.cartService_.retrieve(swap.cart_id, {
-        select: ["total"],
-        relations: [
-          "payment",
-          "shipping_methods",
-          "items",
-          "items.adjustments",
-        ],
-      })
+      const cart = await this.cartService_
+        .withTransaction(manager)
+        .retrieve(swap.cart_id, {
+          select: ["total"],
+          relations: [
+            "payment",
+            "shipping_methods",
+            "items",
+            "items.adjustments",
+          ],
+        })
 
       const { payment } = cart
 
