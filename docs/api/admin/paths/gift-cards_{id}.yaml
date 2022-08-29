@@ -55,9 +55,9 @@ get:
                 $ref: ../components/schemas/gift_card.yaml
 post:
   operationId: PostGiftCardsGiftCard
-  summary: Create a Gift Card
+  summary: Update a Gift Card
   description: >-
-    Creates a Gift Card that can redeemed by its unique code. The Gift Card is
+    Update a Gift Card that can redeemed by its unique code. The Gift Card is
     only valid within 1 region.
   x-authenticated: true
   parameters:
