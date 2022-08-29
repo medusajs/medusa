@@ -12,6 +12,7 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
+const { simpleProductFactory } = require("../../factories")
 
 jest.setTimeout(50000)
 
@@ -1428,6 +1429,58 @@ describe("/admin/products", () => {
               product_id: "test-product",
             }),
           ]),
+        })
+      )
+    })
+  })
+
+  describe("DELETE /admin/products/:id/options/:option_id", () => {
+    beforeEach(async () => {
+      try {
+        await simpleProductFactory(dbConnection, {
+          id: "test-product-without-variants",
+          variants: [],
+          options: [
+            {
+              id: "test-product-option",
+              title: "Test option",
+            },
+          ],
+        })
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("deletes a product option", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          "/admin/products/test-product-without-variants/options/test-product-option",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          options: [],
+          id: "test-product-without-variants",
+          variants: [],
         })
       )
     })
