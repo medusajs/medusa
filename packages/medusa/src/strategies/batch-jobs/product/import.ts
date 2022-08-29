@@ -25,6 +25,8 @@ import {
   TParsedProductImportRowData,
 } from "./types"
 import { transformProductData, transformVariantData } from "./utils"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import { FlagRouter } from "../../../utils/flag-router"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -41,16 +43,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
   private processedCounter: Record<string, number> = {}
 
+  protected readonly featureFlagRouter_: FlagRouter
+
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
   protected readonly fileService_: IFileService
 
+  protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
-  protected readonly regionService_: RegionService
 
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
@@ -66,11 +70,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     regionService,
     fileService,
     manager,
+    featureFlagRouter,
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.csvParser_ = new CsvParser(CSVSchema)
+
+    this.featureFlagRouter_ = featureFlagRouter
 
     this.manager_ = manager
     this.fileService_ = fileService
@@ -654,6 +661,28 @@ const CSVSchema: ProductImportCsvSchema = {
         ).push({
           value,
           _title: context.line[key.slice(0, -6) + " Name"],
+        })
+
+        return builtLine
+      },
+    },
+    // SALES CHANNELS
+    {
+      name: "Sales Channel Name",
+      match: /Sales channel \d+ Name/,
+      reducer: (builtLine, key, value, context): TBuiltProductImportLine => {
+        builtLine["product.channels"] = builtLine["product.channels"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ;(
+          builtLine["product.channels"] as Record<string, string | number>[]
+        ).push({
+          name: value,
+          description: context.line[
+            key.slice(0, -5) + " Description"
+          ] as string,
         })
 
         return builtLine

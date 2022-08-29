@@ -8,8 +8,8 @@ import {
   RegionService,
   ShippingProfileService,
 } from "../../../services"
-import { ProductOptionRepository } from "../../../repositories/product-option"
 import { CsvSchema } from "../../../interfaces/csv-parser"
+import { FlagRouter } from "../../../utils/flag-router"
 
 /**
  * DI props for the Product import strategy
@@ -22,6 +22,7 @@ export type InjectedProps = {
   regionService: RegionService
   fileService: typeof FileService
 
+  featureFlagRouter: FlagRouter
   manager: EntityManager
 }
 
