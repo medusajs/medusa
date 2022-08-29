@@ -92,7 +92,8 @@ get:
                 $ref: ../components/schemas/discount_condition.yaml
 post:
   operationId: PostDiscountsDiscountConditionsCondition
-  summary: >-
+  summary: Update a DiscountCondition
+  description: >-
     Updates a DiscountCondition. Only one of `products`, `product_types`,
     `product_collections`, `product_tags`, and `customer_groups` should be
     provided.
@@ -124,7 +125,6 @@ post:
         result.
       schema:
         type: string
-  description: Updates a DiscountCondition
   requestBody:
     content:
       application/json:

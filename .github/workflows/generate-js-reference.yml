@@ -51,3 +51,5 @@ jobs:
           title: 'chore(docs): Updated API Reference'
           labels: 'type: chore'
           add-paths: docs/content/references/js-client/**
+          branch: 'chore/generate-js-client'
+          branch-suffix: 'timestamp'

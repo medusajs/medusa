@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/uploads/delete-upload.d.ts:16
+medusa/dist/api/routes/admin/uploads/delete-upload.d.ts:41

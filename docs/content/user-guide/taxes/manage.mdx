@@ -1,0 +1,189 @@
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Taxes
+
+In this document, you’ll learn how to view and manage taxes in your Medusa Admin.
+
+## View Taxes
+
+To view taxes:
+
+- Click on Settings in the sidebar.
+- Choose Tax Settings from the list of settings.
+
+This opens the Taxes page where you can find a list of regions. This is because every time you create a region, a default tax rate is associated with that region. 
+
+![List of Regions on the Taxes page](https://i.imgur.com/Hf3RazW.png)
+
+## Edit a Region’s Taxes
+
+To edit a region’s taxes:
+
+- Go to Settings → Taxes.
+- Click on the region you want to edit the taxes for in the Regions section.
+
+This opens a Details form to the right where you can edit the taxes calculation settings and manage the tax rates.
+
+![The details of a region's taxes](https://i.imgur.com/kdLmcVA.png)
+
+## Change Tax Calculation Settings
+
+![Available settings to change tax calculation settings](https://i.imgur.com/y3UUE27.png)
+
+:::tip
+
+The save button only appears when you make changes to the settings.
+
+:::
+
+### Change Tax Provider
+
+The tax provider that you choose defines how taxes are calculated for products and shipping options on checkout. Medusa provides a default tax provider with the name “System Tax Provider”.
+
+If you have integrated a custom tax provider and want to use it to calculate taxes in a region:
+
+- Select a region whose taxes you want to edit.
+- Change the selected tax provider in the Tax Provider field.
+- Click Save at the bottom right.
+
+### Disable Automatic Taxes Calculation
+
+By default, taxes are calculated automatically by Medusa. They’re calculated in different places during checkout, such as when a shipping method is chosen or when a new product is added to the cart.
+
+If you use a third-party tax provider and you want to avoid sending too many requests to the tax provider, you can disable this behavior.
+
+:::caution
+
+If you switch off automatic taxes calculation, the taxes must be calculated manually on checkout. If you’re unsure how that works, please contact your technical team.
+
+:::
+
+To disable automatic taxes calculation:
+
+- Select a region whose tax you want to edit.
+- Check off the “Calculate taxes automatically” input.
+- Click Save at the bottom right.
+
+### Disable Taxes for Gift Cards
+
+To disable applying taxes for Gift Cards:
+
+- Select a region whose tax you want to edit.
+- Check off the “Apply tax to gift cards” input.
+- Click Save at the bottom right.
+
+Enabling taxes for Gift Cards follows the same process, except you check the input.
+
+## Manage Tax Rates
+
+Regions have at least one tax rate, which is the default tax rate. You can, however, add more tax rates for further customization.
+
+### Create Tax Rates
+
+To add a tax rate:
+
+- Select a region that you want to add a new tax rate to.
+- Click on New Tax Rate at the top right of the Details section.
+- This opens the tax rate form in a new window.
+- You can optionally [add overrides to the tax rate](#manage-tax-rate-overrides).
+- Once done, click Save.
+
+![Form to add a tax rate](https://i.imgur.com/y3UUE27.png)
+
+### Edit Tax Rate
+
+To edit a tax rate:
+
+- Select the region that the tax rate you want to edit belongs to.
+- From the list of tax rates in the Details section, find the tax rate you want to edit and click the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+- Choose Edit from the dropdown.
+- In the form that opens in the new window, you can edit the basic details of the tax rate such as the name or rate. If you’re editing a tax rate that’s not the default, you can [manage overrides of this tax rate](#manage-tax-rate-overrides).
+- Once done, click Save.
+
+![Form to edit a tax rate](https://i.imgur.com/FG1Q1np.png)
+
+### Delete Tax Rate
+
+:::warning
+
+If you delete a tax rate, you won’t be able to restore it or use it during checkout.
+
+:::
+
+To delete a tax rate:
+
+- Select the region that the tax rate you want to delete belongs to.
+- From the list of tax rates in the Details section, find the tax rate you want to delete and click the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+- Choose Delete Tax Rate from the dropdown.
+- Confirm deleting the tax rate by clicking the “Yes, confirm” button in the pop-up.
+
+:::info
+
+Default tax rates can’t be deleted. If you don’t want to apply any taxes in a region, you can instead set the default tax rate to 0.
+
+:::
+
+![Delete tax rate link is the second link in the dropdown](https://i.imgur.com/MUarcT0.png)
+
+## Manage Tax Rate Overrides
+
+When you create or edit a tax rate, you can add, edit, and delete overrides. Overrides are used to customize the default tax rate for some products, product types, or shipping options.
+
+### Override Types
+
+There are three override types:
+
+- **Products**: Used to override the tax rate applied on specific products during checkout.
+- **Product Types:** Used to override the tax rate applied on a product type. This subsequently overrides the tax rate of any product having this type during checkout.
+- **Shipping Options:** Used to override the tax rate applied on selected shipping methods during checkout.
+
+### Add Override
+
+To add an override while adding or editing a tax rate:
+
+- Under the Overrides section, click Add Overrides
+- Choose the type of the override, then choose the specific entries in that type that you want to apply the tax rate to. For example, if you chose the Products type, choose at least one product to apply the override to.
+- Once done, click on Add.
+- In the tax rate form, click on Save.
+
+:::info
+
+If you already have an override for one of the types, and you choose to add a new override for that same type, the new override replaces the old one. If you want to add new entries to the same type (for example, add more products to the Products override), you should [edit the existing override](#edit-override) instead.
+
+:::
+
+![Form to add an override](https://i.imgur.com/xIP8gnb.png)
+
+### Edit Override
+
+You can edit an override to select more entries for or remove entries from an override type.
+
+To edit an override:
+
+- Open the edit form of a tax rate.
+- Under the overrides section, find the override type you want to edit. For example, if you want to add a product to the overrides, find the override with the title “Product Rules”.
+- Click on the three dots next to the override type.
+- Choose Edit from the dropdown.
+- You can then change the selected entries for the override type.
+- Once done, click Add.
+- In the edit form of the tax rate, click Save.
+
+![Edit link is the first link in the dropdown](https://i.imgur.com/1qE7vyF.png)
+
+### Delete Override
+
+:::caution
+
+If you delete an override you won’t be able to restore it and it won’t be applied during checkout. If you want to, instead, remove some entries from an override type, you should [edit the override](#edit-override) instead.
+
+:::
+
+To delete an override:
+
+- Open the edit form of a tax rate.
+- Under the overrides section, find the override type you want to delete.
+- Click on the three dots next to the override type.
+- Choose "Delete rule" from the dropdown.
+- Click Save.
+
+![Delete rule link is the second link in the dropdown](https://i.imgur.com/c8yEmrD.png)

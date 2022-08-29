@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/create-cart.d.ts:53
+medusa/dist/api/routes/store/carts/create-cart.d.ts:62
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/create-cart.d.ts:52
+medusa/dist/api/routes/store/carts/create-cart.d.ts:61

@@ -154,7 +154,7 @@ export class ShippingMethod {
  *     type: array
  *     description: Available if the relation `tax_lines` is expanded.
  *     items:
- *       $ref: "#/components/schemas/tax_line"
+ *       $ref: "#/components/schemas/shipping_method_tax_line"
  *   price:
  *     description: "The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of."
  *     type: integer

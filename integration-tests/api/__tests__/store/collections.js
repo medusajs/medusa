@@ -25,12 +25,7 @@ describe("/store/collections", () => {
 
   describe("/store/collections/:id", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -55,12 +50,7 @@ describe("/store/collections", () => {
 
   describe("/store/collections", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
     })
 
     afterEach(async () => {

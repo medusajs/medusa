@@ -22,12 +22,8 @@ describe("Line Item Adjustments", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
-    } catch (error) {
-      console.log(error)
-    }
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -41,60 +37,55 @@ describe("Line Item Adjustments", () => {
       discount,
       lineItemId = "line-test"
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        discount = await simpleDiscountFactory(dbConnection, {
-          code: "MEDUSATEST",
-          id: "discount-test",
-          rule: {
-            value: 100,
-            type: "fixed",
-            allocation: "total",
-          },
-          regions: ["test-region"],
-        })
-        cart = await simpleCartFactory(
-          dbConnection,
-          {
-            customer: "test-customer",
-            id: "cart-test",
-            line_items: [
-              {
-                id: lineItemId,
-                variant_id: "test-variant",
-                cart_id: "cart-test",
-                unit_price: 1000,
-                quantity: 1,
-                adjustments: [
-                  {
-                    amount: 10,
-                    discount_id: discount.id,
-                    description: "discount",
-                    item_id: lineItemId,
-                  },
-                ],
-              },
-            ],
-            region: "test-region",
-            shipping_address: {
-              address_1: "test",
-              country_code: "us",
-              first_name: "chris",
-              last_name: "rock",
-              postal_code: "101",
+      await cartSeeder(dbConnection)
+      discount = await simpleDiscountFactory(dbConnection, {
+        code: "MEDUSATEST",
+        id: "discount-test",
+        rule: {
+          value: 100,
+          type: "fixed",
+          allocation: "total",
+        },
+        regions: ["test-region"],
+      })
+      cart = await simpleCartFactory(
+        dbConnection,
+        {
+          customer: "test-customer",
+          id: "cart-test",
+          line_items: [
+            {
+              id: lineItemId,
+              variant_id: "test-variant",
+              cart_id: "cart-test",
+              unit_price: 1000,
+              quantity: 1,
+              adjustments: [
+                {
+                  amount: 10,
+                  discount_id: discount.id,
+                  description: "discount",
+                  item_id: lineItemId,
+                },
+              ],
             },
-            shipping_methods: [
-              {
-                shipping_option: "test-option",
-              },
-            ],
+          ],
+          region: "test-region",
+          shipping_address: {
+            address_1: "test",
+            country_code: "us",
+            first_name: "chris",
+            last_name: "rock",
+            postal_code: "101",
           },
-          100
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+          shipping_methods: [
+            {
+              shipping_option: "test-option",
+            },
+          ],
+        },
+        100
+      )
     })
 
     afterEach(async () => {

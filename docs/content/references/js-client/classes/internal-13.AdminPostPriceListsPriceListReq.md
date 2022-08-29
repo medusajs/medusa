@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:87
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:109
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:81
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:103
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:83
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:105
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:80
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:102
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:86
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:108
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:82
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:104
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:84
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:106
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:85
+medusa/dist/api/routes/admin/price-lists/create-price-list.d.ts:107

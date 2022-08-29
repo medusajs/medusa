@@ -287,6 +287,11 @@ module.exports = {
                   id: "advanced/backend/upgrade-guides/1-3-0",
                   label: "v1.3.0"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/upgrade-guides/1-3-6",
+                  label: "v1.3.6"
+                },
               ]
             },
           ]
@@ -535,6 +540,73 @@ module.exports = {
         {
           type: "doc",
           id: "user-guide/discounts/index"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Gift Cards",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/gift-cards/index"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Price Lists",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/price-lists/index"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Regions",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/regions/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/regions/manage"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Taxes",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/taxes/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/taxes/manage"
+        }
+      ]
+    },
+    {
+      type: "category",
+      collapsed: false,
+      label: "Sales Channels",
+      items: [
+        {
+          type: "doc",
+          id: "user-guide/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "user-guide/sales-channels/manage"
         }
       ]
     },

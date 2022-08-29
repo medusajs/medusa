@@ -48,7 +48,7 @@ export default class LocalFileService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor({ name, ext }) {
-    const fileKey = `${name}-${Date.now()}.${ext}`
+    const fileKey = `${name}.${ext}`
     const filePath = path.resolve(this.upload_dir_, fileKey)
 
     const isFileExists = fs.existsSync(filePath)
@@ -65,5 +65,13 @@ export default class LocalFileService extends AbstractFileService {
       url: `${this.upload_dir_}/${fileKey}`,
       fileKey,
     }
+  }
+
+  async getDownloadStream(fileData) {
+    const filePath = path.resolve(
+      this.upload_dir_,
+      fileData.fileKey + (fileData.ext ? `.${fileData.ext}` : "")
+    )
+    return fs.createReadStream(filePath)
   }
 }
