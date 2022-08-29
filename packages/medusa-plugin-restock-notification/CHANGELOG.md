@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.33-fix-2098.0
+
+### Patch Changes
+
+- Updated dependencies [[`846ae637e`](https://github.com/medusajs/medusa/commit/846ae637e2be6d557df37f45421da689127b9da6)]:
+  - @medusajs/medusa@1.3.7-fix-2098.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

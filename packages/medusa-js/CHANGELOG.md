@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.2.7-fix-2098.0
+
+### Patch Changes
+
+- Updated dependencies [[`846ae637e`](https://github.com/medusajs/medusa/commit/846ae637e2be6d557df37f45421da689127b9da6)]:
+  - @medusajs/medusa@1.3.7-fix-2098.0
+
 ## 1.2.6
 
 ### Patch Changes
