@@ -6,6 +6,8 @@ export type ProductVariantPricing = {
   prices: MoneyAmount[]
   original_price: number | null
   calculated_price: number | null
+  original_price_includes_tax?: boolean | null
+  calculated_price_includes_tax?: boolean | null
   calculated_price_type?: string | null
 } & TaxedPricing
 

@@ -16,6 +16,7 @@ import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
+import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -23,6 +24,7 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   regionService: RegionService
   priceSelectionStrategy: IPriceSelectionStrategy
+  featureFlagRouter: FlagRouter
 }
 
 /**
@@ -36,6 +38,7 @@ class PricingService extends TransactionBaseService<PricingService> {
   protected readonly taxProviderService: TaxProviderService
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
+  protected readonly featureFlagRouter: FlagRouter
 
   constructor({
     manager,
@@ -43,6 +46,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     taxProviderService,
     regionService,
     priceSelectionStrategy,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -52,6 +56,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
+    this.featureFlagRouter = featureFlagRouter
   }
 
   /**
@@ -115,20 +120,47 @@ class PricingService extends TransactionBaseService<PricingService> {
     }
 
     if (variantPricing.calculated_price !== null) {
-      const taxAmount = Math.round(variantPricing.calculated_price * rate)
+      const taxAmount =
+        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
+        variantPricing.calculated_price_includes_tax
+          ? this.calculateTaxInclusiveTaxAmount(
+              rate,
+              variantPricing.calculated_price
+            )
+          : Math.round(variantPricing.calculated_price * rate)
       taxedPricing.calculated_tax = taxAmount
+
       taxedPricing.calculated_price_incl_tax =
-        variantPricing.calculated_price + taxAmount
+        variantPricing.calculated_price_includes_tax
+          ? variantPricing.calculated_price
+          : variantPricing.calculated_price + taxAmount
     }
 
     if (variantPricing.original_price !== null) {
-      const taxAmount = Math.round(variantPricing.original_price * rate)
+      const taxAmount =
+        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
+        variantPricing.original_price_includes_tax
+          ? this.calculateTaxInclusiveTaxAmount(
+              rate,
+              variantPricing.original_price
+            )
+          : Math.round(variantPricing.original_price * rate)
       taxedPricing.original_tax = taxAmount
+
       taxedPricing.original_price_incl_tax =
-        variantPricing.original_price + taxAmount
+        variantPricing.original_price_includes_tax
+          ? variantPricing.original_price
+          : variantPricing.original_price + taxAmount
     }
 
     return taxedPricing
+  }
+
+  private calculateTaxInclusiveTaxAmount(
+    taxRate: number,
+    taxInclusivePrice: number
+  ): number {
+    return (taxRate * taxInclusivePrice) / (1 + taxRate)
   }
 
   private async getProductVariantPricing_(
@@ -137,6 +169,9 @@ class PricingService extends TransactionBaseService<PricingService> {
     context: PricingContext
   ): Promise<ProductVariantPricing> {
     const transactionManager = this.transactionManager_ ?? this.manager_
+
+    context.price_selection.tax_rates = taxRates
+
     const pricing = await this.priceSelectionStrategy
       .withTransaction(transactionManager)
       .calculateVariantPrice(variantId, context.price_selection)
@@ -146,6 +181,8 @@ class PricingService extends TransactionBaseService<PricingService> {
       original_price: pricing.originalPrice,
       calculated_price: pricing.calculatedPrice,
       calculated_price_type: pricing.calculatedPriceType,
+      original_price_includes_tax: pricing.originalPriceIncludesTax,
+      calculated_price_includes_tax: pricing.calculatedPriceIncludesTax,
       original_price_incl_tax: null,
       calculated_price_incl_tax: null,
       original_tax: null,
