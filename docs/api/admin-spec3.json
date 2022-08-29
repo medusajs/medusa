@@ -2372,7 +2372,8 @@
     "/discounts/{discount_id}/conditions": {
       "post": {
         "operationId": "PostDiscountsDiscountConditions",
-        "summary": "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided.",
+        "summary": "Create a DiscountCondition",
+        "description": "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -2401,7 +2402,6 @@
             }
           }
         ],
-        "description": "Creates a DiscountCondition",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2997,7 +2997,8 @@
       },
       "post": {
         "operationId": "PostDiscountsDiscountConditionsCondition",
-        "summary": "Updates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided.",
+        "summary": "Update a DiscountCondition",
+        "description": "Updates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -3035,7 +3036,6 @@
             }
           }
         ],
-        "description": "Updates a DiscountCondition",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4337,8 +4337,8 @@
       },
       "post": {
         "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "summary": "Update a Gift Card",
+        "description": "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
         "x-authenticated": true,
         "parameters": [
           {
@@ -19189,10 +19189,10 @@
           }
         }
       },
-      "sales_channel_tax_line": {
-        "title": "Sales Channel",
-        "description": "A Sales Channel",
-        "x-resourceId": "sales_channel_tax_line",
+      "shipping_method_tax_line": {
+        "title": "Shipping Method Tax Line",
+        "description": "Shipping Method Tax Line",
+        "x-resourceId": "shipping_method_tax_line",
         "required": [
           "shipping_method_id",
           "rate",
@@ -19319,7 +19319,7 @@
             "type": "array",
             "description": "Available if the relation `tax_lines` is expanded.",
             "items": {
-              "$ref": "#/components/schemas/tax_line"
+              "$ref": "#/components/schemas/shipping_method_tax_line"
             }
           },
           "price": {

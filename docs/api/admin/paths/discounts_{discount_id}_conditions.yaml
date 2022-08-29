@@ -1,6 +1,7 @@
 post:
   operationId: PostDiscountsDiscountConditions
-  summary: >-
+  summary: Create a DiscountCondition
+  description: >-
     Creates a DiscountCondition. Only one of `products`, `product_types`,
     `product_collections`, `product_tags`, and `customer_groups` should be
     provided.
@@ -26,7 +27,6 @@ post:
         result.
       schema:
         type: string
-  description: Creates a DiscountCondition
   requestBody:
     content:
       application/json:

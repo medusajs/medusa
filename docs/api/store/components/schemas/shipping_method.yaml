@@ -59,7 +59,7 @@ properties:
     type: array
     description: Available if the relation `tax_lines` is expanded.
     items:
-      $ref: ./tax_line.yaml
+      $ref: ./shipping_method_tax_line.yaml
   price:
     description: >-
       The amount to charge for the Shipping Method. The currency of the price is
