@@ -5,18 +5,20 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /orders/{id}/refunds
+ * @oas [post] /orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *             description: The reason for the Refund.
  *             type: string
  *           note:
- *             description: A not with additional details about the Refund.
+ *             description: A note with additional details about the Refund.
  *             type: string
  *           no_notification:
  *             description: If set to true no notification will be send related to this Refund.
@@ -56,15 +58,14 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.createRefund(
-    id,
-    validated.amount,
-    validated.reason,
-    validated.note,
-    {
-      no_notification: validated.no_notification,
-    }
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService
+      .withTransaction(transactionManager)
+      .createRefund(id, validated.amount, validated.reason, validated.note, {
+        no_notification: validated.no_notification,
+      })
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

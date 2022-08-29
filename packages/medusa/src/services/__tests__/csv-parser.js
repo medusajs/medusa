@@ -6,7 +6,7 @@ import { currencies } from "../../utils/currencies"
 
 describe("CsvParser", () => {
   describe("parse", () => {
-    const csvParser = new CsvParser(createContainer(), {
+    const csvParser = new CsvParser({
       columns: [],
     })
 
@@ -62,7 +62,7 @@ describe("CsvParser", () => {
         ],
       }
 
-      const csvParser = new CsvParser(createContainer(), schema)
+      const csvParser = new CsvParser(schema)
 
       it("given a line containing a column which is not defined in the schema, then validation should fail", async () => {
         try {
@@ -139,7 +139,7 @@ describe("CsvParser", () => {
     })
 
     describe("mapTo", () => {
-      const csvParser = new CsvParser(createContainer(), {
+      const csvParser = new CsvParser({
         columns: [
           {
             name: "title",
@@ -160,7 +160,7 @@ describe("CsvParser", () => {
     })
 
     describe("transformer", () => {
-      const csvParser = new CsvParser(createContainer(), {
+      const csvParser = new CsvParser({
         columns: [
           {
             name: "title",
@@ -188,7 +188,7 @@ describe("CsvParser", () => {
 
     describe("match", () => {
       describe("regex", () => {
-        const csvParser = new CsvParser(createContainer(), {
+        const csvParser = new CsvParser({
           columns: [
             {
               name: "title",
@@ -273,7 +273,7 @@ describe("CsvParser", () => {
             },
           ],
         }
-        const csvParser = new CsvParser(createContainer(), schema)
+        const csvParser = new CsvParser(schema)
 
         it("given a column with match and reducer properties, when building data, should return the result of the reducer function", async () => {
           const content = await csvParser.buildData([
@@ -363,7 +363,7 @@ describe("CsvParser", () => {
               },
             ],
           }
-          const csvParser = new CsvParser(createContainer(), schema)
+          const csvParser = new CsvParser(schema)
 
           it("given a column with match and mapTo property, when building data, then the mapTo property should be ignored", async () => {
             const content = await csvParser.buildData([

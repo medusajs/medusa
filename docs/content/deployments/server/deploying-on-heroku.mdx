@@ -18,51 +18,24 @@ Alternatively, you can use this button to deploy the Medusa server to Heroku dir
 
 ## Prerequisites
 
-Before you start with this guide, you must have a Medusa server installed locally.
+### Medusa Server
 
-To install a Medusa server, follow our [Quickstart guide](../../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow our [quickstart guide](../../quickstart/quick-start.md).
 
-## How to Deploy Your Medusa Server on Heroku
+Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
 
-### 1. Install the Heroku CLI
+### Needed Accounts
 
-Install the Heroku CLI tool using the instructions that belong to your operating system.
+- A [Heroku](https://heroku.com/) account.
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
-<TabItem value="windows" label="Windows" default>
+### Required Tools
 
-Download the appropriate installer for your Windows installation:
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Heroku's CLI tool. You can follow [Heroku's documentation to learn how to install it for your operating system](https://devcenter.heroku.com/articles/heroku-cli).
 
-[64-bit installer](https://cli-assets.heroku.com/heroku-x64.exe)
+## Deploy to Heroku
 
-[32-bit installer](https://cli-assets.heroku.com/heroku-x86.exe)
-
-</TabItem>
-<TabItem value="linux" label="Linux">
-
-For Ubuntu, you can use the following command:
-
-```bash
-sudo snap install --classic heroku
-```
-
-As for other Linux distributions, please check [Heroku's guide](https://devcenter.heroku.com/articles/heroku-cli#standalone-installation-with-a-tarball).
-
-</TabItem>
-<TabItem value="macos" label="macOS">
-
-For macOS you can install Heroku's CLI tool using Homebrew:
-
-```bash
-brew tap heroku/brew && brew install heroku
-```
-
-For other installation options, please check [Heroku's guide](https://devcenter.heroku.com/articles/heroku-cli#standalone-installation-with-a-tarball)
-
-</TabItem>
-</Tabs>
-
-### 2. Login to Heroku from your CLI
+### 1. Login to Heroku from your CLI
 
 Before you can create an app with Heroku, you must login with the CLI tool:
 
@@ -72,7 +45,7 @@ heroku login
 
 Depending on your operating system, you must follow either the instructions in your terminal or a page in your browser will open.
 
-### 3. Create an App with Heroku
+### 2. Create an App with Heroku
 
 In the root directory of your Medusa server, run the following commands to create an app on Heroku and add it as a remote origin:
 
@@ -83,7 +56,7 @@ heroku git:remote -a <APP_NAME>
 
 Where `<APP_NAME>` is the name of the app you'll create. You can use any name you want.
 
-### 4. Install Postgresql and Redis on Heroku
+### 3. Install Postgresql and Redis on Heroku
 
 Medusa requires a Postgres database and a Redis instance to work. You can add those to your Heroku app using Add-ons.
 
@@ -131,7 +104,7 @@ heroku addons:create upstash-redis
 
 This uses the free plan of Upstash. Make sure to check out [more information regarding the plans and pricing of Upstash](https://elements.heroku.com/addons/upstash-redis#pricing).
 
-### 5. Configure Environment Variables on Heroku
+### 4. Configure Environment Variables on Heroku
 
 Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa Server](../../usage/configurations.md) document.
 
@@ -202,7 +175,7 @@ heroku config:set STORE_CORS=<YOUR_STOREFRONT_URL>
 
 Where `<YOUR_STOREFRONT_URL>` is the URL of your storefront.
 
-### 6. Configure Medusa Server
+### 5. Configure Medusa Server
 
 Before jumping into the deployment, you need to configure your Medusa server to ensure it uses the previous environment variables and the recommended production configurations.
 
@@ -241,7 +214,7 @@ Update `scripts` to include the following scripts:
 },
 ```
 
-### 7. Launch your Medusa Server
+### 6. Launch your Medusa Server
 
 Finally, commit and push all changes to Heroku:
 
@@ -253,23 +226,59 @@ git push heroku HEAD:master
 
 This triggers a redeploy of the Medusa server with all the new configurations.
 
-## Troubleshooting: Inspect Build Logs
+## Test your Server
+
+To test your server, run the following command to retrieve the server's URL:
+
+```bash
+heroku apps:info -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of the app. You should see as the output a bunch of info of the app.
+
+The server's URL is available under "Web URL". You can copy it and perform requests to it to test it out.
+
+For example, you can send a request to `<YOUR_SERVER_URL>/store/products` and you should receive a JSON response with the products in your store.
+
+### Troubleshooting: Inspect Build Logs
 
 If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa server:
 
 ```bash
-heroku logs -n 500000 --remote heroku --tail
+heroku logs -n 500000 --remote heroku --tail -a <APP_NAME>
 ```
 
-## Create a User
+Where `<APP_NAME>` is the name of the app.
 
-As an optional extra step, you can create a user to use when your admin dashboard is up and running:
+## Run Commands on Your Server
+
+To run commands on your server, you can use the following command:
+
+```bash
+heroku run -a <APP_NAME> -- <COMMAND>
+```
+
+Where `<APP_NAME>` is the name of the app and `<COMMAND>` is the command you want to run.
+
+For example, to create an admin user you can run the following command:
 
 ```bash
 heroku run -a <APP_NAME> -- medusa user -e "<EMAIL>" -p "<PASSWORD>"
 ```
 
 Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>` are the credentials you want to use to log in to the Medusa admin dashboard.
+
+## Add Environment Variables
+
+You’ll likely need to add environment variables later such as Admin CORS and Store CORS variables.
+
+To set or change an environment variable's value, you can use the following command:
+
+```bash
+heroku config:set <ENV_NAME>=<ENV_VALUE> -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of your Heroku app, `<ENV_NAME>` is the name of the environment variable, and `<ENV_VALUE>` is the value.
 
 ## What's Next :rocket:
 

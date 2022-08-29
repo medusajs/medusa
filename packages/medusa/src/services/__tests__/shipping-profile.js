@@ -1,12 +1,5 @@
-import { In } from "typeorm"
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ShippingProfileService from "../shipping-profile"
-//import { ShippingProfileModelMock } from "../../models/__mocks__/shipping-profile"
-//import { ProductServiceMock, products } from "../__mocks__/product"
-//import {
-//  ShippingOptionServiceMock,
-//  shippingOptions,
-//} from "../__mocks__/shipping-option"
 
 describe("ShippingProfileService", () => {
   describe("retrieve", () => {
@@ -36,21 +29,21 @@ describe("ShippingProfileService", () => {
 
   describe("update", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
 
     const productService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const shippingOptionService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -105,7 +98,7 @@ describe("ShippingProfileService", () => {
 
   describe("delete", () => {
     const profRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({ id: q.where.id })
       },
     })
@@ -133,7 +126,7 @@ describe("ShippingProfileService", () => {
 
     const productService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -163,7 +156,7 @@ describe("ShippingProfileService", () => {
 
   describe("fetchCartOptions", () => {
     const profRepo = MockRepository({
-      find: q => {
+      find: (q) => {
         switch (q.where.id) {
           default:
             return Promise.resolve([
@@ -195,13 +188,16 @@ describe("ShippingProfileService", () => {
           },
         ])
       }),
-      validateCartOption: jest.fn().mockImplementation(s => s),
-      withTransaction: function() {
+      validateCartOption: jest.fn().mockImplementation((s) => s),
+      withTransaction: function () {
         return this
       },
     }
 
     const customShippingOptionService = {
+      withTransaction: function () {
+        return this
+      },
       list: jest.fn().mockImplementation(({ cart_id }, config) => {
         if (cart_id === "cso-cart") {
           return Promise.resolve([
@@ -305,7 +301,7 @@ describe("ShippingProfileService", () => {
 
     const shippingOptionService = {
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }

@@ -1,8 +1,10 @@
-import { Request, Response } from "express"
-import { SalesChannelService } from "../../../../services"
 import { IsArray, ValidateNested } from "class-validator"
-import { Type } from "class-transformer"
+import { Request, Response } from "express"
+
+import { EntityManager } from "typeorm"
 import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
+import { SalesChannelService } from "../../../../services"
+import { Type } from "class-transformer"
 
 /**
  * @oas [post] /sales-channels/{id}/products/batch
@@ -11,8 +13,25 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
  * description: "Assign a batch of product to a sales channel."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Sales channel.
- *   - (body) product_ids=* {ProductBatchSalesChannel} The product ids that must be assigned to the sales channel.
+ *   - (path) id=* {string} The ID of the Sales channel.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - product_ids
+ *         properties:
+ *           product_ids:
+ *             description: The IDs of the products to add to the Sales Channel
+ *             type: array
+ *             items:
+ *               type: object
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The ID of the product
  * tags:
  *   - Sales Channel
  * responses:
@@ -26,18 +45,25 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
  *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response): Promise<void> => {
+  const validatedBody =
+    req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
+
   const { id } = req.params
 
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
 
-  const validatedBody =
-    req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
-  const salesChannel = await salesChannelService.addProducts(
-    id,
-    validatedBody.product_ids.map((p) => p.id)
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const salesChannel = await manager.transaction(async (transactionManager) => {
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .addProducts(
+        id,
+        validatedBody.product_ids.map((p) => p.id)
+      )
+  })
+
   res.status(200).json({ sales_channel: salesChannel })
 }
 

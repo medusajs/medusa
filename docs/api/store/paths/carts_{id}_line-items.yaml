@@ -1,0 +1,42 @@
+post:
+  operationId: PostCartsCartLineItems
+  summary: Add a Line Item
+  description: Generates a Line Item with a given Product Variant and adds it to the Cart
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart to add the Line Item to.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - variant_id
+            - quantity
+          properties:
+            variant_id:
+              type: string
+              description: The id of the Product Variant to generate the Line Item from.
+            quantity:
+              type: integer
+              description: The quantity of the Product Variant to add to the Line Item.
+            metadata:
+              type: object
+              description: >-
+                An optional key-value map with additional details about the Line
+                Item.

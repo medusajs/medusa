@@ -1,5 +1,6 @@
 import stream from "stream"
 import aws from "aws-sdk"
+import { parse } from "path"
 import fs from "fs"
 import { AbstractFileService } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
@@ -19,7 +20,7 @@ class MinioService extends AbstractFileService {
     this.endpoint_ = options.endpoint
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
-    this.downloadUrlDuration = options.download_url_duration ?? 60  // 60 seconds
+    this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
   upload(file) {
@@ -44,7 +45,7 @@ class MinioService extends AbstractFileService {
           return
         }
 
-        resolve({ url: data.Location })
+        resolve({ url: data.Location, key: data.Key })
       })
     })
   }
@@ -54,27 +55,29 @@ class MinioService extends AbstractFileService {
 
     const s3 = new aws.S3()
     const params = {
-      Key: `${file}`,
+      Bucket: this.bucket_,
+      Key: `${file.fileKey}`,
     }
 
-    return await Promise.all(
-      [
-        s3.deleteObject({...params, Bucket: this.bucket_}, (err, data) => {
+    return await Promise.all([
+      s3.deleteObject({ ...params, Bucket: this.bucket_ }, (err, data) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(data)
+      }),
+      s3.deleteObject(
+        { ...params, Bucket: this.private_bucket_ },
+        (err, data) => {
           if (err) {
             reject(err)
             return
           }
           resolve(data)
-        }),
-        s3.deleteObject({...params, Bucket: this.private_bucket_}, (err, data) => {
-          if (err) {
-            reject(err)
-            return
-          }
-          resolve(data)
-        })
-      ]
-    ) 
+        }
+      ),
+    ])
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {
@@ -124,7 +127,7 @@ class MinioService extends AbstractFileService {
     const params = {
       Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires:  this.downloadUrlDuration,
+      Expires: this.downloadUrlDuration,
     }
 
     return await s3.getSignedUrlPromise("getObject", params)

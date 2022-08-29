@@ -1,9 +1,10 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { Product } from "../../../../models"
-import { PricedProduct } from "../../../../types/pricing"
 import { PricingService, ProductService } from "../../../../services"
+
 import { FilterableProductProps } from "../../../../types/product"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../../models"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /products
@@ -12,23 +13,139 @@ import { FilterableProductProps } from "../../../../types/product"
  * description: "Retrieves a list of Product"
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching products.
- *   - (query) id {string} Id of the product to search for.
- *   - (query) status {string[]} Status to search for.
- *   - (query) collection_id {string[]} Collection ids to search for.
- *   - (query) tags {string[]} Tags to search for.
- *   - (query) title {string} to search for.
- *   - (query) description {string} to search for.
- *   - (query) handle {string} to search for.
- *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} to search for.
- *   - (query) order {string} to retrieve products in.
- *   - (query) sales_chanel_id {string[]} to retrieve products in.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting products was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by product IDs.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: ID of the product to search for.
+ *         - type: array
+ *           items:
+ *             type: string
+ *             description: ID of a product.
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Status to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *         enum: [draft, proposed, published, rejected]
+ *   - in: query
+ *     name: collection_id
+ *     style: form
+ *     explode: false
+ *     description: Collection ids to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: tags
+ *     style: form
+ *     explode: false
+ *     description: Tag IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: price_list_id
+ *     style: form
+ *     explode: false
+ *     description: Price List IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: Sales Channel IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) title {string} title to search for.
+ *   - (query) description {string} description to search for.
+ *   - (query) handle {string} handle to search for.
+ *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - (query) type {string} type ID to search for.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting products were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting products were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: deleted_at
+ *     description: Date comparison for when resulting products were deleted.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * tags:
@@ -40,19 +157,19 @@ import { FilterableProductProps } from "../../../../types/product"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The number of Products.
- *               type: integer
- *             offset:
- *               description: The offset of the Product query.
- *               type: integer
- *             limit:
- *               description: The limit of the Product query.
- *               type: integer
  *             products:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")

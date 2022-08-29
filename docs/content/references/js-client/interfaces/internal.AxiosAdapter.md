@@ -24,4 +24,4 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:18
+medusa-js/node_modules/axios/index.d.ts:18

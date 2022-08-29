@@ -28,13 +28,8 @@ describe("/admin/draft-orders", () => {
 
   describe("POST /admin/draft-orders", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await draftOrderSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -359,7 +354,7 @@ describe("/admin/draft-orders", () => {
       const payload = {
         email: "oli@test.dk",
         shipping_address: "oli-shipping",
-        discounts: [{ code: "TEST" }, { code: "free-shipping"}],
+        discounts: [{ code: "TEST" }, { code: "free-shipping" }],
         items: [
           {
             variant_id: "test-variant",
@@ -426,7 +421,7 @@ describe("/admin/draft-orders", () => {
           }),
           expect.objectContaining({
             code: "free-shipping",
-          })
+          }),
         ])
       )
     })
@@ -524,12 +519,8 @@ describe("/admin/draft-orders", () => {
   })
   describe("GET /admin/draft-orders", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await draftOrderSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -605,13 +596,8 @@ describe("/admin/draft-orders", () => {
 
   describe("DELETE /admin/draft-orders/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await draftOrderSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -644,12 +630,8 @@ describe("/admin/draft-orders", () => {
 
   describe("POST /admin/draft-orders/:id/line-items/:line_id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await draftOrderSeeder(dbConnection, { status: "open" })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection, { status: "open" })
     })
 
     afterEach(async () => {
@@ -733,12 +715,8 @@ describe("/admin/draft-orders", () => {
 
   describe("POST /admin/draft-orders/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await draftOrderSeeder(dbConnection, { status: "open" })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection, { status: "open" })
     })
 
     afterEach(async () => {

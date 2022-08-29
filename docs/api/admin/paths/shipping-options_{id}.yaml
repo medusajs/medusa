@@ -1,0 +1,119 @@
+delete:
+  operationId: DeleteShippingOptionsOption
+  summary: Delete a Shipping Option
+  description: Deletes a Shipping Option.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Shipping Option.
+      schema:
+        type: string
+  tags:
+    - Shipping Option
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted Shipping Option.
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                default: shipping-option
+              deleted:
+                type: boolean
+                description: Whether or not the items were deleted.
+                default: true
+get:
+  operationId: GetShippingOptionsOption
+  summary: Retrieve a Shipping Option
+  description: Retrieves a Shipping Option.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Shipping Option.
+      schema:
+        type: string
+  tags:
+    - Shipping Option
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              shipping_option:
+                $ref: ../components/schemas/shipping_option.yaml
+post:
+  operationId: PostShippingOptionsOption
+  summary: Update Shipping Option
+  description: Updates a Shipping Option
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Shipping Option.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - requirements
+          properties:
+            name:
+              description: The name of the Shipping Option
+              type: string
+            amount:
+              description: The amount to charge for the Shipping Option.
+              type: integer
+            admin_only:
+              description: If true, the option can be used for draft orders
+              type: boolean
+            metadata:
+              description: An optional set of key-value pairs with additional information.
+              type: object
+            requirements:
+              description: >-
+                The requirements that must be satisfied for the Shipping Option
+                to be available.
+              type: array
+              items:
+                required:
+                  - type
+                  - amount
+                properties:
+                  id:
+                    description: The ID of the requirement
+                    type: string
+                  type:
+                    description: The type of the requirement
+                    type: string
+                    enum:
+                      - max_subtotal
+                      - min_subtotal
+                  amount:
+                    description: The amount to compare with.
+                    type: integer
+  tags:
+    - Shipping Option
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              shipping_option:
+                $ref: ../components/schemas/shipping_option.yaml

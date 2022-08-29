@@ -1,0 +1,44 @@
+post:
+  operationId: PostOrdersOrderClaimsClaimFulfillments
+  summary: Create a Claim Fulfillment
+  description: Creates a Fulfillment for a Claim.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: path
+      name: claim_id
+      required: true
+      description: The ID of the Claim.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            metadata:
+              description: >-
+                An optional set of key-value pairs to hold additional
+                information.
+              type: object
+            no_notification:
+              description: >-
+                If set to true no notification will be send related to this
+                Claim.
+              type: boolean
+  tags:
+    - Fulfillment
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

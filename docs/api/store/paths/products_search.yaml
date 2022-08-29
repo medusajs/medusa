@@ -1,0 +1,35 @@
+get:
+  operationId: GetProductsSearch
+  summary: Search Products
+  description: Run a search query on products using the search engine installed on Medusa
+  parameters:
+    - in: query
+      name: q
+      required: true
+      description: The query to run the search with.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many products to skip in the result.
+      schema:
+        type: integer
+    - in: query
+      name: limit
+      description: Limit the number of products returned.
+      schema:
+        type: integer
+  tags:
+    - Product
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              hits:
+                type: array
+                description: >-
+                  Array of results. The format of the items depends on the
+                  search engine installed on the server.

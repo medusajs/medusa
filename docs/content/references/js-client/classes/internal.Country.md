@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:8
+medusa/dist/models/country.d.ts:8
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:3
+medusa/dist/models/country.d.ts:3
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:4
+medusa/dist/models/country.d.ts:4
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:5
+medusa/dist/models/country.d.ts:5
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:7
+medusa/dist/models/country.d.ts:7
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:6
+medusa/dist/models/country.d.ts:6
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:10
+medusa/dist/models/country.d.ts:10
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/country.d.ts:9
+medusa/dist/models/country.d.ts:9

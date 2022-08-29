@@ -1,7 +1,9 @@
+import { ClaimService, OrderService } from "../../../../services"
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { ClaimService, OrderService } from "../../../../services"
+
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/shipments
@@ -10,8 +12,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Registers a Claim Fulfillment as shipped."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (path) claim_id=* {string} The id of the Claim.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (path) claim_id=* {string} The ID of the Claim.
  * requestBody:
  *   content:
  *     application/json:
@@ -20,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
- *             description: The id of the Fulfillment.
+ *             description: The ID of the Fulfillment.
  *             type: string
  *           tracking_numbers:
  *             description: The tracking numbers for the shipment.
@@ -28,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               type: string
  * tags:
- *   - Order
+ *   - Claim
  * responses:
  *   200:
  *     description: OK
@@ -50,11 +52,16 @@ export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
   const claimService: ClaimService = req.scope.resolve("claimService")
 
-  await claimService.createShipment(
-    claim_id,
-    validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({ tracking_number: n }))
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await claimService
+      .withTransaction(transactionManager)
+      .createShipment(
+        claim_id,
+        validated.fulfillment_id,
+        validated.tracking_numbers?.map((n) => ({ tracking_number: n }))
+      )
+  })
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

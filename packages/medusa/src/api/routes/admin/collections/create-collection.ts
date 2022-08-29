@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /collections
@@ -37,13 +38,19 @@ import { Request, Response } from "express"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req: Request, res: Response) => {
-  const { validatedBody } = req
+  const { validatedBody } = req as { validatedBody: AdminPostCollectionsReq }
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const created = await productCollectionService.create(validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const created = await manager.transaction(async (transactionManager) => {
+    return await productCollectionService
+      .withTransaction(transactionManager)
+      .create(validatedBody)
+  })
+
   const collection = await productCollectionService.retrieve(created.id)
 
   res.status(200).json({ collection })
@@ -60,5 +67,5 @@ export class AdminPostCollectionsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

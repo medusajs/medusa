@@ -1,0 +1,85 @@
+get:
+  operationId: GetCollections
+  summary: List Product Collections
+  description: Retrieve a list of Product Collection.
+  parameters:
+    - in: query
+      name: offset
+      description: >-
+        The number of collections to skip before starting to collect the
+        collections set
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: The number of collections to return
+      schema:
+        type: integer
+        default: 10
+    - in: query
+      name: created_at
+      description: Date comparison for when resulting collections were created.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Date comparison for when resulting collections were updated.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+  tags:
+    - Collection
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              collections:
+                type: array
+                items:
+                  $ref: ../components/schemas/product_collection.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

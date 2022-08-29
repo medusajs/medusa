@@ -10,8 +10,8 @@ type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
   stagedJobRepository: typeof StagedJobRepository
-  redisClient: Redis
-  redisSubscriber: Redis
+  redisClient: Redis.Redis
+  redisSubscriber: Redis.Redis
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -27,8 +27,8 @@ export default class EventBusService {
   protected readonly stagedJobRepository_: typeof StagedJobRepository
   protected readonly observers_: Map<string | symbol, Subscriber[]>
   protected readonly cronHandlers_: Map<string | symbol, Subscriber[]>
-  protected readonly redisClient_: Redis
-  protected readonly redisSubscriber_: Redis
+  protected readonly redisClient_: Redis.Redis
+  protected readonly redisSubscriber_: Redis.Redis
   protected readonly cronQueue_: Bull
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
@@ -47,7 +47,7 @@ export default class EventBusService {
     singleton = true
   ) {
     const opts = {
-      createClient: (type: string): Redis => {
+      createClient: (type: string): Redis.Redis => {
         switch (type) {
           case "client":
             return redisClient

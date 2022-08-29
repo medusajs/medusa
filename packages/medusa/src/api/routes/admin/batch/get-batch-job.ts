@@ -5,7 +5,7 @@
  * description: "Retrieves a Batch Job."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Batch Job
+ *   - (path) id=* {string} The ID of the Batch Job
  * tags:
  *   - Batch Job
  * responses:

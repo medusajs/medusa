@@ -1,0 +1,23 @@
+post:
+  operationId: PostOrdersOrderArchive
+  summary: Archive order
+  description: Archives the order with the given id.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

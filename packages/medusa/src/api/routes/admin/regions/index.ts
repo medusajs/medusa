@@ -55,26 +55,10 @@ export default (app) => {
     middlewares.wrap(require("./remove-fulfillment-provider").default)
   )
 
-  /**
-   * Set metadata key / value pair.
-   */
-  route.post(
-    "/:id/metadata",
-    middlewares.wrap(require("./set-metadata").default)
-  )
-
-  /**
-   * Delete metadata key / value pair.
-   */
-  route.delete(
-    "/:id/metadata/:key",
-    middlewares.wrap(require("./delete-metadata").default)
-  )
-
   return app
 }
 
-export const defaultAdminRegionFields = [
+export const defaultAdminRegionFields: (keyof Region)[] = [
   "id",
   "name",
   "automatic_taxes",
@@ -120,4 +104,3 @@ export * from "./create-region"
 export * from "./add-country"
 export * from "./add-payment-provider"
 export * from "./add-fulfillment-provider"
-export * from "./set-metadata"

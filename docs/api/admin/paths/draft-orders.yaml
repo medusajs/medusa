@@ -1,0 +1,162 @@
+post:
+  operationId: PostDraftOrders
+  summary: Create a Draft Order
+  description: Creates a Draft Order
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - email
+            - items
+            - region_id
+            - shipping_methods
+          properties:
+            status:
+              description: The status of the draft order
+              type: string
+              enum:
+                - open
+                - completed
+            email:
+              description: The email of the customer of the draft order
+              type: string
+              format: email
+            billing_address:
+              description: The Address to be used for billing purposes.
+              $ref: ../components/schemas/address.yaml
+            shipping_address:
+              description: The Address to be used for shipping.
+              $ref: ../components/schemas/address.yaml
+            items:
+              description: The Line Items that have been received.
+              type: array
+              items:
+                type: object
+                required:
+                  - quantity
+                properties:
+                  variant_id:
+                    description: >-
+                      The ID of the Product Variant to generate the Line Item
+                      from.
+                    type: string
+                  unit_price:
+                    description: The potential custom price of the item.
+                    type: integer
+                  title:
+                    description: The potential custom title of the item.
+                    type: string
+                  quantity:
+                    description: The quantity of the Line Item.
+                    type: integer
+                  metadata:
+                    description: >-
+                      The optional key-value map with additional details about
+                      the Line Item.
+                    type: object
+            region_id:
+              description: The ID of the region for the draft order
+              type: string
+            discounts:
+              description: The discounts to add on the draft order
+              type: array
+              items:
+                type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    description: The code of the discount to apply
+                    type: string
+            customer_id:
+              description: The ID of the customer to add on the draft order
+              type: string
+            no_notification_order:
+              description: >-
+                An optional flag passed to the resulting order to determine use
+                of notifications.
+              type: boolean
+            shipping_methods:
+              description: The shipping methods for the draft order
+              type: array
+              items:
+                type: object
+                required:
+                  - option_id
+                properties:
+                  option_id:
+                    description: The ID of the shipping option in use
+                    type: string
+                  data:
+                    description: >-
+                      The optional additional data needed for the shipping
+                      method
+                    type: object
+                  price:
+                    description: The potential custom price of the shipping
+                    type: integer
+            metadata:
+              description: >-
+                The optional key-value map with additional details about the
+                Draft Order.
+              type: object
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              draft_order:
+                $ref: ../components/schemas/draft-order.yaml
+get:
+  operationId: GetDraftOrders
+  summary: List Draft Orders
+  description: Retrieves an list of Draft Orders
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: offset
+      description: The number of items to skip before the results.
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: limit
+      description: Limit the number of items returned.
+      schema:
+        type: number
+        default: '50'
+    - in: query
+      name: q
+      description: >-
+        a search term to search emails in carts associated with draft orders and
+        display IDs of draft orders
+      schema:
+        type: string
+  tags:
+    - Draft Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              draft_orders:
+                type: array
+                items:
+                  $ref: ../components/schemas/draft-order.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

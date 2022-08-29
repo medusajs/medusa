@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`OrderService`**
 
@@ -16,21 +16,247 @@
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/order.js:25](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L25)
+[packages/medusa/src/services/order.ts:108](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L108)
 
 ## Properties
 
+### \_\_configModule\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### addressRepository\_
+
+• `Protected` `Readonly` **addressRepository\_**: typeof `AddressRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:102](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L102)
+
+___
+
+### cartService\_
+
+• `Protected` `Readonly` **cartService\_**: [`CartService`](CartService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:101](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L101)
+
+___
+
+### customerService\_
+
+• `Protected` `Readonly` **customerService\_**: [`CustomerService`](CustomerService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:91](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L91)
+
+___
+
+### discountService\_
+
+• `Protected` `Readonly` **discountService\_**: [`DiscountService`](DiscountService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:95](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L95)
+
+___
+
+### draftOrderService\_
+
+• `Protected` `Readonly` **draftOrderService\_**: [`DraftOrderService`](DraftOrderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:104](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L104)
+
+___
+
+### eventBus\_
+
+• `Protected` `Readonly` **eventBus\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:106](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L106)
+
+___
+
+### fulfillmentProviderService\_
+
+• `Protected` `Readonly` **fulfillmentProviderService\_**: [`FulfillmentProviderService`](FulfillmentProviderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:96](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L96)
+
+___
+
+### fulfillmentService\_
+
+• `Protected` `Readonly` **fulfillmentService\_**: [`FulfillmentService`](FulfillmentService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:97](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L97)
+
+___
+
+### giftCardService\_
+
+• `Protected` `Readonly` **giftCardService\_**: [`GiftCardService`](GiftCardService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:103](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L103)
+
+___
+
+### inventoryService\_
+
+• `Protected` `Readonly` **inventoryService\_**: [`InventoryService`](InventoryService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:105](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L105)
+
+___
+
+### lineItemService\_
+
+• `Protected` `Readonly` **lineItemService\_**: [`LineItemService`](LineItemService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:98](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L98)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:87](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L87)
+
+___
+
+### orderRepository\_
+
+• `Protected` `Readonly` **orderRepository\_**: typeof `OrderRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:90](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L90)
+
+___
+
+### paymentProviderService\_
+
+• `Protected` `Readonly` **paymentProviderService\_**: [`PaymentProviderService`](PaymentProviderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:92](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L92)
+
+___
+
+### regionService\_
+
+• `Protected` `Readonly` **regionService\_**: [`RegionService`](RegionService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:100](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L100)
+
+___
+
+### shippingOptionService\_
+
+• `Protected` `Readonly` **shippingOptionService\_**: [`ShippingOptionService`](ShippingOptionService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:93](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L93)
+
+___
+
+### shippingProfileService\_
+
+• `Protected` `Readonly` **shippingProfileService\_**: [`ShippingProfileService`](ShippingProfileService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:94](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L94)
+
+___
+
+### totalsService\_
+
+• `Protected` `Readonly` **totalsService\_**: [`TotalsService`](TotalsService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:99](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L99)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:88](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L88)
+
+___
+
 ### Events
 
-▪ `Static` **Events**: `Object`
+▪ `Static` `Readonly` **Events**: `Object`
 
 #### Type declaration
 
@@ -55,36 +281,36 @@ BaseService.constructor
 
 #### Defined in
 
-[services/order.js:6](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L6)
+[packages/medusa/src/services/order.ts:68](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L68)
 
 ## Methods
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`orderId`, `optionId`, `data`, `config?`): `Promise`<`any`\>
+▸ **addShippingMethod**(`orderId`, `optionId`, `data?`, `config?`): `Promise`<`Order`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `orderId` | `any` |
-| `optionId` | `any` |
-| `data` | `any` |
-| `config` | `Object` |
+| `orderId` | `string` |
+| `optionId` | `string` |
+| `data?` | `Record`<`string`, `unknown`\> |
+| `config` | `CreateShippingMethodDto` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 #### Defined in
 
-[services/order.js:806](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L806)
+[packages/medusa/src/services/order.ts:824](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L824)
 
 ___
 
 ### archive
 
-▸ **archive**(`orderId`): `Promise`<`any`\>
+▸ **archive**(`orderId`): `Promise`<`Order`\>
 
 Archives an order. It only alloved, if the order has been fulfilled
 and payment has been captured.
@@ -97,19 +323,58 @@ and payment has been captured.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 the result of the update operation
 
 #### Defined in
 
-[services/order.js:1301](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1301)
+[packages/medusa/src/services/order.ts:1350](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1350)
+
+___
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
 ### cancel
 
-▸ **cancel**(`orderId`): `Promise`<`any`\>
+▸ **cancel**(`orderId`): `Promise`<`Order`\>
 
 Cancels an order.
 Throws if fulfillment process has been initiated.
@@ -123,19 +388,19 @@ Throws if payment process has been initiated.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 result of the update operation.
 
 #### Defined in
 
-[services/order.js:952](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L952)
+[packages/medusa/src/services/order.ts:977](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L977)
 
 ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<`any`\>
+▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<`Order`\>
 
 Cancels a fulfillment (if related to an order)
 
@@ -147,19 +412,19 @@ Cancels a fulfillment (if related to an order)
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 updated order
 
 #### Defined in
 
-[services/order.js:1242](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1242)
+[packages/medusa/src/services/order.ts:1287](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1287)
 
 ___
 
 ### capturePayment
 
-▸ **capturePayment**(`orderId`): `Promise`<`any`\>
+▸ **capturePayment**(`orderId`): `Promise`<`Order`\>
 
 Captures payment for an order.
 
@@ -171,19 +436,19 @@ Captures payment for an order.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 result of the update operation.
 
 #### Defined in
 
-[services/order.js:1021](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1021)
+[packages/medusa/src/services/order.ts:1055](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1055)
 
 ___
 
 ### completeOrder
 
-▸ **completeOrder**(`orderId`): `Promise`<`any`\>
+▸ **completeOrder**(`orderId`): `Promise`<`Order`\>
 
 #### Parameters
 
@@ -193,43 +458,19 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 the result of the find operation
 
 #### Defined in
 
-[services/order.js:429](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L429)
-
-___
-
-### create
-
-▸ **create**(`data`): `Promise`<`any`\>
-
-Creates an order
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `data` | `any` | the data to create an order |
-
-#### Returns
-
-`Promise`<`any`\>
-
-resolves to the creation result.
-
-#### Defined in
-
-[services/order.js:723](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L723)
+[packages/medusa/src/services/order.ts:457](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L457)
 
 ___
 
 ### createFromCart
 
-▸ **createFromCart**(`cartId`): `Promise`<`any`\>
+▸ **createFromCart**(`cartId`): `Promise`<`Order`\>
 
 Creates an order from a cart
 
@@ -241,19 +482,19 @@ Creates an order from a cart
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 resolves to the creation result.
 
 #### Defined in
 
-[services/order.js:465](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L465)
+[packages/medusa/src/services/order.ts:485](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L485)
 
 ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`orderId`, `itemsToFulfill`, `config?`): `Promise`<`any`\>
+▸ **createFulfillment**(`orderId`, `itemsToFulfill`, `config?`): `Promise`<`Order`\>
 
 Creates fulfillments for an order.
 In a situation where the order has more than one shipping method,
@@ -265,24 +506,26 @@ to their respective fulfillment provider.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderId` | `string` | id of order to cancel. |
-| `itemsToFulfill` | `any` | items to fulfil. |
-| `config` | `any` | the config to cancel. |
+| `itemsToFulfill` | `FulFillmentItemType`[] | items to fulfil. |
+| `config` | `Object` | the config to cancel. |
+| `config.metadata?` | `Record`<`string`, `unknown`\> | - |
+| `config.no_notification?` | `boolean` | - |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 result of the update operation.
 
 #### Defined in
 
-[services/order.js:1121](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1121)
+[packages/medusa/src/services/order.ts:1160](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1160)
 
 ___
 
 ### createRefund
 
-▸ **createRefund**(`orderId`, `refundAmount`, `reason`, `note`, `config?`): `Promise`<`any`\>
+▸ **createRefund**(`orderId`, `refundAmount`, `reason`, `note?`, `config?`): `Promise`<`Order`\>
 
 Refunds a given amount back to the customer.
 
@@ -291,26 +534,27 @@ Refunds a given amount back to the customer.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderId` | `string` | id of the order to refund. |
-| `refundAmount` | `float` | the amount to refund. |
+| `refundAmount` | `number` | the amount to refund. |
 | `reason` | `string` | the reason to refund. |
-| `note` | `undefined` \| `string` | note for refund. |
-| `config` | `any` | the config for refund. |
+| `note?` | `string` | note for refund. |
+| `config` | `Object` | the config for refund. |
+| `config.no_notification?` | `boolean` | - |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 the result of the refund operation.
 
 #### Defined in
 
-[services/order.js:1328](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1328)
+[packages/medusa/src/services/order.ts:1376](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1376)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`orderId`, `fulfillmentId`, `trackingLinks`, `config?`): `order`
+▸ **createShipment**(`orderId`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<`Order`\>
 
 Adds a shipment to the order to indicate that an order has left the
 warehouse. Will ask the fulfillment provider for any documents that may
@@ -322,70 +566,47 @@ have been created in regards to the shipment.
 | :------ | :------ | :------ |
 | `orderId` | `string` | the id of the order that has been shipped |
 | `fulfillmentId` | `string` | the fulfillment that has now been shipped |
-| `trackingLinks` | `undefined` \| `TrackingLink`[] | array of tracking numebers   associated with the shipment |
-| `config` | `any` | the config of the order that has been shipped |
+| `trackingLinks?` | `TrackingLink`[] | array of tracking numebers   associated with the shipment |
+| `config` | `Object` | the config of the order that has been shipped |
+| `config.metadata` | `Record`<`string`, `unknown`\> | - |
+| `config.no_notification?` | `boolean` | - |
 
 #### Returns
 
-`order`
+`Promise`<`Order`\>
 
 the resulting order following the update.
 
 #### Defined in
 
-[services/order.js:643](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L643)
+[packages/medusa/src/services/order.ts:664](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L664)
 
 ___
 
-### decorateTotals\_
+### decorateTotals
 
-▸ **decorateTotals_**(`order`, `totalsFields?`): `Promise`<`any`\>
+▸ `Protected` **decorateTotals**(`order`, `totalsFields?`): `Promise`<`Order`\>
 
 #### Parameters
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `order` | `any` | `undefined` |
-| `totalsFields` | `any`[] | `[]` |
+| `order` | `Order` | `undefined` |
+| `totalsFields` | `string`[] | `[]` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 #### Defined in
 
-[services/order.js:1377](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1377)
-
-___
-
-### deleteMetadata
-
-▸ **deleteMetadata**(`orderId`, `key`): `Promise`<`any`\>
-
-Dedicated method to delete metadata for an order.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `orderId` | `string` | the order to delete metadata from. |
-| `key` | `string` | key for metadata field |
-
-#### Returns
-
-`Promise`<`any`\>
-
-resolves to the updated result.
-
-#### Defined in
-
-[services/order.js:1550](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1550)
+[packages/medusa/src/services/order.ts:1425](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1425)
 
 ___
 
 ### existsByCartId
 
-▸ **existsByCartId**(`cartId`): `Promise`<`Order`\>
+▸ **existsByCartId**(`cartId`): `Promise`<`boolean`\>
 
 Checks the existence of an order by cart id.
 
@@ -397,19 +618,19 @@ Checks the existence of an order by cart id.
 
 #### Returns
 
-`Promise`<`Order`\>
+`Promise`<`boolean`\>
 
 the order document
 
 #### Defined in
 
-[services/order.js:417](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L417)
+[packages/medusa/src/services/order.ts:448](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L448)
 
 ___
 
-### getFulfillmentItems\_
+### getFulfillmentItems
 
-▸ **getFulfillmentItems_**(`order`, `items`, `transformer`): `Promise`<`LineItem`[]\>
+▸ `Protected` **getFulfillmentItems**(`order`, `items`, `transformer`): `Promise`<`LineItem`[]\>
 
 Retrieves the order line items, given an array of items.
 
@@ -418,10 +639,8 @@ Retrieves the order line items, given an array of items.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `order` | `Order` | the order to get line items from |
-| `items` | `Object` | the items to get |
-| `items.item_id` | `string` | - |
-| `items.quantity` | `number` | - |
-| `transformer` | `Function` | a function to apply to each of the items    retrieved from the order, should return a line item. If the transformer    returns an undefined value the line item will be filtered from the    returned array. |
+| `items` | `FulFillmentItemType`[] | the items to get |
+| `transformer` | (`item`: `undefined` \| `LineItem`, `quantity`: `number`) => `unknown` | a function to apply to each of the items    retrieved from the order, should return a line item. If the transformer    returns an undefined value the line item will be filtered from the    returned array. |
 
 #### Returns
 
@@ -431,61 +650,59 @@ the line items generated by the transformer.
 
 #### Defined in
 
-[services/order.js:1284](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1284)
+[packages/medusa/src/services/order.ts:1329](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1329)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<`any`\>
+▸ **list**(`selector`, `config?`): `Promise`<`Order`[]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the config to be used for find |
+| `selector` | `Selector`<`Order`\> | the query object for find |
+| `config` | `FindConfig`<`Order`\> | the config to be used for find |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`[]\>
 
 the result of the find operation
 
 #### Defined in
 
-[services/order.js:148](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L148)
+[packages/medusa/src/services/order.ts:156](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L156)
 
 ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<`any`[]\>
+▸ **listAndCount**(`selector`, `config?`): `Promise`<[`Order`[], `number`]\>
 
 #### Parameters
 
-| Name | Type | Default value |
+| Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | `undefined` |
-| `config` | `Object` | `undefined` |
-| `config.order` | `Object` | `undefined` |
-| `config.order.created_at` | `string` | `"DESC"` |
-| `config.skip` | `number` | `0` |
-| `config.take` | `number` | `50` |
+| `selector` | `QuerySelector`<`Order`\> | the query object for find |
+| `config` | `FindConfig`<`Order`\> | the config to be used for find |
 
 #### Returns
 
-`Promise`<`any`[]\>
+`Promise`<[`Order`[], `number`]\>
+
+the result of the find operation
 
 #### Defined in
 
-[services/order.js:173](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L173)
+[packages/medusa/src/services/order.ts:190](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L190)
 
 ___
 
 ### registerReturnReceived
 
-▸ **registerReturnReceived**(`orderId`, `receivedReturn`, `customRefundAmount`): `Promise`<`any`\>
+▸ **registerReturnReceived**(`orderId`, `receivedReturn`, `customRefundAmount?`): `Promise`<`Order`\>
 
 Handles receiving a return. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -500,18 +717,18 @@ mismatches.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderId` | `string` | the order to return. |
-| `receivedReturn` | `any` | the received return |
-| `customRefundAmount` | `float` | the custom refund amount return |
+| `receivedReturn` | `Return` | the received return |
+| `customRefundAmount?` | `number` | the custom refund amount return |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 the result of the update operation
 
 #### Defined in
 
-[services/order.js:1473](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1473)
+[packages/medusa/src/services/order.ts:1528](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1528)
 
 ___
 
@@ -526,7 +743,7 @@ Gets an order by id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderId` | `string` | id of order to retrieve |
-| `config` | `any` | config of order to retrieve |
+| `config` | `FindConfig`<`Order`\> | config of order to retrieve |
 
 #### Returns
 
@@ -536,7 +753,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:305](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L305)
+[packages/medusa/src/services/order.ts:330](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L330)
 
 ___
 
@@ -551,7 +768,7 @@ Gets an order by cart id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cartId` | `string` | cart id to find order |
-| `config` | `any` | the config to be used to find order |
+| `config` | `FindConfig`<`Order`\> | the config to be used to find order |
 
 #### Returns
 
@@ -561,7 +778,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:343](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L343)
+[packages/medusa/src/services/order.ts:370](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L370)
 
 ___
 
@@ -576,7 +793,7 @@ Gets an order by id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `externalId` | `string` | id of order to retrieve |
-| `config` | `any` | query config to get order by |
+| `config` | `FindConfig`<`Order`\> | query config to get order by |
 
 #### Returns
 
@@ -586,33 +803,63 @@ the order document
 
 #### Defined in
 
-[services/order.js:380](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L380)
+[packages/medusa/src/services/order.ts:409](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L409)
 
 ___
 
-### transformQueryForTotals\_
+### shouldRetryTransaction\_
 
-▸ **transformQueryForTotals_**(`config`): { `relations`: `any` ; `select`: `any` ; `totalsToSelect`: `never`[] = [] } \| { `relations`: `any` ; `select`: `any`[] = toSelect; `totalsToSelect`: `any`  }
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `config` | `any` |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
 
 #### Returns
 
-{ `relations`: `any` ; `select`: `any` ; `totalsToSelect`: `never`[] = [] } \| { `relations`: `any` ; `select`: `any`[] = toSelect; `totalsToSelect`: `any`  }
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[services/order.js:234](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L234)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+
+___
+
+### transformQueryForTotals
+
+▸ `Protected` **transformQueryForTotals**(`config`): `Object`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`Order`\> |
+
+#### Returns
+
+`Object`
+
+| Name | Type |
+| :------ | :------ |
+| `relations` | `undefined` \| `string`[] |
+| `select` | `undefined` \| keyof `Order`[] |
+| `totalsToSelect` | `undefined` \| keyof `Order`[] |
+
+#### Defined in
+
+[packages/medusa/src/services/order.ts:255](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L255)
 
 ___
 
 ### update
 
-▸ **update**(`orderId`, `update`): `Promise`<`any`\>
+▸ **update**(`orderId`, `update`): `Promise`<`Order`\>
 
 Updates an order. Metadata updates should
 use dedicated method, e.g. `setMetadata` etc. The function
@@ -623,23 +870,23 @@ will throw errors if metadata updates are attempted.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `orderId` | `string` | the id of the order. Must be a string that   can be casted to an ObjectId |
-| `update` | `any` | an object with the update values. |
+| `update` | `UpdateOrderInput` | an object with the update values. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Order`\>
 
 resolves to the update result.
 
 #### Defined in
 
-[services/order.js:864](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L864)
+[packages/medusa/src/services/order.ts:888](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L888)
 
 ___
 
-### updateBillingAddress\_
+### updateBillingAddress
 
-▸ **updateBillingAddress_**(`order`, `address`): `Promise`<`any`\>
+▸ `Protected` **updateBillingAddress**(`order`, `address`): `Promise`<`void`\>
 
 Updates the order's billing address.
 
@@ -647,24 +894,24 @@ Updates the order's billing address.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `any` | the order to update |
-| `address` | `any` | the value to set the billing address to |
+| `order` | `Order` | the order to update |
+| `address` | `Address` | the value to set the billing address to |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 the result of the update operation
 
 #### Defined in
 
-[services/order.js:744](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L744)
+[packages/medusa/src/services/order.ts:752](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L752)
 
 ___
 
-### updateShippingAddress\_
+### updateShippingAddress
 
-▸ **updateShippingAddress_**(`order`, `address`): `Promise`<`any`\>
+▸ `Protected` **updateShippingAddress**(`order`, `address`): `Promise`<`void`\>
 
 Updates the order's shipping address.
 
@@ -672,24 +919,24 @@ Updates the order's shipping address.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `any` | the order to update |
-| `address` | `any` | the value to set the shipping address to |
+| `order` | `Order` | the order to update |
+| `address` | `Address` | the value to set the shipping address to |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`void`\>
 
 the result of the update operation
 
 #### Defined in
 
-[services/order.js:779](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L779)
+[packages/medusa/src/services/order.ts:792](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L792)
 
 ___
 
-### validateFulfillmentLineItem\_
+### validateFulfillmentLineItem
 
-▸ **validateFulfillmentLineItem_**(`item`, `quantity`): `LineItem`
+▸ `Protected` **validateFulfillmentLineItem**(`item`, `quantity`): ``null`` \| `LineItem`
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
@@ -705,55 +952,35 @@ quantity from the quantity that was originally purchased.
 
 #### Returns
 
-`LineItem`
+``null`` \| `LineItem`
 
 a line item that has the requested fulfillment quantity
   set.
 
 #### Defined in
 
-[services/order.js:1091](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1091)
-
-___
-
-### validateId\_
-
-▸ **validateId_**(`rawId`): `string`
-
-Used to validate order ids. Throws an error if the cast fails
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `rawId` | `string` | the raw order id to validate. |
-
-#### Returns
-
-`string`
-
-the validated id
-
-#### Defined in
-
-[services/order.js:139](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L139)
+[packages/medusa/src/services/order.ts:1127](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1127)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`manager`): [`OrderService`](OrderService.md)
+▸ **withTransaction**(`transactionManager?`): [`OrderService`](OrderService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `manager` | `any` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`OrderService`](OrderService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/order.js:102](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L102)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

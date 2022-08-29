@@ -1,6 +1,6 @@
-import { AwilixContainer } from "awilix"
 import { difference } from "lodash"
 import Papa, { ParseConfig } from "papaparse"
+
 import { AbstractParser } from "../interfaces/abstract-parser"
 import { CsvParserContext, CsvSchema } from "../interfaces/csv-parser"
 
@@ -16,11 +16,7 @@ class CsvParser<
 > extends AbstractParser<TSchema, TParserResult, ParseConfig, TOutputResult> {
   protected readonly $$delimiter: string = ";"
 
-  constructor(
-    protected readonly container: AwilixContainer,
-    schema: TSchema,
-    delimiter?: string
-  ) {
+  constructor(schema: TSchema, delimiter?: string) {
     super(schema)
     if (delimiter) {
       this.$$delimiter = delimiter

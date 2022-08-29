@@ -8,6 +8,8 @@ import CustomerService from "../../../../services/customer"
  * tags:
  *   - Auth
  * responses:
+ *  "401":
+ *    description: Unauthorized
  *  "200":
  *    description: OK
  *    content:

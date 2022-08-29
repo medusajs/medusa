@@ -1,8 +1,18 @@
+import { FlagRouter } from "../utils/flag-router"
+
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { SearchService } from "."
+import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
-import { Product, ProductTag, ProductType, ProductVariant } from "../models"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import {
+  Product,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+} from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
@@ -20,10 +30,9 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
-import ProductVariantService from "./product-variant"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -36,9 +45,10 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
+  featureFlagRouter: FlagRouter
 }
 
-class ProductService extends TransactionBaseService<ProductService> {
+class ProductService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -51,6 +61,7 @@ class ProductService extends TransactionBaseService<ProductService> {
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -61,28 +72,19 @@ class ProductService extends TransactionBaseService<ProductService> {
 
   constructor({
     manager,
+    productOptionRepository,
     productRepository,
     productVariantRepository,
-    productOptionRepository,
     eventBusService,
     productVariantService,
     productTypeRepository,
     productTagRepository,
     imageRepository,
     searchService,
+    featureFlagRouter,
   }: InjectedDependencies) {
-    super({
-      manager,
-      productRepository,
-      productVariantRepository,
-      productOptionRepository,
-      eventBusService,
-      productVariantService,
-      productTypeRepository,
-      productTagRepository,
-      imageRepository,
-      searchService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.productOptionRepository_ = productOptionRepository
@@ -94,6 +96,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -284,6 +287,37 @@ class ProductService extends TransactionBaseService<ProductService> {
     return product.variants
   }
 
+  async filterProductsBySalesChannel(
+    productIds: string[],
+    salesChannelId: string,
+    config: FindProductConfig = {
+      skip: 0,
+      take: 50,
+    }
+  ): Promise<Product[]> {
+    const givenRelations = config.relations ?? []
+    const requiredRelations = ["sales_channels"]
+    const relationsSet = new Set([...givenRelations, ...requiredRelations])
+
+    const products = await this.list(
+      {
+        id: productIds,
+      },
+      {
+        ...config,
+        relations: [...relationsSet],
+      }
+    )
+    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
+      products.map((product) => [product.id, product.sales_channels])
+    )
+    return products.filter((product) => {
+      return productSalesChannelsMap
+        .get(product.id)
+        ?.some((sc) => sc.id === salesChannelId)
+    })
+  }
+
   async listTypes(): Promise<ProductType[]> {
     const manager = this.manager_
     const productTypeRepository = manager.getCustomRepository(
@@ -321,7 +355,14 @@ class ProductService extends TransactionBaseService<ProductService> {
         this.productOptionRepository_
       )
 
-      const { options, tags, type, images, ...rest } = productObject
+      const {
+        options,
+        tags,
+        type,
+        images,
+        sales_channels: salesChannels,
+        ...rest
+      } = productObject
 
       if (!rest.thumbnail && images?.length) {
         rest.thumbnail = images[0]
@@ -347,11 +388,28 @@ class ProductService extends TransactionBaseService<ProductService> {
           product.type_id = (await productTypeRepo.upsertType(type))?.id || null
         }
 
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        ) {
+          if (isDefined(salesChannels)) {
+            product.sales_channels = []
+            if (salesChannels?.length) {
+              const salesChannelIds = salesChannels?.map((sc) => sc.id)
+              product.sales_channels = salesChannelIds?.map(
+                (id) => ({ id } as SalesChannel)
+              )
+            }
+          }
+        }
+
         product = await productRepo.save(product)
 
         product.options = await Promise.all(
           (options ?? []).map(async (option) => {
-            const res = optionRepo.create({ ...option, product_id: product.id })
+            const res = optionRepo.create({
+              ...option,
+              product_id: product.id,
+            })
             await optionRepo.save(res)
             return res
           })
@@ -399,11 +457,36 @@ class ProductService extends TransactionBaseService<ProductService> {
       )
       const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
+      const relations = ["variants", "tags", "images"]
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (isDefined(update.sales_channels)) {
+          relations.push("sales_channels")
+        }
+      } else {
+        if (isDefined(update.sales_channels)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "the property sales_channels should no appears as part of the payload"
+          )
+        }
+      }
+
       const product = await this.retrieve(productId, {
-        relations: ["variants", "tags", "images"],
+        relations,
       })
 
-      const { variants, metadata, images, tags, type, ...rest } = update
+      const {
+        variants,
+        metadata,
+        images,
+        tags,
+        type,
+        sales_channels: salesChannels,
+        ...rest
+      } = update
 
       if (!product.thumbnail && !update.thumbnail && images?.length) {
         product.thumbnail = images[0]
@@ -423,6 +506,20 @@ class ProductService extends TransactionBaseService<ProductService> {
 
       if (tags) {
         product.tags = await productTagRepo.upsertTags(tags)
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (isDefined(salesChannels)) {
+          product.sales_channels = []
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
+          }
+        }
       }
 
       if (variants) {
@@ -559,10 +656,14 @@ class ProductService extends TransactionBaseService<ProductService> {
 
       await productOptionRepo.save(option)
 
+      const productVariantServiceTx =
+        this.productVariantService_.withTransaction(manager)
       for (const variant of product.variants) {
-        this.productVariantService_
-          .withTransaction(manager)
-          .addOptionValue(variant.id, option.id, "Default Value")
+        await productVariantServiceTx.addOptionValue(
+          variant.id,
+          option.id,
+          "Default Value"
+        )
       }
 
       const result = await this.retrieve(productId)
@@ -671,6 +772,26 @@ class ProductService extends TransactionBaseService<ProductService> {
   }
 
   /**
+   * Retrieve product's option by title.
+   *
+   * @param title - title of the option
+   * @param productId - id of a product
+   * @return product option
+   */
+  async retrieveOptionByTitle(
+    title: string,
+    productId: string
+  ): Promise<ProductOption | undefined> {
+    const productOptionRepo = this.manager_.getCustomRepository(
+      this.productOptionRepository_
+    )
+
+    return productOptionRepo.findOne({
+      where: { title, product_id: productId },
+    })
+  }
+
+  /**
    * Delete an option from a product.
    * @param productId - the product to delete an option from
    * @param optionId - the option to delete
@@ -697,32 +818,37 @@ class ProductService extends TransactionBaseService<ProductService> {
         return Promise.resolve()
       }
 
-      // For the option we want to delete, make sure that all variants have the
-      // same option values. The reason for doing is, that we want to avoid
-      // duplicate variants. For example, if we have a product with size and
-      // color options, that has four variants: (black, 1), (black, 2),
-      // (blue, 1), (blue, 2) and we delete the size option from the product,
-      // we would end up with four variants: (black), (black), (blue), (blue).
-      // We now have two duplicate variants. To ensure that this does not
-      // happen, we will force the user to select which variants to keep.
-      const firstVariant = product.variants[0]
+      // In case the product does not contain variants, we can safely delete the option
+      // If it does contain variants, we need to make sure no variant exist for the
+      // product option to delete
+      if (product?.variants?.length) {
+        // For the option we want to delete, make sure that all variants have the
+        // same option values. The reason for doing is, that we want to avoid
+        // duplicate variants. For example, if we have a product with size and
+        // color options, that has four variants: (black, 1), (black, 2),
+        // (blue, 1), (blue, 2) and we delete the size option from the product,
+        // we would end up with four variants: (black), (black), (blue), (blue).
+        // We now have two duplicate variants. To ensure that this does not
+        // happen, we will force the user to select which variants to keep.
+        const firstVariant = product.variants[0]
 
-      const valueToMatch = firstVariant.options.find(
-        (o) => o.option_id === optionId
-      )?.value
+        const valueToMatch = firstVariant.options.find(
+          (o) => o.option_id === optionId
+        )?.value
 
-      const equalsFirst = await Promise.all(
-        product.variants.map(async (v) => {
-          const option = v.options.find((o) => o.option_id === optionId)
-          return option?.value === valueToMatch
-        })
-      )
-
-      if (!equalsFirst.every((v) => v)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `To delete an option, first delete all variants, such that when an option is deleted, no duplicate variants will exist.`
+        const equalsFirst = await Promise.all(
+          product.variants.map(async (v) => {
+            const option = v.options.find((o) => o.option_id === optionId)
+            return option?.value === valueToMatch
+          })
         )
+
+        if (!equalsFirst.every((v) => v)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `To delete an option, first delete all variants, such that when an option is deleted, no duplicate variants will exist.`
+          )
+        }
       }
 
       // If we reach this point, we can safely delete the product option

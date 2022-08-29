@@ -27,6 +27,7 @@ import {
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
+import { isDefined } from "../utils"
 
 /**
  * Provides layer to manipulate product variants.
@@ -255,9 +256,12 @@ class ProductVariantService extends BaseService {
       if (prices) {
         for (const price of prices) {
           if (price.region_id) {
+            const region = await this.regionService_.retrieve(price.region_id)
+
             await this.setRegionPrice(result.id, {
               amount: price.amount,
               region_id: price.region_id,
+              currency_code: region.currency_code,
             })
           } else {
             await this.setCurrencyPrice(result.id, price)
@@ -359,7 +363,7 @@ class ProductVariantService extends BaseService {
   /**
    * Updates a variant's prices.
    * Deletes any prices that are not in the update object, and is not associated with a price list.
-   * @param variantId - the id of variant variant
+   * @param variantId - the id of variant
    * @param prices - the update prices
    * @returns {Promise<void>} empty promise
    */
@@ -380,7 +384,10 @@ class ProductVariantService extends BaseService {
 
       for (const price of prices) {
         if (price.region_id) {
+          const region = await this.regionService_.retrieve(price.region_id)
+
           await this.setRegionPrice(variantId, {
+            currency_code: region.currency_code,
             region_id: price.region_id,
             amount: price.amount,
           })
@@ -516,8 +523,8 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * Adds option value to a varaint.
-   * Fails when product with variant does not exists or
+   * Adds option value to a variant.
+   * Fails when product with variant does not exist or
    * if that product does not have an option with the given
    * option id. Fails if given variant is not found.
    * Option value must be of type string or number.
@@ -751,7 +758,7 @@ class ProductVariantService extends BaseService {
     config: FindConfig<ProductVariant>
   ): { query: FindWithRelationsOptions; relations: string[]; q?: string } {
     let q: string | undefined
-    if (typeof selector.q !== "undefined") {
+    if (isDefined(selector.q)) {
       q = selector.q
       delete selector.q
     }

@@ -80,9 +80,9 @@ jobs:
         image: redis
         options: >-
           --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
         ports:
           - 6379:6379
       postgres:
@@ -92,9 +92,9 @@ jobs:
           POSTGRES_USER: postgres
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
         ports:
           - 5432:5432
 
@@ -143,7 +143,7 @@ jobs:
         working-directory: integration-tests/api
 
       - name: Run integration tests
-        run: yarn test --maxWorkers=50%
+        run: yarn test
         working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
@@ -164,9 +164,9 @@ jobs:
           POSTGRES_USER: postgres
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
         ports:
           - 5432:5432
 
@@ -215,6 +215,6 @@ jobs:
         working-directory: integration-tests/plugins
 
       - name: Run plugin integration tests
-        run: yarn test:integration:plugins --maxWorkers=50% --silent=false
+        run: yarn test:integration:plugins --silent=false
         env:
           DB_PASSWORD: postgres

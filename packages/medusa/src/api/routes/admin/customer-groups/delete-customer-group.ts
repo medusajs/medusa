@@ -1,5 +1,7 @@
-import { CustomerGroupService } from "../../../../services"
 import { Request, Response } from "express"
+
+import { CustomerGroupService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /customer-groups/{id}
@@ -8,9 +10,9 @@ import { Request, Response } from "express"
  * description: "Deletes a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group
+ *   - (path) id=* {string} The ID of the Customer Group
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -20,12 +22,15 @@ import { Request, Response } from "express"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted customer group.
+ *               description: The ID of the deleted customer group.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
+ *               default: customer_group
  *             deleted:
  *               type: boolean
+ *               description: Whether the customer group was deleted successfully or not.
+ *               default: true
  */
 
 export default async (req: Request, res: Response) => {
@@ -35,7 +40,12 @@ export default async (req: Request, res: Response) => {
     "customerGroupService"
   )
 
-  await customerGroupService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerGroupService
+      .withTransaction(transactionManager)
+      .delete(id)
+  })
 
   res.json({
     id: id,

@@ -1,0 +1,82 @@
+post:
+  operationId: PostSalesChannelsChannelProductsBatch
+  summary: Assign a batch of product to a sales channel
+  description: Assign a batch of product to a sales channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales channel.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - product_ids
+          properties:
+            product_ids:
+              description: The IDs of the products to add to the Sales Channel
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the product
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              sales_channel:
+                $ref: ../components/schemas/sales_channel.yaml
+delete:
+  operationId: DeleteSalesChannelsChannelProductsBatch
+  summary: Remove a list of products from a sales channel
+  description: Remove a list of products from a sales channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales Channel
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - product_ids
+          properties:
+            product_ids:
+              description: The IDs of the products to delete from the Sales Channel.
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    description: The ID of a product
+                    type: string
+  tags:
+    - Sales Channel
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              sales_channel:
+                $ref: ../components/schemas/sales_channel.yaml
