@@ -469,7 +469,7 @@ class ReturnService extends TransactionBaseService {
           )
 
         const calculationContext =
-          this.totalsService_.getCalculationContext(order)
+          await this.totalsService_.getCalculationContext(order)
 
         const taxLines = await this.taxProviderService_
           .withTransaction(manager)

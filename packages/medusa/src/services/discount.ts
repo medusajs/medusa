@@ -590,7 +590,7 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const subtotal = this.totalsService_.getSubtotal(cart, {
+        const subtotal = await this.totalsService_.getSubtotal(cart, {
           excludeNonDiscounts: true,
         })
         const nominator = Math.min(value, subtotal)

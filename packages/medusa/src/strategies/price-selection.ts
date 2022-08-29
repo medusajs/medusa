@@ -67,23 +67,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       true
     )
 
-    if (!count) {
-      return {
-        originalPrice: null,
-        calculatedPrice: null,
-        originalPriceIncludesTax: null,
-        calculatedPriceIncludesTax: null,
-        prices: [],
-      }
-    }
-
-    const taxRate = context.tax_rates?.reduce(
-      (accRate: number, nextTaxRate: TaxServiceRate) => {
-        return accRate + (nextTaxRate.rate || 0) / 100
-      },
-      0
-    )
-
     const result: PriceSelectionResult = {
       originalPrice: null,
       calculatedPrice: null,
@@ -92,9 +75,16 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       calculatedPriceIncludesTax: null,
     }
 
-    if (!context) {
+    if (!count || !context) {
       return result
     }
+
+    const taxRate = context.tax_rates?.reduce(
+      (accRate: number, nextTaxRate: TaxServiceRate) => {
+        return accRate + (nextTaxRate.rate || 0) / 100
+      },
+      0
+    )
 
     for (const ma of prices) {
       const isTaxInclusive = !!(

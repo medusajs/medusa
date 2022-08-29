@@ -123,7 +123,7 @@ class PricingService extends TransactionBaseService {
       const taxAmount =
         this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
         variantPricing.calculated_price_includes_tax
-          ? this.calculateTaxInclusiveTaxAmount(
+          ? this.calculatePriceTaxInclusiveTaxAmount(
               rate,
               variantPricing.calculated_price
             )
@@ -140,7 +140,7 @@ class PricingService extends TransactionBaseService {
       const taxAmount =
         this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
         variantPricing.original_price_includes_tax
-          ? this.calculateTaxInclusiveTaxAmount(
+          ? this.calculatePriceTaxInclusiveTaxAmount(
               rate,
               variantPricing.original_price
             )
@@ -156,11 +156,11 @@ class PricingService extends TransactionBaseService {
     return taxedPricing
   }
 
-  private calculateTaxInclusiveTaxAmount(
+  private calculatePriceTaxInclusiveTaxAmount(
     taxRate: number,
     taxInclusivePrice: number
   ): number {
-    return (taxRate * taxInclusivePrice) / (1 + taxRate)
+    return Math.round((taxRate * taxInclusivePrice) / (1 + taxRate))
   }
 
   private async getProductVariantPricing_(

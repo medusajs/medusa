@@ -1,4 +1,6 @@
 import TaxCalculationStrategy from "../tax-calculation"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
+import { FlagRouter } from "../../utils/flag-router";
 
 const toTest = [
   {
@@ -107,15 +109,66 @@ const toTest = [
       },
     },
   },
+  {
+    title: "calculates correctly with tax inclusive pricing",
+
+    /*
+     * Subtotal = 3 * 100 = 100
+     * Taxable amount = 300
+     * Taxline 1 = 100 * 0.2 * 2 = 40
+     * Taxline 2 = 100 * 0.2 * 1 = 20
+     * Total tax = 60
+     */
+    expected: 60,
+    flags: { [TaxInclusivePricingFeatureFlag.key]: true },
+    items: [
+      {
+        id: "item_1",
+        unit_price: 120,
+        quantity: 2,
+        includes_tax: true
+      },
+      {
+        id: "item_2",
+        unit_price: 100,
+        quantity: 1,
+        includes_tax: false
+      },
+    ],
+    taxLines: [
+      {
+        item_id: "item_1",
+        name: "Name 1",
+        rate: 20,
+      },
+      {
+        item_id: "item_2",
+        name: "Name 2",
+        rate: 20,
+      },
+    ],
+    context: {
+      shipping_address: null,
+      customer: {
+        email: "test@testson.com",
+      },
+      region: {
+        gift_cards_taxable: true,
+      },
+      shipping_methods: [],
+      allocation_map: {},
+    },
+  },
 ]
 
 describe("TaxCalculationStrategy", () => {
   describe("calculate", () => {
-    const calcStrat = new TaxCalculationStrategy()
-
     test.each(toTest)(
       "$title",
-      async ({ items, taxLines, context, expected }) => {
+      async ({ title, items, taxLines, context, expected, flags }) => {
+        const calcStrat = new TaxCalculationStrategy({
+          featureFlagRouter: new FlagRouter(flags || {}),
+        })
         const val = await calcStrat.calculate(items, taxLines, context)
         expect(val).toEqual(expected)
       }

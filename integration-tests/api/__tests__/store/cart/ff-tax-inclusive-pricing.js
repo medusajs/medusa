@@ -10,7 +10,10 @@ const {
   simpleRegionFactory,
   simpleShippingOptionFactory,
   simpleCustomShippingOptionFactory,
+  simpleProductFactory,
+  simplePriceListFactory,
 } = require("../../../factories")
+const { IdMap } = require("medusa-test-utils");
 
 jest.setTimeout(30000)
 
@@ -129,6 +132,362 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           price: 5,
         })
       ]))
+    })
+  })
+
+  describe("POST /store/carts/:id", () => {
+    const variantId1 = IdMap.getId("test-variant-1")
+    const variantId2 = IdMap.getId("test-variant-2")
+    const productId1 = IdMap.getId("test-product-1")
+    const productId2 = IdMap.getId("test-product-2")
+    const regionId = IdMap.getId("test-region")
+
+    describe('with a cart with full tax exclusive variant pricing', () => {
+      beforeEach(async() => {
+        await simpleRegionFactory(dbConnection, {
+          id: regionId,
+          includes_tax: false,
+          currency_code: "usd",
+          countries: ["us"],
+          tax_rate: 20,
+          name: "region test",
+        })
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId1,
+            variants: [
+              {
+                id: variantId1,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId1,
+              amount: 100,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: false,
+        })
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId2,
+            variants: [
+              {
+                id: variantId2,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId2,
+              amount: 100,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: false,
+        })
+      })
+
+      afterEach(async() => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async() => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          {
+            email: "adrien@test.dk",
+            password: "adrientest",
+            first_name: "adrien",
+            last_name: "adrien",
+          },
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", {
+          region_id: regionId,
+          items: [{
+            variant_id: variantId1,
+            quantity: 1
+          }, {
+            variant_id: variantId2,
+            quantity: 1
+          }]
+        })
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
+    })
+
+    describe('with a cart with full tax inclusive variant pricing', () => {
+      beforeEach(async() => {
+        await simpleRegionFactory(dbConnection, {
+          id: regionId,
+          includes_tax: false,
+          currency_code: "usd",
+          countries: ["us"],
+          tax_rate: 20,
+          name: "region test",
+        })
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId1,
+            variants: [
+              {
+                id: variantId1,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId1,
+              amount: 120,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: true,
+        })
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId2,
+            variants: [
+              {
+                id: variantId2,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId2,
+              amount: 120,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: true,
+        })
+      })
+
+      afterEach(async() => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async() => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          {
+            email: "adrien@test.dk",
+            password: "adrientest",
+            first_name: "adrien",
+            last_name: "adrien",
+          },
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", {
+          region_id: regionId,
+          items: [{
+            variant_id: variantId1,
+            quantity: 1
+          }, {
+            variant_id: variantId2,
+            quantity: 1
+          }]
+        })
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
+    })
+
+    describe('with a cart mixing tax inclusive and exclusive variant pricing', () => {
+      beforeEach(async () => {
+        await simpleRegionFactory(dbConnection, {
+          id: regionId,
+          includes_tax: false,
+          currency_code: "usd",
+          countries: ["us"],
+          tax_rate: 20,
+          name: "region test",
+        })
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId1,
+            variants: [
+              {
+                id: variantId1,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId1,
+              amount: 120,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: true,
+        })
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: productId2,
+            variants: [
+              {
+                id: variantId2,
+                prices: [],
+              },
+            ],
+          },
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          status: "active",
+          type: "sale",
+          prices: [
+            {
+              variant_id: variantId2,
+              amount: 100,
+              currency_code: "usd",
+              region_id: regionId,
+            },
+          ],
+          includes_tax: false,
+        })
+      })
+
+      afterEach(async() => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async() => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          {
+            email: "adrien@test.dk",
+            password: "adrientest",
+            first_name: "adrien",
+            last_name: "adrien",
+          },
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", {
+          region_id: regionId,
+          items: [{
+            variant_id: variantId1,
+            quantity: 1
+          }, {
+            variant_id: variantId2,
+            quantity: 1
+          }]
+        })
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
     })
   })
 })

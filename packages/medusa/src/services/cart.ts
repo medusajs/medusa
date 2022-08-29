@@ -233,6 +233,12 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     const totals: { [K in TotalField]?: number | null } = {}
 
+    if (!cart.region) {
+      cart.region = await this.regionService_
+        .withTransaction(this.manager_)
+        .retrieve(cart.region_id)
+    }
+
     for (const key of totalsToSelect) {
       switch (key) {
         case "total": {
@@ -246,7 +252,9 @@ class CartService extends TransactionBaseService {
           break
         }
         case "discount_total":
-          totals.discount_total = this.totalsService_.getDiscountTotal(cart)
+          totals.discount_total = await this.totalsService_.getDiscountTotal(
+            cart
+          )
           break
         case "tax_total":
           totals.tax_total = await this.totalsService_.getTaxTotal(
@@ -255,13 +263,15 @@ class CartService extends TransactionBaseService {
           )
           break
         case "gift_card_total": {
-          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(cart)
+          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
+            cart
+          )
           totals.gift_card_total = giftCardBreakdown.total
           totals.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "subtotal":
-          totals.subtotal = this.totalsService_.getSubtotal(cart)
+          totals.subtotal = await this.totalsService_.getSubtotal(cart)
           break
         default:
           break
@@ -517,7 +527,7 @@ class CartService extends TransactionBaseService {
           .delete(lineItem.id)
 
         const result = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(result)
@@ -685,7 +695,7 @@ class CartService extends TransactionBaseService {
         )
 
         const result = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(result)
@@ -747,7 +757,7 @@ class CartService extends TransactionBaseService {
           .update(lineItemId, lineItemUpdate)
 
         const updatedCart = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(updatedCart)
@@ -2113,7 +2123,7 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const calculationContext = this.totalsService_
+        const calculationContext = await this.totalsService_
           .withTransaction(transactionManager)
           .getCalculationContext(cart)
 
