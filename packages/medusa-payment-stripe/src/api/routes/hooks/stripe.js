@@ -42,8 +42,9 @@ export default async (req, res) => {
     case "payment_intent.amount_capturable_updated":
       if (!order) {
         await manager.transaction(async (manager) => {
-          await cartService.withTransaction(manager).setPaymentSession(cartId, "stripe")
-          await cartService.withTransaction(manager).authorizePayment(cartId)
+          const cartServiceTx = cartService.withTransaction(manager)
+          await cartServiceTx.setPaymentSession(cartId, "stripe")
+          await cartServiceTx.authorizePayment(cartId)
           await orderService.withTransaction(manager).createFromCart(cartId)
         })
       }
