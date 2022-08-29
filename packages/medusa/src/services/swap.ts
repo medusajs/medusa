@@ -35,7 +35,6 @@ import {
 } from "../models"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 
 type InjectedProps = {
   manager: EntityManager
