@@ -9,6 +9,7 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
 import { CreateProductInput } from "../../../types/product"
@@ -24,9 +25,11 @@ import {
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
-import { transformProductData, transformVariantData } from "./utils"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import { SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
+import { transformProductData, transformVariantData } from "./utils"
+import { CreateSalesChannelInput } from "../../../types/sales-channels"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -53,6 +56,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
 
@@ -65,6 +69,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   constructor({
     batchJobService,
     productService,
+    salesChannelService,
     productVariantService,
     shippingProfileService,
     regionService,
@@ -83,6 +88,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService_ = productService
+    this.salesChannelService_ = salesChannelService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
@@ -263,6 +269,36 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
+   * Create, or retrieve by name, sales channels from the input data.
+   *
+   * @param data an array of sales channels partials
+   * @return an array of sales channels created or retrieved by name
+   */
+  private async processSalesChannels(
+    data: Pick<SalesChannel, "name" | "description">[]
+  ): Promise<SalesChannel[]> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const salesChannelServiceTx =
+      this.salesChannelService_.withTransaction(transactionManager)
+
+    const salesChannels: SalesChannel[] = []
+
+    for (const input of data) {
+      let sc = await salesChannelServiceTx.retrieveByName(input.name)
+
+      if (!sc) {
+        sc = await salesChannelServiceTx.create(
+          input as CreateSalesChannelInput
+        )
+      }
+
+      salesChannels.push(sc)
+    }
+
+    return salesChannels
+  }
+
+  /**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
    * @param batchJobId - An id of the current batch job being processed.
@@ -274,13 +310,28 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       OperationType.ProductCreate
     )
 
+    const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
     for (const productOp of productOps) {
+      const productData = transformProductData(
+        productOp
+      ) as unknown as CreateProductInput
+
       try {
+        if (isSalesChannelsFeatureOn) {
+          productData["sales_channels"] = await this.processSalesChannels(
+            productOp["product.sales_channels"] as Pick<
+              SalesChannel,
+              "name" | "description"
+            >[]
+          )
+        }
+
         await this.productService_
           .withTransaction(transactionManager)
-          .create(
-            transformProductData(productOp) as unknown as CreateProductInput
-          )
+          .create(productData)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp)
       }
@@ -671,13 +722,17 @@ const CSVSchema: ProductImportCsvSchema = {
       name: "Sales Channel Name",
       match: /Sales channel \d+ Name/,
       reducer: (builtLine, key, value, context): TBuiltProductImportLine => {
-        builtLine["product.channels"] = builtLine["product.channels"] || []
+        builtLine["product.sales_channels"] =
+          builtLine["product.sales_channels"] || []
 
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
         ;(
-          builtLine["product.channels"] as Record<string, string | number>[]
+          builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
         ).push({
           name: value,
           description: context.line[

@@ -6,6 +6,7 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
 import { CsvSchema } from "../../../interfaces/csv-parser"
@@ -19,6 +20,7 @@ export type InjectedProps = {
   productService: ProductService
   productVariantService: ProductVariantService
   shippingProfileService: ShippingProfileService
+  salesChannelService: SalesChannelService
   regionService: RegionService
   fileService: typeof FileService
 

@@ -90,6 +90,25 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * Find a sales channel by name.
+   * @param name of the sales channel
+   * @param config - find config
+   * @return a sales channel with matching name
+   */
+  async retrieveByName(
+    name: string,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel | undefined> {
+    const manager = this.manager_
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const query = buildQuery({ name }, config)
+    return await salesChannelRepo.findOne(query)
+  }
+
+  /**
    * Lists sales channels based on the provided parameters and includes the count of
    * sales channels that match the query.
    * @return an array containing the sales channels as
