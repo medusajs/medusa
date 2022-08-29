@@ -171,7 +171,7 @@ Protected routes are routes that should be accessible by logged-in customers onl
 To make a route protected, first, import the `authenticate` middleware:
 
 ```js
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
 ```
 
 Then, add the middleware to your route:
