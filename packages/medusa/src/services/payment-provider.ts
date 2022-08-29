@@ -26,7 +26,7 @@ type InjectedDependencies = {
   refundRepository: typeof RefundRepository
 } & {
   [key in `${PaymentProviderKey}`]:
-    | AbstractPaymentService<never>
+    | AbstractPaymentService
     | typeof BasePaymentService
 }
 
@@ -275,11 +275,11 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @return {PaymentService} the payment provider
    */
   retrieveProvider<
-    TProvider extends AbstractPaymentService<never> | typeof BasePaymentService
+    TProvider extends AbstractPaymentService | typeof BasePaymentService
   >(
     providerId: string
-  ): TProvider extends AbstractPaymentService<never>
-    ? AbstractPaymentService<never>
+  ): TProvider extends AbstractPaymentService
+    ? AbstractPaymentService
     : typeof BasePaymentService {
     try {
       let provider

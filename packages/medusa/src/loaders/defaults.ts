@@ -124,7 +124,7 @@ export default async ({
     await storeService.withTransaction(manager).create()
 
     const payProviders =
-      silentResolution<(typeof BasePaymentService | AbstractPaymentService<never>)[]>(
+      silentResolution<(typeof BasePaymentService | AbstractPaymentService)[]>(
         container,
         "paymentProviders",
         logger
