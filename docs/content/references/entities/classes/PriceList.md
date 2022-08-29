@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:54](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L54)
+[models/price-list.ts:54](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L54)
 
 ___
 
@@ -56,7 +56,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:23](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L23)
+[models/price-list.ts:23](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L23)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:38](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L38)
+[models/price-list.ts:38](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L38)
 
 ___
 
@@ -90,7 +90,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L20)
+[models/price-list.ts:20](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L20)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:59](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L59)
+[models/price-list.ts:59](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L59)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:35](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L35)
+[models/price-list.ts:35](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L35)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:29](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L29)
+[models/price-list.ts:29](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L29)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/price-list.ts:26](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L26)
+[models/price-list.ts:26](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L26)
 
 ___
 
@@ -154,7 +154,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -168,4 +168,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/price-list.ts:61](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/models/price-list.ts#L61)
+[models/price-list.ts:61](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/price-list.ts#L61)
