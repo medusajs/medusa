@@ -39,9 +39,9 @@ const BATCH_SIZE = 100
  * Default strategy class used for a batch import of products/variants.
  */
 class ProductImportStrategy extends AbstractBatchJobStrategy {
-  static identifier = "product-import"
+  static identifier = "product-import-strategy"
 
-  static batchType = "product_import"
+  static batchType = "product-import"
 
   private processedCounter: Record<string, number> = {}
 
@@ -190,18 +190,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       }
 
       if (price.regionName) {
-        const region = await this.regionService_
-          .withTransaction(transactionManager)
-          .retrieveByName(price.regionName)
-
-        if (!region) {
+        try {
+          record.region_id = (
+            await this.regionService_
+              .withTransaction(transactionManager)
+              .retrieveByName(price.regionName)
+          )?.id
+        } catch (e) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Trying to set a price for a region ${price.regionName} that doesn't exist`
           )
         }
-
-        record.region_id = region!.id
       } else {
         record.currency_code = price.currency_code
       }
@@ -498,13 +498,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         const { writeStream, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `imports/products/import/ops/${batchJobId}-${op}`,
+            name: `imports/products/ops/${batchJobId}-${op}`,
             ext: "json",
           })
 
         uploadPromises.push(promise)
 
         writeStream.write(JSON.stringify(results[op]))
+        writeStream.end()
       }
     }
 
@@ -527,7 +528,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: `imports/products/import/ops/${batchJobId}-${op}`,
+        fileKey: `imports/products/ops/${batchJobId}-${op}`,
         ext: "json",
       })
 
@@ -555,7 +556,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     for (const op of Object.keys(OperationType)) {
       try {
         this.fileService_.withTransaction(transactionManager).delete({
-          fileKey: `imports/products/import/ops/-${batchJobId}-${op}`,
+          fileKey: `imports/products/ops/-${batchJobId}-${op}`,
         })
       } catch (e) {
         // noop
