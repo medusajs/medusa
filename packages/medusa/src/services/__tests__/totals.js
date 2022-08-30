@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
-import { FlagRouter } from "../../utils/flag-router";
-import taxInclusivePricing from "../../loaders/feature-flags/tax-inclusive-pricing";
+import { FlagRouter } from "../../utils/flag-router"
+import taxInclusivePricing from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 const discounts = {
   total10Percent: {
@@ -105,7 +105,7 @@ describe("TotalsService", () => {
 
   const container = {
     taxProviderService: {
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
       getTaxLines: getTaxLinesMock,
@@ -492,18 +492,20 @@ describe("TotalsService", () => {
 
     it("throws if line items to return is not in order", async () => {
       let errMsg
-      await totalsService.getRefundTotal(orderToRefund, [
-        {
-          id: "notInOrder",
-          unit_price: 123,
-          allow_discounts: true,
-          variant: {
-            id: "variant",
-            product_id: "pid",
+      await totalsService
+        .getRefundTotal(orderToRefund, [
+          {
+            id: "notInOrder",
+            unit_price: 123,
+            allow_discounts: true,
+            variant: {
+              id: "variant",
+              product_id: "pid",
+            },
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ]).catch(e => errMsg = e.message)
+        ])
+        .catch((e) => (errMsg = e.message))
 
       expect(errMsg).toBe("Line item does not exist on order")
     })
@@ -545,10 +547,12 @@ describe("TotalsService", () => {
     const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
     const getAllocationMapMock = jest.fn(() => ({}))
-
+    const featureFlagRouter = new FlagRouter({
+      tax_inclusive_pricing: false,
+    })
     const cradle = {
       taxProviderService: {
-        withTransaction: function () {
+        withTransaction: function() {
           return this
         },
         getTaxLines: getTaxLinesMock,
@@ -556,7 +560,7 @@ describe("TotalsService", () => {
       taxCalculationStrategy: {
         calculate: calculateMock,
       },
-      featureFlagRouter: new FlagRouter({}),
+      featureFlagRouter,
     }
 
     beforeEach(() => {
@@ -611,7 +615,8 @@ describe("TotalsService", () => {
       expect(getTaxLinesMock).toHaveBeenCalledTimes(0)
 
       expect(calculateMock).toHaveBeenCalledTimes(3)
-      expect(calculateMock).toHaveBeenNthCalledWith(3,
+      expect(calculateMock).toHaveBeenNthCalledWith(
+        3,
         order.items,
         [{ id: "orderline1" }],
         {

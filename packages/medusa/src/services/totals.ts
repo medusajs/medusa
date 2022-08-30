@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
@@ -100,6 +99,7 @@ type CalculationContextOptions = {
 class TotalsService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
+  protected readonly featureFlagRouter_: FlagRouter
 
   protected readonly taxProviderService_: TaxProviderService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
@@ -121,6 +121,8 @@ class TotalsService extends TransactionBaseService {
     this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.taxCalculationStrategy_ = taxCalculationStrategy
+    this.featureFlagRouter_ = featureFlagRouter
+
     this.manager_ = manager
     this.featureFlagRouter_ = featureFlagRouter
   }
@@ -208,14 +210,7 @@ class TotalsService extends TransactionBaseService {
     }
 
     if (opts.include_tax) {
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
-        totals.original_tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
-        )
-        totals.tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
-        )
-      } else {
+      if (isCart(cartOrOrder) || cartOrOrder.tax_rate === null) {
         let taxLines: ShippingMethodTaxLine[]
         if (opts.use_tax_lines || isOrder(cartOrOrder)) {
           if (typeof shippingMethod.tax_lines === "undefined") {
@@ -242,12 +237,11 @@ class TotalsService extends TransactionBaseService {
       }
 
       if (totals.tax_lines.length > 0) {
-        totals.original_tax_total =
-          await this.taxCalculationStrategy_.calculate(
-            [],
-            totals.tax_lines,
-            calculationContext
-          )
+        totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
+          [],
+          totals.tax_lines,
+          calculationContext
+        )
         totals.tax_total = totals.original_tax_total
 
         totals.original_total += totals.original_tax_total
@@ -256,7 +250,11 @@ class TotalsService extends TransactionBaseService {
     }
 
     if (cartOrOrder.discounts) {
-      if (cartOrOrder.discounts.some((d) => d.rule.type === "free_shipping")) {
+      if (
+        cartOrOrder.discounts.some(
+          (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
+        )
+      ) {
         totals.total = 0
         totals.tax_total = 0
       }
@@ -309,8 +307,22 @@ class TotalsService extends TransactionBaseService {
    */
   getShippingTotal(cartOrOrder: Cart | Order): number {
     const { shipping_methods } = cartOrOrder
-    return shipping_methods.reduce((acc, next) => {
-      return acc + next.price
+    return shipping_methods.reduce((acc, shippingMethod) => {
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        shippingMethod.includes_tax
+      ) {
+        const rate = shippingMethod.tax_lines
+          .flatMap((method) => method.rate / 100)
+          .reduce((sum, taxRate) => sum + taxRate, 0)
+
+        const totalTaxes = (shippingMethod.price * rate) / (1 + rate)
+        return acc + shippingMethod.price - totalTaxes
+      }
+
+      return acc + shippingMethod.price
     }, 0)
   }
 
@@ -420,8 +432,8 @@ class TotalsService extends TransactionBaseService {
     if (!options.exclude_discounts) {
       let lineDiscounts: LineDiscountAmount[] = []
 
-      const discount = orderOrCart.discounts?.find(
-        ({ rule }) => rule.type !== "free_shipping"
+      const discount = orderOrCart.discounts.find(
+        ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
       if (discount) {
         lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
@@ -860,13 +872,11 @@ class TotalsService extends TransactionBaseService {
       lineItemTotals.total += lineItemTotals.tax_total
 
       calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total =
-        await this.taxCalculationStrategy_.calculate(
-          [lineItem],
-          lineItemTotals.tax_lines,
-          calculationContext
-        )
-
+      lineItemTotals.original_tax_total = await this.taxCalculationStrategy_.calculate(
+        [lineItem],
+        lineItemTotals.tax_lines,
+        calculationContext
+      )
       lineItemTotals.original_total += lineItemTotals.original_tax_total
     }
 
@@ -929,7 +939,9 @@ class TotalsService extends TransactionBaseService {
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
    */
-  async getGiftCardTotal(cartOrOrder: Cart | Order): Promise<{
+  async getGiftCardTotal(
+    cartOrOrder: Cart | Order
+  ): Promise<{
     total: number
     tax_total: number
   }> {
@@ -1014,7 +1026,7 @@ class TotalsService extends TransactionBaseService {
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
     const discount = cartOrOrder.discounts.find(
-      ({ rule }) => rule.type !== "free_shipping"
+      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
     )
 
     if (!discount) {
