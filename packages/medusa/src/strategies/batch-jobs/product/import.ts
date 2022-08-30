@@ -715,7 +715,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Sales Channel Name",
       match: /Sales channel \d+ Name/,
-      reducer: (builtLine, key, value, context): TBuiltProductImportLine => {
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
           builtLine["product.sales_channels"] || []
 
@@ -729,9 +729,6 @@ const CSVSchema: ProductImportCsvSchema = {
           >[]
         ).push({
           name: value,
-          description: context.line[
-            key.slice(0, -5) + " Description"
-          ] as string,
         })
 
         return builtLine
