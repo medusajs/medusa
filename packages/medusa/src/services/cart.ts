@@ -307,8 +307,9 @@ class CartService extends TransactionBaseService {
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
     const validatedId = validateId(cartId)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(options)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      options
+    )
 
     const query = buildQuery(
       { id: validatedId },
@@ -922,14 +923,14 @@ class CartService extends TransactionBaseService {
           )
 
           const hasFreeShipping = cart.discounts.some(
-            ({ rule }) => rule?.type === "free_shipping"
+            ({ rule }) => rule?.type === DiscountRuleType.FREE_SHIPPING
           )
 
           // if we previously had a free shipping discount and then removed it,
           // we need to update shipping methods to original price
           if (
             previousDiscounts.some(
-              ({ rule }) => rule.type === "free_shipping"
+              ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
             ) &&
             !hasFreeShipping
           ) {
@@ -1053,7 +1054,9 @@ class CartService extends TransactionBaseService {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string().email().required()
+    const schema = Validator.string()
+      .email()
+      .required()
     const { value, error } = schema.validate(email.toLowerCase())
     if (error) {
       throw new MedusaError(
@@ -1239,7 +1242,7 @@ class CartService extends TransactionBaseService {
             default:
               if (!sawNotShipping) {
                 sawNotShipping = true
-                if (rule?.type !== "free_shipping") {
+                if (rule?.type !== DiscountRuleType.FREE_SHIPPING) {
                   return discount
                 }
                 return discountToParse
@@ -1255,7 +1258,7 @@ class CartService extends TransactionBaseService {
         )
 
         // ignore if free shipping
-        if (rule?.type !== "free_shipping" && cart?.items) {
+        if (rule?.type !== DiscountRuleType.FREE_SHIPPING && cart?.items) {
           await this.refreshAdjustments_(cart)
         }
       }
@@ -1280,7 +1283,11 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        if (
+          cart.discounts.some(
+            ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
+          )
+        ) {
           await this.adjustFreeShipping_(cart, false)
         }
 
@@ -1715,10 +1722,9 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const cartCustomShippingOptions =
-          await this.customShippingOptionService_
-            .withTransaction(transactionManager)
-            .list({ cart_id: cart.id })
+        const cartCustomShippingOptions = await this.customShippingOptionService_
+          .withTransaction(transactionManager)
+          .list({ cart_id: cart.id })
 
         const customShippingOption = this.findCustomShippingOption(
           cartCustomShippingOptions,
@@ -1780,7 +1786,7 @@ class CartService extends TransactionBaseService {
         // if cart has freeshipping, adjust price
         if (
           updatedCart.discounts.some(
-            ({ rule }) => rule.type === "free_shipping"
+            ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
           )
         ) {
           await this.adjustFreeShipping_(updatedCart, true)
