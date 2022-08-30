@@ -28,6 +28,7 @@ import { isDefined } from "../utils"
 import { calculatePriceTaxAmount } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
+import { calculatePriceTaxInclusiveTaxAmount } from "../utils"
 
 type ShippingMethodTotals = {
   price: number
@@ -314,11 +315,15 @@ class TotalsService extends TransactionBaseService {
         ) &&
         shippingMethod.includes_tax
       ) {
-        const rate = shippingMethod.tax_lines
-          .flatMap((method) => method.rate / 100)
-          .reduce((sum, taxRate) => sum + taxRate, 0)
+        const rate = shippingMethod.tax_lines.reduce(
+          (sum, method) => sum + method.rate / 100,
+          0
+        )
 
-        const totalTaxes = (shippingMethod.price * rate) / (1 + rate)
+        const totalTaxes = calculatePriceTaxInclusiveTaxAmount(
+          shippingMethod.price,
+          rate
+        )
         return acc + shippingMethod.price - totalTaxes
       }
 
