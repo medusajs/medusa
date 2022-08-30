@@ -28,7 +28,6 @@ import {
 import { SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
-import { CreateSalesChannelInput } from "../../../types/sales-channels"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 
 /**
@@ -80,7 +79,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.csvParser_ = new CsvParser(CSVSchema)
+    const isSalesChannelsFeatureOn = featureFlagRouter.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
+    this.csvParser_ = new CsvParser({
+      ...CSVSchema,
+      columns: [
+        ...CSVSchema.columns,
+        ...(isSalesChannelsFeatureOn ? SalesChannelsSchema.columns : []),
+      ],
+    })
 
     this.featureFlagRouter_ = featureFlagRouter
 
@@ -711,29 +720,7 @@ const CSVSchema: ProductImportCsvSchema = {
         return builtLine
       },
     },
-    // SALES CHANNELS
-    {
-      name: "Sales Channel Name",
-      match: /Sales channel \d+ Name/,
-      reducer: (builtLine, key, value): TBuiltProductImportLine => {
-        builtLine["product.sales_channels"] =
-          builtLine["product.sales_channels"] || []
 
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-        ;(
-          builtLine["product.sales_channels"] as Record<
-            string,
-            string | number
-          >[]
-        ).push({
-          name: value,
-        })
-
-        return builtLine
-      },
-    },
     // PRICES
     {
       name: "Price Region",
@@ -799,6 +786,33 @@ const CSVSchema: ProductImportCsvSchema = {
         }
 
         builtLine["product.images"].push(value)
+
+        return builtLine
+      },
+    },
+  ],
+}
+
+const SalesChannelsSchema: ProductImportCsvSchema = {
+  columns: [
+    {
+      name: "Sales Channel Name",
+      match: /Sales channel \d+ Name/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.sales_channels"] =
+          builtLine["product.sales_channels"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ;(
+          builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          name: value,
+        })
 
         return builtLine
       },
