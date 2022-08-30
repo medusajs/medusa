@@ -219,11 +219,7 @@ class LineItemService extends BaseService {
 
         let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
 
-        let tax_inclusive_obj = this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        )
-          ? { includes_tax: context.includes_tax }
-          : {}
+        let unitPriceIncludesTax = false
 
         let shouldMerge = false
 
@@ -237,14 +233,9 @@ class LineItemService extends BaseService {
               customer_id: context?.customer_id,
               include_discount_prices: true,
             })
-          tax_inclusive_obj = this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          )
-            ? {
-                includes_tax:
-                  variantPricing.calculated_price_includes_tax ?? undefined,
-              }
-            : {}
+
+          unitPriceIncludesTax = !!variantPricing.calculated_price_includes_tax
+
           unit_price = variantPricing.calculated_price ?? undefined
         }
 
@@ -259,7 +250,14 @@ class LineItemService extends BaseService {
           is_giftcard: variant.product.is_giftcard,
           metadata: context?.metadata || {},
           should_merge: shouldMerge,
-          ...tax_inclusive_obj,
+        }
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          rawLineItem.includes_tax = unitPriceIncludesTax
         }
 
         const lineItemRepo = transactionManager.getCustomRepository(
