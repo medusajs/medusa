@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Regions Overview
 
 In this document, you’ll get an overview of regions and learn about their importance in your ecommerce store.

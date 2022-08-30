@@ -1,3 +1,7 @@
+---
+sidebar_position: 4
+---
+
 # Manage Shipping Options
 
 In this document, you’ll learn how to manage a region’s shipping options in your Medusa Admin.

@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Manage Taxes
 
 In this document, you’ll learn how to view and manage taxes in your Medusa Admin.

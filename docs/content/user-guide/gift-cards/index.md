@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Gift Cards Overview
 
 In this document, you’ll learn about how Gift Cards in Medusa work.
@@ -11,4 +15,4 @@ You can also create custom gift cards in Medusa. These cards can be created and 
 ## Learn More About Gift Cards
 
 - [Manage Gift Cards](./manage.mdx)
-- Manage Custom Gift Cards
+- [Manage Custom Gift Cards](./custom.md)

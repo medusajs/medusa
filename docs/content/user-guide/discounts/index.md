@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Discounts Overview
 
 In this document, you’ll get an overview of the customer listing page and everything you can do with it.
@@ -26,6 +30,6 @@ In the list, you can see discount details such as the code, description, amount,
 
 ## Learn More About Discounts
 
-- Discount Conditions Overview
-- Create a Discount
-- Edit a Discount
+- [Discount Conditions Overview](./conditions.md)
+- [Create a Discount](./create.md)
+- [Edit a Discount](./edit.md)

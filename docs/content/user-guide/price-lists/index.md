@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Price Lists Overview
 
 In this document, you learn about what price lists are and get an overview of the Pricing page.
@@ -22,6 +26,6 @@ In the list, you can see price list details such as the name, description, and s
 
 ## Learn More About Price Lists
 
-- Create a Price List
-- Edit a Price List
-- Delete a Price List
+- [Create a Price List](./create.md)
+- [Edit a Price List](./edit.md)
+- [Delete a Price List](./delete.md)

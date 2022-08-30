@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Sales Channels Overview
 
 In this document, you’ll get an overview of sales channels in Medusa and learn about their importance in your ecommerce store.

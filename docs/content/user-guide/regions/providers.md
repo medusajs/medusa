@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Manage Payment and Fulfillment Providers
 
 In this document, you’ll learn how to manage a region’s payment and fulfillment providers in your Medusa Admin.

@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Taxes Overview
 
 In this document, you’ll get an overview of taxes in Medusa and learn about their importance in your ecommerce store.
@@ -31,3 +35,4 @@ Adding tax rates alongside the default one allows you to override the prices of 
 - [Manage Taxes](./manage.md)
 - [Manage Tax Rates](./tax-rates.mdx)
 - [Manage Tax Overrides](./tax-overrides.mdx)
+- [Tax Inclusive Pricing Overview](./tax-inclusive.md)

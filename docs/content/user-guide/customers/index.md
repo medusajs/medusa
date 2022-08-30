@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Customers Overview
 
 In this document, you’ll get an overview of the customer listing page and all the things you can do with it.
@@ -28,5 +32,5 @@ In the list, you can see group details such as the group’s title and the numbe
 
 ## Learn More About Customers
 
-- Manage and View a Customer’s Details
-- Manage and View a Customer Group
+- [Manage and View a Customer’s Details](./manage.md)
+- [Manage and View a Customer Group](./groups.md)
