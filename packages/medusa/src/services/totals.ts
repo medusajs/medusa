@@ -28,6 +28,7 @@ import { EntityManager } from "typeorm"
 import { calculatePriceTaxInclusiveTaxAmount, isDefined } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
+import { calculatePriceTaxInclusiveTaxAmount } from "../utils"
 
 type ShippingMethodTotals = {
   price: number
