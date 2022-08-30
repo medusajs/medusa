@@ -60,8 +60,6 @@ export default async (req, res) => {
     )
   }
 
-  console.log(value)
-
   const productReviewService = req.scope.resolve("productReviewService")
 
   const productReview = await productReviewService.create(value)

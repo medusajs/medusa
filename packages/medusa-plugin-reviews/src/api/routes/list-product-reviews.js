@@ -43,8 +43,6 @@ export default async (req, res) => {
     )
   }
 
-  console.log(value)
-
   const { limit, offset, ...filterableFields } = value
 
   const productReviewService = req.scope.resolve("productReviewService")
@@ -54,7 +52,7 @@ export default async (req, res) => {
     take: limit,
   }
 
-  const [reviews, count] = await productReviewService.listAndCount(
+  const [reviews, count] = await productReviewService.list(
     filterableFields,
     listConfig
   )

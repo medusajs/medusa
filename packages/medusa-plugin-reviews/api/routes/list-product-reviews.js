@@ -69,17 +69,16 @@ var _default = /*#__PURE__*/function () {
             throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, error.details.join(", "));
 
           case 4:
-            console.log(value);
             limit = value.limit, offset = value.offset, filterableFields = (0, _objectWithoutProperties2["default"])(value, _excluded);
             productReviewService = req.scope.resolve("productReviewService");
             listConfig = {
               skip: offset,
               take: limit
             };
-            _context.next = 10;
-            return productReviewService.listAndCount(filterableFields, listConfig);
+            _context.next = 9;
+            return productReviewService.list(filterableFields, listConfig);
 
-          case 10:
+          case 9:
             _yield$productReviewS = _context.sent;
             _yield$productReviewS2 = (0, _slicedToArray2["default"])(_yield$productReviewS, 2);
             reviews = _yield$productReviewS2[0];
@@ -91,7 +90,7 @@ var _default = /*#__PURE__*/function () {
               offset: offset
             });
 
-          case 15:
+          case 14:
           case "end":
             return _context.stop();
         }

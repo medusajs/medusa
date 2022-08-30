@@ -13,14 +13,6 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
@@ -31,71 +23,72 @@ var _typeorm = require("typeorm");
 
 var _medusa = require("@medusajs/medusa");
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var ProductReview = (_dec = (0, _typeorm.Entity)(), _dec2 = (0, _typeorm.Column)(), _dec3 = Reflect.metadata("design:type", String), _dec4 = (0, _typeorm.ManyToOne)(function () {
+var ProductReview = (_dec = (0, _typeorm.Entity)(), _dec2 = (0, _typeorm.PrimaryColumn)(), _dec3 = Reflect.metadata("design:type", Number), _dec4 = (0, _typeorm.Column)(), _dec5 = Reflect.metadata("design:type", String), _dec6 = (0, _typeorm.ManyToOne)(function () {
   return _medusa.Product;
 }, function (product) {
   return product.options;
-}), _dec5 = (0, _typeorm.JoinColumn)({
+}), _dec7 = (0, _typeorm.JoinColumn)({
   name: "product_id"
-}), _dec6 = Reflect.metadata("design:type", typeof _medusa.Product === "undefined" ? Object : _medusa.Product), _dec7 = (0, _typeorm.Column)({
+}), _dec8 = Reflect.metadata("design:type", typeof _medusa.Product === "undefined" ? Object : _medusa.Product), _dec9 = (0, _typeorm.Column)({
   type: "int"
-}), _dec8 = Reflect.metadata("design:type", Number), _dec9 = (0, _typeorm.Column)(), _dec10 = Reflect.metadata("design:type", String), _dec11 = (0, _typeorm.Index)(), _dec12 = (0, _typeorm.Column)(), _dec13 = Reflect.metadata("design:type", String), _dec14 = (0, _typeorm.Column)(), _dec15 = Reflect.metadata("design:type", String), _dec(_class = (_class2 = /*#__PURE__*/function (_BaseEntity) {
-  (0, _inherits2["default"])(ProductReview, _BaseEntity);
-
-  var _super = _createSuper(ProductReview);
-
-  function ProductReview() {
-    var _this;
-
-    (0, _classCallCheck2["default"])(this, ProductReview);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "product_id", _descriptor, (0, _assertThisInitialized2["default"])(_this));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "product", _descriptor2, (0, _assertThisInitialized2["default"])(_this));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "rating", _descriptor3, (0, _assertThisInitialized2["default"])(_this));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "body", _descriptor4, (0, _assertThisInitialized2["default"])(_this));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "email", _descriptor5, (0, _assertThisInitialized2["default"])(_this));
-    (0, _initializerDefineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "name", _descriptor6, (0, _assertThisInitialized2["default"])(_this));
-    return _this;
-  }
-
-  return (0, _createClass2["default"])(ProductReview);
-}(_medusa.BaseEntity), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "product_id", [_dec2, _dec3], {
+}), _dec10 = Reflect.metadata("design:type", Number), _dec11 = (0, _typeorm.Column)(), _dec12 = Reflect.metadata("design:type", String), _dec13 = (0, _typeorm.Index)(), _dec14 = (0, _typeorm.Column)(), _dec15 = Reflect.metadata("design:type", String), _dec16 = (0, _typeorm.Column)(), _dec17 = Reflect.metadata("design:type", String), _dec18 = (0, _typeorm.CreateDateColumn)({
+  type: "timestamptz"
+}), _dec19 = Reflect.metadata("design:type", typeof Date === "undefined" ? Object : Date), _dec20 = (0, _typeorm.UpdateDateColumn)({
+  type: "timestamptz"
+}), _dec21 = Reflect.metadata("design:type", typeof Date === "undefined" ? Object : Date), _dec(_class = (_class2 = /*#__PURE__*/(0, _createClass2["default"])(function ProductReview() {
+  (0, _classCallCheck2["default"])(this, ProductReview);
+  (0, _initializerDefineProperty2["default"])(this, "id", _descriptor, this);
+  (0, _initializerDefineProperty2["default"])(this, "product_id", _descriptor2, this);
+  (0, _initializerDefineProperty2["default"])(this, "product", _descriptor3, this);
+  (0, _initializerDefineProperty2["default"])(this, "rating", _descriptor4, this);
+  (0, _initializerDefineProperty2["default"])(this, "body", _descriptor5, this);
+  (0, _initializerDefineProperty2["default"])(this, "email", _descriptor6, this);
+  (0, _initializerDefineProperty2["default"])(this, "name", _descriptor7, this);
+  (0, _initializerDefineProperty2["default"])(this, "created_at", _descriptor8, this);
+  (0, _initializerDefineProperty2["default"])(this, "updated_at", _descriptor9, this);
+}), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2, _dec3], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor2 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "product", [_dec4, _dec5, _dec6], {
+}), _descriptor2 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "product_id", [_dec4, _dec5], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor3 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "rating", [_dec7, _dec8], {
+}), _descriptor3 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "product", [_dec6, _dec7, _dec8], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor4 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "body", [_dec9, _dec10], {
+}), _descriptor4 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "rating", [_dec9, _dec10], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor5 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "email", [_dec11, _dec12, _dec13], {
+}), _descriptor5 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "body", [_dec11, _dec12], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor6 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "name", [_dec14, _dec15], {
+}), _descriptor6 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "email", [_dec13, _dec14, _dec15], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor7 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "name", [_dec16, _dec17], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor8 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "created_at", [_dec18, _dec19], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor9 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "updated_at", [_dec20, _dec21], {
   configurable: true,
   enumerable: true,
   writable: true,

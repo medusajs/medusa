@@ -32,7 +32,7 @@ var addProductReview1658330229321 = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return queryRunner.query("CREATE TABLE \"product_review\" (\"id\" character varying NOT NULL, \"product_id\" character varying NOT NULL, \"rating\" integer NOT NULL, \"body\" character varying, \"email\" character varying NOT NULL, \"name\" character varying, CONSTRAINT \"PK_f62d1a5c2c0c40729a944b8a52b\" PRIMARY KEY (\"id\"))");
+                return queryRunner.query("CREATE TABLE \"product_review\" (\"id\" SERIAL, \"product_id\" character varying NOT NULL, \"rating\" integer NOT NULL, \"body\" character varying, \"email\" character varying NOT NULL, \"name\" character varying, \"created_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"updated_at\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT \"PK_f62d1a5c2c0c40729a944b8a52b\" PRIMARY KEY (\"id\"))");
 
               case 2:
                 _context.next = 4;

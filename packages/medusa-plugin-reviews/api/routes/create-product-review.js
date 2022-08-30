@@ -80,18 +80,17 @@ var _default = /*#__PURE__*/function () {
             throw new _medusaCoreUtils.MedusaError(_medusaCoreUtils.MedusaError.Types.INVALID_DATA, error.details.join(", "));
 
           case 4:
-            console.log(value);
             productReviewService = req.scope.resolve("productReviewService");
-            _context.next = 8;
+            _context.next = 7;
             return productReviewService.create(value);
 
-          case 8:
+          case 7:
             productReview = _context.sent;
             res.status(200).json({
               productReview: productReview
             });
 
-          case 10:
+          case 9:
           case "end":
             return _context.stop();
         }

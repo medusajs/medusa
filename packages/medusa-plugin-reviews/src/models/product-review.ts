@@ -1,8 +1,20 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
-import { BaseEntity, Product } from "@medusajs/medusa"
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
+import { Product } from "@medusajs/medusa"
 
 @Entity()
-export class ProductReview extends BaseEntity {
+export class ProductReview {
+  @PrimaryColumn()
+  id: number
+
   @Column()
   product_id: string
 
@@ -22,6 +34,12 @@ export class ProductReview extends BaseEntity {
 
   @Column()
   name: string
+
+  @CreateDateColumn({ type: "timestamptz" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updated_at: Date
 }
 
 /**
