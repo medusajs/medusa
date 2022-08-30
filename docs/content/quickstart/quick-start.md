@@ -36,13 +36,17 @@ You can install Node from the [official website](https://nodejs.org/en/).
    medusa new my-medusa-store --seed
    ```
 
-### 3. Start your Medusa server
+:::note
+The `--seed` flag creates an SQLite database and seeds it with the required data to run the server.
 
-If you use PostgreSQL, please remember to [run migrations](../advanced/backend/migrations.md) after installing and before starting the server.
+If you are using PostgreSQL, however, you need to [run migrations](../advanced/backend/migrations.md#how-to-run-migrations) right after creating the project and before starting the Medusa server.
+
+:::
+
+### 3. Start your Medusa server
 
    ```bash
    cd my-medusa-store
-   yarn run seed # Only for PostgreSQL
    medusa develop
    ```
 
