@@ -1,7 +1,7 @@
 import path from "path"
 import Configstore from "configstore"
 
-import InMemConfig from "./util/in-memory-config"
+import { InMemoryConfigStore } from "./util/in-memory-config"
 import OutboxStore from "./util/outbox-store"
 import isTruthy from "./util/is-truthy"
 
@@ -10,7 +10,7 @@ class Store {
     try {
       this.config_ = new Configstore(`medusa`, {}, { globalConfigPath: true })
     } catch (e) {
-      this.config_ = new InMemConfig()
+      this.config_ = new InMemoryConfigStore()
     }
 
     const baseDir = path.dirname(this.config_.path)
