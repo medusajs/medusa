@@ -32,7 +32,7 @@ describe("EventBusService", () => {
     })
 
     afterAll(async () => {
-      await await eventBus.stopEnqueuer()
+      await eventBus.stopEnqueuer()
     })
 
     it("creates bull queue", () => {
@@ -64,7 +64,7 @@ describe("EventBusService", () => {
       })
 
       it("added the subscriber to the queue", () => {
-        expect(eventBus.observers_["eventName"].length).toEqual(1)
+        expect(eventBus.observers_.get("eventName").length).toEqual(1)
       })
     })
 
@@ -138,7 +138,7 @@ describe("EventBusService", () => {
           manager: MockManager,
           stagedJobRepository,
           logger: loggerMock,
-        })
+        }, {})
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
@@ -191,13 +191,13 @@ describe("EventBusService", () => {
       it("calls logger warn on rejections", () => {
         expect(loggerMock.warn).toHaveBeenCalledTimes(3)
         expect(loggerMock.warn).toHaveBeenCalledWith(
-          "An error occured while processing eventName: fail1"
+          "An error occurred while processing eventName: fail1"
         )
         expect(loggerMock.warn).toHaveBeenCalledWith(
-          "An error occured while processing eventName: fail2"
+          "An error occurred while processing eventName: fail2"
         )
         expect(loggerMock.warn).toHaveBeenCalledWith(
-          "An error occured while processing eventName: fail3"
+          "An error occurred while processing eventName: fail3"
         )
       })
 

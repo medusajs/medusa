@@ -33,7 +33,7 @@ Medusa's event system works by pushing data into a queue that is based on [Redis
 
 As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa server.
 
-You can read the [Set up your development enviornment guideline](https://docs.medusajs.com/tutorial/set-up-your-development-environment) to learn more about how you can install and setup Redis.
+You can read the [Set up your development enviornment guideline](../tutorial/0-set-up-your-development-environment.mdx#redis) to learn more about how you can install and setup Redis.
 
 ## Create Slack App
 

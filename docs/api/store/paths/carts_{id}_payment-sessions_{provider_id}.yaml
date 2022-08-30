@@ -1,0 +1,69 @@
+delete:
+  operationId: DeleteCartsCartPaymentSessionsSession
+  summary: Delete a Payment Session
+  description: Deletes a Payment Session on a Cart. May be useful if a payment has failed.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart.
+      schema:
+        type: string
+    - in: path
+      name: provider_id
+      required: true
+      description: >-
+        The id of the Payment Provider used to create the Payment Session to be
+        deleted.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+post:
+  operationId: PostCartsCartPaymentSessionUpdate
+  summary: Update a Payment Session
+  description: Updates a Payment Session with additional data.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Cart.
+      schema:
+        type: string
+    - in: path
+      name: provider_id
+      required: true
+      description: The id of the payment provider.
+      schema:
+        type: string
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              description: The data to update the payment session with.

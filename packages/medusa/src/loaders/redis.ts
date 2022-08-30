@@ -5,12 +5,16 @@ import { ConfigModule, MedusaContainer } from "../types/global"
 import { Logger } from "../types/global"
 
 type Options = {
-  container: MedusaContainer;
-  configModule: ConfigModule;
-  logger: Logger;
+  container: MedusaContainer
+  configModule: ConfigModule
+  logger: Logger
 }
 
-async function redisLoader({ container, configModule, logger }: Options): Promise<void> {
+async function redisLoader({
+  container,
+  configModule,
+  logger,
+}: Options): Promise<void> {
   if (configModule.projectConfig.redis_url) {
     // Economical way of dealing with redis clients
     const client = new RealRedis(configModule.projectConfig.redis_url)

@@ -13,7 +13,7 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -217,7 +217,6 @@ describe("DiscountService", () => {
           code: "10%OFF",
           is_dynamic: false,
         },
-        relations: [],
       })
     })
   })
@@ -232,7 +231,9 @@ describe("DiscountService", () => {
         }),
     })
 
-    const discountRuleRepository = MockRepository({})
+    const discountRuleRepository = MockRepository({
+      create: (values) => values,
+    })
 
     const regionService = {
       retrieve: () => {
@@ -760,7 +761,9 @@ describe("DiscountService", () => {
     let discountService
 
     beforeEach(async () => {
-      discountService = new DiscountService({})
+      discountService = new DiscountService({
+        manager: MockManager,
+      })
       const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
       const isDisabledMock = jest.fn().mockImplementation(() => false)
       const isValidForRegionMock = jest
@@ -1063,7 +1066,9 @@ describe("DiscountService", () => {
       }
     })
 
-    const discountService = new DiscountService({})
+    const discountService = new DiscountService({
+      manager: MockManager,
+    })
     discountService.retrieve = retrieveMock
 
     beforeEach(() => {
@@ -1156,6 +1161,9 @@ describe("DiscountService", () => {
     }
 
     const customerService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: jest.fn().mockImplementation((id) => {
         if (id === "customer-no-groups") {
           return Promise.resolve({ id: "customer-no-groups" })

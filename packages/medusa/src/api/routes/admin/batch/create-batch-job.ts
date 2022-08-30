@@ -1,0 +1,93 @@
+import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
+
+import { BatchJob } from "../../../../models"
+import BatchJobService from "../../../../services/batch-job"
+import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+
+/**
+ * @oas [post] /batch-jobs
+ * operationId: "PostBatchJobs"
+ * summary: "Create a Batch Job"
+ * description: "Creates a Batch Job."
+ * x-authenticated: true
+ * requestBody:
+ *   content:
+ *    application/json:
+ *      schema:
+ *        required:
+ *          - type
+ *          - context
+ *        properties:
+ *          type:
+ *            type: string
+ *            description: The type of batch job to start.
+ *            example: product-export
+ *          context:
+ *            type: object
+ *            description: Additional infomration regarding the batch to be used for processing.
+ *            example:
+ *              shape:
+ *                prices:
+ *                  - region: null
+ *                    currency_code: "eur"
+ *                dynamicImageColumnCount: 4
+ *                dynamicOptionColumnCount: 2
+ *              list_config:
+ *                skip: 0
+ *                take: 50
+ *                order:
+ *                  created_at: "DESC"
+ *                relations:
+ *                  - variants
+ *                  - variant.prices
+ *                  - images
+ *          dry_run:
+ *            type: boolean
+ *            description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ *            default: false
+ * tags:
+ *   - Batch Job
+ * responses:
+ *   201:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *            batch_job:
+ *              $ref: "#/components/schemas/batch_job"
+ */
+export default async (req, res) => {
+  const validated = await validator(AdminPostBatchesReq, req.body)
+
+  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+  const toCreate = await batchJobService.prepareBatchJobForProcessing(
+    validated,
+    req
+  )
+
+  const userId = req.user.id ?? req.user.userId
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  const batch_job = await manager.transaction(async (transactionManager) => {
+    return await batchJobService.withTransaction(transactionManager).create({
+      ...toCreate,
+      created_by: userId,
+    })
+  })
+
+  res.status(201).json({ batch_job })
+}
+
+export class AdminPostBatchesReq {
+  @IsString()
+  type: string
+
+  @IsObject()
+  context: BatchJob["context"]
+
+  @IsBoolean()
+  @IsOptional()
+  dry_run = false
+}

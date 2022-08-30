@@ -1,0 +1,42 @@
+name: "Setup test env"
+description: "Setup test environment for actions"
+
+inputs:
+  node-version:
+    description: "Node version"
+    required: false
+    default: "14"
+  cache-extension:
+    description: "Extension for fetching cached dependencies"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.9.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: "yarn"
+
+    - name: Install dependencies
+      uses: ./.github/actions/cache-deps
+      with:
+        extension: ${{ inputs.cache-extension }}
+
+    - name: Build Packages
+      shell: "bash"
+      run: yarn build
+
+    - name: Install dev cli
+      shell: "bash"
+      run: sudo npm i -g medusa-dev-cli
+
+    - name: Set path to medusa repo
+      shell: "bash"
+      run: medusa-dev --set-path-to-repo $(pwd)

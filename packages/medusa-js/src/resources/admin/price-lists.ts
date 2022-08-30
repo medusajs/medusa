@@ -37,7 +37,7 @@ class AdminPriceListResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPriceListDeleteRes> {
     const path = `/admin/price-lists/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   retrieve(
@@ -45,7 +45,7 @@ class AdminPriceListResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPriceListRes> {
     const path = `/admin/price-lists/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   list(
@@ -59,7 +59,7 @@ class AdminPriceListResource extends BaseResource {
       path = `/admin/price-lists?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   listProducts(
@@ -74,7 +74,7 @@ class AdminPriceListResource extends BaseResource {
       path = `/admin/price-lists/${id}/products?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   addPrices(
@@ -93,6 +93,24 @@ class AdminPriceListResource extends BaseResource {
   ): ResponsePromise<AdminPriceListDeleteBatchRes> {
     const path = `/admin/price-lists/${id}/prices/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
+  }
+
+  deleteProductPrices(
+    priceListId: string,
+    productId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
+    const path = `/admin/price-lists/${priceListId}/products/${productId}/prices`
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  deleteVariantPrices(
+    priceListId: string,
+    variantId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
+    const path = `/admin/price-lists/${priceListId}/variants/${variantId}/prices`
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 

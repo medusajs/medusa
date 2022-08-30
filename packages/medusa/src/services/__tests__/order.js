@@ -1,12 +1,19 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import OrderService from "../order"
 import { InventoryServiceMock } from "../__mocks__/inventory"
+import { LineItemServiceMock } from "../__mocks__/line-item"
 
 describe("OrderService", () => {
   const totalsService = {
+    withTransaction: function() {
+      return this
+    },
     getLineItemRefund: () => {},
     getTotal: (o) => {
       return o.total || 0
+    },
+    getGiftCardableAmount: (o) => {
+      return o.subtotal || 0
     },
     getRefundedTotal: (o) => {
       return o.refunded_total || 0
@@ -41,35 +48,6 @@ describe("OrderService", () => {
   const inventoryService = {
     ...InventoryServiceMock,
   }
-
-  describe("create", () => {
-    const orderRepo = MockRepository({ create: (f) => f })
-    const orderService = new OrderService({
-      manager: MockManager,
-      orderRepository: orderRepo,
-      totalsService,
-      eventBusService,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("calls order model functions", async () => {
-      await orderService.create({
-        email: "oliver@test.dk",
-      })
-
-      expect(orderRepo.create).toHaveBeenCalledTimes(1)
-      expect(orderRepo.create).toHaveBeenCalledWith({
-        email: "oliver@test.dk",
-      })
-
-      expect(orderRepo.save).toHaveBeenCalledWith({
-        email: "oliver@test.dk",
-      })
-    })
-  })
 
   describe("createFromCart", () => {
     const orderRepo = MockRepository({
@@ -232,6 +210,8 @@ describe("OrderService", () => {
           "discounts.rule",
           "gift_cards",
           "shipping_methods",
+          "items",
+          "items.adjustments",
         ],
       })
 
@@ -281,6 +261,7 @@ describe("OrderService", () => {
           id: "test",
           currency_code: "eur",
           name: "test",
+          gift_cards_taxable: true,
           tax_rate: 25,
         },
         shipping_address_id: "1234",
@@ -332,13 +313,15 @@ describe("OrderService", () => {
       expect(giftCardService.update).toHaveBeenCalledTimes(1)
       expect(giftCardService.update).toHaveBeenCalledWith("gid", {
         balance: 0,
-        disabled: true,
+        is_disabled: true,
       })
 
       expect(giftCardService.createTransaction).toHaveBeenCalledTimes(1)
       expect(giftCardService.createTransaction).toHaveBeenCalledWith({
         gift_card_id: "gid",
         order_id: "id",
+        is_taxable: true,
+        tax_rate: 25,
         amount: 80,
       })
 
@@ -540,6 +523,7 @@ describe("OrderService", () => {
       manager: MockManager,
       orderRepository: orderRepo,
       eventBusService,
+      lineItemService: LineItemServiceMock,
     })
 
     beforeEach(async () => {

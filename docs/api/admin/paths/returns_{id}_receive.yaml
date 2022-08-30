@@ -1,0 +1,48 @@
+post:
+  operationId: PostReturnsReturnReceive
+  summary: Receive a Return
+  description: >-
+    Registers a Return as received. Updates statuses on Orders and Swaps
+    accordingly.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Return.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - items
+          properties:
+            items:
+              description: The Line Items that have been received.
+              type: array
+              items:
+                required:
+                  - item_id
+                  - quantity
+                properties:
+                  item_id:
+                    description: The ID of the Line Item.
+                    type: string
+                  quantity:
+                    description: The quantity of the Line Item.
+                    type: integer
+            refund:
+              description: The amount to refund.
+              type: number
+  tags:
+    - Return
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              return:
+                $ref: ../components/schemas/return.yaml

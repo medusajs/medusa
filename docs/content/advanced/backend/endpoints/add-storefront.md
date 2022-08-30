@@ -1,8 +1,4 @@
----
-title: Add Endpoint for Storefront
----
-
-# Add Endpoint for Storefront
+# Create Endpoint for Storefront
 
 In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Storefront.
 
@@ -45,6 +41,34 @@ npm run build
 ```
 
 :::
+
+## Accessing Endpoints from Storefront
+
+If you’re customizing one of our storefronts or creating your own, you need to use the `cors` library.
+
+First, you need to import your Medusa’s configurations along with the `cors` library:
+
+```js
+import cors from "cors"
+import { projectConfig } from "../../medusa-config"
+```
+
+Then, create an object that will hold the CORS configurations:
+
+```js
+const corsOptions = {
+  origin: projectConfig.store_cors.split(","),
+  credentials: true,
+}
+```
+
+Finally, for each route add `cors` as a middleware for the route passing it `corsOptions`:
+
+```js
+router.get("/store/hello", cors(corsOptions), (req, res) => {
+  //...
+})
+```
 
 ## Multiple Endpoints
 
@@ -147,7 +171,7 @@ Protected routes are routes that should be accessible by logged-in customers onl
 To make a route protected, first, import the `authenticate` middleware:
 
 ```js
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
 ```
 
 Then, add the middleware to your route:

@@ -1,4 +1,5 @@
 import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
+
 import GiftCardService from "../../../../services/gift-card"
 
 /**
@@ -17,16 +18,8 @@ import GiftCardService from "../../../../services/gift-card"
  *       application/json:
  *         schema:
  *           properties:
- *             id:
- *               description: The id of the Gift Card
- *             code:
- *               description: The code of the Gift Card
- *             value:
- *               description: The original value of the Gift Card.
- *             balance:
- *               description: The current balanace of the Gift Card
- *             region:
- *               $ref: "#/components/schemas/region"
+ *             gift_card:
+ *               $ref: "#/components/schemas/gift_card"
  */
 export default async (req, res) => {
   const { code } = req.params

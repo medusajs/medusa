@@ -331,12 +331,15 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "fixed-discount",
-          code: "fixed100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "fixed-discount",
+            code: "fixed100",
+          }),
+        ])
+      )
     })
 
     it("fails when listing invalid discount types", async () => {
@@ -394,12 +397,15 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "dynamic-discount",
-          code: "Dyn100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "dynamic-discount",
+            code: "Dyn100",
+          })
+        ])
+      )
     })
 
     it("lists disabled discounts ", async () => {
@@ -416,24 +422,22 @@ describe("/admin/discounts", () => {
         })
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.discounts).toEqual([
-        expect.objectContaining({
-          id: "disabled-discount",
-          code: "Dis100",
-        }),
-      ])
+      expect(response.data.discounts).toHaveLength(1)
+      expect(response.data.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "disabled-discount",
+            code: "Dis100",
+          }),
+        ])
+      )
     })
   })
 
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await discountSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -614,16 +618,19 @@ describe("/admin/discounts", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-      ])
+      expect(response.data.discount.rule.conditions).toHaveLength(2)
+      expect(response.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+        ])
+      )
 
       const createdRule = response.data.discount.rule
       const condsToUpdate = createdRule.conditions[0]
@@ -634,12 +641,12 @@ describe("/admin/discounts", () => {
           {
             rule: {
               id: createdRule.id,
-              type: createdRule.type,
               value: createdRule.value,
               allocation: createdRule.allocation,
               conditions: [
                 {
                   id: condsToUpdate.id,
+                  operator: "not_in",
                   products: [product.id, anotherProduct.id],
                 },
               ],
@@ -656,24 +663,26 @@ describe("/admin/discounts", () => {
         })
 
       expect(updated.status).toEqual(200)
-      expect(updated.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-          products: expect.arrayContaining([
-            expect.objectContaining({
-              id: product.id,
-            }),
-            expect.objectContaining({
-              id: anotherProduct.id,
-            }),
-          ]),
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-      ])
+      expect(updated.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+            products: expect.arrayContaining([
+              expect.objectContaining({
+                id: product.id,
+              }),
+              expect.objectContaining({
+                id: anotherProduct.id,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+        ])
+      )
     })
 
     it("fails to add condition on rule with existing comb. of type and operator", async () => {
@@ -727,9 +736,7 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
-                allocation: createdRule.allocation,
                 conditions: [
                   {
                     products: [anotherProduct.id],
@@ -840,7 +847,6 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
                 allocation: createdRule.allocation,
                 conditions: [
@@ -919,6 +925,121 @@ describe("/admin/discounts", () => {
           usage_limit: 20,
         })
       )
+    })
+
+    it("creates a discount and fails to update it because attempting type update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            rule: {
+              id: response.data.discount.rule.id,
+              type: "free_shipping",
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property type should not exist"
+          )
+        })
+    })
+
+    it("creates a discount and fails to update it because attempting is_dynamic update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            is_dynamic: true,
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          is_dynamic: true,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            is_dynamic: false,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property is_dynamic should not exist"
+          )
+        })
     })
 
     it("automatically sets the code to an uppercase string on update", async () => {
@@ -1356,6 +1477,70 @@ describe("/admin/discounts", () => {
             })
           )
         })
+    })
+  })
+
+  describe("POST /admin/discounts/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await dbConnection.manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await dbConnection.manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+        ends_at: new Date(),
+        usage_limit: 10,
+        valid_duration: "P1D",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Removes ends_at, valid_duration and usage_limit when fields are updated with null", async () => {
+      const api = useApi()
+
+      await api
+        .post(
+          "/admin/discounts/test-discount",
+          {
+            ends_at: null,
+            valid_duration: null,
+            usage_limit: null,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const resultingDiscount = await api.get(
+        "/admin/discounts/test-discount",
+        { headers: { Authorization: "Bearer test_token" } }
+      )
+
+      expect(resultingDiscount.status).toEqual(200)
+      expect(resultingDiscount.data.discount).toEqual(
+        expect.objectContaining({
+          ends_at: null,
+          valid_duration: null,
+          usage_limit: null,
+        })
+      )
     })
   })
 
@@ -2036,11 +2221,7 @@ describe("/admin/discounts", () => {
 
   describe("GET /admin/discounts/:id/conditions/:condition_id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
 
       const prod = await simpleProductFactory(dbConnection, {
         type: "pants",
@@ -2119,7 +2300,6 @@ describe("/admin/discounts", () => {
         })
 
       const cond = discountCondition.data.discount_condition
-      console.log(cond.products)
 
       expect(discountCondition.status).toEqual(200)
       expect(cond).toMatchSnapshot({

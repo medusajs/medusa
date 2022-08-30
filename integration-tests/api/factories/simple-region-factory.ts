@@ -9,6 +9,7 @@ export type RegionFactoryData = {
   tax_rate?: number
   countries?: string[]
   automatic_taxes?: boolean
+  gift_cards_taxable?: boolean
 }
 
 export const simpleRegionFactory = async (
@@ -29,6 +30,7 @@ export const simpleRegionFactory = async (
     currency_code: data.currency_code || "usd",
     tax_rate: data.tax_rate || 0,
     payment_providers: [{ id: "test-pay" }],
+    gift_cards_taxable: data.gift_cards_taxable ?? true,
     automatic_taxes:
       typeof data.automatic_taxes !== "undefined" ? data.automatic_taxes : true,
   })

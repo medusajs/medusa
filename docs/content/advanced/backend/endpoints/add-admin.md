@@ -1,8 +1,4 @@
----
-title: Add Endpoint for Admin
----
-
-# Add Endpoint for Admin
+# Create Endpoint for Admin
 
 In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Admin.
 
@@ -66,11 +62,11 @@ const corsOptions = {
 }
 ```
 
-Finally, for each route you add, create an `OPTIONS` request:
+Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route:
 
 ```js
 router.options("/admin/hello", cors(corsOptions))
-router.get("/admin/hello", (req, res) => {
+router.get("/admin/hello", cors(corsOptions), (req, res) => {
   //...
 })
 ```

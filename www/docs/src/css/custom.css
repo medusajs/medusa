@@ -115,8 +115,7 @@ html[data-theme="dark"] footer:not(.theme-doc-footer) {
 }
 
 html[data-theme="dark"] .card {
-  border: 1px solid #fff;
-  color: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-primary);
 }
 
 .navbar {
@@ -144,7 +143,7 @@ article {
 }
 
 @media screen and (min-width: 966px) {
-  article {
+  [class*=docItemContainer] > article {
     margin-left: 50px;
     margin-right: 50px;
     max-width: none
@@ -204,7 +203,8 @@ a.menu__link.menu__link--active.active {
   padding-left: 16px;
 }
 
-a.menu__link--sublist::after {
+a.menu__link--sublist::after,
+.menu__caret:before {
   background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 2rem;
 }
 
@@ -259,7 +259,7 @@ html:not([data-theme="dark"]) footer {
 /* Cards */
 
 html:not([data-theme=dark]) .card {
-  border: 1px solid #1f1f1f;
+  border: 1px solid #cbcbcb;
   border-radius: 8px;
 }
 
@@ -284,8 +284,8 @@ details summary {
   cursor: pointer;
 }
 
-.theme-doc-markdown a:not(.box-link):hover {
-  color: var(--ifm-color-primary-darkest);
+[data-theme="dark"] .theme-doc-markdown a.card:hover {
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
 }
 
@@ -299,6 +299,52 @@ details summary {
   text-decoration: none;
 }
 
+[data-theme="dark"] a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .DocSearch-Container {
   z-index: 1001 !important;
+}
+
+.reference-table th:nth-child(2),
+.reference-table td:nth-child(2) {
+  width: 40%;
+}
+
+.reference-table th:nth-child(3),
+.reference-table td:nth-child(3) {
+  width: 50%;
+}
+
+.reference-table .theme-code-block span {
+  max-width: 100%;
+  word-break: break-word;
+  white-space: break-spaces;
+}
+
+/* API Reference Styling */
+html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-medusa-gray);
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
+}
+
+/* User Guide Styling */
+html[data-theme="dark"] kbd {
+  --ifm-color-emphasis-0: var(--ifm-color-gray-200);
+}
+
+kbd {
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  
+  font: 100% var(--ifm-font-family-monospace) !important;
+}
+
+.ui-icon {
+  vertical-align: sub;
+  width: 20px;
+  height: 20px;
 }

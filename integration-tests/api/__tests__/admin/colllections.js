@@ -25,13 +25,8 @@ describe("/admin/collections", () => {
 
   describe("/admin/collections/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -128,13 +123,8 @@ describe("/admin/collections", () => {
 
   describe("/admin/collections", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -176,20 +166,14 @@ describe("/admin/collections", () => {
       expect(response.data).toMatchSnapshot({
         collections: [
           {
-            id: "test-collection",
-            handle: "test-collection",
-            title: "Test collection",
+            id: "test-collection2",
+            handle: "test-collection2",
+            title: "Test collection 2",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             products: [
               {
-                collection_id: "test-collection",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-              {
-                collection_id: "test-collection",
+                collection_id: "test-collection2",
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 profile_id: expect.stringMatching(/^sp_*/),
@@ -218,14 +202,20 @@ describe("/admin/collections", () => {
             ],
           },
           {
-            id: "test-collection2",
-            handle: "test-collection2",
-            title: "Test collection 2",
+            id: "test-collection",
+            handle: "test-collection",
+            title: "Test collection",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             products: [
               {
-                collection_id: "test-collection2",
+                collection_id: "test-collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                profile_id: expect.stringMatching(/^sp_*/),
+              },
+              {
+                collection_id: "test-collection",
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 profile_id: expect.stringMatching(/^sp_*/),

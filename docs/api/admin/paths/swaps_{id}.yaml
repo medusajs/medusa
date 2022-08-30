@@ -1,0 +1,23 @@
+get:
+  operationId: GetSwapsSwap
+  summary: Retrieve a Swap
+  description: Retrieves a Swap.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Swap.
+      schema:
+        type: string
+  tags:
+    - Swap
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              swap:
+                $ref: ../components/schemas/swap.yaml

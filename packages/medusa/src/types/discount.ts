@@ -11,6 +11,7 @@ import {
 import { DiscountConditionOperator } from "../models/discount-condition"
 import { AllocationType, DiscountRuleType } from "../models/discount-rule"
 import { ExactlyOne } from "./validators/exactly-one"
+import { Region } from "../models"
 
 export type QuerySelector = {
   q?: string
@@ -117,9 +118,9 @@ export type UpsertDiscountConditionInput = {
 
 export type CreateDiscountRuleInput = {
   description?: string
-  type: string
+  type: DiscountRuleType
   value: number
-  allocation: string
+  allocation: AllocationType
   conditions?: UpsertDiscountConditionInput[]
 }
 
@@ -132,28 +133,26 @@ export type CreateDiscountInput = {
   ends_at?: Date
   valid_duration?: string
   usage_limit?: number
-  regions?: string[]
+  regions?: string[] | Region[]
   metadata?: Record<string, unknown>
 }
 
 export type UpdateDiscountRuleInput = {
   id: string
   description?: string
-  type: string
-  value: number
-  allocation: string
+  value?: number
+  allocation?: AllocationType
   conditions?: UpsertDiscountConditionInput[]
 }
 
 export type UpdateDiscountInput = {
   code?: string
   rule?: UpdateDiscountRuleInput
-  is_dynamic?: boolean
   is_disabled?: boolean
   starts_at?: Date
-  ends_at?: Date
-  valid_duration?: string
-  usage_limit?: number
+  ends_at?: Date | null
+  valid_duration?: string | null
+  usage_limit?: number | null
   regions?: string[]
   metadata?: Record<string, unknown>
 }

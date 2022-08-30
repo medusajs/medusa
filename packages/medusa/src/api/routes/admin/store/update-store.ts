@@ -1,6 +1,8 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
+
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /store
@@ -28,6 +30,17 @@ import { validator } from "../../../../utils/validator"
  *           default_currency_code:
  *             description: "The default currency code for the Store."
  *             type: string
+ *             externalDocs:
+ *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *               description: See a list of codes.
+ *           currencies:
+ *             description: "Array of currencies in 2 character ISO code format."
+ *             type: array
+ *             items:
+ *               type: string
+ *           metadata:
+ *             description: "An optional set of key-value pairs with additional information."
+ *             type: object
  * tags:
  *   - Store
  * responses:
@@ -45,7 +58,12 @@ export default async (req, res) => {
 
   const storeService: StoreService = req.scope.resolve("storeService")
 
-  const store = await storeService.update(validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const store = await manager.transaction(async (transactionManager) => {
+    return await storeService
+      .withTransaction(transactionManager)
+      .update(validatedBody)
+  })
 
   res.status(200).json({ store })
 }
@@ -75,4 +93,8 @@ export class AdminPostStoreReq {
   @IsString({ each: true })
   @IsOptional()
   currencies?: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }

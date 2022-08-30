@@ -7,7 +7,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  * description: "Retrieves a Gift Card."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Gift Card.
+ *   - (path) id=* {string} The ID of the Gift Card.
  * tags:
  *   - Gift Card
  * responses:

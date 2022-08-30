@@ -3,8 +3,10 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
+
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /return-reasons/{id}
@@ -13,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Return Reason"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Return Reason.
+ *   - (path) id=* {string} The ID of the Return Reason.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,6 +23,9 @@ import { validator } from "../../../../utils/validator"
  *         properties:
  *           label:
  *             description: "The label to display to the Customer."
+ *             type: string
+ *           value:
+ *             description: "The value that the Return Reason will be identified by. Must be unique."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."
@@ -49,7 +54,12 @@ export default async (req, res) => {
     "returnReasonService"
   )
 
-  await returnReasonService.update(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await returnReasonService
+      .withTransaction(transactionManager)
+      .update(id, validated)
+  })
 
   const reason = await returnReasonService.retrieve(id, {
     select: defaultAdminReturnReasonsFields,
@@ -73,5 +83,5 @@ export class AdminPostReturnReasonsReasonReq {
   description?: string
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

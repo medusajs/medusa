@@ -1,10 +1,8 @@
 import { pick } from "lodash"
-import { FindConfig } from "../types/common"
-
-type BaseEntity = {
-  id: string
-  created_at: Date
-}
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
+import { MedusaError } from "medusa-core-utils/dist"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { isDefined } from "."
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -29,15 +27,15 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
   expand?: string[]
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
-    includeFields = Array
-      .from(new Set([...fields, "id"]))
-      .map(field => (typeof field === "string") ? field.trim() : field) as (keyof TModel)[]
+  if (isDefined(fields)) {
+    includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
+      typeof field === "string" ? field.trim() : field
+    ) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
-    expandFields = expand.map(expandRelation => expandRelation.trim())
+  if (isDefined(expand)) {
+    expandFields = expand.map((expandRelation) => expandRelation.trim())
   }
 
   return {
@@ -56,7 +54,7 @@ export function getListConfig<TModel extends BaseEntity>(
   order?: { [k: symbol]: "DESC" | "ASC" }
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     const fieldSet = new Set(fields)
     // Ensure created_at is included, since we are sorting on this
     fieldSet.add("created_at")
@@ -65,7 +63,7 @@ export function getListConfig<TModel extends BaseEntity>(
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand
   }
 
@@ -80,4 +78,77 @@ export function getListConfig<TModel extends BaseEntity>(
     take: limit,
     order: orderBy,
   }
+}
+
+export function prepareListQuery<
+  T extends RequestQueryFields,
+  TEntity extends BaseEntity
+>(validated: T, queryConfig?: QueryConfig<TEntity>) {
+  const { order, fields, expand, limit, offset } = validated
+
+  let expandRelations: string[] | undefined = undefined
+  if (expand) {
+    expandRelations = expand.split(",")
+  }
+
+  let expandFields: (keyof TEntity)[] | undefined = undefined
+  if (fields) {
+    expandFields = fields.split(",") as (keyof TEntity)[]
+  }
+
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  if (isDefined(order)) {
+    let orderField = order
+    if (order.startsWith("-")) {
+      const [, field] = order.split("-")
+      orderField = field
+      orderBy = { [field]: "DESC" }
+    } else {
+      orderBy = { [order]: "ASC" }
+    }
+
+    if (
+      queryConfig?.allowedFields?.length &&
+      !queryConfig?.allowedFields.includes(orderField)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order field ${orderField} is not valid`
+      )
+    }
+  }
+
+  return getListConfig<TEntity>(
+    queryConfig?.defaultFields as (keyof TEntity)[],
+    (queryConfig?.defaultRelations ?? []) as string[],
+    expandFields,
+    expandRelations,
+    limit ?? queryConfig?.defaultLimit,
+    offset ?? 0,
+    orderBy
+  )
+}
+
+export function prepareRetrieveQuery<
+  T extends RequestQueryFields,
+  TEntity extends BaseEntity
+>(validated: T, queryConfig?: QueryConfig<TEntity>) {
+  const { fields, expand } = validated
+
+  let expandRelations: string[] = []
+  if (expand) {
+    expandRelations = expand.split(",")
+  }
+
+  let expandFields: (keyof TEntity)[] | undefined = undefined
+  if (fields) {
+    expandFields = fields.split(",") as (keyof TEntity)[]
+  }
+
+  return getRetrieveConfig<TEntity>(
+    queryConfig?.defaultFields as (keyof TEntity)[],
+    (queryConfig?.defaultRelations ?? []) as string[],
+    expandFields,
+    expandRelations
+  )
 }

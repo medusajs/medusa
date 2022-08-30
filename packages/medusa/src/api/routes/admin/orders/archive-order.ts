@@ -1,4 +1,5 @@
 import { OrderService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /orders/{id}/archive
@@ -7,7 +8,7 @@ import { OrderService } from "../../../../services"
  * description: "Archives the order with the given id."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Order.
+ *   - (path) id=* {string} The ID of the Order.
  * tags:
  *   - Order
  * responses:
@@ -25,7 +26,10 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  await orderService.archive(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await orderService.withTransaction(transactionManager).archive(id)
+  })
 
   const order = await orderService.retrieve(id, {
     relations: ["region", "customer", "swaps"],

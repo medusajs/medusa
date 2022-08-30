@@ -1,13 +1,19 @@
-import { Type } from "class-transformer"
-import { omit } from "lodash"
+import {
+  CartService,
+  PricingService,
+  ProductVariantService,
+  RegionService,
+} from "../../../../services"
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { defaultStoreVariantRelations } from "."
+
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import ProductVariantService from "../../../../services/product-variant"
-import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { Type } from "class-transformer"
+import { defaultStoreVariantRelations } from "."
+import { omit } from "lodash"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /variants
@@ -17,8 +23,43 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
  * parameters:
  *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
- *   - (query) offset {number}
- *   - (query) limit {number} Maximum number of Product Variants to return.
+ *   - (query) offset=0 {number} How many product variants to skip in the result.
+ *   - (query) limit=100 {number} Maximum number of Product Variants to return.
+ *   - in: query
+ *     name: title
+ *     style: form
+ *     explode: false
+ *     description: product variant title to search for.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: a single title to search by
+ *         - type: array
+ *           description: multiple titles to search by
+ *           items:
+ *             type: string
+ *   - in: query
+ *     name: inventory_quantity
+ *     description: Filter by available inventory quantity
+ *     schema:
+ *       oneOf:
+ *         - type: number
+ *           description: a specific number to search by.
+ *         - type: object
+ *           description: search using less and greater than comparisons.
+ *           properties:
+ *             lt:
+ *               type: number
+ *               description: filter by inventory quantity less than this number
+ *             gt:
+ *               type: number
+ *               description: filter by inventory quantity greater than this number
+ *             lte:
+ *               type: number
+ *               description: filter by inventory quantity less than or equal to this number
+ *             gte:
+ *               type: number
+ *               description: filter by inventory quantity greater than or equal to this number
  * tags:
  *   - Product Variant
  * responses:
@@ -50,11 +91,6 @@ export default async (req, res) => {
       : defaultStoreVariantRelations,
     skip: offset,
     take: limit,
-    cart_id: validated.cart_id,
-    region_id: validated.region_id,
-    currency_code: validated.currency_code,
-    customer_id: customer_id,
-    include_discount_prices: true,
   }
 
   const filterableFields: FilterableProductVariantProps = omit(validated, [
@@ -71,10 +107,35 @@ export default async (req, res) => {
     filterableFields.id = validated.ids.split(",")
   }
 
+  const pricingService: PricingService = req.scope.resolve("pricingService")
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const variants = await variantService.list(filterableFields, listConfig)
+  const cartService: CartService = req.scope.resolve("cartService")
+  const regionService: RegionService = req.scope.resolve("regionService")
+
+  const rawVariants = await variantService.list(filterableFields, listConfig)
+
+  let regionId = validated.region_id
+  let currencyCode = validated.currency_code
+  if (validated.cart_id) {
+    const cart = await cartService.retrieve(validated.cart_id, {
+      select: ["id", "region_id"],
+    })
+    const region = await regionService.retrieve(cart.region_id, {
+      select: ["id", "currency_code"],
+    })
+    regionId = region.id
+    currencyCode = region.currency_code
+  }
+
+  const variants = await pricingService.setVariantPrices(rawVariants, {
+    cart_id: validated.cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    customer_id: customer_id,
+    include_discount_prices: true,
+  })
 
   res.json({ variants })
 }

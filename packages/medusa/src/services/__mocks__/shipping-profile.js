@@ -16,11 +16,20 @@ export const profiles = {
 }
 
 export const ShippingProfileServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   update: jest.fn().mockImplementation(data => {
     return Promise.resolve()
   }),
   create: jest.fn().mockImplementation(data => {
     return Promise.resolve(data)
+  }),
+  createDefault: jest.fn().mockImplementation(() => {
+    return Promise.resolve()
+  }),
+  createGiftCardDefault: jest.fn().mockImplementation(() => {
+    return Promise.resolve()
   }),
   retrieve: jest.fn().mockImplementation(data => {
     if (data === IdMap.getId("default")) {

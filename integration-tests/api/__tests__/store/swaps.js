@@ -1,8 +1,5 @@
 const path = require("path")
-const {
-  ShippingProfile,
-  ShippingOption,
-} = require("@medusajs/medusa")
+const { ShippingProfile, ShippingOption } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -30,35 +27,30 @@ describe("/store/carts", () => {
 
   describe("/store/swaps", () => {
     beforeEach(async () => {
-      try {
-        await orderSeeder(dbConnection)
+      await orderSeeder(dbConnection)
 
-        const manager = dbConnection.manager
-        await manager.query(
-          `UPDATE "swap" SET cart_id='test-cart-2' WHERE id = 'test-swap'`
-        )
-        await manager.query(
-          `UPDATE "payment" SET swap_id=NULL WHERE id = 'test-payment-swap'`
-        )
+      const manager = dbConnection.manager
+      await manager.query(
+        `UPDATE "swap" SET cart_id='test-cart-2' WHERE id = 'test-swap'`
+      )
+      await manager.query(
+        `UPDATE "payment" SET swap_id=NULL WHERE id = 'test-payment-swap'`
+      )
 
-        const defaultProfile = await manager.findOne(ShippingProfile, {
-          type: "default",
-        })
-        await manager.insert(ShippingOption, {
-          id: "return-option",
-          name: "Test ret",
-          profile_id: defaultProfile.id,
-          region_id: "test-region",
-          provider_id: "test-ful",
-          data: {},
-          price_type: "flat_rate",
-          amount: 1000,
-          is_return: true,
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      const defaultProfile = await manager.findOne(ShippingProfile, {
+        type: "default",
+      })
+      await manager.insert(ShippingOption, {
+        id: "return-option",
+        name: "Test ret",
+        profile_id: defaultProfile.id,
+        region_id: "test-region",
+        provider_id: "test-ful",
+        data: {},
+        price_type: "flat_rate",
+        amount: 1000,
+        is_return: true,
+      })
     })
 
     afterEach(async () => {

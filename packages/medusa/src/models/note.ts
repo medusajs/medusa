@@ -1,24 +1,19 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
   JoinColumn,
-  PrimaryColumn,
   ManyToOne,
 } from "typeorm"
-import { ulid } from "ulid"
+
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { User } from "./user"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Note {
-  @PrimaryColumn()
-  id: string
-
+export class Note extends SoftDeletableEntity {
   @Column()
   value: string
 
@@ -37,23 +32,12 @@ export class Note {
   @JoinColumn({ name: "author_id" })
   author: User
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `note_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "note")
   }
 }
 
@@ -62,36 +46,48 @@ export class Note {
  * title: "Note"
  * description: "Notes are elements which we can use in association with different resources to allow users to describe additional information in relation to these."
  * x-resourceId: note
+ * required:
+ *   - value
+ *   - resource_type
+ *   - resource_id
  * properties:
  *   id:
- *     description: "The id of the Note. This value will be prefixed by `note_`."
  *     type: string
+ *     description: The note's ID
+ *     example: note_01G8TM8ENBMC7R90XRR1G6H26Q
  *   resource_type:
  *     description: "The type of resource that the Note refers to."
  *     type: string
+ *     example: order
  *   resource_id:
- *     description: "The id of the resource that the Note refers to."
+ *     description: "The ID of the resource that the Note refers to."
  *     type: string
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   value:
  *     description: "The contents of the note."
  *     type: string
- *   author:
- *     description: "The author of the note."
- *     anyOf:
- *       - $ref: "#/components/schemas/user"
- *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     example: This order must be fulfilled on Monday
+ *   author_id:
  *     type: string
+ *     description: The ID of the author (user)
+ *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+ *   author:
+ *     description: Available if the relation `author` is expanded.
+ *     $ref: "#/components/schemas/user"
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
- *     description: "The date with timezone at which the resource was deleted."
  *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

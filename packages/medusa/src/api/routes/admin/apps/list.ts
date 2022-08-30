@@ -7,7 +7,7 @@ import { OauthService } from "../../../../services"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
  * tags:
- *   - Apps
+ *   - App
  * responses:
  *  "200":
  *    description: OK
@@ -15,8 +15,10 @@ import { OauthService } from "../../../../services"
  *      application/json:
  *        schema:
  *          properties:
- *            collection:
- *              $ref: "#/components/schemas/OAuth"
+ *            apps:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/OAuth"
  */
 export default async (req, res) => {
   const oauthService: OauthService = req.scope.resolve("oauthService")

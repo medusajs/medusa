@@ -1,5 +1,5 @@
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [get] /carts/{id}
@@ -42,10 +42,8 @@ export default async (req, res) => {
     }
   }
 
-  cart = await cartService.retrieve(id, {
-    select: defaultStoreCartFields,
-    relations: defaultStoreCartRelations,
-  })
+  cart = await cartService.retrieve(id, req.retrieveConfig)
 
-  res.json({ cart })
+  const data = await decorateLineItemsWithTotals(cart, req)
+  res.json({ cart: data })
 }

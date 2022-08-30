@@ -28,13 +28,8 @@ describe("/admin/product-tags", () => {
 
   describe("GET /admin/product-tags", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -89,11 +84,10 @@ describe("/admin/product-tags", () => {
         updated_at: expect.any(String),
       }
 
-      expect(res.data.product_tags.map((pt) => pt.value)).toEqual([
-        "123",
-        "123",
-        "123",
-      ])
+      expect(res.data.product_tags.length).toEqual(3)
+      expect(res.data.product_tags.map((pt) => pt.value)).toEqual(
+        expect.arrayContaining(["123", "1235", "1234"])
+      )
 
       expect(res.data.product_tags).toMatchSnapshot([
         tagMatch,

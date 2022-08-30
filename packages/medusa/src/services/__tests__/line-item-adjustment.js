@@ -1,8 +1,8 @@
-import LineItemAdjustmentService from "../line-item-adjustment"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { DiscountServiceMock } from "../__mocks__/discount"
+import { MockManager, MockRepository } from "medusa-test-utils"
 import { In } from "typeorm"
+import LineItemAdjustmentService from "../line-item-adjustment"
+import { DiscountServiceMock } from "../__mocks__/discount"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("LineItemAdjustmentService", () => {
   describe("list", () => {
@@ -101,7 +101,7 @@ describe("LineItemAdjustmentService", () => {
     }
 
     const lineItemAdjustmentRepo = MockRepository({
-      create: (f) => Promise.resolve(lineItemAdjustment),
+      create: (f) => lineItemAdjustment,
       save: (f) => Promise.resolve(lineItemAdjustment),
     })
 
@@ -270,11 +270,11 @@ describe("LineItemAdjustmentService", () => {
 
     it("calls createAdjustmentForLineItem once when given a line item", () => {
       const cart = {
-          id: "cart1",
-          discounts: ["disc-1"],
-          items: [{ id: "li-1" }],
-        },
-        lineItem = { id: "li-1" }
+        id: "cart1",
+        discounts: ["disc-1"],
+        items: [{ id: "li-1" }],
+      }
+      const lineItem = { id: "li-1" }
 
       lineItemAdjustmentService.createAdjustments(cart, lineItem)
       expect(

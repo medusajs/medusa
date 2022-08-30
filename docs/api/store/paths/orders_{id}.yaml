@@ -1,0 +1,22 @@
+get:
+  operationId: GetOrdersOrder
+  summary: Retrieves an Order
+  description: Retrieves an Order
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the Order.
+      schema:
+        type: string
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

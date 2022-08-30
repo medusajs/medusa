@@ -1,32 +1,43 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import {
-  defaultAdminDraftOrdersCartFields,
-  defaultAdminDraftOrdersCartRelations,
-  defaultAdminDraftOrdersFields,
-} from "."
 import {
   CartService,
   DraftOrderService,
   LineItemService,
 } from "../../../../services"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
+  defaultAdminDraftOrdersFields,
+} from "."
+
+import { EntityManager } from "typeorm"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
  * summary: "Create a Line Item for Draft Order"
  * description: "Creates a Line Item for the Draft Order"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - quantity
  *       schema:
+ *         required:
+ *           - quantity
  *         properties:
  *           variant_id:
- *             description: The id of the Product Variant to generate the Line Item from.
+ *             description: The ID of the Product Variant to generate the Line Item from.
  *             type: string
  *           unit_price:
  *             description: The potential custom price of the item.
@@ -34,6 +45,7 @@ import { validator } from "../../../../utils/validator"
  *           title:
  *             description: The potential custom title of the item.
  *             type: string
+ *             default: "Custom item"
  *           quantity:
  *             description: The quantity of the Line Item.
  *             type: integer
@@ -83,16 +95,18 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
-      const line = await lineItemService.generate(
-        validated.variant_id,
-        draftOrder.cart.region_id,
-        validated.quantity,
-        { metadata: validated.metadata, unit_price: validated.unit_price }
-      )
+      const line = await lineItemService
+        .withTransaction(manager)
+        .generate(
+          validated.variant_id,
+          draftOrder.cart.region_id,
+          validated.quantity,
+          { metadata: validated.metadata, unit_price: validated.unit_price }
+        )
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line)
+        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({

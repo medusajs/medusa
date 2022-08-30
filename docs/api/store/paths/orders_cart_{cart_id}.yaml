@@ -1,0 +1,22 @@
+get:
+  operationId: GetOrdersOrderCartId
+  summary: Retrieves Order by Cart id
+  description: Retrieves an Order by the id of the Cart that was used to create the Order.
+  parameters:
+    - in: path
+      name: cart_id
+      required: true
+      description: The ID of Cart.
+      schema:
+        type: string
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml

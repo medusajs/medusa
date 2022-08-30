@@ -1,4 +1,8 @@
-import { Transform, Type } from "class-transformer"
+import {
+  CartService,
+  ProductService,
+  RegionService,
+} from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -7,14 +11,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Transform, Type } from "class-transformer"
 import { omit, pickBy } from "lodash"
-import { defaultStoreProductsRelations } from "."
-import { ProductService } from "../../../../services"
+
 import { DateComparisonOperator } from "../../../../types/common"
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { PriceSelectionParams } from "../../../../types/price-selection"
+import PricingService from "../../../../services/pricing"
+import { Product } from "../../../../models"
+import { defaultStoreProductsRelations } from "."
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { validator } from "../../../../utils/validator"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [get] /products
@@ -22,20 +30,89 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * summary: List Products
  * description: "Retrieves a list of Products."
  * parameters:
- *   - (query) q {string} Query used for searching products.
- *   - (query) id {string} Id of the product to search for.
- *   - (query) collection_id {string[]} Collection ids to search for.
- *   - (query) tags {string[]} Tags to search for.
- *   - (query) title {string} to search for.
- *   - (query) description {string} to search for.
- *   - (query) handle {string} to search for.
- *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} to search for.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting products was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) q {string} Query used for searching products by title, description, variant's title, variant's sku, and collection's title
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: product IDs to search for.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *         - type: array
+ *           items:
+ *             type: string
+ *   - in: query
+ *     name: collection_id
+ *     style: form
+ *     explode: false
+ *     description: Collection IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: tags
+ *     style: form
+ *     explode: false
+ *     description: Tag IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) title {string} title to search for.
+ *   - (query) description {string} description to search for.
+ *   - (query) handle {string} handle to search for.
+ *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - (query) type {string} type to search for.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting products were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting products were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) limit=100 {integer} Limit the number of products returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:
  *   - Product
  * responses:
@@ -45,22 +122,25 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The total number of Products.
- *               type: integer
- *             offset:
- *               description: The offset for pagination.
- *               type: integer
- *             limit:
- *               description: The maxmimum number of Products to return,
- *               type: integer
  *             products:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/product"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const regionService: RegionService = req.scope.resolve("regionService")
 
   const validated = await validator(StoreGetProductsParams, req.query)
 
@@ -77,9 +157,9 @@ export default async (req, res) => {
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  let includeFields: string[] = []
+  let includeFields: (keyof Product)[] = []
   if (validated.fields) {
-    const set = new Set(validated.fields.split(","))
+    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
     set.add("id")
     includeFields = [...set]
   }
@@ -96,17 +176,33 @@ export default async (req, res) => {
       : defaultStoreProductsRelations,
     skip: validated.offset,
     take: validated.limit,
-    cart_id: validated.cart_id,
-    region_id: validated.region_id,
-    currency_code: validated.currency_code,
-    customer_id: req.user?.customer_id,
-    include_discount_prices: true,
   }
 
-  const [products, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+  const [rawProducts, count] = await productService.listAndCount(
+    pickBy(filterableFields, (val) => isDefined(val)),
     listConfig
   )
+
+  let regionId = validated.region_id
+  let currencyCode = validated.currency_code
+  if (validated.cart_id) {
+    const cart = await cartService.retrieve(validated.cart_id, {
+      select: ["id", "region_id"],
+    })
+    const region = await regionService.retrieve(cart.region_id, {
+      select: ["id", "currency_code"],
+    })
+    regionId = region.id
+    currencyCode = region.currency_code
+  }
+
+  const products = await pricingService.setProductPrices(rawProducts, {
+    cart_id: validated.cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    customer_id: req.user?.customer_id,
+    include_discount_prices: true,
+  })
 
   res.json({
     products,

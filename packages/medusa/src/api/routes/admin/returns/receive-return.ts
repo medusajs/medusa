@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNumber,
@@ -6,9 +5,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /returns/{id}/receive
@@ -16,7 +18,7 @@ import { validator } from "../../../../utils/validator"
  * summary: "Receive a Return"
  * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
  * parameters:
- *   - (path) id=* {string} The id of the Return.
+ *   - (path) id=* {string} The ID of the Return.
  * requestBody:
  *   content:
  *     application/json:
@@ -28,16 +30,19 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items that have been received.
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item.
+ *                   description: The ID of the Line Item.
  *                   type: string
  *                 quantity:
  *                   description: The quantity of the Line Item.
  *                   type: integer
  *           refund:
  *             description: The amount to refund.
- *             type: integer
+ *             type: number
  * tags:
  *   - Return
  * responses:
@@ -64,7 +69,7 @@ export default async (req, res) => {
   await entityManager.transaction(async (manager) => {
     let refundAmount = validated.refund
 
-    if (typeof validated.refund !== "undefined" && validated.refund < 0) {
+    if (isDefined(validated.refund) && validated.refund < 0) {
       refundAmount = 0
     }
 

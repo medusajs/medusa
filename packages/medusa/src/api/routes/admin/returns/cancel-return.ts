@@ -3,6 +3,7 @@ import {
   defaultAdminOrdersFields,
   defaultAdminOrdersRelations,
 } from "../orders"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /returns/{id}/cancel
@@ -10,7 +11,7 @@ import {
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
  * parameters:
- *   - (path) id=* {string} The id of the Return.
+ *   - (path) id=* {string} The ID of the Return.
  * tags:
  *   - Return
  * responses:
@@ -20,7 +21,7 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             return:
+ *             order:
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
@@ -29,7 +30,10 @@ export default async (req, res) => {
   const returnService: ReturnService = req.scope.resolve("returnService")
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  let result = await returnService.cancel(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  let result = await manager.transaction(async (transactionManager) => {
+    return await returnService.withTransaction(transactionManager).cancel(id)
+  })
 
   if (result.swap_id) {
     const swapService = req.scope.resolve("swapService")

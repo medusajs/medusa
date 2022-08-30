@@ -1,7 +1,10 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
+
 import { ReturnService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { FindConfig } from "../../../../types/common"
+import { Return } from "../../../../models"
 
 /**
  * @oas [get] /returns
@@ -9,8 +12,8 @@ import { validator } from "../../../../utils/validator"
  * summary: "List Returns"
  * description: "Retrieves a list of Returns"
  * parameters:
- *   - (path) limit {number} The upper limit for the amount of responses returned.
- *   - (path) offset {number} The offset of the list returned.
+ *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
+ *   - (query) offset=0 {number} The offset of the list returned.
  * tags:
  *   - Return
  * responses:
@@ -24,6 +27,15 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/return"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const returnService: ReturnService = req.scope.resolve("returnService")
@@ -37,7 +49,7 @@ export default async (req, res) => {
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },
-  }
+  } as FindConfig<Return>
 
   const returns = await returnService.list(selector, { ...listConfig })
 

@@ -43,6 +43,9 @@ export const regions = {
 }
 
 export const RegionServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation(regionId => {
     if (regionId === IdMap.getId("testRegion")) {
       return Promise.resolve(regions.testRegion)

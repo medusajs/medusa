@@ -1,0 +1,18 @@
+get:
+  operationId: GetStorePaymentProviders
+  summary: Retrieve configured Payment Providers
+  description: Retrieves the configured Payment Providers
+  x-authenticated: true
+  tags:
+    - Store
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              payment_providers:
+                type: array
+                items:
+                  $ref: ../components/schemas/payment_provider.yaml

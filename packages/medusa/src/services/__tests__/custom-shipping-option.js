@@ -4,7 +4,7 @@ import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 describe("CustomShippingOptionService", () => {
   describe("list", () => {
     const customShippingOptionRepository = MockRepository({
-      find: q => {
+      find: (q) => {
         return Promise.resolve([
           {
             id: "cso-test",
@@ -44,7 +44,7 @@ describe("CustomShippingOptionService", () => {
 
   describe("retrieve", () => {
     const customShippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         if (q.where.id === "cso-test") {
           return Promise.resolve({
             id: "cso-test",
@@ -86,10 +86,8 @@ describe("CustomShippingOptionService", () => {
 
   describe("create", () => {
     const customShippingOptionRepository = MockRepository({
-      create: jest
-        .fn()
-        .mockImplementation(f => Promise.resolve({ id: "test-cso", ...f })),
-      save: jest.fn().mockImplementation(f => Promise.resolve(f)),
+      create: jest.fn().mockImplementation((f) => ({ id: "test-cso", ...f })),
+      save: jest.fn().mockImplementation((f) => Promise.resolve(f)),
     })
 
     const customShippingOptionService = new CustomShippingOptionService({
@@ -114,7 +112,7 @@ describe("CustomShippingOptionService", () => {
         cart_id: "test-cso-cart",
         shipping_option_id: "test-so",
         price: 30,
-        metadata: {},
+        metadata: undefined,
       })
 
       expect(customShippingOptionRepository.save).toHaveBeenCalledTimes(1)
@@ -123,7 +121,7 @@ describe("CustomShippingOptionService", () => {
         cart_id: "test-cso-cart",
         shipping_option_id: "test-so",
         price: 30,
-        metadata: {},
+        metadata: undefined,
       })
     })
   })

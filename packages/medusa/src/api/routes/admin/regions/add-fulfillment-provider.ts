@@ -1,8 +1,11 @@
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
-import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /regions/{id}/fulfillment-providers
  * operationId: "PostRegionsRegionFulfillmentProviders"
@@ -10,16 +13,16 @@ import RegionService from "../../../../services/region"
  * description: "Adds a Fulfillment Provider to a Region"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - provider_id
  *       schema:
+ *         required:
+ *           - provider_id
  *         properties:
  *           provider_id:
- *             description: "The id of the Fulfillment Provider to add."
+ *             description: "The ID of the Fulfillment Provider to add."
  *             type: string
  * tags:
  *   - Region
@@ -41,7 +44,12 @@ export default async (req, res) => {
   )
 
   const regionService: RegionService = req.scope.resolve("regionService")
-  await regionService.addFulfillmentProvider(region_id, validated.provider_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await regionService
+      .withTransaction(transactionManager)
+      .addFulfillmentProvider(region_id, validated.provider_id)
+  })
 
   const region: Region = await regionService.retrieve(region_id, {
     select: defaultAdminRegionFields,

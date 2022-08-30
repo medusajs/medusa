@@ -1,7 +1,7 @@
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
  * @oas [get] /customer-groups/{id}
@@ -10,9 +10,11 @@ import { defaultAdminCustomerGroupsRelations } from "."
  * description: "Retrieves a Customer Group."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group.
+ *   - (path) id=* {string} The ID of the Customer Group.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
  * tags:
- *   - CustomerGroup
+ *   - Customer Group
  * responses:
  *   200:
  *     description: OK
@@ -23,30 +25,17 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
-
-  const validated = await validator(
-    AdminGetCustomerGroupsGroupParams,
-    req.query
-  )
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const findConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminCustomerGroupsRelations,
-  }
-
-  const customerGroup = await customerGroupService.retrieve(id, findConfig)
+  const customerGroup = await customerGroupService.retrieve(
+    id,
+    req.retrieveConfig
+  )
 
   res.json({ customer_group: customerGroup })
 }

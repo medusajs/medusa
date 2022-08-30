@@ -1,20 +1,16 @@
-const path = require("path")
 const { dropDatabase } = require("pg-god")
 
-require("dotenv").config({ path: path.join(__dirname, ".env") })
-
-const DB_USERNAME = process.env.DB_USERNAME || "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD || ""
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
 
 const pgGodCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
+  host: DB_HOST,
 }
 
 afterAll(async () => {
-  const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
-  await dropDatabase(
-    { databaseName: `medusa-integration-${workerId}` },
-    pgGodCredentials
-  )
+  await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
 })
