@@ -60,5 +60,5 @@ In the edit page of a product, you can find the sales channels the product belon
 
 ## Learn More About Sales Channels
 
-- Manage Sales Channels
-- Manage Products in Sales Channels
+- [Manage Sales Channels](./manage.mdx)
+- [Manage Products in Sales Channels](./products.mdx)

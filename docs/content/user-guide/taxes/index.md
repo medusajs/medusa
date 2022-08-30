@@ -29,5 +29,5 @@ Adding tax rates alongside the default one allows you to override the prices of 
 ## Learn More About Taxes
 
 - [Manage Taxes](./manage.md)
-- Manage Tax Rates
-- Manage Tax Overrides
+- [Manage Tax Rates](./tax-rates.mdx)
+- [Manage Tax Overrides](./tax-overrides.mdx)

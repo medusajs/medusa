@@ -10,5 +10,5 @@ You can also create custom gift cards in Medusa. These cards can be created and 
 
 ## Learn More About Gift Cards
 
-- Manage Gift Cards
+- [Manage Gift Cards](./manage.mdx)
 - Manage Custom Gift Cards
