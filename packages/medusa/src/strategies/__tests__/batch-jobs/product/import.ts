@@ -15,6 +15,7 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import { InjectedProps } from "../../../batch-jobs/product/types"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -142,6 +143,7 @@ describe("Product import strategy", () => {
     productVariantService:
       productVariantServiceMock as unknown as ProductVariantService,
     regionService: regionServiceMock as unknown as RegionService,
+    featureFlagRouter: new FlagRouter({}),
   } as unknown as InjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
