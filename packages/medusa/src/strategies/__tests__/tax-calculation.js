@@ -118,13 +118,6 @@ const taxInclusiveShippingTests = [
   [
     "calculates correctly with tax inclusive shipping",
     {
-      /*
-       * Subtotal = 2 * 100 = 200
-       * Taxable amount = 200 - 10 = 180
-       * Taxline 1 = 180 * 0.0825 = 15
-       * Taxline 2 = 180 * 0.125 = 23
-       * Total tax = 38
-       */
       expected: 25,
       items: [],
       taxLines: [
