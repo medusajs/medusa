@@ -26,7 +26,7 @@ import {
 import TaxProviderService from "./tax-provider"
 import { EntityManager } from "typeorm"
 import { isDefined } from "../utils"
-import { calculatePriceTaxInclusiveTaxAmount } from "../utils"
+import { calculatePriceTaxAmount } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
 
@@ -776,20 +776,16 @@ class TotalsService extends TransactionBaseService {
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
         const taxRate = cartOrOrder.tax_rate / 100
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          ) &&
-          lineItem.includes_tax
-        ) {
-          const taxExclusiveUnitPrice =
-            lineItem.unit_price -
-            Math.round(
-              calculatePriceTaxInclusiveTaxAmount(lineItem.unit_price, taxRate)
-            )
-          lineItemTotals.subtotal = taxExclusiveUnitPrice * lineItem.quantity
-          lineItemTotals.total = lineItemTotals.subtotal
-        }
+        const priceTaxAmountIncluded = Math.round(
+          calculatePriceTaxAmount({
+            price: lineItem.unit_price,
+            taxRate: lineItem.includes_tax ? taxRate : 0,
+            includesTax: lineItem.includes_tax,
+          })
+        )
+        lineItemTotals.subtotal =
+          (lineItem.unit_price - priceTaxAmountIncluded) * lineItem.quantity
+        lineItemTotals.total = lineItemTotals.subtotal
 
         lineItemTotals.original_tax_total = lineItemTotals.subtotal * taxRate
         lineItemTotals.tax_total =

@@ -5,7 +5,7 @@ import {
   ShippingMethodTaxLine,
 } from "../models"
 import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
-import { calculatePriceTaxInclusiveTaxAmount } from "../utils"
+import { calculatePriceTaxAmount } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
@@ -49,33 +49,32 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       const filteredTaxLines = taxLines.filter((tl) => tl.item_id === item.id)
 
-      let taxableAmount = item.quantity * item.unit_price
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        ) &&
-        item.includes_tax
-      ) {
-        const totalTaxRate = filteredTaxLines.reduce(
-          (accRate: number, nextLineItemTaxLine: LineItemTaxLine) => {
-            return accRate + (nextLineItemTaxLine.rate || 0) / 100
-          },
-          0
-        )
-        const taxExclusiveUnitPrice =
-          item.unit_price -
-          Math.round(
-            calculatePriceTaxInclusiveTaxAmount(item.unit_price, totalTaxRate)
-          )
-        taxableAmount = taxExclusiveUnitPrice * item.quantity
-      }
-
+      const totalTaxRate = filteredTaxLines.reduce(
+        (accRate: number, nextLineItemTaxLine: LineItemTaxLine) => {
+          return accRate + (nextLineItemTaxLine.rate || 0) / 100
+        },
+        0
+      )
+      const priceTaxAmountIncluded = Math.round(
+        calculatePriceTaxAmount({
+          price: item.unit_price,
+          taxRate: item.includes_tax ? totalTaxRate : 0,
+          includesTax: item.includes_tax,
+        })
+      )
+      let taxableAmount =
+        (item.unit_price - priceTaxAmountIncluded) * item.quantity
       taxableAmount -=
         ((allocations.discount && allocations.discount.unit_amount) || 0) *
         item.quantity
 
       for (const filteredTaxLine of filteredTaxLines) {
-        taxTotal += Math.round(taxableAmount * (filteredTaxLine.rate / 100))
+        taxTotal += Math.round(
+          calculatePriceTaxAmount({
+            price: taxableAmount,
+            taxRate: filteredTaxLine.rate / 100,
+          })
+        )
       }
     }
     return taxTotal
