@@ -303,17 +303,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
       if (input.id) {
         try {
-          channel = await salesChannelServiceTx.retrieve(input.id, { select: ["id"] })
+          channel = await salesChannelServiceTx.retrieve(input.id, {
+            select: ["id"],
+          })
         } catch (e) {
           // noop - check if the channel exists with provided name
         }
       }
 
       if (!channel) {
-        channel = (await salesChannelServiceTx.retrieveByName(
-          input.name,
-          { select: ["id"] }
-        )) as SalesChannel
+        channel = (await salesChannelServiceTx.retrieveByName(input.name, {
+          select: ["id"],
+        })) as SalesChannel
       }
 
       salesChannels.push(channel)

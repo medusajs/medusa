@@ -99,13 +99,10 @@ class SalesChannelService extends TransactionBaseService {
     name: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | unknown> {
-    const manager = this.manager_
-    const salesChannelRepo = manager.getCustomRepository(
-      this.salesChannelRepository_
+    const [salesChannel] = await this.listAndCount(
+      { name },
+      { ...config, take: 1 }
     )
-
-    const query = buildQuery({ name }, config)
-    const salesChannel = await salesChannelRepo.findOne(query)
 
     if (!salesChannel) {
       throw new MedusaError(
