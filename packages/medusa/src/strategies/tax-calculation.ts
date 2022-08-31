@@ -55,15 +55,16 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
         },
         0
       )
-      const priceTaxAmountIncluded = Math.round(
-        calculatePriceTaxAmount({
-          price: item.unit_price,
-          taxRate: item.includes_tax ? totalTaxRate : 0,
-          includesTax: item.includes_tax,
-        })
-      )
-      let taxableAmount =
-        (item.unit_price - priceTaxAmountIncluded) * item.quantity
+      const taxIncludedInPrice = !item.includes_tax
+        ? 0
+        : Math.round(
+            calculatePriceTaxAmount({
+              price: item.unit_price,
+              taxRate: totalTaxRate,
+              includesTax: item.includes_tax,
+            })
+          )
+      let taxableAmount = (item.unit_price - taxIncludedInPrice) * item.quantity
       taxableAmount -=
         ((allocations.discount && allocations.discount.unit_amount) || 0) *
         item.quantity
