@@ -1,6 +1,6 @@
 import TaxCalculationStrategy from "../tax-calculation"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
-import { FlagRouter } from "../../utils/flag-router";
+import { featureFlagRouter } from "../../loaders/feature-flags";
 
 const toTest = [
   {
@@ -165,12 +165,20 @@ describe("TaxCalculationStrategy", () => {
   describe("calculate", () => {
     test.each(toTest)(
       "$title",
-      async ({ title, items, taxLines, context, expected, flags }) => {
+      async ({ items, taxLines, context, expected, flags }) => {
+        if (flags) {
+          Object.entries(flags).forEach(([key, value]) => featureFlagRouter.setFlag(key, value))
+        }
+
         const calcStrat = new TaxCalculationStrategy({
-          featureFlagRouter: new FlagRouter(flags || {}),
+          featureFlagRouter
         })
         const val = await calcStrat.calculate(items, taxLines, context)
         expect(val).toEqual(expected)
+
+        if (flags) {
+          Object.entries(flags).forEach(([key, value]) => featureFlagRouter.setFlag(key, false))
+        }
       }
     )
   })
