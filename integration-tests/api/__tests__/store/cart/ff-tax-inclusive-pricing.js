@@ -141,70 +141,54 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     const productId1 = IdMap.getId("test-product-1")
     const productId2 = IdMap.getId("test-product-2")
     const regionId = IdMap.getId("test-region")
+    const regionData = {
+      id: regionId,
+      includes_tax: false,
+      currency_code: "usd",
+      countries: ["us"],
+      tax_rate: 20,
+      name: "region test",
+    }
+    const buildProductData = (productId, variantId) => {
+      return {
+        id: productId,
+        variants: [
+          {
+            id: variantId,
+            prices: [],
+          },
+        ],
+      }
+    }
+    const buildPriceListData = (variantId, includesTax) => {
+      return {
+        status: "active",
+        type: "sale",
+        prices: [
+          {
+            variant_id: variantId,
+            amount: 100,
+            currency_code: "usd",
+            region_id: regionId,
+          },
+        ],
+        includes_tax: includesTax,
+      }
+    }
 
     describe('with a cart with full tax exclusive variant pricing', () => {
       beforeEach(async() => {
-        await simpleRegionFactory(dbConnection, {
-          id: regionId,
-          includes_tax: false,
-          currency_code: "usd",
-          countries: ["us"],
-          tax_rate: 20,
-          name: "region test",
-        })
+        await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId1,
-            variants: [
-              {
-                id: variantId1,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId1, variantId1)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId1,
-              amount: 100,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: false,
-        })
-
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, false))
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId2,
-            variants: [
-              {
-                id: variantId2,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId2, variantId2)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId2,
-              amount: 100,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: false,
-        })
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, false))
       })
 
       afterEach(async() => {
@@ -260,67 +244,17 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
     describe('with a cart with full tax inclusive variant pricing', () => {
       beforeEach(async() => {
-        await simpleRegionFactory(dbConnection, {
-          id: regionId,
-          includes_tax: false,
-          currency_code: "usd",
-          countries: ["us"],
-          tax_rate: 20,
-          name: "region test",
-        })
+        await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId1,
-            variants: [
-              {
-                id: variantId1,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId1, variantId1)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId1,
-              amount: 120,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: true,
-        })
-
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, true))
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId2,
-            variants: [
-              {
-                id: variantId2,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId2, variantId2)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId2,
-              amount: 120,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: true,
-        })
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, true))
       })
 
       afterEach(async() => {
@@ -376,67 +310,17 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
     describe('with a cart mixing tax inclusive and exclusive variant pricing', () => {
       beforeEach(async () => {
-        await simpleRegionFactory(dbConnection, {
-          id: regionId,
-          includes_tax: false,
-          currency_code: "usd",
-          countries: ["us"],
-          tax_rate: 20,
-          name: "region test",
-        })
+        await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId1,
-            variants: [
-              {
-                id: variantId1,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId1, variantId1)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId1,
-              amount: 120,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: true,
-        })
-
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, true))
         await simpleProductFactory(
           dbConnection,
-          {
-            id: productId2,
-            variants: [
-              {
-                id: variantId2,
-                prices: [],
-              },
-            ],
-          },
+          buildProductData(productId2, variantId2)
         )
-
-        await simplePriceListFactory(dbConnection, {
-          status: "active",
-          type: "sale",
-          prices: [
-            {
-              variant_id: variantId2,
-              amount: 100,
-              currency_code: "usd",
-              region_id: regionId,
-            },
-          ],
-          includes_tax: false,
-        })
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, false))
       })
 
       afterEach(async() => {
