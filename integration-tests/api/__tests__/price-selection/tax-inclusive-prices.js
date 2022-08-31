@@ -692,7 +692,6 @@ describe("tax inclusive prices", () => {
         },
       })
 
-      console.log(res.data.shipping_options)
       expect(res.data.shipping_options).toHaveLength(1)
       expect(res.data.shipping_options).toEqual(
         expect.arrayContaining([
