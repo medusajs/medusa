@@ -83,7 +83,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       return await db.teardown()
     })
@@ -160,14 +160,14 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         ],
       }
     }
-    const buildPriceListData = (variantId, includesTax) => {
+    const buildPriceListData = (variantId, price, includesTax) => {
       return {
         status: "active",
         type: "sale",
         prices: [
           {
             variant_id: variantId,
-            amount: 100,
+            amount: price,
             currency_code: "usd",
             region_id: regionId,
           },
@@ -193,26 +193,26 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     }
 
     describe('with a cart with full tax exclusive variant pricing', () => {
-      beforeEach(async() => {
+      beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, false))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 100, false))
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, false))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
       })
 
-      afterEach(async() => {
+      afterEach(async () => {
         const db = useDb()
         return await db.teardown()
       })
 
-      it("should calculates correct payment totals on cart completion", async() => {
+      it("should calculates correct payment totals on cart completion", async () => {
         const api = useApi()
 
         const customerRes = await api.post(
@@ -245,26 +245,26 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     })
 
     describe('with a cart with full tax inclusive variant pricing', () => {
-      beforeEach(async() => {
+      beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, true))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, true))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 120, true))
       })
 
-      afterEach(async() => {
+      afterEach(async () => {
         const db = useDb()
         return await db.teardown()
       })
 
-      it("should calculates correct payment totals on cart completion", async() => {
+      it("should calculates correct payment totals on cart completion", async () => {
         const api = useApi()
 
         const customerRes = await api.post(
@@ -303,20 +303,20 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, true))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, false))
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
       })
 
-      afterEach(async() => {
+      afterEach(async () => {
         const db = useDb()
         return await db.teardown()
       })
 
-      it("should calculates correct payment totals on cart completion", async() => {
+      it("should calculates correct payment totals on cart completion", async () => {
         const api = useApi()
 
         const customerRes = await api.post(
