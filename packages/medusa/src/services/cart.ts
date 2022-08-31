@@ -233,12 +233,6 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     const totals: { [K in TotalField]?: number | null } = {}
 
-    if (!cart.region) {
-      cart.region = await this.regionService_
-        .withTransaction(this.manager_)
-        .retrieve(cart.region_id)
-    }
-
     for (const key of totalsToSelect) {
       switch (key) {
         case "total": {
