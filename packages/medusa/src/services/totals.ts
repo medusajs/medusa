@@ -99,7 +99,6 @@ type CalculationContextOptions = {
 class TotalsService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
-  protected readonly featureFlagRouter_: FlagRouter
 
   protected readonly taxProviderService_: TaxProviderService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
@@ -121,7 +120,6 @@ class TotalsService extends TransactionBaseService {
     this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.taxCalculationStrategy_ = taxCalculationStrategy
-    this.featureFlagRouter_ = featureFlagRouter
 
     this.manager_ = manager
     this.featureFlagRouter_ = featureFlagRouter
@@ -949,7 +947,7 @@ class TotalsService extends TransactionBaseService {
   ): Promise<{
     total: number
     tax_total: number
-  } {
+  }> {
     const subtotal = await this.getSubtotal(cartOrOrder)
     const discountTotal = await this.getDiscountTotal(cartOrOrder)
     const giftCardable = subtotal - discountTotal
