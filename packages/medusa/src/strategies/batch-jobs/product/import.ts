@@ -111,15 +111,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * Create a description of a row on which the error occurred and throw a Medusa error.
    *
    * @param row - Parsed CSV row data
+   * @param errorDescription - Concrete error
    */
   protected static throwDescriptiveError(
-    row: TParsedProductImportRowData
+    row: TParsedProductImportRowData,
+    errorDescription?: string
   ): never {
     const message = `Error while processing row with:
       product id: ${row["product.id"]},
       product handle: ${row["product.handle"]},
       variant id: ${row["variant.id"]}
-      variant sku: ${row["variant.sku"]}`
+      variant sku: ${row["variant.sku"]}
+      ${errorDescription}`
 
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
@@ -336,7 +339,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           .withTransaction(transactionManager)
           .create(productData)
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -364,7 +367,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             transformProductData(productOp)
           )
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -416,7 +419,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         this.updateProgress(batchJobId)
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
     }
   }
@@ -452,7 +455,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -528,8 +531,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: `imports/products/ops/${batchJobId}-${op}`,
-        ext: "json",
+        fileKey: `imports/products/ops/${batchJobId}-${op}.json`,
       })
 
     return await new Promise((resolve) => {
@@ -539,9 +541,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       readableStream.on("end", () => {
         resolve(JSON.parse(data))
       })
-      readableStream.on("error", () =>
+      readableStream.on("error", () => {
+        // TODO: maybe should throw
         resolve([] as TParsedProductImportRowData[])
-      )
+      })
     })
   }
 
