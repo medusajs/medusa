@@ -12,7 +12,7 @@ import {
   SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
-import { CreateProductInput } from "../../../types/product"
+import { CreateProductInput, UpdateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
@@ -283,6 +283,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Create, or retrieve by name, sales channels from the input data.
    *
+   * NOTE: Sales channel names provided in the CSV must exists in the DB.
+   *       New sales channels will not be created.
+   *
    * @param data an array of sales channels partials
    * @return an array of sales channels created or retrieved by name
    */
@@ -316,6 +319,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       OperationType.ProductCreate
     )
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
+
     const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
       SalesChannelFeatureFlag.key
     )
@@ -335,9 +341,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           )
         }
 
-        await this.productService_
-          .withTransaction(transactionManager)
-          .create(productData)
+        await productServiceTx.create(productData)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
@@ -358,14 +362,29 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       OperationType.ProductUpdate
     )
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
+
+    const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
     for (const productOp of productOps) {
+      const productData = transformProductData(productOp) as UpdateProductInput
       try {
-        await this.productService_
-          .withTransaction(transactionManager)
-          .update(
-            productOp["product.id"] as string,
-            transformProductData(productOp)
+        if (isSalesChannelsFeatureOn) {
+          productData["sales_channels"] = await this.processSalesChannels(
+            productOp["product.sales_channels"] as Pick<
+              SalesChannel,
+              "name" | "description"
+            >[]
           )
+        }
+
+        await productServiceTx.update(
+          productOp["product.id"] as string,
+          productData
+        )
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
