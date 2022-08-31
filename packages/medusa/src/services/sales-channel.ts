@@ -99,7 +99,7 @@ class SalesChannelService extends TransactionBaseService {
     name: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | unknown> {
-    const [salesChannel] = await this.listAndCount(
+    const [[salesChannel]] = await this.listAndCount(
       { name },
       { ...config, take: 1 }
     )
