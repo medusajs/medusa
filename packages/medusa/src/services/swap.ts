@@ -292,42 +292,6 @@ class SwapService extends TransactionBaseService {
   }
 
   /**
-   * Goes through a list of return items to ensure that they exist on the
-   * original order. If the item exists it is verified that the quantity to
-   * return is not higher than the original quantity ordered.
-   *
-   * @param order - the order to return from
-   * @param returnItems - the items to return
-   * @return the validated returnItems
-   */
-  protected validateReturnItems(
-    order: Order,
-    returnItems: ReturnItem[]
-  ): { item_id: string; quantity: number }[] {
-    return returnItems.map(({ item_id, quantity }) => {
-      const item = order.items.find((i) => i.id === item_id)
-
-      // The item must exist in the order
-      if (!item) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Item does not exist on order"
-        )
-      }
-
-      // Item's cannot be returned multiple times
-      if (item.quantity < item.returned_quantity + quantity) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot return more items than have been ordered"
-        )
-      }
-
-      return { item_id, quantity }
-    })
-  }
-
-  /**
    * Creates a swap from an order, with given return items, additional items
    * and an optional return shipping method.
    *
