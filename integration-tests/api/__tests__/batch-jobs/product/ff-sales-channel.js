@@ -73,50 +73,49 @@ describe("Product import - Sales Channel", () => {
     return await db.teardown()
   })
 
-  describe("Import products to a sales channel", () => {
-    it("Import products to an existing sales channel", async () => {
-      jest.setTimeout(1000000)
-      const api = useApi()
+  it("Import products to an existing sales channel", async () => {
+    jest.setTimeout(1000000)
+    const api = useApi()
 
-      const response = await api.post(
-        "/admin/batch-jobs",
-        {
-          type: "product_import",
-          context: {
-            fileKey: "product-import.csv",
-          },
+    const response = await api.post(
+      "/admin/batch-jobs",
+      {
+        type: "product-import",
+        context: {
+          fileKey: "product-import.csv",
         },
+      },
+      adminReqConfig
+    )
+
+    const batchJobId = response.data.batch_job.id
+
+    let batchJob
+    let shouldContinuePulling = true
+    while (shouldContinuePulling) {
+      const res = await api.get(
+        `/admin/batch-jobs/${batchJobId}`,
         adminReqConfig
       )
 
-      const batchJobId = response.data.batch_job.id
+      await new Promise((resolve, _) => {
+        setTimeout(resolve, 1000)
+      })
 
-      let batchJob
-      let shouldContinuePulling = true
-      while (shouldContinuePulling) {
-        const res = await api.get(
-          `/admin/batch-jobs/${batchJobId}`,
-          adminReqConfig
-        )
+      batchJob = res.data.batch_job
 
-        await new Promise((resolve, _) => {
-          setTimeout(resolve, 1000)
-        })
+      console.log({ status: batchJob.status })
 
-        batchJob = res.data.batch_job
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
+    }
 
-        console.log({ status: batchJob.status })
+    expect(batchJob.status).toBe("completed")
 
-        shouldContinuePulling = !(
-          batchJob.status === "completed" || batchJob.status === "failed"
-        )
-      }
+    const productsResponse = await api.get("/admin/products", adminReqConfig)
 
-      expect(batchJob.status).toBe("completed")
-
-      const productsResponse = await api.get("/admin/products", adminReqConfig)
-
-      expect(productsResponse.data.count).toBe(2)
-    })
+    console.log(productsResponse)
+    expect(productsResponse.data.count).toBe(2)
   })
 })
