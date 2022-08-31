@@ -18,14 +18,14 @@ import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channe
 import { FindConfig } from "../../../types/common"
 
 type InjectedDependencies = {
-  fileService: IFileService<never>
+  fileService: IFileService
   orderService: OrderService
   batchJobService: BatchJobService
   manager: EntityManager
   featureFlagRouter: FlagRouter
 }
 
-class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
+class OrderExportStrategy extends AbstractBatchJobStrategy {
   public static identifier = "order-export-strategy"
   public static batchType = "order-export"
 
@@ -37,7 +37,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly fileService_: IFileService<any>
+  protected readonly fileService_: IFileService
   protected readonly batchJobService_: BatchJobService
   protected readonly orderService_: OrderService
   protected readonly featureFlagRouter_: FlagRouter
@@ -258,7 +258,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
             await this.fileService_
               .withTransaction(transactionManager)
-              .delete({ key: fileKey })
+              .delete({ fileKey: fileKey })
 
             return
           }

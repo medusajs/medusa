@@ -19,7 +19,7 @@ import {
   UpdateShippingOptionInput,
   CreateShippingOptionInput,
 } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
 import { FlagRouter } from "../utils/flag-router"
@@ -38,7 +38,7 @@ type InjectedDependencies = {
 /**
  * Provides layer to manipulate profiles.
  */
-class ShippingOptionService extends TransactionBaseService<ShippingOptionService> {
+class ShippingOptionService extends TransactionBaseService {
   protected readonly providerService_: FulfillmentProviderService
   protected readonly regionService_: RegionService
   protected readonly requirementRepository_: typeof ShippingOptionRequirementRepository
@@ -267,7 +267,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async createShippingMethod(
     optionId: string,
-    data: object,
+    data: Record<string, unknown>,
     config: CreateShippingMethodDto
   ): Promise<ShippingMethod> {
     return await this.atomicPhase_(async (manager) => {
@@ -277,7 +277,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
 
-      if (typeof config.cart !== "undefined") {
+      if (isDefined(config.cart)) {
         await this.validateCartOption(option, config.cart)
       }
 
@@ -449,7 +449,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         )
       }
 
-      if (typeof data.requirements !== "undefined") {
+      if (isDefined(data.requirements)) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
@@ -535,7 +535,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         relations: ["requirements"],
       })
 
-      if (typeof update.metadata !== "undefined") {
+      if (isDefined(update.metadata)) {
         option.metadata = await setMetadata(option, update.metadata)
       }
 
@@ -546,14 +546,14 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         )
       }
 
-      if (typeof update.is_return !== "undefined") {
+      if (isDefined(update.is_return)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
         )
       }
 
-      if (typeof update.requirements !== "undefined") {
+      if (isDefined(update.requirements)) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -597,7 +597,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         option.requirements = acc
       }
 
-      if (typeof update.price_type !== "undefined") {
+      if (isDefined(update.price_type)) {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -607,18 +607,15 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         }
       }
 
-      if (
-        typeof update.amount !== "undefined" &&
-        option.price_type !== "calculated"
-      ) {
+      if (isDefined(update.amount) && option.price_type !== "calculated") {
         option.amount = update.amount
       }
 
-      if (typeof update.name !== "undefined") {
+      if (isDefined(update.name)) {
         option.name = update.name
       }
 
-      if (typeof update.admin_only !== "undefined") {
+      if (isDefined(update.admin_only)) {
         option.admin_only = update.admin_only
       }
 
@@ -726,7 +723,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async getPrice_(
     option: ShippingOption,
-    data: object,
+    data: Record<string, unknown>,
     cart: Cart | Order | undefined
   ): Promise<number> {
     if (option.price_type === "calculated") {

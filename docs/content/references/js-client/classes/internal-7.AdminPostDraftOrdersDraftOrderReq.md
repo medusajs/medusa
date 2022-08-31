@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:61
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:69
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:59
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:67
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:64
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:72
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:63
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:71
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:60
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:68
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:65
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:73
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:58
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:66
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:62
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:70

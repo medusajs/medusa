@@ -9,8 +9,8 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
- * summary: "Create a Gift Card"
- * description: "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
+ * summary: "Update a Gift Card"
+ * description: "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Gift Card.

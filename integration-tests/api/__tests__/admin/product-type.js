@@ -28,13 +28,8 @@ describe("/admin/product-types", () => {
 
   describe("GET /admin/product-types", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -62,10 +57,7 @@ describe("/admin/product-types", () => {
         updated_at: expect.any(String),
       }
 
-      expect(res.data.product_types).toMatchSnapshot([
-        typeMatch,
-        typeMatch,
-      ])
+      expect(res.data.product_types).toMatchSnapshot([typeMatch, typeMatch])
     })
 
     it("returns a list of product types matching free text search param", async () => {
@@ -90,13 +82,11 @@ describe("/admin/product-types", () => {
 
       // The value of the type should match the search param
       expect(res.data.product_types.map((pt) => pt.value)).toEqual([
-        "test-type-new"
+        "test-type-new",
       ])
 
       // Should only return one type as there is only one match to the search param
-      expect(res.data.product_types).toMatchSnapshot([
-        typeMatch
-      ])
+      expect(res.data.product_types).toMatchSnapshot([typeMatch])
     })
   })
 })

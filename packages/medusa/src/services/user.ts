@@ -24,7 +24,7 @@ type UserServiceProps = {
  * Provides layer to manipulate users.
  * @extends BaseService
  */
-class UserService extends TransactionBaseService<UserService> {
+class UserService extends TransactionBaseService {
   static Events = {
     PASSWORD_RESET: "user.password_reset",
     CREATED: "user.created",
@@ -51,9 +51,7 @@ class UserService extends TransactionBaseService<UserService> {
    * @return {string} the validated email
    */
   validateEmail_(email: string): string {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(

@@ -6,7 +6,7 @@
 
 ### data
 
-• **data**: `object`
+• **data**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 

@@ -2,16 +2,17 @@ import {
   IsArray,
   IsBoolean,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
 import { EntityManager } from "typeorm"
-import RegionService from "../../../../services/region"
-import { validator } from "../../../../utils/validator"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import RegionService from "../../../../services/region"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions/{id}
@@ -150,4 +151,8 @@ export class AdminPostRegionsRegionReq {
     IsBoolean(),
   ])
   includes_tax?: boolean
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }

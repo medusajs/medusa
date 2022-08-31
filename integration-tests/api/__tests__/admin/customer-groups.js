@@ -27,13 +27,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -88,13 +83,8 @@ describe("/admin/customer-groups", () => {
 
   describe("DELETE /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -195,13 +185,8 @@ describe("/admin/customer-groups", () => {
 
   describe("GET /admin/customer-groups/{id}/customers", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -242,13 +227,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups/{id}/customers/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -418,13 +398,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -500,13 +475,8 @@ describe("/admin/customer-groups", () => {
 
   describe("GET /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -559,13 +529,8 @@ describe("/admin/customer-groups", () => {
 
   describe("GET /admin/customer-groups/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -641,13 +606,8 @@ describe("/admin/customer-groups", () => {
 
   describe("DELETE /admin/customer-groups/{id}/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {

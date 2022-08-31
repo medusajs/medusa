@@ -7,7 +7,7 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class DefaultSearchService extends AbstractSearchService<DefaultSearchService> {
+export default class DefaultSearchService extends AbstractSearchService {
   isDefault = true
 
   protected manager_: EntityManager

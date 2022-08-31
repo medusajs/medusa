@@ -1,14 +1,14 @@
-import { TransactionBaseService } from "../interfaces"
-import { EntityManager } from "typeorm"
-import { CurrencyRepository } from "../repositories/currency"
-import { UpdateCurrencyInput } from "../types/currency"
-import { Currency } from "../models"
 import { MedusaError } from "medusa-core-utils"
-import EventBusService from "./event-bus"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { Currency } from "../models"
+import { CurrencyRepository } from "../repositories/currency"
 import { FindConfig, Selector } from "../types/common"
+import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -17,7 +17,7 @@ type InjectedDependencies = {
   featureFlagRouter: FlagRouter
 }
 
-export default class CurrencyService extends TransactionBaseService<CurrencyService> {
+export default class CurrencyService extends TransactionBaseService {
   static readonly Events = {
     UPDATED: "currency.updated",
   }

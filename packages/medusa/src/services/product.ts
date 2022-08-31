@@ -7,6 +7,7 @@ import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
+  ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
@@ -29,7 +30,7 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
@@ -47,10 +48,7 @@ type InjectedDependencies = {
   featureFlagRouter: FlagRouter
 }
 
-class ProductService extends TransactionBaseService<
-  ProductService,
-  InjectedDependencies
-> {
+class ProductService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -393,7 +391,7 @@ class ProductService extends TransactionBaseService<
         if (
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
-          if (typeof salesChannels !== "undefined") {
+          if (isDefined(salesChannels)) {
             product.sales_channels = []
             if (salesChannels?.length) {
               const salesChannelIds = salesChannels?.map((sc) => sc.id)
@@ -464,11 +462,11 @@ class ProductService extends TransactionBaseService<
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        if (typeof update.sales_channels !== "undefined") {
+        if (isDefined(update.sales_channels)) {
           relations.push("sales_channels")
         }
       } else {
-        if (typeof update.sales_channels !== "undefined") {
+        if (isDefined(update.sales_channels)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "the property sales_channels should no appears as part of the payload"
@@ -513,7 +511,7 @@ class ProductService extends TransactionBaseService<
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
-        if (typeof salesChannels !== "undefined") {
+        if (isDefined(salesChannels)) {
           product.sales_channels = []
           if (salesChannels?.length) {
             const salesChannelIds = salesChannels?.map((sc) => sc.id)
@@ -658,10 +656,14 @@ class ProductService extends TransactionBaseService<
 
       await productOptionRepo.save(option)
 
+      const productVariantServiceTx =
+        this.productVariantService_.withTransaction(manager)
       for (const variant of product.variants) {
-        this.productVariantService_
-          .withTransaction(manager)
-          .addOptionValue(variant.id, option.id, "Default Value")
+        await productVariantServiceTx.addOptionValue(
+          variant.id,
+          option.id,
+          "Default Value"
+        )
       }
 
       const result = await this.retrieve(productId)
@@ -770,6 +772,26 @@ class ProductService extends TransactionBaseService<
   }
 
   /**
+   * Retrieve product's option by title.
+   *
+   * @param title - title of the option
+   * @param productId - id of a product
+   * @return product option
+   */
+  async retrieveOptionByTitle(
+    title: string,
+    productId: string
+  ): Promise<ProductOption | undefined> {
+    const productOptionRepo = this.manager_.getCustomRepository(
+      this.productOptionRepository_
+    )
+
+    return productOptionRepo.findOne({
+      where: { title, product_id: productId },
+    })
+  }
+
+  /**
    * Delete an option from a product.
    * @param productId - the product to delete an option from
    * @param optionId - the option to delete
@@ -796,32 +818,37 @@ class ProductService extends TransactionBaseService<
         return Promise.resolve()
       }
 
-      // For the option we want to delete, make sure that all variants have the
-      // same option values. The reason for doing is, that we want to avoid
-      // duplicate variants. For example, if we have a product with size and
-      // color options, that has four variants: (black, 1), (black, 2),
-      // (blue, 1), (blue, 2) and we delete the size option from the product,
-      // we would end up with four variants: (black), (black), (blue), (blue).
-      // We now have two duplicate variants. To ensure that this does not
-      // happen, we will force the user to select which variants to keep.
-      const firstVariant = product.variants[0]
+      // In case the product does not contain variants, we can safely delete the option
+      // If it does contain variants, we need to make sure no variant exist for the
+      // product option to delete
+      if (product?.variants?.length) {
+        // For the option we want to delete, make sure that all variants have the
+        // same option values. The reason for doing is, that we want to avoid
+        // duplicate variants. For example, if we have a product with size and
+        // color options, that has four variants: (black, 1), (black, 2),
+        // (blue, 1), (blue, 2) and we delete the size option from the product,
+        // we would end up with four variants: (black), (black), (blue), (blue).
+        // We now have two duplicate variants. To ensure that this does not
+        // happen, we will force the user to select which variants to keep.
+        const firstVariant = product.variants[0]
 
-      const valueToMatch = firstVariant.options.find(
-        (o) => o.option_id === optionId
-      )?.value
+        const valueToMatch = firstVariant.options.find(
+          (o) => o.option_id === optionId
+        )?.value
 
-      const equalsFirst = await Promise.all(
-        product.variants.map(async (v) => {
-          const option = v.options.find((o) => o.option_id === optionId)
-          return option?.value === valueToMatch
-        })
-      )
-
-      if (!equalsFirst.every((v) => v)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `To delete an option, first delete all variants, such that when an option is deleted, no duplicate variants will exist.`
+        const equalsFirst = await Promise.all(
+          product.variants.map(async (v) => {
+            const option = v.options.find((o) => o.option_id === optionId)
+            return option?.value === valueToMatch
+          })
         )
+
+        if (!equalsFirst.every((v) => v)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `To delete an option, first delete all variants, such that when an option is deleted, no duplicate variants will exist.`
+          )
+        }
       }
 
       // If we reach this point, we can safely delete the product option

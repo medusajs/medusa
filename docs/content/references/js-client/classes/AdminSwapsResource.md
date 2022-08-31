@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/swaps.ts#L19)
+[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/swaps.ts#L19)
 
 ___
 
@@ -46,4 +46,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/e38dd7f6/packages/medusa-js/src/resources/admin/swaps.ts#L11)
+[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/swaps.ts#L11)

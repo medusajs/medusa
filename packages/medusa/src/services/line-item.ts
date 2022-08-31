@@ -1,21 +1,22 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { Cart } from "../models/cart"
+import { LineItem } from "../models/line-item"
+import { LineItemAdjustment } from "../models/line-item-adjustment"
+import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { FindConfig } from "../types/common"
+import { FlagRouter } from "../utils/flag-router"
 import {
   PricingService,
   ProductService,
-  RegionService,
   ProductVariantService,
+  RegionService,
 } from "./index"
-import { CartRepository } from "../repositories/cart"
-import { LineItem } from "../models/line-item"
 import LineItemAdjustmentService from "./line-item-adjustment"
-import { Cart } from "../models/cart"
-import { LineItemAdjustment } from "../models/line-item-adjustment"
-import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -97,7 +98,11 @@ class LineItemService extends BaseService {
 
   async list(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config: FindConfig<LineItem> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
   ): Promise<LineItem[]> {
     const manager = this.manager_
     const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)

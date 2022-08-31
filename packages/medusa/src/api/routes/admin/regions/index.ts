@@ -64,7 +64,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
-export const defaultAdminRegionFields = [
+export const defaultAdminRegionFields: (keyof Region)[] = [
   "id",
   "name",
   "automatic_taxes",

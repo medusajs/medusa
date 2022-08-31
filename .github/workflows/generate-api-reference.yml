@@ -49,3 +49,5 @@ jobs:
           title: 'chore(docs): Updated API Reference'
           labels: 'type: chore'
           add-paths: docs/api/*
+          branch: 'chore/generate-api-ref'
+          branch-suffix: 'timestamp'

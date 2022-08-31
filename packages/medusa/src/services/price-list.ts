@@ -43,7 +43,7 @@ type PriceListConstructorProps = {
  * Provides layer to manipulate product tags.
  * @extends BaseService
  */
-class PriceListService extends TransactionBaseService<PriceListService> {
+class PriceListService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -506,11 +506,10 @@ class PriceListService extends TransactionBaseService<PriceListService> {
   >(prices: T[]): Promise<T[]> {
     const prices_: typeof prices = []
 
+    const regionServiceTx = this.regionService_.withTransaction(this.manager_)
     for (const p of prices) {
       if (p.region_id) {
-        const region = await this.regionService_
-          .withTransaction(this.manager_)
-          .retrieve(p.region_id)
+        const region = await regionServiceTx.retrieve(p.region_id)
 
         p.currency_code = region.currency_code
       }

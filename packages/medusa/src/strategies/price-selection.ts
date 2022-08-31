@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
   IPriceSelectionStrategy,
@@ -5,11 +6,11 @@ import {
   PriceSelectionResult,
   PriceType,
 } from "../interfaces/price-selection-strategy"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { EntityManager } from "typeorm"
-import { FlagRouter } from "../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
+import { FlagRouter } from "../utils/flag-router"
+import { isDefined } from "../utils/is-defined"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
@@ -246,8 +247,7 @@ const isValidAmount = (
 }
 
 const isValidQuantity = (price, quantity): boolean =>
-  (typeof quantity !== "undefined" &&
-    isValidPriceWithQuantity(price, quantity)) ||
+  (isDefined(quantity) && isValidPriceWithQuantity(price, quantity)) ||
   (typeof quantity === "undefined" && isValidPriceWithoutQuantity(price))
 
 const isValidPriceWithoutQuantity = (price): boolean =>

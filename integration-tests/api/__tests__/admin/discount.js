@@ -436,13 +436,8 @@ describe("/admin/discounts", () => {
 
   describe("POST /admin/discounts", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await discountSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1485,6 +1480,70 @@ describe("/admin/discounts", () => {
     })
   })
 
+  describe("POST /admin/discounts/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await dbConnection.manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await dbConnection.manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+        ends_at: new Date(),
+        usage_limit: 10,
+        valid_duration: "P1D",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Removes ends_at, valid_duration and usage_limit when fields are updated with null", async () => {
+      const api = useApi()
+
+      await api
+        .post(
+          "/admin/discounts/test-discount",
+          {
+            ends_at: null,
+            valid_duration: null,
+            usage_limit: null,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const resultingDiscount = await api.get(
+        "/admin/discounts/test-discount",
+        { headers: { Authorization: "Bearer test_token" } }
+      )
+
+      expect(resultingDiscount.status).toEqual(200)
+      expect(resultingDiscount.data.discount).toEqual(
+        expect.objectContaining({
+          ends_at: null,
+          valid_duration: null,
+          usage_limit: null,
+        })
+      )
+    })
+  })
+
   describe("testing for soft-deletion + uniqueness on discount codes", () => {
     let manager
     beforeEach(async () => {
@@ -2162,11 +2221,7 @@ describe("/admin/discounts", () => {
 
   describe("GET /admin/discounts/:id/conditions/:condition_id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
 
       const prod = await simpleProductFactory(dbConnection, {
         type: "pants",
@@ -2245,7 +2300,6 @@ describe("/admin/discounts", () => {
         })
 
       const cond = discountCondition.data.discount_condition
-      console.log(cond.products)
 
       expect(discountCondition.status).toEqual(200)
       expect(cond).toMatchSnapshot({

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/update-user.d.ts:32
+medusa/dist/api/routes/admin/users/update-user.d.ts:50
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/update-user.d.ts:29
+medusa/dist/api/routes/admin/users/update-user.d.ts:47
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/update-user.d.ts:30
+medusa/dist/api/routes/admin/users/update-user.d.ts:48
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/update-user.d.ts:33
+medusa/dist/api/routes/admin/users/update-user.d.ts:51
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/update-user.d.ts:31
+medusa/dist/api/routes/admin/users/update-user.d.ts:49

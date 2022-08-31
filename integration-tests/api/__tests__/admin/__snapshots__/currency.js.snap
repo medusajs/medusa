@@ -2,7 +2,7 @@
 
 exports[`/admin/currencies GET /admin/currencies should retrieve the currencies 1`] = `
 Object {
-  "count": 119,
+  "count": 120,
   "currencies": Array [
     Object {
       "code": "aed",
