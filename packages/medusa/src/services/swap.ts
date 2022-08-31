@@ -145,7 +145,7 @@ class SwapService extends TransactionBaseService {
 
     if (isDefined(relations) && relations.includes("cart")) {
       const [swapRelations, cartRels] = relations.reduce(
-        (acc, next) => {
+        (acc: string[][], next) => {
           if (next === "cart") {
             return acc
           }
@@ -159,7 +159,7 @@ class SwapService extends TransactionBaseService {
 
           return acc
         },
-        [[] as string[], [] as string[]]
+        [[], []]
       )
 
       relations = swapRelations
@@ -184,10 +184,8 @@ class SwapService extends TransactionBaseService {
           [[] as string[], [] as string[]]
         )
 
-        ;(select as string[]) = foundCartId
-          ? swapSelects
-          : [...swapSelects, "cart_id"]
-        cartSelects = cartSels as FindConfig<Cart>["select"]
+        select = foundCartId ? swapSelects : [...swapSelects, "cart_id"]
+        ;(cartSelects as string[]) = cartSels
       }
     }
 
