@@ -463,7 +463,7 @@ class PricingService extends TransactionBaseService {
       totalInclTax = price + taxAmount
     }
 
-    const result = {
+    const result: PricedShippingOption = {
       ...shippingOption,
       price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
@@ -475,7 +475,7 @@ class PricingService extends TransactionBaseService {
         TaxInclusivePricingFeatureFlag.key
       )
     ) {
-      result.includes_tax = shippingOption.includes_tax
+      result.price_includes_tax = shippingOption.includes_tax
     }
 
     return result

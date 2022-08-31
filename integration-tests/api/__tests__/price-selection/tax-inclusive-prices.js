@@ -667,6 +667,12 @@ describe("tax inclusive prices", () => {
     beforeAll(async () => {
       await adminSeeder(dbConnection)
     })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("admin gets correct shipping prices", async () => {
       const api = useApi()
 
