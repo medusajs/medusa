@@ -100,7 +100,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING]: Order Taxes", () => {
 
     const response = await api.get(`/store/orders/${order.id}`)
     expect(response.status).toEqual(200)
-    expect(response.data.order.tax_total).toEqual(210)
+    expect(response.data.order.tax_total).toEqual(211)
     expect(response.data.order.total).toEqual(1310)
   })
 })
