@@ -175,6 +175,22 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         includes_tax: includesTax,
       }
     }
+    const customnerPayload = {
+      email: "adrien@test.dk",
+      password: "adrientest",
+      first_name: "adrien",
+      last_name: "adrien",
+    }
+    const createCartPayload = {
+      region_id: regionId,
+      items: [{
+        variant_id: variantId1,
+        quantity: 1
+      }, {
+        variant_id: variantId2,
+        quantity: 1
+      }]
+    }
 
     describe('with a cart with full tax exclusive variant pricing', () => {
       beforeEach(async() => {
@@ -201,25 +217,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
         const customerRes = await api.post(
           "/store/customers",
-          {
-            email: "adrien@test.dk",
-            password: "adrientest",
-            first_name: "adrien",
-            last_name: "adrien",
-          },
+          customnerPayload,
           { withCredentials: true }
         )
 
-        const createCartRes = await api.post("/store/carts", {
-          region_id: regionId,
-          items: [{
-            variant_id: variantId1,
-            quantity: 1
-          }, {
-            variant_id: variantId2,
-            quantity: 1
-          }]
-        })
+        const createCartRes = await api.post("/store/carts", createCartPayload)
 
         const cart = createCartRes.data.cart
 
@@ -267,25 +269,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
         const customerRes = await api.post(
           "/store/customers",
-          {
-            email: "adrien@test.dk",
-            password: "adrientest",
-            first_name: "adrien",
-            last_name: "adrien",
-          },
+          customnerPayload,
           { withCredentials: true }
         )
 
-        const createCartRes = await api.post("/store/carts", {
-          region_id: regionId,
-          items: [{
-            variant_id: variantId1,
-            quantity: 1
-          }, {
-            variant_id: variantId2,
-            quantity: 1
-          }]
-        })
+        const createCartRes = await api.post("/store/carts", createCartPayload)
 
         const cart = createCartRes.data.cart
 
@@ -333,25 +321,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
         const customerRes = await api.post(
           "/store/customers",
-          {
-            email: "adrien@test.dk",
-            password: "adrientest",
-            first_name: "adrien",
-            last_name: "adrien",
-          },
+          customnerPayload,
           { withCredentials: true }
         )
 
-        const createCartRes = await api.post("/store/carts", {
-          region_id: regionId,
-          items: [{
-            variant_id: variantId1,
-            quantity: 1
-          }, {
-            variant_id: variantId2,
-            quantity: 1
-          }]
-        })
+        const createCartRes = await api.post("/store/carts", createCartPayload)
 
         const cart = createCartRes.data.cart
 
