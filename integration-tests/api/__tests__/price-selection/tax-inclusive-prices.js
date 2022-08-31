@@ -146,7 +146,7 @@ describe("tax inclusive prices", () => {
       await simplePriceListFactory(dbConnection, {
         status: "active",
         type: "sale",
-        tax_inclusive: true,
+        includes_tax: true,
         prices: [
           {
             variant_id: "var_1",
