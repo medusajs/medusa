@@ -6,6 +6,7 @@ import { TaxCalculationContext } from "../interfaces/tax-service"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
+import { calculatePriceTaxAmount } from "../utils/calculate-price-tax-amount"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   protected readonly featureFlagRouter_: FlagRouter
@@ -99,16 +100,12 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       for (const lineRate of lineRates) {
         const rate = lineRate.rate / 100
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          ) &&
-          sm.includes_tax
-        ) {
-          taxTotal += Math.round((amount * rate) / (1 + rate))
-        } else {
-          taxTotal += Math.round(amount * rate)
-        }
+
+        taxTotal += calculatePriceTaxAmount({
+          price: amount,
+          taxRate: rate,
+          includesTax: sm.includes_tax,
+        })
       }
     }
     return taxTotal
