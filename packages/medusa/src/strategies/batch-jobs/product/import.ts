@@ -801,7 +801,7 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
   columns: [
     {
       name: "Sales Channel Name",
-      match: /Sales channel \d+ Name/,
+      match: /Sales Channel \d+ Name/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
           builtLine["product.sales_channels"] || []

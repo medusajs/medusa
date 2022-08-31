@@ -7,6 +7,7 @@ const { useDb } = require("../../../../helpers/use-db")
 const adminSeeder = require("../../../helpers/admin-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleSalesChannelFactory } = require("../../../factories")
+const batchJobSeeder = require("../../../helpers/batch-job-seeder")
 
 const startServerWithEnvironment =
   require("../../../../helpers/start-server-with-environment").default
@@ -55,13 +56,17 @@ describe("Product import - Sales Channel", () => {
   })
 
   beforeEach(async () => {
-    await simpleSalesChannelFactory(dbConnection, {
-      name: "My Sales Channel",
-    })
-
     try {
+      await batchJobSeeder(dbConnection)
       await adminSeeder(dbConnection)
       await userSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Import Sales Channel 1",
+      })
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Import Sales Channel 2",
+      })
     } catch (e) {
       console.log(e)
       throw e
@@ -82,7 +87,7 @@ describe("Product import - Sales Channel", () => {
       {
         type: "product-import",
         context: {
-          fileKey: "product-import.csv",
+          fileKey: "product-import-ss.csv",
         },
       },
       adminReqConfig
@@ -104,8 +109,6 @@ describe("Product import - Sales Channel", () => {
 
       batchJob = res.data.batch_job
 
-      console.log({ status: batchJob.status })
-
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )
@@ -115,7 +118,50 @@ describe("Product import - Sales Channel", () => {
 
     const productsResponse = await api.get("/admin/products", adminReqConfig)
 
-    console.log(productsResponse)
     expect(productsResponse.data.count).toBe(2)
+    expect(productsResponse.data.products).toEqual([
+      expect.objectContaining({
+        id: "O6S1YQ6mKm",
+        title: "Test product",
+        description: "test-product-description-1",
+        handle: "test-product-product-1",
+        variants: [
+          expect.objectContaining({
+            title: "Test variant",
+            product_id: "O6S1YQ6mKm",
+            sku: "test-sku-1",
+          }),
+        ],
+        sales_channels: [
+          expect.objectContaining({
+            name: "Import Sales Channel 1",
+            is_disabled: false,
+          }),
+          expect.objectContaining({
+            name: "Import Sales Channel 2",
+            is_disabled: false,
+          }),
+        ],
+      }),
+      expect.objectContaining({
+        id: "5VxiEkmnPV",
+        title: "Test product",
+        description: "test-product-description",
+        handle: "test-product-product-2",
+        variants: [
+          expect.objectContaining({
+            title: "Test variant",
+            product_id: "5VxiEkmnPV",
+            sku: "test-sku-2",
+          }),
+          expect.objectContaining({
+            title: "Test variant",
+            product_id: "5VxiEkmnPV",
+            sku: "test-sku-3",
+          }),
+        ],
+        sales_channels: [],
+      }),
+    ])
   })
 })
