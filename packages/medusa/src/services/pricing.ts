@@ -447,32 +447,38 @@ class PricingService extends TransactionBaseService {
       0
     )
 
-    let tax
-    let taxInclusiveObj = {}
+    let taxAmount
+    let totalInclTax
+
     if (
       this.featureFlagRouter.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       ) &&
       shippingOption.includes_tax
     ) {
-      tax = 0
-      const taxAmount = Math.round((rate * price) / (1 + rate))
-      taxInclusiveObj = {
-        price_includes_tax: true,
-        tax_amount: taxAmount,
-      }
+      taxAmount = Math.round((rate * price) / (1 + rate))
+      totalInclTax = price
     } else {
-      tax = Math.round(price * rate)
+      taxAmount = Math.round(price * rate)
+      totalInclTax = price + taxAmount
     }
 
-    const total = price + tax
-
-    return {
+    const result = {
       ...shippingOption,
-      price_incl_tax: total,
+      price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
-      ...taxInclusiveObj,
+      tax_amount: taxAmount,
     }
+
+    if (
+      this.featureFlagRouter.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      )
+    ) {
+      result.includes_tax = shippingOption.includes_tax
+    }
+
+    return result
   }
 
   /**

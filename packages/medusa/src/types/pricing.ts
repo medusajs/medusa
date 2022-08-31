@@ -28,6 +28,8 @@ export type PricingContext = {
 export type ShippingOptionPricing = {
   price_incl_tax: number | null
   tax_rates: TaxServiceRate[] | null
+  price_includes_tax?: boolean
+  tax_amount: number
 }
 
 export type PricedShippingOption = Partial<ShippingOption> &
