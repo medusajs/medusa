@@ -799,7 +799,7 @@ describe("TotalsService", () => {
 
   describe("MEDUSA_FF_TAX_INCLUSIVE_PRICING: getShippingTotal ", () => {
     const featureFlagRouter = new FlagRouter({
-      tax_inclusive_pricing: true,
+      [taxInclusivePricing.key]: true,
     })
 
     beforeEach(() => {

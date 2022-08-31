@@ -319,10 +319,11 @@ class TotalsService extends TransactionBaseService {
           0
         )
 
-        const totalTaxes = calculatePriceTaxInclusiveTaxAmount(
-          shippingMethod.price,
-          rate
-        )
+        const totalTaxes = calculatePriceTaxAmount({
+          price: shippingMethod.price,
+          taxRate: rate,
+          includesTax: true,
+        })
         return acc + shippingMethod.price - totalTaxes
       }
 
@@ -948,7 +949,7 @@ class TotalsService extends TransactionBaseService {
   ): Promise<{
     total: number
     tax_total: number
-  }> {
+  } {
     const subtotal = await this.getSubtotal(cartOrOrder)
     const discountTotal = await this.getDiscountTotal(cartOrOrder)
     const giftCardable = subtotal - discountTotal

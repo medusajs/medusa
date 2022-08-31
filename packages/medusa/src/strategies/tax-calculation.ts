@@ -96,15 +96,13 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
   ): number {
     let taxTotal = 0
     for (const sm of shipping_methods) {
-      const amount = sm.price
       const lineRates = taxLines.filter((tl) => tl.shipping_method_id === sm.id)
       for (const lineRate of lineRates) {
-        const rate = lineRate.rate / 100
-        if (sm.includes_tax) {
-          taxTotal += calculatePriceTaxInclusiveTaxAmount(amount, rate)
-        } else {
-          taxTotal += amount * rate
-        }
+        taxTotal += calculatePriceTaxAmount({
+          price: sm.price,
+          taxRate: lineRate.rate / 100,
+          includesTax: sm.includes_tax ?? false,
+        })
       }
     }
     return taxTotal
