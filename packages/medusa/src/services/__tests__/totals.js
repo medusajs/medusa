@@ -1,7 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
 import { FlagRouter } from "../../utils/flag-router"
-import taxInclusivePricing from "../../loaders/feature-flags/tax-inclusive-pricing"
+import * as CalculatePriceTaxAmount from "../../utils/calculate-price-tax-amount"
+
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 const discounts = {
   total10Percent: {
@@ -749,7 +751,7 @@ describe("TotalsService", () => {
     const totalsService = new TotalsService({
       ...container,
       featureFlagRouter: new FlagRouter({
-        [taxInclusivePricing.key]: true,
+        [TaxInclusivePricingFeatureFlag.key]: true,
       }),
     })
 
@@ -799,7 +801,7 @@ describe("TotalsService", () => {
 
   describe("MEDUSA_FF_TAX_INCLUSIVE_PRICING: getShippingTotal ", () => {
     const featureFlagRouter = new FlagRouter({
-      [taxInclusivePricing.key]: true,
+      [TaxInclusivePricingFeatureFlag.key]: true,
     })
 
     beforeEach(() => {
@@ -835,14 +837,15 @@ describe("TotalsService", () => {
           },
         ],
       }
-      const getTaxTotalMock = jest.fn(() => Promise.resolve(45))
-      totalsService.getTaxTotal = getTaxTotalMock
-      res = await totalsService.getTotal(order)
 
-      expect(getTaxTotalMock).toHaveBeenCalledTimes(1)
-      expect(getTaxTotalMock).toHaveBeenCalledWith(order, undefined)
+      const calculatePriceTaxAmountMock = jest
+        .spyOn(CalculatePriceTaxAmount, "calculatePriceTaxAmount")
+        .mockReturnValue(20)
 
-      expect(res).toEqual(185)
+      const res = totalsService.getShippingTotal(order)
+
+      expect(res).toEqual(100)
+      expect(calculatePriceTaxAmountMock).toHaveBeenCalledTimes(1)
     })
   })
 })

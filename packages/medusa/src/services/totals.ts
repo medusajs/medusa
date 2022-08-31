@@ -435,7 +435,7 @@ class TotalsService extends TransactionBaseService {
     if (!options.exclude_discounts) {
       let lineDiscounts: LineDiscountAmount[] = []
 
-      const discount = orderOrCart.discounts.find(
+      const discount = orderOrCart.discounts?.find(
         ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
       if (discount) {
@@ -664,7 +664,7 @@ class TotalsService extends TransactionBaseService {
     lineItem: LineItem,
     discount: Discount
   ): number {
-    const matchingDiscount = lineItem.adjustments.find(
+    const matchingDiscount = lineItem.adjustments?.find(
       (adjustment) => adjustment.discount_id === discount.id
     )
 
@@ -1022,13 +1022,9 @@ class TotalsService extends TransactionBaseService {
       excludeNonDiscounts: true,
     })
 
-    if (!cartOrOrder.discounts || !cartOrOrder.discounts.length) {
-      return 0
-    }
-
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts.find(
+    const discount = cartOrOrder.discounts?.find(
       ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
     )
 
