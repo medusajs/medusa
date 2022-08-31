@@ -415,7 +415,7 @@ class ReturnService extends TransactionBaseService {
         }
       } else {
         // Merchant hasn't specified refund amount so we calculate it
-        toRefund = this.totalsService_.getRefundTotal(order, returnLines)
+        toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
       }
 
       const method = data.shipping_method
