@@ -17,6 +17,7 @@ import {
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
 import { FlagRouter } from "../utils/flag-router"
+import { calculatePriceTaxAmount } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -120,47 +121,36 @@ class PricingService extends TransactionBaseService {
     }
 
     if (variantPricing.calculated_price !== null) {
-      const taxAmount =
-        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
-        variantPricing.calculated_price_includes_tax
-          ? this.calculateTaxInclusiveTaxAmount(
-              rate,
-              variantPricing.calculated_price
-            )
-          : Math.round(variantPricing.calculated_price * rate)
-      taxedPricing.calculated_tax = taxAmount
+      taxedPricing.calculated_tax = Math.round(
+        calculatePriceTaxAmount({
+          price: variantPricing.calculated_price,
+          taxRate: rate,
+          includesTax: variantPricing.calculated_price_includes_tax ?? false,
+        })
+      )
 
       taxedPricing.calculated_price_incl_tax =
         variantPricing.calculated_price_includes_tax
           ? variantPricing.calculated_price
-          : variantPricing.calculated_price + taxAmount
+          : variantPricing.calculated_price + taxedPricing.calculated_tax
     }
 
     if (variantPricing.original_price !== null) {
-      const taxAmount =
-        this.featureFlagRouter.isFeatureEnabled("tax_inclusive_pricing") &&
-        variantPricing.original_price_includes_tax
-          ? this.calculateTaxInclusiveTaxAmount(
-              rate,
-              variantPricing.original_price
-            )
-          : Math.round(variantPricing.original_price * rate)
-      taxedPricing.original_tax = taxAmount
+      taxedPricing.original_tax = Math.round(
+        calculatePriceTaxAmount({
+          price: variantPricing.original_price,
+          taxRate: rate,
+          includesTax: variantPricing.original_price_includes_tax ?? false,
+        })
+      )
 
       taxedPricing.original_price_incl_tax =
         variantPricing.original_price_includes_tax
           ? variantPricing.original_price
-          : variantPricing.original_price + taxAmount
+          : variantPricing.original_price + taxedPricing.original_tax
     }
 
     return taxedPricing
-  }
-
-  private calculateTaxInclusiveTaxAmount(
-    taxRate: number,
-    taxInclusivePrice: number
-  ): number {
-    return (taxRate * taxInclusivePrice) / (1 + taxRate)
   }
 
   private async getProductVariantPricing_(

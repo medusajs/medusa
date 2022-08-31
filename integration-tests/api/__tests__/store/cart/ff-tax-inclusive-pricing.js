@@ -10,7 +10,10 @@ const {
   simpleRegionFactory,
   simpleShippingOptionFactory,
   simpleCustomShippingOptionFactory,
+  simpleProductFactory,
+  simplePriceListFactory,
 } = require("../../../factories")
+const { IdMap } = require("medusa-test-utils");
 
 jest.setTimeout(30000)
 
@@ -80,7 +83,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       return await db.teardown()
     })
@@ -129,6 +132,220 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           price: 5,
         })
       ]))
+    })
+  })
+
+  describe("POST /store/carts/:id", () => {
+    const variantId1 = IdMap.getId("test-variant-1")
+    const variantId2 = IdMap.getId("test-variant-2")
+    const productId1 = IdMap.getId("test-product-1")
+    const productId2 = IdMap.getId("test-product-2")
+    const regionId = IdMap.getId("test-region")
+    const regionData = {
+      id: regionId,
+      includes_tax: false,
+      currency_code: "usd",
+      countries: ["us"],
+      tax_rate: 20,
+      name: "region test",
+    }
+    const buildProductData = (productId, variantId) => {
+      return {
+        id: productId,
+        variants: [
+          {
+            id: variantId,
+            prices: [],
+          },
+        ],
+      }
+    }
+    const buildPriceListData = (variantId, price, includesTax) => {
+      return {
+        status: "active",
+        type: "sale",
+        prices: [
+          {
+            variant_id: variantId,
+            amount: price,
+            currency_code: "usd",
+            region_id: regionId,
+          },
+        ],
+        includes_tax: includesTax,
+      }
+    }
+    const customnerPayload = {
+      email: "adrien@test.dk",
+      password: "adrientest",
+      first_name: "adrien",
+      last_name: "adrien",
+    }
+    const createCartPayload = {
+      region_id: regionId,
+      items: [{
+        variant_id: variantId1,
+        quantity: 1
+      }, {
+        variant_id: variantId2,
+        quantity: 1
+      }]
+    }
+
+    describe('with a cart with full tax exclusive variant pricing', () => {
+      beforeEach(async () => {
+        await simpleRegionFactory(dbConnection, regionData)
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId1, variantId1)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 100, false))
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId2, variantId2)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async () => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          customnerPayload,
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", createCartPayload)
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
+    })
+
+    describe('with a cart with full tax inclusive variant pricing', () => {
+      beforeEach(async () => {
+        await simpleRegionFactory(dbConnection, regionData)
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId1, variantId1)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId2, variantId2)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 120, true))
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async () => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          customnerPayload,
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", createCartPayload)
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
+    })
+
+    describe('with a cart mixing tax inclusive and exclusive variant pricing', () => {
+      beforeEach(async () => {
+        await simpleRegionFactory(dbConnection, regionData)
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId1, variantId1)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId2, variantId2)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("should calculates correct payment totals on cart completion", async () => {
+        const api = useApi()
+
+        const customerRes = await api.post(
+          "/store/customers",
+          customnerPayload,
+          { withCredentials: true }
+        )
+
+        const createCartRes = await api.post("/store/carts", createCartPayload)
+
+        const cart = createCartRes.data.cart
+
+        await api.post(`/store/carts/${cart.id}`, {
+          customer_id: customerRes.data.customer.id,
+        })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const createdOrder = await api.post(
+          `/store/carts/${cart.id}/complete-cart`
+        )
+
+        expect(createdOrder.data.type).toEqual("order")
+        expect(createdOrder.data.data.discount_total).toEqual(0)
+        expect(createdOrder.data.data.subtotal).toEqual(200)
+        expect(createdOrder.data.data.total).toEqual(240)
+
+        expect(createdOrder.status).toEqual(200)
+      })
     })
   })
 })

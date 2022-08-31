@@ -1433,13 +1433,17 @@ class OrderService extends TransactionBaseService {
           break
         }
         case "gift_card_total": {
-          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(order)
+          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
+            order
+          )
           order.gift_card_total = giftCardBreakdown.total
           order.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "discount_total": {
-          order.discount_total = this.totalsService_.getDiscountTotal(order)
+          order.discount_total = await this.totalsService_.getDiscountTotal(
+            order
+          )
           break
         }
         case "tax_total": {
@@ -1447,7 +1451,7 @@ class OrderService extends TransactionBaseService {
           break
         }
         case "subtotal": {
-          order.subtotal = this.totalsService_.getSubtotal(order)
+          order.subtotal = await this.totalsService_.getSubtotal(order)
           break
         }
         case "total": {
@@ -1471,36 +1475,48 @@ class OrderService extends TransactionBaseService {
           break
         }
         case "items.refundable": {
-          order.items = order.items.map((i) => ({
-            ...i,
-            refundable: this.totalsService_.getLineItemRefund(order, {
-              ...i,
-              quantity: i.quantity - (i.returned_quantity || 0),
-            } as LineItem),
-          })) as LineItem[]
+          const items: LineItem[] = []
+          for (const item of order.items) {
+            items.push({
+              ...item,
+              refundable: await this.totalsService_.getLineItemRefund(order, {
+                ...item,
+                quantity: item.quantity - (item.returned_quantity || 0),
+              } as LineItem),
+            } as LineItem)
+          }
+          order.items = items
           break
         }
         case "swaps.additional_items.refundable": {
           for (const s of order.swaps) {
-            s.additional_items = s.additional_items.map((i) => ({
-              ...i,
-              refundable: this.totalsService_.getLineItemRefund(order, {
-                ...i,
-                quantity: i.quantity - (i.returned_quantity || 0),
-              } as LineItem),
-            })) as LineItem[]
+            const items: LineItem[] = []
+            for (const item of s.additional_items) {
+              items.push({
+                ...item,
+                refundable: await this.totalsService_.getLineItemRefund(order, {
+                  ...item,
+                  quantity: item.quantity - (item.returned_quantity || 0),
+                } as LineItem),
+              } as LineItem)
+            }
+            s.additional_items = items
           }
           break
         }
         case "claims.additional_items.refundable": {
           for (const c of order.claims) {
-            c.additional_items = c.additional_items.map((i) => ({
-              ...i,
-              refundable: this.totalsService_.getLineItemRefund(order, {
-                ...i,
-                quantity: i.quantity - (i.returned_quantity || 0),
-              } as LineItem),
-            })) as LineItem[]
+            const items: LineItem[] = []
+            for (const item of c.additional_items) {
+              items.push({
+                ...item,
+                refundable: await this.totalsService_.getLineItemRefund(order, {
+                  ...item,
+                  quantity: item.quantity - (item.returned_quantity || 0),
+                } as LineItem),
+              } as LineItem)
+            }
+            c.additional_items = items
           }
           break
         }
