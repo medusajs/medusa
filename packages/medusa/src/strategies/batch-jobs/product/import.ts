@@ -303,7 +303,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
       if (input.id) {
         try {
-          channel = await salesChannelServiceTx.retrieve(input.id)
+          channel = await salesChannelServiceTx.retrieve(input.id, { select: ["id"] })
         } catch (e) {
           // noop - check if the channel exists with provided name
         }
@@ -311,7 +311,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
       if (!channel) {
         channel = (await salesChannelServiceTx.retrieveByName(
-          input.name
+          input.name,
+          { select: ["id"] }
         )) as SalesChannel
       }
 
@@ -855,7 +856,7 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
       },
     },
     {
-      name: "Sales Channel Name",
+      name: "Sales Channel Id",
       match: /Sales Channel \d+ Id/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
