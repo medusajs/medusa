@@ -162,14 +162,14 @@ describe("Product import strategy", () => {
       1,
       {
         ext: "json",
-        name: `imports/products/import/ops/${fakeJob.id}-PRODUCT_CREATE`,
+        name: `imports/products/ops/${fakeJob.id}-PRODUCT_CREATE`,
       }
     )
     expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
       2,
       {
         ext: "json",
-        name: `imports/products/import/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id
+        name: `imports/products/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id
       }
     )
 
