@@ -49,22 +49,31 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       const filteredTaxLines = taxLines.filter((tl) => tl.item_id === item.id)
 
-      const totalTaxRate = filteredTaxLines.reduce(
-        (accRate: number, nextLineItemTaxLine: LineItemTaxLine) => {
-          return accRate + (nextLineItemTaxLine.rate || 0) / 100
-        },
-        0
-      )
-      const taxIncludedInPrice = !item.includes_tax
-        ? 0
-        : Math.round(
-            calculatePriceTaxAmount({
-              price: item.unit_price,
-              taxRate: totalTaxRate,
-              includesTax: item.includes_tax,
-            })
-          )
-      let taxableAmount = (item.unit_price - taxIncludedInPrice) * item.quantity
+      let taxableAmount
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        item.includes_tax
+      ) {
+        const taxRate = filteredTaxLines.reduce(
+          (accRate: number, nextLineItemTaxLine: LineItemTaxLine) => {
+            return accRate + (nextLineItemTaxLine.rate || 0) / 100
+          },
+          0
+        )
+        const taxIncludedInPrice = Math.round(
+          calculatePriceTaxAmount({
+            price: item.unit_price,
+            taxRate,
+            includesTax: item.includes_tax,
+          })
+        )
+        taxableAmount = (item.unit_price - taxIncludedInPrice) * item.quantity
+      } else {
+        taxableAmount = item.unit_price * item.quantity
+      }
+
       taxableAmount -=
         ((allocations.discount && allocations.discount.unit_amount) || 0) *
         item.quantity
