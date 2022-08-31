@@ -781,7 +781,7 @@ class TotalsService extends TransactionBaseService {
           : Math.round(
               calculatePriceTaxAmount({
                 price: lineItem.unit_price,
-                taxRate: lineItem.includes_tax ? taxRate : 0,
+                taxRate: taxRate,
                 includesTax: lineItem.includes_tax,
               })
             )
