@@ -796,4 +796,53 @@ describe("TotalsService", () => {
       expect(res).toEqual(185)
     })
   })
+
+  describe("MEDUSA_FF_TAX_INCLUSIVE_PRICING: getShippingTotal ", () => {
+    const featureFlagRouter = new FlagRouter({
+      tax_inclusive_pricing: true,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calculates total", async () => {
+      const order = {
+        region: {
+          tax_rate: 25,
+        },
+        items: [
+          {
+            unit_price: 20,
+            quantity: 2,
+          },
+          {
+            unit_price: 25,
+            quantity: 2,
+            includes_tax: true,
+          },
+        ],
+        shipping_methods: [
+          {
+            _id: IdMap.getId("expensiveShipping"),
+            name: "Expensive Shipping",
+            price: 100,
+            provider_id: "default_provider",
+            profile_id: IdMap.getId("default"),
+            data: {
+              extra: "hi",
+            },
+          },
+        ],
+      }
+      const getTaxTotalMock = jest.fn(() => Promise.resolve(45))
+      totalsService.getTaxTotal = getTaxTotalMock
+      res = await totalsService.getTotal(order)
+
+      expect(getTaxTotalMock).toHaveBeenCalledTimes(1)
+      expect(getTaxTotalMock).toHaveBeenCalledWith(order, undefined)
+
+      expect(res).toEqual(185)
+    })
+  })
 })
