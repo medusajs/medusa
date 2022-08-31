@@ -283,14 +283,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Create, or retrieve by name, sales channels from the input data.
    *
-   * NOTE: Sales channel names provided in the CSV must exists in the DB.
+   * NOTE: Sales channel names provided in the CSV must exist in the DB.
    *       New sales channels will not be created.
    *
    * @param data an array of sales channels partials
    * @return an array of sales channels created or retrieved by name
    */
   private async processSalesChannels(
-    data: Pick<SalesChannel, "name" | "description">[]
+    data: Pick<SalesChannel, "name" | "id">[]
   ): Promise<SalesChannel[]> {
     const transactionManager = this.transactionManager_ ?? this.manager_
     const salesChannelServiceTx =
@@ -299,9 +299,23 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const salesChannels: SalesChannel[] = []
 
     for (const input of data) {
-      salesChannels.push(
-        (await salesChannelServiceTx.retrieveByName(input.name)) as SalesChannel
-      )
+      let channel: SalesChannel | null = null
+
+      if (input.id) {
+        try {
+          channel = await salesChannelServiceTx.retrieve(input.id)
+        } catch (e) {
+          // noop - check if the channel exists with provided name
+        }
+      }
+
+      if (!channel) {
+        channel = (await salesChannelServiceTx.retrieveByName(
+          input.name
+        )) as SalesChannel
+      }
+
+      salesChannels.push(channel)
     }
 
     return salesChannels
@@ -336,7 +350,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
-              "name" | "description"
+              "name" | "id"
             >[]
           )
         }
@@ -376,7 +390,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
-              "name" | "description"
+              "name" | "id"
             >[]
           )
         }
@@ -835,6 +849,28 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
           >[]
         ).push({
           name: value,
+        })
+
+        return builtLine
+      },
+    },
+    {
+      name: "Sales Channel Name",
+      match: /Sales Channel \d+ Id/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.sales_channels"] =
+          builtLine["product.sales_channels"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ;(
+          builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          id: value,
         })
 
         return builtLine
