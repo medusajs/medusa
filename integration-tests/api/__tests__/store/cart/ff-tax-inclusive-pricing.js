@@ -12,8 +12,10 @@ const {
   simpleCustomShippingOptionFactory,
   simpleProductFactory,
   simplePriceListFactory,
+  simpleDiscountFactory,
 } = require("../../../factories")
 const { IdMap } = require("medusa-test-utils");
+const cartSeeder = require("../../../helpers/cart-seeder");
 
 jest.setTimeout(30000)
 
@@ -345,6 +347,162 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         expect(createdOrder.data.data.total).toEqual(240)
 
         expect(createdOrder.status).toEqual(200)
+      })
+    })
+  })
+
+  describe("POST /store/carts/:id/line-items", () => {
+    const cartIdWithItemPercentageDiscount = "test-cart-w-item-percentage-discount"
+    const percentage15discountId = IdMap.getId("percentage15discountId")
+    const variantId1 = IdMap.getId("test-variant-1")
+    const variantId2 = IdMap.getId("test-variant-2")
+    const productId1 = IdMap.getId("test-product-1")
+    const productId2 = IdMap.getId("test-product-2")
+    const regionId = IdMap.getId("test-region")
+    const regionData = {
+      id: regionId,
+      includes_tax: false,
+      currency_code: "usd",
+      countries: ["us"],
+      tax_rate: 20,
+      name: "region test",
+    }
+    const buildProductData = (productId, variantId) => {
+      return {
+        id: productId,
+        variants: [
+          {
+            id: variantId,
+            prices: [],
+          },
+        ],
+      }
+    }
+    const buildPriceListData = (variantId, price, includesTax) => {
+      return {
+        status: "active",
+        type: "sale",
+        prices: [
+          {
+            variant_id: variantId,
+            amount: price,
+            currency_code: "usd",
+            region_id: regionId,
+          },
+        ],
+        includes_tax: includesTax,
+      }
+    }
+
+    describe("with a cart mixing tax inclusive and exclusive variant pricing", () => {
+      beforeEach(async () => {
+        await cartSeeder(dbConnection)
+        await simpleRegionFactory(dbConnection, regionData)
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId1, variantId1)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simpleProductFactory(
+          dbConnection,
+          buildProductData(productId2, variantId2)
+        )
+        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
+
+        const tenDaysAgo = ((today) => new Date(today.setDate(today.getDate() - 10)))(
+          new Date()
+        )
+        const tenDaysFromToday = ((today) =>
+          new Date(today.setDate(today.getDate() + 10)))(new Date())
+        await simpleDiscountFactory(dbConnection, {
+          id: percentage15discountId,
+          code: percentage15discountId,
+          regions: [regionId],
+          rule: {
+            type: "percentage",
+            value: "15",
+            allocation: "item",
+          },
+          starts_at: tenDaysAgo,
+          ends_at: tenDaysFromToday,
+        })
+      })
+
+      afterEach(async () => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      it("adds line item to cart containing an item percentage discount with all items being tax inclusive", async() => {
+        const api = useApi()
+
+        await api.post(`/store/carts/${cartIdWithItemPercentageDiscount}`, {
+          region_id: regionId,
+          discounts: [{ code: percentage15discountId }]
+        })
+
+        await api
+          .post(
+            `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
+            {
+              variant_id: variantId1,
+              quantity: 2,
+            },
+            { withCredentials: true }
+          )
+        const response = await api
+          .post(
+            `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
+            {
+              variant_id: variantId2,
+              quantity: 2,
+            },
+            { withCredentials: true }
+          )
+
+        const expectedItemTotals = {
+          subtotal: 200,
+          gift_card_total: 0,
+          discount_total: 30,
+          total: 204,
+          original_total: 240,
+          original_tax_total: 40,
+          tax_total: 34,
+        }
+
+        const expectedAdjustment = {
+          amount: 30,
+          discount_id: percentage15discountId,
+          description: "discount",
+        }
+
+        expect(response.data.cart.items).toHaveLength(2)
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              includes_tax: true,
+              cart_id: cartIdWithItemPercentageDiscount,
+              unit_price: 120,
+              variant_id: variantId1,
+              quantity: 2,
+              adjustments: [
+                expect.objectContaining(expectedAdjustment),
+              ],
+              ...expectedItemTotals,
+            }),
+            expect.objectContaining({
+              includes_tax: false,
+              cart_id: cartIdWithItemPercentageDiscount,
+              unit_price: 100,
+              variant_id: variantId2,
+              quantity: 2,
+              adjustments: [
+                expect.objectContaining(expectedAdjustment),
+              ],
+              ...expectedItemTotals
+            }),
+          ])
+        )
       })
     })
   })
