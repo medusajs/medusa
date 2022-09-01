@@ -506,17 +506,35 @@ class TotalsService extends TransactionBaseService {
   async getLineItemRefund(order: Order, lineItem: LineItem): Promise<number> {
     const allocationMap = await this.getAllocationMap(order)
 
+    const includesTax =
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && lineItem.includes_tax
+
     const discountAmount =
       (allocationMap[lineItem.id]?.discount?.unit_amount || 0) *
       lineItem.quantity
 
-    const lineSubtotal =
-      lineItem.unit_price * lineItem.quantity - discountAmount
+    let lineSubtotal = lineItem.unit_price * lineItem.quantity - discountAmount
 
     /*
      * Used for backcompat with old tax system
      */
     if (order.tax_rate !== null) {
+      const taxAmountIncludedInPrice = !includesTax
+        ? 0
+        : Math.round(
+            calculatePriceTaxAmount({
+              price: lineItem.unit_price,
+              taxRate: order.tax_rate / 100,
+              includesTax,
+            })
+          )
+
+      lineSubtotal =
+        (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -
+        discountAmount
+
       const taxRate = order.tax_rate / 100
       return this.rounded(lineSubtotal * (1 + taxRate))
     }
@@ -530,6 +548,23 @@ class TotalsService extends TransactionBaseService {
         "Tax calculation did not receive tax_lines"
       )
     }
+
+    const taxRate = lineItem.tax_lines.reduce((acc, next) => {
+      return acc + next.rate / 100
+    }, 0)
+    const taxAmountIncludedInPrice = !includesTax
+      ? 0
+      : Math.round(
+          calculatePriceTaxAmount({
+            price: lineItem.unit_price,
+            taxRate,
+            includesTax,
+          })
+        )
+
+    lineSubtotal =
+      (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -
+      discountAmount
 
     const taxTotal = lineItem.tax_lines.reduce((acc, next) => {
       const taxRate = next.rate / 100
