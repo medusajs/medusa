@@ -12,14 +12,14 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
  * operationId: "PostDiscountsDiscountConditionsCondition"
- * summary: "Updates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
+ * summary: "Update a DiscountCondition"
+ * description: "Updates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
  *   - (path) condition_id=* {string} The ID of the DiscountCondition.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
- * description: "Updates a DiscountCondition"
  * requestBody:
  *   content:
  *     application/json:
