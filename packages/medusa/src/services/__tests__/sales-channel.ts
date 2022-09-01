@@ -1,11 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService, ProductService, StoreService } from "../index"
-import { FindConditions, FindOneOptions } from "typeorm"
+import { EventBusService, StoreService } from "../index"
+import { FindConditions, FindManyOptions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
-import { ProductServiceMock } from "../__mocks__/product";
-import { store, StoreServiceMock } from "../__mocks__/store";
+import { store, StoreServiceMock } from "../__mocks__/store"
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -16,56 +15,79 @@ describe("SalesChannelService", () => {
 
   const salesChannelRepositoryMock = {
     ...MockRepository({
+      findOneWithRelations: jest
+        .fn()
+        .mockImplementation(
+          (
+            relations: Array<keyof SalesChannel> = [],
+            optionsWithoutRelations: Omit<
+              FindManyOptions<SalesChannel>,
+              "relations"
+            >
+          ): any => {
+            return Promise.resolve({
+              id:
+                (optionsWithoutRelations?.where as FindConditions<SalesChannel>)
+                  ?.id ?? IdMap.getId("sc_adjhlukiaeswhfae"),
+              ...salesChannelData,
+            })
+          }
+        ),
       findOne: jest
-      .fn()
-      .mockImplementation(
-        (queryOrId: string | FindOneOptions<SalesChannel>): any => {
-          return Promise.resolve({
-            id:
-              typeof queryOrId === "string"
-                ? queryOrId
-                : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                IdMap.getId("sc_adjhlukiaeswhfae"),
-            ...salesChannelData,
-          })
-        }
-      ),
+        .fn()
+        .mockImplementation(
+          (queryOrId: string | FindOneOptions<SalesChannel>): any => {
+            return Promise.resolve({
+              id:
+                typeof queryOrId === "string"
+                  ? queryOrId
+                  : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
+                    IdMap.getId("sc_adjhlukiaeswhfae"),
+              ...salesChannelData,
+            })
+          }
+        ),
       findAndCount: jest.fn().mockImplementation(() =>
         Promise.resolve([
           {
             id: IdMap.getId("sales_channel_1"),
-            ...salesChannelData
+            ...salesChannelData,
           },
-        ]),
+        ])
       ),
       create: jest.fn().mockImplementation((data) => data),
-      save: (salesChannel) => Promise.resolve({
-        id: IdMap.getId("sales_channel_1"),
-        ...salesChannel
-      }),
+      save: (salesChannel) =>
+        Promise.resolve({
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannel,
+        }),
       softRemove: jest.fn().mockImplementation((id: string): any => {
-          return Promise.resolve()
+        return Promise.resolve()
       }),
     }),
     getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
       Promise.resolve([
         {
           id: IdMap.getId("sales_channel_1"),
-          ...salesChannelData
+          ...salesChannelData,
         },
       ])
     ),
-    removeProducts: jest.fn().mockImplementation((id: string, productIds: string[]): any => {
-      Promise.resolve([
-        {
-          id: IdMap.getId("sales_channel_1"),
-          ...salesChannelData
-        },
-      ])
-    }),
-    addProducts: jest.fn().mockImplementation((id: string, productIds: string[]): any => {
-      return Promise.resolve()
-    }),
+    removeProducts: jest
+      .fn()
+      .mockImplementation((id: string, productIds: string[]): any => {
+        Promise.resolve([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData,
+          },
+        ])
+      }),
+    addProducts: jest
+      .fn()
+      .mockImplementation((id: string, productIds: string[]): any => {
+        return Promise.resolve()
+      }),
   }
 
   describe("create default", async () => {
@@ -145,8 +167,9 @@ describe("SalesChannelService", () => {
         ...salesChannelData,
       })
 
-      expect(salesChannelRepositoryMock.findOne).toHaveBeenCalledTimes(1)
-      expect(salesChannelRepositoryMock.findOne).toHaveBeenLastCalledWith({
+      expect(
+        salesChannelRepositoryMock.findOneWithRelations
+      ).toHaveBeenLastCalledWith(undefined, {
         where: { id: IdMap.getId("sales_channel_1") },
       })
     })
@@ -206,48 +229,53 @@ describe("SalesChannelService", () => {
 
       expect(salesChannel).toBeTruthy()
       expect(salesChannel).toEqual(
-        expect.arrayContaining([{
-          id: IdMap.getId("sales_channel_1"),
-          ...salesChannelData,
-        }])
+        expect.arrayContaining([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData,
+          },
+        ])
       )
 
       expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(0)
-      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
-      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenLastCalledWith(
-        q,
-        {
-          skip: 0,
-          take: 20,
-          where: {},
-        }
-      )
+      expect(
+        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+      ).toHaveBeenLastCalledWith(q, {
+        skip: 0,
+        take: 20,
+        where: {},
+      })
     })
 
     it("should retrieve a sales channel using find and count", async () => {
       const salesChannel = await salesChannelService.listAndCount({
-        id: IdMap.getId("sales_channel_1")
+        id: IdMap.getId("sales_channel_1"),
       })
 
       expect(salesChannel).toBeTruthy()
       expect(salesChannel).toEqual(
-        expect.arrayContaining([{
-          id: IdMap.getId("sales_channel_1"),
-          ...salesChannelData,
-        }])
+        expect.arrayContaining([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData,
+          },
+        ])
       )
 
-      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(0)
+      expect(
+        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledTimes(0)
       expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(1)
-      expect(salesChannelRepositoryMock.findAndCount).toHaveBeenLastCalledWith(
-        {
-          skip: 0,
-          take: 20,
-          where: {
-            id: IdMap.getId("sales_channel_1"),
-          },
-        }
-      )
+      expect(salesChannelRepositoryMock.findAndCount).toHaveBeenLastCalledWith({
+        skip: 0,
+        take: 20,
+        where: {
+          id: IdMap.getId("sales_channel_1"),
+        },
+      })
     })
   })
 
@@ -318,7 +346,7 @@ describe("SalesChannelService", () => {
       jest.clearAllMocks()
     })
 
-    it('should remove a list of product to a sales channel', async () => {
+    it("should remove a list of product to a sales channel", async () => {
       const salesChannel = await salesChannelService.removeProducts(
         IdMap.getId("sales_channel_1"),
         [IdMap.getId("sales_channel_1_product_1")]
@@ -349,7 +377,7 @@ describe("SalesChannelService", () => {
       jest.clearAllMocks()
     })
 
-    it('should add a list of product to a sales channel', async () => {
+    it("should add a list of product to a sales channel", async () => {
       const salesChannel = await salesChannelService.addProducts(
         IdMap.getId("sales_channel_1"),
         [IdMap.getId("sales_channel_1_product_1")]
