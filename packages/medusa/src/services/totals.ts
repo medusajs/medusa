@@ -305,28 +305,31 @@ class TotalsService extends TransactionBaseService {
    */
   getShippingTotal(cartOrOrder: Cart | Order): number {
     const { shipping_methods } = cartOrOrder
-    return shipping_methods.reduce((acc, shippingMethod) => {
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        ) &&
-        shippingMethod.includes_tax
-      ) {
-        const rate = shippingMethod.tax_lines.reduce(
-          (sum, method) => sum + method.rate / 100,
-          0
-        )
+    return (
+      shipping_methods?.reduce((acc, shippingMethod) => {
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) &&
+          shippingMethod.includes_tax
+        ) {
+          const rate =
+            shippingMethod.tax_lines?.reduce(
+              (sum, method) => sum + method.rate / 100,
+              0
+            ) || 0
 
-        const totalTaxes = calculatePriceTaxAmount({
-          price: shippingMethod.price,
-          taxRate: rate,
-          includesTax: true,
-        })
-        return acc + shippingMethod.price - totalTaxes
-      }
+          const totalTaxes = calculatePriceTaxAmount({
+            price: shippingMethod.price,
+            taxRate: rate,
+            includesTax: true,
+          })
+          return acc + shippingMethod.price - totalTaxes
+        }
 
-      return acc + shippingMethod.price
-    }, 0)
+        return acc + shippingMethod.price
+      }, 0) || 0
+    )
   }
 
   /**
