@@ -14,8 +14,8 @@ const {
   simplePriceListFactory,
   simpleDiscountFactory,
 } = require("../../../factories")
-const { IdMap } = require("medusa-test-utils");
-const cartSeeder = require("../../../helpers/cart-seeder");
+const { IdMap } = require("medusa-test-utils")
+const cartSeeder = require("../../../helpers/cart-seeder")
 
 jest.setTimeout(30000)
 
@@ -54,7 +54,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           country_code: "us",
         }
         const region = await simpleRegionFactory(dbConnection, {
-          id: "test-region"
+          id: "test-region",
         })
         cart = await simpleCartFactory(dbConnection, {
           id: "test-cart",
@@ -70,10 +70,13 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           shipping_address: shippingAddress,
           currency_code: "usd",
         })
-        includesTaxShippingOption = await simpleShippingOptionFactory(dbConnection, {
-          includes_tax: true,
-          region_id: region.id
-        })
+        includesTaxShippingOption = await simpleShippingOptionFactory(
+          dbConnection,
+          {
+            includes_tax: true,
+            region_id: region.id,
+          }
+        )
         await simpleCustomShippingOptionFactory(dbConnection, {
           id: "another-cso-test",
           cart_id: customSoCart.id,
@@ -94,46 +97,49 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       const api = useApi()
 
       const cartWithShippingMethodRes = await api.post(
-          `/store/carts/${cart.id}/shipping-methods`,
-          {
-            option_id: includesTaxShippingOption.id,
-          },
-          { withCredentials: true }
+        `/store/carts/${cart.id}/shipping-methods`,
+        {
+          option_id: includesTaxShippingOption.id,
+        },
+        { withCredentials: true }
       )
 
       expect(cartWithShippingMethodRes.status).toEqual(200)
-      expect(cartWithShippingMethodRes.data.cart.shipping_methods)
-        .toEqual(expect.arrayContaining([
+      expect(cartWithShippingMethodRes.data.cart.shipping_methods).toEqual(
+        expect.arrayContaining([
           expect.objectContaining({
             shipping_option_id: includesTaxShippingOption.id,
             includes_tax: true,
-          })
-        ]))
+          }),
+        ])
+      )
     })
 
     it("should add a custom shipping method to the cart", async () => {
       const api = useApi()
 
       const cartWithCustomShippingMethodRes = await api
-          .post(
-              `/store/carts/${customSoCart.id}/shipping-methods`,
-              {
-                option_id: includesTaxShippingOption.id,
-              },
-              { withCredentials: true }
-          )
-          .catch((err) => err.response)
+        .post(
+          `/store/carts/${customSoCart.id}/shipping-methods`,
+          {
+            option_id: includesTaxShippingOption.id,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => err.response)
 
       expect(cartWithCustomShippingMethodRes.status).toEqual(200)
       expect(
-          cartWithCustomShippingMethodRes.data.cart.shipping_methods
-      ).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          shipping_option_id: includesTaxShippingOption.id,
-          includes_tax: true,
-          price: 5,
-        })
-      ]))
+        cartWithCustomShippingMethodRes.data.cart.shipping_methods
+      ).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            shipping_option_id: includesTaxShippingOption.id,
+            includes_tax: true,
+            price: 5,
+          }),
+        ])
+      )
     })
   })
 
@@ -185,28 +191,37 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     }
     const createCartPayload = {
       region_id: regionId,
-      items: [{
-        variant_id: variantId1,
-        quantity: 1
-      }, {
-        variant_id: variantId2,
-        quantity: 1
-      }]
+      items: [
+        {
+          variant_id: variantId1,
+          quantity: 1,
+        },
+        {
+          variant_id: variantId2,
+          quantity: 1,
+        },
+      ],
     }
 
-    describe('with a cart with full tax exclusive variant pricing', () => {
+    describe("with a cart with full tax exclusive variant pricing", () => {
       beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 100, false))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId1, 100, false)
+        )
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId2, 100, false)
+        )
       })
 
       afterEach(async () => {
@@ -246,19 +261,25 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       })
     })
 
-    describe('with a cart with full tax inclusive variant pricing', () => {
+    describe("with a cart with full tax inclusive variant pricing", () => {
       beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId1, 120, true)
+        )
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 120, true))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId2, 120, true)
+        )
       })
 
       afterEach(async () => {
@@ -298,19 +319,25 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       })
     })
 
-    describe('with a cart mixing tax inclusive and exclusive variant pricing', () => {
+    describe("with a cart mixing tax inclusive and exclusive variant pricing", () => {
       beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId1, 120, true)
+        )
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId2, 100, false)
+        )
       })
 
       afterEach(async () => {
@@ -352,7 +379,8 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
   })
 
   describe("POST /store/carts/:id/line-items", () => {
-    const cartIdWithItemPercentageDiscount = "test-cart-w-item-percentage-discount"
+    const cartIdWithItemPercentageDiscount =
+      "test-cart-w-item-percentage-discount"
     const percentage15discountId = IdMap.getId("percentage15discountId")
     const variantId1 = IdMap.getId("test-variant-1")
     const variantId2 = IdMap.getId("test-variant-2")
@@ -402,16 +430,21 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           dbConnection,
           buildProductData(productId1, variantId1)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId1, 120, true))
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId1, 120, true)
+        )
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId2, variantId2)
         )
-        await simplePriceListFactory(dbConnection, buildPriceListData(variantId2, 100, false))
-
-        const tenDaysAgo = ((today) => new Date(today.setDate(today.getDate() - 10)))(
-          new Date()
+        await simplePriceListFactory(
+          dbConnection,
+          buildPriceListData(variantId2, 100, false)
         )
+
+        const tenDaysAgo = ((today) =>
+          new Date(today.setDate(today.getDate() - 10)))(new Date())
         const tenDaysFromToday = ((today) =>
           new Date(today.setDate(today.getDate() + 10)))(new Date())
         await simpleDiscountFactory(dbConnection, {
@@ -433,32 +466,30 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         return await db.teardown()
       })
 
-      it("adds line item to cart containing an item percentage discount with all items being tax inclusive", async() => {
+      it("adds line item to cart containing an item percentage discount with all items being tax inclusive", async () => {
         const api = useApi()
 
         await api.post(`/store/carts/${cartIdWithItemPercentageDiscount}`, {
           region_id: regionId,
-          discounts: [{ code: percentage15discountId }]
+          discounts: [{ code: percentage15discountId }],
         })
 
-        await api
-          .post(
-            `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
-            {
-              variant_id: variantId1,
-              quantity: 2,
-            },
-            { withCredentials: true }
-          )
-        const response = await api
-          .post(
-            `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
-            {
-              variant_id: variantId2,
-              quantity: 2,
-            },
-            { withCredentials: true }
-          )
+        await api.post(
+          `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
+          {
+            variant_id: variantId1,
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
+        const response = await api.post(
+          `/store/carts/${cartIdWithItemPercentageDiscount}/line-items`,
+          {
+            variant_id: variantId2,
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
 
         const expectedItemTotals = {
           subtotal: 200,
@@ -485,9 +516,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
               unit_price: 120,
               variant_id: variantId1,
               quantity: 2,
-              adjustments: [
-                expect.objectContaining(expectedAdjustment),
-              ],
+              adjustments: [expect.objectContaining(expectedAdjustment)],
               ...expectedItemTotals,
             }),
             expect.objectContaining({
@@ -496,10 +525,8 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
               unit_price: 100,
               variant_id: variantId2,
               quantity: 2,
-              adjustments: [
-                expect.objectContaining(expectedAdjustment),
-              ],
-              ...expectedItemTotals
+              adjustments: [expect.objectContaining(expectedAdjustment)],
+              ...expectedItemTotals,
             }),
           ])
         )
