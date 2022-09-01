@@ -10,6 +10,8 @@ const {
   simpleRegionFactory,
   simplePriceListFactory,
   simpleProductTaxRateFactory,
+  simpleShippingOptionFactory,
+  simpleShippingTaxRateFactory,
 } = require("../../factories")
 
 const adminSeeder = require("../../helpers/admin-seeder")
@@ -26,6 +28,7 @@ describe("tax inclusive prices", () => {
     const [process, conn] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
+      verbose: false,
     })
     dbConnection = conn // await initDb({ cwd })
     medusaProcess = process // await setupServer({ cwd })
@@ -143,7 +146,7 @@ describe("tax inclusive prices", () => {
       await simplePriceListFactory(dbConnection, {
         status: "active",
         type: "sale",
-        tax_inclusive: true,
+        includes_tax: true,
         prices: [
           {
             variant_id: "var_1",
@@ -657,6 +660,93 @@ describe("tax inclusive prices", () => {
           ])
         )
       })
+    })
+  })
+
+  describe("tax inclusive shipping options", () => {
+    beforeAll(async () => {
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("admin gets correct shipping prices", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, {
+        tax_rate: 25,
+      })
+      const so = await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price: 100,
+        includes_tax: true,
+      })
+      await simpleShippingTaxRateFactory(dbConnection, {
+        shipping_option_id: so.id,
+        rate: {
+          region_id: region.id,
+          rate: 10,
+        },
+      })
+
+      const res = await api.get(`/admin/shipping-options`, {
+        headers: {
+          Authorization: `Bearer test_token`,
+        },
+      })
+
+      expect(res.data.shipping_options).toHaveLength(1)
+      expect(res.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: so.id,
+            amount: 100,
+            price_incl_tax: 100,
+            price_includes_tax: true,
+            tax_amount: 9,
+          }),
+        ])
+      )
+    })
+
+    it("gets correct shipping prices", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, {
+        tax_rate: 25,
+      })
+      const so = await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        includes_tax: true,
+        price: 100,
+      })
+      await simpleShippingTaxRateFactory(dbConnection, {
+        shipping_option_id: so.id,
+        rate: {
+          region_id: region.id,
+          rate: 10,
+        },
+      })
+
+      const res = await api.get(
+        `/store/shipping-options?region_id=${region.id}`
+      )
+
+      expect(res.data.shipping_options).toHaveLength(1)
+      expect(res.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: so.id,
+            amount: 100,
+            price_incl_tax: 100,
+            price_includes_tax: true,
+            tax_amount: 9,
+          }),
+        ])
+      )
     })
   })
 

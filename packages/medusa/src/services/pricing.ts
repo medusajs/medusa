@@ -18,6 +18,7 @@ import {
 } from "../interfaces/price-selection-strategy"
 import { FlagRouter } from "../utils/flag-router"
 import { calculatePriceTaxAmount } from "../utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -445,14 +446,37 @@ class PricingService extends TransactionBaseService {
       },
       0
     )
-    const tax = Math.round(price * rate)
-    const total = price + tax
 
-    return {
+    const includesTax =
+      this.featureFlagRouter.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && shippingOption.includes_tax
+
+    const taxAmount = Math.round(
+      calculatePriceTaxAmount({
+        taxRate: rate,
+        price,
+        includesTax,
+      })
+    )
+    const totalInclTax = includesTax ? price : price + taxAmount
+
+    const result: PricedShippingOption = {
       ...shippingOption,
-      price_incl_tax: total,
+      price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
+      tax_amount: taxAmount,
     }
+
+    if (
+      this.featureFlagRouter.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      )
+    ) {
+      result.price_includes_tax = shippingOption.includes_tax
+    }
+
+    return result
   }
 
   /**

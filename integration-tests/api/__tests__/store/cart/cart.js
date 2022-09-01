@@ -45,13 +45,9 @@ describe("/store/carts", () => {
   }
 
   beforeAll(async () => {
-    try {
-      const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: false })
-    } catch (err) {
-      console.log(err)
-    }
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: false })
   })
 
   afterAll(async () => {
