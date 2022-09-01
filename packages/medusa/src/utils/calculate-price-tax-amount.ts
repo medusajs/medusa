@@ -1,6 +1,3 @@
-import { featureFlagRouter } from "../loaders/feature-flags"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-
 /**
  * Return the tax amount that
  * - is includes in the price if it is tax inclusive
@@ -18,10 +15,7 @@ export function calculatePriceTaxAmount({
   includesTax?: boolean
   taxRate: number
 }): number {
-  if (
-    featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key) &&
-    includesTax
-  ) {
+  if (includesTax) {
     return (taxRate * price) / (1 + taxRate)
   }
 
