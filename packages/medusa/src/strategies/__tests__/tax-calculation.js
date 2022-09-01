@@ -1,9 +1,9 @@
 import TaxCalculationStrategy from "../tax-calculation"
-import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { featureFlagRouter } from "../../loaders/feature-flags"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
+import { featureFlagRouter } from "../../loaders/feature-flags";
 
 const toTest = [
-  [
+	[
     "calculates correctly without gift card",
     {
       /*
@@ -128,13 +128,13 @@ const toTest = [
           id: "item_1",
           unit_price: 120,
           quantity: 2,
-          includes_tax: true,
+          includes_tax: true
         },
         {
           id: "item_2",
           unit_price: 100,
           quantity: 1,
-          includes_tax: false,
+          includes_tax: false
         },
       ],
       taxLines: [
@@ -161,7 +161,7 @@ const toTest = [
         allocation_map: {},
       },
     },
-  ],
+  ]
 ]
 
 describe("TaxCalculationStrategy", () => {
@@ -170,21 +170,17 @@ describe("TaxCalculationStrategy", () => {
       "%s",
       async (title, { items, taxLines, context, expected, flags }) => {
         if (flags) {
-          Object.entries(flags).forEach(([key, value]) =>
-            featureFlagRouter.setFlag(key, value)
-          )
+          Object.entries(flags).forEach(([key, value]) => featureFlagRouter.setFlag(key, value))
         }
 
         const calcStrat = new TaxCalculationStrategy({
-          featureFlagRouter,
+          featureFlagRouter
         })
         const val = await calcStrat.calculate(items, taxLines, context)
         expect(val).toEqual(expected)
 
         if (flags) {
-          Object.entries(flags).forEach(([key]) =>
-            featureFlagRouter.setFlag(key, false)
-          )
+          Object.entries(flags).forEach(([key]) => featureFlagRouter.setFlag(key, false))
         }
       }
     )
