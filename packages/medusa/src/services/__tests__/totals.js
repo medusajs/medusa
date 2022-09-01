@@ -103,7 +103,9 @@ const calculateAdjustment = (cart, lineItem, discount) => {
 }
 
 describe("TotalsService", () => {
-  const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
+  const featureFlagRouter = new FlagRouter({
+    [TaxInclusivePricingFeatureFlag.key]: false,
+  })
 
   const container = {
     taxProviderService: {
@@ -550,7 +552,7 @@ describe("TotalsService", () => {
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
     const getAllocationMapMock = jest.fn(() => ({}))
     const featureFlagRouter = new FlagRouter({
-      tax_inclusive_pricing: false,
+      [TaxInclusivePricingFeatureFlag.key]: false,
     })
     const cradle = {
       taxProviderService: {
