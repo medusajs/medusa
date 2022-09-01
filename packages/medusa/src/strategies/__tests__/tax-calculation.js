@@ -1,4 +1,3 @@
-import { FlagRouter } from "../../utils/flag-router"
 import TaxCalculationStrategy from "../tax-calculation"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { featureFlagRouter } from "../../loaders/feature-flags"
@@ -112,68 +111,82 @@ const toTest = [
       },
     },
   ],
-]
-
-const taxInclusiveShippingTests = [
   [
-    "calculates correctly with tax inclusive shipping",
+    "calculates correctly with tax inclusive pricing",
     {
-      expected: 25,
-      items: [],
-      taxLines: [
+      /*
+       * Subtotal = 3 * 100 = 100
+       * Taxable amount = 300
+       * Taxline 1 = 100 * 0.2 * 2 = 40
+       * Taxline 2 = 100 * 0.2 * 1 = 20
+       * Total tax = 60
+       */
+      expected: 60,
+      flags: { [TaxInclusivePricingFeatureFlag.key]: true },
+      items: [
         {
-          shipping_method_id: "shipping_method_1",
-          name: "Name 1",
-          rate: 25,
+          id: "item_1",
+          unit_price: 120,
+          quantity: 2,
+          includes_tax: true,
         },
         {
-          shipping_method_id: "shipping_method_2",
+          id: "item_2",
+          unit_price: 100,
+          quantity: 1,
+          includes_tax: false,
+        },
+      ],
+      taxLines: [
+        {
+          item_id: "item_1",
+          name: "Name 1",
+          rate: 20,
+        },
+        {
+          item_id: "item_2",
           name: "Name 2",
-          rate: 10,
+          rate: 20,
         },
       ],
       context: {
-        shipping_methods: [
-          { id: "shipping_method_1", price: 100, includes_tax: true },
-          { id: "shipping_method_2", price: 50, includes_tax: false },
-        ],
+        shipping_address: null,
+        customer: {
+          email: "test@testson.com",
+        },
+        region: {
+          gift_cards_taxable: true,
+        },
+        shipping_methods: [],
+        allocation_map: {},
       },
     },
   ],
 ]
+
 describe("TaxCalculationStrategy", () => {
-  ;[true, false].forEach((taxInclusivePricingEnabled) => {
-    describe(`calculate (tax inclusive: ${taxInclusivePricingEnabled})`, () => {
-      const featureFlagRouter = new FlagRouter({
-        tax_inclusive_pricing: taxInclusivePricingEnabled,
-      })
-
-      const calcStrat = new TaxCalculationStrategy({ featureFlagRouter })
-
-      test.each(toTest)(
-        "%s",
-        async (title, { items, taxLines, context, expected }) => {
-          const val = await calcStrat.calculate(items, taxLines, context)
-          expect(val).toEqual(expected)
+  describe("calculate", () => {
+    test.each(toTest)(
+      "%s",
+      async (title, { items, taxLines, context, expected, flags }) => {
+        if (flags) {
+          Object.entries(flags).forEach(([key, value]) =>
+            featureFlagRouter.setFlag(key, value)
+          )
         }
-      )
-    })
-  })
 
-  describe("tax inclusive calculations", () => {
-    const featureFlagRouter = new FlagRouter({
-      tax_inclusive_pricing: true,
-    })
-    describe("shipping methods tax", () => {
-      const calcStrat = new TaxCalculationStrategy({ featureFlagRouter })
+        const calcStrat = new TaxCalculationStrategy({
+          featureFlagRouter,
+        })
+        const val = await calcStrat.calculate(items, taxLines, context)
+        expect(val).toEqual(expected)
 
-      test.each(taxInclusiveShippingTests)(
-        "%s",
-        async (title, { items, taxLines, context, expected }) => {
-          const val = await calcStrat.calculate(items, taxLines, context)
-          expect(val).toEqual(expected)
+        if (flags) {
+          Object.entries(flags).forEach(([key]) =>
+            featureFlagRouter.setFlag(key, false)
+          )
         }
-      )
-    })
+      }
+    )
   })
 })

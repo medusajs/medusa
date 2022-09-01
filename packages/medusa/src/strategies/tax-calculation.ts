@@ -1,12 +1,13 @@
-import { LineItem } from "../models/line-item"
-import { ShippingMethod } from "../models/shipping-method"
-import { LineItemTaxLine } from "../models/line-item-tax-line"
-import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
-import { TaxCalculationContext } from "../interfaces/tax-service"
-import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import {
+  LineItem,
+  LineItemTaxLine,
+  ShippingMethod,
+  ShippingMethodTaxLine,
+} from "../models"
+import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
+import { calculatePriceTaxAmount } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import { calculatePriceTaxAmount } from "../utils/calculate-price-tax-amount"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   protected readonly featureFlagRouter_: FlagRouter
@@ -97,15 +98,8 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
     for (const sm of shipping_methods) {
       const amount = sm.price
       const lineRates = taxLines.filter((tl) => tl.shipping_method_id === sm.id)
-
       for (const lineRate of lineRates) {
-        const rate = lineRate.rate / 100
-
-        taxTotal += calculatePriceTaxAmount({
-          price: amount,
-          taxRate: rate,
-          includesTax: sm.includes_tax,
-        })
+        taxTotal += Math.round(amount * (lineRate.rate / 100))
       }
     }
     return taxTotal
