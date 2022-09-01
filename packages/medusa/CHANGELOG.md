@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.8-fix-2124.0
+
+### Patch Changes
+
+- [#1846](https://github.com/medusajs/medusa/pull/1846) [`d14a0398f`](https://github.com/medusajs/medusa/commit/d14a0398fb884a1cd472c147af8ff5fa6fdbe4cb) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Fixes an error thrown when deleting product options on a product without variants
+
 ## 1.3.7
 
 ### Patch Changes
