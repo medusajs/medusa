@@ -39,7 +39,7 @@ export const simpleDiscountFactory = async (
 
   const manager = connection.manager
 
-  const ruleData = data.rule ?? {} as DiscountRuleFactoryData
+  const ruleData = data.rule ?? ({} as DiscountRuleFactoryData)
   const ruleToSave = manager.create(DiscountRule, {
     type: ruleData.type ?? DiscountRuleType.PERCENTAGE,
     value: ruleData.value ?? 10,

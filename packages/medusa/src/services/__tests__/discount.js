@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import DiscountService from "../discount"
-import { FlagRouter } from "../../utils/flag-router";
+import { FlagRouter } from "../../utils/flag-router"
 
 const featureFlagRouter = new FlagRouter({})
 
