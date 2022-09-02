@@ -103,6 +103,7 @@ const calculateAdjustment = (cart, lineItem, discount) => {
 }
 
 describe("TotalsService", () => {
+  const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
   const featureFlagRouter = new FlagRouter({
     [TaxInclusivePricingFeatureFlag.key]: false,
   })
