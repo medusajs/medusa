@@ -25,7 +25,7 @@ import {
 import TaxProviderService from "./tax-provider"
 import { EntityManager } from "typeorm"
 
-import { calculatePriceTaxInclusiveTaxAmount, isDefined } from "../utils"
+import { calculatePriceTaxAmount, isDefined } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
 
