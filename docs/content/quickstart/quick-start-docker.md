@@ -69,7 +69,7 @@ You will use `docker compose` and Docker to start up your development environmen
 
 Once done, your server will be accessible at `http://localhost:9000`.
 
-## Try it out
+## Test Your Server
 
 Let's try out your Medusa server by fetching some products.
 
