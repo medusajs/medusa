@@ -53,7 +53,7 @@ SENDGRID_API_KEY="some_sendgrid_key"
 docker compose up --build
 ```
 
-You will use `docker compose` and Docker to start up your development environment. Running the above command will do the following:
+Running the above command does the following:
 
 1. Build images for your Medusa project, a PostgreSQL database and a Redis server
 2. Run migrations for your newly created database
