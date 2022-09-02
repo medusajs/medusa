@@ -675,6 +675,15 @@ export const currencies: Record<string, Currency> = {
     code: "MUR",
     name_plural: "Mauritian rupees",
   },
+  MVR: {
+    symbol: "MVR",
+    name: "Maldivian Rufiyaa",
+    symbol_native: "ރ",
+    decimal_digits: 0,
+    rounding: 0,
+    code: "MVR",
+    name_plural: "Maldivian Rufiyaa",
+  },
   MXN: {
     symbol: "MX$",
     name: "Mexican Peso",
