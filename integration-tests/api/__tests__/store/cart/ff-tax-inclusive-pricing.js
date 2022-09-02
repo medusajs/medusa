@@ -15,7 +15,6 @@ const {
   simpleDiscountFactory,
 } = require("../../../factories")
 const { IdMap } = require("medusa-test-utils")
-const cartSeeder = require("../../../helpers/cart-seeder")
 
 jest.setTimeout(30000)
 
@@ -424,8 +423,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
     describe("with a cart mixing tax inclusive and exclusive variant pricing", () => {
       beforeEach(async () => {
-        await cartSeeder(dbConnection)
-        await simpleRegionFactory(dbConnection, regionData)
+        const region = await simpleRegionFactory(dbConnection, regionData)
+        await simpleCartFactory(dbConnection, {
+          id: cartIdWithItemPercentageDiscount,
+          region,
+        })
         await simpleProductFactory(
           dbConnection,
           buildProductData(productId1, variantId1)
@@ -466,7 +468,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
         return await db.teardown()
       })
 
-      it("adds line item to cart containing an item percentage discount with all items being tax inclusive", async () => {
+      it("calculates correct item totals for percentage discount with mix of tax inclusive/exclusive items", async () => {
         const api = useApi()
 
         await api.post(`/store/carts/${cartIdWithItemPercentageDiscount}`, {
