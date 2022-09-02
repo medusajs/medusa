@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
@@ -30,6 +30,7 @@ import {
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
+import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -1049,24 +1050,17 @@ class CartService extends TransactionBaseService {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string().email().required()
-    const { value, error } = schema.validate(email.toLowerCase())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
+    const validatedEmail = validateEmail(email)
 
     let customer = await this.customerService_
       .withTransaction(this.transactionManager_)
-      .retrieveByEmail(value)
+      .retrieveByEmail(validatedEmail)
       .catch(() => undefined)
 
     if (!customer) {
       customer = await this.customerService_
         .withTransaction(this.transactionManager_)
-        .create({ email: value })
+        .create({ email: validatedEmail })
     }
 
     return customer
