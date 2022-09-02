@@ -2,15 +2,64 @@ import {
   Brackets,
   DeleteResult,
   EntityRepository,
+  FindManyOptions,
   In,
   Repository,
 } from "typeorm"
 import { SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common";
+import { ExtendedFindConfig, Selector } from "../types/common"
+import { flatten, groupBy, merge } from "lodash"
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends Repository<SalesChannel> {
-    public async getFreeTextSearchResultsAndCount(
+  public async findWithRelations(
+    relations: (keyof SalesChannel | string)[] = [],
+    idsOrOptionsWithoutRelations:
+      | Omit<FindManyOptions<SalesChannel>, "relations">
+      | string[] = {}
+  ): Promise<[SalesChannel[], number]> {
+    let entities: SalesChannel[] = []
+    let count = 0
+    if (Array.isArray(idsOrOptionsWithoutRelations)) {
+      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      count = idsOrOptionsWithoutRelations.length
+    } else {
+      const [results, resultCount] = await this.findAndCount(
+        idsOrOptionsWithoutRelations
+      )
+      entities = results
+      count = resultCount
+    }
+    const entitiesIds = entities.map(({ id }) => id)
+
+    const groupedRelations = {}
+    for (const rel of relations) {
+      const [topLevel] = rel.split(".")
+      if (groupedRelations[topLevel]) {
+        groupedRelations[topLevel].push(rel)
+      } else {
+        groupedRelations[topLevel] = [rel]
+      }
+    }
+
+    const entitiesIdsWithRelations = await Promise.all(
+      Object.entries(groupedRelations).map(([_, rels]) => {
+        return this.findByIds(entitiesIds, {
+          select: ["id"],
+          relations: rels as string[],
+        })
+      })
+    ).then(flatten)
+    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+
+    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
+    return [
+      Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v)),
+      count,
+    ]
+  }
+
+  public async getFreeTextSearchResultsAndCount(
     q: string,
     options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = {
       where: {},
@@ -69,5 +118,22 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
       )
       .orIgnore()
       .execute()
+  }
+
+  public async findOneWithRelations(
+    relations: Array<keyof SalesChannel> = [],
+    optionsWithoutRelations: Omit<
+      FindManyOptions<SalesChannel>,
+      "relations"
+    > = {}
+  ): Promise<SalesChannel> {
+    // Limit 1
+    optionsWithoutRelations.take = 1
+
+    const [result] = await this.findWithRelations(
+      relations,
+      optionsWithoutRelations
+    )
+    return result[0]
   }
 }
