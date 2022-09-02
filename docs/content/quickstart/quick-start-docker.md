@@ -1,4 +1,4 @@
-# Quickstart with Docker
+# Quickstart Using Docker
 
 This quick start is intended for developers, assuming that you have already configured your local development environment and familiarised yourself with all the technologies and frameworks used throughout the Medusa eco-system.
 
