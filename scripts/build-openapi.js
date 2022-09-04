@@ -4,15 +4,14 @@ const fs = require("fs")
 const OAS = require("oas-normalize")
 const swaggerInline = require("swagger-inline")
 const { exec } = require("child_process");
-const { exit } = require("process");
 
 const isDryRun = process.argv.indexOf('--dry-run') !== -1;
 
 // Storefront API
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
   {
-    base: "./docs/api/store-spec3-base.json",
+    base: "./docs/api/store-spec3-base.yaml",
   }
 ).then((gen) => {
   const oas = new OAS(gen)
@@ -31,9 +30,9 @@ swaggerInline(
 })
 
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/store"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
   {
-    base: "./docs/api/store-spec3-base.json",
+    base: "./docs/api/store-spec3-base.yaml",
     format: "yaml",
   }
 ).then((gen) => {
@@ -52,9 +51,9 @@ swaggerInline(
 
 // Admin API
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
   {
-    base: "./docs/api/admin-spec3-base.json",
+    base: "./docs/api/admin-spec3-base.yaml",
   }
 ).then((gen) => {
   const oas = new OAS(gen)
@@ -73,9 +72,9 @@ swaggerInline(
 })
 
 swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/routes/admin"],
+  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
   {
-    base: "./docs/api/admin-spec3-base.json",
+    base: "./docs/api/admin-spec3-base.yaml",
     format: "yaml",
   }
 ).then((gen) => {

@@ -228,7 +228,8 @@ module.exports = {
             expandResponses: "200,204",
             generatedPayloadSamplesMaxDepth: 4,
             showObjectSchemaExamples: true,
-            requiredPropsFirst: true
+            requiredPropsFirst: true,
+            hideRequestPayloadSample: true
           }
         }
       },
