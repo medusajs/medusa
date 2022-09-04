@@ -208,7 +208,14 @@ class TotalsService extends TransactionBaseService {
     }
 
     if (opts.include_tax) {
-      if (isCart(cartOrOrder) || cartOrOrder.tax_rate === null) {
+      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+        totals.original_tax_total = Math.round(
+          totals.price * (cartOrOrder.tax_rate / 100)
+        )
+        totals.tax_total = Math.round(
+          totals.price * (cartOrOrder.tax_rate / 100)
+        )
+      } else {
         let taxLines: ShippingMethodTaxLine[]
         if (opts.use_tax_lines || isOrder(cartOrOrder)) {
           if (typeof shippingMethod.tax_lines === "undefined") {

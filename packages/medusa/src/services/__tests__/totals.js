@@ -552,9 +552,7 @@ describe("TotalsService", () => {
     const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
     const getAllocationMapMock = jest.fn(() => ({}))
-    const featureFlagRouter = new FlagRouter({
-      [TaxInclusivePricingFeatureFlag.key]: false,
-    })
+
     const cradle = {
       taxProviderService: {
         withTransaction: function() {
@@ -802,7 +800,7 @@ describe("TotalsService", () => {
     })
   })
 
-  describe("MEDUSA_FF_TAX_INCLUSIVE_PRICING: getShippingTotal ", () => {
+  describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] getShippingTotal ", () => {
     const featureFlagRouter = new FlagRouter({
       [TaxInclusivePricingFeatureFlag.key]: true,
     })
