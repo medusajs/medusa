@@ -1,9 +1,11 @@
 import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
 import { FlagRouter } from "../../utils/flag-router"
+
 import * as CalculatePriceTaxAmount from "../../utils/calculate-price-tax-amount"
 
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { calculatePriceTaxAmount } from "../../utils"
 
 const discounts = {
   total10Percent: {
@@ -87,11 +89,21 @@ const applyDiscount = (cart, discount) => {
 const calculateAdjustment = (cart, lineItem, discount) => {
   let amount = discount.rule.value * lineItem.quantity
 
-  let lineItemPrice = lineItem.unit_price * lineItem.quantity
+  const taxAmountIncludedInPrice = !lineItem.includes_tax
+    ? 0
+    : Math.round(
+        calculatePriceTaxAmount({
+          price: lineItem.unit_price,
+          taxRate: cart.tax_rate / 100,
+          includesTax: lineItem.includes_tax,
+        })
+      )
+  let price = lineItem.unit_price - taxAmountIncludedInPrice
+  const lineItemPrice = price * lineItem.quantity
 
   if (discount.rule.type === "fixed" && discount.rule.allocation === "total") {
     let subtotal = cart.items.reduce(
-      (total, item) => total + item.unit_price * item.quantity,
+      (total, item) => total + price * item.quantity,
       0
     )
     const nominator = Math.min(discount.rule.value, subtotal)
@@ -513,6 +525,187 @@ describe("TotalsService", () => {
         .catch((e) => (errMsg = e.message))
 
       expect(errMsg).toBe("Line item does not exist on order")
+    })
+  })
+
+  describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] getRefundTotal", () => {
+    let res
+    const totalsService = new TotalsService({
+      ...container,
+      featureFlagRouter: new FlagRouter({
+        [TaxInclusivePricingFeatureFlag.key]: true,
+      }),
+    })
+
+    const orderToRefund = {
+      id: "refund-order",
+      tax_rate: 25,
+      items: [
+        {
+          id: "line",
+          unit_price: 125,
+          includes_tax: true,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp1",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+          metadata: {},
+        },
+        {
+          id: "non-discount",
+          unit_price: 100,
+          allow_discounts: false,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 1,
+          returned_quantity: 0,
+          metadata: {},
+        },
+      ],
+      region_id: "fr",
+      discounts: [],
+    }
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+      orderToRefund.discounts = []
+    })
+
+    it("calculates refund", async () => {
+      res = await totalsService.getRefundTotal(orderToRefund, [
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "product2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+          metadata: {},
+        },
+      ])
+
+      expect(res).toEqual(1250)
+    })
+
+    it("calculates refund with line that includes tax", async () => {
+      res = await totalsService.getRefundTotal(orderToRefund, [
+        {
+          id: "line",
+          unit_price: 125,
+          includes_tax: true,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "product2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+          metadata: {},
+        },
+      ])
+
+      expect(res).toEqual(1250)
+    })
+
+    it("calculates refund with item fixed discount", async () => {
+      orderToRefund.discounts.push(discounts.item2Fixed)
+      let order = applyDiscount(orderToRefund, discounts.item2Fixed)
+      res = await totalsService.getRefundTotal(order, [
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
+
+      expect(res).toEqual(1225)
+    })
+
+    it("calculates refund with item fixed discount and a line that includes tax", async () => {
+      orderToRefund.discounts.push(discounts.item2Fixed)
+      let order = applyDiscount(orderToRefund, discounts.item2Fixed)
+      res = await totalsService.getRefundTotal(order, [
+        {
+          id: "line",
+          unit_price: 125,
+          includes_tax: true,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
+
+      expect(res).toEqual(1225)
+    })
+
+    it("calculates refund with item percentage discount", async () => {
+      orderToRefund.discounts.push(discounts.item10Percent)
+      let order = applyDiscount(orderToRefund, discounts.item10Percent)
+      res = await totalsService.getRefundTotal(order, [
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
+
+      expect(res).toEqual(1125)
+    })
+
+    it("calculates refund with item percentage discount and a line that includes tax", async () => {
+      orderToRefund.discounts.push(discounts.item10Percent)
+      let order = applyDiscount(orderToRefund, discounts.item10Percent)
+      res = await totalsService.getRefundTotal(order, [
+        {
+          id: "line",
+          unit_price: 125,
+          includes_tax: true,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
+
+      expect(res).toEqual(1125)
     })
   })
 

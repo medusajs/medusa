@@ -1,4 +1,5 @@
 import TaxCalculationStrategy from "../tax-calculation"
+
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { featureFlagRouter } from "../../loaders/feature-flags"
 
@@ -277,7 +278,7 @@ describe("TaxCalculationStrategy", () => {
             featureFlagRouter.setFlag(key, value)
           )
         }
-
+        
         const calcStrat = new TaxCalculationStrategy({
           featureFlagRouter,
         })
