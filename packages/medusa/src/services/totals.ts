@@ -781,7 +781,8 @@ class TotalsService extends TransactionBaseService {
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       ) &&
-      lineItem.includes_tax
+      lineItem.includes_tax &&
+      options.include_tax
     ) {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
@@ -883,21 +884,6 @@ class TotalsService extends TransactionBaseService {
         lineItemTotals.tax_lines,
         calculationContext
       )
-
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        ) &&
-        lineItem.includes_tax
-      ) {
-        lineItemTotals.subtotal +=
-          lineItem.unit_price * lineItem.quantity - lineItemTotals.tax_total
-        lineItemTotals.total += lineItemTotals.subtotal
-        lineItemTotals.original_total += lineItemTotals.subtotal
-      }
-
-      lineItemTotals.total += lineItemTotals.tax_total
-
       calculationContext.allocation_map = {} // Don't account for discounts
       lineItemTotals.original_tax_total =
         await this.taxCalculationStrategy_.calculate(
@@ -906,6 +892,20 @@ class TotalsService extends TransactionBaseService {
           calculationContext
         )
 
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        lineItem.includes_tax
+      ) {
+        lineItemTotals.subtotal +=
+          lineItem.unit_price * lineItem.quantity -
+          lineItemTotals.original_tax_total
+        lineItemTotals.total += lineItemTotals.subtotal
+        lineItemTotals.original_total += lineItemTotals.subtotal
+      }
+
+      lineItemTotals.total += lineItemTotals.tax_total
       lineItemTotals.original_total += lineItemTotals.original_tax_total
     }
 
