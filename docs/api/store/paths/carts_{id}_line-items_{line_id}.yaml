@@ -15,6 +15,16 @@ delete:
       description: The id of the Line Item.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/deleteundefined
   tags:
     - Cart
   responses:
@@ -26,6 +36,16 @@ delete:
             properties:
               cart:
                 $ref: ../components/schemas/cart.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostCartsCartLineItemsItem
   summary: Update a Line Item
@@ -43,6 +63,16 @@ post:
       description: The id of the Line Item.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/postundefined
   tags:
     - Cart
   responses:
@@ -54,6 +84,16 @@ post:
             properties:
               cart:
                 $ref: ../components/schemas/cart.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
   requestBody:
     content:
       application/json:

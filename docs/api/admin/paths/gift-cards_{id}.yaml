@@ -10,6 +10,18 @@ delete:
       description: The ID of the Gift Card to delete.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/gift-cards_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/gift-cards_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -30,6 +42,18 @@ delete:
                 type: boolean
                 description: Whether the gift card was deleted successfully or not.
                 default: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetGiftCardsGiftCard
   summary: Retrieve a Gift Card
@@ -42,6 +66,18 @@ get:
       description: The ID of the Gift Card.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/gift-cards_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/gift-cards_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -53,6 +89,18 @@ get:
             properties:
               gift_card:
                 $ref: ../components/schemas/gift_card.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostGiftCardsGiftCard
   summary: Update a Gift Card
@@ -92,6 +140,18 @@ post:
                 An optional set of key-value pairs to hold additional
                 information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/gift-cards_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/gift-cards_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Gift Card
   responses:
@@ -103,3 +163,15 @@ post:
             properties:
               gift_card:
                 $ref: ../components/schemas/gift_card.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

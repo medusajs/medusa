@@ -2,9 +2,19 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Medusa Admin API
-  description: >-
+  description: >
     API reference for Medusa's Admin endpoints. All endpoints are prefixed with
     `/admin`.
+
+
+    ## Authentication
+
+
+    There are two ways to send authenticated requests to the Medusa server:
+    Using a user's API token, or using a Cookie Session ID.
+
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
@@ -66,7 +76,7 @@ tags:
   - name: Product Tag
     description: Product Tag endpoints that allow handling product tags in Medusa.
     x-resourceId: product_tag
-  - name: Product Types
+  - name: Product Type
     description: Product Types endpoints that allow handling product types in Medusa.
     x-resourceId: product_type
   - name: Product Variant
@@ -349,3 +359,144 @@ paths:
     $ref: paths/users_reset-password.yaml
   /variants:
     $ref: paths/variants.yaml
+components:
+  securitySchemes:
+    api_token:
+      type: http
+      x-displayName: API Token
+      description: >
+        Use a user's API Token to send authenticated requests.
+
+
+        ### How to Add API Token to a User
+
+
+        At the moment, there's no direct way of adding an API Token for a user.
+        The only way it can be done is through directly editing the database.
+
+
+        If you're using a PostgreSQL database, you can run the following
+        commands in your command line to add API token:
+
+
+        ```bash
+
+        psql -d <DB_NAME> -U <DB_USER>
+
+        UPDATE public.user SET api_token='<API_TOKEN>' WHERE
+        email='<USER_EMAIL>';
+
+        ```
+
+
+        Where:
+
+        - `<DB_NAME>` is the name of the database schema you use for the Medusa
+        server.
+
+        - `<DB_USER>` is the name of the user that has privileges over the
+        database schema.
+
+        - `<API_TOKEN>` is the API token you want to associate with the user.
+        You can use [this tool to generate a random
+        token](https://randomkeygen.com/).
+
+        - `<USER_EMAIL>` is the email address of the admin user you want to have
+        this API token.
+
+
+        ### How to Use the API Token
+
+
+        The API token can be used for Bearer Authentication. It's passed in the
+        `Authorization` header as the following:
+
+
+        ```
+
+        Authorization: Bearer {api_token}
+
+        ```
+
+
+        In this API reference, you'll find in the cURL request samples the use
+        of `{api_token}`. This is where you must pass the API token.
+
+
+        If you're alternatively following along with the JS Client request
+        samples, you must provide the `apiKey` option when creating the Medusa
+        client:
+
+
+        ```js
+
+        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3,
+        apiKey: '{api_token}' })
+
+        ```
+      scheme: bearer
+    cookie_auth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      x-displayName: Cookie Session ID
+      description: >
+        Use a cookie session to send authenticated requests.
+
+
+        ### How to Obtain the Cookie Session
+
+
+        If you're sending requests through a browser, using JS Client, or using
+        tools like Postman, the cookie session should be automatically set when
+        the admin user is logged in.
+
+
+        If you're sending requests using cURL, you must set the Session ID in
+        the cookie manually.
+
+
+        To do that, send a request to [authenticate the
+        user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+
+        ```bash
+
+        curl -v --location --request POST 'https://medusa-url.com/admin/auth' \
+
+        --header 'Content-Type: application/json' \
+
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+
+        ```
+
+
+        The headers will be logged in the terminal as well as the response. You
+        should find in the headers a Cookie header similar to this:
+
+
+        ```bash
+
+        Set-Cookie:
+        connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+
+        ```
+
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass
+        it as a cookie in subsequent requests as the following:
+
+
+        ```bash
+
+        curl --location --request GET 'https://medusa-url.com/admin/products' \
+
+        --header 'Cookie: connect.sid={sid}'
+
+        ```
+
+
+        Where `{sid}` is the value of `connect.sid` that you copied.
