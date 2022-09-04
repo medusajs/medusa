@@ -122,11 +122,16 @@ class PricingService extends TransactionBaseService {
     }
 
     if (variantPricing.calculated_price !== null) {
+      const includesTax = !!(
+        this.featureFlagRouter.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && variantPricing.calculated_price_includes_tax
+      )
       taxedPricing.calculated_tax = Math.round(
         calculatePriceTaxAmount({
           price: variantPricing.calculated_price,
           taxRate: rate,
-          includesTax: variantPricing.calculated_price_includes_tax ?? false,
+          includesTax,
         })
       )
 
@@ -136,11 +141,16 @@ class PricingService extends TransactionBaseService {
     }
 
     if (variantPricing.original_price !== null) {
+      const includesTax = !!(
+        this.featureFlagRouter.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && variantPricing.original_price_includes_tax
+      )
       taxedPricing.original_tax = Math.round(
         calculatePriceTaxAmount({
           price: variantPricing.original_price,
           taxRate: rate,
-          includesTax: variantPricing.original_price_includes_tax ?? false,
+          includesTax,
         })
       )
 

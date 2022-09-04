@@ -281,6 +281,7 @@ describe("TaxCalculationStrategy", () => {
         const calcStrat = new TaxCalculationStrategy({
           featureFlagRouter,
         })
+
         const val = await calcStrat.calculate(items, taxLines, context)
         expect(val).toEqual(expected)
 

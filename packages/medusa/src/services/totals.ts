@@ -801,13 +801,17 @@ class TotalsService extends TransactionBaseService {
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
         const taxRate = cartOrOrder.tax_rate / 100
 
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && lineItem.includes_tax
         const taxIncludedInPrice = !lineItem.includes_tax
           ? 0
           : Math.round(
               calculatePriceTaxAmount({
                 price: lineItem.unit_price,
                 taxRate: taxRate,
-                includesTax: lineItem.includes_tax,
+                includesTax,
               })
             )
         lineItemTotals.subtotal =
