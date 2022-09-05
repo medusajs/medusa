@@ -1,10 +1,9 @@
 import TaxCalculationStrategy from "../tax-calculation"
-import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
-import { featureFlagRouter } from "../../loaders/feature-flags";
-import { FlagRouter } from "../../utils/flag-router";
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../utils/flag-router"
 
 const toTest = [
-	[
+  [
     "calculates correctly without gift card",
     {
       /*
@@ -129,13 +128,13 @@ const toTest = [
           id: "item_1",
           unit_price: 120,
           quantity: 2,
-          includes_tax: true
+          includes_tax: true,
         },
         {
           id: "item_2",
           unit_price: 100,
           quantity: 1,
-          includes_tax: false
+          includes_tax: false,
         },
       ],
       taxLines: [
@@ -162,7 +161,110 @@ const toTest = [
         allocation_map: {},
       },
     },
-  ]
+  ],
+  [
+    "calculates correctly with tax inclusive shipping",
+    {
+      expected: 40,
+      flags: { [TaxInclusivePricingFeatureFlag.key]: true },
+      items: [
+        {
+          id: "item_1",
+          unit_price: 120,
+          quantity: 1,
+          includes_tax: true,
+        },
+      ],
+      taxLines: [
+        {
+          shipping_method_id: "shipping_method_1",
+          name: "Name 1",
+          rate: 15,
+        },
+        {
+          shipping_method_id: "shipping_method_2",
+          name: "Name 2",
+          rate: 5,
+        },
+        {
+          item_id: "item_1",
+          name: "Name 1",
+          rate: 20,
+        },
+      ],
+      context: {
+        shipping_address: null,
+        customer: {
+          email: "test@testson.com",
+        },
+        region: {
+          gift_cards_taxable: true,
+        },
+        shipping_methods: [
+          { id: "shipping_method_1", price: 115, includes_tax: true },
+          { id: "shipping_method_2", price: 105, includes_tax: true },
+        ],
+        allocation_map: {},
+      },
+    },
+  ],
+  [
+    "calculates correctly with tax inclusive pricing and shipping",
+    {
+      expected: 85,
+      flags: { [TaxInclusivePricingFeatureFlag.key]: true },
+      items: [
+        {
+          id: "item_1",
+          unit_price: 120,
+          quantity: 2,
+          includes_tax: true,
+        },
+        {
+          id: "item_2",
+          unit_price: 100,
+          quantity: 1,
+          includes_tax: false,
+        },
+      ],
+      taxLines: [
+        {
+          shipping_method_id: "shipping_method_1",
+          name: "Name 1",
+          rate: 15,
+        },
+        {
+          shipping_method_id: "shipping_method_2",
+          name: "Name 2",
+          rate: 10,
+        },
+        {
+          item_id: "item_1",
+          name: "Name 1",
+          rate: 20,
+        },
+        {
+          item_id: "item_2",
+          name: "Name 2",
+          rate: 20,
+        },
+      ],
+      context: {
+        shipping_address: null,
+        customer: {
+          email: "test@testson.com",
+        },
+        region: {
+          gift_cards_taxable: true,
+        },
+        shipping_methods: [
+          { id: "shipping_method_1", price: 115, includes_tax: true },
+          { id: "shipping_method_2", price: 100, includes_tax: false },
+        ],
+        allocation_map: {},
+      },
+    },
+  ],
 ]
 
 describe("TaxCalculationStrategy", () => {
@@ -172,7 +274,7 @@ describe("TaxCalculationStrategy", () => {
       async (title, { items, taxLines, context, expected, flags }) => {
         const featureFlagRouter = new FlagRouter(flags ?? {})
         const calcStrat = new TaxCalculationStrategy({
-          featureFlagRouter
+          featureFlagRouter,
         })
 
         const val = await calcStrat.calculate(items, taxLines, context)

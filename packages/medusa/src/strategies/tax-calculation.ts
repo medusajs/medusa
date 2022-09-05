@@ -93,12 +93,19 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
     shipping_methods: ShippingMethod[],
     taxLines: ShippingMethodTaxLine[]
   ): number {
+    const taxInclusiveEnabled = this.featureFlagRouter_.isFeatureEnabled(
+      TaxInclusivePricingFeatureFlag.key
+    )
+
     let taxTotal = 0
     for (const sm of shipping_methods) {
-      const amount = sm.price
       const lineRates = taxLines.filter((tl) => tl.shipping_method_id === sm.id)
       for (const lineRate of lineRates) {
-        taxTotal += Math.round(amount * (lineRate.rate / 100))
+        taxTotal += calculatePriceTaxAmount({
+          price: sm.price,
+          taxRate: lineRate.rate / 100,
+          includesTax: taxInclusiveEnabled && sm.includes_tax,
+        })
       }
     }
     return taxTotal

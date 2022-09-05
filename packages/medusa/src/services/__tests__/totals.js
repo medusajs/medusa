@@ -1,7 +1,8 @@
 import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
 import { FlagRouter } from "../../utils/flag-router"
-import taxInclusivePricing from "../../loaders/feature-flags/tax-inclusive-pricing"
+
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { calculatePriceTaxAmount } from "../../utils"
 
 const discounts = {
@@ -113,16 +114,19 @@ const calculateAdjustment = (cart, lineItem, discount) => {
 
 describe("TotalsService", () => {
   const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
+  const featureFlagRouter = new FlagRouter({
+    [TaxInclusivePricingFeatureFlag.key]: false,
+  })
 
   const container = {
     taxProviderService: {
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
       getTaxLines: getTaxLinesMock,
     },
     taxCalculationStrategy: {},
-    featureFlagRouter: new FlagRouter({}),
+    featureFlagRouter,
   }
 
   describe("getAllocationItemDiscounts", () => {
@@ -527,7 +531,7 @@ describe("TotalsService", () => {
     const totalsService = new TotalsService({
       ...container,
       featureFlagRouter: new FlagRouter({
-        [taxInclusivePricing.key]: true,
+        [TaxInclusivePricingFeatureFlag.key]: true,
       }),
     })
 
@@ -705,7 +709,26 @@ describe("TotalsService", () => {
 
   describe("getShippingTotal", () => {
     let res
-    const totalsService = new TotalsService(container)
+
+    const getTaxLinesMock = jest.fn(() =>
+      Promise.resolve([
+        { shipping_method_id: IdMap.getId("expensiveShipping") },
+      ])
+    )
+    const calculateMock = jest.fn(() => Promise.resolve(20))
+
+    const totalsService = new TotalsService({
+      ...container,
+      taxProviderService: {
+        withTransaction: function() {
+          return this
+        },
+        getTaxLines: getTaxLinesMock,
+      },
+      taxCalculationStrategy: {
+        calculate: calculateMock,
+      },
+    })
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -715,7 +738,7 @@ describe("TotalsService", () => {
       const order = {
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
+            id: IdMap.getId("expensiveShipping"),
             name: "Expensive Shipping",
             price: 100,
             provider_id: "default_provider",
@@ -726,7 +749,7 @@ describe("TotalsService", () => {
           },
         ],
       }
-      res = totalsService.getShippingTotal(order)
+      res = await totalsService.getShippingTotal(order)
 
       expect(res).toEqual(100)
     })
@@ -742,7 +765,7 @@ describe("TotalsService", () => {
 
     const cradle = {
       taxProviderService: {
-        withTransaction: function () {
+        withTransaction: function() {
           return this
         },
         getTaxLines: getTaxLinesMock,
@@ -750,7 +773,7 @@ describe("TotalsService", () => {
       taxCalculationStrategy: {
         calculate: calculateMock,
       },
-      featureFlagRouter: new FlagRouter({}),
+      featureFlagRouter,
     }
 
     beforeEach(() => {
@@ -939,7 +962,7 @@ describe("TotalsService", () => {
     const totalsService = new TotalsService({
       ...container,
       featureFlagRouter: new FlagRouter({
-        [taxInclusivePricing.key]: true,
+        [TaxInclusivePricingFeatureFlag.key]: true,
       }),
     })
 
@@ -984,6 +1007,60 @@ describe("TotalsService", () => {
       expect(getTaxTotalMock).toHaveBeenCalledWith(order, undefined)
 
       expect(res).toEqual(185)
+    })
+  })
+
+  describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] getShippingTotal ", () => {
+    const calculateMock = jest.fn(() => Promise.resolve(20))
+    const totalsService = new TotalsService({
+      ...container,
+      taxCalculationStrategy: {
+        calculate: calculateMock,
+      },
+      featureFlagRouter: new FlagRouter({
+        [TaxInclusivePricingFeatureFlag.key]: true,
+      }),
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calculates total", async () => {
+      const order = {
+        tax_rate: null,
+        items: [
+          {
+            unit_price: 20,
+            quantity: 2,
+          },
+          {
+            unit_price: 25,
+            quantity: 2,
+            includes_tax: true,
+          },
+        ],
+        shipping_methods: [
+          {
+            id: IdMap.getId("expensiveShipping"),
+            name: "Expensive Shipping",
+            price: 120,
+            includes_tax: true,
+            tax_lines: [
+              { shipping_method_id: IdMap.getId("expensiveShipping") },
+            ],
+            provider_id: "default_provider",
+            profile_id: IdMap.getId("default"),
+            data: {
+              extra: "hi",
+            },
+          },
+        ],
+      }
+
+      const res = await totalsService.getShippingTotal(order)
+
+      expect(res).toEqual(100)
     })
   })
 })

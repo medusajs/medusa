@@ -135,10 +135,9 @@ class PricingService extends TransactionBaseService {
         })
       )
 
-      taxedPricing.calculated_price_incl_tax =
-        variantPricing.calculated_price_includes_tax
-          ? variantPricing.calculated_price
-          : variantPricing.calculated_price + taxedPricing.calculated_tax
+      taxedPricing.calculated_price_incl_tax = variantPricing.calculated_price_includes_tax
+        ? variantPricing.calculated_price
+        : variantPricing.calculated_price + taxedPricing.calculated_tax
     }
 
     if (variantPricing.original_price !== null) {
@@ -155,10 +154,9 @@ class PricingService extends TransactionBaseService {
         })
       )
 
-      taxedPricing.original_price_incl_tax =
-        variantPricing.original_price_includes_tax
-          ? variantPricing.original_price
-          : variantPricing.original_price + taxedPricing.original_tax
+      taxedPricing.original_price_incl_tax = variantPricing.original_price_includes_tax
+        ? variantPricing.original_price
+        : variantPricing.original_price + taxedPricing.original_tax
     }
 
     return taxedPricing
