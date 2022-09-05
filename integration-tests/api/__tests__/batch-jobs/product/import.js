@@ -74,7 +74,7 @@ describe("Product import batch job", () => {
     const response = await api.post(
       "/admin/batch-jobs",
       {
-        type: "product_import",
+        type: "product-import",
         context: {
           fileKey: "product-import.csv",
         },
