@@ -1,5 +1,7 @@
 ---
-"medusa-plugin-meilisearch": minor
+"medusa-plugin-meilisearch": major
 ---
 
 Update meilisearch deps to respect latest breaking changes
+
+BREAKING CHANGE
