@@ -19,34 +19,15 @@ post:
             password:
               type: string
               description: The User's password.
-  tags:
-    - Auth
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            properties:
-              user:
-                $ref: ../components/schemas/user.yaml
-    '401':
-      description: The user doesn't exist or the credentials are incorrect.
-delete:
-  operationId: DeleteAuth
-  summary: Delete Session
-  x-authenticated: true
-  description: Deletes the current session for the logged in user.
-  tags:
-    - Auth
-  responses:
-    '200':
-      description: OK
-get:
-  operationId: GetAuth
-  summary: Get Session
-  x-authenticated: true
-  description: Gets the currently logged in User.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/postundefined
   tags:
     - Auth
   responses:
@@ -59,4 +40,88 @@ get:
               user:
                 $ref: ../components/schemas/user.yaml
     '400':
-      description: An error occurred.
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/incorrect_credentials.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteAuth
+  summary: Delete Session
+  x-authenticated: true
+  description: Deletes the current session for the logged in user.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetAuth
+  summary: Get Session
+  x-authenticated: true
+  description: Gets the currently logged in User.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/auth/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              user:
+                $ref: ../components/schemas/user.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

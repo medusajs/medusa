@@ -16,6 +16,19 @@ post:
       description: The ID of the Region.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{id}_regions_{region_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/discounts_{id}_regions_{region_id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:
@@ -27,6 +40,18 @@ post:
             properties:
               discount:
                 $ref: ../components/schemas/discount.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteDiscountsDiscountRegionsRegion
   summary: Remove Region availability
@@ -45,6 +70,20 @@ delete:
       description: The ID of the Region.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/discounts_{id}_regions_{region_id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/discounts_{id}_regions_{region_id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Discount
   responses:
@@ -56,3 +95,15 @@ delete:
             properties:
               discount:
                 $ref: ../components/schemas/discount.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

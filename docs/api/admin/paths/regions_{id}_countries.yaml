@@ -24,6 +24,18 @@ post:
                 url: >-
                   https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
                 description: See a list of codes.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/regions_{id}_countries/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/regions_{id}_countries/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:
@@ -35,3 +47,15 @@ post:
             properties:
               region:
                 $ref: ../components/schemas/region.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

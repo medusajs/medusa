@@ -1,5 +1,5 @@
-get:
-  operationId: GetProductsSearch
+post:
+  operationId: PostProductsSearch
   summary: Search Products
   description: Run a search query on products using the search engine installed on Medusa
   parameters:
@@ -19,6 +19,15 @@ get:
       description: Limit the number of products returned.
       schema:
         type: integer
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/products_search/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/products_search/postundefined
   tags:
     - Product
   responses:
@@ -33,3 +42,13 @@ get:
                 description: >-
                   Array of results. The format of the items depends on the
                   search engine installed on the server.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

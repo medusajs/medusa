@@ -62,6 +62,11 @@ get:
                 description: >-
                   filter by inventory quantity greater than or equal to this
                   number
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/variants/getundefined
   tags:
     - Product Variant
   responses:
@@ -75,3 +80,13 @@ get:
                 type: array
                 items:
                   $ref: ../components/schemas/product_variant.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

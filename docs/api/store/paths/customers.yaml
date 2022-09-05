@@ -29,6 +29,15 @@ post:
             phone:
               description: The Customer's phone number.
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers/postundefined
   tags:
     - Customer
   responses:
@@ -40,6 +49,12 @@ post:
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
     '422':
       description: A customer with the same email exists
       content:
@@ -61,3 +76,5 @@ post:
             message: >-
               A customer with the given email already has an account. Log in
               instead
+    '500':
+      $ref: ../components/responses/500_error.yaml
