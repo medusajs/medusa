@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
+import { DeepPartial } from "typeorm/common/DeepPartial"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import {
@@ -15,6 +16,7 @@ import LineItemAdjustmentService from "./line-item-adjustment"
 import { Cart } from "../models/cart"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { FindConfig } from "../types/common"
+import { LineItemTaxLine } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -324,6 +326,19 @@ class LineItemService extends BaseService {
           .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
       }
     )
+  }
+
+  /**
+   * Create a line item tax line.
+   * @param args - tax line partial passed to the repo create method
+   * @return a new line item tax line
+   */
+  public createTaxLine(args: DeepPartial<LineItemTaxLine>): LineItemTaxLine {
+    const itemTaxLineRepo = this.manager_.getCustomRepository(
+      this.itemTaxLineRepo_
+    )
+
+    return itemTaxLineRepo.create(args)
   }
 }
 

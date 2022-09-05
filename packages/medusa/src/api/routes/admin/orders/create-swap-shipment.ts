@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               type: string
  *           no_notification:
- *             description: If set to true no notification will be send related to this Claim.
+ *             description: If set to true no notification will be sent related to this Claim.
  *             type: boolean
  * tags:
  *   - Swap
