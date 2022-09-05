@@ -12950,7 +12950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
+"cross-fetch@npm:^3.1.5":
   version: 3.1.5
   resolution: "cross-fetch@npm:3.1.5"
   dependencies:
@@ -23831,7 +23831,7 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.31
-    meilisearch: ^0.24.0
+    meilisearch: 0.27.0
   peerDependencies:
     medusa-interfaces: 1.3.3
   languageName: unknown
@@ -24119,12 +24119,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"meilisearch@npm:^0.24.0":
-  version: 0.24.0
-  resolution: "meilisearch@npm:0.24.0"
+"meilisearch@npm:0.27.0":
+  version: 0.27.0
+  resolution: "meilisearch@npm:0.27.0"
   dependencies:
-    cross-fetch: ^3.1.4
-  checksum: c8ee053589c84b69f99fcb49611a560efec39fcea406a41b2c8d5c374967ca0e7a3958999c2ed9b2f614752ee94968a298b9f529e690ed0d404f2aeb8baadceb
+    cross-fetch: ^3.1.5
+  checksum: 81903e8e5048eed7f32db0304c9829f4e9ff162a260830675b936f18223ffc0b3ca6b6f1e169563ea3cb5b39adb46a1506d96dc7ad5a1888c3a893e0e415c7ac
   languageName: node
   linkType: hard
 
