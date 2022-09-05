@@ -1,10 +1,15 @@
+const newLineRegexp = new RegExp(/\n/g)
+const doubleQuoteRegexp = new RegExp(/"/g)
+
 export function csvNewLineContentFormatter(str: string): string {
-  const hasNewLineChar = !!str.match(/[\r\n]/g)
+  const hasNewLineChar = !!str.match(newLineRegexp)
   if (!hasNewLineChar) {
     return str
   }
 
-  let formatterStr = str.replace(/\n/g, "\\n")
-  formatterStr = formatterStr.replace(/"/g, '""')
+  const formatterStr = str
+    .replace(newLineRegexp, "\\n")
+    .replace(doubleQuoteRegexp, '""')
+
   return `"${formatterStr}"`
 }
