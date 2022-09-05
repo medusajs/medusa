@@ -242,7 +242,9 @@ class CartService extends TransactionBaseService {
           break
         }
         case "shipping_total": {
-          totals.shipping_total = this.totalsService_.getShippingTotal(cart)
+          totals.shipping_total = await this.totalsService_.getShippingTotal(
+            cart
+          )
           break
         }
         case "discount_total":
@@ -1749,8 +1751,9 @@ class CartService extends TransactionBaseService {
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
-          const shippingOptionServiceTx =
-            this.shippingOptionService_.withTransaction(transactionManager)
+          const shippingOptionServiceTx = this.shippingOptionService_.withTransaction(
+            transactionManager
+          )
 
           for (const shippingMethod of shipping_methods) {
             if (
@@ -1767,8 +1770,9 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.items?.length) {
-          const lineItemServiceTx =
-            this.lineItemService_.withTransaction(transactionManager)
+          const lineItemServiceTx = this.lineItemService_.withTransaction(
+            transactionManager
+          )
 
           await Promise.all(
             cart.items.map(async (item) => {

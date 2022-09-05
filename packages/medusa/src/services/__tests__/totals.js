@@ -2,8 +2,6 @@ import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
 import { FlagRouter } from "../../utils/flag-router"
 
-import * as CalculatePriceTaxAmount from "../../utils/calculate-price-tax-amount"
-
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { calculatePriceTaxAmount } from "../../utils"
 
@@ -711,7 +709,26 @@ describe("TotalsService", () => {
 
   describe("getShippingTotal", () => {
     let res
-    const totalsService = new TotalsService(container)
+
+    const getTaxLinesMock = jest.fn(() =>
+      Promise.resolve([
+        { shipping_method_id: IdMap.getId("expensiveShipping") },
+      ])
+    )
+    const calculateMock = jest.fn(() => Promise.resolve(20))
+
+    const totalsService = new TotalsService({
+      ...container,
+      taxProviderService: {
+        withTransaction: function() {
+          return this
+        },
+        getTaxLines: getTaxLinesMock,
+      },
+      taxCalculationStrategy: {
+        calculate: calculateMock,
+      },
+    })
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -721,7 +738,7 @@ describe("TotalsService", () => {
       const order = {
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
+            id: IdMap.getId("expensiveShipping"),
             name: "Expensive Shipping",
             price: 100,
             provider_id: "default_provider",
@@ -732,7 +749,7 @@ describe("TotalsService", () => {
           },
         ],
       }
-      res = totalsService.getShippingTotal(order)
+      res = await totalsService.getShippingTotal(order)
 
       expect(res).toEqual(100)
     })
@@ -994,8 +1011,12 @@ describe("TotalsService", () => {
   })
 
   describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] getShippingTotal ", () => {
+    const calculateMock = jest.fn(() => Promise.resolve(20))
     const totalsService = new TotalsService({
       ...container,
+      taxCalculationStrategy: {
+        calculate: calculateMock,
+      },
       featureFlagRouter: new FlagRouter({
         [TaxInclusivePricingFeatureFlag.key]: true,
       }),
@@ -1007,9 +1028,7 @@ describe("TotalsService", () => {
 
     it("calculates total", async () => {
       const order = {
-        region: {
-          tax_rate: 25,
-        },
+        tax_rate: null,
         items: [
           {
             unit_price: 20,
@@ -1023,10 +1042,13 @@ describe("TotalsService", () => {
         ],
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
+            id: IdMap.getId("expensiveShipping"),
             name: "Expensive Shipping",
             price: 120,
             includes_tax: true,
+            tax_lines: [
+              { shipping_method_id: IdMap.getId("expensiveShipping") },
+            ],
             provider_id: "default_provider",
             profile_id: IdMap.getId("default"),
             data: {
@@ -1036,14 +1058,9 @@ describe("TotalsService", () => {
         ],
       }
 
-      const calculatePriceTaxAmountMock = jest
-        .spyOn(CalculatePriceTaxAmount, "calculatePriceTaxAmount")
-        .mockReturnValue(20)
-
-      const res = totalsService.getShippingTotal(order)
+      const res = await totalsService.getShippingTotal(order)
 
       expect(res).toEqual(100)
-      expect(calculatePriceTaxAmountMock).toHaveBeenCalledTimes(1)
     })
   })
 })

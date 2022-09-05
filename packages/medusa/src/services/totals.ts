@@ -33,6 +33,7 @@ type ShippingMethodTotals = {
   price: number
   tax_total: number
   total: number
+  subtotal: number
   original_total: number
   original_tax_total: number
   tax_lines: ShippingMethodTaxLine[]
@@ -142,7 +143,7 @@ class TotalsService extends TransactionBaseService {
     const giftCardTotal = options.exclude_gift_cards
       ? { total: 0 }
       : await this.getGiftCardTotal(cartOrOrder)
-    const shippingTotal = this.getShippingTotal(cartOrOrder)
+    const shippingTotal = await this.getShippingTotal(cartOrOrder)
 
     return (
       subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal.total
@@ -202,6 +203,7 @@ class TotalsService extends TransactionBaseService {
       price: shippingMethod.price,
       original_total: shippingMethod.price,
       total: shippingMethod.price,
+      subtotal: shippingMethod.price,
       original_tax_total: 0,
       tax_total: 0,
       tax_lines: shippingMethod.tax_lines || [],
@@ -215,33 +217,32 @@ class TotalsService extends TransactionBaseService {
         totals.tax_total = Math.round(
           totals.price * (cartOrOrder.tax_rate / 100)
         )
-      } else {
-        let taxLines: ShippingMethodTaxLine[]
-        if (opts.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof shippingMethod.tax_lines === "undefined") {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "Tax Lines must be joined on shipping method to calculate taxes"
-            )
+      } else if (totals.tax_lines.length === 0) {
+        const orderLines = await this.taxProviderService_
+          .withTransaction(this.manager_)
+          .getTaxLines(cartOrOrder.items, calculationContext)
+
+        totals.tax_lines = orderLines.filter((ol) => {
+          if ("shipping_method_id" in ol) {
+            return ol.shipping_method_id === shippingMethod.id
           }
+          return false
+        }) as ShippingMethodTaxLine[]
 
-          taxLines = shippingMethod.tax_lines
-        } else {
-          const orderLines = await this.taxProviderService_
-            .withTransaction(this.manager_)
-            .getTaxLines(cartOrOrder.items, calculationContext)
-
-          taxLines = orderLines.filter((ol) => {
-            if ("shipping_method_id" in ol) {
-              return ol.shipping_method_id === shippingMethod.id
-            }
-            return false
-          }) as ShippingMethodTaxLine[]
+        if (totals.tax_lines.length === 0 && isOrder(cartOrOrder)) {
+          throw new MedusaError(
+            MedusaError.Types.UNEXPECTED_STATE,
+            "Tax Lines must be joined on shipping method to calculate taxes"
+          )
         }
-        totals.tax_lines = taxLines
       }
 
       if (totals.tax_lines.length > 0) {
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+
         totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
           [],
           totals.tax_lines,
@@ -249,8 +250,12 @@ class TotalsService extends TransactionBaseService {
         )
         totals.tax_total = totals.original_tax_total
 
-        totals.original_total += totals.original_tax_total
-        totals.total += totals.tax_total
+        if (includesTax) {
+          totals.subtotal -= totals.tax_total
+        } else {
+          totals.original_total += totals.original_tax_total
+          totals.total += totals.tax_total
+        }
       }
     }
 
@@ -260,6 +265,7 @@ class TotalsService extends TransactionBaseService {
 
     if (hasFreeShipping) {
       totals.total = 0
+      totals.subtotal = 0
       totals.tax_total = 0
     }
 
@@ -308,33 +314,23 @@ class TotalsService extends TransactionBaseService {
    * @param cartOrOrder - cart or order to calculate subtotal for
    * @return shipping total
    */
-  getShippingTotal(cartOrOrder: Cart | Order): number {
+  async getShippingTotal(cartOrOrder: Cart | Order): Promise<number> {
     const { shipping_methods } = cartOrOrder
-    return (
-      shipping_methods?.reduce((acc, shippingMethod) => {
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          ) &&
-          shippingMethod.includes_tax
-        ) {
-          const rate =
-            shippingMethod.tax_lines?.reduce(
-              (sum, method) => sum + method.rate / 100,
-              0
-            ) || 0
 
-          const totalTaxes = calculatePriceTaxAmount({
-            price: shippingMethod.price,
-            taxRate: rate,
-            includesTax: true,
-          })
-          return acc + shippingMethod.price - totalTaxes
+    let total = 0
+    for (const shippingMethod of shipping_methods) {
+      const totals = await this.getShippingMethodTotals(
+        shippingMethod,
+        cartOrOrder,
+        {
+          include_tax: true,
         }
+      )
 
-        return acc + shippingMethod.price
-      }, 0) || 0
-    )
+      total += totals.subtotal
+    }
+
+    return total
   }
 
   /**
@@ -382,7 +378,7 @@ class TotalsService extends TransactionBaseService {
         taxLines = taxLines.concat(shippingTaxLines)
       } else {
         const subtotal = await this.getSubtotal(cartOrOrder)
-        const shippingTotal = this.getShippingTotal(cartOrOrder)
+        const shippingTotal = await this.getShippingTotal(cartOrOrder)
         const discountTotal = await this.getDiscountTotal(cartOrOrder)
         return this.rounded(
           (subtotal - discountTotal - giftCardTotal.total + shippingTotal) *
