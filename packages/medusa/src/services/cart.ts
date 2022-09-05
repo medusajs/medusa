@@ -2145,48 +2145,6 @@ class CartService extends TransactionBaseService {
       .withTransaction(transactionManager)
       .createAdjustments(cart)
   }
-
-  /**
-   * Dedicated method to delete metadata for a cart.
-   * @param cartId - the cart to delete metadata from.
-   * @param key - key for metadata field
-   * @return resolves to the updated result.
-   */
-  async deleteMetadata(cartId: string, key: string): Promise<Cart> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
-          this.cartRepository_
-        )
-        const validatedId = validateId(cartId)
-
-        if (typeof key !== "string") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Key type is invalid. Metadata keys must be strings"
-          )
-        }
-
-        const cart = await cartRepo.findOne(validatedId)
-        if (!cart) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Cart with id: ${validatedId} was not found`
-          )
-        }
-
-        const updated = cart.metadata || {}
-        delete updated[key]
-        cart.metadata = updated
-
-        const updatedCart = await cartRepo.save(cart)
-        this.eventBus_
-          .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, updatedCart)
-        return updatedCart
-      }
-    )
-  }
 }
 
 export default CartService

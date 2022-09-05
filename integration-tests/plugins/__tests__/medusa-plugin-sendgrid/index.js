@@ -178,7 +178,6 @@ describe("medusa-plugin-sendgrid", () => {
       order: {
         display_id: expect.any(Number),
         id: expect.any(String),
-        display_id: expect.any(Number),
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
         customer_id: expect.any(String),
