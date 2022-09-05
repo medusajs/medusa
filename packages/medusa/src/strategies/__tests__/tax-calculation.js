@@ -273,24 +273,13 @@ describe("TaxCalculationStrategy", () => {
     test.each(toTest)(
       "%s",
       async (title, { items, taxLines, context, expected, flags }) => {
-        if (flags) {
-          Object.entries(flags).forEach(([key, value]) =>
-            featureFlagRouter.setFlag(key, value)
-          )
-        }
-        
+        const featureFlagRouter = new FlagRouter(flags ?? {})
         const calcStrat = new TaxCalculationStrategy({
           featureFlagRouter,
         })
 
         const val = await calcStrat.calculate(items, taxLines, context)
         expect(val).toEqual(expected)
-
-        if (flags) {
-          Object.entries(flags).forEach(([key]) =>
-            featureFlagRouter.setFlag(key, false)
-          )
-        }
       }
     )
   })

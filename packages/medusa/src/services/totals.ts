@@ -254,15 +254,13 @@ class TotalsService extends TransactionBaseService {
       }
     }
 
-    if (cartOrOrder.discounts) {
-      if (
-        cartOrOrder.discounts.some(
-          (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
-        )
-      ) {
-        totals.total = 0
-        totals.tax_total = 0
-      }
+    const hasFreeShipping = cartOrOrder.discounts?.some(
+      (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
+    )
+
+    if (hasFreeShipping) {
+      totals.total = 0
+      totals.tax_total = 0
     }
 
     return totals
@@ -910,12 +908,11 @@ class TotalsService extends TransactionBaseService {
         calculationContext
       )
       calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total =
-        await this.taxCalculationStrategy_.calculate(
-          [lineItem],
-          lineItemTotals.tax_lines,
-          calculationContext
-        )
+      lineItemTotals.original_tax_total = await this.taxCalculationStrategy_.calculate(
+        [lineItem],
+        lineItemTotals.tax_lines,
+        calculationContext
+      )
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -931,13 +928,6 @@ class TotalsService extends TransactionBaseService {
       }
 
       lineItemTotals.total += lineItemTotals.tax_total
-
-      calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-        [lineItem],
-        lineItemTotals.tax_lines,
-        calculationContext
-      )
       lineItemTotals.original_total += lineItemTotals.original_tax_total
     }
 

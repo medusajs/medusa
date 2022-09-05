@@ -128,7 +128,7 @@ describe("TotalsService", () => {
       getTaxLines: getTaxLinesMock,
     },
     taxCalculationStrategy: {},
-    featureFlagRouter: new FlagRouter({}),
+    featureFlagRouter,
   }
 
   describe("getAllocationItemDiscounts", () => {
@@ -1025,7 +1025,8 @@ describe("TotalsService", () => {
           {
             _id: IdMap.getId("expensiveShipping"),
             name: "Expensive Shipping",
-            price: 100,
+            price: 120,
+            includes_tax: true,
             provider_id: "default_provider",
             profile_id: IdMap.getId("default"),
             data: {

@@ -14,16 +14,14 @@ describe("calculatePriceTaxAmount", () => {
         includesTax: false,
       })
 
-      expect(tax).toEqual(28.5)
+      expect(tax).toBeCloseTo(28.5, 2)
 
-      const tax2 = Math.round(
-        calculatePriceTaxAmount({
-          price: 120,
-          taxRate: 0.17,
-        })
-      )
+      const tax2 = calculatePriceTaxAmount({
+        price: 120,
+        taxRate: 0.17,
+      })
 
-      expect(tax2).toEqual(20)
+      expect(tax2).toBeCloseTo(20.4, 2)
     })
 
     it("Tax included", () => {
@@ -31,17 +29,17 @@ describe("calculatePriceTaxAmount", () => {
         price: 115,
         taxRate: 0.15,
         includesTax: true,
-      }).toFixed(2)
+      })
 
-      expect(tax).toEqual("15.00")
+      expect(tax).toBeCloseTo(15, 2)
 
       const tax2 = calculatePriceTaxAmount({
         price: 2150,
         taxRate: 0.17,
         includesTax: true,
-      }).toFixed(2)
+      })
 
-      expect(tax2).toEqual("312.39")
+      expect(tax2).toBeCloseTo(312.39, 2)
     })
   })
 })
