@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.3-alpha.2
+
+### Patch Changes
+
+- [`6a4b705d1`](https://github.com/medusajs/medusa/commit/6a4b705d12ff948907fa6eba82759104f07bb464) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Bump medusa-core-utils in cli
+
 ## 1.3.3-alpha.1
 
 ### Patch Changes
