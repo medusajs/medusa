@@ -36,7 +36,6 @@
     "fs-extra": "^10.0.0",
     "hosted-git-info": "^4.0.2",
     "is-valid-path": "^0.1.1",
-    "joi": "^17.4.2",
     "microbundle": "^0.13.3",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.2",

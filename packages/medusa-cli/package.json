@@ -37,7 +37,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "@babel/runtime": "^7.9.6",
-    "@hapi/joi": "^16.1.8",
     "axios": "^0.21.1",
     "chalk": "^4.0.0",
     "configstore": "5.0.1",
@@ -49,7 +48,6 @@
     "hosted-git-info": "^4.0.2",
     "inquirer": "^8.0.0",
     "is-valid-path": "^0.1.1",
-    "joi-objectid": "^3.0.1",
     "meant": "^1.0.1",
     "medusa-core-utils": "^0.1.27",
     "medusa-telemetry": "0.0.13",
