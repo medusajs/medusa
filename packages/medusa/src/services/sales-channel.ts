@@ -2,7 +2,7 @@ import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { FindConfig, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 
 import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
@@ -55,8 +55,48 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * A generic retrieve used to find a sales channel by different attributes.
+   *
+   * @param selector - SC selector
+   * @param config - find config
+   * @returns a single SC matching the query or throws
+   */
+  protected async retrieve_(
+    selector: Selector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel> {
+    const manager = this.manager_
+
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const { relations, ...query } = buildQuery(selector, config)
+
+    const salesChannel = await salesChannelRepo.findOneWithRelations(
+      relations as (keyof SalesChannel)[],
+      query
+    )
+
+    if (!salesChannel) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with ${selectorConstraints} was not found`
+      )
+    }
+
+    return salesChannel
+  }
+
+  /**
    * Retrieve a SalesChannel by id
    *
+   * @param salesChannelId - id of the channel to retrieve
+   * @param config - SC config
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @returns a sales channel
@@ -65,28 +105,21 @@ class SalesChannelService extends TransactionBaseService {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
-    const manager = this.manager_
-    const salesChannelRepo = manager.getCustomRepository(
-      this.salesChannelRepository_
-    )
+    return await this.retrieve_({ id: salesChannelId }, config)
+  }
 
-    const query = buildQuery(
-      {
-        id: salesChannelId,
-      },
-      config
-    )
-
-    const salesChannel = await salesChannelRepo.findOne(query)
-
-    if (!salesChannel) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Sales channel with id ${salesChannelId} was not found`
-      )
-    }
-
-    return salesChannel
+  /**
+   * Find a sales channel by name.
+   *
+   * @param name of the sales channel
+   * @param config - find config
+   * @return a sales channel with matching name
+   */
+  async retrieveByName(
+    name: string,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel | unknown> {
+    return await this.retrieve_({ name }, config)
   }
 
   /**
