@@ -1,12 +1,7 @@
 import { calculatePriceTaxAmount } from "../calculate-price-tax-amount"
-import { FlagRouter } from "../../utils/flag-router"
 
 describe("calculatePriceTaxAmount", () => {
   describe("Calculate taxes from a given price", () => {
-    beforeAll(() => {
-      jest.spyOn(FlagRouter.prototype, "isFeatureEnabled").mockReturnValue(true)
-    })
-
     it("Tax NOT included", () => {
       const tax = calculatePriceTaxAmount({
         price: 150,

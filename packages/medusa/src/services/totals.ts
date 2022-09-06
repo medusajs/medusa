@@ -211,22 +211,37 @@ class TotalsService extends TransactionBaseService {
 
     if (opts.include_tax) {
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
-        totals.original_tax_total = Math.round(
-          totals.price * (cartOrOrder.tax_rate / 100)
-        )
-        totals.tax_total = Math.round(
-          totals.price * (cartOrOrder.tax_rate / 100)
-        )
+        const taxRate = cartOrOrder.tax_rate / 100
+
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+        const taxIncludedInPrice = !shippingMethod.includes_tax
+          ? 0
+          : Math.round(
+              calculatePriceTaxAmount({
+                price: shippingMethod.price,
+                taxRate: taxRate,
+                includesTax,
+              })
+            )
+        totals.subtotal -= taxIncludedInPrice
+        totals.original_tax_total = totals.subtotal * taxRate
+        totals.tax_total = totals.original_tax_total
+
+        totals.total = totals.subtotal + totals.tax_total
+        totals.original_total = totals.subtotal + totals.original_tax_total
       } else if (totals.tax_lines.length === 0) {
         const orderLines = await this.taxProviderService_
           .withTransaction(this.manager_)
           .getTaxLines(cartOrOrder.items, calculationContext)
 
         totals.tax_lines = orderLines.filter((ol) => {
-          if ("shipping_method_id" in ol) {
-            return ol.shipping_method_id === shippingMethod.id
-          }
-          return false
+          return (
+            "shipping_method_id" in ol &&
+            ol.shipping_method_id === shippingMethod.id
+          )
         }) as ShippingMethodTaxLine[]
 
         if (totals.tax_lines.length === 0 && isOrder(cartOrOrder)) {
@@ -238,19 +253,20 @@ class TotalsService extends TransactionBaseService {
       }
 
       if (totals.tax_lines.length > 0) {
-        const includesTax =
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          ) && shippingMethod.includes_tax
-
-        totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-          [],
-          totals.tax_lines,
-          calculationContext
-        )
+        totals.original_tax_total =
+          await this.taxCalculationStrategy_.calculate(
+            [],
+            totals.tax_lines,
+            calculationContext
+          )
         totals.tax_total = totals.original_tax_total
 
-        if (includesTax) {
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) &&
+          shippingMethod.includes_tax
+        ) {
           totals.subtotal -= totals.tax_total
         } else {
           totals.original_total += totals.original_tax_total
@@ -904,11 +920,12 @@ class TotalsService extends TransactionBaseService {
         calculationContext
       )
       calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-        [lineItem],
-        lineItemTotals.tax_lines,
-        calculationContext
-      )
+      lineItemTotals.original_tax_total =
+        await this.taxCalculationStrategy_.calculate(
+          [lineItem],
+          lineItemTotals.tax_lines,
+          calculationContext
+        )
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -986,9 +1003,7 @@ class TotalsService extends TransactionBaseService {
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
    */
-  async getGiftCardTotal(
-    cartOrOrder: Cart | Order
-  ): Promise<{
+  async getGiftCardTotal(cartOrOrder: Cart | Order): Promise<{
     total: number
     tax_total: number
   }> {

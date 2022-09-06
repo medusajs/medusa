@@ -164,9 +164,8 @@ class OrderService extends TransactionBaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = buildQuery(selector, config)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -234,9 +233,8 @@ class OrderService extends TransactionBaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
 
     if (select && select.length) {
       query.select = select
@@ -254,9 +252,7 @@ class OrderService extends TransactionBaseService {
     return [orders, count]
   }
 
-  protected transformQueryForTotals(
-    config: FindConfig<Order>
-  ): {
+  protected transformQueryForTotals(config: FindConfig<Order>): {
     relations: string[] | undefined
     select: FindConfig<Order>["select"]
     totalsToSelect: FindConfig<Order>["select"]
@@ -337,9 +333,8 @@ class OrderService extends TransactionBaseService {
   ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { id: orderId },
@@ -378,9 +373,8 @@ class OrderService extends TransactionBaseService {
   ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { cart_id: cartId },
@@ -418,9 +412,8 @@ class OrderService extends TransactionBaseService {
   ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
 
     const query = {
       where: { external_id: externalId },
@@ -858,9 +851,8 @@ class OrderService extends TransactionBaseService {
         .withTransaction(manager)
         .createShippingMethod(optionId, data ?? {}, { order, ...config })
 
-      const shippingOptionServiceTx = this.shippingOptionService_.withTransaction(
-        manager
-      )
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
 
       const methods = [newMethod]
       if (shipping_methods.length) {
@@ -1031,9 +1023,8 @@ class OrderService extends TransactionBaseService {
         await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
       }
 
-      const paymentProviderServiceTx = this.paymentProviderService_.withTransaction(
-        manager
-      )
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(manager)
       for (const p of order.payments) {
         await paymentProviderServiceTx.cancelPayment(p)
       }
@@ -1073,9 +1064,8 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const paymentProviderServiceTx = this.paymentProviderService_.withTransaction(
-        manager
-      )
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(manager)
 
       const payments: Payment[] = []
       for (const p of order.payments) {
@@ -1228,7 +1218,7 @@ class OrderService extends TransactionBaseService {
       const fulfillments = await this.fulfillmentService_
         .withTransaction(manager)
         .createFulfillment(
-          (order as unknown) as CreateFulfillmentOrder,
+          order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
             metadata,

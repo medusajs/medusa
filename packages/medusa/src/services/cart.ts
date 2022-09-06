@@ -309,9 +309,8 @@ class CartService extends TransactionBaseService {
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
     const validatedId = validateId(cartId)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      options
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(options)
 
     const query = buildQuery(
       { id: validatedId },
@@ -1056,9 +1055,7 @@ class CartService extends TransactionBaseService {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email.toLowerCase())
     if (error) {
       throw new MedusaError(
@@ -1724,9 +1721,10 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const cartCustomShippingOptions = await this.customShippingOptionService_
-          .withTransaction(transactionManager)
-          .list({ cart_id: cart.id })
+        const cartCustomShippingOptions =
+          await this.customShippingOptionService_
+            .withTransaction(transactionManager)
+            .list({ cart_id: cart.id })
 
         const customShippingOption = this.findCustomShippingOption(
           cartCustomShippingOptions,
@@ -1751,9 +1749,8 @@ class CartService extends TransactionBaseService {
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
-          const shippingOptionServiceTx = this.shippingOptionService_.withTransaction(
-            transactionManager
-          )
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
 
           for (const shippingMethod of shipping_methods) {
             if (
@@ -1770,9 +1767,8 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.items?.length) {
-          const lineItemServiceTx = this.lineItemService_.withTransaction(
-            transactionManager
-          )
+          const lineItemServiceTx =
+            this.lineItemService_.withTransaction(transactionManager)
 
           await Promise.all(
             cart.items.map(async (item) => {
