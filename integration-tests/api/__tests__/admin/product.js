@@ -2393,7 +2393,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("successfully gets the tags usage", async () => {
+    it("successfully updates variant without prices", async () => {
       const api = useApi()
 
       const res = await api
