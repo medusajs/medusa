@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
@@ -30,6 +30,7 @@ import {
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
+import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -309,9 +310,8 @@ class CartService extends TransactionBaseService {
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
     const validatedId = validateId(cartId)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      options
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(options)
 
     const query = buildQuery(
       { id: validatedId },
@@ -1056,26 +1056,17 @@ class CartService extends TransactionBaseService {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string()
-      .email()
-      .required()
-    const { value, error } = schema.validate(email.toLowerCase())
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
+    const validatedEmail = validateEmail(email)
 
     let customer = await this.customerService_
       .withTransaction(this.transactionManager_)
-      .retrieveByEmail(value)
+      .retrieveByEmail(validatedEmail)
       .catch(() => undefined)
 
     if (!customer) {
       customer = await this.customerService_
         .withTransaction(this.transactionManager_)
-        .create({ email: value })
+        .create({ email: validatedEmail })
     }
 
     return customer
@@ -1724,9 +1715,10 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const cartCustomShippingOptions = await this.customShippingOptionService_
-          .withTransaction(transactionManager)
-          .list({ cart_id: cart.id })
+        const cartCustomShippingOptions =
+          await this.customShippingOptionService_
+            .withTransaction(transactionManager)
+            .list({ cart_id: cart.id })
 
         const customShippingOption = this.findCustomShippingOption(
           cartCustomShippingOptions,
@@ -1751,9 +1743,8 @@ class CartService extends TransactionBaseService {
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
-          const shippingOptionServiceTx = this.shippingOptionService_.withTransaction(
-            transactionManager
-          )
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
 
           for (const shippingMethod of shipping_methods) {
             if (
@@ -1770,9 +1761,8 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.items?.length) {
-          const lineItemServiceTx = this.lineItemService_.withTransaction(
-            transactionManager
-          )
+          const lineItemServiceTx =
+            this.lineItemService_.withTransaction(transactionManager)
 
           await Promise.all(
             cart.items.map(async (item) => {
@@ -2158,48 +2148,6 @@ class CartService extends TransactionBaseService {
     await this.lineItemAdjustmentService_
       .withTransaction(transactionManager)
       .createAdjustments(cart)
-  }
-
-  /**
-   * Dedicated method to delete metadata for a cart.
-   * @param cartId - the cart to delete metadata from.
-   * @param key - key for metadata field
-   * @return resolves to the updated result.
-   */
-  async deleteMetadata(cartId: string, key: string): Promise<Cart> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
-          this.cartRepository_
-        )
-        const validatedId = validateId(cartId)
-
-        if (typeof key !== "string") {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_ARGUMENT,
-            "Key type is invalid. Metadata keys must be strings"
-          )
-        }
-
-        const cart = await cartRepo.findOne(validatedId)
-        if (!cart) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Cart with id: ${validatedId} was not found`
-          )
-        }
-
-        const updated = cart.metadata || {}
-        delete updated[key]
-        cart.metadata = updated
-
-        const updatedCart = await cartRepo.save(cart)
-        this.eventBus_
-          .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, updatedCart)
-        return updatedCart
-      }
-    )
   }
 }
 

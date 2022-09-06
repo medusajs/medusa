@@ -60,22 +60,26 @@ class MinioService extends AbstractFileService {
     }
 
     return await Promise.all([
-      s3.deleteObject({ ...params, Bucket: this.bucket_ }, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve(data)
-      }),
-      s3.deleteObject(
-        { ...params, Bucket: this.private_bucket_ },
-        (err, data) => {
+      new Promise((resolve, reject) =>
+        s3.deleteObject({ ...params, Bucket: this.bucket_ }, (err, data) => {
           if (err) {
             reject(err)
             return
           }
           resolve(data)
-        }
+        })
+      ),
+      new Promise((resolve, reject) =>
+        s3.deleteObject(
+          { ...params, Bucket: this.private_bucket_ },
+          (err, data) => {
+            if (err) {
+              reject(err)
+              return
+            }
+            resolve(data)
+          }
+        )
       ),
     ])
   }

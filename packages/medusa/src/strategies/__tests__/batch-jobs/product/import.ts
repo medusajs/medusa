@@ -15,6 +15,7 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import { InjectedProps } from "../../../batch-jobs/product/types"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -142,6 +143,7 @@ describe("Product import strategy", () => {
     productVariantService:
       productVariantServiceMock as unknown as ProductVariantService,
     regionService: regionServiceMock as unknown as RegionService,
+    featureFlagRouter: new FlagRouter({}),
   } as unknown as InjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
@@ -160,14 +162,14 @@ describe("Product import strategy", () => {
       1,
       {
         ext: "json",
-        name: `imports/products/import/ops/${fakeJob.id}-PRODUCT_CREATE`,
+        name: `imports/products/ops/${fakeJob.id}-PRODUCT_CREATE`,
       }
     )
     expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
       2,
       {
         ext: "json",
-        name: `imports/products/import/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id
+        name: `imports/products/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id
       }
     )
 

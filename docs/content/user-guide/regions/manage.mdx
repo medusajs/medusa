@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 import UiIcon from '@site/src/components/UiIcon';
 
 # Manage Regions
@@ -8,23 +12,23 @@ In this document, you’ll learn how to view and manage regions in your Medusa A
 
 To view your regions:
 
-- Click on Settings in the sidebar.
-- Choose Regions from the list of settings.
+1. Click on Settings in the sidebar.
+2. Choose Regions from the list of settings.
 
 This opens the Regions page where you can find a list of regions.
 
-![List of Regions](https://i.imgur.com/qZgU1SC.png)
+---
 
 ## Create a Region
 
 To create a region:
 
-- Go to Settings → Regions.
-- Click on Add Region at the top right of the Regions section.
-- In the window that opens you must enter the Regions details:
+1. Go to Settings → Regions.
+2. Click on Add Region at the top right of the Regions section.
+3. In the window that opens you must enter the Regions details:
     - It is required to enter a name and choose a currency and at least one country, payment provider, and fulfillment provider.
-    - You can optionally enter a tax rate and code for the region. Alternatively, you can [edit a region’s tax settings and rates](../taxes/manage.mdx#edit-a-regions-taxes) after creation.
-- Once you’re done, click Save.
+    - You can optionally enter a tax rate and code for the region. Alternatively, you can [edit a region’s tax settings and rates](../taxes/manage.md#edit-a-regions-taxes) after creation.
+4. Once you’re done, click Save.
 
 :::tip
 
@@ -32,148 +36,9 @@ If you can’t find the currency you want to use in the Currency field, make sur
 
 :::
 
-![Example form to add a region](https://i.imgur.com/Q3SBQW3.png)
-
 After you click save, the region will be created and you can see it in the list on the left.
 
-### Edit a Region
-
-To edit a region:
-
-- Go to Settings → Regions.
-- Click on the region you want to edit from the Regions section.
-
-This opens a Details form to the right. You can edit basic information such as the name or currency.
-
-![Details form to edit a region](https://i.imgur.com/rJv9nUa.png)
-
-### Manage Payment Providers in a Region
-
-To add or remove a payment provider in a region:
-
-- Select a region to edit.
-- Scroll down to the Payment Providers section in the Details form.
-- Select the payment providers you want to add to the region.
-- Unselect the payment providers you want to remove from the region.
-- Click Save.
-
-![Example of choosing a payment provider](https://i.imgur.com/piD7oQi.png)
-
-### Manage Fulfillment Providers in a Region
-
-To add or remove a fulfillment provider in a region:
-
-- Select a region to edit.
-- Scroll down to the Fulfillment Providers section in the Details form.
-- Select the fulfillment providers you want to add to the region.
-- Unselect the fulfillment providers you want to remove from the region.
-- Click Save.
-
-![Examples of choosing a fulfillment provider](https://i.imgur.com/QzPAYU7.png)
-
-## Manage Shipping Options in a Region
-
-A shipping option is used by customers during checkout when they pick a shipping method for their order. They’re also used by admins when they create a draft order.
-
-### Add Shipping Option to a Region
-
-To add a shipping option:
-
-- Select a region to edit.
-- Scroll down to the Shipping Options section in the Details form.
-- Click on Add Option.
-- A new window will open with a form with the following fields:
-    - **Name (Required):** The name of the shipping option. The customer will see this name on the storefront if the “Show on Website” field is checked.
-    - **Currency:** This is a read-only field and its value depends on the currency of the region.
-    - **Price (Required):** The price of the shipping option.
-    - **Show on Website:** Whether or not this option should be available on the website. This is useful if you want to create a shipping option only for use on the Medusa Admin (for example, to create draft orders).
-    - **Shipping Profile (Required):** The shipping profile this option belongs to.
-    - **Fulfillment Method (Required):** the fulfillment provider that will handle fulfilling this shipping option.
-    - **Requirements:** You can use this to specify a condition for when this shipping option should be available. The first field indicates the minimum cart subtotal, and the second field indicates the maximum cart subtotal. For example, you can fill in the first field “100” to only allow using this shipping option if the cart’s subtotal is at least $100.
-- Once you’re done, click Save.
-
-![Form example of adding a shipping option](https://i.imgur.com/maiCo8D.png)
-
-### Edit a Shipping Option
-
-To edit a shipping option:
-
-- Select a region to edit.
-- Scroll down to the Shipping Options section in the Details form.
-- Find the shipping option you want to edit and click on Edit at the right of its name.
-- A new window will open with the fields that you can edit. You can edit all of the fields you chose while adding the shipping option except for the Shipping Profile and Fulfillment Method.
-- Once done, click Save.
-
-![Form example of editing a shipping option](https://i.imgur.com/mnsVOJF.png)
-
-### Delete a Shipping Option
-
-:::caution
-
-If you delete a shipping option, you can’t restore it or its data, customers can’t use it during checkout, and admins can’t use it for draft orders.
-
-:::
-
-To delete a shipping option:
-
-- Select a region to edit.
-- Scroll down to the Shipping Options section in the Details form.
-- Find the shipping option you want to edit and click on Edit at the right of its name.
-- A new window will open. Click on Delete under the Danger Zone section.
-- Confirm deleting the shipping option by clicking the “Yes, remove” button in the pop-up.
-
-![Delete shipping option link is under the Danger Zone section of the edit form](https://i.imgur.com/zGl3qt3.png)
-
-## Manage Return Shipping Options in a Region
-
-A return shipping option is a shipping option that is only used to return items in an order. It can be used by the customer when they request a return or an exchange, and by the admin when they request a return, register an exchange, or register a claim.
-
-### Add Return Shipping Option to a Region
-
-To add a return shipping option:
-
-- Select a region to edit.
-- Scroll down to the Return Shipping Options section in the Details form.
-- Click on Add Return.
-- A new window will open with a form with the following fields:
-    - **Name (Required):** The name of the return shipping option. The customer will see this name on the storefront if the “Show on Website” field is checked.
-    - **Currency:** This is a read-only field and its value depends on the currency of the region.
-    - **Price (Required):** The price of the return shipping option.
-    - **Show on Website:** Whether or not this option should be available on the website. This is useful if you want to create a return shipping option only for use on the Medusa Admin (for example, to create claims or return requests from the Medusa Admin).
-    - **Fulfillment Method (Required):** the fulfillment provider that will handle fulfilling this return shipping option.
-- Once you’re done, click Save.
-
-![Example form of adding a return shipping option](https://i.imgur.com/VXC67zT.png)
-
-### Edit a Return Shipping Option
-
-To edit a return shipping option:
-
-- Select a region to edit.
-- Scroll down to the Return Shipping Options section in the Details form.
-- Find the return shipping option you want to edit and click on Edit at the right of its name.
-- A new window will open with the fields that you can edit. You can edit all of the fields you chose while adding the shipping profile except for the Fulfillment Method.
-- Once done, click Save.
-
-![Example for of editing a return shipping option](https://i.imgur.com/go8UX6k.png)
-
-### Delete a Return Shipping Option
-
-:::caution
-
-If you delete a return shipping option, you can’t restore it or its data, customers can’t use it when they request a return or an exchange, and admins can’t use it when requesting a return for an order or registering an exchange or claim for an order.
-
-:::
-
-To delete a return shipping option:
-
-- Select a region to edit.
-- Scroll down to the Return Shipping Options section in the Details form.
-- Find the return shipping option you want to edit and click on Edit at the right of its name.
-- A new window will open. Click on Delete under the Danger Zone section.
-- Confirm deleting the return shipping option by clicking the “Yes, remove” button in the pop-up.
-
-![Delete return shipping option link is under the Danger Zone section](https://i.imgur.com/wjjoFrT.png)
+---
 
 ## Duplicate a Region
 
@@ -181,12 +46,10 @@ Duplicating a region allows you to create a new region with some of its details 
 
 To duplicate a region:
 
-- Go to Settings → Regions.
-- Click on the region you want to duplicate from the Regions section.
-- In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
-- Choose Duplicate Region from the dropdown list.
-
-![Duplicate Region is the first link in the dropdown](https://i.imgur.com/qyzmMLF.png)
+1. Go to Settings → Regions.
+2. Click on the region you want to duplicate from the Regions section.
+3. In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+4. Choose Duplicate Region from the dropdown list.
 
 ## Delete a Region
 
@@ -198,10 +61,8 @@ If you delete a region, you will not be able to restore it or its data. Data rel
 
 To delete a region:
 
-- Go to Settings → Regions.
-- Click on the region you want to duplicate from the Regions section.
-- In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
-- Choose Delete Region from the dropdown list.
-- Confirm deleting the region by clicking the “Yes, delete” button in the pop-up.
-
-![Delete Region is the second link in the dropdown](https://i.imgur.com/haVXAYO.png)
+1. Go to Settings → Regions.
+2. Click on the region you want to duplicate from the Regions section.
+3. In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+4. Choose Delete Region from the dropdown list.
+5. Confirm deleting the region by clicking the “Yes, delete” button in the pop-up.

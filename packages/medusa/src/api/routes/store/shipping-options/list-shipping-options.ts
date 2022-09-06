@@ -8,6 +8,20 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * description: "Retrieves a list of Shipping Options available to a cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.shippingOptions.listCartOptions(cart_id)
+ *       .then(({ shipping_options }) => {
+ *         console.log(shipping_options.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
  * tags:
  *   - Shipping Option
  * responses:
@@ -21,6 +35,16 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { cart_id } = req.params

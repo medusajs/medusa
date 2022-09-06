@@ -55,6 +55,15 @@ post:
                   quantity:
                     description: The quantity to send of the variant.
                     type: integer
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/swaps/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/swaps/postundefined
   tags:
     - Swap
   responses:
@@ -66,3 +75,13 @@ post:
             properties:
               swap:
                 $ref: ../components/schemas/swap.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

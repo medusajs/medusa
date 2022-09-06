@@ -21,6 +21,14 @@ post:
             code:
               type: string
               description: The code for the generated token.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/apps_authorizations/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - App
   responses:
@@ -32,3 +40,15 @@ post:
             properties:
               apps:
                 $ref: ../components/schemas/OAuth.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

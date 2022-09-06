@@ -10,6 +10,18 @@ delete:
       description: The ID of the Collection.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -30,6 +42,18 @@ delete:
                 type: boolean
                 description: Whether the collection was deleted successfully or not.
                 default: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetCollectionsCollection
   summary: Retrieve a Product Collection
@@ -42,6 +66,18 @@ get:
       description: The ID of the Product Collection
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -53,6 +89,18 @@ get:
             properties:
               collection:
                 $ref: ../components/schemas/product_collection.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostCollectionsCollection
   summary: Update a Product Collection
@@ -83,6 +131,18 @@ post:
                 An optional set of key-value pairs to hold additional
                 information.
               type: object
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/collections_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -94,3 +154,15 @@ post:
             properties:
               collection:
                 $ref: ../components/schemas/product_collection.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

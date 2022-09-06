@@ -10,6 +10,19 @@ get:
       description: The ID of the Region.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/regions_{id}_fulfillment-options/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/regions_{id}_fulfillment-options/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Region
   responses:
@@ -33,3 +46,15 @@ get:
                         - id: manual-fulfillment
                         - id: manual-fulfillment-return
                           is_return: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

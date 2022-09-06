@@ -1,6 +1,8 @@
-import { Swap } from "./../../../../"
 import { Router } from "express"
+
+import { Swap } from "./../../../../"
 import middlewares from "../../../middlewares"
+import { FindConfig } from "../../../../types/common"
 
 const route = Router()
 
@@ -27,7 +29,7 @@ export const defaultStoreSwapRelations = [
   "shipping_methods",
   "cart",
 ]
-export const defaultStoreSwapFields = [
+export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
   "id",
   "fulfillment_status",
   "payment_status",

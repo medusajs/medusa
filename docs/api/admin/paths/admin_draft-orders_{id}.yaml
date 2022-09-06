@@ -54,6 +54,18 @@ post:
             customer_id:
               description: The ID of the Customer to associate the Draft Order with.
               type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_draft-orders_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Draft Order
   responses:
@@ -65,3 +77,15 @@ post:
             properties:
               draft_order:
                 $ref: ../components/schemas/draft-order.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

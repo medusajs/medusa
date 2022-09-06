@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.0
+
+### Major Changes
+
+- [#2140](https://github.com/medusajs/medusa/pull/2140) [`e707b4649`](https://github.com/medusajs/medusa/commit/e707b46499e05e7244fe7a9788995a826680d4ed) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Update meilisearch deps to respect latest breaking changes
+
+  BREAKING CHANGE
+
 ## 0.2.5
 
 ### Patch Changes

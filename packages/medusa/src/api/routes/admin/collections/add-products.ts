@@ -25,6 +25,21 @@ import ProductCollectionService from "../../../../services/product-collection"
  *             items:
  *               description: "The ID of a Product to add to the Product Collection."
  *               type: string
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/collections/{id}/products/batch' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "product_ids": [
+ *               "prod_01G1G5V2MBA328390B5AXJ610F"
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Collection
  * responses:
@@ -36,6 +51,18 @@ import ProductCollectionService from "../../../../services/product-collection"
  *          properties:
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "401":
+ *    $ref: "#/components/responses/unauthorized"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
