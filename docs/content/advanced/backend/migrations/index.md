@@ -44,4 +44,4 @@ If you check your database now you should see that the change defined by the mig
 
 ## What’s Next 🚀
 
-- Learn more about [setting up your development server](../tutorial/set-up-your-development-environment).
+- Learn more about [setting up your development server](../../../tutorial/0-set-up-your-development-environment.mdx).

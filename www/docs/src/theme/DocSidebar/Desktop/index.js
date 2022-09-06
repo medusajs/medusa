@@ -16,8 +16,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
     sidebarFooter = [],
   } = useThemeConfig();
 
-  console.log(sidebarFooter)
-
   return (
     <div
       className={clsx(

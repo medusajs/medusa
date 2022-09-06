@@ -51,4 +51,4 @@ This will use the underlying `seed` command provided by Medusa's CLI to seed you
 ## What's Next :rocket:
 
 - Learn [how to create a migration](index.md)
-- Learn more about [setting up your development server](../tutorial/set-up-your-development-environment).
+- Learn more about [setting up your development server](../../../tutorial/set-up-your-development-environment).
