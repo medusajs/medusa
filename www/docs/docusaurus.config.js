@@ -61,7 +61,7 @@ module.exports = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docsSidebar",
           label: "Docs"
         },
         {
@@ -92,40 +92,6 @@ module.exports = {
               </a>`
             },
           ],
-        },
-        {
-          type: 'dropdown',
-          label: 'References',
-          items: [
-            {
-              to: "cli/reference",
-              label: "CLI Reference",
-            },
-            {
-              type: "docSidebar",
-              sidebarId: "entitiesSidebar",
-              label: "Entities Reference",
-            },
-            {
-              to: "advanced/backend/subscribers/events-list",
-              label: "Events Reference",
-            },
-            {
-              type: "docSidebar",
-              sidebarId: "jsClientSidebar",
-              label: "JS Client Reference",
-            },
-            {
-              type: "docSidebar",
-              sidebarId: "servicesSidebar",
-              label: "Services Reference",
-            },
-          ]
-        },
-        {
-          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-          position: 'right',
-          label: 'Report an Issue'
         },
         {
           href: "https://github.com/medusajs/medusa",
@@ -177,6 +143,18 @@ module.exports = {
       ],
       copyright: `© ${new Date().getFullYear()} Medusa`,
     },
+    sidebarFooter: [
+      {
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        label: 'Report an Issue',
+        className: 'alert-icon',
+      },
+      {
+        href: "https://medusajs.com/",
+        label: 'Go to medusajs.com',
+        className: 'topright-icon',
+      },
+    ]
   },
   presets: [
     [
