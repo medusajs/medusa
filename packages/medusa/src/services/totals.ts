@@ -210,7 +210,11 @@ class TotalsService extends TransactionBaseService {
     }
 
     if (opts.include_tax) {
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+      if (
+        isOrder(cartOrOrder) &&
+        isDefined(cartOrOrder.tax_rate) &&
+        cartOrOrder.tax_rate !== null
+      ) {
         const taxRate = cartOrOrder.tax_rate / 100
 
         const includesTax =
@@ -844,7 +848,11 @@ class TotalsService extends TransactionBaseService {
       // When we have an order with a null'ed tax rate we know that it is an
       // order from the old tax system. The following is a backward compat
       // calculation.
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+      if (
+        isOrder(cartOrOrder) &&
+        isDefined(cartOrOrder.tax_rate) &&
+        cartOrOrder.tax_rate !== null
+      ) {
         const taxRate = cartOrOrder.tax_rate / 100
 
         const includesTax =

@@ -1013,7 +1013,6 @@ describe("TotalsService", () => {
       id: IdMap.getId("expensiveShipping"),
       name: "Expensive Shipping",
       price: 120,
-      includes_tax: true,
       tax_lines: [{ shipping_method_id: IdMap.getId("expensiveShipping") }],
       provider_id: "default_provider",
       profile_id: IdMap.getId("default"),
@@ -1036,10 +1035,15 @@ describe("TotalsService", () => {
       jest.clearAllMocks()
     })
 
-    it("calculates total with tax lines", async () => {
+    it("calculates total with tax lines and being tax inclusive", async () => {
       const order = {
         object: "order",
-        shipping_methods: [shippingMethodData],
+        shipping_methods: [
+          {
+            ...shippingMethodData,
+            includes_tax: true,
+          },
+        ],
       }
 
       const total = await totalsService.getShippingTotal(order)
@@ -1047,13 +1051,50 @@ describe("TotalsService", () => {
       expect(total).toEqual(100)
     })
 
-    it("calculates total with the old system", async () => {
+    it("calculates total with tax lines and not being tax inclusive", async () => {
+      const order = {
+        object: "order",
+        shipping_methods: [
+          {
+            ...shippingMethodData,
+            price: 100,
+            includes_tax: false,
+          },
+        ],
+      }
+
+      const total = await totalsService.getShippingTotal(order)
+
+      expect(total).toEqual(100)
+    })
+
+    it("calculates total with the old system and being tax inclusive", async () => {
       const order = {
         object: "order",
         tax_rate: 20,
         shipping_methods: [
           {
             ...shippingMethodData,
+            includes_tax: true,
+            tax_lines: [],
+          },
+        ],
+      }
+
+      const total = await totalsService.getShippingTotal(order)
+
+      expect(total).toEqual(100)
+    })
+
+    it("calculates total with the old system and not being tax inclusive", async () => {
+      const order = {
+        object: "order",
+        tax_rate: 20,
+        shipping_methods: [
+          {
+            ...shippingMethodData,
+            price: 100,
+            includes_tax: false,
             tax_lines: [],
           },
         ],
