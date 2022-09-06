@@ -6,6 +6,17 @@ get:
     saved with Payment Providers and it is their responsibility to fetch saved
     methods.
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_me_payment-methods/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_me_payment-methods/getundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -29,3 +40,15 @@ get:
                       description: >-
                         The data needed for the Payment Provider to use the
                         saved payment method.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

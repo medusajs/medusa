@@ -10,6 +10,18 @@ delete:
       description: The ID of the Shipping Option.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -30,6 +42,18 @@ delete:
                 type: boolean
                 description: Whether or not the items were deleted.
                 default: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetTaxRatesTaxRate
   summary: Get Tax Rate
@@ -60,6 +84,18 @@ get:
         items:
           type: string
   x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -71,6 +107,18 @@ get:
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostTaxRatesTaxRate
   summary: Update a Tax Rate
@@ -133,6 +181,18 @@ post:
               description: The IDs of the types of products associated with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -144,3 +204,15 @@ post:
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

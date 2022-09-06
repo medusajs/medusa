@@ -40,6 +40,18 @@ post:
               description: The IDs of the products to associate with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/tax-rates_{id}_products_batch/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}_products_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -51,6 +63,18 @@ post:
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteTaxRatesTaxRateProducts
   summary: Removes Tax Rate from Products
@@ -93,6 +117,19 @@ delete:
               description: The IDs of the products to remove association with this tax rate
               items:
                 type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/tax-rates_{id}_products_batch/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/tax-rates_{id}_products_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Tax Rate
   responses:
@@ -104,3 +141,15 @@ delete:
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

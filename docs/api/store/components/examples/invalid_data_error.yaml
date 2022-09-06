@@ -1,0 +1,4 @@
+summary: Invalid Data Error
+value:
+  message: first_name must be a string
+  type: invalid_data
