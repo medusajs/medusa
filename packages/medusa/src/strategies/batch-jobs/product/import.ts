@@ -776,7 +776,6 @@ const CSVSchema: ProductImportCsvSchema = {
         }
 
         const regionName = key.split(" ")[1]
-
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
@@ -802,7 +801,6 @@ const CSVSchema: ProductImportCsvSchema = {
         }
 
         const currency = key.split(" ")[1]
-
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({

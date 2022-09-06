@@ -1,4 +1,4 @@
-import { csvNewLineContentFormatter } from "../csv-new-line-content-formatter"
+import { csvCellContentFormatter } from "../csv-cell-content-formatter"
 
 type Case = {
   str: string
@@ -28,16 +28,17 @@ in a template string`,
   [
     "should return a formatted string escaping new line when there is new line chars and escape the double quote when there is double quotes",
     {
-      str: 'Hello,\nmy name is "Adrien" and\nI like writing multiline content\nin a string',
+      str:
+        'Hello,\nmy name is "Adrien" and\nI like writing multiline content\nin a string',
       expected:
         '"Hello,\\nmy name is ""Adrien"" and\\nI like writing multiline content\\nin a string"',
     },
   ],
 ]
 
-describe("CsvNewLineContentFormatter", function () {
+describe("csvCellContentFormatter", function() {
   it.each(cases)("%s", (title: string, { str, expected }: Case) => {
-    const formattedStr = csvNewLineContentFormatter(str)
+    const formattedStr = csvCellContentFormatter(str)
     expect(formattedStr).toBe(expected)
   })
 })

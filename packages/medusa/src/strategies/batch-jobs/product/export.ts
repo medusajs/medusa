@@ -15,7 +15,7 @@ import {
 import { FindProductConfig } from "../../../types/product"
 import { FlagRouter } from "../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { csvNewLineContentFormatter } from "../../../utils"
+import { csvCellContentFormatter } from "../../../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -53,7 +53,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ProductExportColumnSchemaDescriptor
   > = new Map(productExportSchemaDescriptors)
 
-  private readonly NEWLINE_ = "\r\n"
+  private readonly NEWLINE_ = "\n"
   private readonly DELIMITER_ = ";"
   private readonly DEFAULT_LIMIT = 50
 
@@ -427,13 +427,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const variantLineData: string[] = []
       for (const [, columnSchema] of this.columnDescriptors.entries()) {
         if (columnSchema.entityName === "product") {
-          const formattedContent = csvNewLineContentFormatter(
+          const formattedContent = csvCellContentFormatter(
             columnSchema.accessor(product)
           )
           variantLineData.push(formattedContent)
         }
         if (columnSchema.entityName === "variant") {
-          const formattedContent = csvNewLineContentFormatter(
+          const formattedContent = csvCellContentFormatter(
             columnSchema.accessor(variant)
           )
           variantLineData.push(formattedContent)
