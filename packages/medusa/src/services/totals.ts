@@ -825,7 +825,7 @@ class TotalsService extends TransactionBaseService {
 
     // Tax Information
     if (options.include_tax) {
-      // When we have an order with a null'ed tax rate we know that it is an
+      // When we have an order with a nulled or undefined tax rate we know that it is an
       // order from the old tax system. The following is a backward compat
       // calculation.
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate != null) {
