@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`sales channels DELETE /admin/sales-channels/:id should delete the requested sales channel 1`] = `
+Object {
+  "deleted": true,
+  "id": Any<String>,
+  "object": "sales-channel",
+}
+`;
+
+exports[`sales channels GET /admin/orders/:id expands sales channel for single 1`] = `
+Object {
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "description": "test description",
+  "id": Any<String>,
+  "is_disabled": false,
+  "name": "test name",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`sales channels GET /admin/orders?expand=sales_channels expands sales channel with parameter 1`] = `
+Object {
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "description": "test description",
+  "id": Any<String>,
+  "is_disabled": false,
+  "name": "test name",
+  "updated_at": Any<String>,
+}
+`;
+
 exports[`sales channels GET /admin/sales-channels should list the sales channel 1`] = `
 Object {
   "count": 2,
@@ -66,38 +98,6 @@ Object {
 }
 `;
 
-exports[`sales channels DELETE /admin/sales-channels/:id should delete the requested sales channel 1`] = `
-Object {
-  "deleted": true,
-  "id": Any<String>,
-  "object": "sales-channel",
-}
-`;
-
-exports[`sales channels GET /admin/orders/:id expands sales channel for single 1`] = `
-Object {
-  "created_at": Any<String>,
-  "deleted_at": null,
-  "description": "test description",
-  "id": Any<String>,
-  "is_disabled": false,
-  "name": "test name",
-  "updated_at": Any<String>,
-}
-`;
-
-exports[`sales channels GET /admin/orders?expand=sales_channels expands sales channel with parameter 1`] = `
-Object {
-  "created_at": Any<String>,
-  "deleted_at": null,
-  "description": "test description",
-  "id": Any<String>,
-  "is_disabled": false,
-  "name": "test name",
-  "updated_at": Any<String>,
-}
-`;
-
 exports[`sales channels GET /admin/sales-channels/:id should retrieve the requested sales channel 1`] = `
 Object {
   "created_at": Any<String>,
@@ -110,15 +110,12 @@ Object {
 }
 `;
 
-exports[`sales channels GET /store/cart/:id with saleschannel returns cart with sales channel for single cart 1`] = `
+exports[`sales channels POST /admin/sales-channels successfully creates a disabled sales channel 1`] = `
 Object {
-  "created_at": Any<String>,
-  "deleted_at": null,
-  "description": "test description",
-  "id": Any<String>,
-  "is_disabled": false,
-  "name": "test name",
-  "updated_at": Any<String>,
+  "sales_channel": ObjectContaining {
+    "is_disabled": true,
+    "name": "sales channel name",
+  },
 }
 `;
 

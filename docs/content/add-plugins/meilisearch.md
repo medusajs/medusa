@@ -1,145 +1,292 @@
 # MeiliSearch
 
-### Introduction
+In this document, you’ll learn how to install the [MeiliSearch plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-meilisearch) and use it on both your Medusa Server and your storefront.
 
-Search functionality is one of the most useful and important features in e-commerce platforms. From increasing customer conversion rates to significantly improving the user experience, search engines can enable significant business growth. Medusa brings search functionality to your doorstep by leveraging some of the already existing search engines out there.
+## Overview
 
-We have developed a plugin that will allow you to use the performant, open-source, and feature-rich search engine MeiliSearch.
+[MeiliSearch](https://www.meilisearch.com/) is a super-fast, open source search engine built in Rust. It comes with a wide range of features including typo-tolerance, filtering, and sorting.
 
-MeiliSearch is a super-fast, open-source, search engine built in Rust. It comes with a wide range of features such as typo-tolerance, filtering, sorting, and [much more](https://docs.meilisearch.com/learn/what_is_meilisearch/features.html). MeiliSearch also provides a pleasant developer experience, as it is extremely intuitive and newcomer-friendly - so even if you're new to the search engine "ecosystem", you'll have a great time navigating through their documentation.
+MeiliSearch also provides a pleasant developer experience, as it is extremely intuitive and newcomer-friendly. So, even if you're new to the search engine ecosystem, [their documentation](https://docs.meilisearch.com/) is resourceful enough for everyone to go through and understand.
 
-Through Medusa flexible plugin system, it is possible to enable search functionality into your medusa applications with minimum hassle by including our new plugin `medusa-plugin-meilisearch` to your `medusa-config.js` file.
+Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using MeiliSearch with just a few steps.
 
-### Installation
+## Prerequisites
 
-In case you don't have MeiliSearch installed locally on your environment yet, you can run the following:
+### Medusa Components
 
-```bash
-# Install MeiliSearch
-curl -L https://install.meilisearch.com | sh
+It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with our [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
 
-# Launch MeiliSearch
-./meilisearch
-```
+Furthermore, it’s highly recommended to ensure your Medusa server is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa server are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
 
-For other installation alternatives, you can head over to Meilisearch's [installation guide](https://docs.meilisearch.com/learn/getting_started/installation.html).
+:::caution
 
-In order to add the plugin to your medusa project, you will need to first install the plugin using your favorite package manager:
+If you don’t install and configure Redis on your Medusa server, the MeiliSearch integration will still work. However, products indexed in MeiliSearch are only added and updated when you restart the Medusa server.
+
+:::
+
+### MeiliSearch Instance
+
+You must install MeiliSearch to use it with Medusa. You can follow [this documentation to install MeiliSearch](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) either locally or on a cloud.
+
+Furthermore, you should create a master key for your MeiliSearch instance. If you don’t have one created, follow [this guide](https://docs.meilisearch.com/learn/security/master_api_keys.html#protecting-a-meilisearch-instance) to create a master key.
+
+## Install the MeiliSearch Plugin
+
+In the directory of your Medusa server, run the following command to install the MeiliSearch plugin:
 
 ```bash npm2yarn
 npm install medusa-plugin-meilisearch
 ```
 
-Then in your `medusa-config.js` file, add the plugin to your `plugins` array. For this example, assumption is that you're leveraging MeiliSearch to perform searches on an index called `products`
+Then, add the following environment variables to your Medusa server:
+
+```bash
+MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
+MEILISEARCH_API_KEY=<YOUR_MASTER_KEY>
+```
+
+Where `<YOUR_MEILISEARCH_HOST>` is the host of your MeiliSearch instance. By default, if MeiliSearch is installed locally, the host is `http://127.0.0.1:7700`.
+
+`<YOUR_MASTER_KEY>` is the master key of your MeiliSearch instance.
+
+Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
 ```jsx
-module.exports = {
-  // ...other options
-  plugins: [
-    // ...other plugins
-    {
-      resolve: `medusa-plugin-meilisearch`,
-      options: {
-        // config object passed when creating an instance of the MeiliSearch client
-        config: {
-          host: "http://127.0.0.1:7700",
-          apiKey: "your_master_key",
-        },
-        settings: {
-          // index name
-          products: {
-            // MeiliSearch's setting options to be set on a particular index
-            searchableAttributes: ["title", "description", "variant_sku"],
-            displayedAttributes: ["title", "description", "variant_sku"],
-          },
+const plugins = [
+  //...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      // config object passed when creating an instance of the MeiliSearch client
+      config: {
+        host: process.env.MEILISEARCH_HOST,
+        apiKey: process.env.MEILISEARCH_API_KEY,
+      },
+      settings: {
+        // index name
+        products: {
+          // MeiliSearch's setting options to be set on a particular index
+          searchableAttributes: ["title", "description", "variant_sku"],
+          displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
         },
       },
     },
-  ],
+  },
+];
+```
+
+You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
+
+## Test MeiliSearch Plugin
+
+Make sure your MeiliSearch instance is running. If you’re unsure how to run it, you can check the [installation documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) for the command to run the MeiliSearch instance.
+
+Then, run the Medusa server:
+
+```bash npm2yarn
+npm run start
+```
+
+The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
+
+![Postman request to search endpoint that shows results returned from the search engine](https://i.imgur.com/RCGquxU.png)
+
+You can also check that the products are properly indexed by opening the MeiliSearch host URL in your browser, which is `http://127.0.0.1:7700/` by default. You’ll find your products that are on your Medusa server added there.
+
+![MeiliSearch dashboard showing products from the Medusa server indexed](https://i.imgur.com/5sk3jyP.png)
+
+### Add or Update Products
+
+If you add or update products on your Medusa server, the addition or update will be reflected in the MeiliSearch indices.
+
+:::note
+
+This feature is only available if you have Redis installed and configured with your Medusa server as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa server to see the change in the MeiliSearch indices.
+
+:::
+
+## Add Search to your Storefront
+
+In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../starters/nextjs-medusa-starter.md) storefront as well as React-based frameworks such as the [Gatsby storefront](../starters/gatsby-medusa-starter.md).
+
+### Storefront Prerequisites
+
+It is assumed you already have a storefront set up and working with the Medusa server, as this section only covers how to add the search UI.
+
+:::tip
+
+If you don’t have a storefront set up, you can use the [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) storefronts Medusa provides.
+
+:::
+
+Furthermore, you must create an API key in your MeiliSearch instance that will be used to search on the storefront. To do that, run the following command in your terminal while the MeiliSearch instance is running:
+
+```bash
+curl \
+  -X POST '<MEILISEARCH_HOST>/keys' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <MEILISEARCH_MASTER_KEY>' \
+  --data-binary '{
+    "description": "Search products",
+    "actions": ["search"],
+    "indexes": ["products"],
+    "expiresAt": "2024-01-01T00:00:00Z"
+  }'
+```
+
+Make sure to replace `<MEILISEARCH_HOST>` and `<MEILISEARCH_MASTER_KEY>` accordingly.
+
+If this request is successful, the API key will be available under the `key` property returned in the JSON response.
+
+### Add to Next.js Storefront
+
+The Next.js storefront has the MeiliSearch integration available out of the box. To get it working, you just need to follow two steps.
+
+First, ensure that the search feature is enabled in `store.config.json`:
+
+```json
+{
+  "features": {
+    "search": true
+  }
 }
 ```
 
-Et voilà! That's all it takes to make medusa and MeiliSearch work in great harmony. Please note that you can use any other setting from this [list](https://docs.meilisearch.com/reference/features/settings.html#settings) such as `filterableAttributes`, `sortableAttributes`, and `synonyms`. We are working on another blog post that will demonstrate how you can make use of these settings to build a great storefront experience, so stay tuned to that!
+Then, add the necessary environment variables:
 
-### Simple Usage
+```bash
+NEXT_PUBLIC_SEARCH_ENDPOINT=<YOUR_MEILISEARCH_HOST>
+NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_API_KEY>
+NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+```
 
-Medusa exposes an API layer that can serve as an abstraction over various search providers. We will now be interacting with one of the search routes parts of that layer, namely, the `POST /store/products/search` route. The route will enable you to test out the integration between Medusa and MeiliSearch. The endpoint takes a mandatory `q` property and a set of optional parameters which will be passed to MeiliSearch's `search()` method as a second argument. The list of the parameters which can be provided can be found in MeiliSearch's [docs](https://docs.meilisearch.com/reference/api/search.html#search-in-an-index-with-post-route).
+Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
 
-Let's use Postman for this short demo to get some search results:
+If you run your Next.js storefront now while the Medusa server and the MeiliSearch services are running, the search functionality will be available in your storefront.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zu09kroufrux94y6d5rq.png)
+:::note
 
-We tried to perform a search query "creneck" to find all crewnecks in our store. Note how the explicit mistake of leaving a "w" out from "crewneck" still yields the correct results.
+To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
-Postman is not the most exciting client to use to showcase this, so in the next section, there is a short guide on how you can use React and MeiliSearchh's ecosystem to build something that looks better than JSON.
+:::
 
-### Highlighting and Pagination in a React Storefront
+![Search Result on Next.js storefront](https://i.imgur.com/gQVWvH2.png)
 
-The Medusa + MeiliSearch integration opens up a lot of capabilities for creating a rich UX for your storefront. The plugin indexes all your products and listens to any updates made on them, so you can then leverage any client-side SDKs developed by the MeiliSearch team to build cool search experiences for storefronts. For example, MeiliSearch exposes a React [adapter](https://github.com/meilisearch/meilisearch-react/) that can be used with React InstantSearch (made by Algolia) which provides features such as highlighting, filtering, and pagination out of the box.
+### Add to Gatsby and React-Based Storefronts
 
-In order to leverage this functionality, you'll need to install the corresponding packages by running:
+This section covers adding the search UI to React-based storefronts. It uses the Gatsby storefront as an example, but you can use the same steps on any React-based framework.
+
+:::tip
+
+For other frontend frameworks, please check out [MeiliSearch’s Integrations guide](https://github.com/meilisearch/integration-guides) for steps based on your framework.
+
+:::
+
+In the directory that contains your storefront, run the following command to install the necessary dependencies:
 
 ```bash npm2yarn
 npm install react-instantsearch-dom @meilisearch/instant-meilisearch
 ```
 
-You can then use the MeiliSearch client in your react app:
+Then, add the following environment variables:
+
+```bash
+GATSBY_MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
+GATSBY_MEILISEARCH_API_KEY=<YOUR_API_KEY>
+GATSBY_SEARCH_INDEX_NAME=products
+```
+
+Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
+
+:::caution
+
+In Gatsby, environment variables that should be public and available in the browser are prefixed with `GATSBY_`. If you’re using another React-based framework, you might need to use a different prefix to ensure these variables can be used in your code. Please refer to your framework’s documentation for help on this.
+
+:::
+
+Then, create the file `src/components/header/search.jsx` with the following content:
 
 ```jsx
-import React from "react"
 import {
-  InstantSearch,
-  Hits,
-  SearchBox,
-  Pagination,
   Highlight,
+  Hits,
+  InstantSearch,
+  SearchBox,
+  connectStateResults
 } from "react-instantsearch-dom"
+
+import React from "react"
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch"
 
 const searchClient = instantMeiliSearch(
-  "http://127.0.0.1:7700",
-  "your_master_key"
+  process.env.GATSBY_MEILISEARCH_HOST,
+  process.env.GATSBY_MEILISEARCH_API_KEY
 )
 
-const SearchPage = () => (
-  <InstantSearch indexName="products" searchClient={searchClient}>
-    <SearchBox />
-    <Hits hitComponent={Hit} />
-    <Pagination />
-  </InstantSearch>
-)
+const Search = () => {
+  const Results = connectStateResults(({ searchState, searchResults, children }) =>
+    searchState && searchState.query && searchResults && searchResults.nbHits !== 0 ? (
+      <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
+        {children}
+      </div>
+    ) : (
+      <div></div>
+    )
+  );
 
-const Hit = ({ hit }) => {
   return (
-    <div key={hit.id}>
-      <div className="hit-name">
-        <Highlight attribute="name" hit={hit} />
-      </div>
-      <img src={hit.image} align="left" alt={hit.name} />
-      <div className="hit-description">
-        <Snippet attribute="description" hit={hit} />
-      </div>
-      <div className="hit-info">price: {hit.price}</div>
-      <div className="hit-info">release date: {hit.releaseDate}</div>
+    <div className="relative">
+      <InstantSearch indexName={process.env.GATSBY_SEARCH_INDEX_NAME} searchClient={searchClient}>
+        <SearchBox submit={null} reset={null} />
+        <Results>
+          <Hits hitComponent={Hit} />
+        </Results>
+      </InstantSearch>
     </div>
   )
 }
+
+const Hit = ({ hit }) => {
+  return (
+    <div key={hit.id} className="relative">
+      <div className="hit-name">
+        <Highlight attribute="title" hit={hit} tagName="mark" />
+      </div>
+    </div>
+  )
+}
+
+export default Search;
 ```
 
-If you want to play around with the various features provided by React InstantSearch you can read more on algolia's [documentation](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/react/). You can also use MeiliSearch's react [demo](https://codesandbox.io/s/ms-react-is-sh9ud?fontsize=14&hidenavigation=1&theme=dark&file=/src/App.js) for a more interactive example.
+This file uses the dependencies you installed to show the search results. It also initializes MeiliSearch using the environment variables you added.
 
-### Demo: Palmes Storefront
+:::caution
 
-By using the above libraries (React, `react-instantsearch-dom`, and `instant-meilisearch`) in addition to the medusa plugin, we have successfully integrated the MeiliSearch plugin for one of our customers: Palmes. Following is a short GIF demoing the functionality.
+If you named your environment variables differently based on your framework, make sure to rename them here as well.
 
-[Palmes Tennis Society.mp4](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e0b596ab-e146-4151-a8b0-42c94401761f/Palmes_Tennis_Society.mp4)
+:::
 
-### Enhance your development experience with MeiliSearch's Web UI
+Finally, import this file at the beginning of `src/components/header/index.jsx`:
 
-For a quicker feedback loop on what's happening on your search engine, you can use MeiliSearch's helpful out-of-the-box web interface to run some searches and get live results. It comes with MeiliSearch when you first install it and requires 0 configuration. When integrating the MeiliSearch plugin to existing medusa projects, we also found it to be extremely helpful for debugging
+```jsx
+import Search from "./search"
+```
 
-<iframe src="https://player.vimeo.com/video/639184340?h=593662d9f6" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+And add the `Search` component in the returned JSX before `RegionPopover`:
 
-### More to come
+```jsx
+//...
+<Search />
+<RegionPopover regions={mockData.regions} />
+//...
+```
 
-As briefly mentioned before, we're preparing another blog post that dives a bit deeper into the Medusa Search API and provides a more in-depth walkthrough on how to build a feature-rich search experience that includes filtering, synonyms, stop-words, and more!
+If you run your Gatsby storefront while the Medusa server and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
+
+![Search box in the header of the storefront](https://i.imgur.com/ZkRgF2h.png)
+
+## What’s Next 🚀
+
+- Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
+- Learn how to [deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).

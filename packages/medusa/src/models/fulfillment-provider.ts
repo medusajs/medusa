@@ -18,7 +18,9 @@ export class FulfillmentProvider {
  *   id:
  *     description: "The id of the fulfillment provider as given by the plugin."
  *     type: string
+ *     example: manual
  *   is_installed:
  *     description: "Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`."
  *     type: boolean
+ *     example: true
  */

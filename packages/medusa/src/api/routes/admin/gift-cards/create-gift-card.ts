@@ -1,8 +1,10 @@
-import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
+
 import { GiftCardService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /gift-cards
@@ -14,6 +16,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - region_id
  *         properties:
  *           value:
  *             type: integer
@@ -26,13 +30,36 @@ import { validator } from "../../../../utils/validator"
  *             format: date-time
  *             description: The time at which the Gift Card should no longer be available.
  *           region_id:
- *             description: The id of the Region in which the Gift Card can be used.
- *             type: array
- *             items:
- *               type: string
+ *             description: The ID of the Region in which the Gift Card can be used.
+ *             type: string
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.giftCards.create({
+ *         region_id
+ *       })
+ *       .then(({ gift_card }) => {
+ *         console.log(gift_card.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/gift-cards' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "region_id": "{region_id}"
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Gift Card
  * responses:
@@ -44,15 +71,30 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             gift_card:
  *               $ref: "#/components/schemas/gift_card"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = await validator(AdminPostGiftCardsReq, req.body)
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const newly = await giftCardService.create({
-    ...validated,
-    balance: validated.value,
+  const manager: EntityManager = req.scope.resolve("manager")
+  const newly = await manager.transaction(async (transactionManager) => {
+    return await giftCardService.withTransaction(transactionManager).create({
+      ...validated,
+      balance: validated.value,
+    })
   })
 
   const giftCard = await giftCardService.retrieve(newly.id, {

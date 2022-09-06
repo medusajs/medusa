@@ -1,6 +1,6 @@
-import { AwilixContainer } from "awilix"
 import { difference } from "lodash"
 import Papa, { ParseConfig } from "papaparse"
+
 import { AbstractParser } from "../interfaces/abstract-parser"
 import { CsvParserContext, CsvSchema } from "../interfaces/csv-parser"
 
@@ -16,11 +16,7 @@ class CsvParser<
 > extends AbstractParser<TSchema, TParserResult, ParseConfig, TOutputResult> {
   protected readonly $$delimiter: string = ";"
 
-  constructor(
-    protected readonly container: AwilixContainer,
-    schema: TSchema,
-    delimiter?: string
-  ) {
+  constructor(schema: TSchema, delimiter?: string) {
     super(schema)
     if (delimiter) {
       this.$$delimiter = delimiter
@@ -57,6 +53,9 @@ class CsvParser<
   ): Promise<TOutputResult> {
     let outputTuple = {} as TOutputResult
     const columnMap = this.buildColumnMap_(this.$$schema.columns)
+    const requiredColumnsMap = this.buildColumnMap_(
+      this.$$schema.columns.filter((col) => col.required)
+    )
 
     const tupleKeys = Object.keys(line)
 
@@ -99,10 +98,10 @@ class CsvParser<
     }
 
     /**
-     * missing columns = columns defined in the schema - columns present in the line
+     * missing columns = columns defined (& required) in the schema - columns present in the line
      */
     const missingColumns = difference(
-      Object.keys(columnMap),
+      Object.keys(requiredColumnsMap),
       Object.keys(processedColumns)
     )
 

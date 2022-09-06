@@ -1,29 +1,26 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models"
-import { SalesChannelRepository } from "../repositories/sales-channel"
-import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import { buildQuery } from "../utils"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
+
+import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
+import { MedusaError } from "medusa-core-utils"
+import { SalesChannel } from "../models"
+import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
-import { formatException, PostgresError } from "../utils/exception-formatter"
-import ProductService from "./product"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
-  productService: ProductService
 }
 
-class SalesChannelService extends TransactionBaseService<SalesChannelService> {
+class SalesChannelService extends TransactionBaseService {
   static Events = {
     UPDATED: "sales_channel.updated",
     CREATED: "sales_channel.created",
@@ -36,28 +33,70 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
-  protected readonly productService_: ProductService
 
   constructor({
     salesChannelRepository,
     eventBusService,
     manager,
     storeService,
-    productService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({
+      salesChannelRepository,
+      eventBusService,
+      manager,
+      storeService,
+    })
 
     this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
-    this.productService_ = productService
+  }
+
+  /**
+   * A generic retrieve used to find a sales channel by different attributes.
+   *
+   * @param selector - SC selector
+   * @param config - find config
+   * @returns a single SC matching the query or throws
+   */
+  protected async retrieve_(
+    selector: Selector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel> {
+    const manager = this.manager_
+
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const { relations, ...query } = buildQuery(selector, config)
+
+    const salesChannel = await salesChannelRepo.findOneWithRelations(
+      relations as (keyof SalesChannel)[],
+      query
+    )
+
+    if (!salesChannel) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with ${selectorConstraints} was not found`
+      )
+    }
+
+    return salesChannel
   }
 
   /**
    * Retrieve a SalesChannel by id
    *
+   * @param salesChannelId - id of the channel to retrieve
+   * @param config - SC config
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @returns a sales channel
@@ -66,28 +105,21 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
-    const manager = this.manager_
-    const salesChannelRepo = manager.getCustomRepository(
-      this.salesChannelRepository_
-    )
+    return await this.retrieve_({ id: salesChannelId }, config)
+  }
 
-    const query = buildQuery(
-      {
-        id: salesChannelId,
-      },
-      config
-    )
-
-    const salesChannel = await salesChannelRepo.findOne(query)
-
-    if (!salesChannel) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Sales channel with id ${salesChannelId} was not found`
-      )
-    }
-
-    return salesChannel
+  /**
+   * Find a sales channel by name.
+   *
+   * @param name of the sales channel
+   * @param config - find config
+   * @return a sales channel with matching name
+   */
+  async retrieveByName(
+    name: string,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel | unknown> {
+    return await this.retrieve_({ name }, config)
   }
 
   /**
@@ -182,7 +214,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @param salesChannelId - the id of the sales channel to delete
-   * @return Promise<void>
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
@@ -280,36 +311,15 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(
-      async (transactionManager) => {
-        const salesChannelRepo = transactionManager.getCustomRepository(
-          this.salesChannelRepository_
-        )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
 
-        await salesChannelRepo.addProducts(salesChannelId, productIds)
+      await salesChannelRepo.addProducts(salesChannelId, productIds)
 
-        return await this.retrieve(salesChannelId)
-      },
-      async (error: { code: string }) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          const existingProducts = await this.productService_.list({
-            id: productIds,
-          })
-
-          const nonExistingProducts = productIds.filter(
-            (cId) => existingProducts.findIndex((el) => el.id === cId) === -1
-          )
-
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following product ids do not exist: ${JSON.stringify(
-              nonExistingProducts.join(", ")
-            )}`
-          )
-        }
-        throw formatException(error)
-      }
-    )
+      return await this.retrieve(salesChannelId)
+    })
   }
 }
 

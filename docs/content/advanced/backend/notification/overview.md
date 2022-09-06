@@ -81,7 +81,7 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 
 ## What’s Next 🚀
 
-- Learn how to create your own Notification Provider.
+- Learn how to [create your own Notification Provider](how-to-create-notification-provider.md).
 - Check out the [list of events](../subscribers/events-list.md) in Medusa.
 - Check the [`NotificationService`](../../../references/services/classes/NotificationService.md) API reference for more details on how it works.
 - Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) Notification plugin.

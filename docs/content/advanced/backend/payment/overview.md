@@ -24,7 +24,7 @@ Payment Providers can also be related to a custom way of handling payment operat
 
 ### How Payment Provider is Created
 
-A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the `PaymentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa server.
+A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa server.
 
 As a developer, you will mainly work with the Payment Provider when integrating a payment method in Medusa.
 

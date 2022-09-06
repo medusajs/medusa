@@ -115,8 +115,7 @@ html[data-theme="dark"] footer:not(.theme-doc-footer) {
 }
 
 html[data-theme="dark"] .card {
-  border: 1px solid #fff;
-  color: var(--ifm-color-primary);
+  border: 1px solid var(--ifm-color-primary);
 }
 
 .navbar {
@@ -285,8 +284,8 @@ details summary {
   cursor: pointer;
 }
 
-.theme-doc-markdown a:not(.box-link):hover {
-  color: var(--ifm-color-primary-darkest);
+[data-theme="dark"] .theme-doc-markdown a.card:hover {
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
 }
 
@@ -298,6 +297,10 @@ details summary {
 .theme-doc-markdown a:hover {
   color: #6e3eff;
   text-decoration: none;
+}
+
+[data-theme="dark"] a:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .DocSearch-Container {
@@ -318,4 +321,47 @@ details summary {
   max-width: 100%;
   word-break: break-word;
   white-space: break-spaces;
+}
+
+/* API Reference Styling */
+html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-medusa-gray);
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) pre {
+  background-color: transparent !important;
+  margin-top: 10px;
+}
+
+html[data-theme="dark"] .redocusaurus h5 + svg {
+  fill: #fff;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  padding: 8px 9.6px;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  background-color: #11171a;
+}
+
+/* User Guide Styling */
+html[data-theme="dark"] kbd {
+  --ifm-color-emphasis-0: var(--ifm-color-gray-200);
+}
+
+kbd {
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  
+  font: 100% var(--ifm-font-family-monospace) !important;
+}
+
+.ui-icon {
+  vertical-align: sub;
+  width: 20px;
+  height: 20px;
 }

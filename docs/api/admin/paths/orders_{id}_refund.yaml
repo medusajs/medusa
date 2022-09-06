@@ -1,0 +1,69 @@
+post:
+  operationId: PostOrdersOrderRefunds
+  summary: Create a Refund
+  description: Issues a Refund.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - amount
+            - reason
+          properties:
+            amount:
+              description: The amount to refund.
+              type: integer
+            reason:
+              description: The reason for the Refund.
+              type: string
+            note:
+              description: A note with additional details about the Refund.
+              type: string
+            no_notification:
+              description: >-
+                If set to true no notification will be send related to this
+                Refund.
+              type: boolean
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/orders_{id}_refund/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/orders_{id}_refund/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Order
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order:
+                $ref: ../components/schemas/order.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNotEmpty,
@@ -8,7 +7,10 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
+
+import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import OrderService from "../../../../services/order"
@@ -24,36 +26,74 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - order_id
+ *           - items
  *         properties:
  *           order_id:
  *             type: string
- *             description: The id of the Order to create the Return from.
+ *             description: The ID of the Order to create the Return from.
  *           items:
  *             description: "The items to include in the Return."
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
- *                   description: The id of the Line Item from the Order.
+ *                   description: The ID of the Line Item from the Order.
  *                   type: string
  *                 quantity:
  *                   description: The quantity to return.
  *                   type: integer
- *               required:
- *                 - item_id
- *                 - quantity
+ *                 reason_id:
+ *                   description: The ID of the return reason.
+ *                   type: string
+ *                 note:
+ *                   description: A note to add to the item returned.
+ *                   type: string
  *           return_shipping:
  *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
  *             type: object
+ *             required:
+ *               - option_id
  *             properties:
  *               option_id:
  *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
- *             required:
- *               - option_id
- *         required:
- *           - order_id
- *           - items
+ *                 description: The ID of the Shipping Option to create the Shipping Method from.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.returns.create({
+ *         order_id,
+ *         items: [
+ *           {
+ *             item_id,
+ *             quantity: 1
+ *           }
+ *         ]
+ *       })
+ *       .then(({ return }) => {
+ *         console.log(return.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/returns' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "order_id": "asfasf",
+ *           "items": [
+ *             {
+ *               "item_id": "assfasf",
+ *               "quantity": 1
+ *             }
+ *           ]
+ *       }'
  * tags:
  *   - Return
  * responses:
@@ -65,6 +105,16 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             return:
  *               $ref: "#/components/schemas/return"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const returnDto = await validator(StorePostReturnsReq, req.body)
@@ -72,17 +122,17 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const headerKey = req.get("Idempotency-Key") || ""
 
   let idempotencyKey
   try {
-    idempotencyKey = await idempotencyKeyService.initializeRequest(
-      headerKey,
-      req.method,
-      req.params,
-      req.path
-    )
+    await manager.transaction(async (transactionManager) => {
+      idempotencyKey = await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .initializeRequest(headerKey, req.method, req.params, req.path)
+    })
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
     return
@@ -97,96 +147,100 @@ export default async (req, res) => {
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
-    let err = false
+    let err: unknown = false
 
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          const { key, error } = await idempotencyKeyService.workStage(
-            idempotencyKey.idempotency_key,
-            async (manager) => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(returnDto.order_id, {
-                  select: ["refunded_total", "total"],
-                  relations: ["items"],
-                })
-
-              const returnObj: any = {
-                order_id: returnDto.order_id,
-                idempotency_key: idempotencyKey.idempotency_key,
-                items: returnDto.items,
-              }
-
-              if (returnDto.return_shipping) {
-                returnObj.shipping_method = returnDto.return_shipping
-              }
-
-              const createdReturn = await returnService
-                .withTransaction(manager)
-                .create(returnObj)
-
-              if (returnDto.return_shipping) {
-                await returnService
+          await manager.transaction(async (transactionManager) => {
+            const { key, error } = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                const order = await orderService
                   .withTransaction(manager)
-                  .fulfill(createdReturn.id)
-              }
+                  .retrieve(returnDto.order_id, {
+                    select: ["refunded_total", "total"],
+                    relations: ["items"],
+                  })
 
-              await eventBus
-                .withTransaction(manager)
-                .emit("order.return_requested", {
-                  id: returnDto.order_id,
-                  return_id: createdReturn.id,
-                })
+                const returnObj: any = {
+                  order_id: returnDto.order_id,
+                  idempotency_key: idempotencyKey.idempotency_key,
+                  items: returnDto.items,
+                }
 
-              return {
-                recovery_point: "return_requested",
-              }
+                if (returnDto.return_shipping) {
+                  returnObj.shipping_method = returnDto.return_shipping
+                }
+
+                const createdReturn = await returnService
+                  .withTransaction(manager)
+                  .create(returnObj)
+
+                if (returnDto.return_shipping) {
+                  await returnService
+                    .withTransaction(manager)
+                    .fulfill(createdReturn.id)
+                }
+
+                await eventBus
+                  .withTransaction(manager)
+                  .emit("order.return_requested", {
+                    id: returnDto.order_id,
+                    return_id: createdReturn.id,
+                  })
+
+                return {
+                  recovery_point: "return_requested",
+                }
+              })
+
+            if (error) {
+              inProgress = false
+              err = error
+            } else {
+              idempotencyKey = key
             }
-          )
-
-          if (error) {
-            inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
+          })
           break
         }
 
         case "return_requested": {
-          const { key, error } = await idempotencyKeyService.workStage(
-            idempotencyKey.idempotency_key,
-            async (manager) => {
-              let ret = await returnService.withTransaction(manager).list(
-                {
-                  idempotency_key: idempotencyKey.idempotency_key,
-                },
-                {
-                  relations: ["items", "items.reason"],
+          await manager.transaction(async (transactionManager) => {
+            const { key, error } = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                const returnOrders = await returnService
+                  .withTransaction(manager)
+                  .list(
+                    {
+                      idempotency_key: idempotencyKey.idempotency_key,
+                    },
+                    {
+                      relations: ["items", "items.reason"],
+                    }
+                  )
+                if (!returnOrders.length) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    `Return not found`
+                  )
                 }
-              )
-              if (!ret.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  `Return not found`
-                )
-              }
-              ret = ret[0]
+                const returnOrder = returnOrders[0]
 
-              return {
-                response_code: 200,
-                response_body: { return: ret },
-              }
+                return {
+                  response_code: 200,
+                  response_body: { return: returnOrder },
+                }
+              })
+
+            if (error) {
+              inProgress = false
+              err = error
+            } else {
+              idempotencyKey = key
             }
-          )
-
-          if (error) {
-            inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
+          })
           break
         }
 
@@ -196,14 +250,15 @@ export default async (req, res) => {
         }
 
         default:
-          idempotencyKey = await idempotencyKeyService.update(
-            idempotencyKey.idempotency_key,
-            {
-              recovery_point: "finished",
-              response_code: 500,
-              response_body: { message: "Unknown recovery point" },
-            }
-          )
+          await manager.transaction(async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .update(idempotencyKey.idempotency_key, {
+                recovery_point: "finished",
+                response_code: 500,
+                response_body: { message: "Unknown recovery point" },
+              })
+          })
           break
       }
     }

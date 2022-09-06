@@ -1,15 +1,77 @@
+import { IsInt, IsOptional, ValidateNested } from "class-validator"
+
+import { DateComparisonOperator } from "../../../../types/common"
+import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
 import { omit } from "lodash"
-import { ValidateNested, IsInt, IsOptional } from "class-validator"
-import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
-import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /regions
  * operationId: GetRegions
  * summary: List Regions
  * description: "Retrieves a list of Regions."
+ * parameters:
+ *   - (query) offset=0 {integer} How many regions to skip in the result.
+ *   - (query) limit=100 {integer} Limit the number of regions returned.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting regions were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting regions were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.regions.list()
+ *       .then(({ regions }) => {
+ *         console.log(regions.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/regions'
  * tags:
  *   - Region
  * responses:
@@ -19,19 +81,20 @@ import { DateComparisonOperator } from "../../../../types/common"
  *       application/json:
  *         schema:
  *           properties:
- *             count:
- *               description: The total number of regions.
- *               type: integer
- *             offset:
- *               description: The offset for pagination.
- *               type: integer
- *             limit:
- *               description: The maxmimum number of regions to return,
- *               type: integer
  *             regions:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/region"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetRegionsParams, req.query)

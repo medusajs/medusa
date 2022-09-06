@@ -1,0 +1,127 @@
+post:
+  operationId: PostNotes
+  summary: Creates a Note
+  description: Creates a Note which can be associated with any resource as required.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - resource_id
+            - resource_type
+            - value
+          properties:
+            resource_id:
+              type: string
+              description: The ID of the resource which the Note relates to.
+            resource_type:
+              type: string
+              description: The type of resource which the Note relates to.
+            value:
+              type: string
+              description: The content of the Note to create.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/notes/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/notes/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Note
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              note:
+                $ref: ../components/schemas/note.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetNotes
+  summary: List Notes
+  x-authenticated: true
+  description: Retrieves a list of notes
+  parameters:
+    - in: query
+      name: limit
+      description: The number of notes to get
+      schema:
+        type: number
+        default: '50'
+    - in: query
+      name: offset
+      description: The offset at which to get notes
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: resource_id
+      description: The ID which the notes belongs to
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/notes/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/notes/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Note
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              notes:
+                type: array
+                items:
+                  $ref: ../components/schemas/note.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

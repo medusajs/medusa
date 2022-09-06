@@ -18,6 +18,7 @@ import {
   ClaimType,
   FulfillmentItem,
   LineItem,
+  ReturnItem,
 } from "../models"
 import { ClaimRepository } from "../repositories/claim"
 import { DeepPartial, EntityManager } from "typeorm"
@@ -25,7 +26,7 @@ import { LineItemRepository } from "../repositories/line-item"
 import { MedusaError } from "medusa-core-utils"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FindConfig } from "../types/common"
 import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
 
@@ -49,10 +50,7 @@ type InjectedDependencies = {
   totalsService: TotalsService
 }
 
-export default class ClaimService extends TransactionBaseService<
-  ClaimService,
-  InjectedDependencies
-> {
+export default class ClaimService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "claim.created",
     UPDATED: "claim.updated",
@@ -150,32 +148,29 @@ export default class ClaimService extends TransactionBaseService<
         }
 
         if (shipping_methods) {
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
+
           for (const m of claim.shipping_methods) {
-            await this.shippingOptionService_
-              .withTransaction(transactionManager)
-              .updateShippingMethod(m.id, {
-                claim_order_id: null,
-              })
+            await shippingOptionServiceTx.updateShippingMethod(m.id, {
+              claim_order_id: null,
+            })
           }
 
           for (const method of shipping_methods) {
             if (method.id) {
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .updateShippingMethod(method.id, {
-                  claim_order_id: claim.id,
-                })
+              await shippingOptionServiceTx.updateShippingMethod(method.id, {
+                claim_order_id: claim.id,
+              })
             } else {
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .createShippingMethod(
-                  method.option_id as string,
-                  (method as any).data,
-                  {
-                    claim_order_id: claim.id,
-                    price: method.price,
-                  }
-                )
+              await shippingOptionServiceTx.createShippingMethod(
+                method.option_id as string,
+                (method as any).data,
+                {
+                  claim_order_id: claim.id,
+                  price: method.price,
+                }
+              )
             }
           }
         }
@@ -186,11 +181,12 @@ export default class ClaimService extends TransactionBaseService<
         }
 
         if (claim_items) {
+          const claimItemServiceTx =
+            this.claimItemService_.withTransaction(transactionManager)
+
           for (const i of claim_items) {
             if (i.id) {
-              await this.claimItemService_
-                .withTransaction(transactionManager)
-                .update(i.id, i)
+              await claimItemServiceTx.update(i.id, i)
             }
           }
         }
@@ -235,12 +231,13 @@ export default class ClaimService extends TransactionBaseService<
           ...rest
         } = data
 
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         for (const item of claim_items) {
-          const line = await this.lineItemService_
-            .withTransaction(transactionManager)
-            .retrieve(item.item_id, {
-              relations: ["order", "swap", "claim_order", "tax_lines"],
-            })
+          const line = await lineItemServiceTx.retrieve(item.item_id, {
+            relations: ["order", "swap", "claim_order", "tax_lines"],
+          })
 
           if (
             line.order?.canceled_at ||
@@ -336,25 +333,32 @@ export default class ClaimService extends TransactionBaseService<
         }
 
         let newItems: LineItem[] = []
-        if (typeof additional_items !== "undefined") {
+        if (isDefined(additional_items)) {
+          const inventoryServiceTx =
+            this.inventoryService_.withTransaction(transactionManager)
+
           for (const item of additional_items) {
-            await this.inventoryService_
-              .withTransaction(transactionManager)
-              .confirmInventory(item.variant_id, item.quantity)
+            await inventoryServiceTx.confirmInventory(
+              item.variant_id,
+              item.quantity
+            )
           }
 
           newItems = await Promise.all(
             additional_items.map((i) =>
-              this.lineItemService_
-                .withTransaction(transactionManager)
-                .generate(i.variant_id, order.region_id, i.quantity)
+              lineItemServiceTx.generate(
+                i.variant_id,
+                order.region_id,
+                i.quantity
+              )
             )
           )
 
           for (const newItem of newItems) {
-            await this.inventoryService_
-              .withTransaction(transactionManager)
-              .adjustInventory(newItem.variant_id, -newItem.quantity)
+            await inventoryServiceTx.adjustInventory(
+              newItem.variant_id,
+              -newItem.quantity
+            )
           }
         }
 
@@ -378,57 +382,58 @@ export default class ClaimService extends TransactionBaseService<
 
         if (result.additional_items && result.additional_items.length) {
           const calcContext = this.totalsService_.getCalculationContext(order)
-          const lineItems = await this.lineItemService_
-            .withTransaction(transactionManager)
-            .list({
-              id: result.additional_items.map((i) => i.id),
-            })
+          const lineItems = await lineItemServiceTx.list({
+            id: result.additional_items.map((i) => i.id),
+          })
           await this.taxProviderService_
             .withTransaction(transactionManager)
             .createTaxLines(lineItems, calcContext)
         }
 
         if (shipping_methods) {
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
+
           for (const method of shipping_methods) {
             if (method.id) {
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .updateShippingMethod(method.id, {
-                  claim_order_id: result.id,
-                })
+              await shippingOptionServiceTx.updateShippingMethod(method.id, {
+                claim_order_id: result.id,
+              })
             } else {
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .createShippingMethod(
-                  method.option_id as string,
-                  (method as any).data,
-                  {
-                    claim_order_id: result.id,
-                    price: method.price,
-                  }
-                )
+              await shippingOptionServiceTx.createShippingMethod(
+                method.option_id as string,
+                (method as any).data,
+                {
+                  claim_order_id: result.id,
+                  price: method.price,
+                }
+              )
             }
           }
         }
 
+        const claimItemServiceTx =
+          this.claimItemService_.withTransaction(transactionManager)
+
         for (const ci of claim_items) {
-          await this.claimItemService_
-            .withTransaction(transactionManager)
-            .create({
-              ...ci,
-              claim_order_id: result.id,
-            })
+          await claimItemServiceTx.create({
+            ...ci,
+            claim_order_id: result.id,
+          })
         }
 
         if (return_shipping) {
           await this.returnService_.withTransaction(transactionManager).create({
             order_id: order.id,
             claim_order_id: result.id,
-            items: claim_items.map((ci) => ({
-              item_id: ci.item_id,
-              quantity: ci.quantity,
-              metadata: (ci as any).metadata,
-            })),
+            items: claim_items.map(
+              (ci) =>
+                ({
+                  item_id: ci.item_id,
+                  quantity: ci.quantity,
+                  metadata: (ci as any).metadata,
+                } as ReturnItem)
+            ),
             shipping_method: return_shipping,
             no_notification: evaluatedNoNotification,
           })
@@ -584,14 +589,14 @@ export default class ClaimService extends TransactionBaseService<
         )
         const claimOrder = await claimRepo.save(claim)
 
+        const eventBusTx = this.eventBus_.withTransaction(transactionManager)
+
         for (const fulfillment of fulfillments) {
-          await this.eventBus_
-            .withTransaction(transactionManager)
-            .emit(ClaimService.Events.FULFILLMENT_CREATED, {
-              id: id,
-              fulfillment_id: fulfillment.id,
-              no_notification: claim.no_notification,
-            })
+          await eventBusTx.emit(ClaimService.Events.FULFILLMENT_CREATED, {
+            id: id,
+            fulfillment_id: fulfillment.id,
+            no_notification: claim.no_notification,
+          })
         }
 
         return claimOrder
@@ -708,6 +713,9 @@ export default class ClaimService extends TransactionBaseService<
 
         claim.fulfillment_status = ClaimFulfillmentStatus.SHIPPED
 
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         for (const additionalItem of claim.additional_items) {
           const shipped = shipment.items.find(
             (si) => si.item_id === additionalItem.id
@@ -715,11 +723,9 @@ export default class ClaimService extends TransactionBaseService<
           if (shipped) {
             const shippedQty =
               (additionalItem.shipped_quantity || 0) + shipped.quantity
-            await this.lineItemService_
-              .withTransaction(transactionManager)
-              .update(additionalItem.id, {
-                shipped_quantity: shippedQty,
-              })
+            await lineItemServiceTx.update(additionalItem.id, {
+              shipped_quantity: shippedQty,
+            })
 
             if (shippedQty !== additionalItem.quantity) {
               claim.fulfillment_status =

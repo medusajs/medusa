@@ -27,19 +27,14 @@ describe("medusa-plugin-sendgrid", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      const { container, app, port } = await bootstrapApp({ cwd })
-      appContainer = container
+    dbConnection = await initDb({ cwd })
+    const { container, app, port } = await bootstrapApp({ cwd })
+    appContainer = container
 
-      setPort(port)
-      express = app.listen(port, (err) => {
-        process.send(port)
-      })
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
+    setPort(port)
+    express = app.listen(port, (err) => {
+      process.send(port)
+    })
   })
 
   afterAll(async () => {
@@ -183,7 +178,6 @@ describe("medusa-plugin-sendgrid", () => {
       order: {
         display_id: expect.any(Number),
         id: expect.any(String),
-        display_id: expect.any(Number),
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
         customer_id: expect.any(String),

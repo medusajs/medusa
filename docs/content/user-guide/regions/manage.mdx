@@ -1,0 +1,68 @@
+---
+sidebar_position: 2
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Regions
+
+In this document, you’ll learn how to view and manage regions in your Medusa Admin.
+
+## View Regions
+
+To view your regions:
+
+1. Click on Settings in the sidebar.
+2. Choose Regions from the list of settings.
+
+This opens the Regions page where you can find a list of regions.
+
+---
+
+## Create a Region
+
+To create a region:
+
+1. Go to Settings → Regions.
+2. Click on Add Region at the top right of the Regions section.
+3. In the window that opens you must enter the Regions details:
+    - It is required to enter a name and choose a currency and at least one country, payment provider, and fulfillment provider.
+    - You can optionally enter a tax rate and code for the region. Alternatively, you can [edit a region’s tax settings and rates](../taxes/manage.md#edit-a-regions-taxes) after creation.
+4. Once you’re done, click Save.
+
+:::tip
+
+If you can’t find the currency you want to use in the Currency field, make sure to add the Currency to the store’s currencies in the settings.
+
+:::
+
+After you click save, the region will be created and you can see it in the list on the left.
+
+---
+
+## Duplicate a Region
+
+Duplicating a region allows you to create a new region with some of its details filled from an existing region. The details that will be copied are the currency, payment providers, and fulfillment providers.
+
+To duplicate a region:
+
+1. Go to Settings → Regions.
+2. Click on the region you want to duplicate from the Regions section.
+3. In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+4. Choose Duplicate Region from the dropdown list.
+
+## Delete a Region
+
+:::warning
+
+If you delete a region, you will not be able to restore it or its data. Data related to the region such as tax settings will also be deleted. Prices using the currencies of this region will remain available.
+
+:::
+
+To delete a region:
+
+1. Go to Settings → Regions.
+2. Click on the region you want to duplicate from the Regions section.
+3. In the Details section, click on the <UiIcon lightIcon="https://i.imgur.com/1ordBC6.png" darkIcon="https://i.imgur.com/dSwWYBH.png" alt="three dots" /> icon.
+4. Choose Delete Region from the dropdown list.
+5. Confirm deleting the region by clicking the “Yes, delete” button in the pop-up.

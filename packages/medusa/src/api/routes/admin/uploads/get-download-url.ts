@@ -1,5 +1,5 @@
-import { IsString } from "class-validator"
 import { AbstractFileService } from "../../../../interfaces"
+import { IsString } from "class-validator"
 
 /**
  * [post] /uploads/download-url
@@ -17,15 +17,58 @@ import { AbstractFileService } from "../../../../interfaces"
  *           file_key:
  *             description: "key of the file to obtain the download link for"
  *             type: string
- *   - (path) fileKey=* {string} key of the file to obtain the download link for.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.uploads.getPresignedDownloadUrl({
+ *         file_key
+ *       })
+ *       .then(({ download_url }) => {
+ *         console.log(download_url);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/uploads/download-url' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "file_key": "{file_key}"
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
- *   - Uploads
+ *   - Upload
  * responses:
  *   200:
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             download_url:
+ *               type: string
+ *               description: The Download URL of the file
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
+  const fileService: AbstractFileService = req.scope.resolve("fileService")
 
   const url = await fileService.getPresignedDownloadUrl({
     fileKey: (req.validatedBody as AdminPostUploadsDownloadUrlReq).file_key,

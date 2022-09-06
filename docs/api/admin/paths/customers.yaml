@@ -1,0 +1,146 @@
+post:
+  operationId: PostCustomers
+  summary: Create a Customer
+  description: Creates a Customer.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - email
+            - first_name
+            - last_name
+            - password
+          properties:
+            email:
+              type: string
+              description: The customer's email.
+              format: email
+            first_name:
+              type: string
+              description: The customer's first name.
+            last_name:
+              type: string
+              description: The customer's last name.
+            password:
+              type: string
+              description: The customer's password.
+              format: password
+            phone:
+              type: string
+              description: The customer's phone number.
+            metadata:
+              description: >-
+                An optional set of key-value pairs to hold additional
+                information.
+              type: object
+  tags:
+    - Customer
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customer:
+                $ref: ../components/schemas/customer.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetCustomers
+  summary: List Customers
+  description: Retrieves a list of Customers.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: The number of items to return.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: offset
+      description: The items to skip before result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in each customer.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: a search term to search email, first_name, and last_name.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Customer
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              customers:
+                type: array
+                items:
+                  $ref: ../components/schemas/customer.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

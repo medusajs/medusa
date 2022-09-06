@@ -1,0 +1,69 @@
+get:
+  operationId: GetVariants
+  summary: List Product Variants.
+  description: Retrieves a list of Product Variants
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: Query used for searching variants.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many variants to skip in the result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: limit
+      description: Limit the number of variants returned.
+      schema:
+        type: integer
+        default: 20
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/variants/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/variants/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Product Variant
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              variants:
+                type: array
+                items:
+                  $ref: ../components/schemas/product_variant.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

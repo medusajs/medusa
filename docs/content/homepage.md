@@ -42,7 +42,7 @@ Medusa comes with a set of building blocks that allow you to create unique digit
 
 You can follow our [quickstart guide](quickstart/quick-start.md) to install and run a Medusa server.
 
-It's also recommended to learn how to [set up your development environment](tutorial/set-up-your-development-environment) with the requirements tools and services to run a Medusa server, then [configure your Medusa server](usage/configurations.md).
+It's also recommended to learn how to [set up your development environment](tutorial/set-up-your-development-environment) with the required tools and services to run a Medusa server, then [configure your Medusa server](usage/configurations.md).
 
 ### The Medusa Admin
 
@@ -56,7 +56,7 @@ The final step is to set up a storefront to sell your products.
 
 Medusa provides 2 starter storefronts, one built with [Next.js](./starters/nextjs-medusa-starter.md) and one with [Gatsby](./starters/gatsby-medusa-starter.md), that you can use to quickly set up your store and start selling.
 
-Alternatively, you can build your own storefront with any frontend framework of your choice just by connecting to your server with the [Storefront REST APIs](https://docs.medusajs.com/api/store/collection).
+Alternatively, you can build your own storefront with any frontend framework of your choice just by connecting to your server with the [Storefront REST APIs](https://docs.medusajs.com/api/store).
 
 ## What’s Next 🚀
 

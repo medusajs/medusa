@@ -1,0 +1,59 @@
+post:
+  operationId: PostCartsCartShippingMethod
+  description: Adds a Shipping Method to the Cart.
+  summary: Add a Shipping Method
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The cart ID.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/carts_{id}_shipping-methods/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/carts_{id}_shipping-methods/postundefined
+  tags:
+    - Cart
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              cart:
+                $ref: ../components/schemas/cart.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - option_id
+          properties:
+            option_id:
+              type: string
+              description: ID of the shipping option to create the method from
+            data:
+              type: object
+              description: >-
+                Used to hold any data that the shipping method may need to
+                process the fulfillment of the order. Look at the documentation
+                for your installed fulfillment providers to find out what to
+                send.

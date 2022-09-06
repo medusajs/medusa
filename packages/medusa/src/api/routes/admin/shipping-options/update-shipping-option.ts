@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,7 +8,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
+
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -18,11 +20,13 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Shipping Option"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Shipping Option.
+ *   - (path) id=* {string} The ID of the Shipping Option.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - requirements
  *         properties:
  *           name:
  *             description: "The name of the Shipping Option"
@@ -40,7 +44,13 @@ import { validator } from "../../../../utils/validator"
  *             description: "The requirements that must be satisfied for the Shipping Option to be available."
  *             type: array
  *             items:
+ *               required:
+ *                 - type
+ *                 - amount
  *               properties:
+ *                 id:
+ *                   description: The ID of the requirement
+ *                   type: string
  *                 type:
  *                   description: The type of the requirement
  *                   type: string
@@ -50,6 +60,43 @@ import { validator } from "../../../../utils/validator"
  *                 amount:
  *                   description: The amount to compare with.
  *                   type: integer
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.shippingOptions.update(option_id, {
+ *         name: 'PostFake',
+ *         requirements: [
+ *           {
+ *             id,
+ *             type: 'max_subtotal',
+ *             amount: 1000
+ *           }
+ *         ]
+ *       })
+ *       .then(({ shipping_option }) => {
+ *         console.log(shipping_option.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/shipping-options/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "requirements": [
+ *             {
+ *               "type": "max_subtotal",
+ *               "amount": 1000
+ *             }
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Shipping Option
  * responses:
@@ -61,6 +108,18 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { option_id } = req.params
@@ -69,7 +128,12 @@ export default async (req, res) => {
 
   const optionService = req.scope.resolve("shippingOptionService")
 
-  await optionService.update(option_id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await optionService
+      .withTransaction(transactionManager)
+      .update(option_id, validated)
+  })
 
   const data = await optionService.retrieve(option_id, {
     select: defaultFields,

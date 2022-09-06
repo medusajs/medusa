@@ -5,6 +5,7 @@ import { asFunction, aliasTo } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
+import { isDefined } from "../utils"
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -17,8 +18,7 @@ type LoaderOptions = {
  * @returns void
  */
 export default ({ container, configModule, isTest }: LoaderOptions): void => {
-  const useMock =
-    typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
+  const useMock = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock
     ? "../strategies/__mocks__/[!__]*.js"
@@ -28,7 +28,15 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+    ignore: [
+      "**/__fixtures__/**",
+      "**/index.js",
+      "**/index.ts",
+      "**/utils.js",
+      "**/utils.ts",
+      "**/types.js",
+      "**/types.ts",
+    ],
   })
 
   core.forEach((fn) => {

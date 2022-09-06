@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-meilisearch",
-  "version": "0.2.3",
+  "version": "1.0.0",
   "description": "A starter for Medusa projects.",
   "main": "index.js",
   "repository": {
@@ -17,13 +17,13 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.3.3"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
     "medusa-core-utils": "^1.1.31",
-    "meilisearch": "^0.24.0"
+    "meilisearch": "0.27.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",

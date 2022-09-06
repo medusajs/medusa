@@ -6,22 +6,22 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ClaimType
 
-## Enumeration members
+## Enumeration Members
 
 ### REFUND
 
-• **REFUND** = `"refund"`
+• **REFUND** = ``"refund"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:10
+medusa/dist/models/claim-order.d.ts:10
 
 ___
 
 ### REPLACE
 
-• **REPLACE** = `"replace"`
+• **REPLACE** = ``"replace"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:11
+medusa/dist/models/claim-order.d.ts:11

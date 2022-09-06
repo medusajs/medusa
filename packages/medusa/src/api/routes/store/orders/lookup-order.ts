@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsEmail,
   IsNumber,
@@ -7,17 +6,55 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
- * description: "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned."
+ * description: "Look up an order using filters."
  * parameters:
  *   - (query) display_id=* {number} The display id given to the Order.
- *   - (query) email=* {string} The email of the Order with the given display_id.
+ *   - in: query
+ *     name: email
+ *     style: form
+ *     explode: false
+ *     description: The email associated with this order.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       format: email
+ *   - in: query
+ *     name: shipping_address
+ *     style: form
+ *     explode: false
+ *     description: The shipping address associated with this order.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         postal_code:
+ *           type: string
+ *           description: The postal code of the shipping address
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.lookupOrder({
+ *         display_id: 1,
+ *         email: 'user@example.com'
+ *       })
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
  *   - Order
  * responses:
@@ -29,6 +66,16 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             order:
  *               $ref: "#/components/schemas/order"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetOrdersParams, req.query)

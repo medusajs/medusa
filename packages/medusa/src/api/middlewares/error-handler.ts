@@ -33,6 +33,7 @@ export default () => {
       case QUERY_RUNNER_RELEASED:
       case TRANSACTION_STARTED:
       case TRANSACTION_NOT_STARTED:
+      case MedusaError.Types.CONFLICT:
         statusCode = 409
         errObj.code = INVALID_STATE_ERROR
         errObj.message =
@@ -66,3 +67,19 @@ export default () => {
     res.status(statusCode).json(errObj)
   }
 }
+
+/**
+ * @schema error
+ * title: "Response Error"
+ * x-resourceId: error
+ * properties:
+ *  code:
+ *    type: string
+ *    description: A slug code to indicate the type of the error.
+ *  message:
+ *    type: string
+ *    description: Description of the error that occurred.
+ *  type:
+ *    type: string
+ *    description: A slug indicating the type of the error.
+ */
