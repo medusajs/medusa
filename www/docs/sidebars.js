@@ -36,7 +36,6 @@ module.exports = {
         },
       ]
     },
-    
     {
       type: "category",
       label: "Setup & Deployment",
@@ -252,6 +251,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "advanced/backend/entities/overview",
+          label: "Entities"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/services/overview",
           label: "Services"
         },
@@ -259,11 +263,6 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/subscribers/overview",
           label: "Subscribers"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/entities/overview",
-          label: "Entities"
         },
         {
           type: "doc",
@@ -289,6 +288,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/migrations/overview",
           label: "Migrations"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/index",
+          label: "Batch Jobs"
         },
       ]
     },
