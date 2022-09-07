@@ -22,7 +22,6 @@
     "@babel/runtime": "^7.16.3",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0",
     "jest": "^25.5.2"
   },
   "scripts": {

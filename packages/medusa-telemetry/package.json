@@ -19,10 +19,8 @@
     "@babel/preset-typescript": "^7.15.0",
     "babel-preset-medusa-package": "^1.1.19",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "nodemon": "^2.0.1",
-    "prettier": "^1.19.1"
+    "nodemon": "^2.0.1"
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",

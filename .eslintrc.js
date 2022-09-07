@@ -50,6 +50,7 @@ module.exports = {
     "no-use-before-define": "error",
     "space-before-function-paren": ["error", "never"],
     "space-infix-ops": "error",
+    "eol-last": ["error", "always"],
   },
   env: {
     es6: true,

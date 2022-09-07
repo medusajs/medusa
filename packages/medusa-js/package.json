@@ -32,9 +32,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.19",
     "cross-env": "^7.0.3",
-    "eslint": "^8.2.0",
     "jest": "^26.6.3",
-    "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",

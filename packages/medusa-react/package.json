@@ -31,13 +31,6 @@
       "pre-commit": "tsdx lint"
     }
   },
-  "prettier": {
-    "endOfLine": "lf",
-    "semi": false,
-    "singleQuote": false,
-    "tabWidth": 2,
-    "trailingComma": "es5"
-  },
   "name": "medusa-react",
   "author": "Zakaria S. El Asri",
   "module": "dist/medusa-react.esm.js",
