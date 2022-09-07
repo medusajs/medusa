@@ -7,10 +7,8 @@ module.exports = {
       experimentalDecorators: true,
     },
   },
-  extends: [
-    "eslint:recommended",
-    "google",
-  ],
+  plugins: ["prettier"],
+  extends: ["eslint:recommended", "google", "plugin:prettier/recommended"],
   rules: {
     curly: [1, "all"],
     "new-cap": "off",
@@ -19,36 +17,54 @@ module.exports = {
     "no-unused-vars": "off",
     camelcase: "off",
     "no-invalid-this": "off",
-    "max-len": ["error", {
-      code: 80,
-      ignoreStrings: true,
-      ignoreRegExpLiterals: true,
-      ignoreComments: true,
-      ignoreTrailingComments: true,
-      ignoreUrls: true,
-      ignoreTemplateLiterals: true,
-    }],
-    indent: ["error", 2],
+    "max-len": [
+      "error",
+      {
+        code: 80,
+        ignoreStrings: true,
+        ignoreRegExpLiterals: true,
+        ignoreComments: true,
+        ignoreTrailingComments: true,
+        ignoreUrls: true,
+        ignoreTemplateLiterals: true,
+      },
+    ],
     semi: ["error", "never"],
-    quotes: ["error", "double", {
-      "allowTemplateLiterals": true
-    }],
-    "comma-dangle": ["error", {
-      arrays: "never",
-      objects: "always-multiline",
-      imports: "always-multiline",
-      exports: "always-multiline",
-      functions: "never"
-    }],
+    quotes: [
+      "error",
+      "double",
+      {
+        allowTemplateLiterals: true,
+      },
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        arrays: "always-multiline",
+        objects: "always-multiline",
+        imports: "always-multiline",
+        exports: "always-multiline",
+        functions: "never",
+      },
+    ],
     "object-curly-spacing": ["error", "always"],
     "arrow-parens": ["error", "always"],
     "linebreak-style": 0,
-    "no-confusing-arrow":  ["error", {
-      allowParens: false
-    }],
-    "no-mixed-operators": ["error"],
+    "no-confusing-arrow": [
+      "error",
+      {
+        allowParens: false,
+      },
+    ],
     "no-use-before-define": "error",
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": [
+      "error",
+      {
+        anonymous: "always",
+        named: "never",
+        asyncArrow: "always",
+      },
+    ],
     "space-infix-ops": "error",
     "eol-last": ["error", "always"],
   },
@@ -57,8 +73,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [
-  ],
+  ignorePatterns: [],
   overrides: [
     {
       files: ["*.ts"],
@@ -66,26 +81,31 @@ module.exports = {
       extends: ["plugin:@typescript-eslint/recommended"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: './packages/medusa/tsconfig.json'
+        project: "./packages/medusa/tsconfig.json",
       },
       rules: {
         "valid-jsdoc": "off",
-        "brace-style": "off",
-        "keyword-spacing": "off",
-        "no-use-before-define": "off",
-        "space-before-function-paren": "off",
-        "space-infix-ops": "off",
-
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/promise-function-async": "error",
-        "@typescript-eslint/brace-style": ["error", "1tbs", {
-          "allowSingleLine": false
-        }],
+        "@typescript-eslint/brace-style": [
+          "error",
+          "1tbs",
+          {
+            allowSingleLine: false,
+          },
+        ],
         "@typescript-eslint/keyword-spacing": "error",
         "@typescript-eslint/no-use-before-define": "error",
-        "@typescript-eslint/space-before-function-paren": ["error", "never"],
+        "@typescript-eslint/space-before-function-paren": [
+          "error",
+          {
+            anonymous: "always",
+            named: "never",
+            asyncArrow: "always",
+          },
+        ],
         "@typescript-eslint/space-infix-ops": "error",
 
         // --- Rules to be fixed

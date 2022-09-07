@@ -27865,7 +27865,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.5.1":
+"prettier@npm:^2.5.1, prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
   bin:
@@ -29959,6 +29959,8 @@ __metadata:
     cross-env: ^7.0.2
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-prettier: ^4.2.1
     express: ^4.17.1
     get-port: ^5.1.1
     global: ^4.4.0
@@ -29969,6 +29971,7 @@ __metadata:
     microbundle: ^0.13.3
     oas-normalize: ^5.0.1
     pg-god: ^1.0.11
+    prettier: ^2.7.1
     resolve-cwd: ^3.0.0
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
