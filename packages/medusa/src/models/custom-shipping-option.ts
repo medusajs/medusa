@@ -92,4 +92,7 @@ export class CustomShippingOption extends SoftDeletableEntity {
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
+ *  includes_tax:
+ *     description: "[EXPERIMENTAL] Indicates if the custom shipping option price include tax"
+ *     type: boolean
  */
