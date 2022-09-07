@@ -56,7 +56,6 @@ module.exports = {
         allowParens: false,
       },
     ],
-    "no-use-before-define": "error",
     "space-before-function-paren": [
       "error",
       {
@@ -97,7 +96,7 @@ module.exports = {
           },
         ],
         "@typescript-eslint/keyword-spacing": "error",
-        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-use-before-define": "warn",
         "@typescript-eslint/space-before-function-paren": [
           "error",
           {
