@@ -86,6 +86,9 @@ const productServiceMock = {
 }
 
 const shippingProfileServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieveDefault: jest.fn().mockImplementation((_data) => {
     return Promise.resolve({ id: "default_shipping_profile" })
   }),

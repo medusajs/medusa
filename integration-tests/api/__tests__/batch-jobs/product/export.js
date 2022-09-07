@@ -159,7 +159,7 @@ describe("Batch job of product-export type", () => {
     expect(batchJob.result?.file_size).toBe(fileSize)
 
     const data = (await fs.readFile(exportFilePath)).toString()
-    const [, ...lines] = data.split("\r\n").filter((l) => l)
+    const [, ...lines] = data.split("\n").filter((l) => l)
 
     expect(lines.length).toBe(1)
 
@@ -222,7 +222,7 @@ describe("Batch job of product-export type", () => {
     expect(isFileExists).toBeTruthy()
 
     const data = (await fs.readFile(exportFilePath)).toString()
-    const [, ...lines] = data.split("\r\n").filter((l) => l)
+    const [, ...lines] = data.split("\n").filter((l) => l)
 
     expect(lines.length).toBe(4)
 
