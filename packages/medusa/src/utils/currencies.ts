@@ -679,7 +679,7 @@ export const currencies: Record<string, Currency> = {
     symbol: "MVR",
     name: "Maldivian Rufiyaa",
     symbol_native: "ރ",
-    decimal_digits: 0,
+    decimal_digits: 2,
     rounding: 0,
     code: "MVR",
     name_plural: "Maldivian Rufiyaa",
