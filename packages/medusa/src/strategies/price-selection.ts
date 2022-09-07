@@ -87,11 +87,15 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     )
 
     for (const ma of prices) {
-      const isTaxInclusive = !!(
-        ma.region?.includes_tax ||
-        ma.currency?.includes_tax ||
-        ma.price_list?.includes_tax
-      )
+      let isTaxInclusive = ma.currency?.includes_tax || false
+
+      if (ma.price_list?.includes_tax) {
+        // PriceList specific price so use the PriceList tax setting
+        isTaxInclusive = ma.price_list.includes_tax
+      } else if (ma.region?.includes_tax) {
+        // Region specific price so use the Region tax setting
+        isTaxInclusive = ma.region.includes_tax
+      }
 
       delete ma.currency
       delete ma.region
