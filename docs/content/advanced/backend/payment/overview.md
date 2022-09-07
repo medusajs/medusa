@@ -62,7 +62,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The `PaymentSession` entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` also belongs to a `PaymentProvider`. This is the Payment Provider that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
