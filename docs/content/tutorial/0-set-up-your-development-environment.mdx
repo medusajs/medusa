@@ -208,6 +208,23 @@ For other distributions, you can check out [PostgreSQL’s website for more guid
 You can download PostgreSQL on your macOS using [the installer on their website](https://www.postgresql.org/download/macosx/).
 
 </TabItem>
+<TabItem value="docker" label="Docker">
+
+Make sure the Docker Desktop app is running, then run the following command to quickly spin up a PostgreSQL instance:
+
+```bash
+docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
+```
+
+Where:
+
+- `--name` creates a new container named `postgres`.
+- `-e` creates environment variables `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. These will be used to set up a database named `medusa-docker` with the username and password being `postgres`.
+- `-p` maps the container port `5432` to the external host `5432`. This allows you to connect to the database server from outside of the container.
+- `-d` enables Docker to run the container in the background.
+- The last section of the command, `postgres` grabs the latest postgres image from the Docker hub.
+
+</TabItem>
 </Tabs>
 
 ### Redis

@@ -332,6 +332,23 @@ html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
   color: var(--ifm-link-color) !important;
 }
 
+.redocusaurus [data-section-id] > div:nth-child(2) pre {
+  background-color: transparent !important;
+  margin-top: 10px;
+}
+
+html[data-theme="dark"] .redocusaurus h5 + svg {
+  fill: #fff;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  padding: 8px 9.6px;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  background-color: #11171a;
+}
+
 /* User Guide Styling */
 html[data-theme="dark"] kbd {
   --ifm-color-emphasis-0: var(--ifm-color-gray-200);

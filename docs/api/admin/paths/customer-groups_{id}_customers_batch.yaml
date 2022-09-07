@@ -27,6 +27,20 @@ post:
                   id:
                     description: ID of the customer
                     type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/customer-groups_{id}_customers_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:
@@ -38,6 +52,18 @@ post:
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteCustomerGroupsGroupCustomerBatch
   summary: 'Remove a list of customers from a customer group '
@@ -67,6 +93,20 @@ delete:
                   id:
                     description: ID of the customer
                     type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/customer-groups_{id}_customers_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:
@@ -78,3 +118,15 @@ delete:
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

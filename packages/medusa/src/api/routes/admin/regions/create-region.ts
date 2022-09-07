@@ -1,16 +1,18 @@
 import {
   IsArray,
+  IsBoolean,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-
-import { validator } from "../../../../utils/validator"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { Region } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions
@@ -61,6 +63,56 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *             type: array
  *             items:
  *               type: string
+ *           includes_tax:
+ *             description: "[EXPERIMENTAL] Tax included in prices of region"
+ *             type: boolean
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.regions.create({
+ *         name: 'Europe',
+ *         currency_code: 'eur',
+ *         tax_rate: 0,
+ *         payment_providers: [
+ *           'manual'
+ *         ],
+ *         fulfillment_providers: [
+ *           'manual'
+ *         ],
+ *         countries: [
+ *           'DK'
+ *         ]
+ *       })
+ *       .then(({ region }) => {
+ *         console.log(region.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/regions' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "Europe",
+ *           "currency_code": "eur",
+ *           "tax_rate": 0,
+ *           "payment_providers": [
+ *             "manual"
+ *           ],
+ *           "fulfillment_providers": [
+ *             "manual"
+ *           ],
+ *           "countries": [
+ *             "DK"
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Region
  * responses:
@@ -72,6 +124,18 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *           properties:
  *             region:
  *               $ref: "#/components/schemas/region"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = await validator(AdminPostRegionsReq, req.body)
@@ -119,6 +183,12 @@ export class AdminPostRegionsReq {
   @IsArray()
   @IsString({ each: true })
   countries: string[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 
   @IsObject()
   @IsOptional()

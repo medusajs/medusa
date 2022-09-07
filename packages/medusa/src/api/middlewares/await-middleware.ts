@@ -15,3 +15,18 @@ export default (fn: handler): RequestHandler => {
     return fn(req, res).catch(next)
   }
 }
+
+/**
+ * @schema multiple_errors
+ * title: "Multiple Errors"
+ * x-resourceId: multiple_errors
+ * properties:
+ *  errors:
+ *    type: array
+ *    description: Array of errors
+ *    items:
+ *      $ref: "#/components/schemas/error"
+ *  message:
+ *    type: string
+ *    default: "Provided request body contains errors. Please check the data and retry the request"
+ */

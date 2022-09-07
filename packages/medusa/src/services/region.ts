@@ -2,22 +2,24 @@ import { DeepPartial, EntityManager } from "typeorm"
 
 import { MedusaError } from "medusa-core-utils"
 
-import StoreService from "./store"
-import EventBusService from "./event-bus"
-import { countries } from "../utils/countries"
 import { TransactionBaseService } from "../interfaces"
-import { RegionRepository } from "../repositories/region"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { Country, Currency, Region } from "../models"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
-import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
+import { PaymentProviderRepository } from "../repositories/payment-provider"
+import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
-import FulfillmentProviderService from "./fulfillment-provider"
-import { Country, Currency, Region } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
 import { buildQuery, setMetadata } from "../utils"
+import { countries } from "../utils/countries"
+import { FlagRouter } from "../utils/flag-router"
+import EventBusService from "./event-bus"
+import FulfillmentProviderService from "./fulfillment-provider"
 import { PaymentProviderService } from "./index"
+import StoreService from "./store"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -25,6 +27,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   paymentProviderService: PaymentProviderService
   fulfillmentProviderService: FulfillmentProviderService
+  featureFlagRouter: FlagRouter
 
   regionRepository: typeof RegionRepository
   countryRepository: typeof CountryRepository
@@ -47,6 +50,7 @@ class RegionService extends TransactionBaseService {
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
+  protected featureFlagRouter_: FlagRouter
 
   protected readonly eventBus_: EventBusService
   protected readonly storeService_: StoreService
@@ -71,6 +75,7 @@ class RegionService extends TransactionBaseService {
     taxProviderRepository,
     paymentProviderService,
     fulfillmentProviderService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     super({
       manager,
@@ -84,6 +89,7 @@ class RegionService extends TransactionBaseService {
       taxProviderRepository,
       paymentProviderService,
       fulfillmentProviderService,
+      featureFlagRouter,
     })
 
     this.manager_ = manager
@@ -97,6 +103,8 @@ class RegionService extends TransactionBaseService {
     this.paymentProviderService_ = paymentProviderService
     this.taxProviderRepository_ = taxProviderRepository
     this.fulfillmentProviderService_ = fulfillmentProviderService
+
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -115,9 +123,19 @@ class RegionService extends TransactionBaseService {
       )
 
       const regionObject = { ...data } as DeepPartial<Region>
-      const { metadata, currency_code, ...toValidate } = data
+      const { metadata, currency_code, includes_tax, ...toValidate } = data
 
       const validated = await this.validateFields(toValidate)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          regionObject.includes_tax = includes_tax
+        }
+      }
 
       if (currency_code) {
         // will throw if currency is not added to store currencies
@@ -179,9 +197,19 @@ class RegionService extends TransactionBaseService {
 
       const region = await this.retrieve(regionId)
 
-      const { metadata, currency_code, ...toValidate } = update
+      const { metadata, currency_code, includes_tax, ...toValidate } = update
 
       const validated = await this.validateFields(toValidate, region.id)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          region.includes_tax = includes_tax
+        }
+      }
 
       if (currency_code) {
         // will throw if currency is not added to store currencies

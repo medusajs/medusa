@@ -129,6 +129,24 @@ import { Type } from "class-transformer"
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
  *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.listOrders()
+ *       .then(({ orders, limit, offset, count }) => {
+ *         console.log(orders);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
+ *       --header 'Cookie: connect.sid={sid}'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:
@@ -151,6 +169,18 @@ import { Type } from "class-transformer"
  *             limit:
  *               type: integer
  *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
   const id: string | undefined = req.user?.customer_id

@@ -22,6 +22,32 @@ import { validator } from "../../../../utils/validator"
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
  *   - (body) usage_limit=1 {number} amount of times the discount can be applied.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.discounts.createDynamicCode(discount_id, {
+ *         code: 'TEST',
+ *         usage_limit: 1
+ *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/dynamic-codes' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "code": "TEST"
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:
@@ -33,6 +59,18 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             discount:
  *               $ref: "#/components/schemas/discount"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { discount_id } = req.params

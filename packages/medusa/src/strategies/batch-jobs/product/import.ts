@@ -9,9 +9,10 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
-import { CreateProductInput } from "../../../types/product"
+import { CreateProductInput, UpdateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
@@ -24,7 +25,10 @@ import {
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
+import { SalesChannel } from "../../../models"
+import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -35,22 +39,25 @@ const BATCH_SIZE = 100
  * Default strategy class used for a batch import of products/variants.
  */
 class ProductImportStrategy extends AbstractBatchJobStrategy {
-  static identifier = "product-import"
+  static identifier = "product-import-strategy"
 
-  static batchType = "product_import"
+  static batchType = "product-import"
 
   private processedCounter: Record<string, number> = {}
+
+  protected readonly featureFlagRouter_: FlagRouter
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
   protected readonly fileService_: IFileService
 
+  protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
-  protected readonly regionService_: RegionService
 
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
@@ -61,21 +68,36 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   constructor({
     batchJobService,
     productService,
+    salesChannelService,
     productVariantService,
     shippingProfileService,
     regionService,
     fileService,
     manager,
+    featureFlagRouter,
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.csvParser_ = new CsvParser(CSVSchema)
+    const isSalesChannelsFeatureOn = featureFlagRouter.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
+    this.csvParser_ = new CsvParser({
+      ...CSVSchema,
+      columns: [
+        ...CSVSchema.columns,
+        ...(isSalesChannelsFeatureOn ? SalesChannelsSchema.columns : []),
+      ],
+    })
+
+    this.featureFlagRouter_ = featureFlagRouter
 
     this.manager_ = manager
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService_ = productService
+    this.salesChannelService_ = salesChannelService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
@@ -89,15 +111,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * Create a description of a row on which the error occurred and throw a Medusa error.
    *
    * @param row - Parsed CSV row data
+   * @param errorDescription - Concrete error
    */
   protected static throwDescriptiveError(
-    row: TParsedProductImportRowData
+    row: TParsedProductImportRowData,
+    errorDescription?: string
   ): never {
     const message = `Error while processing row with:
       product id: ${row["product.id"]},
       product handle: ${row["product.handle"]},
       variant id: ${row["variant.id"]}
-      variant sku: ${row["variant.sku"]}`
+      variant sku: ${row["variant.sku"]}
+      ${errorDescription}`
 
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
@@ -168,18 +193,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       }
 
       if (price.regionName) {
-        const region = await this.regionService_
-          .withTransaction(transactionManager)
-          .retrieveByName(price.regionName)
-
-        if (!region) {
+        try {
+          record.region_id = (
+            await this.regionService_
+              .withTransaction(transactionManager)
+              .retrieveByName(price.regionName)
+          )?.id
+        } catch (e) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Trying to set a price for a region ${price.regionName} that doesn't exist`
           )
         }
-
-        record.region_id = region!.id
       } else {
         record.currency_code = price.currency_code
       }
@@ -256,6 +281,49 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
+   * Create, or retrieve by name, sales channels from the input data.
+   *
+   * NOTE: Sales channel names provided in the CSV must exist in the DB.
+   *       New sales channels will not be created.
+   *
+   * @param data an array of sales channels partials
+   * @return an array of sales channels created or retrieved by name
+   */
+  private async processSalesChannels(
+    data: Pick<SalesChannel, "name" | "id">[]
+  ): Promise<SalesChannel[]> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const salesChannelServiceTx =
+      this.salesChannelService_.withTransaction(transactionManager)
+
+    const salesChannels: SalesChannel[] = []
+
+    for (const input of data) {
+      let channel: SalesChannel | null = null
+
+      if (input.id) {
+        try {
+          channel = await salesChannelServiceTx.retrieve(input.id, {
+            select: ["id"],
+          })
+        } catch (e) {
+          // noop - check if the channel exists with provided name
+        }
+      }
+
+      if (!channel) {
+        channel = (await salesChannelServiceTx.retrieveByName(input.name, {
+          select: ["id"],
+        })) as SalesChannel
+      }
+
+      salesChannels.push(channel)
+    }
+
+    return salesChannels
+  }
+
+  /**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
    * @param batchJobId - An id of the current batch job being processed.
@@ -267,15 +335,31 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       OperationType.ProductCreate
     )
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
+
+    const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
     for (const productOp of productOps) {
+      const productData = transformProductData(
+        productOp
+      ) as unknown as CreateProductInput
+
       try {
-        await this.productService_
-          .withTransaction(transactionManager)
-          .create(
-            transformProductData(productOp) as unknown as CreateProductInput
+        if (isSalesChannelsFeatureOn) {
+          productData["sales_channels"] = await this.processSalesChannels(
+            productOp["product.sales_channels"] as Pick<
+              SalesChannel,
+              "name" | "id"
+            >[]
           )
+        }
+
+        await productServiceTx.create(productData)
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -294,16 +378,31 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       OperationType.ProductUpdate
     )
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
+
+    const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
+
     for (const productOp of productOps) {
+      const productData = transformProductData(productOp) as UpdateProductInput
       try {
-        await this.productService_
-          .withTransaction(transactionManager)
-          .update(
-            productOp["product.id"] as string,
-            transformProductData(productOp)
+        if (isSalesChannelsFeatureOn) {
+          productData["sales_channels"] = await this.processSalesChannels(
+            productOp["product.sales_channels"] as Pick<
+              SalesChannel,
+              "name" | "id"
+            >[]
           )
+        }
+
+        await productServiceTx.update(
+          productOp["product.id"] as string,
+          productData
+        )
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -355,7 +454,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         this.updateProgress(batchJobId)
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
     }
   }
@@ -391,7 +490,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
-        ProductImportStrategy.throwDescriptiveError(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
 
       this.updateProgress(batchJobId)
@@ -437,13 +536,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         const { writeStream, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `imports/products/import/ops/${batchJobId}-${op}`,
+            name: `imports/products/ops/${batchJobId}-${op}`,
             ext: "json",
           })
 
         uploadPromises.push(promise)
 
         writeStream.write(JSON.stringify(results[op]))
+        writeStream.end()
       }
     }
 
@@ -466,8 +566,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: `imports/products/import/ops/${batchJobId}-${op}`,
-        ext: "json",
+        fileKey: `imports/products/ops/${batchJobId}-${op}.json`,
       })
 
     return await new Promise((resolve) => {
@@ -477,9 +576,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       readableStream.on("end", () => {
         resolve(JSON.parse(data))
       })
-      readableStream.on("error", () =>
+      readableStream.on("error", () => {
+        // TODO: maybe should throw
         resolve([] as TParsedProductImportRowData[])
-      )
+      })
     })
   }
 
@@ -494,7 +594,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     for (const op of Object.keys(OperationType)) {
       try {
         this.fileService_.withTransaction(transactionManager).delete({
-          fileKey: `imports/products/import/ops/-${batchJobId}-${op}`,
+          fileKey: `imports/products/ops/-${batchJobId}-${op}`,
         })
       } catch (e) {
         // noop
@@ -659,6 +759,7 @@ const CSVSchema: ProductImportCsvSchema = {
         return builtLine
       },
     },
+
     // PRICES
     {
       name: "Price Region",
@@ -724,6 +825,55 @@ const CSVSchema: ProductImportCsvSchema = {
         }
 
         builtLine["product.images"].push(value)
+
+        return builtLine
+      },
+    },
+  ],
+}
+
+const SalesChannelsSchema: ProductImportCsvSchema = {
+  columns: [
+    {
+      name: "Sales Channel Name",
+      match: /Sales Channel \d+ Name/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.sales_channels"] =
+          builtLine["product.sales_channels"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ;(
+          builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          name: value,
+        })
+
+        return builtLine
+      },
+    },
+    {
+      name: "Sales Channel Id",
+      match: /Sales Channel \d+ Id/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.sales_channels"] =
+          builtLine["product.sales_channels"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ;(
+          builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          id: value,
+        })
 
         return builtLine
       },

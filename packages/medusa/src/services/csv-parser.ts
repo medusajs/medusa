@@ -53,6 +53,9 @@ class CsvParser<
   ): Promise<TOutputResult> {
     let outputTuple = {} as TOutputResult
     const columnMap = this.buildColumnMap_(this.$$schema.columns)
+    const requiredColumnsMap = this.buildColumnMap_(
+      this.$$schema.columns.filter((col) => col.required)
+    )
 
     const tupleKeys = Object.keys(line)
 
@@ -95,10 +98,10 @@ class CsvParser<
     }
 
     /**
-     * missing columns = columns defined in the schema - columns present in the line
+     * missing columns = columns defined (& required) in the schema - columns present in the line
      */
     const missingColumns = difference(
-      Object.keys(columnMap),
+      Object.keys(requiredColumnsMap),
       Object.keys(processedColumns)
     )
 
