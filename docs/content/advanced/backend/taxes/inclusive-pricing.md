@@ -10,13 +10,11 @@ Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. T
 
 ## Introduction
 
-Countries have different tax rates, even if they share the same currency. In these cases, using one price for a currency that is used by multiple countries or regions can introduce issues when it comes to calculating taxes.
+Countries have different tax rates, even if they share the same currency. In these cases, using one tax-exclusive price for a currency that is used by multiple countries or regions can show different price to the customer based on the tax rate of each region.
 
-Without tax-inclusive pricing, if a merchant wants the same price to be shown for a currency despite the tax rate of the region the customer is viewing their store from, they’ll have to manually calculate the price without tax to work for each region.
+Using Tax Inclusive Pricing, you can just specify the price that should be displayed to the customer for a specific currency.
 
-Tax Inclusive Pricing reduces the manual work that merchants have to do. Merchants can just specify the price that they want to display to the customer for a specific currency.
-
-Then, Medusa handles calculating the tax amount using the tax rate and the tax-inclusive price. Customers will not be able to tell the difference. This is only managed in the backend and relayed to accounting and analytics tools.
+Then, Medusa handles calculating the tax amount using the tax rate and the tax-inclusive price. This is managed in the backend and relayed to accounting and analytics tools.
 
 ## How is Tax Inclusivity Defined?
 
@@ -38,8 +36,8 @@ The `LineItem` entity also has the `includes_tax` attribute. The value of this f
 
 - The region of the line item has the `includes_tax` attribute set to `true`;
 - Or the currency of the line item has the `includes_tax` attribute set to `true`;
-- Or a price list that includes the product variant associated with the line item has the `includes_tax` attribute set to `true`, and the amount of one of the variant’s prices in the price list is less than the original price of the variant;
-- Or one of the variant’s prices in the price list uses a currency or region that has the `includes_tax` attribute set to `true`, and the amount of the price is less than the original price of the variant.
+- Or a price list that includes the product variant associated with the line item has the `includes_tax` attribute set to `true`, and the tax-inclusive amount of one of the variant’s prices in the price list is less than the original price of the variant;
+- Or one of the variant’s prices in the price list uses a currency or region that has the `includes_tax` attribute set to `true`, and the tax-inclusive amount of the price is less than the original price of the variant.
 
 ### How is Tax Inclusivity Defined for Shipping Methods?
 
@@ -63,7 +61,7 @@ Where `taxRate` is the tax rate to be applied on the price, and `taxInclusivePri
 
 For example, if the tax rate is `0.25` and the price of a product is `100`, then the tax amount applied to that product is `20`.
 
-## How are Tax Amounts Calculated?
+## Retrieving Tax Amounts
 
 This section covers at which point tax amounts are calculated for different entities, how they are calculated when the price is tax inclusive, and what fields can be returned in the endpoints relative to each of the entities.
 
@@ -79,21 +77,21 @@ Taxes are calculated for each product variant either when a [single product is r
 
 Among the pricing fields retrieved for each variant, the following fields are relevant to taxes:
 
-- `original_price`: The original price as entered by the admin when the variant was created.
+- `original_price`: The original price of the variant.
 - `calculated_price`: The calculated price, which can be based on prices defined in a price list.
 - `original_tax`: The tax amount applied to the original price.
 - `calculated_tax`: The tax amount applied to the calculated price.
-- `original_price_incl_tax`: The original price including the tax amount.
-- `calculated_price_incl_tax`: The calculated price including tax amount.
-- `original_price_includes_tax`: a boolean value indicating whether the amount in `original_price` includes tax by default or not.
-- `calculated_price_includes_tax`: a boolean value indicating whether the amount in `calculated_price` includes tax by default or not.
+- `original_price_incl_tax`: The price after applying the tax amount on the original price.
+- `calculated_price_incl_tax`: The price after applying the tax amount on the calculated price
+- `original_price_includes_tax`: a boolean value indicating whether the amount in `original_price` includes the tax amount by default or not.
+- `calculated_price_includes_tax`: a boolean value indicating whether the amount in `calculated_price` includes the tax amount by default or not.
 
 If tax inclusivity is enabled for the current currency (which is indicated by which region is selected):
 
 - `original_price` will include the tax amount by default.
 - `original_price_includes_tax` will be set to `true`.
 - `original_price_incl_tax` will have the same amount as `original_price`.
-- `original_tax` is [automatically calculated by Medusa](#tax-amount-calculation-formula).
+- `original_tax` is automatically calculated by Medusa.
 
 Also, for each of the product variant’s prices in a price list, if tax inclusivity is enabled (either if the price list itself has the `includes_tax` attribute set to `true`, or the variant’s price in the price list uses a currency or region that has the `includes_tax` attribute set to `true`), and the amount of the price is less than the original price of the variant:
 
@@ -115,19 +113,19 @@ Where `amount` is the amount of the variant’s price in the price list, `taxRat
 
 :::
 
-Here is an example of these fields when the currency of the variant does not have tax inclusivity enabled, but one of the variant’s prices in the price list is inclusive:
+Here is an example of these fields when tax inclusivity is enabled for both the currency and the price list:
 
 ```jsx
 {
-  original_price: 100,
-  calculated_price: 110,
+  original_price: 110,
+  calculated_price: 100,
   calculated_price_type: "sale",
-  original_price_includes_tax: false,
+  original_price_includes_tax: true,
   calculated_price_includes_tax: true,
-  calculated_price_incl_tax: 110,
-  calculated_tax: 22,
-  original_price_incl_tax: 125,
-  original_tax: 25,
+  calculated_price_incl_tax: 100,
+  calculated_tax: 20,
+  original_price_incl_tax: 110,
+  original_tax: 22,
 }
 ```
 
@@ -139,9 +137,9 @@ Each line item returned in any of the cart’s requests has total fields related
 
 - `unit_price`: The original price of the variant associated with the line item.
 - `tax_total`: The total tax amount applied on the original price taking into account any applied discounts as well.
-- `subtotal`: The total of the line item’s price without the applied tax amount.
-- `origial_total`: The total of the line item’s price with the applied tax amount.
 - `original_tax_total`: The total tax amount applied on the original price without taking into account any applied discounts.
+- `subtotal`: The total of the line item’s price subtracting the amount in `original_tax_total`.
+- `origial_total`: The `subtotal` including the `original_tax_total` amount.
 
 If tax inclusivity is enabled for the line item, the amount of `tax_total` is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) based on the line item’s tax rates. The calculation takes into account any discounts applied on the item, which means the discount amount is deducted from the original price.
 
@@ -163,15 +161,13 @@ Among the returned fields for each shipping option, the following are relevant t
 
 - `amount`: The original price of the shipping option.
 - `price_incl_tax`: The price of the shipping option with tax included.
-- `tax_rates`: An array of applied tax rates on this shipping option.
 - `tax_amount`: The tax amount applied to the shipping option.
-- `price_includes_tax`: A boolean value indicating whether the original price includes tax by default or not. This field has the same value as the `includes_tax` attribute of the shipping option.
 
 If tax inclusivity is enabled for the shipping option, `amount` and `price_incl_tax` have the same value. Also, the value of `tax_amount` is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula).
 
 ### Carts and Orders
 
-Carts and Orders share the same total fields relevant for taxes.
+Carts and Orders have the same total fields relevant for taxes.
 
 A cart’s totals, including its taxes, are calculated and retrieved whenever the cart is [updated or retrieved](https://docs.medusajs.com/api/store/#tag/Cart).
 
@@ -179,16 +175,12 @@ An order’s totals, including its taxes, are calculated and retrieved whenever 
 
 The relevant fields are:
 
-- `shipping_total`: The total price of the shipping methods used in the cart or order without any applied taxes. If `includes_tax` of a shipping method is set to `true`, the tax amount will be calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula), then the tax amount is removed from the shipping method’s price.
+- `shipping_total`: The total tax-exclusive price of the shipping methods used in the cart or order without any applied taxes.
 - `tax_total`: The total of the taxes applied on the cart or order, including taxes applied on line items and shipping methods.
 - `subtotal`: The subtotal of line items including taxes, but without shipping total.
 - `total`: The total of the cart or order, including the subtotal, shipping total, and taxes applied.
 
 During the calculation of the totals of different components of the cart or order, such as shipping or line items, if tax inclusivity is enabled on that component, a process similar to those explained above will be applied to retrieve the total.
-
-For example, while calculating the `shipping_total`, if tax inclusivity is enabled for a shipping method, the tax amount will be calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) to remove it from the shipping method’s price.
-
-Similarly, when calculating the cart’s `subtotal`, the totals of the line items are retrieved as explained earlier including their taxes. If tax inclusivity is enabled for any of the items, the tax amount will be calculated using [Medusa’s formula for tax-inclusive pricing](#tax-amount-calculation-formula).
 
 ## What’s Next 🚀
 

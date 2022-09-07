@@ -1,10 +1,10 @@
 # Calculate Taxes Manually in Checkout
 
-In this document, you’ll learn how to manually calculate taxes during checkout if you have it disabled in a region.
+In this document, you’ll learn how to manually calculate taxes during checkout if you have automatic tax calculation disabled in a region.
 
 ## Overview
 
-By default, taxes are automatically calculated by Medusa during checkout. This behavior can be disabled from the Medusa admin for a region to limit the requests being sent to a tax provider.
+By default, taxes are automatically calculated by Medusa during checkout. This behavior can be disabled for a region using the Admin APIs or the Medusa admin to limit the requests being sent to a tax provider.
 
 If you disable this behavior, you must manually trigger taxes calculation. When taxes are calculated, this means that requests will be sent to the tax provider to retrieve the tax rates.
 
@@ -27,7 +27,7 @@ You can, however, force calculating the taxes of the cart by passing in the thir
 For example:
 
 ```jsx
-cartService.retrieve('cart_01G8ZH853Y6TFXWPG5EYE81X63', { }, { force_taxes: true });
+cartService.retrieve('cart_01G8Z...', { }, { force_taxes: true });
 ```
 
 :::tip
@@ -38,22 +38,29 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 ### Use decorateLineItemsWithTotals function in Endpoints
 
-If you want to calculate the taxes of line items in an endpoint and return the necessary fields in the result, you can use the `decorateLineItemsWithTotals` method in your endpoint:
+If you want to calculate the taxes of line items on the storefront in an endpoint and return the necessary fields in the result, you can use the `decorateLineItemsWithTotals` method in your endpoint:
 
 ```jsx
-router.get("/test", async (req, res) => {
-  //example of retrieving cart
-  const cartService = req.scope.resolve("cartService");
-  const cart = await cartService.retrieve(cart_id)
+//at the beginning of the file
+import { decorateLineItemsWithTotals } from "@medusajs/medusa/dist/api/routes/store/carts/decorate-line-items-with-totals"
 
+export default () => {
   //...
-  //retrieve taxes of line items
-  const data = await decorateLineItemsWithTotals(cart, req, {
-    force_taxes: true
-  });
 
-  return res.status(200).json({ cart: data });
-})
+  router.get("/store/line-taxes", async (req, res) => {
+    //example of retrieving cart
+    const cartService = req.scope.resolve("cartService");
+    const cart = await cartService.retrieve(cart_id)
+    
+    //...
+    //retrieve taxes of line items
+    const data = await decorateLineItemsWithTotals(cart, req, {
+      force_taxes: true
+    });
+    
+    return res.status(200).json({ cart: data });
+  })
+}
 ```
 
 The `decorateLineItemsWithTotals` method accepts an options object as a third parameter. If you set `force_taxes` to `true` in that object, the totals of the line items can be retrieved regardless of whether the automatic calculation is enabled in the line item’s region.
