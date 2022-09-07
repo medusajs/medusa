@@ -402,7 +402,8 @@ kbd {
 
 .theme-doc-sidebar-item-link-level-1 .menu__link,
 .theme-doc-sidebar-item-category-level-1 .menu__link,
-.redocusaurus .menu-content label.-depth1 {
+.redocusaurus .menu-content label.-depth1,
+.navbar-sidebar__item .menu__link:not(.navbar-github-link) {
   padding-left: 1.7em;
 }
 
@@ -475,7 +476,7 @@ html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth
   transform: rotate(90deg);
 }
 
-.menu__link:not(.menu__link--sublist)::before {
+.menu__link:not(.menu__link--sublist):not(.navbar-github-link)::before {
   content: "";
   height: 1.1em;
   width: 1.1em;
@@ -506,7 +507,8 @@ html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist).menu__link--
 .theme-doc-sidebar-item-link-level-1 a.menu__link--sublist::before,
 .theme-doc-sidebar-item-category-level-1 .menu__link::before,
 .theme-doc-sidebar-item-category-level-1 a.menu__link--sublist::before,
-.redocusaurus .menu-content label[type=tag].-depth1::before {
+.redocusaurus .menu-content label[type=tag].-depth1::before,
+.navbar-sidebar__item .menu__link::before  {
   left: 0;
 }
 
@@ -581,4 +583,8 @@ html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link.menu__l
 
 .redocusaurus .menu-content {
   width: var(--doc-sidebar-width);
+}
+
+.navbar-github-link {
+  overflow: visible;
 }
