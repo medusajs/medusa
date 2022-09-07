@@ -9,13 +9,14 @@ packages/*
 !packages/medusa
 
 integration-tests/*
-!integration-tests/api
+#!integration-tests/api
 
 
 **/models/*
 **/scripts/*
 **/dist/*
 **/node_modules/*
+**/migrations/*
 **/__mocks__/*
 **/__tests__/*
 
