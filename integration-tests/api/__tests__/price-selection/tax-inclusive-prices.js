@@ -705,7 +705,7 @@ describe("tax inclusive prices", () => {
             id: so.id,
             amount: 100,
             price_incl_tax: 100,
-            price_includes_tax: true,
+            includes_tax: true,
             tax_amount: 9,
           }),
         ])
@@ -742,7 +742,7 @@ describe("tax inclusive prices", () => {
             id: so.id,
             amount: 100,
             price_incl_tax: 100,
-            price_includes_tax: true,
+            includes_tax: true,
             tax_amount: 9,
           }),
         ])
