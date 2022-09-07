@@ -1,24 +1,24 @@
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { Product, ProductVariant, ShippingOption } from "../models"
-import { TaxServiceRate } from "../types/tax-service"
-import {
-  ProductVariantPricing,
-  TaxedPricing,
-  PricingContext,
-  PricedProduct,
-  PricedShippingOption,
-  PricedVariant,
-} from "../types/pricing"
 import { TransactionBaseService } from "../interfaces"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
-import { FlagRouter } from "../utils/flag-router"
-import { calculatePriceTaxAmount } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { Product, ProductVariant, ShippingOption } from "../models"
+import {
+  PricedProduct,
+  PricedShippingOption,
+  PricedVariant,
+  PricingContext,
+  ProductVariantPricing,
+  TaxedPricing,
+} from "../types/pricing"
+import { TaxServiceRate } from "../types/tax-service"
+import { calculatePriceTaxAmount } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -135,9 +135,10 @@ class PricingService extends TransactionBaseService {
         })
       )
 
-      taxedPricing.calculated_price_incl_tax = variantPricing.calculated_price_includes_tax
-        ? variantPricing.calculated_price
-        : variantPricing.calculated_price + taxedPricing.calculated_tax
+      taxedPricing.calculated_price_incl_tax =
+        variantPricing.calculated_price_includes_tax
+          ? variantPricing.calculated_price
+          : variantPricing.calculated_price + taxedPricing.calculated_tax
     }
 
     if (variantPricing.original_price !== null) {
@@ -154,9 +155,10 @@ class PricingService extends TransactionBaseService {
         })
       )
 
-      taxedPricing.original_price_incl_tax = variantPricing.original_price_includes_tax
-        ? variantPricing.original_price
-        : variantPricing.original_price + taxedPricing.original_tax
+      taxedPricing.original_price_incl_tax =
+        variantPricing.original_price_includes_tax
+          ? variantPricing.original_price
+          : variantPricing.original_price + taxedPricing.original_tax
     }
 
     return taxedPricing
@@ -474,14 +476,6 @@ class PricingService extends TransactionBaseService {
       price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
       tax_amount: taxAmount,
-    }
-
-    if (
-      this.featureFlagRouter.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      )
-    ) {
-      result.price_includes_tax = shippingOption.includes_tax
     }
 
     return result
