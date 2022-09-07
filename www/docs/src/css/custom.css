@@ -24,7 +24,7 @@
   --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
 
   /* Sidebar */
-  --doc-sidebar-width: 350px !important;
+  --doc-sidebar-width: 250px !important;
 
   /* Docs Page */
   --ifm-docs-page-max-width: 850px;
@@ -387,7 +387,7 @@ kbd {
 .menu__link,
 .redocusaurus .menu-content label {
   font-weight: 500 !important;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.7em;
   position: relative;
   white-space: nowrap;
@@ -430,11 +430,11 @@ kbd {
   font-weight: 600 !important;
 }
 
-.menu__list,
+/* .menu__list,
 .redocusaurus .menu-content ul {
   padding-left: 1.7em;
   padding-right: 1.7em;
-}
+} */
 
 a.menu__link--sublist::after {
   content: none;
@@ -540,7 +540,7 @@ a.menu__link--sublist::before,
   background-image: url('/img/alert.svg');
   width: 20px;
   height: 20px;
-  top: 23%;
+  top: 19%;
 }
 
 html:not([data-theme="dark"]) .menu__list-item.alert-icon .menu__link:hover::before,
@@ -557,7 +557,7 @@ html:not([data-theme="dark"]) .menu__list-item.alert-icon .menu__link.menu__link
   background-image: url('/img/arrow-top-right.svg');
   width: 20px;
   height: 20px;
-  top: 23%;
+  top: 19%;
 }
 
 html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link:hover::before,
@@ -577,4 +577,8 @@ html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link.menu__l
 
 .menu__list-item-collapsible {
   padding-bottom: 6px;
+}
+
+.redocusaurus .menu-content {
+  width: var(--doc-sidebar-width);
 }

@@ -154,7 +154,7 @@ module.exports = {
         label: 'Go to medusajs.com',
         className: 'topright-icon',
       },
-    ]
+    ],
   },
   presets: [
     [
