@@ -57,13 +57,17 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 ## Sidebar
 
-When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `tutorialSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
+When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `docsSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
 ### Terminology
 
 When the documentation page is a conceptual or overview documentation, the label in the sidebar should start with a noun.
 
 When the documentation page is a tutorial documentation, the label in the sidebar should start with a verb. An exception of this rule are integration documentations and upgrade guides.
+
+### Character Count
+
+The character count of the sidebar item's label must be at most twenty seven characters.
 
 ## Notes and Additional Information
 
@@ -109,7 +113,7 @@ For example, even though you can run the `start` script using NPM with `npm star
 
 When a command uses the global option `-g`, add it at the end of the NPM command to ensure that it’s transformed to a Yarn command properly. For example:
 
-```bash
+```bash npm2yarn
 npm install @medusajs/medusa-cli -g
 ```
 

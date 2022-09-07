@@ -44,7 +44,7 @@ module.exports = {
         {
           type: "doc",
           id: "tutorial/set-up-your-development-environment",
-          label: "Set Up Development Environment"
+          label: "Set Up Dev Environment"
         },
         {
           type: "doc",
@@ -322,7 +322,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "add-plugins/contentful/customize-contentful",
-                  label: "Customize Contentful Integration",
+                  label: "Customize Integration",
                 },
               ]
             },
@@ -436,7 +436,7 @@ module.exports = {
         {
           type: "doc",
           id: "troubleshooting/missing-payment-providers",
-          label: "Payment provider (Stripe) not showing in checkout",
+          label: "Payment provider missing",
         },
         {
           type: "doc",
