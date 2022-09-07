@@ -219,7 +219,7 @@ export const productExportSchemaDescriptors = new Map<
     },
   ],
   [
-    "Variant Id",
+    "Variant id",
     {
       accessor: (variant: ProductVariant): string => variant?.id ?? "",
       entityName: "variant",

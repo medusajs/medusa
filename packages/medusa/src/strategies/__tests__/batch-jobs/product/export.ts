@@ -13,7 +13,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 const productServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
   list: jest.fn().mockImplementation(() => Promise.resolve(productsToExport)),
@@ -51,7 +51,7 @@ describe("Product export strategy", () => {
         fileKey: "product-export.csv",
       })
     }),
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
   }
@@ -73,7 +73,7 @@ describe("Product export strategy", () => {
   } as ProductExportBatchJob
 
   const batchJobServiceMock = {
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
     update: jest.fn().mockImplementation((jobOrId, data) => {
@@ -129,7 +129,7 @@ describe("Product export strategy", () => {
     )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product ID.*/)
+    expect(template).toMatch(/.*Product id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -142,7 +142,7 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Product Height.*/)
     expect(template).toMatch(/.*Product HS Code.*/)
     expect(template).toMatch(/.*Product Origin Country.*/)
-    expect(template).toMatch(/.*Product MID Code.*/)
+    expect(template).toMatch(/.*Product Mid Code.*/)
     expect(template).toMatch(/.*Product Material.*/)
     expect(template).toMatch(/.*Product Collection Title.*/)
     expect(template).toMatch(/.*Product Collection Handle.*/)
@@ -154,7 +154,7 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant ID.*/)
+    expect(template).toMatch(/.*Variant id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
@@ -166,7 +166,7 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Variant Height.*/)
     expect(template).toMatch(/.*Variant HS Code.*/)
     expect(template).toMatch(/.*Variant Origin Country.*/)
-    expect(template).toMatch(/.*Variant MID Code.*/)
+    expect(template).toMatch(/.*Variant Mid Code.*/)
     expect(template).toMatch(/.*Variant Material.*/)
 
     expect(template).toMatch(/.*Option 1 Name.*/)
@@ -314,7 +314,7 @@ describe("Product export strategy with sales channels", () => {
         fileKey: "product-export.csv",
       })
     }),
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
   }
@@ -336,7 +336,7 @@ describe("Product export strategy with sales channels", () => {
   } as ProductExportBatchJob
 
   const batchJobServiceMock = {
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
     update: jest.fn().mockImplementation((jobOrId, data) => {
@@ -394,7 +394,7 @@ describe("Product export strategy with sales channels", () => {
     )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product ID.*/)
+    expect(template).toMatch(/.*Product id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -407,7 +407,7 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Product Height.*/)
     expect(template).toMatch(/.*Product HS Code.*/)
     expect(template).toMatch(/.*Product Origin Country.*/)
-    expect(template).toMatch(/.*Product MID Code.*/)
+    expect(template).toMatch(/.*Product Mid Code.*/)
     expect(template).toMatch(/.*Product Material.*/)
     expect(template).toMatch(/.*Product Collection Title.*/)
     expect(template).toMatch(/.*Product Collection Handle.*/)
@@ -419,7 +419,7 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant ID.*/)
+    expect(template).toMatch(/.*Variant id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
@@ -431,7 +431,7 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Variant Height.*/)
     expect(template).toMatch(/.*Variant HS Code.*/)
     expect(template).toMatch(/.*Variant Origin Country.*/)
-    expect(template).toMatch(/.*Variant MID Code.*/)
+    expect(template).toMatch(/.*Variant Mid Code.*/)
     expect(template).toMatch(/.*Variant Material.*/)
 
     expect(template).toMatch(/.*Option 1 Name.*/)

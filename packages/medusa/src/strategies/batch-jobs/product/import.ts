@@ -135,7 +135,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   async getImportInstructions(
     csvData: TParsedProductImportRowData[]
   ): Promise<Record<OperationType, TParsedProductImportRowData[]>> {
-    const shippingProfile = await this.shippingProfileService_.retrieveDefault()
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const shippingProfile = await this.shippingProfileService_
+      .withTransaction(transactionManager)
+      .retrieveDefault()
 
     const seenProducts = {}
 
@@ -224,8 +227,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * @param batchJobId - An id of a job that is being preprocessed.
    */
   async preProcessBatchJob(batchJobId: string): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const batchJob = await this.batchJobService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .retrieve(batchJobId)
 
     const csvFileKey = (batchJob.context as ImportJobContext).fileKey
@@ -233,8 +237,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       fileKey: csvFileKey,
     })
 
-    const parsedData = await this.csvParser_.parse(csvStream)
-    const builtData = await this.csvParser_.buildData(parsedData)
+    let builtData: Record<string, string>[]
+    try {
+      const parsedData = await this.csvParser_.parse(csvStream)
+      builtData = await this.csvParser_.buildData(parsedData)
+    } catch (e) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The csv file parsing failed due to: " + e.message
+      )
+    }
 
     const ops = await this.getImportInstructions(builtData)
 
@@ -248,7 +260,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     })
 
     await this.batchJobService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .update(batchJobId, {
         result: {
           advancement_count: 0,
@@ -537,10 +549,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     variantOp,
     productId: string
   ): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const productOptions = variantOp["variant.options"] || []
 
+    const productServiceTx =
+      this.productService_.withTransaction(transactionManager)
     for (const o of productOptions) {
-      const option = await this.productService_.retrieveOptionByTitle(
+      const option = await productServiceTx.retrieveOptionByTitle(
         o._title,
         productId
       )

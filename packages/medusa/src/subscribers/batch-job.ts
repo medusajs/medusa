@@ -47,7 +47,7 @@ class BatchJobSubscriber {
           .preProcessBatchJob(batchJob.id)
         await batchJobServiceTx.setPreProcessingDone(batchJob.id)
       } catch (e) {
-        await batchJobServiceTx.setFailed(batchJob.id)
+        await this.batchJobService_.setFailed(batchJob.id)
         throw e
       }
     })
@@ -62,13 +62,13 @@ class BatchJobSubscriber {
         batchJob.type
       )
 
-      await this.batchJobService_.setProcessing(batchJob.id)
+      await batchJobServiceTx.setProcessing(batchJob.id)
 
       try {
         await batchJobStrategy.withTransaction(manager).processJob(batchJob.id)
         await batchJobServiceTx.complete(batchJob.id)
       } catch (e) {
-        await batchJobServiceTx.setFailed(batchJob.id)
+        await this.batchJobService_.setFailed(batchJob.id)
         throw e
       }
     })
