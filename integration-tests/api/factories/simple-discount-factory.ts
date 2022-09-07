@@ -7,7 +7,7 @@ import {
 import faker from "faker"
 import { Connection } from "typeorm"
 import {
-  DiscuntConditionFactoryData,
+  DiscountConditionFactoryData,
   simpleDiscountConditionFactory,
 } from "./simple-discount-condition-factory"
 
@@ -15,7 +15,7 @@ export type DiscountRuleFactoryData = {
   type?: DiscountRuleType
   value?: number
   allocation?: AllocationType
-  conditions: DiscuntConditionFactoryData[]
+  conditions: DiscountConditionFactoryData[]
 }
 
 export type DiscountFactoryData = {
@@ -24,6 +24,8 @@ export type DiscountFactoryData = {
   is_dynamic?: boolean
   rule?: DiscountRuleFactoryData
   regions?: string[]
+  starts_at?: Date
+  ends_at?: Date
 }
 
 export const simpleDiscountFactory = async (
@@ -37,7 +39,7 @@ export const simpleDiscountFactory = async (
 
   const manager = connection.manager
 
-  const ruleData = data.rule ?? {}
+  const ruleData = data.rule ?? ({} as DiscountRuleFactoryData)
   const ruleToSave = manager.create(DiscountRule, {
     type: ruleData.type ?? DiscountRuleType.PERCENTAGE,
     value: ruleData.value ?? 10,
@@ -63,8 +65,9 @@ export const simpleDiscountFactory = async (
     rule_id: dRule.id,
     code: data.code ?? "TESTCODE",
     regions: data.regions?.map((r) => ({ id: r })) || [],
+    starts_at: data.starts_at,
+    ends_at: data.ends_at,
   })
 
-  const discount = await manager.save(toSave)
-  return discount
+  return await manager.save(toSave)
 }

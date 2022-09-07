@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, FindOperator } from "typeorm"
+import { DeepPartial, EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -24,6 +24,8 @@ import { FilterableProductProps } from "../types/product"
 import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
 import { ProductVariantRepository } from "../repositories/product-variant"
+import { FlagRouter } from "../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -34,6 +36,7 @@ type PriceListConstructorProps = {
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
   productVariantRepository: typeof ProductVariantRepository
+  featureFlagRouter: FlagRouter
 }
 
 /**
@@ -51,6 +54,7 @@ class PriceListService extends TransactionBaseService {
   protected readonly priceListRepo_: typeof PriceListRepository
   protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -61,6 +65,7 @@ class PriceListService extends TransactionBaseService {
     priceListRepository,
     moneyAmountRepository,
     productVariantRepository,
+    featureFlagRouter,
   }: PriceListConstructorProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -73,6 +78,7 @@ class PriceListService extends TransactionBaseService {
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
     this.productVariantRepo_ = productVariantRepository
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -102,18 +108,34 @@ class PriceListService extends TransactionBaseService {
 
   /**
    * Creates a Price List
-   * @param {CreatePriceListInput} priceListObject - the Price List to create
-   * @return {Promise<PriceList>} created Price List
+   * @param priceListObject - the Price List to create
+   * @return created Price List
    */
-  async create(priceListObject: CreatePriceListInput): Promise<PriceList> {
+  async create(
+    priceListObject: CreatePriceListInput
+  ): Promise<PriceList | never> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-      const { prices, customer_groups, ...rest } = priceListObject
+      const { prices, customer_groups, includes_tax, ...rest } = priceListObject
 
       try {
-        const entity = priceListRepo.create(rest)
+        const rawPriceList: DeepPartial<PriceList> = {
+          ...rest,
+        }
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          if (typeof includes_tax !== "undefined") {
+            rawPriceList.includes_tax = includes_tax
+          }
+        }
+
+        const entity = priceListRepo.create(rawPriceList)
 
         const priceList = await priceListRepo.save(entity)
 
@@ -125,11 +147,9 @@ class PriceListService extends TransactionBaseService {
           await this.upsertCustomerGroups_(priceList.id, customer_groups)
         }
 
-        const result = await this.retrieve(priceList.id, {
+        return await this.retrieve(priceList.id, {
           relations: ["prices", "customer_groups"],
         })
-
-        return result
       } catch (error) {
         throw formatException(error)
       }
@@ -149,7 +169,17 @@ class PriceListService extends TransactionBaseService {
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
-      const { prices, customer_groups, ...rest } = update
+      const { prices, customer_groups, includes_tax, ...rest } = update
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          priceList.includes_tax = includes_tax
+        }
+      }
 
       if (prices) {
         const prices_ = await this.addCurrencyFromRegion(prices)

@@ -19,6 +19,8 @@ import { Order } from "./order"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -115,6 +117,9 @@ export class LineItem extends BaseEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
+  includes_tax: boolean
 
   refundable?: number | null
   subtotal?: number | null
@@ -275,6 +280,9 @@ export class LineItem extends BaseEntity {
  *     type: integer
  *     description: The total of the gift card of the line item
  *     example: 0
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
+ *     type: boolean
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

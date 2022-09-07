@@ -243,11 +243,15 @@ class CartService extends TransactionBaseService {
           break
         }
         case "shipping_total": {
-          totals.shipping_total = this.totalsService_.getShippingTotal(cart)
+          totals.shipping_total = await this.totalsService_.getShippingTotal(
+            cart
+          )
           break
         }
         case "discount_total":
-          totals.discount_total = this.totalsService_.getDiscountTotal(cart)
+          totals.discount_total = await this.totalsService_.getDiscountTotal(
+            cart
+          )
           break
         case "tax_total":
           totals.tax_total = await this.totalsService_.getTaxTotal(
@@ -256,13 +260,15 @@ class CartService extends TransactionBaseService {
           )
           break
         case "gift_card_total": {
-          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(cart)
+          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
+            cart
+          )
           totals.gift_card_total = giftCardBreakdown.total
           totals.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "subtotal":
-          totals.subtotal = this.totalsService_.getSubtotal(cart)
+          totals.subtotal = await this.totalsService_.getSubtotal(cart)
           break
         default:
           break
@@ -518,7 +524,7 @@ class CartService extends TransactionBaseService {
           .delete(lineItem.id)
 
         const result = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(result)
@@ -686,7 +692,7 @@ class CartService extends TransactionBaseService {
         )
 
         const result = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(result)
@@ -748,7 +754,7 @@ class CartService extends TransactionBaseService {
           .update(lineItemId, lineItemUpdate)
 
         const updatedCart = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule"],
+          relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(updatedCart)
@@ -919,14 +925,14 @@ class CartService extends TransactionBaseService {
           )
 
           const hasFreeShipping = cart.discounts.some(
-            ({ rule }) => rule?.type === "free_shipping"
+            ({ rule }) => rule?.type === DiscountRuleType.FREE_SHIPPING
           )
 
           // if we previously had a free shipping discount and then removed it,
           // we need to update shipping methods to original price
           if (
             previousDiscounts.some(
-              ({ rule }) => rule.type === "free_shipping"
+              ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
             ) &&
             !hasFreeShipping
           ) {
@@ -1229,7 +1235,7 @@ class CartService extends TransactionBaseService {
             default:
               if (!sawNotShipping) {
                 sawNotShipping = true
-                if (rule?.type !== "free_shipping") {
+                if (rule?.type !== DiscountRuleType.FREE_SHIPPING) {
                   return discount
                 }
                 return discountToParse
@@ -1245,7 +1251,7 @@ class CartService extends TransactionBaseService {
         )
 
         // ignore if free shipping
-        if (rule?.type !== "free_shipping" && cart?.items) {
+        if (rule?.type !== DiscountRuleType.FREE_SHIPPING && cart?.items) {
           await this.refreshAdjustments_(cart)
         }
       }
@@ -1270,7 +1276,11 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+        if (
+          cart.discounts.some(
+            ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
+          )
+        ) {
           await this.adjustFreeShipping_(cart, false)
         }
 
@@ -1770,7 +1780,7 @@ class CartService extends TransactionBaseService {
         // if cart has freeshipping, adjust price
         if (
           updatedCart.discounts.some(
-            ({ rule }) => rule.type === "free_shipping"
+            ({ rule }) => rule.type === DiscountRuleType.FREE_SHIPPING
           )
         ) {
           await this.adjustFreeShipping_(updatedCart, true)
@@ -2107,7 +2117,7 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const calculationContext = this.totalsService_
+        const calculationContext = await this.totalsService_
           .withTransaction(transactionManager)
           .getCalculationContext(cart)
 
