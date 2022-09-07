@@ -7,21 +7,21 @@ const {
   ShippingMethod,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../../helpers/setup-server")
+const { useApi } = require("../../../../helpers/use-api")
+const { initDb, useDb } = require("../../../../helpers/use-db")
 
-const orderSeeder = require("../../helpers/order-seeder")
-const swapSeeder = require("../../helpers/swap-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
-const claimSeeder = require("../../helpers/claim-seeder")
+const orderSeeder = require("../../../helpers/order-seeder")
+const swapSeeder = require("../../../helpers/swap-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const claimSeeder = require("../../../helpers/claim-seeder")
 
 const {
   expectPostCallToReturn,
   expectAllPostCallsToReturn,
   callGet,
   partial,
-} = require("../../helpers/call-helpers")
+} = require("../../../helpers/call-helpers")
 
 jest.setTimeout(30000)
 
@@ -30,7 +30,7 @@ describe("/admin/orders", () => {
   let dbConnection
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd })
   })

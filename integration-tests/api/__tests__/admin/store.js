@@ -52,12 +52,7 @@ describe("/admin/store", () => {
             code: "usd",
           },
         ],
-        feature_flags: [
-          {
-            key: "sales_channels",
-            value: false,
-          },
-        ],
+        feature_flags: expect.any(Array),
         default_currency_code: "usd",
         created_at: expect.any(String),
         updated_at: expect.any(String),
@@ -133,15 +128,17 @@ describe("/admin/store", () => {
     it("successfully updates default currency code", async () => {
       const api = useApi()
 
-      const response = await api.post(
-        "/admin/store",
-        {
-          default_currency_code: "dkk",
-        },
-        {
-          headers: { Authorization: "Bearer test_token " },
-        }
-      )
+      const response = await api
+        .post(
+          "/admin/store",
+          {
+            default_currency_code: "dkk",
+          },
+          {
+            headers: { Authorization: "Bearer test_token " },
+          }
+        )
+        .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
       expect(response.data.store).toMatchSnapshot({

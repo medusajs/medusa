@@ -39,6 +39,8 @@ import DiscountConditionService from "./discount-condition"
 import CustomerService from "./customer"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
  * Provides layer to manipulate discounts.
@@ -58,6 +60,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -71,6 +74,7 @@ class DiscountService extends TransactionBaseService {
     regionService,
     customerService,
     eventBusService,
+    featureFlagRouter,
   }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -86,6 +90,7 @@ class DiscountService extends TransactionBaseService {
     this.regionService_ = regionService
     this.customerService_ = customerService
     this.eventBus_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -579,7 +584,23 @@ class DiscountService extends TransactionBaseService {
 
       const { type, value, allocation } = discount.rule
 
-      const fullItemPrice = lineItem.unit_price * lineItem.quantity
+      let fullItemPrice = lineItem.unit_price * lineItem.quantity
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        lineItem.includes_tax
+      ) {
+        const lineItemTotals = await this.totalsService_.getLineItemTotals(
+          lineItem,
+          cart,
+          {
+            include_tax: true,
+            exclude_gift_cards: true,
+          }
+        )
+        fullItemPrice = lineItemTotals.subtotal
+      }
 
       if (type === DiscountRuleType.PERCENTAGE) {
         adjustment = Math.round((fullItemPrice / 100) * value)
@@ -590,12 +611,11 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const subtotal = this.totalsService_.getSubtotal(cart, {
+        const subtotal = await this.totalsService_.getSubtotal(cart, {
           excludeNonDiscounts: true,
         })
         const nominator = Math.min(value, subtotal)
-        const itemRelativeToSubtotal = lineItem.unit_price / subtotal
-        const totalItemPercentage = itemRelativeToSubtotal * lineItem.quantity
+        const totalItemPercentage = fullItemPrice / subtotal
         adjustment = Math.round(nominator * totalItemPercentage)
       } else {
         adjustment = value * lineItem.quantity

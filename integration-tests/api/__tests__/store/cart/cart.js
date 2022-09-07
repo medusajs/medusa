@@ -9,29 +9,29 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../../helpers/setup-server")
+const { useApi } = require("../../../../helpers/use-api")
+const { initDb, useDb } = require("../../../../helpers/use-db")
 
-const cartSeeder = require("../../helpers/cart-seeder")
-const productSeeder = require("../../helpers/product-seeder")
-const swapSeeder = require("../../helpers/swap-seeder")
+const cartSeeder = require("../../../helpers/cart-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
+const swapSeeder = require("../../../helpers/swap-seeder")
 const {
   simpleCartFactory,
   simpleRegionFactory,
   simpleProductFactory,
   simpleShippingOptionFactory,
   simpleLineItemFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../factories/simple-discount-factory")
+} = require("../../../factories/simple-discount-factory")
 const {
   simpleCustomerFactory,
-} = require("../../factories/simple-customer-factory")
+} = require("../../../factories/simple-customer-factory")
 const {
   simpleCustomerGroupFactory,
-} = require("../../factories/simple-customer-group-factory")
+} = require("../../../factories/simple-customer-group-factory")
 
 jest.setTimeout(30000)
 
@@ -45,7 +45,7 @@ describe("/store/carts", () => {
   }
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd, verbose: false })
   })
@@ -1813,7 +1813,7 @@ describe("/store/carts", () => {
         type: "swap",
       })
 
-      const cartWithCustomSo = await manager.save(_cart)
+      await manager.save(_cart)
 
       await manager.insert(CustomShippingOption, {
         id: "another-cso-test",

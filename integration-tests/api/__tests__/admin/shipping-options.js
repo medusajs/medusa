@@ -1,16 +1,21 @@
 const path = require("path")
 const {
-  Region,
   ShippingProfile,
-  ShippingOption,
-  ShippingOptionRequirement,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const shippingOptionSeeder = require("../../helpers/shipping-option-seeder")
+const { simpleShippingOptionFactory, simpleRegionFactory } = require("../../factories")
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -457,6 +462,123 @@ describe("/admin/shipping-options", () => {
           }),
         ])
       )
+    })
+  })
+})
+
+describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const [process, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
+      verbose: false,
+    })
+    dbConnection = connection
+    medusaProcess = process
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  describe("POST /admin/shipping-options", () => {
+    const shippingOptionIncludesTaxId = "shipping-option-1-includes-tax"
+    let region
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        region = await simpleRegionFactory(dbConnection, {
+          id: "region",
+          countries: ["fr"],
+        })
+        await simpleShippingOptionFactory(dbConnection, {
+          id: shippingOptionIncludesTaxId,
+          region_id: region.id,
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should creates a shipping option that includes tax", async () => {
+      const api = useApi()
+
+      const defaultProfile = await dbConnection.manager.findOne(ShippingProfile, {
+        type: "default",
+      })
+
+      const payload = {
+        name: "Test option",
+        amount: 100,
+        price_type: "flat_rate",
+        region_id: region.id,
+        provider_id: "test-ful",
+        data: {},
+        profile_id: defaultProfile.id,
+        includes_tax: true,
+      }
+
+      const response = await api
+        .post("/admin/shipping-options", payload, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.shipping_option).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          includes_tax: true,
+        })
+      )
+    })
+
+    it("should update a shipping option that include_tax", async () => {
+      const api = useApi()
+
+      let response = await api
+        .get(`/admin/shipping-options/${shippingOptionIncludesTaxId}`, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.shipping_option.includes_tax).toBe(false)
+
+      const payload = {
+        requirements: [
+          {
+            type: "min_subtotal",
+            amount: 1,
+          },
+          {
+            type: "max_subtotal",
+            amount: 2,
+          },
+        ],
+        includes_tax: true,
+      }
+
+      response = await api
+        .post(`/admin/shipping-options/${shippingOptionIncludesTaxId}`, payload, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.shipping_option.includes_tax).toBe(true)
     })
   })
 })
