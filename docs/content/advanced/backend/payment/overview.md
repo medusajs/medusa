@@ -94,7 +94,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The `Payment` entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
+The [`Payment`](../../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 
