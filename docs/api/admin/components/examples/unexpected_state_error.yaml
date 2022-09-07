@@ -1,0 +1,4 @@
+summary: Unexpected State Error
+value:
+  message: cart.total must be defined
+  type: unexpected_state

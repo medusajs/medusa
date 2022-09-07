@@ -138,7 +138,6 @@ describe("InviteService", () => {
     it("fails to accept an with an invalid token", async () => {
       expect.assertions(2)
       await inviteService.accept("totally.valid.token", {}).catch((err) => {
-        console.log(err)
         expect(err.message).toEqual("Token is not valid")
         expect(err.type).toEqual("invalid_data")
       })

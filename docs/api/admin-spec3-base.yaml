@@ -1,0 +1,321 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Medusa Admin API
+  description: |
+    API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.
+    
+    ## Authentication
+
+    There are two ways to send authenticated requests to the Medusa server: Using a user's API token, or using a Cookie Session ID.
+
+    <!-- ReDoc-Inject: <SecurityDefinitions> -->
+  license:
+    name: MIT
+    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+tags:
+- name: Auth
+  description: Auth endpoints that allow authorization of admin Users and manages
+    their sessions.
+- name: App
+  description: App endpoints that allow handling apps in Medusa.
+  x-resourceId: OAuth
+- name: Batch Job
+  description: Batch Job endpoints that allow handling batch jobs in Medusa.
+  x-resourceId: batch_job
+- name: Claim
+  description: Claim endpoints that allow handling claims in Medusa.
+  x-resourceId: claim_order
+- name: Collection
+  description: Collection endpoints that allow handling collections in Medusa.
+  x-resourceId: product_collection
+- name: Customer
+  description: Customer endpoints that allow handling customers in Medusa.
+  x-resourceId: customer
+- name: Customer Group
+  description: Customer Group endpoints that allow handling customer groups in Medusa.
+  x-resourceId: customer_group
+- name: Discount
+  description: Discount endpoints that allow handling discounts in Medusa.
+  x-resourceId: discount
+- name: Discount Condition
+  description: Discount Condition endpoints that allow handling discount conditions
+    in Medusa.
+  x-resourceId: discount_condition
+- name: Draft Order
+  description: Draft Order endpoints that allow handling draft orders in Medusa.
+  x-resourceId: draft-order
+- name: Gift Card
+  description: Gift Card endpoints that allow handling gift cards in Medusa.
+  x-resourceId: gift_card
+- name: Invite
+  description: Invite endpoints that allow handling invites in Medusa.
+  x-resourceId: invite
+- name: Note
+  description: Note endpoints that allow handling notes in Medusa.
+  x-resourceId: note
+- name: Notification
+  description: Notification endpoints that allow handling notifications in Medusa.
+  x-resourceId: notification
+- name: Order
+  description: Order endpoints that allow handling orders in Medusa.
+  x-resourceId: order
+- name: Price List
+  description: Price List endpoints that allow handling price lists in Medusa.
+  x-resourceId: price_list
+- name: Product
+  description: Product endpoints that allow handling products in Medusa.
+  x-resourceId: product
+- name: Product Tag
+  description: Product Tag endpoints that allow handling product tags in Medusa.
+  x-resourceId: product_tag
+- name: Product Type
+  description: Product Types endpoints that allow handling product types in Medusa.
+  x-resourceId: product_type
+- name: Product Variant
+  description: Product Variant endpoints that allow handling product variants in Medusa.
+  x-resourceId: product_variant
+- name: Region
+  description: Region endpoints that allow handling regions in Medusa.
+  x-resourceId: region
+- name: Return Reason
+  description: Return Reason endpoints that allow handling return reasons in Medusa.
+  x-resourceId: return_reason
+- name: Return
+  description: Return endpoints that allow handling returns in Medusa.
+  x-resourceId: return
+- name: Sales Channel
+  description: Sales Channel endpoints that allow handling sales channels in Medusa.
+  x-resourceId: sales_channel
+- name: Shipping Option
+  description: Shipping Option endpoints that allow handling shipping options in Medusa.
+  x-resourceId: shipping_option
+- name: Shipping Profile
+  description: Shipping Profile endpoints that allow handling shipping profiles in
+    Medusa.
+  x-resourceId: shipping_profile
+- name: Store
+  description: Store endpoints that allow handling stores in Medusa.
+  x-resourceId: store
+- name: Swap
+  description: Swap endpoints that allow handling swaps in Medusa.
+  x-resourceId: swap
+- name: Tax Rate
+  description: Tax Rate endpoints that allow handling tax rates in Medusa.
+  x-resourceId: tax_rate
+- name: Upload
+  description: Upload endpoints that allow handling uploads in Medusa.
+- name: User
+  description: User endpoints that allow handling users in Medusa.
+  x-resourceId: user
+servers:
+- url: https://api.medusa-commerce.com/admin
+paths: {}
+components:
+  responses: 
+    default_error:
+      description: Default Error
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/error"
+          example:
+            code: "unknown_error"
+            message: "An unknown error occurred."
+            type: "unknown_error"
+    invalid_state_error:
+      description: Invalid State Error
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/error"
+          example:
+            code: "unknown_error"
+            message: "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
+            type: "QueryRunnerAlreadyReleasedError"
+    invalid_request_error:
+      description: Invalid Request Error
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/error"
+          example:
+            code: "invalid_request_error"
+            message: "Discount with code TEST already exists."
+            type: "duplicate_error"
+    not_found_error:
+      description: Not Found Error
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/error"
+          example:
+            message: "Entity with id 1 was not found"
+            type: "not_found"
+    400_error:
+      description: Client Error or Multiple Errors
+      content:
+        application/json:
+          schema:
+            oneOf: 
+              - $ref: "#/components/schemas/error"
+              - $ref: "#/components/schemas/multiple_errors"
+          examples: 
+            not_allowed:
+              $ref: "#/components/examples/not_allowed_error"
+            invalid_data:
+              $ref: "#/components/examples/invalid_data_error"
+            multiple_errors:
+              $ref: "#/components/examples/multiple_errors"
+    500_error:
+      description: Server Error
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/error"
+          examples: 
+            database:
+              $ref: "#/components/examples/database_error"
+            unexpected_state:
+              $ref: "#/components/examples/unexpected_state_error"
+            invalid_argument:
+              $ref: "#/components/examples/invalid_argument_error"
+            default_error:
+              $ref: "#/components/examples/default_error"
+    unauthorized:
+      description: 'User is not authorized. Must log in first'
+      content: 
+        text/plain:
+          schema: 
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+    incorrect_credentials:
+      description: 'User does not exist or incorrect credentials'
+      content: 
+        text/plain:
+          schema: 
+            type: string
+            default: Unauthorized
+            example: Unauthorized
+  examples:
+    not_allowed_error:
+      summary: Not Allowed Error
+      value:
+        message: "Discount must be set to dynamic"
+        type: "not_allowed"
+    invalid_data_error:
+      summary: Invalid Data Error
+      value:
+        message: "first_name must be a string"
+        type: "invalid_data"
+    multiple_errors:
+      summary: Multiple Errors
+      value:
+        message: "Provided request body contains errors. Please check the data and retry the request"
+        errors:
+          - message: "first_name must be a string"
+            type: "invalid_data"
+          - message: "Discount must be set to dynamic"
+            type: "not_allowed"
+    database_error:
+      summary: Database Error
+      value:
+        code: "api_error"
+        message: "An error occured while hashing password"
+        type: "database_error"
+    unexpected_state_error:
+      summary: Unexpected State Error
+      value:
+        message: "cart.total must be defined"
+        type: "unexpected_state"
+    invalid_argument_error:
+      summary: Invalid Argument Error
+      value:
+        message: "cart.total must be defined"
+        type: "unexpected_state"
+    default_error:
+      summary: Default Error
+      value:
+        code: "unknown_error"
+        message: "An unknown error occurred."
+        type: "unknown_error"
+  securitySchemes:
+    api_token:
+      type: http
+      x-displayName: API Token
+      description: |
+        Use a user's API Token to send authenticated requests.
+
+        ### How to Add API Token to a User
+
+        At the moment, there's no direct way of adding an API Token for a user. The only way it can be done is through directly editing the database.
+
+        If you're using a PostgreSQL database, you can run the following commands in your command line to add API token:
+        
+        ```bash
+        psql -d <DB_NAME> -U <DB_USER>
+        UPDATE public.user SET api_token='<API_TOKEN>' WHERE email='<USER_EMAIL>';
+        ```
+
+        Where:
+        - `<DB_NAME>` is the name of the database schema you use for the Medusa server.
+        - `<DB_USER>` is the name of the user that has privileges over the database schema.
+        - `<API_TOKEN>` is the API token you want to associate with the user. You can use [this tool to generate a random token](https://randomkeygen.com/).
+        - `<USER_EMAIL>` is the email address of the admin user you want to have this API token.
+
+        ### How to Use the API Token
+
+        The API token can be used for Bearer Authentication. It's passed in the `Authorization` header as the following:
+        
+        ```
+        Authorization: Bearer {api_token}
+        ```
+
+        In this API reference, you'll find in the cURL request samples the use of `{api_token}`. This is where you must pass the API token.
+
+        If you're alternatively following along with the JS Client request samples, you must provide the `apiKey` option when creating the Medusa client:
+
+        ```js
+        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3, apiKey: '{api_token}' })
+        ```
+      scheme: bearer
+    cookie_auth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+      x-displayName: Cookie Session ID
+      description: |
+        Use a cookie session to send authenticated requests.
+
+        ### How to Obtain the Cookie Session
+
+        If you're sending requests through a browser, using JS Client, or using tools like Postman, the cookie session should be automatically set when the admin user is logged in.
+
+        If you're sending requests using cURL, you must set the Session ID in the cookie manually.
+
+        To do that, send a request to [authenticate the user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+
+        ```bash
+        curl -v --location --request POST 'https://medusa-url.com/admin/auth' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+        ```
+
+        The headers will be logged in the terminal as well as the response. You should find in the headers a Cookie header similar to this:
+
+        ```bash
+        Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+        ```
+
+        Copy the value after `connect.sid` (without the `;` at the end) and pass it as a cookie in subsequent requests as the following:
+
+        ```bash
+        curl --location --request GET 'https://medusa-url.com/admin/products' \
+        --header 'Cookie: connect.sid={sid}'
+        ```
+        
+        Where `{sid}` is the value of `connect.sid` that you copied.

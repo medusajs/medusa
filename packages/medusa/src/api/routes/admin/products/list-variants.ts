@@ -20,6 +20,15 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} Comma separated string of the relations to include.
  *   - (query) offset=0 {integer} How many items to skip before the results.
  *   - (query) limit=100 {integer} Limit the number of items returned.
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/products/{id}/variants' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:
@@ -42,6 +51,18 @@ import { validator } from "../../../../utils/validator"
  *             limit:
  *               type: integer
  *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

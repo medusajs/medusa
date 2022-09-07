@@ -1,10 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
-import { Cart } from "../models/cart"
-import { LineItem } from "../models/line-item"
-import { LineItemAdjustment } from "../models/line-item-adjustment"
-import { ProductVariant } from "../models/product-variant"
+import {
+  Cart,
+  DiscountRuleType,
+  LineItem,
+  LineItemAdjustment,
+  ProductVariant,
+} from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
@@ -70,8 +73,9 @@ class LineItemAdjustmentService extends BaseService {
     id: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
-    const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
-      this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
+    const lineItemAdjustmentRepo: LineItemAdjustmentRepository = this.manager_.getCustomRepository(
+      this.lineItemAdjustmentRepo_
+    )
 
     const query = this.buildQuery_({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
@@ -93,8 +97,9 @@ class LineItemAdjustmentService extends BaseService {
    */
   async create(data: Partial<LineItemAdjustment>): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
-        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository = manager.getCustomRepository(
+        this.lineItemAdjustmentRepo_
+      )
 
       const lineItemAdjustment = lineItemAdjustmentRepo.create(data)
 
@@ -113,8 +118,9 @@ class LineItemAdjustmentService extends BaseService {
     data: Partial<LineItemAdjustment>
   ): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
-        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository = manager.getCustomRepository(
+        this.lineItemAdjustmentRepo_
+      )
 
       const lineItemAdjustment = await this.retrieve(id)
 
@@ -163,8 +169,9 @@ class LineItemAdjustmentService extends BaseService {
     selectorOrId: string | FilterableLineItemAdjustmentProps
   ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
-        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository = manager.getCustomRepository(
+        this.lineItemAdjustmentRepo_
+      )
 
       if (typeof selectorOrId === "string") {
         return await this.delete({ id: selectorOrId })
@@ -206,7 +213,7 @@ class LineItemAdjustmentService extends BaseService {
       }
 
       const [discount] = cart.discounts.filter(
-        (d) => d.rule.type !== "free_shipping"
+        (d) => d.rule.type !== DiscountRuleType.FREE_SHIPPING
       )
 
       // if no discount is applied to the cart then return

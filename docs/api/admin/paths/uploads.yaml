@@ -3,8 +3,6 @@ post:
   summary: Uploads a file
   description: Uploads a file to the specific fileservice that is installed in Medusa.
   x-authenticated: true
-  tags:
-    - Upload
   requestBody:
     content:
       multipart/form-data:
@@ -14,6 +12,20 @@ post:
             files:
               type: string
               format: binary
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/uploads/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/uploads/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Upload
   responses:
     '200':
       description: OK
@@ -30,3 +42,15 @@ post:
                       type: string
                       description: The URL of the uploaded file.
                       format: uri
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

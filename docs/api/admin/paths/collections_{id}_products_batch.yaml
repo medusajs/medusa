@@ -23,6 +23,14 @@ post:
               items:
                 description: The ID of a Product to add to the Product Collection.
                 type: string
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}_products_batch/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -34,6 +42,18 @@ post:
             properties:
               collection:
                 $ref: ../components/schemas/product_collection.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteProductsFromCollection
   summary: Removes products associated with a Product Collection
@@ -59,6 +79,14 @@ delete:
               items:
                 description: The ID of a Product to add to the Product Collection.
                 type: string
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/collections_{id}_products_batch/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Collection
   responses:
@@ -81,3 +109,15 @@ delete:
                 items:
                   description: The ID of a Product to add to the Product Collection.
                   type: string
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
