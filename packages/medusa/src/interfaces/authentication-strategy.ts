@@ -2,20 +2,16 @@ import { Express, NextFunction, Request, Response } from "express"
 import { TransactionBaseService } from "./index"
 import { MedusaContainer } from "../types/global"
 
-export interface IAuthenticationStrategy<
-  T extends TransactionBaseService<never>
-> extends TransactionBaseService<T> {
+export interface IAuthenticationStrategy extends TransactionBaseService {
   authenticate(req: Request, res: Response): Promise<void>
   unAuthenticate(req: Request, res: Response): Promise<void>
   validate(req: Request, res: Response, next: NextFunction): Promise<void>
   shouldUseStrategy(req: Request, scope: "admin" | "store"): Promise<boolean>
 }
 
-export default abstract class AbstractAuthStrategy<
-    T extends TransactionBaseService<never>
-  >
-  extends TransactionBaseService<T>
-  implements IAuthenticationStrategy<T>
+export default abstract class AbstractAuthStrategy
+  extends TransactionBaseService
+  implements IAuthenticationStrategy
 {
   static identifier: string
 

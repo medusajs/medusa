@@ -203,12 +203,12 @@ class AuthService extends TransactionBaseService {
   async retrieveAuthenticationStrategy(
     req: Request,
     scope: "admin" | "store"
-  ): Promise<AbstractAuthStrategy<never>> {
-    let authStrategy: AbstractAuthStrategy<never> | undefined
+  ): Promise<AbstractAuthStrategy> {
+    let authStrategy: AbstractAuthStrategy | undefined
 
     const authenticationStrategies = req.scope.resolve(
       "authenticationStrategies"
-    ) as AbstractAuthStrategy<never>[]
+    ) as AbstractAuthStrategy[]
     const userStrategies = authenticationStrategies.filter((strategy) => {
       return (
         (strategy.constructor as any).identifier !==

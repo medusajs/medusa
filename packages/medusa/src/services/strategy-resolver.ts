@@ -30,12 +30,12 @@ export default class StrategyResolver extends TransactionBaseService {
     return resolved
   }
 
-  resolveAuthByType<T extends TransactionBaseService<never>>(
+  resolveAuthByType<T extends TransactionBaseService>(
     type: string
-  ): AbstractAuthStrategy<T> {
-    let resolved: AbstractAuthStrategy<T>
+  ): AbstractAuthStrategy {
+    let resolved: AbstractAuthStrategy
     try {
-      resolved = this.container[`auth_${type}`] as AbstractAuthStrategy<T>
+      resolved = this.container[`auth_${type}`] as AbstractAuthStrategy
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

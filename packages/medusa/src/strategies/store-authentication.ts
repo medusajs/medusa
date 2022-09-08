@@ -17,7 +17,7 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStrategy<StoreDefaultAuthenticationStrategy> {
+export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStrategy {
   static identifier = "core-store-default-auth"
 
   protected manager_: EntityManager
