@@ -9,3 +9,5 @@ checks:
 - for all future commits: yarn run hooks:uninstall
 
 `)
+
+process.exit(1)
