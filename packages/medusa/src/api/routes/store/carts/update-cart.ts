@@ -9,10 +9,10 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { AddressPayload } from "../../../../types/common"
 import { CartService } from "../../../../services"
-import { EntityManager } from "typeorm";
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
@@ -139,12 +139,16 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await cartService.withTransaction(transactionManager).update(id, validated)
 
-    const updated = await cartService.withTransaction(transactionManager).retrieve(id, {
-      relations: ["payment_sessions", "shipping_methods"],
-    })
+    const updated = await cartService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["payment_sessions", "shipping_methods"],
+      })
 
     if (updated.payment_sessions?.length && !validated.region_id) {
-      await cartService.withTransaction(transactionManager).setPaymentSessions(id)
+      await cartService
+        .withTransaction(transactionManager)
+        .setPaymentSessions(id)
     }
   })
 

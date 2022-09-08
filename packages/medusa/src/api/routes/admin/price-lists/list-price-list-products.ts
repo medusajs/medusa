@@ -213,6 +213,7 @@ export default async (req: Request, res) => {
   })
 }
 
+// eslint-disable-next-line max-len
 export class AdminGetPriceListsPriceListProductsParams extends extendedFindParamsMixin(
   { limit: 50 }
 ) {

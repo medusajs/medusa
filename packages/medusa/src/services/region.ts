@@ -59,7 +59,9 @@ class RegionService extends TransactionBaseService {
   protected readonly regionRepository_: typeof RegionRepository
   protected readonly countryRepository_: typeof CountryRepository
   protected readonly currencyRepository_: typeof CurrencyRepository
+  // eslint-disable-next-line max-len
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
+  // eslint-disable-next-line max-len
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
   protected readonly taxProviderRepository_: typeof TaxProviderRepository
 
@@ -281,7 +283,7 @@ class RegionService extends TransactionBaseService {
 
     if (regionData.countries) {
       region.countries = await Promise.all(
-        regionData.countries!.map((countryCode) =>
+        regionData.countries!.map(async (countryCode) =>
           this.validateCountry(countryCode, id!)
         )
       ).catch((err) => {

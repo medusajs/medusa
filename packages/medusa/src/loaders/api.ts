@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import { Express } from "express"
 import bodyParser from "body-parser"
 import routes from "../api"
 import { AwilixContainer } from "awilix"

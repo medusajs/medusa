@@ -1,4 +1,8 @@
-import { CartService, LineItemService, RegionService } from "../../../../services"
+import {
+  CartService,
+  LineItemService,
+  RegionService,
+} from "../../../../services"
 import {
   IsArray,
   IsInt,
@@ -7,18 +11,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreCartFields, defaultStoreCartRelations, } from "."
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { Cart } from "../../../../models";
+import { Cart } from "../../../../models"
 import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { MedusaError } from "medusa-core-utils"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import reqIp from "request-ip"
-import { isDefined } from "../../../../utils";
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /carts
@@ -140,7 +144,7 @@ export default async (req, res) => {
         ...validated.context,
       },
       region_id: regionId,
-     })
+    })
 
     if (validated.items) {
       await Promise.all(

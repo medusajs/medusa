@@ -4,7 +4,6 @@ import * as fs from "fs"
 import * as path from "path"
 
 export default class LocalFileService extends AbstractFileService {
-  // eslint-disable-next-line no-empty-pattern
   constructor({}, options) {
     super({})
     this.upload_dir_ =

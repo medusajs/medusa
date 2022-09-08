@@ -1,12 +1,14 @@
 import { Request } from "express"
 import { TotalsService } from "../../../../services"
 import { Cart, LineItem } from "../../../../models"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 
 export const decorateLineItemsWithTotals = async (
   cart: Cart,
   req: Request,
-  options: { force_taxes: boolean, transactionManager?: EntityManager } = { force_taxes: false }
+  options: { force_taxes: boolean; transactionManager?: EntityManager } = {
+    force_taxes: false,
+  }
 ): Promise<Cart> => {
   const totalsService: TotalsService = req.scope.resolve("totalsService")
 
@@ -15,10 +17,13 @@ export const decorateLineItemsWithTotals = async (
       const totalsServiceTx = totalsService.withTransaction(manager)
       return await Promise.all(
         cart.items.map(async (item: LineItem) => {
-          const itemTotals = await totalsServiceTx
-            .getLineItemTotals(item, cart, {
+          const itemTotals = await totalsServiceTx.getLineItemTotals(
+            item,
+            cart,
+            {
               include_tax: options.force_taxes || cart.region.automatic_taxes,
-            })
+            }
+          )
 
           return Object.assign(item, itemTotals)
         })
@@ -29,7 +34,8 @@ export const decorateLineItemsWithTotals = async (
     if (options.transactionManager) {
       items = await getItems(options.transactionManager)
     } else {
-      const manager: EntityManager = options.transactionManager ?? req.scope.resolve("manager")
+      const manager: EntityManager =
+        options.transactionManager ?? req.scope.resolve("manager")
       items = await manager.transaction(async (transactionManager) => {
         return await getItems(transactionManager)
       })

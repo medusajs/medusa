@@ -54,6 +54,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly customerService_: CustomerService
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
   protected readonly giftCardRepository_: typeof GiftCardRepository
+  // eslint-disable-next-line max-len
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly discountConditionService_: DiscountConditionService
   protected readonly totalsService_: TotalsService
@@ -202,7 +203,7 @@ class DiscountService extends TransactionBaseService {
       try {
         if (discount.regions) {
           discount.regions = (await Promise.all(
-            discount.regions.map((regionId) =>
+            discount.regions.map(async (regionId) =>
               this.regionService_.withTransaction(manager).retrieve(regionId)
             )
           )) as Region[]
@@ -353,12 +354,14 @@ class DiscountService extends TransactionBaseService {
 
       if (regions) {
         discount.regions = await Promise.all(
-          regions.map((regionId) => this.regionService_.retrieve(regionId))
+          regions.map(async (regionId) =>
+            this.regionService_.retrieve(regionId)
+          )
         )
       }
 
       if (metadata) {
-        discount.metadata = await setMetadata(discount, metadata)
+        discount.metadata = setMetadata(discount, metadata)
       }
 
       if (rule) {

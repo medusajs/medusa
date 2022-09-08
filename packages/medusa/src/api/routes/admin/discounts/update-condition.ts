@@ -152,6 +152,7 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditionsCondition extends AdminUpsertConditionsReq {}
 
 export class AdminPostDiscountsDiscountConditionsConditionParams {

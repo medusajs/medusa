@@ -90,7 +90,7 @@ export default async (req, res) => {
   try {
     const userService: UserService = req.scope.resolve("userService")
 
-    const decoded = (await jwt.decode(validated.token)) as payload
+    const decoded = jwt.decode(validated.token) as payload
 
     let user: User
     try {
@@ -104,10 +104,10 @@ export default async (req, res) => {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "invalid token")
     }
 
-    const verifiedToken = (await jwt.verify(
+    const verifiedToken = jwt.verify(
       validated.token,
       user.password_hash
-    )) as payload
+    ) as payload
     if (!verifiedToken || verifiedToken.user_id !== user.id) {
       res.status(401).send("Invalid or expired password reset token")
       return

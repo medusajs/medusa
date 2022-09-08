@@ -919,7 +919,7 @@ class CartService extends TransactionBaseService {
           cart.discounts.length = 0
 
           await Promise.all(
-            data.discounts.map(({ code }) => {
+            data.discounts.map(async ({ code }) => {
               return this.applyDiscount(cart, code)
             })
           )
@@ -948,7 +948,7 @@ class CartService extends TransactionBaseService {
           cart.gift_cards = []
 
           await Promise.all(
-            (data.gift_cards ?? []).map(({ code }) => {
+            (data.gift_cards ?? []).map(async ({ code }) => {
               return this.applyGiftCard_(cart, code)
             })
           )
@@ -1021,7 +1021,7 @@ class CartService extends TransactionBaseService {
 
     if (itemsToRemove.length) {
       const results = await Promise.all(
-        itemsToRemove.map((item) => {
+        itemsToRemove.map(async (item) => {
           return this.removeLineItem(cart.id, item.id)
         })
       )
@@ -2091,7 +2091,7 @@ class CartService extends TransactionBaseService {
         }
 
         const updatedCart = await cartRepo.save(cart)
-        this.eventBus_
+        void this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, updatedCart)
         return updatedCart

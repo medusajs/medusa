@@ -57,7 +57,7 @@ class CsvParser<
       this.$$schema.columns.filter((col) => col.required)
     )
 
-    const tupleKeys = Object.keys(line)
+    const tupleKeys = Object.keys(line as object)
 
     /**
      * map which keeps track of the columns processed
@@ -150,13 +150,13 @@ class CsvParser<
       return columnMap[tupleKey]
     }
 
-    const matchedColumn = this.$$schema.columns.find((column) =>
-      "match" in column &&
-      typeof column.match === "object" &&
-      column.match instanceof RegExp
+    const matchedColumn = this.$$schema.columns.find((column) => {
+      return "match" in column &&
+        typeof column.match === "object" &&
+        column.match instanceof RegExp
         ? column.match.test(tupleKey)
         : false
-    )
+    })
 
     return matchedColumn
   }

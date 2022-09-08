@@ -103,7 +103,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.regionService_ = regionService
   }
 
-  buildTemplate(): Promise<string> {
+  async buildTemplate(): Promise<string> {
     throw new Error("Not implemented!")
   }
 
@@ -276,7 +276,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       await this.createVariants(batchJobId)
       await this.updateVariants(batchJobId)
 
-      this.finalize(batchJobId)
+      await this.finalize(batchJobId)
     })
   }
 
@@ -362,7 +362,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
-      this.updateProgress(batchJobId)
+      await this.updateProgress(batchJobId)
     }
   }
 
@@ -405,7 +405,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
-      this.updateProgress(batchJobId)
+      await this.updateProgress(batchJobId)
     }
   }
 
@@ -452,7 +452,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           .withTransaction(transactionManager)
           .create(product!, variant as unknown as CreateProductVariantInput)
 
-        this.updateProgress(batchJobId)
+        await this.updateProgress(batchJobId)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
@@ -493,7 +493,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
 
-      this.updateProgress(batchJobId)
+      await this.updateProgress(batchJobId)
     }
   }
 
@@ -593,7 +593,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     for (const op of Object.keys(OperationType)) {
       try {
-        this.fileService_.withTransaction(transactionManager).delete({
+        await this.fileService_.withTransaction(transactionManager).delete({
           fileKey: `imports/products/ops/-${batchJobId}-${op}`,
         })
       } catch (e) {
@@ -727,9 +727,13 @@ const CSVSchema: ProductImportCsvSchema = {
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
-        ;(
-          builtLine["product.options"] as Record<string, string | number>[]
-        ).push({ title: value })
+
+        const options = builtLine["product.options"] as Record<
+          string,
+          string | number
+        >[]
+
+        options.push({ title: value })
 
         return builtLine
       },
@@ -749,9 +753,12 @@ const CSVSchema: ProductImportCsvSchema = {
           return builtLine
         }
 
-        ;(
-          builtLine["variant.options"] as Record<string, string | number>[]
-        ).push({
+        const options = builtLine["variant.options"] as Record<
+          string,
+          string | number
+        >[]
+
+        options.push({
           value,
           _title: context.line[key.slice(0, -6) + " Name"],
         })
@@ -777,9 +784,12 @@ const CSVSchema: ProductImportCsvSchema = {
 
         const regionName = key.split(" ")[1]
 
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
+        const prices = builtLine["variant.prices"] as Record<
+          string,
+          string | number
+        >[]
+
+        prices.push({
           amount: value,
           regionName,
         })
@@ -803,9 +813,12 @@ const CSVSchema: ProductImportCsvSchema = {
 
         const currency = key.split(" ")[1]
 
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
+        const prices = builtLine["variant.prices"] as Record<
+          string,
+          string | number
+        >[]
+
+        prices.push({
           amount: value,
           currency_code: currency,
         })
@@ -844,12 +857,13 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
-        ;(
-          builtLine["product.sales_channels"] as Record<
-            string,
-            string | number
-          >[]
-        ).push({
+
+        const channels = builtLine["product.sales_channels"] as Record<
+          string,
+          string | number
+        >[]
+
+        channels.push({
           name: value,
         })
 
@@ -866,12 +880,13 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
-        ;(
-          builtLine["product.sales_channels"] as Record<
-            string,
-            string | number
-          >[]
-        ).push({
+
+        const channels = builtLine["product.sales_channels"] as Record<
+          string,
+          string | number
+        >[]
+
+        channels.push({
           id: value,
         })
 
