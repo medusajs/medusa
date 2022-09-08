@@ -453,7 +453,7 @@ class ReturnService extends TransactionBaseService {
         })
       )
 
-      const created = returnRepository.create(returnObject)
+      const created = await returnRepository.create(returnObject)
       const result = await returnRepository.save(created)
 
       if (method && method.option_id) {

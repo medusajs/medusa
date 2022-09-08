@@ -189,7 +189,7 @@ class ShippingProfileService extends TransactionBaseService {
           name: "Default Shipping Profile",
         }
 
-        const created = profileRepository.create(toCreate)
+        const created = await profileRepository.create(toCreate)
 
         profile = await profileRepository.save(created)
       }
@@ -228,7 +228,7 @@ class ShippingProfileService extends TransactionBaseService {
           this.shippingProfileRepository_
         )
 
-        const created = profileRepository.create({
+        const created = await profileRepository.create({
           type: ShippingProfileType.GIFT_CARD,
           name: "Gift Card Profile",
         })
@@ -258,7 +258,7 @@ class ShippingProfileService extends TransactionBaseService {
         )
       }
 
-      const created = profileRepository.create(profile)
+      const created = await profileRepository.create(profile)
       const result = await profileRepository.save(created)
       return result
     })

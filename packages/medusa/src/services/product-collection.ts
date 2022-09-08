@@ -119,7 +119,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
 
       try {
-        const productCollection = collectionRepo.create(collection)
+        const productCollection = await collectionRepo.create(collection)
         return await collectionRepo.save(productCollection)
       } catch (error) {
         throw formatException(error)

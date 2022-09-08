@@ -649,7 +649,7 @@ class ProductService extends TransactionBaseService {
         )
       }
 
-      const option = productOptionRepo.create({
+      const option = await productOptionRepo.create({
         title: optionTitle,
         product_id: productId,
       })

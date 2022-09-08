@@ -127,7 +127,7 @@ class ShippingOptionService extends TransactionBaseService {
           ...requirement,
         })
       } else {
-        const created = reqRepo.create({
+        const created = await reqRepo.create({
           ...requirement,
           shipping_option_id: optionId,
         })
@@ -336,7 +336,7 @@ class ShippingOptionService extends TransactionBaseService {
         toCreate.claim_order_id = config.claim_order_id
       }
 
-      const method = methodRepo.create(toCreate)
+      const method = await methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
 

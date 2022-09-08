@@ -280,7 +280,7 @@ class CustomerService extends TransactionBaseService {
           delete customer.password
         }
 
-        const created = customerRepository.create(customer)
+        const created = await customerRepository.create(customer)
         const result = await customerRepository.save(created)
         await this.eventBusService_
           .withTransaction(manager)
@@ -488,7 +488,7 @@ class CustomerService extends TransactionBaseService {
       )
 
       if (shouldAdd) {
-        const created = addressRepository.create({
+        const created = await addressRepository.create({
           ...address,
           customer_id: customerId,
         })

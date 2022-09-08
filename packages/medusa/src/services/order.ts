@@ -778,7 +778,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
+      const created = await addrRepo.create({ ...address })
       await addrRepo.save(created)
     }
   }
@@ -1072,8 +1072,8 @@ class OrderService extends TransactionBaseService {
         if (p.captured_at === null) {
           const result = await paymentProviderServiceTx
             .capturePayment(p)
-            .catch((err) => {
-              void this.eventBus_
+            .catch(async (err) => {
+              await this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
                   id: orderId,
@@ -1101,7 +1101,7 @@ class OrderService extends TransactionBaseService {
       const result = await orderRepo.save(order)
 
       if (order.payment_status === PaymentStatus.CAPTURED) {
-        void this.eventBus_
+        await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
             id: result.id,
@@ -1413,7 +1413,7 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      void this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
+      await this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
         id: result.id,
         refund_id: refund.id,
         no_notification: evaluatedNoNotification,
@@ -1575,7 +1575,7 @@ class OrderService extends TransactionBaseService {
       if (refundAmount > order.refundable_amount) {
         order.fulfillment_status = FulfillmentStatus.REQUIRES_ACTION
         const result = await orderRepo.save(order)
-        void this.eventBus_
+        await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
             id: result.id,
