@@ -581,7 +581,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         const { writeStream, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: this.buildFilename(batchJobId, op),
+            name: ProductImportStrategy.buildFilename(batchJobId, op),
             ext: "json",
           })
 
@@ -611,7 +611,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: this.buildFilename(batchJobId, op, { withExt: true }),
+        fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
+          withExt: true,
+        }),
       })
 
     return await new Promise((resolve) => {
@@ -640,7 +642,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     for (const op of Object.values(OperationType)) {
       try {
         await fileServiceTx.delete({
-          fileKey: this.buildFilename(batchJobId, op, { withExt: true }),
+          fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
+            withExt: true,
+          }),
         })
       } catch (e) {
         // noop
@@ -701,7 +705,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       })
   }
 
-  private buildFilename(
+  private static buildFilename(
     batchJobId: string,
     operation: string,
     { withExt }: { withExt: boolean } = { withExt: false }
