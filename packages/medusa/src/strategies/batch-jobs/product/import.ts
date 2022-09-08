@@ -21,11 +21,12 @@ import {
   ImportJobContext,
   InjectedProps,
   OperationType,
+  ProductImportBatchJob,
   ProductImportCsvSchema,
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
-import { SalesChannel } from "../../../models"
+import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -295,30 +296,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    */
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJob = await this.batchJobService_
+      const batchJob = (await this.batchJobService_
         .withTransaction(manager)
-        .retrieve(batchJobId)
-      const operations = batchJob.result.operations as {
-        [K in keyof typeof OperationType]: number
-      }
+        .retrieve(batchJobId)) as ProductImportBatchJob
 
-      if (operations[OperationType.ProductCreate]) {
-        await this.createProducts(batchJobId)
-      }
+      await this.createProducts(batchJob)
+      await this.updateProducts(batchJob)
+      await this.createVariants(batchJob)
+      await this.updateVariants(batchJob)
 
-      if (operations[OperationType.ProductUpdate]) {
-        await this.updateProducts(batchJobId)
-      }
-
-      if (operations[OperationType.VariantCreate]) {
-        await this.createVariants(batchJobId)
-      }
-
-      if (operations[OperationType.VariantUpdate]) {
-        await this.updateVariants(batchJobId)
-      }
-
-      await this.finalize(batchJobId)
+      await this.finalize(batchJob)
     })
   }
 
@@ -368,12 +355,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - The current batch job being processed.
    */
-  private async createProducts(batchJobId: string): Promise<void> {
+  private async createProducts(batchJob: ProductImportBatchJob): Promise<void> {
+    if (!batchJob.result.operations[OperationType.ProductCreate]) return
+
     const transactionManager = this.transactionManager_ ?? this.manager_
+
     const productOps = await this.downloadImportOpsFile(
-      batchJobId,
+      batchJob.id,
       OperationType.ProductCreate
     )
 
@@ -404,19 +394,21 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
-      await this.updateProgress(batchJobId)
+      await this.updateProgress(batchJob.id)
     }
   }
 
   /**
    * Method updates existing products in the DB using a CSV row data.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - The current batch job being processed.
    */
-  private async updateProducts(batchJobId: string): Promise<void> {
+  private async updateProducts(batchJob: ProductImportBatchJob): Promise<void> {
+    if (!batchJob.result.operations[OperationType.ProductUpdate]) return
+
     const transactionManager = this.transactionManager_ ?? this.manager_
     const productOps = await this.downloadImportOpsFile(
-      batchJobId,
+      batchJob.id,
       OperationType.ProductUpdate
     )
 
@@ -447,7 +439,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
-      await this.updateProgress(batchJobId)
+      await this.updateProgress(batchJob.id)
     }
   }
 
@@ -455,13 +447,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * Method creates product variants from a CSV data.
    * Method also handles processing of variant options.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - The current batch job being processed.
    */
-  private async createVariants(batchJobId: string): Promise<void> {
+  private async createVariants(batchJob: ProductImportBatchJob): Promise<void> {
+    if (!batchJob.result.operations[OperationType.VariantCreate]) return
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
-      batchJobId,
+      batchJob.id,
       OperationType.VariantCreate
     )
 
@@ -494,7 +487,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           .withTransaction(transactionManager)
           .create(product!, variant as unknown as CreateProductVariantInput)
 
-        await this.updateProgress(batchJobId)
+        await this.updateProgress(batchJob.id)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
@@ -504,13 +497,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Method updates product variants from a CSV data.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - The current batch job being processed.
    */
-  private async updateVariants(batchJobId: string): Promise<void> {
+  private async updateVariants(batchJob: ProductImportBatchJob): Promise<void> {
+    if (!batchJob.result.operations[OperationType.VariantUpdate]) return
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
-      batchJobId,
+      batchJob.id,
       OperationType.VariantUpdate
     )
 
@@ -535,7 +529,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }
 
-      await this.updateProgress(batchJobId)
+      await this.updateProgress(batchJob.id)
     }
   }
 
@@ -656,19 +650,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * Update count of processed data in the batch job `result` column
    * and cleanup temp JSON files.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - The current batch job being processed.
    */
-  private async finalize(batchJobId: string): Promise<void> {
+  private async finalize(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
-    const batchJob = await this.batchJobService_
-      .withTransaction(transactionManager)
-      .retrieve(batchJobId)
 
-    delete this.processedCounter[batchJobId]
+    delete this.processedCounter[batchJob.id]
 
     await this.batchJobService_
       .withTransaction(transactionManager)
-      .update(batchJobId, {
+      .update(batchJob.id, {
         result: { advancement_count: batchJob.result.count },
       })
 
@@ -678,7 +669,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .delete({ fileKey })
 
-    await this.deleteOpsFiles(batchJobId)
+    await this.deleteOpsFiles(batchJob.id)
   }
 
   /**
