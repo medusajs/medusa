@@ -6,13 +6,8 @@ import "reflect-metadata"
 import supertest from "supertest"
 import querystring from "querystring"
 import apiLoader from "../loaders/api"
-import passportLoader from "../loaders/passport"
-import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
-import strategiesLoader from "../loaders/strategies"
-import logger from "../loaders/logger"
-import featureFlagLoader from "../loaders/feature-flags"
-import servicesLoader from "../loaders/services"
+import { featureFlagRouter } from "../loaders/feature-flags"
 import strategiesLoader, { authStrategies } from "../loaders/strategies"
 import { asArray } from "../loaders"
 
@@ -38,13 +33,10 @@ const config = {
 }
 
 let supertestRequest
-let featureFlagRouter
 const loadSupertest = async () => {
   const testApp = express()
 
   const container = createContainer()
-
-  featureFlagRouter = featureFlagLoader(config)
 
   container.register("featureFlagRouter", asValue(featureFlagRouter))
   container.register("configModule", asValue(config))
