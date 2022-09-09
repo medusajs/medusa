@@ -87,19 +87,14 @@ export async function authStrategies({
   const isTest = process.env.NODE_ENV === "test"
 
   const corePath = isTest
-    ? "../strategies/**/[!__]*.{js,ts}"
-    : "../strategies/**/[!__]*.js"
+    ? "../strategies/authentication/**/[!__]*.{js,ts}"
+    : "../strategies/authentication/**/[!__]*.js"
 
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: [
-      "**/__fixtures__/**",
-      "**/__tests__/**",
-      "**/index.js",
-      "**/index.ts",
-    ],
+    ignore: ["**/__fixtures__/**", "**/__tests__/**"],
   })
 
   for (const fn of core) {

@@ -4,8 +4,8 @@ import { users, UserServiceMock } from "../__mocks__/user"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { strategyResolverServiceMock } from "../__mocks__/strategy-resolver"
 import { asFunction, asValue, createContainer } from "awilix"
-import AdminDefaultAuthenticationStrategy from "../../strategies/admin-authentication"
-import StoreDefaultAuthenticationStrategy from "../../strategies/store-authentication"
+import AdminDefaultAuthenticationStrategy from "../../strategies/authentication/admin-authentication"
+import StoreDefaultAuthenticationStrategy from "../../strategies/authentication/store-authentication"
 import StrategyResolver from "../strategy-resolver"
 
 const managerMock = MockManager
@@ -15,7 +15,7 @@ describe("AuthService", () => {
     manager: managerMock,
     userService: UserServiceMock,
     customerService: CustomerServiceMock,
-    strategyResolverService: strategyResolverServiceMock
+    strategyResolverService: strategyResolverServiceMock,
   })
 
   describe("authenticate", () => {
@@ -91,7 +91,9 @@ describe("AuthService", () => {
       manager: asValue(managerMock),
       userService: asValue(UserServiceMock),
       customerService: asValue(CustomerServiceMock),
-      strategyResolverService: asFunction((cradle) => new StrategyResolver(cradle)),
+      strategyResolverService: asFunction(
+        (cradle) => new StrategyResolver(cradle)
+      ),
       authService: asFunction((cradle) => new AuthService(cradle)),
       [`auth_${AdminDefaultAuthenticationStrategy.identifier}`]: asFunction(
         (cradle) => new AdminDefaultAuthenticationStrategy(cradle, {})
@@ -101,7 +103,7 @@ describe("AuthService", () => {
       ).singleton(),
     })
     container.register({
-      "authenticationStrategies": asValue([
+      authenticationStrategies: asValue([
         container.resolve(
           `auth_${AdminDefaultAuthenticationStrategy.identifier}`
         ),
@@ -118,21 +120,21 @@ describe("AuthService", () => {
 
     it("returns the appropriate strategy", async () => {
       const reqMock = { scope: container.createScope() }
-      const adminAuthStrategy = await authService
-        .retrieveAuthenticationStrategy(reqMock, "admin")
+      const adminAuthStrategy =
+        await authService.retrieveAuthenticationStrategy(reqMock, "admin")
 
       expect(adminAuthStrategy).toBeTruthy()
       expect(adminAuthStrategy).toBeInstanceOf(
         AdminDefaultAuthenticationStrategy
       )
 
-      const storeAuthStrategy = await authService
-        .retrieveAuthenticationStrategy(reqMock, "store")
+      const storeAuthStrategy =
+        await authService.retrieveAuthenticationStrategy(reqMock, "store")
 
       expect(storeAuthStrategy).toBeTruthy()
       expect(storeAuthStrategy).toBeInstanceOf(
         StoreDefaultAuthenticationStrategy
       )
     })
-})
+  })
 })

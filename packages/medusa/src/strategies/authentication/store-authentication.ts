@@ -4,22 +4,21 @@ import { Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
 import { Express, NextFunction, Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
 import jwt from "jsonwebtoken"
-import _ from "lodash"
 
-import AbstractAuthStrategy from "../interfaces/authentication-strategy"
-import { AuthService } from "../services"
-import { ConfigModule, MedusaContainer } from "../types/global"
-import { validator } from "../utils/validator"
-import { AdminPostAuthReq } from "../api/routes/admin/auth"
+import AbstractAuthStrategy from "../../interfaces/authentication-strategy"
+import { AuthService } from "../../services"
+import { ConfigModule, MedusaContainer } from "../../types/global"
+import { validator } from "../../utils/validator"
+import CustomerService from "../../services/customer"
+import { StorePostAuthReq } from "../../api/routes/store/auth"
 
 type InjectedDependencies = {
   manager: EntityManager
 }
 
-export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStrategy {
-  static identifier = "core-admin-default-auth"
+export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStrategy {
+  static identifier = "core-store-default-auth"
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -102,37 +101,46 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
     req: Request,
     scope: "admin" | "store"
   ): Promise<boolean> {
-    return scope === "admin"
+    return scope === "store"
   }
 
   async authenticate(req: Request, res: Response): Promise<void> {
-    const { jwt_secret } = this.configModule_.projectConfig
-    if (!jwt_secret) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Please configure jwt_secret in your environment"
-      )
-    }
-    const validated = await validator(AdminPostAuthReq, req.body)
+    const validated = await validator(StorePostAuthReq, req.body, {
+      whitelist: false,
+      forbidNonWhitelisted: false,
+    })
 
     const authService: AuthService = req.scope.resolve("authService")
-    const result = await authService.authenticate(
+    const result = await authService.authenticateCustomer(
       validated.email,
       validated.password
     )
 
-    if (result.success && result.user) {
-      // Add JWT to cookie
-      req.session.jwt = jwt.sign({ userId: result.user.id }, jwt_secret, {
-        expiresIn: "24h",
-      })
-
-      const cleanRes = _.omit(result.user, ["password_hash"])
-
-      res.json({ user: cleanRes })
-    } else {
+    if (!result.success) {
       res.sendStatus(401)
+      return
     }
+
+    // Add JWT to cookie
+    const {
+      projectConfig: { jwt_secret },
+    } = req.scope.resolve("configModule")
+    req.session.jwt = jwt.sign(
+      { customer_id: result.customer?.id },
+      jwt_secret!,
+      {
+        expiresIn: "30d",
+      }
+    )
+
+    const customerService: CustomerService =
+      req.scope.resolve("customerService")
+    const customer = await customerService.retrieve(
+      result.customer?.id || "",
+      req.retrieveConfig ?? {}
+    )
+
+    res.json({ customer })
   }
 
   async unAuthenticate(req: Request, res: Response): Promise<void> {
@@ -145,6 +153,16 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    passport.authenticate(["jwt", "bearer"], { session: false })(req, res, next)
+    passport.authenticate(
+      ["jwt", "bearer"],
+      { session: false },
+      (err, user) => {
+        if (err) {
+          return next(err)
+        }
+        req.user = user
+        return next()
+      }
+    )(req, res, next)
   }
 }

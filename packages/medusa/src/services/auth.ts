@@ -8,8 +8,8 @@ import { EntityManager } from "typeorm"
 import AbstractAuthStrategy from "../interfaces/authentication-strategy"
 import { Request } from "express"
 import { StrategyResolverService } from "./index"
-import AdminDefaultAuthenticationStrategy from "../strategies/admin-authentication"
-import StoreDefaultAuthenticationStrategy from "../strategies/store-authentication"
+import AdminDefaultAuthenticationStrategy from "../strategies/authentication/admin-authentication"
+import StoreDefaultAuthenticationStrategy from "../strategies/authentication/store-authentication"
 
 type InjectedDependencies = {
   manager: EntityManager
