@@ -88,15 +88,7 @@ module.exports = {
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/promise-function-async": "error",
-        "@typescript-eslint/brace-style": [
-          "error",
-          "1tbs",
-          {
-            allowSingleLine: false,
-          },
-        ],
         "@typescript-eslint/keyword-spacing": "error",
-        "@typescript-eslint/no-use-before-define": "warn",
         "@typescript-eslint/space-before-function-paren": [
           "error",
           {
@@ -113,6 +105,7 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-var-requires": "off",
       },
     },
   ],
