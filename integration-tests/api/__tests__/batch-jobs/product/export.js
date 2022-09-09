@@ -75,7 +75,7 @@ describe("Batch job of product-export type", () => {
 
     const productPayload = {
       title: "Test export product",
-      description: "test-product-description",
+      description: "test-product-description\ntest line 2",
       type: { value: "test-type" },
       images: ["test-image.png", "test-image-2.png"],
       collection_id: "test-collection",
@@ -167,7 +167,9 @@ describe("Batch job of product-export type", () => {
 
     expect(lineColumn[0]).toBe(productId)
     expect(lineColumn[2]).toBe(productPayload.title)
-    expect(lineColumn[4]).toBe(productPayload.description)
+    expect(lineColumn[4]).toBe(
+      `"${productPayload.description.replace(/\n/g, "\\n")}"`
+    )
     expect(lineColumn[23]).toBe(variantId)
     expect(lineColumn[24]).toBe(productPayload.variants[0].title)
     expect(lineColumn[25]).toBe(productPayload.variants[0].sku)

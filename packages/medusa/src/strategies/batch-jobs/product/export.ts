@@ -53,7 +53,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ProductExportColumnSchemaDescriptor
   > = new Map(productExportSchemaDescriptors)
 
-  private readonly NEWLINE_ = "\n"
+  private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
   private readonly DEFAULT_LIMIT = 50
 
