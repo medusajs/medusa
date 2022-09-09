@@ -39,7 +39,6 @@ class MinioService extends AbstractFileService {
 
     return new Promise((resolve, reject) => {
       s3.upload(params, (err, data) => {
-        console.log(data, err)
         if (err) {
           reject(err)
           return
