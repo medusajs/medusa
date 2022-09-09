@@ -3,8 +3,8 @@ import fs from "fs"
 /**
  * @oas [post] /uploads
  * operationId: "PostUploads"
- * summary: "Uploads a file"
- * description: "Uploads a file to the specific fileservice that is installed in Medusa."
+ * summary: "Uploads files"
+ * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -22,7 +22,7 @@ import fs from "fs"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.uploads.create(file)
+ *       medusa.admin.uploads.create(files) //files is an array of one or more files to be uploaded
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
  *       });
@@ -32,7 +32,8 @@ import fs from "fs"
  *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
- *       --data-binary '{file_path}'
+ *       --form 'files=@"<FILE_PATH_1>"' \
+ *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
