@@ -40,7 +40,7 @@ It’s important to choose a payment provider in the list of payment providers i
 
 ### PaymentProvider Entity Overview
 
-The `PaymentProvider` entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
+The [`PaymentProvider`](../../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
 
 ## Payment Session
 
