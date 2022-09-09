@@ -7,9 +7,7 @@ export function csvCellContentFormatter(str: string): string {
     return str
   }
 
-  const formatterStr = str
-    .replace(newLineRegexp, "\\n")
-    .replace(doubleQuoteRegexp, '""')
+  const formatterStr = str.replace(doubleQuoteRegexp, '""')
 
   return `"${formatterStr}"`
 }

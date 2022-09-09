@@ -145,7 +145,7 @@ export const productExportSchemaDescriptors = new Map<
     },
   ],
   [
-    "Product Mid Code",
+    "Product MID Code",
     {
       accessor: (product: Product): string =>
         product?.mid_code?.toString() ?? "",
@@ -319,7 +319,7 @@ export const productExportSchemaDescriptors = new Map<
     },
   ],
   [
-    "Variant Mid Code",
+    "Variant MID Code",
     {
       accessor: (variant: ProductVariant): string =>
         variant?.mid_code?.toString() ?? "",

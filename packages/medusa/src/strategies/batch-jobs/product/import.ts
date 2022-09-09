@@ -358,7 +358,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * @param batchJob - The current batch job being processed.
    */
   private async createProducts(batchJob: ProductImportBatchJob): Promise<void> {
-    if (!batchJob.result.operations[OperationType.ProductCreate]) return
+    if (!batchJob.result.operations[OperationType.ProductCreate]) {
+      return
+    }
 
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -404,7 +406,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * @param batchJob - The current batch job being processed.
    */
   private async updateProducts(batchJob: ProductImportBatchJob): Promise<void> {
-    if (!batchJob.result.operations[OperationType.ProductUpdate]) return
+    if (!batchJob.result.operations[OperationType.ProductUpdate]) {
+      return
+    }
 
     const transactionManager = this.transactionManager_ ?? this.manager_
     const productOps = await this.downloadImportOpsFile(
@@ -450,7 +454,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * @param batchJob - The current batch job being processed.
    */
   private async createVariants(batchJob: ProductImportBatchJob): Promise<void> {
-    if (!batchJob.result.operations[OperationType.VariantCreate]) return
+    if (!batchJob.result.operations[OperationType.VariantCreate]) {
+      return
+    }
+
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
@@ -500,7 +507,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
    * @param batchJob - The current batch job being processed.
    */
   private async updateVariants(batchJob: ProductImportBatchJob): Promise<void> {
-    if (!batchJob.result.operations[OperationType.VariantUpdate]) return
+    if (!batchJob.result.operations[OperationType.VariantUpdate]) {
+      return
+    }
+
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
@@ -606,7 +616,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .getDownloadStream({
         fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
-          withExt: true,
+          appendExt: ".json",
         }),
       })
 
@@ -637,7 +647,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       try {
         await fileServiceTx.delete({
           fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
-            withExt: true,
+            appendExt: ".json",
           }),
         })
       } catch (e) {
@@ -699,10 +709,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   private static buildFilename(
     batchJobId: string,
     operation: string,
-    { withExt }: { withExt: boolean } = { withExt: false }
+    { appendExt }: { appendExt?: string } = { appendExt: undefined }
   ): string {
     const filename = `imports/products/ops/${batchJobId}-${operation}`
-    return withExt ? filename + ".json" : filename
+    return appendExt ? filename + appendExt : filename
   }
 }
 
@@ -734,7 +744,7 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Height", mapTo: "product.height" },
     { name: "Product HS Code", mapTo: "product.hs_code" },
     { name: "Product Origin Country", mapTo: "product.origin_country" },
-    { name: "Product Mid Code", mapTo: "product.mid_code" },
+    { name: "Product MID Code", mapTo: "product.mid_code" },
     { name: "Product Material", mapTo: "product.material" },
     // PRODUCT-COLLECTION
     { name: "Product Collection Title", mapTo: "product.collection.title" },
@@ -771,7 +781,7 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Variant Height", mapTo: "variant.height" },
     { name: "Variant HS Code", mapTo: "variant.hs_code" },
     { name: "Variant Origin Country", mapTo: "variant.origin_country" },
-    { name: "Variant Mid Code", mapTo: "variant.mid_code" },
+    { name: "Variant MID Code", mapTo: "variant.mid_code" },
     { name: "Variant Material", mapTo: "variant.material" },
 
     // ==== DYNAMIC FIELDS ====
