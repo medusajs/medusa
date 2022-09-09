@@ -125,7 +125,7 @@ This separation allows for developers to implement the custom integration with t
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
-The `ShippingMethod` entity belongs to a `ShippingOption`.
+The [`ShippingMethod`](../../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
 
 Similar to the `data` attribute explained for the `ShippingOption` entity, a `ShippingMethod` has a similar `data` attribute that includes all the data to be sent to the fulfillment provider when fulfilling the order.
 
