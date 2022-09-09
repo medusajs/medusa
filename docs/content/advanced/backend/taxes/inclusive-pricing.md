@@ -86,7 +86,7 @@ Among the pricing fields retrieved for each variant, the following fields are re
 - `original_price_includes_tax`: a boolean value indicating whether the amount in `original_price` includes the tax amount by default or not.
 - `calculated_price_includes_tax`: a boolean value indicating whether the amount in `calculated_price` includes the tax amount by default or not.
 
-If tax inclusivity is enabled for the current currency (which is indicated by which region is selected):
+If tax inclusivity is enabled for the current region or currency (based on whether the default price is specified for the region or currency, with region taking a higher precedence):
 
 - `original_price` will include the tax amount by default.
 - `original_price_includes_tax` will be set to `true`.
@@ -141,7 +141,7 @@ Each line item returned in any of the cart’s requests has total fields related
 - `subtotal`: The total of the line item’s price subtracting the amount in `original_tax_total`.
 - `origial_total`: The `subtotal` including the `original_tax_total` amount.
 
-If tax inclusivity is enabled for the line item, the amount of `tax_total` is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) based on the line item’s tax rates. The calculation takes into account any discounts applied on the item, which means the discount amount is deducted from the original price.
+If tax inclusivity is enabled for the line item, `unit_price` will include the tax amount. The tax amount, which will also be the value of `tax_total`, is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) based on the line item’s tax rates. The calculation takes into account any discounts applied on the item, which means the discount amount is deducted from the original price.
 
 Then, the `subtotal` is calculated by subtracting the `tax_total` from the total of the line item’s price. `original_total` has the same value as `subtotal`.
 
