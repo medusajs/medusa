@@ -32,6 +32,14 @@ module.exports = {
     ]
   ],
   themeConfig: {
+    announcementBar: {
+      id: 'release-1-3-8',
+      content:
+        'New Release! Version 1.3.8 of Medusa is out now! Read all about it <a href="https://github.com/medusajs/medusa/releases/tag/v1.3.8">here</a>.',
+      backgroundColor: '#7C53FF',
+      textColor: '#fff',
+      isCloseable: false,
+    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
