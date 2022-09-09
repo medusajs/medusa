@@ -39,7 +39,7 @@ class DigitalOceanService extends AbstractFileService {
         }
 
         if (this.spacesUrl_) {
-          resolve({ url: `${this.spacesUrl_}/${data.Key}` })
+          resolve({ url: `${this.spacesUrl_}/${data.Key}`, key: data.Key })
         }
 
         resolve({ url: data.Location, key: data.Key })
