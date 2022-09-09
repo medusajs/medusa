@@ -121,7 +121,7 @@ When handling the order and fulfilling it, you, as a developer, will be mostly i
 
 This separation allows for developers to implement the custom integration with third-party fulfillment providers as necessary while also ensuring that the admin has full control of their store.
 
-## ShippingMethod Entity Overview
+### ShippingMethod Entity Overview
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
