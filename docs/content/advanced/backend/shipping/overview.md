@@ -41,7 +41,7 @@ Once the Fulfillment Provider is added to the server, the store operator will be
 
 ### FulfillmentProvider Entity Overview
 
-The `FulfillmentProvider` entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+The [`FulfillmentProvider`](../../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
 
 ## Shipping Profile
 
