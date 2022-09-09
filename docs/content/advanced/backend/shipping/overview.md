@@ -63,7 +63,7 @@ For example, shipping heavy items might be more expensive than others, which wou
 
 ### ShippingProfile Entity Overview
 
-The `ShippingProfile` entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
+The [`ShippingProfile`](../../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
 
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
