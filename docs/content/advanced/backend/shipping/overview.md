@@ -89,7 +89,7 @@ Think of a shipping option as a template defined by the admin that indicates wha
 
 ### ShippingOption Entity Overview
 
-The `ShippingOption` entity belongs to the `ShippingProfile` entity.
+The [`ShippingOption`](../../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
 
 The `ShippingOption` entity also belongs to a `FulfillmentProvider`. This can be either a custom third-party provider or one of Medusa’s default fulfillment providers.
 
