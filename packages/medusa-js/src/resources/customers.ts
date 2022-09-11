@@ -3,6 +3,7 @@ import {
   StoreCustomersRes,
   StoreGetCustomersCustomerOrdersParams,
   StorePostCustomersCustomerPasswordTokenReq,
+  StorePostCustomersResetPasswordReq,
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
 } from "@medusajs/medusa"
@@ -83,7 +84,7 @@ class CustomerResource extends BaseResource {
    * @return {ResponsePromise<StoreCustomersRes>}
    */
   resetPassword(
-    payload: StorePostCustomersCustomerPasswordTokenReq,
+    payload: StorePostCustomersResetPasswordReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/password-reset`
