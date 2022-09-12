@@ -1,12 +1,12 @@
 import { AbstractFileService } from "@medusajs/medusa"
 import stream from "stream"
+import { resolve } from "path"
 import * as fs from "fs"
-import * as path from "path"
+import mkdirp from "mkdirp"
 
 export default class LocalFileService extends AbstractFileService {
-  // eslint-disable-next-line no-empty-pattern
   constructor({}, options) {
-    super({})
+    super({}, options)
     this.upload_dir_ =
       process.env.UPLOAD_DIR ?? options.upload_dir ?? "uploads/images"
 
@@ -15,49 +15,56 @@ export default class LocalFileService extends AbstractFileService {
     }
   }
 
-  async upload(file) {
-    const uploadPath = path.join(
-      this.upload_dir_,
-      path.dirname(file.originalname)
-    )
+  upload(file) {
+    return new Promise((resolvePromise, reject) => {
+      const path = resolve(this.upload_dir_, file.originalname)
 
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true })
-    }
-
-    const filePath = path.resolve(this.upload_dir_, file.originalname)
-    fs.writeFile(filePath, "", (error) => {
-      if (error) {
-        throw error
+      let content = ""
+      if (file.filename) {
+        content = fs.readFileSync(
+          resolve(process.cwd(), "uploads", file.filename)
+        )
       }
-    })
-    return { url: filePath }
-  }
 
-  async delete({ name }) {
-    return new Promise((resolve, _) => {
-      const path = resolve(this.upload_dir_, name)
-      fs.unlink(path, (err) => {
+      const pathSegments = path.split("/")
+      pathSegments.splice(-1)
+      const dirname = pathSegments.join("/")
+      mkdirp.sync(dirname, { recursive: true })
+
+      fs.writeFile(path, content.toString(), (err) => {
         if (err) {
-          throw err
+          reject(err)
         }
 
-        resolve("file unlinked")
+        resolvePromise({ url: path })
+      })
+    })
+  }
+
+  delete({ fileKey }) {
+    return new Promise((resolvePromise, reject) => {
+      const path = resolve(this.upload_dir_, fileKey)
+      fs.unlink(path, (err) => {
+        if (err) {
+          reject(err)
+        }
+
+        resolvePromise("file unlinked")
       })
     })
   }
 
   async getUploadStreamDescriptor({ name, ext }) {
     const fileKey = `${name}.${ext}`
-    const filePath = path.resolve(this.upload_dir_, fileKey)
+    const path = resolve(this.upload_dir_, fileKey)
 
-    const isFileExists = fs.existsSync(filePath)
+    const isFileExists = fs.existsSync(path)
     if (!isFileExists) {
       await this.upload({ originalname: fileKey })
     }
 
     const pass = new stream.PassThrough()
-    pass.pipe(fs.createWriteStream(filePath))
+    pass.pipe(fs.createWriteStream(path))
 
     return {
       writeStream: pass,
@@ -67,11 +74,23 @@ export default class LocalFileService extends AbstractFileService {
     }
   }
 
-  async getDownloadStream(fileData) {
-    const filePath = path.resolve(
-      this.upload_dir_,
-      fileData.fileKey + (fileData.ext ? `.${fileData.ext}` : "")
-    )
-    return fs.createReadStream(filePath)
+  async getDownloadStream({ fileKey }) {
+    return new Promise((resolvePromise, reject) => {
+      try {
+        const path = resolve(this.upload_dir_, fileKey)
+        const data = fs.readFileSync(path)
+        const readable = stream.Readable()
+        readable._read = function () {}
+        readable.push(data.toString())
+        readable.push(null)
+        resolvePromise(readable)
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
+  async getPresignedDownloadUrl({ fileKey }) {
+    return `${this.upload_dir_}/${fileKey}`
   }
 }
