@@ -1,7 +1,7 @@
 ---
-"@medusajs/medusa": minor
-"@medusajs/medusa-js": minor
-"medusa-react": minor
+"@medusajs/medusa": patch
+"@medusajs/medusa-js": patch
+"medusa-react": patch
 ---
 
 Adds missing response types for currency endpoints and exports route. Adds currency endpoints to medusa-js and medusa-react.
