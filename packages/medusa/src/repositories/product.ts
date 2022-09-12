@@ -17,7 +17,8 @@ import {
 } from "../types/common"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
-  tags: FindOperator<string[]>
+  tags: FindOperator<string[]>,
+  collections: FindOperator<string[]>,
 }
 
 export type DefaultWithoutRelations = Omit<
@@ -49,6 +50,9 @@ export class ProductRepository extends Repository<Product> {
   ): Promise<[Product[], number]> {
     const tags = optionsWithoutRelations?.where?.tags
     delete optionsWithoutRelations?.where?.tags
+
+    const collections = optionsWithoutRelations?.where?.collections
+    delete optionsWithoutRelations?.where?.collections
 
     const price_lists = optionsWithoutRelations?.where?.price_list_id
     delete optionsWithoutRelations?.where?.price_list_id
@@ -86,6 +90,11 @@ export class ProductRepository extends Repository<Product> {
       })
     }
 
+    if (collections) {
+      qb.leftJoin("product.collections", "collections").andWhere(`collections.id IN (:...collection_ids)`, {
+        collection_ids: collections.value,
+      })
+    }
     if (price_lists) {
       qb.leftJoin("product.variants", "variants")
         .leftJoin("variants.prices", "ma")
@@ -316,10 +325,9 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-      .update(Product)
-      .set({ collection_id: collectionId })
-      .where({ id: In(productIds) })
-      .execute()
+      .relation(Product, 'collections')
+      .of(productIds)
+      .add({ id: collectionId });
 
     return this.findByIds(productIds)
   }
@@ -329,10 +337,9 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-      .update(Product)
-      .set({ collection_id: null })
-      .where({ id: In(productIds), collection_id: collectionId })
-      .execute()
+      .relation(Product, 'collections')
+      .of(productIds)
+      .remove({ id: collectionId });
 
     return this.findByIds(productIds)
   }

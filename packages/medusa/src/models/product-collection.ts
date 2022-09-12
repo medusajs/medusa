@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, ManyToMany, OneToMany } from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "./product"
@@ -14,8 +14,8 @@ export class ProductCollection extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column({ nullable: true })
   handle: string
-
-  @OneToMany(() => Product, (product) => product.collection)
+ 
+  @ManyToMany(() => Product, (product) => product.collections)
   products: Product[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })

@@ -101,7 +101,7 @@ export const defaultAdminProductRelations = [
   "options",
   "tags",
   "type",
-  "collection",
+  "collections",
 ]
 
 export const defaultAdminProductFields: (keyof Product)[] = [
@@ -116,7 +116,6 @@ export const defaultAdminProductFields: (keyof Product)[] = [
   "discountable",
   "thumbnail",
   "profile_id",
-  "collection_id",
   "type_id",
   "weight",
   "length",
@@ -146,7 +145,6 @@ export const allowedAdminProductFields = [
   "discountable",
   "thumbnail",
   "profile_id",
-  "collection_id",
   "type_id",
   "weight",
   "length",
@@ -169,7 +167,7 @@ export const allowedAdminProductRelations = [
   "options",
   "tags",
   "type",
-  "collection",
+  "collections",
   "sales_channels",
 ]
 

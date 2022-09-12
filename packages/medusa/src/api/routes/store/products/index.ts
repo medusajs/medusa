@@ -24,7 +24,7 @@ export const defaultStoreProductsRelations = [
   "options.values",
   "images",
   "tags",
-  "collection",
+  "collections",
   "type",
 ]
 

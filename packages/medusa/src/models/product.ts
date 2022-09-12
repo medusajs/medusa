@@ -109,12 +109,19 @@ export class Product extends SoftDeletableEntity {
   @Column({ type: "text", nullable: true })
   material: string | null
 
-  @Column({ type: "text", nullable: true })
-  collection_id: string | null
-
-  @ManyToOne(() => ProductCollection)
-  @JoinColumn({ name: "collection_id" })
-  collection: ProductCollection
+  @ManyToMany(() => ProductCollection, productCollection => productCollection.products)
+  @JoinTable({
+    name: "product_collections",
+    joinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_collection_id",
+      referencedColumnName: "id",
+    },
+  })
+  collections: ProductCollection[]
 
   @Column({ type: "text", nullable: true })
   type_id: string | null

@@ -39,7 +39,7 @@ export class FilterableProductProps {
 
   @IsArray()
   @IsOptional()
-  collection_id?: string[]
+  collections?: string[]
 
   @IsArray()
   @IsOptional()
