@@ -10,7 +10,7 @@ module.exports = {
   plugins: ["prettier"],
   extends: ["eslint:recommended", "google", "plugin:prettier/recommended"],
   rules: {
-    curly: [1, "all"],
+    curly: ["error", "all"],
     "new-cap": "off",
     "require-jsdoc": "off",
     "no-unused-expressions": "off",
