@@ -247,7 +247,18 @@ module.exports = {
               label: "Implement Checkout"
             },
           ]
-        }
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+          ]
+        },
       ]
     },
     {
