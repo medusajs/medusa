@@ -9,8 +9,8 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /tax-rates/{id}/shipping-options/batch
  * operationId: "DeleteTaxRatesTaxRateShippingOptions"
- * summary: "Removes a Tax Rate from Product Types"
- * description: "Removes a Tax Rate from a list of Product Types"
+ * summary: "Del. for Shipping Options"
+ * description: "Removes a Tax Rate from a list of Shipping Options"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query

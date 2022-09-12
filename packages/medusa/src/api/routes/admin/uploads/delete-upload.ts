@@ -3,7 +3,7 @@ import { IsString } from "class-validator"
 /**
  * [delete] /uploads
  * operationId: "AdminDeleteUploads"
- * summary: "Removes an uploaded file"
+ * summary: "Delete an Uploaded File"
  * description: "Removes an uploaded file using the installed fileservice"
  * x-authenticated: true
  * requestBody:

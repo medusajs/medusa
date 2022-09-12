@@ -11,7 +11,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /products/{id}/variants
  * operationId: "GetProductsProductVariants"
- * summary: "List a Product's Product Variants"
+ * summary: "List a Product's Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."
  * x-authenticated: true
  * parameters:
