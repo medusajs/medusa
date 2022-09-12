@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from "typeorm"
 
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { resolveDbType } from "../utils/db-aware-column"
 import { OrderItemChange } from "./order-item-change"
@@ -14,9 +15,8 @@ import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 import { LineItem } from "./line-item"
 import { Order } from "./order"
-import { User } from "./user"
 
-@FeatureFlagEntity("order_editing")
+@FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderEdit extends SoftDeletableEntity {
   @Column({ nullable: true })
   order_id: string
@@ -26,7 +26,6 @@ export class OrderEdit extends SoftDeletableEntity {
   order: Order
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
-    eager: true,
     cascade: true,
   })
   changes: OrderItemChange[]
@@ -35,21 +34,13 @@ export class OrderEdit extends SoftDeletableEntity {
   internal_note?: string
 
   @Column({ nullable: true })
-  created_by: string
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "created_by" })
-  created_by_user: User
+  created_by: string // customer or user ID
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
   @Column({ nullable: true })
-  requested_by?: string
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "requested_by" })
-  requested_by_user: User
+  requested_by?: string // customer or user ID
 
   @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
   requested_at?: Date
@@ -71,10 +62,6 @@ export class OrderEdit extends SoftDeletableEntity {
 
   @Column({ nullable: true })
   canceled_by?: string
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "canceled_by" })
-  canceled_by_user: User
 
   @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at?: Date

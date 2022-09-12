@@ -43,6 +43,7 @@ import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
 import { OrderEdit } from "./order-edit"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -209,7 +210,7 @@ export class Order extends BaseEntity {
   @JoinColumn({ name: "draft_order_id" })
   draft_order: DraftOrder
 
-  @FeatureFlagDecorators("order_editing", [
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
     OneToMany(
       () => OrderEdit,
       (oe) => oe.order

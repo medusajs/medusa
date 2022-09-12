@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToOne } from "typeorm"
 
 import { SoftDeletableEntity } from "../interfaces"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { generateEntityId } from "../utils"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -13,11 +14,10 @@ export enum OrderEditItemChangeType {
   QUANTITY_CHANGE = "quantity_change",
 }
 
-@FeatureFlagEntity("order_editing")
+@FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderItemChange extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
-    nullable: true,
     enum: OrderEditItemChangeType,
   })
   type: OrderEditItemChangeType
