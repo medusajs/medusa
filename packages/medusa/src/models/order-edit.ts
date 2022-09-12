@@ -73,10 +73,14 @@ export class OrderEdit extends SoftDeletableEntity {
   canceled_at?: Date
 
   // Computed
-  subtotal: number
-  discount_total?: number
-  tax_total: number
+  shipping_total: number
+  discount_total: number
+  tax_total: number | null
   total: number
+  subtotal: number
+  gift_card_total: number
+  gift_card_tax_total: number
+
   difference_due: number
 
   status: OrderEditStatus
@@ -168,11 +172,23 @@ export class OrderEdit extends SoftDeletableEntity {
  *     type: string
  *   subtotal:
  *     type: integer
- *     description: The subtotal for line items computed from changes.
+ *     description: The total of subtotal
  *     example: 8000
  *   discount_total:
  *     type: integer
  *     description: The total of discount
+ *     example: 800
+ *   shipping_total:
+ *     type: integer
+ *     description: The total of the shipping amount
+ *     example: 800
+ *   gift_card_total:
+ *     type: integer
+ *     description: The total of the gift card amount
+ *     example: 800
+ *   gift_card_tax_total:
+ *     type: integer
+ *     description: The total of the gift card tax amount
  *     example: 800
  *   tax_total:
  *     type: integer
