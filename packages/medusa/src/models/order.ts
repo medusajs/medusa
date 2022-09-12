@@ -42,6 +42,7 @@ import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { OrderEdit } from "./order-edit"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -207,6 +208,14 @@ export class Order extends BaseEntity {
   @OneToOne(() => DraftOrder)
   @JoinColumn({ name: "draft_order_id" })
   draft_order: DraftOrder
+
+  @FeatureFlagDecorators("order_editing", [
+    OneToMany(
+      () => OrderEdit,
+      (oe) => oe.order
+    ),
+  ])
+  edits: OrderEdit[]
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
     cascade: ["insert"],
@@ -406,25 +415,25 @@ export class Order extends BaseEntity {
  *     description: The returns associated with the order. Available if the relation `returns` is expanded.
  *     items:
  *       type: object
- *       description: A return object. 
+ *       description: A return object.
  *   claims:
  *     type: array
  *     description: The claims associated with the order. Available if the relation `claims` is expanded.
  *     items:
  *       type: object
- *       description: A claim order object. 
+ *       description: A claim order object.
  *   refunds:
  *     type: array
  *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
  *     items:
  *       type: object
- *       description: A refund object. 
+ *       description: A refund object.
  *   swaps:
  *     type: array
  *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
  *     items:
  *       type: object
- *       description: A swap object. 
+ *       description: A swap object.
  *   draft_order_id:
  *     type: string
  *     description: The ID of the draft order this order is associated with.
