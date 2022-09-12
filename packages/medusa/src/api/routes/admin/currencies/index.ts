@@ -1,12 +1,14 @@
 import { Router } from "express"
+import { Currency } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { AdminGetCurrenciesParams } from "./list-currencies"
 import { AdminPostCurrenciesCurrencyReq } from "./update-currency"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 export default (app) => {
   const route = Router()
@@ -31,6 +33,14 @@ export default (app) => {
   )
 
   return app
+}
+
+export type AdminCurrenciesListRes = PaginatedResponse & {
+  currencies: Currency[]
+}
+
+export type AdminCurrenciesRes = {
+  currency: Currency
 }
 
 export * from "./list-currencies"
