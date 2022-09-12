@@ -18,7 +18,7 @@ import { User } from "./user"
 
 @FeatureFlagEntity("order_editing")
 export class OrderEdit extends SoftDeletableEntity {
-  @Column()
+  @Column({ nullable: true })
   order_id: string
 
   @ManyToOne(() => Order, (o) => o.edits)
@@ -34,7 +34,7 @@ export class OrderEdit extends SoftDeletableEntity {
   @Column({ nullable: true })
   internal_note?: string
 
-  @Column()
+  @Column({ nullable: true })
   created_by: string
 
   @ManyToOne(() => User)

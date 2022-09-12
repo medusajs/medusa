@@ -22,7 +22,7 @@ export class OrderItemChange extends SoftDeletableEntity {
   })
   type: OrderEditItemChangeType
 
-  @Column()
+  @Column({ nullable: true })
   order_edit_id: string
 
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)
@@ -30,14 +30,14 @@ export class OrderItemChange extends SoftDeletableEntity {
   order_edit: OrderEdit
 
   @Column({ nullable: true })
-  original_line_item_id: string
+  original_line_item_id?: string
 
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "original_line_item_id" })
   original_line_item: LineItem
 
   @Column({ nullable: true })
-  line_item_id: string
+  line_item_id?: string
 
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "line_item_id" })
@@ -45,6 +45,6 @@ export class OrderItemChange extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "oec")
+    this.id = generateEntityId(this.id, "oic")
   }
 }
