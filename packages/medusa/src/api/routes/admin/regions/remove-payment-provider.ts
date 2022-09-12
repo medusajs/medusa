@@ -6,7 +6,7 @@ import RegionService from "../../../../services/region"
 /**
  * @oas [delete] /regions/{id}/payment-providers/{provider_id}
  * operationId: "PostRegionsRegionPaymentProvidersProvider"
- * summary: "Remove Payment Provider"
+ * summary: "Delete Payment Provider"
  * description: "Removes a Payment Provider."
  * x-authenticated: true
  * parameters:

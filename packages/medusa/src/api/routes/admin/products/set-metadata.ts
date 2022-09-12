@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /products/{id}/metadata
  * operationId: "PostProductsProductMetadata"
- * summary: "Set Product metadata"
+ * summary: "Set Product Metadata"
  * description: "Set metadata key/value pair for Product"
  * x-authenticated: true
  * parameters:

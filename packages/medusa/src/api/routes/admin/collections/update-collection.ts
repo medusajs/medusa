@@ -6,7 +6,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 /**
  * @oas [post] /collections/{id}
  * operationId: "PostCollectionsCollection"
- * summary: "Update a Product Collection"
+ * summary: "Update a Collection"
  * description: "Updates a Product Collection."
  * x-authenticated: true
  * parameters:

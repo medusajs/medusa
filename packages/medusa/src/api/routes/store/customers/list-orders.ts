@@ -20,7 +20,7 @@ import { Type } from "class-transformer"
 /**
  * @oas [get] /customers/me/orders
  * operationId: GetCustomersCustomerOrders
- * summary: Retrieve Customer Orders
+ * summary: List Orders
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
  * parameters:

@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /shipping-options
  * operationId: GetShippingOptions
- * summary: Retrieve Shipping Options
+ * summary: Get Shipping Options
  * description: "Retrieves a list of Shipping Options."
  * parameters:
  *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.

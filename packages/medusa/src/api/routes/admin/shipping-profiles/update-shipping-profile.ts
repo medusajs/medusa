@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /shipping-profiles/{id}
  * operationId: "PostShippingProfilesProfile"
- * summary: "Update a Shipping Profiles"
+ * summary: "Update a Shipping Profile"
  * description: "Updates a Shipping Profile"
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
