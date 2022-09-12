@@ -48,7 +48,7 @@ export class OrderEdit extends SoftDeletableEntity {
   requested_by?: string
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "created_by" })
+  @JoinColumn({ name: "requested_by" })
   requested_by_user: User
 
   @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
