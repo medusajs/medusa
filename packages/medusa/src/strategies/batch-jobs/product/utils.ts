@@ -1,10 +1,11 @@
+import { TParsedProductImportRowData } from "./types"
+import { csvRevertCellContentFormatter } from "../../../utils"
+
 /**
  * Pick keys for a new object by regex.
  * @param data - Initial data object
  * @param regex - A regex used to pick which keys are going to be copied in the new object
  */
-import { TParsedProductImportRowData } from "./types"
-
 export function pickObjectPropsByRegex(
   data: TParsedProductImportRowData,
   regex: RegExp
@@ -14,7 +15,11 @@ export function pickObjectPropsByRegex(
 
   for (const k in data) {
     if (variantKeyPredicate(k)) {
-      ret[k] = data[k]
+      const formattedData =
+        typeof data[k] === "string"
+          ? csvRevertCellContentFormatter(data[k] as string)
+          : data[k]
+      ret[k] = formattedData
     }
   }
 
