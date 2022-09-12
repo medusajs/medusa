@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  Unique,
+} from "typeorm"
 
 import { SoftDeletableEntity } from "../interfaces"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
@@ -15,6 +22,8 @@ export enum OrderEditItemChangeType {
 }
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
+@Unique(["order_edit_id", "original_line_item_id"])
+@Unique(["order_edit_id", "line_item_id"])
 export class OrderItemChange extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
@@ -32,7 +41,7 @@ export class OrderItemChange extends SoftDeletableEntity {
   @Column({ nullable: true })
   original_line_item_id?: string
 
-  @OneToOne(() => LineItem, { nullable: true })
+  @ManyToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "original_line_item_id" })
   original_line_item?: LineItem
 
