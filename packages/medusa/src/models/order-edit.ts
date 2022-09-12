@@ -18,6 +18,9 @@ import { User } from "./user"
 
 @FeatureFlagEntity("order_editing")
 export class OrderEdit extends SoftDeletableEntity {
+  @Column()
+  order_id: string
+
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
   order: Order

@@ -22,7 +22,11 @@ export class OrderItemChange extends SoftDeletableEntity {
   })
   type: OrderEditItemChangeType
 
+  @Column()
+  order_edit_id: string
+
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)
+  @JoinColumn({ name: "order_edit_id" })
   order_edit: OrderEdit
 
   @Column({ nullable: true })
