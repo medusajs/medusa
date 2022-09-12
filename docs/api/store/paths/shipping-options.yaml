@@ -1,6 +1,6 @@
 get:
   operationId: GetShippingOptions
-  summary: Retrieve Shipping Options
+  summary: Get Shipping Options
   description: Retrieves a list of Shipping Options.
   parameters:
     - in: query
