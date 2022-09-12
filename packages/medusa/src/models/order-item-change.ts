@@ -34,14 +34,14 @@ export class OrderItemChange extends SoftDeletableEntity {
 
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "original_line_item_id" })
-  original_line_item: LineItem
+  original_line_item?: LineItem
 
   @Column({ nullable: true })
   line_item_id?: string
 
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "line_item_id" })
-  line_item: LineItem
+  line_item?: LineItem
 
   @BeforeInsert()
   private beforeInsert(): void {
