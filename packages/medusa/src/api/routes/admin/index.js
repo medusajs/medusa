@@ -15,6 +15,7 @@ import inviteRoutes, { unauthenticatedInviteRoutes } from "./invites"
 import noteRoutes from "./notes"
 import notificationRoutes from "./notifications"
 import orderRoutes from "./orders"
+import orderEditRoutes from "./order-edits"
 import priceListRoutes from "./price-lists"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
@@ -79,6 +80,7 @@ export default (app, container, config) => {
   noteRoutes(route)
   notificationRoutes(route)
   orderRoutes(route, featureFlagRouter)
+  orderEditRoutes(route, featureFlagRouter)
   priceListRoutes(route, featureFlagRouter)
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
