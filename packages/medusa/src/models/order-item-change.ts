@@ -1,4 +1,4 @@
-import { BeforeInsert, JoinColumn, ManyToOne, OneToOne } from "typeorm"
+import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToOne } from "typeorm"
 
 import { SoftDeletableEntity } from "../interfaces"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
@@ -25,9 +25,15 @@ export class OrderItemChange extends SoftDeletableEntity {
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)
   order_edit: OrderEdit
 
+  @Column({ nullable: true })
+  original_line_item_id: string
+
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "original_line_item_id" })
   original_line_item: LineItem
+
+  @Column({ nullable: true })
+  line_item_id: string
 
   @OneToOne(() => LineItem, { nullable: true })
   @JoinColumn({ name: "line_item_id" })
