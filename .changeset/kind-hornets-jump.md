@@ -1,5 +1,5 @@
 ---
-"medusa-file-minio": patch
+"medusa-file-minio": minor
 ---
 
 Version bump
