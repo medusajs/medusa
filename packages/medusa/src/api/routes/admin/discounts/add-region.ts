@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
- * summary: "Adds Region availability"
+ * summary: "Add Region"
  * description: "Adds a Region to the list of Regions that a Discount can be used in."
  * x-authenticated: true
  * parameters:

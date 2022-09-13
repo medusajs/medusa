@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}
  * operationId: "PostOrdersOrder"
- * summary: "Update an order"
+ * summary: "Update an Order"
  * description: "Updates and order"
  * x-authenticated: true
  * parameters:

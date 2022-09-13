@@ -5,7 +5,7 @@ import GiftCardService from "../../../../services/gift-card"
 /**
  * @oas [get] /gift-cards/{code}
  * operationId: "GetGiftCardsCode"
- * summary: "Retrieve Gift Card by Code"
+ * summary: "Get Gift Card by Code"
  * description: "Retrieves a Gift Card by its associated unqiue code."
  * parameters:
  *   - (path) code=* {string} The unique Gift Card code.

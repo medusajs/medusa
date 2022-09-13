@@ -6,7 +6,7 @@ import RegionService from "../../../../services/region"
 /**
  * @oas [delete] /regions/{id}/countries/{country_code}
  * operationId: "PostRegionsRegionCountriesCountry"
- * summary: "Remove Country"
+ * summary: "Delete Country"
  * x-authenticated: true
  * description: "Removes a Country from the list of Countries in a Region"
  * parameters:

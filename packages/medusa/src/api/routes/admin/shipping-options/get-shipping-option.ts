@@ -1,7 +1,7 @@
 /**
  * @oas [get] /shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
- * summary: "Retrieve a Shipping Option"
+ * summary: "Get a Shipping Option"
  * description: "Retrieves a Shipping Option."
  * x-authenticated: true
  * parameters:
