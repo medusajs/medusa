@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /tax-rates/{id}/product-types/batch
  * operationId: "PostTaxRatesTaxRateProductTypes"
- * summary: "Add Tax Rate to Product Types"
+ * summary: "Add to Product Types"
  * description: "Associates a Tax Rate with a list of Product Types"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.

@@ -26,7 +26,7 @@ In the list, you can see order details such as ID, the ID of the order the draft
 
 ## Learn More About Orders
 
-- [Manage Order Details](./manage.md)
+- [Manage Order Details](./manage.mdx)
 - [Manage Order’s Payment](./payments.md)
 - [Manage Order’s Fulfillment](./fulfillments.md)
 - [Manage Draft Orders](./drafts.md)

@@ -3,7 +3,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
 /**
  * @oas [get] /gift-cards/{id}
  * operationId: "GetGiftCardsGiftCard"
- * summary: "Retrieve a Gift Card"
+ * summary: "Get a Gift Card"
  * description: "Retrieves a Gift Card."
  * x-authenticated: true
  * parameters:

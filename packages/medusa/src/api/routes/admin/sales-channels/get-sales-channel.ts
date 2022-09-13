@@ -5,7 +5,7 @@ import { SalesChannelService } from "../../../../services"
 /**
  * @oas [get] /sales-channels/{id}
  * operationId: "GetSalesChannelsSalesChannel"
- * summary: "Retrieve a sales channel"
+ * summary: "Get a Sales Channel"
  * description: "Retrieves the sales channel."
  * x-authenticated: true
  * parameters:

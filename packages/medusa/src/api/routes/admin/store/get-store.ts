@@ -10,7 +10,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 /**
  * @oas [get] /store
  * operationId: "GetStore"
- * summary: "Retrieve Store details."
+ * summary: "Get Store details"
  * description: "Retrieves the Store details"
  * x-authenticated: true
  * x-codeSamples:

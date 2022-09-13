@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{discount_id}/conditions
  * operationId: "PostDiscountsDiscountConditions"
- * summary: "Create a DiscountCondition"
+ * summary: "Create a Condition"
  * description: "Creates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
  * x-authenticated: true
  * parameters:

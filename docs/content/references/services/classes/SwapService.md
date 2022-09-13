@@ -4,7 +4,7 @@ Handles swaps
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`SwapService`**
 
@@ -18,17 +18,203 @@ Handles swaps
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedProps` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L22)
+[packages/medusa/src/services/swap.ts:93](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L93)
 
 ## Properties
+
+### \_\_configModule\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### cartService\_
+
+• `Protected` `Readonly` **cartService\_**: [`CartService`](CartService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:80](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L80)
+
+___
+
+### customShippingOptionService\_
+
+• `Protected` `Readonly` **customShippingOptionService\_**: [`CustomShippingOptionService`](CustomShippingOptionService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:91](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L91)
+
+___
+
+### eventBus\_
+
+• `Protected` `Readonly` **eventBus\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:81](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L81)
+
+___
+
+### fulfillmentService\_
+
+• `Protected` `Readonly` **fulfillmentService\_**: [`FulfillmentService`](FulfillmentService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:87](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L87)
+
+___
+
+### inventoryService\_
+
+• `Protected` `Readonly` **inventoryService\_**: [`InventoryService`](InventoryService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:86](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L86)
+
+___
+
+### lineItemAdjustmentService\_
+
+• `Protected` `Readonly` **lineItemAdjustmentService\_**: `LineItemAdjustmentService`
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:90](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L90)
+
+___
+
+### lineItemService\_
+
+• `Protected` `Readonly` **lineItemService\_**: [`LineItemService`](LineItemService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:85](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L85)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:75](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L75)
+
+___
+
+### orderService\_
+
+• `Protected` `Readonly` **orderService\_**: [`OrderService`](OrderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:82](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L82)
+
+___
+
+### paymentProviderService\_
+
+• `Protected` `Readonly` **paymentProviderService\_**: [`PaymentProviderService`](PaymentProviderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:89](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L89)
+
+___
+
+### returnService\_
+
+• `Protected` `Readonly` **returnService\_**: [`ReturnService`](ReturnService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:83](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L83)
+
+___
+
+### shippingOptionService\_
+
+• `Protected` `Readonly` **shippingOptionService\_**: [`ShippingOptionService`](ShippingOptionService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:88](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L88)
+
+___
+
+### swapRepository\_
+
+• `Protected` `Readonly` **swapRepository\_**: typeof `SwapRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:78](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L78)
+
+___
+
+### totalsService\_
+
+• `Protected` `Readonly` **totalsService\_**: [`TotalsService`](TotalsService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:84](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L84)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:76](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L76)
+
+___
 
 ### Events
 
@@ -50,9 +236,48 @@ BaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L10)
+[packages/medusa/src/services/swap.ts:63](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L63)
 
 ## Methods
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+
+___
 
 ### cancel
 
@@ -76,13 +301,13 @@ the canceled swap.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:819](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L819)
+[packages/medusa/src/services/swap.ts:830](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L830)
 
 ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentId`): `Swap`
+▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<`Swap`\>
 
 Cancels a fulfillment (if related to a swap)
 
@@ -94,19 +319,19 @@ Cancels a fulfillment (if related to a swap)
 
 #### Returns
 
-`Swap`
+`Promise`<`Swap`\>
 
 updated swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:1014](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L1014)
+[packages/medusa/src/services/swap.ts:1031](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L1031)
 
 ___
 
 ### create
 
-▸ **create**(`order`, `returnItems`, `additionalItems`, `returnShipping`, `custom?`): `Promise`<`Swap`\>
+▸ **create**(`order`, `returnItems`, `additionalItems?`, `returnShipping?`, `custom?`): `Promise`<`Swap`\>
 
 Creates a swap from an order, with given return items, additional items
 and an optional return shipping method.
@@ -115,21 +340,26 @@ and an optional return shipping method.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `Order` | the order to base the swap off. |
-| `returnItems` | `ReturnItem`[] | the items to return in the swap. |
-| `additionalItems` | `undefined` \| `PreliminaryLineItem`[] | the items to send to  the customer. |
-| `returnShipping` | `any` | an optional shipping method for  returning the returnItems. |
-| `custom` | `any` | contains relevant custom information. This object may  include no_notification which will disable sending notification when creating  swap. If set, it overrules the attribute inherited from the order. |
+| `order` | `Order` | the order to base the swap off |
+| `returnItems` | `Partial`<`ReturnItem`\>[] | the items to return in the swap |
+| `additionalItems?` | `Pick`<`LineItem`, ``"variant_id"`` \| ``"quantity"``\>[] | the items to send to the customer |
+| `returnShipping?` | `Object` | an optional shipping method for returning the returnItems |
+| `returnShipping.option_id` | `string` | - |
+| `returnShipping.price?` | `number` | - |
+| `custom` | `Object` | contains relevant custom information. This object may  include no_notification which will disable sending notification when creating  swap. If set, it overrules the attribute inherited from the order |
+| `custom.allow_backorder?` | `boolean` | - |
+| `custom.idempotency_key?` | `string` | - |
+| `custom.no_notification?` | `boolean` | - |
 
 #### Returns
 
 `Promise`<`Swap`\>
 
-the newly created swap.
+the newly created swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:319](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L319)
+[packages/medusa/src/services/swap.ts:307](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L307)
 
 ___
 
@@ -137,7 +367,7 @@ ___
 
 ▸ **createCart**(`swapId`, `customShippingOptions?`): `Promise`<`Swap`\>
 
-Creates a cart from the given swap and order. The cart can be used to pay
+Creates a cart from the given swap. The cart can be used to pay
 for differences associated with the swap. The swap represented by the
 swapId must belong to the order. Fails if there is already a cart on the
 swap.
@@ -147,18 +377,17 @@ swap.
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `swapId` | `string` | `undefined` | the id of the swap to create the cart from |
-| `customShippingOptions` | `any`[] | `[]` | the shipping options |
+| `customShippingOptions` | { `option_id`: `string` ; `price`: `number`  }[] | `[]` | the shipping options |
 
 #### Returns
 
 `Promise`<`Swap`\>
 
-the swap with its cart_id prop set to the id of
-  the new cart.
+the swap with its cart_id prop set to the id of the new cart.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:550](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L550)
+[packages/medusa/src/services/swap.ts:556](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L556)
 
 ___
 
@@ -166,7 +395,7 @@ ___
 
 ▸ **createFulfillment**(`swapId`, `config?`): `Promise`<`Swap`\>
 
-Fulfills the addtional items associated with the swap. Will call the
+Fulfills the additional items associated with the swap. Will call the
 fulfillment providers associated with the shipping methods.
 
 #### Parameters
@@ -174,7 +403,7 @@ fulfillment providers associated with the shipping methods.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `swapId` | `string` | the id of the swap to fulfill, |
-| `config` | `any` | optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag. |
+| `config` | `CreateShipmentConfig` | optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag. |
 
 #### Returns
 
@@ -184,13 +413,13 @@ the updated swap with new status and fulfillments.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:877](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L877)
+[packages/medusa/src/services/swap.ts:892](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L892)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`swapId`, `fulfillmentId`, `trackingLinks`, `config?`): `Promise`<`Swap`\>
+▸ **createShipment**(`swapId`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<`Swap`\>
 
 Marks a fulfillment as shipped and attaches tracking numbers.
 
@@ -199,9 +428,9 @@ Marks a fulfillment as shipped and attaches tracking numbers.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `swapId` | `string` | the id of the swap that has been shipped. |
-| `fulfillmentId` | `string` | the id of the specific fulfillment that   has been shipped |
-| `trackingLinks` | `undefined` \| `TrackingLink`[] | the tracking numbers associated   with the shipment |
-| `config` | `any` | optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag. |
+| `fulfillmentId` | `string` | the id of the specific fulfillment that has been shipped |
+| `trackingLinks?` | { `tracking_number`: `string`  }[] | the tracking numbers associated with the shipment |
+| `config` | `CreateShipmentConfig` | optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag. |
 
 #### Returns
 
@@ -211,13 +440,13 @@ the updated swap with new fulfillments and status.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:1047](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L1047)
+[packages/medusa/src/services/swap.ts:1062](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L1062)
 
 ___
 
 ### deleteMetadata
 
-▸ **deleteMetadata**(`swapId`, `key`): `Promise`<`any`\>
+▸ **deleteMetadata**(`swapId`, `key`): `Promise`<`Swap`\>
 
 Dedicated method to delete metadata for a swap.
 
@@ -230,62 +459,70 @@ Dedicated method to delete metadata for a swap.
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Swap`\>
 
 resolves to the updated result.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:1122](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L1122)
+[packages/medusa/src/services/swap.ts:1140](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L1140)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<`any`\>
+▸ **list**(`selector`, `config?`): `Promise`<`Swap`[]\>
+
+List swaps.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the configuration used to find the objects. contains relations, skip, and take. |
+| `selector` | `Selector`<`Swap`\> | the query object for find |
+| `config` | `FindConfig`<`Swap`\> | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Swap`[]\>
 
 the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:244](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L244)
+[packages/medusa/src/services/swap.ts:277](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L277)
 
 ___
 
 ### processDifference
 
-▸ **processDifference**(`swapId`): `Promise`<`any`\>
+▸ **processDifference**(`swapId`): `Promise`<`Swap`\>
+
+Process difference for the requested swap.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `swapId` | `any` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `swapId` | `string` | id of a swap being processed |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Swap`\>
+
+processed swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:401](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L401)
+[packages/medusa/src/services/swap.ts:400](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L400)
 
 ___
 
 ### registerCartCompletion
 
-▸ **registerCartCompletion**(`swapId`): `Promise`<`any`\>
+▸ **registerCartCompletion**(`swapId`): `Promise`<`Swap`\>
+
+Register a cart completion
 
 #### Parameters
 
@@ -295,17 +532,19 @@ ___
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Swap`\>
+
+swap related to the cart
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:671](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L671)
+[packages/medusa/src/services/swap.ts:679](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L679)
 
 ___
 
 ### registerReceived
 
-▸ **registerReceived**(`id`): `Promise`<`Order`\>
+▸ **registerReceived**(`id`): `Promise`<`Swap`\>
 
 Registers the swap return items as received so that they cannot be used
 as a part of other swaps/returns.
@@ -314,17 +553,17 @@ as a part of other swaps/returns.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | the id of the order with the swap. |
+| `id` | `any` | the id of the order with the swap. |
 
 #### Returns
 
-`Promise`<`Order`\>
+`Promise`<`Swap`\>
 
 the resulting order
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:1147](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L1147)
+[packages/medusa/src/services/swap.ts:1180](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L1180)
 
 ___
 
@@ -339,7 +578,7 @@ Retrieves a swap with the given id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | the id of the swap to retrieve |
-| `config` | `any` | the configuration to retrieve the swap |
+| `config` | `Omit`<`FindConfig`<`Swap`\>, ``"select"``\> & { `select?`: `string`[]  } | the configuration to retrieve the swap |
 
 #### Returns
 
@@ -349,7 +588,7 @@ the swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:182](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L182)
+[packages/medusa/src/services/swap.ts:208](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L208)
 
 ___
 
@@ -364,7 +603,7 @@ Retrieves a swap based on its associated cart id
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
 | `cartId` | `string` | `undefined` | the cart id that the swap's cart has |
-| `relations` | `string`[] | `[]` | the relations to retrieve swap |
+| `relations` | `undefined` \| `string`[] | `[]` | the relations to retrieve swap |
 
 #### Returns
 
@@ -374,92 +613,101 @@ the swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:222](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L222)
+[packages/medusa/src/services/swap.ts:250](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L250)
 
 ___
 
-### transformQueryForCart\_
+### shouldRetryTransaction\_
 
-▸ **transformQueryForCart_**(`config`): `any`
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `config` | `any` |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
 
 #### Returns
 
-`any`
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:115](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L115)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
-### update
+### transformQueryForCart
 
-▸ **update**(`swapId`, `update`): `Promise`<`any`\>
+▸ `Protected` **transformQueryForCart**(`config`): `Omit`<`FindConfig`<`Swap`\>, ``"select"``\> & { `select?`: `string`[]  } & { `cartRelations`: `undefined` \| `string`[] ; `cartSelects`: `undefined` \| keyof `Cart`[]  }
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `swapId` | `any` |
-| `update` | `any` |
-
-#### Returns
-
-`Promise`<`any`\>
-
-#### Defined in
-
-[packages/medusa/src/services/swap.js:517](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L517)
-
-___
-
-### validateReturnItems\_
-
-▸ **validateReturnItems_**(`order`, `returnItems`): `ReturnItems`[]
-
-Goes through a list of return items to ensure that they exist on the
-original order. If the item exists it is verified that the quantity to
-return is not higher than the original quantity ordered.
+Transform find config object for retrieval.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `OrderLike` | the order to return from |
-| `returnItems` | `ReturnItem`[] | the items to return |
+| `config` | `Omit`<`FindConfig`<`Swap`\>, ``"select"``\> & { `select?`: `string`[]  } | parsed swap find config |
 
 #### Returns
 
-`ReturnItems`[]
+`Omit`<`FindConfig`<`Swap`\>, ``"select"``\> & { `select?`: `string`[]  } & { `cartRelations`: `undefined` \| `string`[] ; `cartSelects`: `undefined` \| keyof `Cart`[]  }
 
-the validated returnItems
+transformed find swap config
 
 #### Defined in
 
-[packages/medusa/src/services/swap.js:275](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L275)
+[packages/medusa/src/services/swap.ts:135](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L135)
+
+___
+
+### update
+
+▸ **update**(`swapId`, `update`): `Promise`<`Swap`\>
+
+Update the swap record.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `swapId` | `string` | id of a swap to update |
+| `update` | `Partial`<`Swap`\> | new data |
+
+#### Returns
+
+`Promise`<`Swap`\>
+
+updated swap record
+
+#### Defined in
+
+[packages/medusa/src/services/swap.ts:523](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/swap.ts#L523)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`SwapService`](SwapService.md)
+▸ **withTransaction**(`transactionManager?`): [`SwapService`](SwapService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `any` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`SwapService`](SwapService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[packages/medusa/src/services/swap.js:87](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/swap.js#L87)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
