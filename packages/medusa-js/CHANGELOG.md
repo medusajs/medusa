@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.2.7-alpha.0
+
+### Patch Changes
+
+- [#2185](https://github.com/medusajs/medusa/pull/2185) [`64949dc72`](https://github.com/medusajs/medusa/commit/64949dc721a6c697e3eb7091db9f2d261111a766) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - Adds missing response types for currency endpoints and exports route. Adds currency endpoints to medusa-js and medusa-react.
+
+- Updated dependencies [[`cbb7dd978`](https://github.com/medusajs/medusa/commit/cbb7dd978775676b094cef6b1dbb8c0c526a4905), [`cbb7dd978`](https://github.com/medusajs/medusa/commit/cbb7dd978775676b094cef6b1dbb8c0c526a4905), [`64949dc72`](https://github.com/medusajs/medusa/commit/64949dc721a6c697e3eb7091db9f2d261111a766), [`b6161d240`](https://github.com/medusajs/medusa/commit/b6161d24043b8b910320475b8616b7e29a96f6cd), [`af80e0fd2`](https://github.com/medusajs/medusa/commit/af80e0fd2ed75cd3c15282ddcbfb949060dfdd33), [`37fd48000`](https://github.com/medusajs/medusa/commit/37fd48000bb9438d71069f216c11b379ad69ef6e)]:
+  - @medusajs/medusa@1.3.9-alpha.0
+
 ## 1.2.6
 
 ### Patch Changes

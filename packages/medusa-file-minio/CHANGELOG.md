@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.11-alpha.0
+
+### Patch Changes
+
+- [#2162](https://github.com/medusajs/medusa/pull/2162) [`70cf3f1f2`](https://github.com/medusajs/medusa/commit/70cf3f1f2c314dff08dbd53bbe4e5d278958cf67) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Version bump
+
 ## 1.0.10
 
 ### Patch Changes
