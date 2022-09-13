@@ -5,7 +5,7 @@ import { EventBusServiceMock } from "../__mocks__/event-bus"
 describe("NoteService", () => {
   describe("list", () => {
     const noteRepo = MockRepository({
-      find: q => {
+      find: (q) => {
         return Promise.resolve([
           { id: IdMap.getId("note"), value: "some note" },
         ])
@@ -40,7 +40,7 @@ describe("NoteService", () => {
 
   describe("retrieve", () => {
     const noteRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("note"):
             return Promise.resolve({
@@ -88,8 +88,8 @@ describe("NoteService", () => {
     }
 
     const noteRepo = MockRepository({
-      create: f => Promise.resolve(note),
-      save: f => Promise.resolve(note),
+      create: (f) => note,
+      save: (f) => Promise.resolve(note),
     })
 
     const noteService = new NoteService({
@@ -137,8 +137,8 @@ describe("NoteService", () => {
     const note = { id: IdMap.getId("note") }
 
     const noteRepo = MockRepository({
-      findOne: f => Promise.resolve(note),
-      save: f => Promise.resolve(note),
+      findOne: (f) => Promise.resolve(note),
+      save: (f) => Promise.resolve(note),
     })
 
     const noteService = new NoteService({
@@ -172,8 +172,8 @@ describe("NoteService", () => {
     const note = { id: IdMap.getId("note") }
 
     const noteRepo = MockRepository({
-      softRemove: f => Promise.resolve(),
-      findOne: f => Promise.resolve(note),
+      softRemove: (f) => Promise.resolve(),
+      findOne: (f) => Promise.resolve(note),
     })
 
     const noteService = new NoteService({
