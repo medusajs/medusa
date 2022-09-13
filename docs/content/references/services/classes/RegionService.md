@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L62)
+[packages/medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L62)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L56)
+[packages/medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L56)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L57)
+[packages/medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L57)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:51](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L51)
+[packages/medusa/src/services/region.ts:51](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L51)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:59](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L59)
+[packages/medusa/src/services/region.ts:59](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L59)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L54)
+[packages/medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L54)
 
 ___
 
@@ -118,7 +118,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:48](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L48)
+[packages/medusa/src/services/region.ts:48](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L48)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:58](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L58)
+[packages/medusa/src/services/region.ts:58](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L58)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:53](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L53)
+[packages/medusa/src/services/region.ts:53](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L53)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L55)
+[packages/medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L55)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L52)
+[packages/medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L52)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:60](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L60)
+[packages/medusa/src/services/region.ts:60](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L60)
 
 ___
 
@@ -182,7 +182,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:49](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L49)
+[packages/medusa/src/services/region.ts:49](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L49)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:42](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L42)
+[packages/medusa/src/services/region.ts:42](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L42)
 
 ## Methods
 
@@ -225,7 +225,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:525](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L525)
+[packages/medusa/src/services/region.ts:544](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L544)
 
 ___
 
@@ -251,7 +251,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:655](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L655)
+[packages/medusa/src/services/region.ts:674](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L674)
 
 ___
 
@@ -277,7 +277,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:604](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L604)
+[packages/medusa/src/services/region.ts:623](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L623)
 
 ___
 
@@ -316,7 +316,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -340,7 +340,7 @@ the newly created region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:108](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L108)
+[packages/medusa/src/services/region.ts:108](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L108)
 
 ___
 
@@ -364,7 +364,7 @@ the result of the delete operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:494](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L494)
+[packages/medusa/src/services/region.ts:513](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L513)
 
 ___
 
@@ -389,7 +389,7 @@ result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:474](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L474)
+[packages/medusa/src/services/region.ts:493](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L493)
 
 ___
 
@@ -414,7 +414,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:563](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L563)
+[packages/medusa/src/services/region.ts:582](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L582)
 
 ___
 
@@ -439,7 +439,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:743](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L743)
+[packages/medusa/src/services/region.ts:762](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L762)
 
 ___
 
@@ -464,7 +464,7 @@ the updated Region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:704](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L704)
+[packages/medusa/src/services/region.ts:723](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L723)
 
 ___
 
@@ -489,7 +489,7 @@ the region
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:446](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L446)
+[packages/medusa/src/services/region.ts:465](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L465)
 
 ___
 
@@ -514,7 +514,31 @@ a Region with country code
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:408](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L408)
+[packages/medusa/src/services/region.ts:408](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L408)
+
+___
+
+### retrieveByName
+
+▸ **retrieveByName**(`name`): `Promise`<`Region`\>
+
+Retrieves a region by name.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name` | `string` | the name of the region to retrieve |
+
+#### Returns
+
+`Promise`<`Region`\>
+
+region with the matching name
+
+#### Defined in
+
+[packages/medusa/src/services/region.ts:445](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L445)
 
 ___
 
@@ -538,7 +562,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -563,7 +587,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:171](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L171)
+[packages/medusa/src/services/region.ts:171](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L171)
 
 ___
 
@@ -589,7 +613,7 @@ the validated Country
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:359](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L359)
+[packages/medusa/src/services/region.ts:359](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L359)
 
 ___
 
@@ -617,7 +641,7 @@ void
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:334](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L334)
+[packages/medusa/src/services/region.ts:334](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L334)
 
 ___
 
@@ -649,7 +673,7 @@ the validated region data
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:232](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L232)
+[packages/medusa/src/services/region.ts:232](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L232)
 
 ___
 
@@ -677,7 +701,7 @@ void
 
 #### Defined in
 
-[packages/medusa/src/services/region.ts:318](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/region.ts#L318)
+[packages/medusa/src/services/region.ts:318](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/services/region.ts#L318)
 
 ___
 
@@ -701,4 +725,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

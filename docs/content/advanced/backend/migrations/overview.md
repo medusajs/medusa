@@ -1,6 +1,6 @@
 # Migrations
 
-In this document, you’ll learn about what Migrations are, their purpose, how you can run them, and how you can create your own Migrations.
+In this document, you'll learn what Migrations are in Medusa.
 
 :::note
 
@@ -8,7 +8,7 @@ Medusa’s Migrations do not work with SQLite databases. They are intended to be
 
 :::
 
-## Overview
+## What are Migrations?
 
 Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your server and for subsequent server upgrades later on.
 
@@ -48,50 +48,7 @@ npm run seed
 
 This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
 
-## How to Create Migrations
+## What's Next :rocket:
 
-In this section, you’ll learn how to create your own migrations using [Typeorm](https://typeorm.io). This will allow you to modify Medusa’s predefined tables or create your own tables.
-
-### Create Migration
-
-To create a migration that makes changes to your Medusa schema, run the following command:
-
-```bash
-npx typeorm migration:create -n UserChanged --dir src/migrations
-```
-
-:::tip
-
-The migration file must be inside the `src/migrations` directory. When the build command is run, it will be transpiled into the directory `dist/migrations`. The `migrations run` command can only pick up migrations under the `dist/migrations` directory.
-
-:::
-
-This will create the migration file in the path you specify. You can use this without the need to install Typeorm's CLI tool. You can then go ahead and make changes to it as necessary.
-
-:::tip
-
-You can learn more about writing migrations in [Typeorm’s Documentation](https://typeorm.io/migrations).
-
-:::
-
-### Build Files
-
-Before you can run the migrations you need to run the build command to transpile the TypeScript files to JavaScript files:
-
-```bash npm2yarn
-npm run build
-```
-
-### Run Migration
-
-The last step is to run the migration with the command detailed earlier
-
-```bash
-medusa migrations run
-```
-
-If you check your database now you should see that the change defined by the migration has been applied successfully.
-
-## What’s Next 🚀
-
-- Learn more about [setting up your development server](/tutorial/set-up-your-development-environment).
+- Learn [how to create a migration](index.md)
+- Learn more about [setting up your development server](../../../tutorial/set-up-your-development-environment).

@@ -4,7 +4,7 @@ import { IsString } from "class-validator"
 /**
  * [post] /uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
- * summary: "Creates a presigned download url for a file"
+ * summary: "Get a File's Download URL"
  * description: "Creates a presigned download url for a file"
  * x-authenticated: true
  * requestBody:
