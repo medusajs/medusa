@@ -731,7 +731,7 @@ const CSVSchema: ProductImportCsvSchema = {
   columns: [
     // PRODUCT
     {
-      name: "Product Id",
+      name: "Product id",
       mapTo: "product.id",
     },
     {
@@ -772,7 +772,7 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Profile Type", mapTo: "product.profile.type" },
     // VARIANTS
     {
-      name: "Variant Id",
+      name: "Variant id",
       mapTo: "variant.id",
     },
     { name: "Variant Title", mapTo: "variant.title" },
