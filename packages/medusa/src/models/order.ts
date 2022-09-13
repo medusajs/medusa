@@ -447,6 +447,11 @@ export class Order extends BaseEntity {
  *     description: The line items that belong to the order. Available if the relation `items` is expanded.
  *     items:
  *       $ref: "#/components/schemas/line_item"
+ *   edits:
+ *     type: array
+ *     description: [EXPERIMENTAL] Order edits done on the order. Available if the relation `edits` is expanded.
+ *     items:
+ *       $ref: "#/components/schemas/order_edit"
  *   gift_card_transactions:
  *     type: array
  *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.

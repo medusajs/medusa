@@ -1,11 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from "typeorm"
+import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm"
 
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
@@ -35,9 +28,6 @@ export class OrderEdit extends SoftDeletableEntity {
 
   @Column()
   created_by: string // customer or user ID
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
 
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
