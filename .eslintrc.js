@@ -1,15 +1,16 @@
 module.exports = {
-  parser: `@babel/eslint-parser`,
+  root: true,
+  parser: "@babel/eslint-parser",
   parserOptions: {
     requireConfigFile: false,
     ecmaFeatures: {
       experimentalDecorators: true,
     },
   },
-  plugins: [`eslint-plugin-prettier`],
-  extends: [`eslint:recommended`, `google`, `eslint-config-prettier`],
+  plugins: ["prettier"],
+  extends: ["eslint:recommended", "google", "plugin:prettier/recommended"],
   rules: {
-    curly: [1, "all"],
+    curly: ["error", "all"],
     "new-cap": "off",
     "require-jsdoc": "off",
     "no-unused-expressions": "off",

@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /customer-groups/{id}/customers/batch
  * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
- * summary: "Remove a list of customers from a customer group "
+ * summary: "Remove Customers"
  * description: "Removes a list of customers, represented by id's, from a customer group."
  * x-authenticated: true
  * parameters:

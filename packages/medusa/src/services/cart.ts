@@ -1937,12 +1937,13 @@ class CartService extends TransactionBaseService {
         )
       }
 
-      const updated = {
+      const updated = addrRepo.create({
         ...shippingAddress,
         country_code: countryCode.toLowerCase(),
-      }
+      })
 
       await addrRepo.save(updated)
+      await this.updateShippingAddress_(cart, updated, addrRepo)
     } else {
       /*
        * In the case where the country code is not specified we need to check

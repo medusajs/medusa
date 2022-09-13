@@ -40,7 +40,7 @@ It’s important to choose a payment provider in the list of payment providers i
 
 ### PaymentProvider Entity Overview
 
-The `PaymentProvider` entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
+The [`PaymentProvider`](../../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
 
 ## Payment Session
 
@@ -62,7 +62,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The `PaymentSession` entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` also belongs to a `PaymentProvider`. This is the Payment Provider that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
@@ -94,7 +94,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The `Payment` entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
+The [`Payment`](../../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 

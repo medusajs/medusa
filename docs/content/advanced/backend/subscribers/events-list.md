@@ -1693,7 +1693,7 @@ As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag.
 MEDUSA_FF_SALES_CHANNELS=true
 ```
 
-Then, run the [migrations](../migrations.md#how-to-run-migrations).
+Then, run the [migrations](../migrations/overview.md#how-to-run-migrations).
 
 :::
 

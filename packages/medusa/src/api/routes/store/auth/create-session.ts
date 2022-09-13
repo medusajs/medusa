@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /auth
  * operationId: "PostAuth"
- * summary: "Authenticate Customer"
+ * summary: "Customer Login"
  * description: "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser."
  * parameters:
  *   - (body) email=* {string} The Customer's email.

@@ -3,7 +3,7 @@ import { OrderService } from "../../../../services"
 /**
  * @oas [get] /orders/{id}
  * operationId: "GetOrdersOrder"
- * summary: "Retrieve an Order"
+ * summary: "Get an Order"
  * description: "Retrieves an Order"
  * x-authenticated: true
  * parameters:

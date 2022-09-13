@@ -11,7 +11,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /users/reset-password
  * operationId: "PostUsersUserPassword"
- * summary: "Set the password for a User."
+ * summary: "Reset Password"
  * description: "Sets the password for a User given the correct token."
  * x-authenticated: true
  * requestBody:

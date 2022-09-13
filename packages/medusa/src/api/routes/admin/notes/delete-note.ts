@@ -4,7 +4,7 @@ import NoteService from "../../../../services/note"
 /**
  * @oas [delete] /notes/{id}
  * operationId: "DeleteNotesNote"
- * summary: "Deletes a Note"
+ * summary: "Delete a Note"
  * description: "Deletes a Note."
  * x-authenticated: true
  * parameters:

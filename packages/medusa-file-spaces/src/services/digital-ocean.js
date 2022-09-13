@@ -14,7 +14,7 @@ class DigitalOceanService extends AbstractFileService {
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
     this.endpoint_ = options.endpoint
-    this.downloadUrlDuration = options.download_url_duration ?? 60  // 60 seconds
+    this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
   upload(file) {
@@ -22,6 +22,7 @@ class DigitalOceanService extends AbstractFileService {
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
     const s3 = new aws.S3()
     const params = {
       ACL: "public-read",
@@ -38,10 +39,10 @@ class DigitalOceanService extends AbstractFileService {
         }
 
         if (this.spacesUrl_) {
-          resolve({ url: `${this.spacesUrl_}/${data.Key}` })
+          resolve({ url: `${this.spacesUrl_}/${data.Key}`, key: data.Key })
         }
 
-        resolve({ url: data.Location })
+        resolve({ url: data.Location, key: data.Key })
       })
     })
   }
@@ -111,7 +112,7 @@ class DigitalOceanService extends AbstractFileService {
     const params = {
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires:  this.downloadUrlDuration
+      Expires: this.downloadUrlDuration,
     }
 
     return await s3.getSignedUrlPromise("getObject", params)

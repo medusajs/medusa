@@ -6,7 +6,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 /**
  * @oas [delete] /collections/{id}
  * operationId: "DeleteCollectionsCollection"
- * summary: "Delete a Product Collection"
+ * summary: "Delete a Collection"
  * description: "Deletes a Product Collection."
  * x-authenticated: true
  * parameters:

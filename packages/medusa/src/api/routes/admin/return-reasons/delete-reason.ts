@@ -4,7 +4,7 @@ import { ReturnReasonService } from "../../../../services"
 /**
  * @oas [delete] /return-reasons/{id}
  * operationId: "DeleteReturnReason"
- * summary: "Delete a return reason"
+ * summary: "Delete a Return Reason"
  * description: "Deletes a return reason."
  * x-authenticated: true
  * parameters:

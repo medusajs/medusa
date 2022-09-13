@@ -268,8 +268,9 @@ class NotificationService extends TransactionBaseService {
       const notiRepo = transactionManager.getCustomRepository(
         this.notificationRepository_
       )
+      const resendNoti: Record<string, unknown> = { ...notification, id: null }
       const created = notiRepo.create({
-        ...notification,
+        ...resendNoti,
         to,
         data,
         parent_id: id,
