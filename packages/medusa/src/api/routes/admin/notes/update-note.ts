@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /notes/{id}
  * operationId: "PostNotesNote"
- * summary: "Updates a Note"
+ * summary: "Update a Note"
  * x-authenticated: true
  * description: "Updates a Note associated with some resource"
  * parameters:

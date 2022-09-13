@@ -67,7 +67,7 @@ When the documentation page is a tutorial documentation, the label in the sideba
 
 ### Character Count
 
-The character count of the sidebar item's label must be at most twenty seven characters.
+The character count of the sidebar item's label must be at most twenty seven characters. For the API Reference, the sidebar item's label must be at most twenty five characters.
 
 ## Notes and Additional Information
 

@@ -13,7 +13,7 @@ import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /draft-orders/{id}/pay
- * summary: "Registers a payment for a Draft Order"
+ * summary: "Registers a Payment"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
  * description: "Registers a payment for a Draft Order."
  * x-authenticated: true

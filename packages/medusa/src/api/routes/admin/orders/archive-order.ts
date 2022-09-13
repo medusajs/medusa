@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /orders/{id}/archive
  * operationId: "PostOrdersOrderArchive"
- * summary: "Archive order"
+ * summary: "Archive Order"
  * description: "Archives the order with the given id."
  * x-authenticated: true
  * parameters:

@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /tax-rates/{id}/products/batch
  * operationId: "DeleteTaxRatesTaxRateProducts"
- * summary: "Removes Tax Rate from Products"
+ * summary: "Delete from Products"
  * description: "Removes a Tax Rate from a list of Products"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.

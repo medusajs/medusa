@@ -9,7 +9,7 @@ import { Type } from "class-transformer"
 /**
  * @oas [get] /products
  * operationId: "GetProducts"
- * summary: "List Product"
+ * summary: "List Products"
  * description: "Retrieves a list of Product"
  * x-authenticated: true
  * parameters:
