@@ -5,7 +5,7 @@ import { SwapService } from "../../../../services"
 /**
  * @oas [get] /swaps/{id}
  * operationId: "GetSwapsSwap"
- * summary: "Retrieve a Swap"
+ * summary: "Get a Swap"
  * description: "Retrieves a Swap."
  * x-authenticated: true
  * parameters:

@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
- * summary: Update a Draft Order"
+ * summary: Update a Draft Order
  * description: "Updates a Draft Order."
  * x-authenticated: true
  * parameters:

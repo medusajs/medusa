@@ -2,6 +2,7 @@ import BaseResource from "../base"
 import AdminAuthResource from "./auth"
 import AdminBatchJobsResource from "./batch-jobs"
 import CollectionsResource from "./collections"
+import AdminCurrenciesResource from "./currencies"
 import AdminCustomerGroupsResource from "./customer-groups"
 import AdminCustomersResource from "./customers"
 import AdminDiscountsResource from "./discounts"
@@ -34,6 +35,7 @@ class Admin extends BaseResource {
   public customers = new AdminCustomersResource(this.client)
   public customerGroups = new AdminCustomerGroupsResource(this.client)
   public discounts = new AdminDiscountsResource(this.client)
+  public currencies = new AdminCurrenciesResource(this.client)
   public collections = new CollectionsResource(this.client)
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)

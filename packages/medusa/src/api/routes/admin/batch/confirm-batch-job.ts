@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /batch-jobs/{id}/confirm
  * operationId: "PostBatchJobsBatchJobConfirmProcessing"
- * summary: "Confirm a batch job"
+ * summary: "Confirm a Batch Job"
  * description: "Confirms that a previously requested batch job should be executed."
  * x-authenticated: true
  * parameters:

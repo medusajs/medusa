@@ -7,7 +7,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /price-lists/{id}/prices/batch
  * operationId: "DeletePriceListsPriceListPricesBatch"
- * summary: "Batch delete prices that belong to a Price List"
+ * summary: "Delete Prices"
  * description: "Batch delete prices that belong to a Price List"
  * x-authenticated: true
  * parameters:

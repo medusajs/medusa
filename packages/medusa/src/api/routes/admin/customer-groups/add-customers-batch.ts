@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /customer-groups/{id}/customers/batch
  * operationId: "PostCustomerGroupsGroupCustomersBatch"
- * summary: "Add a list of customers to a customer group "
+ * summary: "Add Customers"
  * description: "Adds a list of customers, represented by id's, to a customer group."
  * x-authenticated: true
  * parameters:

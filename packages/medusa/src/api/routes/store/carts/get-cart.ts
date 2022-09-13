@@ -4,7 +4,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 /**
  * @oas [get] /carts/{id}
  * operationId: "GetCartsCart"
- * summary: "Retrieve a Cart"
+ * summary: "Get a Cart"
  * description: "Retrieves a Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
