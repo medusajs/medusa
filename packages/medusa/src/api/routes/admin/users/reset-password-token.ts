@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /users/password-token
  * operationId: "PostUsersUserPasswordToken"
- * summary: "Generate a password token for a User."
+ * summary: "Request Password Reset"
  * description: "Generates a password token for a User with a given email."
  * x-authenticated: true
  * requestBody:

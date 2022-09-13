@@ -11,6 +11,15 @@ import {
 } from "../../../services"
 import { CsvSchema } from "../../../interfaces/csv-parser"
 import { FlagRouter } from "../../../utils/flag-router"
+import { BatchJob } from "../../../models"
+
+export type ProductImportBatchJob = BatchJob & {
+  result: Pick<BatchJob, "result"> & {
+    operations: {
+      [K in keyof typeof OperationType]: number
+    }
+  }
+}
 
 /**
  * DI props for the Product import strategy

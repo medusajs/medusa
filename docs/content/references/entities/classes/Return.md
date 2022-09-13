@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/return.ts:57](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L57)
+[models/return.ts:57](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L57)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:53](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L53)
+[models/return.ts:53](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L53)
 
 ___
 
@@ -52,7 +52,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:88](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L88)
+[models/return.ts:88](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L88)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:41](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L41)
+[models/return.ts:41](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L41)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:85](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L85)
+[models/return.ts:85](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L85)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:82](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L82)
+[models/return.ts:82](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L82)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:65](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L65)
+[models/return.ts:65](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L65)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:61](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L61)
+[models/return.ts:61](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L61)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:79](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L79)
+[models/return.ts:79](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L79)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:76](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L76)
+[models/return.ts:76](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L76)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:73](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L73)
+[models/return.ts:73](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L73)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:70](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L70)
+[models/return.ts:70](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L70)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:35](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L35)
+[models/return.ts:35](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L35)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:49](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L49)
+[models/return.ts:49](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L49)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:45](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L45)
+[models/return.ts:45](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L45)
 
 ___
 
@@ -210,7 +210,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -224,4 +224,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/return.ts:90](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/return.ts#L90)
+[models/return.ts:90](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/return.ts#L90)

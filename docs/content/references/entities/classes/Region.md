@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/region.ts:47](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L47)
+[models/region.ts:47](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L47)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:50](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L50)
+[models/region.ts:50](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L50)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:32](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L32)
+[models/region.ts:32](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L32)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:28](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L28)
+[models/region.ts:28](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L28)
 
 ___
 
@@ -86,7 +86,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:91](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L91)
+[models/region.ts:91](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L91)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:44](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L44)
+[models/region.ts:44](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L44)
 
 ___
 
@@ -120,7 +120,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:94](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L94)
+[models/region.ts:94](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L94)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:25](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L25)
+[models/region.ts:25](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L25)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:74](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L74)
+[models/region.ts:74](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L74)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:41](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L41)
+[models/region.ts:41](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L41)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:57](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L57)
+[models/region.ts:57](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L57)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:53](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L53)
+[models/region.ts:53](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L53)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:35](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L35)
+[models/region.ts:35](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L35)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/region.ts:38](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L38)
+[models/region.ts:38](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L38)
 
 ___
 
@@ -214,7 +214,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -228,4 +228,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/region.ts:96](https://github.com/medusajs/medusa/blob/076b41bb8/packages/medusa/src/models/region.ts#L96)
+[models/region.ts:96](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/region.ts#L96)

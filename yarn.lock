@@ -2408,6 +2408,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@eslint/eslintrc@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@eslint/eslintrc@npm:1.3.1"
+  dependencies:
+    ajv: ^6.12.4
+    debug: ^4.3.2
+    espree: ^9.4.0
+    globals: ^13.15.0
+    ignore: ^5.2.0
+    import-fresh: ^3.2.1
+    js-yaml: ^4.1.0
+    minimatch: ^3.1.2
+    strip-json-comments: ^3.1.1
+  checksum: f08aba21464894297ee4e4433320716ecd8f82fef24df088026fad6ba43fb77917126aa8de4c68212d5c225680797417e4f6cc3a6eb3ae79665e97d64b3fc74a
+  languageName: node
+  linkType: hard
+
 "@exodus/schemasafe@npm:^1.0.0-rc.2":
   version: 1.0.0-rc.7
   resolution: "@exodus/schemasafe@npm:1.0.0-rc.7"
@@ -2940,6 +2957,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@humanwhocodes/config-array@npm:^0.10.4":
+  version: 0.10.4
+  resolution: "@humanwhocodes/config-array@npm:0.10.4"
+  dependencies:
+    "@humanwhocodes/object-schema": ^1.2.1
+    debug: ^4.1.1
+    minimatch: ^3.0.4
+  checksum: 3d606164d4ba05fd3861bc75c1c02fa26d287d85349ce2ee15b5d3f84fc49bf1950d3d93b0cb28cd53ac690b842731ce3f276b4edd9225a072d0c426b39baa15
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.5.0":
   version: 0.5.0
   resolution: "@humanwhocodes/config-array@npm:0.5.0"
@@ -2959,6 +2987,20 @@ __metadata:
     debug: ^4.1.1
     minimatch: ^3.0.4
   checksum: 6a6be8bb71443615b98dcf2136e31d7261289b32ef474c2f76b084940922d82b349c70111799c389d4eb02040e8f686e5a635283f65774853556c219a8699cc4
+  languageName: node
+  linkType: hard
+
+"@humanwhocodes/gitignore-to-minimatch@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@humanwhocodes/gitignore-to-minimatch@npm:1.0.2"
+  checksum: f2d3325e506c9467b719ce4f0a5abf8ba0eae21e20ea504aa28702eb89e7a95d5bc77f897197ef5706d0b98362da896e1cf3b922c414fe684a5fb66f1ec50b27
+  languageName: node
+  linkType: hard
+
+"@humanwhocodes/module-importer@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@humanwhocodes/module-importer@npm:1.0.1"
+  checksum: 909b69c3b86d482c26b3359db16e46a32e0fb30bd306a3c176b8313b9e7313dba0f37f519de6aa8b0a1921349e505f259d19475e123182416a506d7f87e7f529
   languageName: node
   linkType: hard
 
@@ -4271,7 +4313,6 @@ __metadata:
     core-js: ^3.6.5
     cross-env: ^5.2.1
     dotenv: ^8.2.0
-    eslint: ^6.8.0
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
@@ -4286,7 +4327,6 @@ __metadata:
     open: ^8.0.6
     ora: ^5.4.1
     pg-god: ^1.0.11
-    prettier: ^1.19.1
     prompts: ^2.4.1
     regenerator-runtime: ^0.13.5
     resolve-cwd: ^3.0.0
@@ -4308,10 +4348,8 @@ __metadata:
     "@types/jest": ^26.0.19
     axios: ^0.24.0
     cross-env: ^7.0.3
-    eslint: ^8.2.0
     form-data: ^4.0.0
     jest: ^26.6.3
-    prettier: ^2.2.1
     qs: ^6.10.3
     retry-axios: ^2.6.0
     typescript: ^4.1.3
@@ -4345,7 +4383,6 @@ __metadata:
     cors: ^2.8.5
     cross-env: ^5.2.1
     cross-spawn: ^7.0.3
-    eslint: ^7.32.0
     express: ^4.17.1
     express-session: ^1.17.1
     fs-exists-cached: ^1.0.0
@@ -4368,7 +4405,6 @@ __metadata:
     passport-jwt: ^4.0.0
     passport-local: ^1.0.0
     pg: ^8.5.1
-    prettier: ^1.19.1
     randomatic: ^3.1.1
     redis: ^3.0.2
     reflect-metadata: ^0.1.13
@@ -8263,7 +8299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.0.0, @typescript-eslint/eslint-plugin@npm:^5.30.0":
+"@typescript-eslint/eslint-plugin@npm:^5.30.0":
   version: 5.30.6
   resolution: "@typescript-eslint/eslint-plugin@npm:5.30.6"
   dependencies:
@@ -8283,6 +8319,29 @@ __metadata:
     typescript:
       optional: true
   checksum: a299b65d346ad39d4a34da501bda743fd041306f751efd6a78fcc13da2d9a4a3409f4a0119cd679ef0157866ae1c0e05676e0603af5c62ac6abccbfa68e1db57
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/eslint-plugin@npm:^5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/eslint-plugin@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.36.2
+    "@typescript-eslint/type-utils": 5.36.2
+    "@typescript-eslint/utils": 5.36.2
+    debug: ^4.3.4
+    functional-red-black-tree: ^1.0.1
+    ignore: ^5.2.0
+    regexpp: ^3.2.0
+    semver: ^7.3.7
+    tsutils: ^3.21.0
+  peerDependencies:
+    "@typescript-eslint/parser": ^5.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: d76a3c99d84509085b1e3c06488266a12c86c0645410b8f34cc1b92df4d58d45797dad398baf54a435e33aba7b1db9789f710a89457fbb23f56b13bd0baae089
   languageName: node
   linkType: hard
 
@@ -8319,7 +8378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.0.0, @typescript-eslint/parser@npm:^5.30.0":
+"@typescript-eslint/parser@npm:^5.30.0":
   version: 5.30.6
   resolution: "@typescript-eslint/parser@npm:5.30.6"
   dependencies:
@@ -8333,6 +8392,23 @@ __metadata:
     typescript:
       optional: true
   checksum: 02a4e7c91f25294e9439021920832b7389f29fa274093a99aa5bde71399337056a90eb299e8218d3a4eedc53ab4e8e66d4c44d83006fb5a048742cb375a14de2
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/parser@npm:^5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/parser@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.36.2
+    "@typescript-eslint/types": 5.36.2
+    "@typescript-eslint/typescript-estree": 5.36.2
+    debug: ^4.3.4
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 3a840dc72e3051b64cd030f64a539e6f239b72a06b75999b6133b3b17885fdf5066a7c316989fe7c85dfa4d164064d365e2e88a77ec56db65eea3609f3647f42
   languageName: node
   linkType: hard
 
@@ -8356,6 +8432,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/scope-manager@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/scope-manager@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/types": 5.36.2
+    "@typescript-eslint/visitor-keys": 5.36.2
+  checksum: 64b2427a7f10fb10b3782b82fb0ee45cd79d1a11d2ebac6e08390fc765617894b278e544ee1326ba7ad3dbd3dadcb2cdfc83468660660fda183f86ebf0d5e276
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/type-utils@npm:5.30.6":
   version: 5.30.6
   resolution: "@typescript-eslint/type-utils@npm:5.30.6"
@@ -8372,6 +8458,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/type-utils@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/type-utils@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/typescript-estree": 5.36.2
+    "@typescript-eslint/utils": 5.36.2
+    debug: ^4.3.4
+    tsutils: ^3.21.0
+  peerDependencies:
+    eslint: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 1b22a2b7386153e8788d91f0fc38c18d81480eae537de8afccb14f957bf1b5d992e2a26cbd1782645f331f3b9717e4d0c6df117bcf78ca7703e8dc6bd0da920d
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/types@npm:4.33.0":
   version: 4.33.0
   resolution: "@typescript-eslint/types@npm:4.33.0"
@@ -8383,6 +8486,13 @@ __metadata:
   version: 5.30.6
   resolution: "@typescript-eslint/types@npm:5.30.6"
   checksum: ca09fc4c6b2a73481440e979132504ae311b00007c0fcd4c4e87c2cb44dced69c821ce5afa00d4017b461f7d154fd0b571e650e3986c2b4ceb8666cfbbc33995
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/types@npm:5.36.2"
+  checksum: 73202539d7c759697b458bcf230678e3a37abfd05c4e7a2affff88671f12d0fe045cc6cd272c065fbacdb9759cbdf5b31bcf9c9cc807cdaeb381cbb058768540
   languageName: node
   linkType: hard
 
@@ -8422,6 +8532,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/typescript-estree@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/typescript-estree@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/types": 5.36.2
+    "@typescript-eslint/visitor-keys": 5.36.2
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    semver: ^7.3.7
+    tsutils: ^3.21.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: a887f2515528bd09fded97f723b8d309feb667a32f209d490835913a4ea3afb52b1b1231410c6fa6f19de89723b67631982aa9c89d0a4c0e977ebe514dcf4de1
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/utils@npm:5.30.6, @typescript-eslint/utils@npm:^5.10.0, @typescript-eslint/utils@npm:^5.13.0":
   version: 5.30.6
   resolution: "@typescript-eslint/utils@npm:5.30.6"
@@ -8435,6 +8563,22 @@ __metadata:
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   checksum: 3bdc0937eaae7dc5437e4d1ec48f6b3dc8939673c47848c9ec90f6fcb2926154d95045f9ebeb0270d6ad8c7df34a6c9e1c144f5991d2191692d71f238964f351
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/utils@npm:5.36.2"
+  dependencies:
+    "@types/json-schema": ^7.0.9
+    "@typescript-eslint/scope-manager": 5.36.2
+    "@typescript-eslint/types": 5.36.2
+    "@typescript-eslint/typescript-estree": 5.36.2
+    eslint-scope: ^5.1.1
+    eslint-utils: ^3.0.0
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 9fc774aee1ba6d8d126bd79f11387a7e105a06e4109a10a2f6d576ab7347a19a43f8629b5e93cd3b5ea5004c94067b7abd3aa45fd50866492d97ef9965b9f06e
   languageName: node
   linkType: hard
 
@@ -8455,6 +8599,16 @@ __metadata:
     "@typescript-eslint/types": 5.30.6
     eslint-visitor-keys: ^3.3.0
   checksum: 000dc77b8654155d6a170ce603367106cdd382bac13620dd6d4ae8d42930f61df184dbf0c1c7aa1e2ce19932d3c89f4edfdc5fe90963d2f7f38b610409bcc0db
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:5.36.2":
+  version: 5.36.2
+  resolution: "@typescript-eslint/visitor-keys@npm:5.36.2"
+  dependencies:
+    "@typescript-eslint/types": 5.36.2
+    eslint-visitor-keys: ^3.3.0
+  checksum: 4c904f61dc28c433059c45bdae62d3d3be9c35099343235fbe96193ccbf8484b57e527e2bf2d0e299e8b136980787e7ad1f4efb93b8b093bd24dafad874a0c18
   languageName: node
   linkType: hard
 
@@ -9048,6 +9202,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: d9ff126ba128ac56fd5c54a4295e68bf95b923d1ce728152d9dd1980bd9f35eaac5771c0072a840ee6296323c3c9891186cd29c7541579dcb5b4d4c74bfef379
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.8.0":
+  version: 8.8.0
+  resolution: "acorn@npm:8.8.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 5efce4f59554e0ab766f32932cba34b86cc2ecdf24fcd27463beff41d8a1b1b9575c21f92c1b9f7f82b93374a9d5aed33c91f93e2d0cb1bdf3f1e06ec131e816
   languageName: node
   linkType: hard
 
@@ -12857,7 +13020,6 @@ __metadata:
     common-tags: ^1.8.0
     configstore: ^6.0.0
     enquirer: ^2.3.6
-    eslint: ^7.32.0
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
@@ -12865,7 +13027,6 @@ __metadata:
     is-valid-path: ^0.1.1
     microbundle: ^0.13.3
     node-fetch: ^2.6.1
-    prettier: ^2.3.2
     prompts: ^2.4.1
     string-length: ^4.0.2
     terminal-link: ^2.1.1
@@ -14796,7 +14957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.3.0, eslint-config-prettier@npm:^8.5.0":
+"eslint-config-prettier@npm:^8.5.0":
   version: 8.5.0
   resolution: "eslint-config-prettier@npm:8.5.0"
   peerDependencies:
@@ -14956,7 +15117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^4.0.0, eslint-plugin-prettier@npm:^4.2.1":
+"eslint-plugin-prettier@npm:^4.2.1":
   version: 4.2.1
   resolution: "eslint-plugin-prettier@npm:4.2.1"
   dependencies:
@@ -15209,7 +15370,56 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.2.0, eslint@npm:^8.7.0":
+"eslint@npm:^8.23.0":
+  version: 8.23.0
+  resolution: "eslint@npm:8.23.0"
+  dependencies:
+    "@eslint/eslintrc": ^1.3.1
+    "@humanwhocodes/config-array": ^0.10.4
+    "@humanwhocodes/gitignore-to-minimatch": ^1.0.2
+    "@humanwhocodes/module-importer": ^1.0.1
+    ajv: ^6.10.0
+    chalk: ^4.0.0
+    cross-spawn: ^7.0.2
+    debug: ^4.3.2
+    doctrine: ^3.0.0
+    escape-string-regexp: ^4.0.0
+    eslint-scope: ^7.1.1
+    eslint-utils: ^3.0.0
+    eslint-visitor-keys: ^3.3.0
+    espree: ^9.4.0
+    esquery: ^1.4.0
+    esutils: ^2.0.2
+    fast-deep-equal: ^3.1.3
+    file-entry-cache: ^6.0.1
+    find-up: ^5.0.0
+    functional-red-black-tree: ^1.0.1
+    glob-parent: ^6.0.1
+    globals: ^13.15.0
+    globby: ^11.1.0
+    grapheme-splitter: ^1.0.4
+    ignore: ^5.2.0
+    import-fresh: ^3.0.0
+    imurmurhash: ^0.1.4
+    is-glob: ^4.0.0
+    js-yaml: ^4.1.0
+    json-stable-stringify-without-jsonify: ^1.0.1
+    levn: ^0.4.1
+    lodash.merge: ^4.6.2
+    minimatch: ^3.1.2
+    natural-compare: ^1.4.0
+    optionator: ^0.9.1
+    regexpp: ^3.2.0
+    strip-ansi: ^6.0.1
+    strip-json-comments: ^3.1.0
+    text-table: ^0.2.0
+  bin:
+    eslint: bin/eslint.js
+  checksum: 48e0e00f8fed998892d4a079106722c5f1860200c488706bb2c245f8cb5ee4a13479b39593e6332e11dccd7bc4b68c56eee1ad7e4c6482241964ba80142af929
+  languageName: node
+  linkType: hard
+
+"eslint@npm:^8.7.0":
   version: 8.19.0
   resolution: "eslint@npm:8.19.0"
   dependencies:
@@ -15284,6 +15494,17 @@ __metadata:
     acorn-jsx: ^5.3.2
     eslint-visitor-keys: ^3.3.0
   checksum: 86458e955f847e3e6b64b1df496fe870d09489da821eeec966564f624e5b54fe97734625a4c1f6772256dda3af1950a0f263b79af448c7ed2a5408952cf1ed2a
+  languageName: node
+  linkType: hard
+
+"espree@npm:^9.4.0":
+  version: 9.4.0
+  resolution: "espree@npm:9.4.0"
+  dependencies:
+    acorn: ^8.8.0
+    acorn-jsx: ^5.3.2
+    eslint-visitor-keys: ^3.3.0
+  checksum: 95f1f9ac49fa112bfc2d2e82fd9e85192367090a9ee03b1e43594e85e29a3458b603b4cf7cd5ccfb156da2b94d07e7f5428474c830faa6f19db47a0b86dd3656
   languageName: node
   linkType: hard
 
@@ -23267,11 +23488,9 @@ __metadata:
     class-transformer: ^0.5.1
     class-validator: ^0.13.1
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     joi: ^17.3.0
     joi-objectid: ^3.0.1
-    prettier: ^1.19.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -23331,7 +23550,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23359,7 +23577,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23387,7 +23604,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23412,7 +23628,6 @@ __metadata:
     "@babel/runtime": ^7.9.6
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23438,7 +23653,6 @@ __metadata:
     client-sessions: ^0.8.0
     cors: ^2.8.5
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23461,11 +23675,9 @@ __metadata:
     "@babel/preset-typescript": ^7.13.0
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
     medusa-test-utils: ^1.1.37
-    prettier: ^1.19.1
     typeorm: ^0.2.29
     typescript: ^4.4.4
   peerDependencies:
@@ -23494,7 +23706,6 @@ __metadata:
     client-sessions: ^0.8.0
     cors: ^2.8.5
     cross-env: ^7.0.2
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23523,7 +23734,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23549,7 +23759,6 @@ __metadata:
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     medusa-test-utils: ^1.1.37
   peerDependencies:
@@ -23576,7 +23785,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23605,7 +23813,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23633,7 +23840,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.31
@@ -23664,13 +23870,11 @@ __metadata:
     axios-rate-limit: ^1.2.1
     client-sessions: ^0.8.0
     cross-env: ^7.0.2
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
     medusa-interfaces: ^1.3.1
     medusa-test-utils: ^1.1.37
-    prettier: ^2.0.5
     randomatic: ^3.1.1
   peerDependencies:
     medusa-interfaces: 1.x
@@ -23695,7 +23899,6 @@ __metadata:
     client-sessions: ^0.8.0
     contentful-management: ^5.27.1
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23723,7 +23926,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^0.1.27
@@ -23751,7 +23953,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23800,7 +24001,6 @@ __metadata:
     client-sessions: ^0.8.0
     cors: ^2.8.5
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     mailchimp-api-v3: ^1.14.0
@@ -23827,7 +24027,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.31
@@ -23849,7 +24048,6 @@ __metadata:
     body-parser: ^1.19.0
     cors: ^2.8.5
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23908,7 +24106,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23936,7 +24133,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -23963,7 +24159,6 @@ __metadata:
     "@babel/runtime": ^7.9.6
     body-parser: ^1.19.0
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
     medusa-test-utils: ^1.1.37
@@ -23990,7 +24185,6 @@ __metadata:
     body-parser: ^1.19.0
     cors: ^2.8.5
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
@@ -24061,7 +24255,6 @@ __metadata:
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^7.0.3
-    eslint: ^7.32.0
     express: ^4.17.1
     ioredis: ^4.27.9
     jest: ^26.6.3
@@ -24089,12 +24282,10 @@ __metadata:
     ci-info: ^3.2.0
     configstore: 5.0.1
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     global: ^4.4.0
     is-docker: ^2.2.1
     jest: ^25.5.2
     nodemon: ^2.0.1
-    prettier: ^1.19.1
     remove-trailing-slash: ^0.1.1
     uuid: ^8.3.2
   languageName: unknown
@@ -24112,7 +24303,6 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
-    eslint: ^6.8.0
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
     randomatic: ^3.1.1
@@ -27675,7 +27865,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.0.5, prettier@npm:^2.1.1, prettier@npm:^2.2.1, prettier@npm:^2.3.2, prettier@npm:^2.5.1":
+"prettier@npm:^2.5.1, prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
   bin:
@@ -29760,17 +29950,17 @@ __metadata:
     "@changesets/changelog-github": ^0.4.5
     "@changesets/cli": ^2.23.0
     "@redocly/cli": latest
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    "@typescript-eslint/parser": ^5.0.0
+    "@typescript-eslint/eslint-plugin": ^5.36.2
+    "@typescript-eslint/parser": ^5.36.2
     axios: ^0.21.1
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
     babel-preset-medusa-package: ^1.0.0
     cross-env: ^7.0.2
-    eslint: ^8.2.0
+    eslint: ^8.23.0
     eslint-config-google: ^0.14.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-prettier: ^4.0.0
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-prettier: ^4.2.1
     express: ^4.17.1
     get-port: ^5.1.1
     global: ^4.4.0
@@ -29781,7 +29971,7 @@ __metadata:
     microbundle: ^0.13.3
     oas-normalize: ^5.0.1
     pg-god: ^1.0.11
-    prettier: ^2.1.1
+    prettier: ^2.7.1
     resolve-cwd: ^3.0.0
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6

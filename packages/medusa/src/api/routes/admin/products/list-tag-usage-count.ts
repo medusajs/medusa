@@ -3,7 +3,7 @@ import { ProductService } from "../../../../services"
 /**
  * @oas [get] /products/tag-usage
  * operationId: "GetProductsTagUsage"
- * summary: "List Product Tags Usage Number"
+ * summary: "List Tags Usage Number"
  * description: "Retrieves a list of Product Tags with how many times each is used."
  * x-authenticated: true
  * x-codeSamples:

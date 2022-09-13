@@ -7,7 +7,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key";
 /**
  * @oas [post] /carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
- * summary: "Initialize Payment Sessions"
+ * summary: "Create Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
