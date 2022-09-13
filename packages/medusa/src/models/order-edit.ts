@@ -33,7 +33,7 @@ export class OrderEdit extends SoftDeletableEntity {
   @Column({ nullable: true })
   internal_note?: string
 
-  @Column({ nullable: true })
+  @Column()
   created_by: string // customer or user ID
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
