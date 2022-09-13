@@ -18,7 +18,7 @@ import { LineItem } from "./line-item"
 export enum OrderEditItemChangeType {
   ITEM_ADD = "item_add",
   ITEM_REMOVE = "item_remove",
-  QUANTITY_CHANGE = "quantity_change",
+  ITEM_UPDATE = "item_update",
 }
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
@@ -31,7 +31,7 @@ export class OrderItemChange extends SoftDeletableEntity {
   })
   type: OrderEditItemChangeType
 
-  @Column({ nullable: true })
+  @Column()
   order_edit_id: string
 
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)

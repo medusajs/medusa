@@ -18,7 +18,7 @@ import { Order } from "./order"
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderEdit extends SoftDeletableEntity {
-  @Column({ nullable: true })
+  @Column()
   order_id: string
 
   @ManyToOne(() => Order, (o) => o.edits)
@@ -42,13 +42,13 @@ export class OrderEdit extends SoftDeletableEntity {
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   requested_at?: Date
 
   @Column({ nullable: true })
   confirmed_by?: string // customer or user ID
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at?: Date
 
   @Column({ nullable: true })
@@ -57,13 +57,13 @@ export class OrderEdit extends SoftDeletableEntity {
   @Column({ nullable: true })
   declined_reason?: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   declined_at?: Date
 
   @Column({ nullable: true })
   canceled_by?: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at?: Date
 
   // Computed
