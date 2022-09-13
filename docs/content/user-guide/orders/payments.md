@@ -13,6 +13,8 @@ When a customer places an order, using the payment provider they choose during c
 
 The payment isn’t automatically captured. You must capture it manually from the Medusa admin.
 
+---
+
 ## Capture Payment
 
 :::info
@@ -26,6 +28,8 @@ To capture an order’s payment:
 1. Open the order details page.
 2. Scroll to the Payment section.
 3. Click on the Capture Payment button.
+
+---
 
 ## Refund Payment
 
