@@ -2,12 +2,6 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { Type } from "class-transformer"
-
-import {
-  CartService,
-  LineItemService,
-  RegionService,
-} from "../../../../services"
 import {
   IsArray,
   IsInt,
@@ -16,13 +10,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+
+import {
+  CartService,
+  LineItemService,
+  RegionService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { Cart } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { AddressPayload } from "../../../../types/common"
+import { CartCreateProps } from "../../../../types/cart"
 import { isDefined } from "../../../../utils"
 
 /**
@@ -136,14 +136,7 @@ export default async (req, res) => {
     regionId = regions[0].id
   }
 
-  const toCreate: {
-    region_id: string
-    context: object
-    sales_channel_id?: string
-    customer_id?: string
-    email?: string
-    shipping_address?: Partial<AddressPayload>
-  } = {
+  const toCreate: Partial<CartCreateProps> = {
     region_id: regionId,
     sales_channel_id: validated.sales_channel_id,
     context: {
