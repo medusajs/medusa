@@ -341,12 +341,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       }
 
       if (!channel) {
-        channel = (await salesChannelServiceTx.retrieveByName(input.name, {
-          select: ["id"],
-        })) as SalesChannel
+        try {
+          channel = (await salesChannelServiceTx.retrieveByName(input.name, {
+            select: ["id"],
+          })) as SalesChannel
+        } catch (e) {
+          // noop
+        }
       }
 
-      salesChannels.push(channel)
+      if (channel) {
+        salesChannels.push(channel)
+      }
     }
 
     return salesChannels
@@ -382,7 +388,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       ) as unknown as CreateProductInput
 
       try {
-        if (isSalesChannelsFeatureOn) {
+        if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
@@ -725,7 +731,7 @@ const CSVSchema: ProductImportCsvSchema = {
   columns: [
     // PRODUCT
     {
-      name: "Product id",
+      name: "Product Id",
       mapTo: "product.id",
     },
     {
@@ -766,7 +772,7 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Profile Type", mapTo: "product.profile.type" },
     // VARIANTS
     {
-      name: "Variant id",
+      name: "Variant Id",
       mapTo: "variant.id",
     },
     { name: "Variant Title", mapTo: "variant.title" },
