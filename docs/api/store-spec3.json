@@ -65,7 +65,7 @@ paths:
   /auth:
     post:
       operationId: PostAuth
-      summary: Authenticate Customer
+      summary: Customer Login
       description: >-
         Logs a Customer in and authorizes them to view their details. Successful
         authentication will set a session cookie in the Customer's browser.
@@ -136,7 +136,7 @@ paths:
                   description: The Customer's password.
     delete:
       operationId: DeleteAuth
-      summary: Log out
+      summary: Customer Log out
       description: Destroys a Customer's authenticated session.
       x-authenticated: true
       x-codeSamples:
@@ -168,7 +168,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetAuth
-      summary: Get Session
+      summary: Get Current Customer
       description: Gets the currently logged in Customer.
       x-authenticated: true
       x-codeSamples:
@@ -220,7 +220,7 @@ paths:
   '/auth/{email}':
     get:
       operationId: GetAuthEmail
-      summary: Check if email has account
+      summary: Check if email exists
       description: Checks if a Customer with the given email has signed up.
       parameters:
         - in: path
@@ -667,7 +667,7 @@ paths:
   '/carts/{id}/payment-sessions':
     post:
       operationId: PostCartsCartPaymentSessions
-      summary: Initialize Payment Sessions
+      summary: Create Payment Sessions
       description: >-
         Creates Payment Sessions for each of the available Payment Providers in
         the Cart's Region.
@@ -722,7 +722,7 @@ paths:
     delete:
       operationId: DeleteCartsCartDiscountsDiscount
       description: Removes a Discount from a Cart.
-      summary: Remove Discount from Cart
+      summary: Remove Discount
       parameters:
         - in: path
           name: id
@@ -1052,7 +1052,7 @@ paths:
   '/carts/{id}':
     get:
       operationId: GetCartsCart
-      summary: Retrieve a Cart
+      summary: Get a Cart
       description: Retrieves a Cart.
       parameters:
         - in: path
@@ -1363,7 +1363,7 @@ paths:
   '/collections/{id}':
     get:
       operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
+      summary: Get a Collection
       description: Retrieves a Product Collection.
       parameters:
         - in: path
@@ -1415,7 +1415,7 @@ paths:
   /collections:
     get:
       operationId: GetCollections
-      summary: List Product Collections
+      summary: List Collections
       description: Retrieve a list of Product Collection.
       parameters:
         - in: query
@@ -1862,7 +1862,7 @@ paths:
   /customers/me:
     get:
       operationId: GetCustomersCustomer
-      summary: Retrieves a Customer
+      summary: Get a Customer
       description: >-
         Retrieves a Customer - the Customer must be logged in to retrieve their
         details.
@@ -1917,7 +1917,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomersCustomer
-      summary: Update Customer details
+      summary: Update Customer
       description: Updates a Customer's saved details.
       x-authenticated: true
       requestBody:
@@ -2009,7 +2009,7 @@ paths:
   /customers/me/payment-methods:
     get:
       operationId: GetCustomersCustomerPaymentMethods
-      summary: Retrieve saved payment methods
+      summary: Get Payment Methods
       description: >-
         Retrieves a list of a Customer's saved payment methods. Payment methods
         are saved with Payment Providers and it is their responsibility to fetch
@@ -2078,7 +2078,7 @@ paths:
   /customers/me/orders:
     get:
       operationId: GetCustomersCustomerOrders
-      summary: Retrieve Customer Orders
+      summary: List Orders
       description: Retrieves a list of a Customer's Orders.
       x-authenticated: true
       parameters:
@@ -2303,7 +2303,7 @@ paths:
   /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
-      summary: Creates a reset password token
+      summary: Request Password Reset
       description: >-
         Creates a reset password token to be used in a subsequent
         /reset-password request. The password token should be sent out of band
@@ -2370,7 +2370,7 @@ paths:
   /customers/password-reset:
     post:
       operationId: PostCustomersResetPassword
-      summary: Resets Customer password
+      summary: Reset Password
       description: >-
         Resets a Customer's password using a password token created by a
         previous /password-token request.
@@ -2451,7 +2451,7 @@ paths:
   '/gift-cards/{code}':
     get:
       operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
+      summary: Get Gift Card by Code
       description: Retrieves a Gift Card by its associated unqiue code.
       parameters:
         - in: path
@@ -2503,7 +2503,7 @@ paths:
   '/orders/cart/{cart_id}':
     get:
       operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
+      summary: Get by Cart ID
       description: >-
         Retrieves an Order by the id of the Cart that was used to create the
         Order.
@@ -2557,7 +2557,7 @@ paths:
   '/orders/{id}':
     get:
       operationId: GetOrdersOrder
-      summary: Retrieves an Order
+      summary: Get an Order
       description: Retrieves an Order
       parameters:
         - in: path
@@ -2684,7 +2684,7 @@ paths:
   '/products/{id}':
     get:
       operationId: GetProductsProduct
-      summary: Retrieves a Product
+      summary: Get a Product
       description: Retrieves a Product.
       parameters:
         - in: path
@@ -2993,7 +2993,7 @@ paths:
   '/regions/{id}':
     get:
       operationId: GetRegionsRegion
-      summary: Retrieves a Region
+      summary: Get a Region
       description: Retrieves a Region.
       parameters:
         - in: path
@@ -3148,7 +3148,7 @@ paths:
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
+      summary: Get a Return Reason
       description: Retrieves a Return Reason.
       parameters:
         - in: path
@@ -3357,7 +3357,7 @@ paths:
   /shipping-options:
     get:
       operationId: GetShippingOptions
-      summary: Retrieve Shipping Options
+      summary: Get Shipping Options
       description: Retrieves a list of Shipping Options.
       parameters:
         - in: query
@@ -3422,7 +3422,7 @@ paths:
   '/shipping-options/{cart_id}':
     get:
       operationId: GetShippingOptionsCartId
-      summary: Retrieve Shipping Options for Cart
+      summary: List for Cart
       description: Retrieves a list of Shipping Options available to a cart.
       parameters:
         - in: path
@@ -3606,7 +3606,7 @@ paths:
   '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
-      summary: Retrieve Swap by Cart id
+      summary: Get by Cart ID
       description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
       parameters:
         - in: path
@@ -3658,7 +3658,7 @@ paths:
   '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
-      summary: Retrieve a Product Variant
+      summary: Get a Product Variant
       description: Retrieves a Product Variant by id
       parameters:
         - in: path
@@ -3717,7 +3717,7 @@ paths:
   /variants:
     get:
       operationId: GetVariants
-      summary: Retrieve Product Variants
+      summary: Get Product Variants
       description: Retrieves a list of Product Variants
       parameters:
         - in: query
@@ -8629,7 +8629,7 @@ components:
           $ref: '#/components/schemas/address'
         shipping_methods:
           description: >-
-            The Shipping Methods used to fulfill the addtional items purchased.
+            The Shipping Methods used to fulfill the additional items purchased.
             Available if the relation `shipping_methods` is expanded.
           type: array
           items:

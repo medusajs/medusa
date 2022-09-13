@@ -69,7 +69,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetUsers
-  summary: Retrieve all users
+  summary: List Users
   description: Retrieves all users.
   x-authenticated: true
   x-codeSamples:

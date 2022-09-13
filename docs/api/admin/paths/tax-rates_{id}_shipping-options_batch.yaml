@@ -1,6 +1,6 @@
 post:
   operationId: PostTaxRatesTaxRateShippingOptions
-  summary: Add Tax Rate to Product Types
+  summary: Add to Shipping Options
   description: Associates a Tax Rate with a list of Shipping Options
   parameters:
     - in: path
@@ -79,8 +79,8 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteTaxRatesTaxRateShippingOptions
-  summary: Removes a Tax Rate from Product Types
-  description: Removes a Tax Rate from a list of Product Types
+  summary: Del. for Shipping Options
+  description: Removes a Tax Rate from a list of Shipping Options
   parameters:
     - in: path
       name: id

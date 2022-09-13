@@ -1,6 +1,6 @@
 post:
   operationId: PostCollections
-  summary: Create a Product Collection
+  summary: Create a Collection
   description: Creates a Product Collection.
   x-authenticated: true
   requestBody:
@@ -60,7 +60,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetCollections
-  summary: List Product Collections
+  summary: List Collections
   description: Retrieve a list of Product Collection.
   x-authenticated: true
   parameters:

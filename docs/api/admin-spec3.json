@@ -122,7 +122,7 @@ paths:
   /apps/authorizations:
     post:
       operationId: PostApps
-      summary: Generates a token for an application.
+      summary: Generate Token for App
       description: Generates a token for an application.
       x-authenticated: true
       requestBody:
@@ -188,7 +188,7 @@ paths:
   /apps:
     get:
       operationId: GetApps
-      summary: List applications
+      summary: List Applications
       description: Retrieve a list of applications.
       x-authenticated: true
       x-codeSamples:
@@ -228,7 +228,7 @@ paths:
   /auth:
     post:
       operationId: PostAuth
-      summary: Authenticate a User
+      summary: User Login
       x-authenticated: false
       description: Logs a User in and authorizes them to manage Store settings.
       parameters: []
@@ -296,7 +296,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteAuth
-      summary: Delete Session
+      summary: User Logout
       x-authenticated: true
       description: Deletes the current session for the logged in user.
       x-codeSamples:
@@ -340,7 +340,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetAuth
-      summary: Get Session
+      summary: Get Current User
       x-authenticated: true
       description: Gets the currently logged in User.
       x-codeSamples:
@@ -393,7 +393,7 @@ paths:
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
-      summary: Marks a batch job as canceled
+      summary: Cancel a Batch Job
       description: Marks a batch job as canceled
       x-authenticated: true
       parameters:
@@ -455,7 +455,7 @@ paths:
   '/batch-jobs/{id}/confirm':
     post:
       operationId: PostBatchJobsBatchJobConfirmProcessing
-      summary: Confirm a batch job
+      summary: Confirm a Batch Job
       description: Confirms that a previously requested batch job should be executed.
       x-authenticated: true
       parameters:
@@ -921,7 +921,7 @@ paths:
   '/batch-jobs/{id}':
     get:
       operationId: GetBatchJobsBatchJob
-      summary: Retrieve a Batch Job
+      summary: Get a Batch Job
       description: Retrieves a Batch Job.
       x-authenticated: true
       parameters:
@@ -983,7 +983,7 @@ paths:
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
-      summary: Updates products associated with a Product Collection
+      summary: Update Products
       description: Updates products associated with a Product Collection
       x-authenticated: true
       parameters:
@@ -1050,7 +1050,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteProductsFromCollection
-      summary: Removes products associated with a Product Collection
+      summary: Remove Product
       description: Removes products associated with a Product Collection
       x-authenticated: true
       parameters:
@@ -1131,7 +1131,7 @@ paths:
   /collections:
     post:
       operationId: PostCollections
-      summary: Create a Product Collection
+      summary: Create a Collection
       description: Creates a Product Collection.
       x-authenticated: true
       requestBody:
@@ -1213,7 +1213,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetCollections
-      summary: List Product Collections
+      summary: List Collections
       description: Retrieve a list of Product Collection.
       x-authenticated: true
       parameters:
@@ -1373,7 +1373,7 @@ paths:
   '/collections/{id}':
     delete:
       operationId: DeleteCollectionsCollection
-      summary: Delete a Product Collection
+      summary: Delete a Collection
       description: Deletes a Product Collection.
       x-authenticated: true
       parameters:
@@ -1443,7 +1443,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
+      summary: Get a Collection
       description: Retrieves a Product Collection.
       x-authenticated: true
       parameters:
@@ -1504,7 +1504,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostCollectionsCollection
-      summary: Update a Product Collection
+      summary: Update a Collection
       description: Updates a Product Collection.
       x-authenticated: true
       parameters:
@@ -1592,7 +1592,7 @@ paths:
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
-      summary: 'Add a list of customers to a customer group '
+      summary: Add Customers
       description: 'Adds a list of customers, represented by id''s, to a customer group.'
       x-authenticated: true
       parameters:
@@ -1687,7 +1687,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteCustomerGroupsGroupCustomerBatch
-      summary: 'Remove a list of customers from a customer group '
+      summary: Remove Customers
       description: 'Removes a list of customers, represented by id''s, from a customer group.'
       x-authenticated: true
       parameters:
@@ -1783,7 +1783,7 @@ paths:
   /customer-groups:
     post:
       operationId: PostCustomerGroups
-      summary: Create a CustomerGroup
+      summary: Create a Customer Group
       description: Creates a CustomerGroup.
       x-authenticated: true
       parameters: []
@@ -1860,7 +1860,7 @@ paths:
                   description: Metadata for the customer.
     get:
       operationId: GetCustomerGroups
-      summary: Retrieve a list of customer groups
+      summary: List Customer Groups
       description: Retrieve a list of customer groups.
       x-authenticated: true
       parameters:
@@ -2038,7 +2038,7 @@ paths:
   '/customer-groups/{id}':
     delete:
       operationId: DeleteCustomerGroupsCustomerGroup
-      summary: Delete a CustomerGroup
+      summary: Delete a Customer Group
       description: Deletes a CustomerGroup.
       x-authenticated: true
       parameters:
@@ -2110,7 +2110,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
+      summary: Get a Customer Group
       description: Retrieves a Customer Group.
       x-authenticated: true
       parameters:
@@ -2185,7 +2185,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostCustomerGroupsGroup
-      summary: Update a CustomerGroup
+      summary: Update a Customer Group
       description: Update a CustomerGroup.
       x-authenticated: true
       parameters:
@@ -2528,7 +2528,7 @@ paths:
   '/customers/{id}':
     get:
       operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
+      summary: Get a Customer
       description: Retrieves a Customer.
       x-authenticated: true
       parameters:
@@ -2716,7 +2716,7 @@ paths:
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
-      summary: Adds Region availability
+      summary: Add Region
       description: Adds a Region to the list of Regions that a Discount can be used in.
       x-authenticated: true
       parameters:
@@ -2783,7 +2783,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteDiscountsDiscountRegionsRegion
-      summary: Remove Region availability
+      summary: Remove Region
       x-authenticated: true
       description: >-
         Removes a Region from the list of Regions that a Discount can be used
@@ -2853,7 +2853,7 @@ paths:
   '/discounts/{discount_id}/conditions':
     post:
       operationId: PostDiscountsDiscountConditions
-      summary: Create a DiscountCondition
+      summary: Create a Condition
       description: >-
         Creates a DiscountCondition. Only one of `products`, `product_types`,
         `product_collections`, `product_tags`, and `customer_groups` should be
@@ -3341,10 +3341,11 @@ paths:
   '/discounts/{id}/dynamic-codes':
     post:
       operationId: PostDiscountsDiscountDynamicCodes
-      summary: Create a dynamic Discount code
+      summary: Create a Dynamic Code
       description: >-
-        Creates a unique code that can map to a parent Discount. This is useful
-        if you want to automatically generate codes with the same behaviour.
+        Creates a dynamic unique code that can map to a parent Discount. This is
+        useful if you want to automatically generate codes with the same
+        behaviour.
       x-authenticated: true
       parameters:
         - in: path
@@ -3434,7 +3435,7 @@ paths:
   '/discounts/{discount_id}/conditions/{condition_id}':
     delete:
       operationId: DeleteDiscountsDiscountConditionsCondition
-      summary: Delete a DiscountCondition
+      summary: Delete a Condition
       description: Deletes a DiscountCondition
       x-authenticated: true
       parameters:
@@ -3526,7 +3527,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetDiscountsDiscountConditionsCondition
-      summary: Gets a DiscountCondition
+      summary: Get a Condition
       description: Gets a DiscountCondition
       x-authenticated: true
       parameters:
@@ -3604,7 +3605,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostDiscountsDiscountConditionsCondition
-      summary: Update a DiscountCondition
+      summary: Update a Condition
       description: >-
         Updates a DiscountCondition. Only one of `products`, `product_types`,
         `product_collections`, `product_tags`, and `customer_groups` should be
@@ -3810,7 +3811,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetDiscountsDiscount
-      summary: Retrieve a Discount
+      summary: Get a Discount
       description: Retrieves a Discount
       x-authenticated: true
       parameters:
@@ -4086,7 +4087,7 @@ paths:
   '/discounts/{id}/dynamic-codes/{code}':
     delete:
       operationId: DeleteDiscountsDiscountDynamicCodesCode
-      summary: Delete a dynamic code
+      summary: Delete a Dynamic Code
       description: Deletes a dynamic code from a Discount.
       x-authenticated: true
       parameters:
@@ -4154,7 +4155,7 @@ paths:
   '/discounts/code/{code}':
     get:
       operationId: GetDiscountsDiscountCode
-      summary: Retrieve a Discount by code
+      summary: Get Discount by Code
       description: Retrieves a Discount by its discount code
       x-authenticated: true
       parameters:
@@ -4495,7 +4496,7 @@ paths:
   '/draft-orders/{id}/line-items':
     post:
       operationId: PostDraftOrdersDraftOrderLineItems
-      summary: Create a Line Item for Draft Order
+      summary: Create a Line Item
       description: Creates a Line Item for the Draft Order
       x-authenticated: true
       parameters:
@@ -4662,7 +4663,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetDraftOrdersDraftOrder
-      summary: Retrieve a Draft Order
+      summary: Get a Draft Order
       description: Retrieves a Draft Order.
       x-authenticated: true
       parameters:
@@ -4792,7 +4793,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostDraftOrdersDraftOrderLineItemsItem
-      summary: Update a Line Item for a Draft Order
+      summary: Update a Line Item
       description: Updates a Line Item for a Draft Order
       x-authenticated: true
       parameters:
@@ -4887,7 +4888,7 @@ paths:
           $ref: '#/components/responses/500_error'
   '/draft-orders/{id}/pay':
     post:
-      summary: Registers a payment for a Draft Order
+      summary: Registers a Payment
       operationId: PostDraftOrdersDraftOrderRegisterPayment
       description: Registers a payment for a Draft Order.
       x-authenticated: true
@@ -4950,7 +4951,7 @@ paths:
   '/admin/draft-orders/{id}':
     post:
       operationId: PostDraftOrdersDraftOrder
-      summary: Update a Draft Order"
+      summary: Update a Draft Order
       description: Updates a Draft Order.
       x-authenticated: true
       parameters:
@@ -5313,7 +5314,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetGiftCardsGiftCard
-      summary: Retrieve a Gift Card
+      summary: Get a Gift Card
       description: Retrieves a Gift Card.
       x-authenticated: true
       parameters:
@@ -5655,7 +5656,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetInvites
-      summary: Lists all Invites
+      summary: Lists Invites
       description: Lists all Invites
       x-authenticated: true
       x-codeSamples:
@@ -6009,7 +6010,7 @@ paths:
   '/notes/{id}':
     delete:
       operationId: DeleteNotesNote
-      summary: Deletes a Note
+      summary: Delete a Note
       description: Deletes a Note.
       x-authenticated: true
       parameters:
@@ -6079,7 +6080,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetNotesNote
-      summary: Get Note
+      summary: Get a Note
       description: Retrieves a single note using its id
       x-authenticated: true
       parameters:
@@ -6140,7 +6141,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostNotesNote
-      summary: Updates a Note
+      summary: Update a Note
       x-authenticated: true
       description: Updates a Note associated with some resource
       parameters:
@@ -6506,7 +6507,7 @@ paths:
   '/orders/{id}/archive':
     post:
       operationId: PostOrdersOrderArchive
-      summary: Archive order
+      summary: Archive Order
       description: Archives the order with the given id.
       x-authenticated: true
       parameters:
@@ -6568,7 +6569,7 @@ paths:
   '/orders/{id}/claims/{claim_id}/cancel':
     post:
       operationId: PostOrdersClaimCancel
-      summary: Cancels a Claim
+      summary: Cancel a Claim
       description: Cancels a Claim
       x-authenticated: true
       parameters:
@@ -6637,8 +6638,8 @@ paths:
   '/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersClaimFulfillmentsCancel
-      summary: Cancels a fulfilmment related to a Claim
-      description: Registers a Fulfillment as canceled.
+      summary: Cancel Claim Fulfillment
+      description: Registers a claim's fulfillment as canceled.
       x-authenticated: true
       parameters:
         - in: path
@@ -6713,8 +6714,8 @@ paths:
   '/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersSwapFulfillmentsCancel
-      summary: Cancels a fulfilmment related to a Swap
-      description: Registers a Fulfillment as canceled.
+      summary: Cancel Swap's Fulfilmment
+      description: Registers a Swap's Fulfillment as canceled.
       x-authenticated: true
       parameters:
         - in: path
@@ -6789,7 +6790,7 @@ paths:
   '/orders/{id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersOrderFulfillmentsCancel
-      summary: Cancels a fulfilmment
+      summary: Cancels a Fulfilmment
       description: Registers a Fulfillment as canceled.
       x-authenticated: true
       parameters:
@@ -6992,7 +6993,7 @@ paths:
   '/orders/{id}/capture':
     post:
       operationId: PostOrdersOrderCapture
-      summary: Capture an Order
+      summary: Capture Order's Payment
       description: Captures all the Payments associated with an Order.
       x-authenticated: true
       parameters:
@@ -7649,7 +7650,7 @@ paths:
                     type: string
                 no_notification:
                   description: >-
-                    If set to true no notification will be send related to this
+                    If set to true no notification will be sent related to this
                     Claim.
                   type: boolean
       x-codeSamples:
@@ -7877,7 +7878,7 @@ paths:
   '/orders/{id}/claims/{claim_id}/fulfillments':
     post:
       operationId: PostOrdersOrderClaimsClaimFulfillments
-      summary: Create a Claim Fulfillment
+      summary: Create Claim Fulfillment
       description: Creates a Fulfillment for a Claim.
       x-authenticated: true
       parameters:
@@ -7961,7 +7962,7 @@ paths:
   '/orders/{id}/swaps/{swap_id}/fulfillments':
     post:
       operationId: PostOrdersOrderSwapsSwapFulfillments
-      summary: Create a Swap Fulfillment
+      summary: Create Swap Fulfillment
       description: Creates a Fulfillment for a Swap.
       x-authenticated: true
       parameters:
@@ -8045,7 +8046,7 @@ paths:
   '/orders/{id}':
     get:
       operationId: GetOrdersOrder
-      summary: Retrieve an Order
+      summary: Get an Order
       description: Retrieves an Order
       x-authenticated: true
       parameters:
@@ -8106,7 +8107,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrdersOrder
-      summary: Update an order
+      summary: Update an Order
       description: Updates and order
       x-authenticated: true
       parameters:
@@ -8524,7 +8525,7 @@ paths:
   '/orders/{id}/swaps/{swap_id}/process-payment':
     post:
       operationId: PostOrdersOrderSwapsSwapProcessPayment
-      summary: Process a Swap difference
+      summary: Process Swap Payment
       description: >-
         When there are differences between the returned and shipped Products in
         a Swap, the difference must be processed. Either a Refund will be issued
@@ -9000,7 +9001,7 @@ paths:
   '/price-lists/{id}/prices/batch':
     post:
       operationId: PostPriceListsPriceListPricesBatch
-      summary: Batch update prices for a Price List
+      summary: Update Prices
       description: Batch update prices for a Price List
       x-authenticated: true
       parameters:
@@ -9128,7 +9129,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeletePriceListsPriceListPricesBatch
-      summary: Batch delete prices that belong to a Price List
+      summary: Delete Prices
       description: Batch delete prices that belong to a Price List
       x-authenticated: true
       parameters:
@@ -9225,7 +9226,7 @@ paths:
   /price-lists:
     post:
       operationId: PostPriceListsPriceList
-      summary: Creates a Price List
+      summary: Create a Price List
       description: Creates a Price List
       x-authenticated: true
       requestBody:
@@ -9666,7 +9667,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetPriceListsPriceList
-      summary: Retrieve a Price List
+      summary: Get a Price List
       description: Retrieves a Price List.
       x-authenticated: true
       parameters:
@@ -9877,7 +9878,7 @@ paths:
   '/price-lists/{id}/products/{product_id}/prices':
     delete:
       operationId: DeletePriceListsPriceListProductsProductPrices
-      summary: Delete all the prices related to a specific product in a price list
+      summary: Delete Product's Prices
       description: Delete all the prices related to a specific product in a price list
       x-authenticated: true
       parameters:
@@ -9960,7 +9961,7 @@ paths:
   '/price-lists/{id}/variants/{variant_id}/prices':
     delete:
       operationId: DeletePriceListsPriceListVariantsVariantPrices
-      summary: Delete all the prices related to a specific variant in a price list
+      summary: Delete Variant's Prices
       description: Delete all the prices related to a specific variant in a price list
       x-authenticated: true
       parameters:
@@ -10043,7 +10044,7 @@ paths:
   '/price-lists/{id}/products':
     get:
       operationId: GetPriceListsPriceListProducts
-      summary: List Product in a Price List
+      summary: List Products
       description: Retrieves a list of Product that are part of a Price List
       x-authenticated: true
       parameters:
@@ -10878,7 +10879,7 @@ paths:
                                 same index in the Product's `options` field.
                               type: string
                 weight:
-                  description: The wieght of the Product.
+                  description: The weight of the Product.
                   type: number
                 length:
                   description: The length of the Product.
@@ -10967,7 +10968,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetProducts
-      summary: List Product
+      summary: List Products
       description: Retrieves a list of Product
       x-authenticated: true
       parameters:
@@ -11431,7 +11432,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetProductsProductVariants
-      summary: List a Product's Product Variants
+      summary: List a Product's Variants
       description: Retrieves a list of the Product Variants associated with a Product.
       x-authenticated: true
       parameters:
@@ -11593,7 +11594,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostProductsProductOptionsOption
-      summary: Update a Product Option.
+      summary: Update a Product Option
       description: Updates a Product Option
       x-authenticated: true
       parameters:
@@ -11749,7 +11750,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetProductsProduct
-      summary: Retrieve a Product
+      summary: Get a Product
       description: Retrieves a Product.
       x-authenticated: true
       parameters:
@@ -12236,7 +12237,7 @@ paths:
                     Product Variant.
                   type: boolean
                 weight:
-                  description: The wieght of the Product Variant.
+                  description: The weight of the Product Variant.
                   type: number
                 length:
                   description: The length of the Product Variant.
@@ -12387,7 +12388,7 @@ paths:
   /products/tag-usage:
     get:
       operationId: GetProductsTagUsage
-      summary: List Product Tags Usage Number
+      summary: List Tags Usage Number
       description: Retrieves a list of Product Tags with how many times each is used.
       x-authenticated: true
       x-codeSamples:
@@ -12510,7 +12511,7 @@ paths:
   '/products/{id}/metadata':
     post:
       operationId: PostProductsProductMetadata
-      summary: Set Product metadata
+      summary: Set Product Metadata
       description: Set metadata key/value pair for Product
       x-authenticated: true
       parameters:
@@ -13150,7 +13151,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetRegionsRegion
-      summary: Retrieve a Region
+      summary: Get a Region
       description: Retrieves a Region.
       x-authenticated: true
       parameters:
@@ -13338,7 +13339,7 @@ paths:
   '/regions/{id}/fulfillment-options':
     get:
       operationId: GetRegionsRegionFulfillmentOptions
-      summary: List Fulfillment Options available in the Region
+      summary: List Fulfillment Options
       description: Gathers all the fulfillment options available to in the Region.
       x-authenticated: true
       parameters:
@@ -13412,7 +13413,7 @@ paths:
   '/regions/{id}/countries/{country_code}':
     delete:
       operationId: PostRegionsRegionCountriesCountry
-      summary: Remove Country
+      summary: Delete Country
       x-authenticated: true
       description: Removes a Country from the list of Countries in a Region
       parameters:
@@ -13483,7 +13484,7 @@ paths:
   '/regions/{id}/fulfillment-providers/{provider_id}':
     delete:
       operationId: PostRegionsRegionFulfillmentProvidersProvider
-      summary: Remove Fulfillment Provider
+      summary: Del. Fulfillment Provider
       description: Removes a Fulfillment Provider.
       x-authenticated: true
       parameters:
@@ -13552,7 +13553,7 @@ paths:
   '/regions/{id}/payment-providers/{provider_id}':
     delete:
       operationId: PostRegionsRegionPaymentProvidersProvider
-      summary: Remove Payment Provider
+      summary: Delete Payment Provider
       description: Removes a Payment Provider.
       x-authenticated: true
       parameters:
@@ -13769,7 +13770,7 @@ paths:
   '/return-reasons/{id}':
     delete:
       operationId: DeleteReturnReason
-      summary: Delete a return reason
+      summary: Delete a Return Reason
       description: Deletes a return reason.
       x-authenticated: true
       parameters:
@@ -13839,7 +13840,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetReturnReasonsReason
-      summary: Retrieve a Return Reason
+      summary: Get a Return Reason
       description: Retrieves a Return Reason.
       x-authenticated: true
       parameters:
@@ -14235,7 +14236,7 @@ paths:
   '/sales-channels/{id}/products/batch':
     post:
       operationId: PostSalesChannelsChannelProductsBatch
-      summary: Assign a batch of product to a sales channel
+      summary: Add Products
       description: Assign a batch of product to a sales channel.
       x-authenticated: true
       parameters:
@@ -14330,7 +14331,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteSalesChannelsChannelProductsBatch
-      summary: Remove a list of products from a sales channel
+      summary: Delete Products
       description: Remove a list of products from a sales channel.
       x-authenticated: true
       parameters:
@@ -14505,7 +14506,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetSalesChannels
-      summary: List sales channels
+      summary: List Sales Channels
       description: Retrieves a list of sales channels
       x-authenticated: true
       parameters:
@@ -14689,7 +14690,7 @@ paths:
   '/sales-channels/{id}':
     delete:
       operationId: DeleteSalesChannelsSalesChannel
-      summary: Delete a sales channel
+      summary: Delete a Sales Channel
       description: Deletes the sales channel.
       x-authenticated: true
       parameters:
@@ -14759,7 +14760,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetSalesChannelsSalesChannel
-      summary: Retrieve a sales channel
+      summary: Get a Sales Channel
       description: Retrieves the sales channel.
       x-authenticated: true
       parameters:
@@ -15196,7 +15197,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingOptionsOption
-      summary: Retrieve a Shipping Option
+      summary: Get a Shipping Option
       description: Retrieves a Shipping Option.
       x-authenticated: true
       parameters:
@@ -15581,7 +15582,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetShippingProfilesProfile
-      summary: Retrieve a Shipping Profile
+      summary: Get a Shipping Profile
       description: Retrieves a Shipping Profile.
       x-authenticated: true
       parameters:
@@ -15642,7 +15643,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostShippingProfilesProfile
-      summary: Update a Shipping Profiles
+      summary: Update a Shipping Profile
       description: Updates a Shipping Profile
       parameters:
         - in: path
@@ -15783,7 +15784,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteStoreCurrenciesCode
-      summary: Remove a Currency Code
+      summary: Delete a Currency Code
       description: Removes a Currency Code from the available currencies.
       x-authenticated: true
       parameters:
@@ -15848,7 +15849,7 @@ paths:
   /store:
     get:
       operationId: GetStore
-      summary: Retrieve Store details.
+      summary: Get Store details
       description: Retrieves the Store details
       x-authenticated: true
       x-codeSamples:
@@ -15900,7 +15901,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostStore
-      summary: Update Store details.
+      summary: Update Store Details
       description: Updates the Store details
       x-authenticated: true
       requestBody:
@@ -16002,7 +16003,7 @@ paths:
   /store/payment-providers:
     get:
       operationId: GetStorePaymentProviders
-      summary: Retrieve configured Payment Providers
+      summary: List Payment Providers
       description: Retrieves the configured Payment Providers
       x-authenticated: true
       x-codeSamples:
@@ -16059,7 +16060,7 @@ paths:
   /store/tax-providers:
     get:
       operationId: GetStoreTaxProviders
-      summary: Retrieve configured Tax Providers
+      summary: List Tax Providers
       description: Retrieves the configured Tax Providers
       x-authenticated: true
       x-codeSamples:
@@ -16116,7 +16117,7 @@ paths:
   '/swaps/{id}':
     get:
       operationId: GetSwapsSwap
-      summary: Retrieve a Swap
+      summary: Get a Swap
       description: Retrieves a Swap.
       x-authenticated: true
       parameters:
@@ -16255,7 +16256,7 @@ paths:
   '/tax-rates/{id}/product-types/batch':
     post:
       operationId: PostTaxRatesTaxRateProductTypes
-      summary: Add Tax Rate to Product Types
+      summary: Add to Product Types
       description: Associates a Tax Rate with a list of Product Types
       parameters:
         - in: path
@@ -16360,7 +16361,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateProductTypes
-      summary: Remove Tax Rate from Product Types
+      summary: Delete from Product Types
       description: Removes a Tax Rate from a list of Product Types
       parameters:
         - in: path
@@ -16466,7 +16467,7 @@ paths:
   '/tax-rates/{id}/products/batch':
     post:
       operationId: PostTaxRatesTaxRateProducts
-      summary: Add Tax Rate to Products
+      summary: Add to Products
       description: Associates a Tax Rate with a list of Products
       parameters:
         - in: path
@@ -16569,7 +16570,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateProducts
-      summary: Removes Tax Rate from Products
+      summary: Delete from Products
       description: Removes a Tax Rate from a list of Products
       parameters:
         - in: path
@@ -16675,7 +16676,7 @@ paths:
   '/tax-rates/{id}/shipping-options/batch':
     post:
       operationId: PostTaxRatesTaxRateShippingOptions
-      summary: Add Tax Rate to Product Types
+      summary: Add to Shipping Options
       description: Associates a Tax Rate with a list of Shipping Options
       parameters:
         - in: path
@@ -16781,8 +16782,8 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteTaxRatesTaxRateShippingOptions
-      summary: Removes a Tax Rate from Product Types
-      description: Removes a Tax Rate from a list of Product Types
+      summary: Del. for Shipping Options
+      description: Removes a Tax Rate from a list of Shipping Options
       parameters:
         - in: path
           name: id
@@ -17223,7 +17224,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetTaxRatesTaxRate
-      summary: Get Tax Rate
+      summary: Get a Tax Rate
       description: Retrieves a TaxRate
       parameters:
         - in: path
@@ -17426,7 +17427,7 @@ paths:
   /uploads:
     post:
       operationId: PostUploads
-      summary: Uploads a file
+      summary: Upload a file
       description: Uploads a file to the specific fileservice that is installed in Medusa.
       x-authenticated: true
       requestBody:
@@ -17594,7 +17595,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetUsers
-      summary: Retrieve all users
+      summary: List Users
       description: Retrieves all users.
       x-authenticated: true
       x-codeSamples:
@@ -17719,7 +17720,7 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetUsersUser
-      summary: Retrieve a User
+      summary: Get a User
       description: Retrieves a User.
       x-authenticated: true
       parameters:
@@ -17876,7 +17877,7 @@ paths:
   /users/password-token:
     post:
       operationId: PostUsersUserPasswordToken
-      summary: Generate a password token for a User.
+      summary: Request Password Reset
       description: Generates a password token for a User with a given email.
       x-authenticated: true
       requestBody:
@@ -17948,7 +17949,7 @@ paths:
   /users/reset-password:
     post:
       operationId: PostUsersUserPassword
-      summary: Set the password for a User.
+      summary: Reset Password
       description: Sets the password for a User given the correct token.
       x-authenticated: true
       requestBody:
@@ -18032,7 +18033,7 @@ paths:
   /variants:
     get:
       operationId: GetVariants
-      summary: List Product Variants.
+      summary: List Product Variants
       description: Retrieves a list of Product Variants
       x-authenticated: true
       parameters:
@@ -23005,7 +23006,7 @@ components:
           $ref: '#/components/schemas/address'
         shipping_methods:
           description: >-
-            The Shipping Methods used to fulfill the addtional items purchased.
+            The Shipping Methods used to fulfill the additional items purchased.
             Available if the relation `shipping_methods` is expanded.
           type: array
           items:
