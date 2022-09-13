@@ -69,7 +69,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostProductsProductOptionsOption
-  summary: Update a Product Option.
+  summary: Update a Product Option
   description: Updates a Product Option
   x-authenticated: true
   parameters:

@@ -1,6 +1,6 @@
 delete:
   operationId: PostRegionsRegionPaymentProvidersProvider
-  summary: Remove Payment Provider
+  summary: Delete Payment Provider
   description: Removes a Payment Provider.
   x-authenticated: true
   parameters:

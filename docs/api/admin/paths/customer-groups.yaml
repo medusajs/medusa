@@ -1,6 +1,6 @@
 post:
   operationId: PostCustomerGroups
-  summary: Create a CustomerGroup
+  summary: Create a Customer Group
   description: Creates a CustomerGroup.
   x-authenticated: true
   parameters: []
@@ -55,7 +55,7 @@ post:
               description: Metadata for the customer.
 get:
   operationId: GetCustomerGroups
-  summary: Retrieve a list of customer groups
+  summary: List Customer Groups
   description: Retrieve a list of customer groups.
   x-authenticated: true
   parameters:

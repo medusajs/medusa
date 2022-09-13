@@ -50,7 +50,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteStoreCurrenciesCode
-  summary: Remove a Currency Code
+  summary: Delete a Currency Code
   description: Removes a Currency Code from the available currencies.
   x-authenticated: true
   parameters:

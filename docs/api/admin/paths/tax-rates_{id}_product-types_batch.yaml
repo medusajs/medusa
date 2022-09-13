@@ -1,6 +1,6 @@
 post:
   operationId: PostTaxRatesTaxRateProductTypes
-  summary: Add Tax Rate to Product Types
+  summary: Add to Product Types
   description: Associates a Tax Rate with a list of Product Types
   parameters:
     - in: path
@@ -78,7 +78,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteTaxRatesTaxRateProductTypes
-  summary: Remove Tax Rate from Product Types
+  summary: Delete from Product Types
   description: Removes a Tax Rate from a list of Product Types
   parameters:
     - in: path

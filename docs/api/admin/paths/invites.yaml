@@ -53,7 +53,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetInvites
-  summary: Lists all Invites
+  summary: Lists Invites
   description: Lists all Invites
   x-authenticated: true
   x-codeSamples:
