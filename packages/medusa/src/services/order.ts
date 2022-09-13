@@ -778,7 +778,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address })
+      const created = addrRepo.create({ ...address })
       await addrRepo.save(created)
     }
   }

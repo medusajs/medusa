@@ -7,13 +7,13 @@ export function csvCellContentFormatter(str: string): string {
     return str
   }
 
-  const formatterStr = str.replace(doubleQuoteRegexp, '""')
+  const formatterStr = str.replace(doubleQuoteRegexp, `""`)
 
   return `"${formatterStr}"`
 }
 
 export function csvRevertCellContentFormatter(str: string): string {
-  if (str.startsWith('"')) {
+  if (str.startsWith(`"`)) {
     str = str.substring(1, str.length - 1)
   }
   return str
