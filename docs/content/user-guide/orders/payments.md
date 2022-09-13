@@ -35,7 +35,7 @@ To capture an order’s payment:
 
 :::caution
 
-Payment can only be refunded after it has been captured. Refunding payments can’t be undone.
+Refunding payments can’t be undone. Payment can only be refunded after it has been captured.
 
 :::
 
