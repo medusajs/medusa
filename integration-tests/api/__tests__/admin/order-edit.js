@@ -203,7 +203,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         adminHeaders
       )
 
-      console.log(response)
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
