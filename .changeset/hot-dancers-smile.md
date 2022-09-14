@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": patch
+"@medusajs/medusa": minor
 "@medusajs/medusa-js": minor
 "medusa-react": minor
 ---
