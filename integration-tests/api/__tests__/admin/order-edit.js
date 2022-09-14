@@ -285,7 +285,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       await api
         .delete(`/admin/order-edits/${id}`, adminHeaders)
         .catch((err) => {
-          console.log(err.response.data)
           expect(err.response.status).toEqual(400)
           expect(err.response.data.message).toEqual(
             `Cannot delete order edit with status ${status}`
