@@ -1,6 +1,6 @@
 get:
   operationId: GetProductsProduct
-  summary: Retrieves a Product
+  summary: Get a Product
   description: Retrieves a Product.
   parameters:
     - in: path

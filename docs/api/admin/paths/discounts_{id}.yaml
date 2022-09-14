@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetDiscountsDiscount
-  summary: Retrieve a Discount
+  summary: Get a Discount
   description: Retrieves a Discount
   x-authenticated: true
   parameters:

@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetUsersUser
-  summary: Retrieve a User
+  summary: Get a User
   description: Retrieves a User.
   x-authenticated: true
   parameters:
