@@ -4,6 +4,7 @@ const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
+<<<<<<< HEAD
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
@@ -20,6 +21,13 @@ const {
 const { OrderEditItemChangeType } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
+=======
+const {
+  simpleOrderEditFactory,
+} = require("../../factories/simple-order-edit-factory")
+
+const adminSeeder = require("../../helpers/admin-seeder")
+>>>>>>> 49d7ebed0 (add initial order edit integration tests)
 
 const adminHeaders = {
   headers: {
@@ -27,12 +35,21 @@ const adminHeaders = {
   },
 }
 
+<<<<<<< HEAD
+=======
+jest.setTimeout(30000)
+
+>>>>>>> 49d7ebed0 (add initial order edit integration tests)
 describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
   let medusaProcess
   let dbConnection
 
   beforeAll(async () => {
+<<<<<<< HEAD
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
+=======
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+>>>>>>> 49d7ebed0 (add initial order edit integration tests)
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
@@ -49,6 +66,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     medusaProcess.kill()
   })
 
+<<<<<<< HEAD
   describe("GET /admin/order-edits/:id", () => {
     const orderEditId = IdMap.getId("order-edit-1")
     const prodId1 = IdMap.getId("prodId1")
@@ -156,10 +174,52 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       const response = await api.get(
         `/admin/order-edits/${orderEditId}`,
+=======
+  describe("DELETE /admin/order-edits/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("deletes order edit", async () => {
+      const { id } = await simpleOrderEditFactory(dbConnection)
+
+      const api = useApi()
+
+      const response = await api.delete(
+        `/admin/order-edits/${id}`,
         adminHeaders
       )
 
       expect(response.status).toEqual(200)
+      expect(response.body).toEqual({
+        id,
+        object: "order_edit",
+        deleted: true,
+      })
+    })
+
+    it("deletes already removed order edit", async () => {
+      const { id } = await simpleOrderEditFactory(dbConnection)
+
+      const api = useApi()
+
+      const response = await api.delete(
+        `/admin/order-edits/${id}`,
+        adminHeaders
+      )
+      const idempontentResponse = await api.delete(
+        `/admin/order-edits/${id}`,
+>>>>>>> 49d7ebed0 (add initial order edit integration tests)
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+<<<<<<< HEAD
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -177,6 +237,74 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           ]),
         })
       )
+=======
+      expect(response.body).toEqual({
+        id,
+        object: "order_edit",
+        deleted: true,
+      })
+      expect(idempontentResponse.status).toEqual(200)
+      expect(idempontentResponse.body).toEqual({
+        id,
+        object: "order_edit",
+        deleted: true,
+      })
+    })
+
+    // test.each([
+    //   {
+    //     timestampField: "requested_at",
+    //     actorField: "requested_by",
+    //     status: "",
+    //   },
+    //   // {
+    //   //   timestampField: "confirmed_at",
+    //   //   actorField: "confirmed_by",
+    //   //   status: "",
+    //   // },
+    //   // { timestampField: "declined_at", actorField: "declined_by", status: "" },
+    //   // {
+    //   //   timestampField: "cancelled_at",
+    //   //   actorField: "cancelled_by",
+    //   //   status: "",
+    //   // },
+    // ])(
+    //   "fails to delet order edit with status $status",
+    //   async ({ timestampField, actorField, status }) => {
+    //     expect.assertions(2)
+    //     const adminUserId = "admin_user"
+    //     const { id } = await simpleOrderEditFactory(dbConnection, {
+    //       [timestampField]: new Date(),
+    //       [actorField]: adminUserId,
+    //     })
+
+    //     const api = useApi()
+
+    //     await api
+    //       .delete(`/admin/order-edits/${id}`, adminHeaders)
+    //       .catch((err) => {
+    //         console.log(err)
+    //       })
+    //   }
+    // )
+
+    it("fails to delet order edit with status not Created", async () => {
+      expect.assertions(2)
+
+      const adminUserId = "admin_user"
+      const { id } = await simpleOrderEditFactory(dbConnection, {
+        canceled_at: new Date(),
+        canceled_by: adminUserId,
+      })
+
+      const api = useApi()
+
+      await api
+        .delete(`/admin/order-edits/${id}`, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+>>>>>>> 49d7ebed0 (add initial order edit integration tests)
     })
   })
 })
