@@ -2,13 +2,13 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [delete] /order-edits/{edit_id}
+ * @oas [delete] /order-edits/{id}
  * operationId: "DeleteOrderEditsOrderEdit"
- * summary: "Delete an Invite"
+ * summary: "Delete an Order Edit"
  * description: "Deletes an Order Edit"
  * x-authenticated: true
  * parameters:
- *   - (path) edit_id =* {string} The ID of the Order Edit
+ *   - (path) id =* {string} The ID of the Order Edit
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,7 +23,7 @@ import { OrderEditService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{edit_id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -52,7 +52,7 @@ import { OrderEditService } from "../../../../services"
  *     $ref: "#/components/responses/400_error"
  */
 export default async (req, res) => {
-  const { edit_id } = req.params
+  const { id } = req.params
 
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
@@ -60,11 +60,11 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
 
   await manager.transaction(async (transactionManager) => {
-    await orderEditService.withTransaction(transactionManager).delete(edit_id)
+    await orderEditService.withTransaction(transactionManager).delete(id)
   })
 
   res.status(200).send({
-    id: edit_id,
+    id,
     object: "order_edit",
     deleted: true,
   })

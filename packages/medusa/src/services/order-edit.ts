@@ -117,7 +117,7 @@ export default class OrderEditService extends TransactionBaseService {
   }
 
   async delete(orderEditId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const orderEditRepo = manager.getCustomRepository(
         this.orderEditRepository_
       )
@@ -125,7 +125,7 @@ export default class OrderEditService extends TransactionBaseService {
       const edit = await orderEditRepo.findOne({ where: { id: orderEditId } })
 
       if (!edit) {
-        return Promise.resolve()
+        return
       }
 
       if (edit.status !== OrderEditStatus.CREATED) {
@@ -136,8 +136,6 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       await orderEditRepo.softRemove(edit)
-
-      return Promise.resolve()
     })
   }
 }

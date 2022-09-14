@@ -29,10 +29,7 @@ export default (app) => {
     middlewares.wrap(require("./get-order-edit").default)
   )
 
-  route.delete(
-    "/:edit_id",
-    middlewares.wrap(require("./delete-order-edit").default)
-  )
+  route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
   return app
 }
@@ -41,6 +38,3 @@ export type AdminOrdersEditsRes = {
   order_edit: OrderEdit
 }
 export type AdminOrderEditDeleteRes = DeleteResponse
-
-export const defaultAdminOrderEditRelations = []
-export const defaultAdminOrderEditFields = []

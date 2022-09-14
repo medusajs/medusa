@@ -18,7 +18,7 @@ export const useAdminDeleteOrderEdit = (
     () => client.admin.orderEdits.delete(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.detail(id)],
+      [adminOrderEditsKeys.detail(id), adminOrderEditsKeys.lists()],
       options
     )
   )
