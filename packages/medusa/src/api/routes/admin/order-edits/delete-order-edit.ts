@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { OrderEditService } from "../../../../services/order-edit"
+import { OrderEditService } from "../../../../services"
 
 /**
  * @oas [delete] /order-edits/{edit_id}
