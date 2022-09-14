@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetProductsProduct
-  summary: Retrieve a Product
+  summary: Get a Product
   description: Retrieves a Product.
   x-authenticated: true
   parameters:

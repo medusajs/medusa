@@ -1,16 +1,18 @@
 import {
   IsArray,
+  IsBoolean,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-
-import { validator } from "../../../../utils/validator"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { Region } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /regions
@@ -61,6 +63,9 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *             type: array
  *             items:
  *               type: string
+ *           includes_tax:
+ *             description: "[EXPERIMENTAL] Tax included in prices of region"
+ *             type: boolean
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -178,6 +183,12 @@ export class AdminPostRegionsReq {
   @IsArray()
   @IsString({ each: true })
   countries: string[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 
   @IsObject()
   @IsOptional()

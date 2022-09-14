@@ -2374,6 +2374,48 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("POST /admin/products/:id/variants/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-to-update",
+        variants: [
+          {
+            id: "test-variant-to-update",
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully updates variant without prices", async () => {
+      const api = useApi()
+
+      const res = await api
+        .post(
+          "/admin/products/test-product-to-update/variants/test-variant-to-update",
+          {
+            inventory_quantity: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+    })
+  })
+
   describe("GET /admin/products/tag-usage", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)

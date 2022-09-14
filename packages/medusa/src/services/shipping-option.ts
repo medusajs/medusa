@@ -22,6 +22,18 @@ import {
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
+import { FlagRouter } from "../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+
+type InjectedDependencies = {
+  manager: EntityManager
+  fulfillmentProviderService: FulfillmentProviderService
+  regionService: RegionService
+  shippingOptionRequirementRepository: typeof ShippingOptionRequirementRepository
+  shippingOptionRepository: typeof ShippingOptionRepository
+  shippingMethodRepository: typeof ShippingMethodRepository
+  featureFlagRouter: FlagRouter
+}
 
 /**
  * Provides layer to manipulate profiles.
@@ -32,6 +44,7 @@ class ShippingOptionService extends TransactionBaseService {
   protected readonly requirementRepository_: typeof ShippingOptionRequirementRepository
   protected readonly optionRepository_: typeof ShippingOptionRepository
   protected readonly methodRepository_: typeof ShippingMethodRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -43,7 +56,8 @@ class ShippingOptionService extends TransactionBaseService {
     shippingMethodRepository,
     fulfillmentProviderService,
     regionService,
-  }) {
+    featureFlagRouter,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -53,6 +67,7 @@ class ShippingOptionService extends TransactionBaseService {
     this.requirementRepository_ = shippingOptionRequirementRepository
     this.providerService_ = fulfillmentProviderService
     this.regionService_ = regionService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -285,6 +300,16 @@ class ShippingOptionService extends TransactionBaseService {
         price: methodPrice,
       }
 
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof option.includes_tax !== "undefined") {
+          toCreate.includes_tax = option.includes_tax
+        }
+      }
+
       if (config.order) {
         toCreate.order_id = config.order.id
       }
@@ -313,10 +338,10 @@ class ShippingOptionService extends TransactionBaseService {
 
       const created = await methodRepo.save(method)
 
-      return methodRepo.findOne({
+      return (await methodRepo.findOne({
         where: { id: created.id },
         relations: ["shipping_option"],
-      }) as unknown as ShippingMethod
+      })) as ShippingMethod
     })
   }
 
@@ -404,6 +429,16 @@ class ShippingOptionService extends TransactionBaseService {
       option.price_type = await this.validatePriceType_(data.price_type, option)
       option.amount =
         data.price_type === "calculated" ? null : data.amount ?? null
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof data.includes_tax !== "undefined") {
+          option.includes_tax = data.includes_tax
+        }
+      }
 
       const isValid = await this.providerService_.validateOption(option)
 
@@ -582,6 +617,16 @@ class ShippingOptionService extends TransactionBaseService {
 
       if (isDefined(update.admin_only)) {
         option.admin_only = update.admin_only
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof update.includes_tax !== "undefined") {
+          option.includes_tax = update.includes_tax
+        }
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)

@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/product-tax-rate.ts:32](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L32)
+[models/product-tax-rate.ts:32](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L32)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:38](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L38)
+[models/product-tax-rate.ts:38](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L38)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L24)
+[models/product-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L24)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L17)
+[models/product-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L17)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L20)
+[models/product-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L20)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:29](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L29)
+[models/product-tax-rate.ts:29](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L29)
 
 ___
 
@@ -78,4 +78,4 @@ ___
 
 #### Defined in
 
-[models/product-tax-rate.ts:35](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/product-tax-rate.ts#L35)
+[models/product-tax-rate.ts:35](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/product-tax-rate.ts#L35)

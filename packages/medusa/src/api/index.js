@@ -19,6 +19,7 @@ export default (container, config) => {
 export * from "./routes/admin/auth"
 export * from "./routes/admin/batch"
 export * from "./routes/admin/collections"
+export * from "./routes/admin/currencies"
 export * from "./routes/admin/customer-groups"
 export * from "./routes/admin/customers"
 export * from "./routes/admin/discounts"

@@ -1,6 +1,6 @@
 get:
   operationId: GetStorePaymentProviders
-  summary: Retrieve configured Payment Providers
+  summary: List Payment Providers
   description: Retrieves the configured Payment Providers
   x-authenticated: true
   x-codeSamples:

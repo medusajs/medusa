@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /batch-jobs/{id}/cancel
  * operationId: "PostBatchJobsBatchJobCancel"
- * summary: "Marks a batch job as canceled"
+ * summary: "Cancel a Batch Job"
  * description: "Marks a batch job as canceled"
  * x-authenticated: true
  * parameters:

@@ -3,7 +3,7 @@ import InviteService from "../../../../services/invite"
 /**
  * @oas [get] /invites
  * operationId: "GetInvites"
- * summary: "Lists all Invites"
+ * summary: "Lists Invites"
  * description: "Lists all Invites"
  * x-authenticated: true
  * x-codeSamples:

@@ -1,6 +1,6 @@
 get:
   operationId: GetOrdersOrder
-  summary: Retrieve an Order
+  summary: Get an Order
   description: Retrieves an Order
   x-authenticated: true
   parameters:
@@ -47,7 +47,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostOrdersOrder
-  summary: Update an order
+  summary: Update an Order
   description: Updates and order
   x-authenticated: true
   parameters:

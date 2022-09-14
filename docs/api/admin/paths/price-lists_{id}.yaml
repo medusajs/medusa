@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetPriceListsPriceList
-  summary: Retrieve a Price List
+  summary: Get a Price List
   description: Retrieves a Price List.
   x-authenticated: true
   parameters:

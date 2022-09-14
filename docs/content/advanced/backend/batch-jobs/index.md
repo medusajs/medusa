@@ -41,7 +41,7 @@ A batch job’s flow from creation to completion is:
 1. A batch job is created using the [Create Batch Job API endpoint](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs).
 2. Once the batch job is created, the batch job’s status is changed to `created` and the `batch.created` event is triggered by the `BatchJobService`.
 3. The `BatchJobSubscriber` handles the `created` event. It resolves the batch job strategy based on the `type` of the batch job, then uses it to pre-process the batch job. After this, the batch job’s status is changed to `pre_processed`. Only when the batch job has the status `pre_processed` can be confirmed.
-4. The batch job can be confirmed using the [Confirm Batch Job API](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing) endpoint.
+4. If `dry_run` is not set in the Create Batch Job request in step one or if it is set to `false`, the batch job will automatically be confirmed after processing. Otherwise, if `dry_run` is set to `true`, the batch job can be confirmed using the [Confirm Batch Job API](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing) endpoint.
 5. Once the batch job is confirmed, the batch job’s status is changed to `confirmed` and the `batch.confirmed` event is triggered by the `BatchJobService`.
 6. The `BatchJobSubscriber` handles the `confirmed` event. It resolves the batch job strategy, then uses it to process the batch job. 
 7. Once the batch job is processed succesfully, the batch job has the status `completed`.

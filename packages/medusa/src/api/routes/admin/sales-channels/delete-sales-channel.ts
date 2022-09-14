@@ -6,7 +6,7 @@ import { SalesChannelService } from "../../../../services/"
 /**
  * @oas [delete] /sales-channels/{id}
  * operationId: "DeleteSalesChannelsSalesChannel"
- * summary: "Delete a sales channel"
+ * summary: "Delete a Sales Channel"
  * description: "Deletes the sales channel."
  * x-authenticated: true
  * parameters:

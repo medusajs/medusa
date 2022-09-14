@@ -233,6 +233,11 @@ module.exports = {
           label: "Create a Migration"
         },
         {
+          type: "doc",
+          id: "advanced/backend/cron-jobs/create",
+          label: "Create a Cron Job"
+        },
+        {
           type: "category",
           label: "Storefront",
           items: [

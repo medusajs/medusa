@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
- * summary: "Update a Line Item for a Draft Order"
+ * summary: "Update a Line Item"
  * description: "Updates a Line Item for a Draft Order"
  * x-authenticated: true
  * parameters:

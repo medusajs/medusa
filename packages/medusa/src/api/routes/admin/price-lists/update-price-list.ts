@@ -1,22 +1,25 @@
 import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
-import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import {
+  AdminPriceListPricesUpdateReq,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 
-import { PriceList } from "../../../.."
-import PriceListService from "../../../../services/price-list"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { PriceList } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import PriceListService from "../../../../services/price-list"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /price-lists/{id}
@@ -99,6 +102,9 @@ import { EntityManager } from "typeorm"
  *                 id:
  *                   description: The ID of a customer group
  *                   type: string
+ *           includes_tax:
+ *             description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *             type: boolean
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -213,4 +219,10 @@ export class AdminPostPriceListsPriceListPriceListReq {
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
   customer_groups?: CustomerGroup[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

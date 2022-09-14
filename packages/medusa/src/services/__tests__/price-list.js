@@ -1,8 +1,9 @@
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import PriceListService from "../price-list"
 import { MoneyAmountRepository } from "../../repositories/money-amount"
-import { RegionServiceMock } from "../__mocks__/region";
+import { FlagRouter } from "../../utils/flag-router"
+import PriceListService from "../price-list"
+import { RegionServiceMock } from "../__mocks__/region"
 
 const priceListRepository = MockRepository({
   findOne: (q) => {
@@ -42,6 +43,7 @@ describe("PriceListService", () => {
     customerGroupService,
     priceListRepository,
     moneyAmountRepository,
+    featureFlagRouter: new FlagRouter({}),
   })
 
   beforeEach(async () => {
@@ -121,16 +123,21 @@ describe("PriceListService", () => {
 
   describe("update", () => {
     const updateRelatedMoneyAmountRepository = MockRepository()
-    updateRelatedMoneyAmountRepository.create = jest.fn().mockImplementation((rawEntity) => Promise.resolve(rawEntity))
-    updateRelatedMoneyAmountRepository.save = jest.fn().mockImplementation(() => Promise.resolve())
-    updateRelatedMoneyAmountRepository.updatePriceListPrices = (new MoneyAmountRepository()).updatePriceListPrices
+    updateRelatedMoneyAmountRepository.create = jest
+      .fn()
+      .mockImplementation((rawEntity) => Promise.resolve(rawEntity))
+    updateRelatedMoneyAmountRepository.save = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve())
+    updateRelatedMoneyAmountRepository.updatePriceListPrices = new MoneyAmountRepository().updatePriceListPrices
 
     const updateRelatedPriceListService = new PriceListService({
       manager: MockManager,
       customerGroupService,
       priceListRepository,
       moneyAmountRepository: updateRelatedMoneyAmountRepository,
-      regionService: RegionServiceMock
+      featureFlagRouter: new FlagRouter({}),
+      regionService: RegionServiceMock,
     })
 
     it("update only existing price lists and related money amount", async () => {

@@ -18,7 +18,7 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /variants
  * operationId: GetVariants
- * summary: Retrieve Product Variants
+ * summary: Get Product Variants
  * description: "Retrieves a list of Product Variants"
  * parameters:
  *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.

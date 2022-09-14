@@ -8,7 +8,7 @@ import { Type } from "class-transformer"
 /**
  * @oas [get] /customer-groups
  * operationId: "GetCustomerGroups"
- * summary: "Retrieve a list of customer groups"
+ * summary: "List Customer Groups"
  * description: "Retrieve a list of customer groups."
  * x-authenticated: true
  * parameters:
