@@ -832,7 +832,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRICES
     {
       name: "Price Region",
-      match: /Price .* \[([A-Z]{2,4})\]/,
+      match: /Price .* \[([A-Z]{3})\]/,
       reducer: (
         builtLine: TParsedProductImportRowData,
         key,
@@ -857,7 +857,7 @@ const CSVSchema: ProductImportCsvSchema = {
     },
     {
       name: "Price Currency",
-      match: /Price [A-Z]{2,4}/,
+      match: /Price [A-Z]{3}/,
       reducer: (
         builtLine: TParsedProductImportRowData,
         key,
