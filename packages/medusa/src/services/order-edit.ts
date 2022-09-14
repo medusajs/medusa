@@ -62,66 +62,66 @@ export default class OrderEditService extends TransactionBaseService {
   }
 
   async computeLineItems(orderEdit: OrderEdit): Promise<OrderEdit> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const order = orderEdit.order?.items
-        ? orderEdit.order
-        : await this.orderService_
-            .withTransaction(transactionManager)
-            .retrieve(orderEdit.order_id, {
-              select: ["items"],
-              relations: ["items"],
-            })
-
-      const changes =
-        orderEdit.changes ??
-        (
-          await this.retrieve(orderEdit.id, {
-            select: ["changes"],
-            relations: ["changes"],
-          })
-        ).changes
-
-      const originalItems = order.items ?? []
-      const removedItems: LineItem[] = []
-      const items: LineItem[] = []
-
-      const updatedItems = changes
-        .map((itemChange) => {
-          if (itemChange.type === OrderEditItemChangeType.ITEM_ADD) {
-            items.push(itemChange.line_item as LineItem)
-            return
-          }
-
-          if (itemChange.type === OrderEditItemChangeType.ITEM_REMOVE) {
-            removedItems.push({
-              ...itemChange.original_line_item,
-              id: itemChange.original_line_item_id,
-            } as LineItem)
-            return
-          }
-
-          return [itemChange.original_line_item_id as string, itemChange]
+    let order = !!orderEdit.order?.items && orderEdit.order
+    if (!order) {
+      order = (
+        await this.retrieve(orderEdit.order_id, {
+          select: ["order"],
+          relations: ["order, order.items"],
         })
-        .filter((change) => !!change) as [string, OrderItemChange][]
+      ).order
+    }
 
-      const orderEditUpdatedChangesMap: Map<string, OrderItemChange> = new Map(
-        updatedItems
-      )
+    let changes = orderEdit.changes
+    if (!changes) {
+      changes = (
+        await this.retrieve(orderEdit.id, {
+          select: ["changes"],
+          relations: ["changes"],
+        })
+      ).changes
+    }
 
-      originalItems.map((item) => {
-        const itemChange = orderEditUpdatedChangesMap.get(item.id)
-        if (itemChange) {
-          items.push({
-            ...itemChange.line_item,
+    const originalItems = order.items ?? []
+    const removedItems: LineItem[] = []
+    const items: LineItem[] = []
+
+    const updatedItems = changes
+      .map((itemChange) => {
+        if (itemChange.type === OrderEditItemChangeType.ITEM_ADD) {
+          items.push(itemChange.line_item as LineItem)
+          return
+        }
+
+        if (itemChange.type === OrderEditItemChangeType.ITEM_REMOVE) {
+          removedItems.push({
+            ...itemChange.original_line_item,
             id: itemChange.original_line_item_id,
           } as LineItem)
+          return
         }
+
+        return [itemChange.original_line_item_id as string, itemChange]
       })
+      .filter((change) => !!change) as [string, OrderItemChange][]
 
-      orderEdit.items = items
-      orderEdit.removed_items = removedItems
+    const orderEditUpdatedChangesMap: Map<string, OrderItemChange> = new Map(
+      updatedItems
+    )
 
-      return orderEdit
+    originalItems.map((item) => {
+      const itemChange = orderEditUpdatedChangesMap.get(item.id)
+      if (itemChange) {
+        items.push({
+          ...itemChange.line_item,
+          id: itemChange.original_line_item_id,
+        } as LineItem)
+      }
     })
+
+    orderEdit.items = items
+    orderEdit.removed_items = removedItems
+
+    return orderEdit
   }
 }

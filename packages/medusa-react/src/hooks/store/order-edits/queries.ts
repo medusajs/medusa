@@ -7,11 +7,11 @@ import { Response } from "@medusajs/medusa-js"
 
 const ORDER_EDITS_QUERY_KEY = `orderEdit` as const
 
-export const orderEditsKeys = queryKeysFactory<typeof ORDER_EDITS_QUERY_KEY>(
-  ORDER_EDITS_QUERY_KEY
-)
+export const orderEditQueryKeys = queryKeysFactory<
+  typeof ORDER_EDITS_QUERY_KEY
+>(ORDER_EDITS_QUERY_KEY)
 
-type OrderQueryKey = typeof orderEditsKeys
+type OrderQueryKey = typeof orderEditQueryKeys
 
 export const useOrderEdit = (
   id: string,
@@ -23,7 +23,7 @@ export const useOrderEdit = (
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    orderEditsKeys.detail(id),
+    orderEditQueryKeys.detail(id),
     () => client.orderEdits.retrieve(id),
     options
   )
