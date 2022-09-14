@@ -1,6 +1,6 @@
 get:
   operationId: GetShippingOptionsCartId
-  summary: Retrieve Shipping Options for Cart
+  summary: List for Cart
   description: Retrieves a list of Shipping Options available to a cart.
   parameters:
     - in: path

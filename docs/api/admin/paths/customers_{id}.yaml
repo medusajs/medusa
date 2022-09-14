@@ -1,6 +1,6 @@
 get:
   operationId: GetCustomersCustomer
-  summary: Retrieve a Customer
+  summary: Get a Customer
   description: Retrieves a Customer.
   x-authenticated: true
   parameters:

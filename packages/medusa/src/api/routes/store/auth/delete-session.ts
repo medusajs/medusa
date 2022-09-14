@@ -1,7 +1,7 @@
 /**
  * @oas [delete] /auth
  * operationId: "DeleteAuth"
- * summary: "Log out"
+ * summary: "Customer Log out"
  * description: "Destroys a Customer's authenticated session."
  * x-authenticated: true
  * x-codeSamples:

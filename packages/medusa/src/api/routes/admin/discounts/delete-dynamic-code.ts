@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [delete] /discounts/{id}/dynamic-codes/{code}
  * operationId: "DeleteDiscountsDiscountDynamicCodesCode"
- * summary: "Delete a dynamic code"
+ * summary: "Delete a Dynamic Code"
  * description: "Deletes a dynamic code from a Discount."
  * x-authenticated: true
  * parameters:

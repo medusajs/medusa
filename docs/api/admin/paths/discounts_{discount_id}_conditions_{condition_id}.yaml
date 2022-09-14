@@ -1,6 +1,6 @@
 delete:
   operationId: DeleteDiscountsDiscountConditionsCondition
-  summary: Delete a DiscountCondition
+  summary: Delete a Condition
   description: Deletes a DiscountCondition
   x-authenticated: true
   parameters:
@@ -79,7 +79,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetDiscountsDiscountConditionsCondition
-  summary: Gets a DiscountCondition
+  summary: Get a Condition
   description: Gets a DiscountCondition
   x-authenticated: true
   parameters:
@@ -144,7 +144,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostDiscountsDiscountConditionsCondition
-  summary: Update a DiscountCondition
+  summary: Update a Condition
   description: >-
     Updates a DiscountCondition. Only one of `products`, `product_types`,
     `product_collections`, `product_tags`, and `customer_groups` should be

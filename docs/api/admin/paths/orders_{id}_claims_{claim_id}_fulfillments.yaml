@@ -1,6 +1,6 @@
 post:
   operationId: PostOrdersOrderClaimsClaimFulfillments
-  summary: Create a Claim Fulfillment
+  summary: Create Claim Fulfillment
   description: Creates a Fulfillment for a Claim.
   x-authenticated: true
   parameters:

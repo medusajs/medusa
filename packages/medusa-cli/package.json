@@ -30,9 +30,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "cross-env": "^5.2.1",
-    "eslint": "^6.8.0",
-    "jest": "^25.5.2",
-    "prettier": "^1.19.1"
+    "jest": "^25.5.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",

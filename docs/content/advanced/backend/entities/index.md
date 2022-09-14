@@ -1,22 +1,8 @@
-# How to Create Entities
+# Create an Entity
 
-In this document, you’ll learn about entities in Medusa and how you can create your own entity.
+In this document, you’ll learn how you can create an [Entity](overview.md).
 
-## Overview
-
-Entities in medusa represent tables in the database as classes. An example of this would be the `Order` entity which represents the `order` table in the database. Entities provide a uniform way of defining and interacting with data retrieved from the database.
-
-Aside from Medusa’s core entities, you can also create your own entities to use in your Medusa server. Custom entities must reside in the `src/models` directory of your Medusa server.
-
-Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
-
-All entities must extend either the `BaseEntity` or `SoftDeletableEntity` classes. The `BaseEntity` class holds common columns including the `id`, `created_at`, and `updated_at` columns.
-
-The `SoftDeletableEntity` class extends the `BaseEntity` class and adds another column `deleted_at`. If an entity can be soft deleted, meaning that a row in it can appear to the user as deleted but still be available in the database, it should extend `SoftDeletableEntity`.
-
-## How to Create a Custom Entity
-
-### Prerequisites
+## Prerequisites
 
 It’s recommended to create a `tsconfig.json` file in the root of your Medusa server with the following content:
 
@@ -30,7 +16,7 @@ It’s recommended to create a `tsconfig.json` file in the root of your Medusa s
 
 This will remove any errors that show up in your IDE related to experimental decorators.
 
-### Create the Entity
+## Create the Entity
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
@@ -70,11 +56,11 @@ export class Post extends SoftDeletableEntity {
 
 You can learn more about what decorators and column types you can use in [Typeorm’s documentation](https://typeorm.io/entities).
 
-### Create the Migration
+### Create a Migration
 
 Additionally, you must create a migration for your entity. Migrations are used to update the database schema with new tables or changes to existing tables.
 
-You can learn more about Migrations, how to create them, and how to run them in the [Migration documentation](migrations.md).
+You can learn more about Migrations, how to create them, and how to run them in the [Migration documentation](../migrations/overview.md).
 
 ### Create a Repository
 
@@ -97,7 +83,7 @@ Be careful with your file names as it can cause unclear errors in Typeorm. Make 
 
 :::
 
-## Access Your Custom Entity
+## Access a Custom Entity
 
 :::note
 
@@ -145,7 +131,7 @@ This same usage of repositories can be done in subscribers as well.
 
 :::
 
-### Deleting Soft-Deletable Entities
+### Delete a Soft-Deletable Entity
 
 To delete soft-deletable entities that extend the `SoftDeletableEntity` class, you can use the repository method `softDelete` method:
 
@@ -155,6 +141,6 @@ await postRepository.softDelete(post.id);
 
 ## What’s Next 🚀
 
-- Check out Medusa's entities in the [Entities' reference](../../references/entities/classes/Address.md).
-- Learn about [migrations](migrations.md).
-- Learn more about [Services](services/create-service.md) and how to use them.
+- Check out Medusa's entities in the [Entities' reference](../../../references/entities/classes/Address.md).
+- Learn about [migrations](../migrations/overview.md).
+- Learn more about [Services](../services/create-service.md) and how to use them.

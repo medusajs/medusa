@@ -1,6 +1,6 @@
 get:
   operationId: GetApps
-  summary: List applications
+  summary: List Applications
   description: Retrieve a list of applications.
   x-authenticated: true
   x-codeSamples:

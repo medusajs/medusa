@@ -7,7 +7,7 @@ import ReturnReasonService from "../../../../services/return-reason"
 /**
  * @oas [get] /return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
- * summary: "Retrieve a Return Reason"
+ * summary: "Get a Return Reason"
  * description: "Retrieves a Return Reason."
  * parameters:
  *   - (path) id=* {string} The id of the Return Reason.

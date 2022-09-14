@@ -1,6 +1,6 @@
 post:
   operationId: PostSalesChannelsChannelProductsBatch
-  summary: Assign a batch of product to a sales channel
+  summary: Add Products
   description: Assign a batch of product to a sales channel.
   x-authenticated: true
   parameters:
@@ -66,7 +66,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteSalesChannelsChannelProductsBatch
-  summary: Remove a list of products from a sales channel
+  summary: Delete Products
   description: Remove a list of products from a sales channel.
   x-authenticated: true
   parameters:

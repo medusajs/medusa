@@ -14,8 +14,8 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/dynamic-codes
  * operationId: "PostDiscountsDiscountDynamicCodes"
- * summary: "Create a dynamic Discount code"
- * description: "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour."
+ * summary: "Create a Dynamic Code"
+ * description: "Creates a dynamic unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount to create the dynamic code from."

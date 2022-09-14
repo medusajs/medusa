@@ -44,7 +44,6 @@
     "@babel/runtime": "^7.15.4",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.32.0",
     "jest": "^26.6.3"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
