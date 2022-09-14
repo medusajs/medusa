@@ -5,7 +5,7 @@ import { createWrapper } from "../../../utils"
 
 describe("useAdminDelete hook", () => {
   test("Deletes an order edit", async () => {
-    const id = "id test"
+    const id = "oe_1"
     const { result, waitFor } = renderHook(() => useAdminDeleteOrderEdit(id), {
       wrapper: createWrapper(),
     })
