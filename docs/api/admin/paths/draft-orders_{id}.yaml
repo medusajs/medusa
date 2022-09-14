@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetDraftOrdersDraftOrder
-  summary: Retrieve a Draft Order
+  summary: Get a Draft Order
   description: Retrieves a Draft Order.
   x-authenticated: true
   parameters:

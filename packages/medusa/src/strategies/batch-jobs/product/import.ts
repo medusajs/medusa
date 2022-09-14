@@ -341,12 +341,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       }
 
       if (!channel) {
-        channel = (await salesChannelServiceTx.retrieveByName(input.name, {
-          select: ["id"],
-        })) as SalesChannel
+        try {
+          channel = (await salesChannelServiceTx.retrieveByName(input.name, {
+            select: ["id"],
+          })) as SalesChannel
+        } catch (e) {
+          // noop
+        }
       }
 
-      salesChannels.push(channel)
+      if (channel) {
+        salesChannels.push(channel)
+      }
     }
 
     return salesChannels
@@ -382,7 +388,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       ) as unknown as CreateProductInput
 
       try {
-        if (isSalesChannelsFeatureOn) {
+        if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,

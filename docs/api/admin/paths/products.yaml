@@ -215,7 +215,7 @@ post:
                             index in the Product's `options` field.
                           type: string
             weight:
-              description: The wieght of the Product.
+              description: The weight of the Product.
               type: number
             length:
               description: The length of the Product.
@@ -278,7 +278,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetProducts
-  summary: List Product
+  summary: List Products
   description: Retrieves a list of Product
   x-authenticated: true
   parameters:

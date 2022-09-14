@@ -1,6 +1,6 @@
 post:
   operationId: PostAuth
-  summary: Authenticate Customer
+  summary: Customer Login
   description: >-
     Logs a Customer in and authorizes them to view their details. Successful
     authentication will set a session cookie in the Customer's browser.
@@ -54,7 +54,7 @@ post:
               description: The Customer's password.
 delete:
   operationId: DeleteAuth
-  summary: Log out
+  summary: Customer Log out
   description: Destroys a Customer's authenticated session.
   x-authenticated: true
   x-codeSamples:
@@ -83,7 +83,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetAuth
-  summary: Get Session
+  summary: Get Current Customer
   description: Gets the currently logged in Customer.
   x-authenticated: true
   x-codeSamples:

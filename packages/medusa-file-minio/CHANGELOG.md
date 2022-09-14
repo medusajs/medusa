@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.0
+
+### Minor Changes
+
+- [#2159](https://github.com/medusajs/medusa/pull/2159) [`70cf3f1f2`](https://github.com/medusajs/medusa/commit/70cf3f1f2c314dff08dbd53bbe4e5d278958cf67) Thanks [@shahednasser](https://github.com/shahednasser)! - Version bump
+
 ## 1.0.10
 
 ### Patch Changes

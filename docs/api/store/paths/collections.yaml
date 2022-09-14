@@ -1,6 +1,6 @@
 get:
   operationId: GetCollections
-  summary: List Product Collections
+  summary: List Collections
   description: Retrieve a list of Product Collection.
   parameters:
     - in: query

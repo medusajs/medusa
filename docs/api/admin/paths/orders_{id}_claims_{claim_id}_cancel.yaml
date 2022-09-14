@@ -1,6 +1,6 @@
 post:
   operationId: PostOrdersClaimCancel
-  summary: Cancels a Claim
+  summary: Cancel a Claim
   description: Cancels a Claim
   x-authenticated: true
   parameters:

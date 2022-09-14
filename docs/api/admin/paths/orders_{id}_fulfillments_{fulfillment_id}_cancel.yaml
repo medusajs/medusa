@@ -1,6 +1,6 @@
 post:
   operationId: PostOrdersOrderFulfillmentsCancel
-  summary: Cancels a fulfilmment
+  summary: Cancels a Fulfilmment
   description: Registers a Fulfillment as canceled.
   x-authenticated: true
   parameters:
