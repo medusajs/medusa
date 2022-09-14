@@ -7,7 +7,7 @@ import { adminOrderEditsKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 
-export const useAdminDeleteNote = (
+export const useAdminDeleteOrderEdit = (
   id: string,
   options?: UseMutationOptions<Response<AdminNotesDeleteRes>, Error, void>
 ) => {
