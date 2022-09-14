@@ -135,7 +135,7 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      await orderEditRepo.softDelete(edit)
+      await orderEditRepo.softRemove(edit)
 
       return Promise.resolve()
     })
