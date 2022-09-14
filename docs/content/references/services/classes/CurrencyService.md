@@ -1,16 +1,16 @@
-# Class: ReturnReasonService
+# Class: CurrencyService
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`ReturnReasonService`**
+  ↳ **`CurrencyService`**
 
 ## Constructors
 
 ### constructor
 
-• **new ReturnReasonService**(`__namedParameters`)
+• **new CurrencyService**(`__namedParameters`)
 
 #### Parameters
 
@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:21](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L21)
+[packages/medusa/src/services/currency.ts:32](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L32)
 
 ## Properties
 
@@ -56,6 +56,36 @@ TransactionBaseService.\_\_container\_\_
 
 ___
 
+### currencyRepository\_
+
+• `Protected` `Readonly` **currencyRepository\_**: typeof `CurrencyRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/currency.ts:28](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L28)
+
+___
+
+### eventBusService\_
+
+• `Protected` `Readonly` **eventBusService\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/currency.ts:29](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L29)
+
+___
+
+### featureFlagRouter\_
+
+• `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+
+#### Defined in
+
+[packages/medusa/src/services/currency.ts:30](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L30)
+
+___
+
 ### manager\_
 
 • `Protected` **manager\_**: `EntityManager`
@@ -66,17 +96,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L18)
-
-___
-
-### retReasonRepo\_
-
-• `Protected` `Readonly` **retReasonRepo\_**: typeof `ReturnReasonRepository`
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L16)
+[packages/medusa/src/services/currency.ts:25](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L25)
 
 ___
 
@@ -90,7 +110,23 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:19](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L19)
+[packages/medusa/src/services/currency.ts:26](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L26)
+
+___
+
+### Events
+
+▪ `Static` `Readonly` **Events**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `UPDATED` | `string` |
+
+#### Defined in
+
+[packages/medusa/src/services/currency.ts:21](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L21)
 
 ## Methods
 
@@ -133,91 +169,55 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### create
+### listAndCount
 
-▸ **create**(`data`): `Promise`<`ReturnReason`\>
+▸ **listAndCount**(`selector`, `config?`): `Promise`<[`Currency`[], `number`]\>
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `data` | `CreateReturnReason` |
-
-#### Returns
-
-`Promise`<`ReturnReason`\>
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:29](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L29)
-
-___
-
-### delete
-
-▸ **delete**(`returnReasonId`): `Promise`<`void`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `returnReasonId` | `string` |
-
-#### Returns
-
-`Promise`<`void`\>
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:110](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L110)
-
-___
-
-### list
-
-▸ **list**(`selector`, `config?`): `Promise`<`ReturnReason`[]\>
+Lists currencies based on the provided parameters and includes the count of
+currencies that match the query.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `Selector`<`ReturnReason`\> | the query object for find |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
+| `selector` | `Selector`<`Currency`\> | an object that defines rules to filter currencies   by |
+| `config` | `FindConfig`<`Currency`\> | object that defines the scope for what should be   returned |
 
 #### Returns
 
-`Promise`<`ReturnReason`[]\>
+`Promise`<[`Currency`[], `number`]\>
 
-the result of the find operation
+an array containing the currencies as
+  the first element and the total count of products that matches the query
+  as the second element.
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:72](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L72)
+[packages/medusa/src/services/currency.ts:81](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L81)
 
 ___
 
-### retrieve
+### retrieveByCode
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`ReturnReason`\>
+▸ **retrieveByCode**(`code`): `Promise`<`Currency`\>
 
-Gets an order by id.
+Return the currency
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of order to retrieve |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
+| `code` | `string` | The code of the currency that must be retrieve |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
+`Promise`<`Currency`\>
 
-the order document
+The currency
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:91](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L91)
+[packages/medusa/src/services/currency.ts:50](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L50)
 
 ___
 
@@ -247,28 +247,32 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<`ReturnReason`\>
+▸ **update**(`code`, `data`): `Promise`<`undefined` \| `Currency`\>
+
+Update a currency
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `data` | `UpdateReturnReason` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `code` | `string` | The code of the currency to update |
+| `data` | `UpdateCurrencyInput` | The data that must be updated on the currency |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
+`Promise`<`undefined` \| `Currency`\>
+
+The updated currency
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:50](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/return-reason.ts#L50)
+[packages/medusa/src/services/currency.ts:103](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/currency.ts#L103)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnReasonService`](ReturnReasonService.md)
+▸ **withTransaction**(`transactionManager?`): [`CurrencyService`](CurrencyService.md)
 
 #### Parameters
 
@@ -278,7 +282,7 @@ ___
 
 #### Returns
 
-[`ReturnReasonService`](ReturnReasonService.md)
+[`CurrencyService`](CurrencyService.md)
 
 #### Inherited from
 
