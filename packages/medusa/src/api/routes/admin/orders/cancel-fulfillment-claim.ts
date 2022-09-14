@@ -11,8 +11,8 @@ import { MedusaError } from "medusa-core-utils"
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
- * summary: "Cancels a fulfilmment related to a Claim"
- * description: "Registers a Fulfillment as canceled."
+ * summary: "Cancel Claim Fulfillment"
+ * description: "Registers a claim's fulfillment as canceled."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Claim relates to.

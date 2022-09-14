@@ -11,7 +11,7 @@ import { DraftOrder } from "../../../.."
 /**
  * @oas [get] /draft-orders/{id}
  * operationId: "GetDraftOrdersDraftOrder"
- * summary: "Retrieve a Draft Order"
+ * summary: "Get a Draft Order"
  * description: "Retrieves a Draft Order."
  * x-authenticated: true
  * parameters:

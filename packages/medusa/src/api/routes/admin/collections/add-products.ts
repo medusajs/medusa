@@ -7,7 +7,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 /**
  * @oas [post] /collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
- * summary: "Updates products associated with a Product Collection"
+ * summary: "Update Products"
  * description: "Updates products associated with a Product Collection"
  * x-authenticated: true
  * parameters:

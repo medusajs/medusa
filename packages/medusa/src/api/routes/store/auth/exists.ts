@@ -2,7 +2,7 @@ import CustomerService from "../../../../services/customer"
 /**
  * @oas [get] /auth/{email}
  * operationId: "GetAuthEmail"
- * summary: "Check if email has account"
+ * summary: "Check if email exists"
  * description: "Checks if a Customer with the given email has signed up."
  * parameters:
  *   - in: path

@@ -173,6 +173,110 @@ describe("Batch job of product-export type", () => {
     expect(lineColumn[25]).toBe(productPayload.variants[0].sku)
   })
 
+  it("should export a csv file containing the expected products including new line char in the cells", async () => {
+    jest.setTimeout(1000000)
+    const api = useApi()
+
+    const productPayload = {
+      title: "Test export product",
+      description: "test-product-description\ntest line 2",
+      type: { value: "test-type" },
+      images: ["test-image.png", "test-image-2.png"],
+      collection_id: "test-collection",
+      tags: [{ value: "123" }, { value: "456" }],
+      options: [{ title: "size" }, { title: "color" }],
+      variants: [
+        {
+          title: "Test variant",
+          inventory_quantity: 10,
+          sku: "test-variant-sku-product-export",
+          prices: [
+            {
+              currency_code: "usd",
+              amount: 100,
+            },
+            {
+              currency_code: "eur",
+              amount: 45,
+            },
+            {
+              currency_code: "dkk",
+              amount: 30,
+            },
+          ],
+          options: [{ value: "large" }, { value: "green" }],
+        },
+      ],
+    }
+    const createProductRes = await api.post(
+      "/admin/products",
+      productPayload,
+      adminReqConfig
+    )
+    const productId = createProductRes.data.product.id
+    const variantId = createProductRes.data.product.variants[0].id
+
+    const batchPayload = {
+      type: "product-export",
+      context: {
+        filterable_fields: {
+          title: "Test export product",
+        },
+      },
+    }
+    const batchJobRes = await api.post(
+      "/admin/batch-jobs",
+      batchPayload,
+      adminReqConfig
+    )
+    const batchJobId = batchJobRes.data.batch_job.id
+
+    expect(batchJobId).toBeTruthy()
+
+    // Pull to check the status until it is completed
+    let batchJob
+    let shouldContinuePulling = true
+    while (shouldContinuePulling) {
+      const res = await api.get(
+        `/admin/batch-jobs/${batchJobId}`,
+        adminReqConfig
+      )
+
+      await new Promise((resolve, _) => {
+        setTimeout(resolve, 1000)
+      })
+
+      batchJob = res.data.batch_job
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
+    }
+
+    expect(batchJob.status).toBe("completed")
+
+    exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
+    const isFileExists = (await fs.stat(exportFilePath)).isFile()
+
+    expect(isFileExists).toBeTruthy()
+
+    const fileSize = (await fs.stat(exportFilePath)).size
+    expect(batchJob.result?.file_size).toBe(fileSize)
+
+    const data = (await fs.readFile(exportFilePath)).toString()
+    const [, ...lines] = data.split("\r\n").filter((l) => l)
+
+    expect(lines.length).toBe(1)
+
+    const lineColumn = lines[0].split(";")
+
+    expect(lineColumn[0]).toBe(productId)
+    expect(lineColumn[2]).toBe(productPayload.title)
+    expect(lineColumn[4]).toBe(`"${productPayload.description}"`)
+    expect(lineColumn[23]).toBe(variantId)
+    expect(lineColumn[24]).toBe(productPayload.variants[0].title)
+    expect(lineColumn[25]).toBe(productPayload.variants[0].sku)
+  })
+
   it("should export a csv file containing a limited number of products", async () => {
     jest.setTimeout(1000000)
     const api = useApi()

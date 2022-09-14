@@ -1,7 +1,7 @@
 /**
  * @oas [get] /batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
- * summary: "Retrieve a Batch Job"
+ * summary: "Get a Batch Job"
  * description: "Retrieves a Batch Job."
  * x-authenticated: true
  * parameters:

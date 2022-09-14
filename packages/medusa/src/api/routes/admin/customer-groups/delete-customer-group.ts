@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [delete] /customer-groups/{id}
  * operationId: "DeleteCustomerGroupsCustomerGroup"
- * summary: "Delete a CustomerGroup"
+ * summary: "Delete a Customer Group"
  * description: "Deletes a CustomerGroup."
  * x-authenticated: true
  * parameters:
