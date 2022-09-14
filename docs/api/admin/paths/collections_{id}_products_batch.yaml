@@ -1,6 +1,6 @@
 post:
   operationId: PostProductsToCollection
-  summary: Updates products associated with a Product Collection
+  summary: Update Products
   description: Updates products associated with a Product Collection
   x-authenticated: true
   parameters:
@@ -56,7 +56,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteProductsFromCollection
-  summary: Removes products associated with a Product Collection
+  summary: Remove Product
   description: Removes products associated with a Product Collection
   x-authenticated: true
   parameters:

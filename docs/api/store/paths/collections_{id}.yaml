@@ -1,6 +1,6 @@
 get:
   operationId: GetCollectionsCollection
-  summary: Retrieve a Product Collection
+  summary: Get a Collection
   description: Retrieves a Product Collection.
   parameters:
     - in: path

@@ -1,6 +1,6 @@
 get:
   operationId: GetVariantsVariant
-  summary: Retrieve a Product Variant
+  summary: Get a Product Variant
   description: Retrieves a Product Variant by id
   parameters:
     - in: path

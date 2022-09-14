@@ -1,6 +1,6 @@
 get:
   operationId: GetOrdersOrderCartId
-  summary: Retrieves Order by Cart id
+  summary: Get by Cart ID
   description: Retrieves an Order by the id of the Cart that was used to create the Order.
   parameters:
     - in: path

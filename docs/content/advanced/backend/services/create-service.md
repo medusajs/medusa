@@ -43,9 +43,9 @@ async getProductCount() {
 }
 ```
 
-## Using a Service
+## Use a Service
 
-You can use core and custom services throughout your Medusa server.
+In this section, you'll learn how to use services throughout your Medusa server. This includes both Medusa's services and your custom services.
 
 :::note
 

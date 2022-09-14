@@ -1,6 +1,6 @@
 get:
   operationId: GetCartsCart
-  summary: Retrieve a Cart
+  summary: Get a Cart
   description: Retrieves a Cart.
   parameters:
     - in: path

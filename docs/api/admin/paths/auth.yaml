@@ -1,6 +1,6 @@
 post:
   operationId: PostAuth
-  summary: Authenticate a User
+  summary: User Login
   x-authenticated: false
   description: Logs a User in and authorizes them to manage Store settings.
   parameters: []
@@ -53,7 +53,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteAuth
-  summary: Delete Session
+  summary: User Logout
   x-authenticated: true
   description: Deletes the current session for the logged in user.
   x-codeSamples:
@@ -87,7 +87,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetAuth
-  summary: Get Session
+  summary: Get Current User
   x-authenticated: true
   description: Gets the currently logged in User.
   x-codeSamples:
