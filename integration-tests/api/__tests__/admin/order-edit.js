@@ -247,55 +247,50 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       [
         "requested",
         {
-          timestampField: "requested_at",
-          actorField: "requested_by",
+          requested_at: new Date(),
+          requested_by: adminUserId,
         },
       ],
       [
         "confirmed",
         {
-          timestampField: "confirmed_at",
-          actorField: "confirmed_by",
+          confirmed_at: new Date(),
+          confirmed_by: adminUserId,
         },
       ],
       [
         "declined",
         {
-          timestampField: "declined_at",
-          actorField: "declined_by",
+          declined_at: new Date(),
+          declined_by: adminUserId,
         },
       ],
       [
         "canceled",
         {
-          timestampField: "canceled_at",
-          actorField: "canceled_by",
+          canceled_at: new Date(),
+          canceled_by: adminUserId,
         },
       ],
-    ])(
-      "fails to delete order edit with status %s",
-      async (status, { timestampField, actorField }) => {
-        expect.assertions(2)
+    ])("fails to delete order edit with status %s", async (status, data) => {
+      expect.assertions(2)
 
-        const adminUserId = "admin_user"
-        const { id } = await simpleOrderEditFactory(dbConnection, {
-          [timestampField]: new Date(),
-          [actorField]: adminUserId,
-          created_by: adminUserId,
+      const { id } = await simpleOrderEditFactory(dbConnection, {
+        created_by: adminUserId,
+        ...data,
+      })
+
+      const api = useApi()
+
+      await api
+        .delete(`/admin/order-edits/${id}`, adminHeaders)
+        .catch((err) => {
+          console.log(err.response.data)
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            `Cannot delete order edit with status ${status}`
+          )
         })
-
-        const api = useApi()
-
-        await api
-          .delete(`/admin/order-edits/${id}`, adminHeaders)
-          .catch((err) => {
-            console.log(err.response.data)
-            expect(err.response.status).toEqual(400)
-            expect(err.response.data.message).toEqual(
-              `Cannot delete order edit with status ${status}`
-            )
-          })
-      }
-    )
+    })
   })
 })
