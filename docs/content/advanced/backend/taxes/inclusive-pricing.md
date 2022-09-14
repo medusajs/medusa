@@ -10,9 +10,9 @@ Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. T
 
 ## Introduction
 
-Countries have different tax rates, even if they share the same currency. In these cases, using one tax-exclusive price for a currency that is used by multiple countries or regions can show different price to the customer based on the tax rate of each region.
+Tax Inclusive pricing allows you to set the final prices for products and shipping options regardless of the customer's applicable tax rates. When tax-inclusive prices are used, Medusa automatically calculates the tax amount for a given price.
 
-Using Tax Inclusive Pricing, you can just specify the price that should be displayed to the customer for a specific currency.
+This can be useful when some countries have the same currency but have different tax rates. If you want your prices to be the same across these countries, you have to manage two price lists to account for the tax differences. Using tax-inclusive pricing you only have to specify the price once.
 
 Then, Medusa handles calculating the tax amount using the tax rate and the tax-inclusive price. This is managed in the backend and relayed to accounting and analytics tools.
 
@@ -20,7 +20,7 @@ Then, Medusa handles calculating the tax amount using the tax rate and the tax-i
 
 Tax inclusivity can be toggled for regions, currencies, price lists, and shipping options either during creation or while editing. This is represented by the boolean attribute `includes_tax` available in the entities `Region`, `Currency`, `PriceList`, and `ShippingOption`. By default, this attribute is set to `false`.
 
-If you want to enable or disable this attribute for any of these entities, you can use the create or edit/update endpoints related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
+If you want to enable or disable this attribute for any of these entities, you can use the create or update endpoints related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
 
 The value set for these entities can affect whether line items and shipping methods are tax inclusive or not.
 
@@ -57,9 +57,9 @@ When a price is tax-inclusive, the tax amount is calculated using the following 
 const taxAmount = (taxRate * taxInclusivePrice) / (1 + taxRate)
 ```
 
-Where `taxRate` is the tax rate to be applied on the price, and `taxInclusivePrice` is the price that the admin entered.
+Where `taxRate` is the tax rate to be applied to the price, and `taxInclusivePrice` is the price entered by the store operator.
 
-For example, if the tax rate is `0.25` and the price of a product is `100`, then the tax amount applied to that product is `20`.
+For example, if the tax rate is `0.25` and the price of a product is `100`, the resulting tax amount calculated by Medusa will be `0.25 * 100 / 1.25 = 20`.
 
 ## Retrieving Tax Amounts
 
