@@ -7,6 +7,7 @@ import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
+import { OrderEdit } from "../../../../models"
 
 const route = Router()
 
@@ -30,4 +31,6 @@ export default (app) => {
   return app
 }
 
-export { AdminOrdersEditsRes } from "../../../../types/order-edit"
+export type AdminOrdersEditsRes = {
+  order_edit: OrderEdit
+}

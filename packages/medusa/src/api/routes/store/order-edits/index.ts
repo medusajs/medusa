@@ -7,6 +7,7 @@ import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
+import { OrderEdit } from "../../../../models"
 
 const route = Router()
 
@@ -35,7 +36,12 @@ export default (app) => {
   return app
 }
 
-export { StoreOrderEditsRes } from "../../../../types/order-edit"
+export type StoreOrderEditsRes = {
+  order_edit: Omit<
+    OrderEdit,
+    "internal_note" | "created_by" | "confirmed_by" | "canceled_by"
+  >
+}
 
 export const storeOrderEditNotAllowedFields = [
   "internal_note",

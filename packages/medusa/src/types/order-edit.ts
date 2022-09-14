@@ -1,16 +1,5 @@
 import { OrderEdit } from "../models"
 
-export type AdminOrdersEditsRes = {
-  order_edit: OrderEdit
-}
-
-export type StoreOrderEditsRes = {
-  order_edit: Omit<
-    OrderEdit,
-    "internal_note" | "created_by" | "confirmed_by" | "canceled_by"
-  >
-}
-
 export const defaultOrderEditRelations: string[] = [
   "order",
   "order.items",
