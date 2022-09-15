@@ -38,5 +38,6 @@ In the list, you can see order details such as ID, the ID of the order the draft
 - [Manage Order’s Fulfillment](./fulfillments.mdx)
 - [Manage Draft Orders](./drafts.mdx)
 - [Manage Order Returns](./returns.mdx)
-- [Manage Order Claims](./claims.md)
-- [Manage Order Exchanges and Swaps](./swaps.md)
+- [Manage Order Claims](./claims.mdx)
+- [Manage Order Exchanges](./swaps.md)
+- [Export Orders](./export.mdx)

@@ -82,6 +82,9 @@ post:
                   id:
                     description: The ID of a customer group
                     type: string
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of price list'
+              type: boolean
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

@@ -1589,6 +1589,92 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /currencies:
+    get:
+      operationId: GetCurrencies
+      summary: List Currency
+      description: Retrieves a list of Currency
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: code
+          description: Code of the currency to search for.
+          schema:
+            type: string
+        - in: query
+          name: includes_tax
+          description: Search for tax inclusive currencies.
+          schema:
+            type: boolean
+        - in: query
+          name: order
+          description: to retrieve products in.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
+          schema:
+            type: string
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The number of Currency.
+                    type: integer
+                  offset:
+                    description: The offset of the Currency query.
+                    type: integer
+                  limit:
+                    description: The limit of the currency query.
+                    type: integer
+                  currencies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/currency'
+  '/currencies/{code}':
+    post:
+      operationId: PostCurrenciesCurrency
+      summary: Update a Currency
+      description: Update a Currency
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The code of the Currency.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                includes_tax:
+                  type: boolean
+                  description: '[EXPERIMENTAL] Tax included in prices of currency.'
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  currency:
+                    $ref: '#/components/schemas/currency'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -9311,6 +9397,9 @@ paths:
                       id:
                         description: The ID of a customer group
                         type: string
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of price list'
+                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9818,6 +9907,9 @@ paths:
                       id:
                         description: The ID of a customer group
                         type: string
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of price list'
+                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12895,6 +12987,9 @@ paths:
                   type: array
                   items:
                     type: string
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of region'
+                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13258,6 +13353,9 @@ paths:
                 tax_rate:
                   description: The tax rate to use on Orders in the Region.
                   type: number
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of region'
+                  type: boolean
                 payment_providers:
                   description: >-
                     A list of Payment Provider IDs that should be enabled for
@@ -14983,6 +15081,9 @@ paths:
                     An optional set of key-value pairs with additional
                     information.
                   type: object
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15311,6 +15412,9 @@ paths:
                       amount:
                         description: The amount to compare with.
                         type: integer
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17427,8 +17531,10 @@ paths:
   /uploads:
     post:
       operationId: PostUploads
-      summary: Upload a file
-      description: Uploads a file to the specific fileservice that is installed in Medusa.
+      summary: Upload files
+      description: >-
+        Uploads at least one file to the specific fileservice that is installed
+        in Medusa.
       x-authenticated: true
       requestBody:
         content:
@@ -17465,7 +17571,9 @@ paths:
 
             --header 'Content-Type: image/jpeg' \
 
-            --data-binary '{file_path}'
+            --form 'files=@"<FILE_PATH_1>"' \
+
+            --form 'files=@"<FILE_PATH_1>"'
       security:
         - api_token: []
         - cookie_auth: []
@@ -17687,7 +17795,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Users
+        - User
       responses:
         '200':
           description: OK
@@ -19156,6 +19264,9 @@ components:
           description: The written name of the currency
           type: string
           example: US Dollar
+        includes_tax:
+          description: '[EXPERIMENTAL] Does the currency prices include tax'
+          type: boolean
     custom_shipping_option:
       title: Custom Shipping Option
       description: >-
@@ -19212,6 +19323,11 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+        includes_tax:
+          description: >-
+            [EXPERIMENTAL] Indicates if the custom shipping option price include
+            tax
+          type: boolean
     customer_group:
       title: Customer Group
       description: Represents a customer group
@@ -20511,6 +20627,9 @@ components:
           type: integer
           description: The total of the gift card of the line item
           example: 0
+        includes_tax:
+          description: '[EXPERIMENTAL] Indicates if the line item unit_price include tax'
+          type: boolean
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -20849,6 +20968,138 @@ components:
           type: object
           description: Any data necessary to the app.
           example: {}
+    order_edit:
+      title: Order Edit
+      description: Order edit keeps track of order items changes.
+      x-resourceId: order_edit
+      required:
+        - order_id
+        - order
+        - changes
+        - created_by
+      properties:
+        id:
+          type: string
+          description: The order edit's ID
+          example: oe_01G8TJSYT9M6AVS5N4EMNFS1EK
+        order_id:
+          type: string
+          description: The ID of the order that is edited
+          example: order_01G2SG30J8C85S4A5CHM2S1NS2
+        order:
+          description: Order object
+          $ref: '#/components/schemas/order'
+        changes:
+          type: array
+          description: Line item changes array.
+          items:
+            $ref: '#/components/schemas/order_item_change'
+        internal_note:
+          description: An optional note with additional details about the order edit.
+          type: string
+          example: Included two more items B to the order.
+        created_by:
+          type: string
+          description: >-
+            The unique identifier of the user or customer who created the order
+            edit.
+        requested_by:
+          type: string
+          description: >-
+            The unique identifier of the user or customer who requested the
+            order edit.
+        requested_at:
+          type: string
+          description: The date with timezone at which the edit was requested.
+          format: date-time
+        confirmed_by:
+          type: string
+          description: >-
+            The unique identifier of the user or customer who confirmed the
+            order edit.
+        confirmed_at:
+          type: string
+          description: The date with timezone at which the edit was confirmed.
+          format: date-time
+        declined_by:
+          type: string
+          description: >-
+            The unique identifier of the user or customer who declined the order
+            edit.
+        declined_at:
+          type: string
+          description: The date with timezone at which the edit was declined.
+          format: date-time
+        declined_reason:
+          description: An optional note why  the order edit is declined.
+          type: string
+        subtotal:
+          type: integer
+          description: The subtotal for line items computed from changes.
+          example: 8000
+        discount_total:
+          type: integer
+          description: The total of discount
+          example: 800
+        tax_total:
+          type: integer
+          description: The total of tax
+          example: 0
+        total:
+          type: integer
+          description: The total amount of the edited order.
+          example: 8200
+        difference_due:
+          type: integer
+          description: >-
+            The difference between the total amount of the order and total
+            amount of edited order.
+          example: 8200
+        items:
+          type: array
+          description: Computed line items from the changes.
+          items:
+            $ref: '#/components/schemas/line_item'
+    order_item_change:
+      title: Order Item Change
+      description: Represents an order edit item change
+      x-resourceId: order_item_change
+      required:
+        - type
+        - order_edit_id
+      properties:
+        id:
+          type: string
+          description: The order item change's ID
+          example: oic_01G8TJSYT9M6AVS5N4EMNFS1EK
+        type:
+          type: string
+          description: The order's status
+          enum:
+            - item_add
+            - item_remove
+            - item_update
+        order_edit_id:
+          type: string
+          description: The ID of the order edit
+          example: oe_01G2SG30J8C85S4A5CHM2S1NS2
+        order_edit:
+          description: Order edit object
+          $ref: '#/components/schemas/order_edit'
+        original_line_item_id:
+          type: string
+          description: The ID of the original line item in the order
+          example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
+        original_line_item:
+          description: Original line item object.
+          $ref: '#/components/schemas/line_item'
+        line_item_id:
+          type: string
+          description: The ID of the cloned line item.
+          example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
+        line_item:
+          description: Line item object.
+          $ref: '#/components/schemas/line_item'
     order:
       title: Order
       description: Represents an order
@@ -21041,6 +21292,13 @@ components:
             `items` is expanded.
           items:
             $ref: '#/components/schemas/line_item'
+        edits:
+          type: array
+          description: >-
+            [EXPERIMENTAL] Order edits done on the order. Available if the
+            relation `edits` is expanded.
+          items:
+            $ref: '#/components/schemas/order_edit'
         gift_card_transactions:
           type: array
           description: >-
@@ -21372,7 +21630,12 @@ components:
             if the relation `prices` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/money_amount'
+            oneOf:
+              - $ref: '#/components/schemas/money_amount'
+              - $ref: '#/components/schemas/customer_group'
+        includes_tax:
+          description: '[EXPERIMENTAL] Does the price list prices include tax'
+          type: boolean
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -22184,6 +22447,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/fulfillment_provider'
+        includes_tax:
+          description: '[EXPERIMENTAL] Does the prices for the region include tax'
+          type: boolean
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -22578,6 +22844,9 @@ components:
             data, and may contain information such as a drop point id.
           type: object
           example: {}
+        includes_tax:
+          description: '[EXPERIMENTAL] Indicates if the shipping method price include tax'
+          type: boolean
     shipping_option_requirement:
       title: Shipping Option Requirement
       description: >-
@@ -22712,6 +22981,9 @@ components:
             Shipping Option.
           type: object
           example: {}
+        includes_tax:
+          description: '[EXPERIMENTAL] Does the shipping option price include tax'
+          type: boolean
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
