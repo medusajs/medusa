@@ -80,9 +80,11 @@ describe("OrderEditService", () => {
     const orderEdit = await orderEditService.retrieve(
       IdMap.getId("order-edit-with-changes")
     )
-    const computedOrderEdit = await orderEditService.computeLineItems(orderEdit)
-    expect(computedOrderEdit.items.length).toBe(2)
-    expect(computedOrderEdit.items).toEqual(
+    const { items, removedItems } = await orderEditService.computeLineItems(
+      orderEdit.id
+    )
+    expect(items.length).toBe(2)
+    expect(items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           id: IdMap.getId("line-item-2"),
@@ -93,8 +95,8 @@ describe("OrderEditService", () => {
       ])
     )
 
-    expect(computedOrderEdit.removed_items.length).toBe(1)
-    expect(computedOrderEdit.removed_items).toEqual(
+    expect(removedItems.length).toBe(1)
+    expect(removedItems).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           id: IdMap.getId("line-item-1"),
