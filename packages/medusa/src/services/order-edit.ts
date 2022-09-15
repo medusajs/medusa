@@ -61,32 +61,25 @@ export default class OrderEditService extends TransactionBaseService {
     return orderEdit
   }
 
-  async computeLineItems(orderEdit: OrderEdit): Promise<OrderEdit> {
-    let order = !!orderEdit.order?.items && orderEdit.order
-    if (!order) {
-      order = (
-        await this.retrieve(orderEdit.order_id, {
-          select: ["order"],
-          relations: ["order, order.items"],
-        })
-      ).order
-    }
+  async computeLineItems(
+    orderEditId: string
+  ): Promise<{ items: LineItem[]; removedItems: LineItem[] }> {
+    const orderEdit = await this.retrieve(orderEditId, {
+      select: ["id", "order_id", "changes", "order"],
+      relations: [
+        "changes",
+        "changes.line_item",
+        "changes.original_line_item",
+        "order",
+        "order.items",
+      ],
+    })
 
-    let changes = orderEdit.changes
-    if (!changes) {
-      changes = (
-        await this.retrieve(orderEdit.id, {
-          select: ["changes"],
-          relations: ["changes"],
-        })
-      ).changes
-    }
-
-    const originalItems = order.items ?? []
+    const originalItems = orderEdit.order.items
     const removedItems: LineItem[] = []
     const items: LineItem[] = []
 
-    const updatedItems = changes
+    const updatedItems = orderEdit.changes
       .map((itemChange) => {
         if (itemChange.type === OrderEditItemChangeType.ITEM_ADD) {
           items.push(itemChange.line_item as LineItem)
@@ -119,9 +112,6 @@ export default class OrderEditService extends TransactionBaseService {
       }
     })
 
-    orderEdit.items = items
-    orderEdit.removed_items = removedItems
-
-    return orderEdit
+    return { items, removedItems }
   }
 }

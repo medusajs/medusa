@@ -1,8 +1,6 @@
 import { OrderEdit } from "../models"
 
 export const defaultOrderEditRelations: string[] = [
-  "order",
-  "order.items",
   "changes",
   "changes.line_item",
   "changes.original_line_item",
@@ -10,7 +8,6 @@ export const defaultOrderEditRelations: string[] = [
 
 export const defaultOrderEditFields: (keyof OrderEdit)[] = [
   "id",
-  "order",
   "changes",
   "order_id",
   "created_by",
