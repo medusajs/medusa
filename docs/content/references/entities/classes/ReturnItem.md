@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/return-item.ts:28](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L28)
+[models/return-item.ts:28](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L28)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:22](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L22)
+[models/return-item.ts:22](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L22)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:14](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L14)
+[models/return-item.ts:14](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L14)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:47](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L47)
+[models/return-item.ts:47](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L47)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:44](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L44)
+[models/return-item.ts:44](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L44)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:25](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L25)
+[models/return-item.ts:25](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L25)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:41](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L41)
+[models/return-item.ts:41](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L41)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:37](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L37)
+[models/return-item.ts:37](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L37)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:34](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L34)
+[models/return-item.ts:34](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L34)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:31](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L31)
+[models/return-item.ts:31](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L31)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:11](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L11)
+[models/return-item.ts:11](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L11)
 
 ___
 
@@ -128,4 +128,4 @@ ___
 
 #### Defined in
 
-[models/return-item.ts:18](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/return-item.ts#L18)
+[models/return-item.ts:18](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/return-item.ts#L18)
