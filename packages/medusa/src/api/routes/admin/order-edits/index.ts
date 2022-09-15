@@ -1,4 +1,5 @@
 import { Router } from "express"
+
 import middlewares, {
   transformBody,
   transformQuery,
@@ -11,6 +12,7 @@ import {
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 import { OrderEdit } from "../../../../models"
+import { AdminPostOrderEditsOrderEditReq } from "./update-order-edit"
 import { AdminPostOrderEditsReq } from "./create-order-edit"
 
 const route = Router()
@@ -40,11 +42,7 @@ export default (app) => {
 
   route.post(
     "/:id",
-    transformQuery(EmptyQueryParams, {
-      defaultRelations: defaultOrderEditRelations,
-      defaultFields: defaultOrderEditFields,
-      isList: false,
-    }),
+    transformBody(AdminPostOrderEditsOrderEditReq),
     middlewares.wrap(require("./update-order-edit").default)
   )
 

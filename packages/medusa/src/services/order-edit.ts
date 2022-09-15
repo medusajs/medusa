@@ -18,7 +18,7 @@ import {
   TotalsService,
 } from "./index"
 import { CreateOrderEditInput } from "../types/order-edit"
-import { OrderService } from "./index"
+import { EventBusService, OrderService } from "./index"
 import { UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
@@ -33,6 +33,7 @@ type InjectedDependencies = {
 export default class OrderEditService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "order-edit.created",
+    UPDATED: "order-edit.updated",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -265,7 +266,27 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     data: UpdateOrderEditInput
   ): Promise<OrderEdit> {
-    return await this.retrieve(orderEditId)
+    const orderEditRepo = this.manager_.getCustomRepository(
+      this.orderEditRepository_
+    )
+
+    const orderEdit = await this.retrieve(orderEditId)
+
+    for (const key of Object.keys(data)) {
+      if (typeof data[key] !== `undefined`) {
+        orderEdit[key] = data[key]
+      }
+    }
+
+    const result = await orderEditRepo.save(orderEdit)
+
+    await this.eventBusService_
+      .withTransaction(this.manager_)
+      .emit(OrderEditService.Events.UPDATED, {
+        id: result.id,
+      })
+
+    return result
   }
 
   async delete(orderEditId: string): Promise<void> {
