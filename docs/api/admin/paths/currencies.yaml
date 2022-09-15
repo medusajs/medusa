@@ -1,0 +1,53 @@
+get:
+  operationId: GetCurrencies
+  summary: List Currency
+  description: Retrieves a list of Currency
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: code
+      description: Code of the currency to search for.
+      schema:
+        type: string
+    - in: query
+      name: includes_tax
+      description: Search for tax inclusive currencies.
+      schema:
+        type: boolean
+    - in: query
+      name: order
+      description: to retrieve products in.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many products to skip in the result.
+      schema:
+        type: string
+    - in: query
+      name: limit
+      description: Limit the number of products returned.
+      schema:
+        type: string
+  tags:
+    - Currency
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              count:
+                description: The number of Currency.
+                type: integer
+              offset:
+                description: The offset of the Currency query.
+                type: integer
+              limit:
+                description: The limit of the currency query.
+                type: integer
+              currencies:
+                type: array
+                items:
+                  $ref: ../components/schemas/currency.yaml

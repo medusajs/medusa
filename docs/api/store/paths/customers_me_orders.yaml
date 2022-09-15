@@ -63,9 +63,14 @@ get:
         type: string
     - in: query
       name: currency_code
-      description: to search for.
+      style: form
+      explode: false
+      description: The 3 character ISO currency code to set prices based on.
       schema:
         type: string
+        externalDocs:
+          url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+          description: See a list of codes.
     - in: query
       name: tax_rate
       description: to search for.
