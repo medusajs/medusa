@@ -842,6 +842,34 @@
       "refunded_total": 0,
       "refundable_amount": 8200
     },
+    "order_edit": {
+      "id": "oe_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "order_id": "ord_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "internal_note": "internal note",
+      "declined_reason": null,
+      "declined_at": null,
+      "declined_by": null,
+      "canceled_at": null,
+      "canceled_by": null,
+      "requested_at": null,
+      "requested_by": null,
+      "created_at": "2021-03-16T21:24:35.871Z",
+      "created_by_id": "admin_user",
+      "confirmed_at": null,
+      "confirmed_by": null
+    },
+    "store_order_edit": {
+      "id": "oe_01F0YET7XPCMF8RZ0Y151NZV2B",
+      "order_id": "ord_01F0YET7XPCMF8RZ0Y151NZV2V",
+      "declined_reason": null,
+      "declined_at": null,
+      "declined_by": null,
+      "canceled_at": null,
+      "requested_at": null,
+      "created_at": "2021-03-16T21:24:35.871Z",
+      "confirmed_at": null,
+      "confirmed_by": null
+    },
     "return": {
       "id": "ret_01F0YET7XPCMF8RZ0Y151NZV2V",
       "status": "requested",
