@@ -38,6 +38,16 @@ export default (app) => {
     middlewares.wrap(require("./get-order-edit").default)
   )
 
+  route.post(
+    "/:id",
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: defaultOrderEditRelations,
+      defaultFields: defaultOrderEditFields,
+      isList: false,
+    }),
+    middlewares.wrap(require("./update-order-edit").default)
+  )
+
   route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
   return app

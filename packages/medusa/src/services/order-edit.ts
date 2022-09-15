@@ -18,6 +18,8 @@ import {
   TotalsService,
 } from "./index"
 import { CreateOrderEditInput } from "../types/order-edit"
+import { OrderService } from "./index"
+import { UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -257,6 +259,13 @@ export default class OrderEditService extends TransactionBaseService {
 
       return orderEdit
     })
+  }
+
+  async update(
+    orderEditId: string,
+    data: UpdateOrderEditInput
+  ): Promise<OrderEdit> {
+    return await this.retrieve(orderEditId)
   }
 
   async delete(orderEditId: string): Promise<void> {
