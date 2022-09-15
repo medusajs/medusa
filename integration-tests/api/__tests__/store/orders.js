@@ -8,6 +8,7 @@ const {
   ProductVariant,
   LineItem,
   Payment,
+  PaymentSession,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -297,6 +298,59 @@ describe("/store/carts", () => {
       expect(responseFail.data.message).toEqual(
         "Cart has already been completed"
       )
+    })
+  })
+
+  describe("Cart completion with failed payment removes taxlines", () => {
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should remove taxlines when a cart completion fails", async () => {
+      expect.assertions(2)
+
+      const api = useApi()
+      const manager = dbConnection.manager
+
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const product1 = await simpleProductFactory(dbConnection)
+
+      const cartRes = await api.post("/store/carts", {
+        region_id: region.id,
+      })
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+      await api.post(`/store/carts/${cartId}/payment-sessions`)
+
+      const cartResponse = await api.get(`/store/carts/${cartId}`)
+
+      await dbConnection.manager.remove(
+        PaymentSession,
+        cartResponse.data.cart.payment_session
+      )
+
+      await api.post(`/store/carts/${cartId}/complete`).catch((err) => {
+        expect(err.response.status).toEqual(400)
+      })
+
+      const lineItem = await dbConnection.manager.findOne(LineItem, {
+        where: {
+          id: cartResponse.data.cart.items[0].id,
+        },
+        relations: ["tax_lines"],
+      })
+
+      expect(lineItem.tax_lines).toHaveLength(0)
     })
   })
 })
