@@ -1,16 +1,16 @@
-# Class: ReturnReasonService
+# Class: OrderEditService
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`ReturnReasonService`**
+  ↳ **`OrderEditService`**
 
 ## Constructors
 
 ### constructor
 
-• **new ReturnReasonService**(`__namedParameters`)
+• **new OrderEditService**(`__namedParameters`)
 
 #### Parameters
 
@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:21](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L21)
+[packages/medusa/src/services/order-edit.ts:27](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L27)
 
 ## Properties
 
@@ -58,7 +58,7 @@ ___
 
 ### manager\_
 
-• `Protected` **manager\_**: `EntityManager`
+• `Protected` `Readonly` **manager\_**: `EntityManager`
 
 #### Overrides
 
@@ -66,17 +66,27 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L18)
+[packages/medusa/src/services/order-edit.ts:23](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L23)
 
 ___
 
-### retReasonRepo\_
+### orderEditRepository\_
 
-• `Protected` `Readonly` **retReasonRepo\_**: typeof `ReturnReasonRepository`
+• `Protected` `Readonly` **orderEditRepository\_**: typeof `OrderEditRepository`
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L16)
+[packages/medusa/src/services/order-edit.ts:24](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L24)
+
+___
+
+### orderService\_
+
+• `Protected` `Readonly` **orderService\_**: [`OrderService`](OrderService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/order-edit.ts:25](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L25)
 
 ___
 
@@ -90,7 +100,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L19)
+[packages/medusa/src/services/order-edit.ts:22](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L22)
 
 ## Methods
 
@@ -133,91 +143,44 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### create
+### computeLineItems
 
-▸ **create**(`data`): `Promise`<`ReturnReason`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `data` | `CreateReturnReason` |
-
-#### Returns
-
-`Promise`<`ReturnReason`\>
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:29](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L29)
-
-___
-
-### delete
-
-▸ **delete**(`returnReasonId`): `Promise`<`void`\>
+▸ **computeLineItems**(`orderEditId`): `Promise`<{ `items`: `LineItem`[] ; `removedItems`: `LineItem`[]  }\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `returnReasonId` | `string` |
+| `orderEditId` | `string` |
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<{ `items`: `LineItem`[] ; `removedItems`: `LineItem`[]  }\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:110](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L110)
-
-___
-
-### list
-
-▸ **list**(`selector`, `config?`): `Promise`<`ReturnReason`[]\>
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selector` | `Selector`<`ReturnReason`\> | the query object for find |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
-
-#### Returns
-
-`Promise`<`ReturnReason`[]\>
-
-the result of the find operation
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:72](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L72)
+[packages/medusa/src/services/order-edit.ts:64](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L64)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`ReturnReason`\>
-
-Gets an order by id.
+▸ **retrieve**(`orderEditId`, `config?`): `Promise`<`OrderEdit`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | id of order to retrieve |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
+| Name | Type |
+| :------ | :------ |
+| `orderEditId` | `string` |
+| `config` | `FindConfig`<`OrderEdit`\> |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
-
-the order document
+`Promise`<`OrderEdit`\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:91](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L91)
+[packages/medusa/src/services/order-edit.ts:40](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/order-edit.ts#L40)
 
 ___
 
@@ -245,30 +208,9 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
-
-▸ **update**(`id`, `data`): `Promise`<`ReturnReason`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `data` | `UpdateReturnReason` |
-
-#### Returns
-
-`Promise`<`ReturnReason`\>
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/return-reason.ts#L50)
-
-___
-
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnReasonService`](ReturnReasonService.md)
+▸ **withTransaction**(`transactionManager?`): [`OrderEditService`](OrderEditService.md)
 
 #### Parameters
 
@@ -278,7 +220,7 @@ ___
 
 #### Returns
 
-[`ReturnReasonService`](ReturnReasonService.md)
+[`OrderEditService`](OrderEditService.md)
 
 #### Inherited from
 

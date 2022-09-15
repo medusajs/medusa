@@ -28,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:32](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L32)
+[packages/medusa/src/services/customer-group.ts:32](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L32)
 
 ## Properties
 
@@ -38,7 +38,7 @@ BaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:28](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L28)
+[packages/medusa/src/services/customer-group.ts:28](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L28)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:30](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L30)
+[packages/medusa/src/services/customer-group.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L30)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:26](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L26)
+[packages/medusa/src/services/customer-group.ts:26](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L26)
 
 ## Methods
 
@@ -83,7 +83,7 @@ the customer group after insertion
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:114](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L114)
+[packages/medusa/src/services/customer-group.ts:114](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L114)
 
 ___
 
@@ -115,7 +115,7 @@ the result of the create operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:87](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L87)
+[packages/medusa/src/services/customer-group.ts:87](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L87)
 
 ___
 
@@ -139,7 +139,7 @@ a promise
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:195](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L195)
+[packages/medusa/src/services/customer-group.ts:195](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L195)
 
 ___
 
@@ -164,7 +164,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:218](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L218)
+[packages/medusa/src/services/customer-group.ts:218](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L218)
 
 ___
 
@@ -189,7 +189,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:237](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L237)
+[packages/medusa/src/services/customer-group.ts:237](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L237)
 
 ___
 
@@ -214,7 +214,7 @@ the customergroup with the provided id
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:272](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L272)
+[packages/medusa/src/services/customer-group.ts:272](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L272)
 
 ___
 
@@ -235,7 +235,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:63](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L63)
+[packages/medusa/src/services/customer-group.ts:63](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L63)
 
 ___
 
@@ -260,7 +260,7 @@ resulting customer group
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:163](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L163)
+[packages/medusa/src/services/customer-group.ts:163](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L163)
 
 ___
 
@@ -280,4 +280,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:47](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/customer-group.ts#L47)
+[packages/medusa/src/services/customer-group.ts:47](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L47)
