@@ -449,7 +449,7 @@ export class Order extends BaseEntity {
  *       $ref: "#/components/schemas/line_item"
  *   edits:
  *     type: array
- *     description: [EXPERIMENTAL] Order edits done on the order. Available if the relation `edits` is expanded.
+ *     description: "[EXPERIMENTAL] Order edits done on the order. Available if the relation `edits` is expanded."
  *     items:
  *       $ref: "#/components/schemas/order_edit"
  *   gift_card_transactions:
