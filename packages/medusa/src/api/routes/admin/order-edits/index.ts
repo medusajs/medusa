@@ -56,4 +56,6 @@ export type AdminOrderEditsRes = {
 }
 export type AdminOrderEditDeleteRes = DeleteResponse
 
+export * from "./update-order-edit"
+
 export * from "./create-order-edit"
