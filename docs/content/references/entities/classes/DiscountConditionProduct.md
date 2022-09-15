@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/discount-condition-product.ts:20](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L20)
+[models/discount-condition-product.ts:20](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L20)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:31](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L31)
+[models/discount-condition-product.ts:31](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L31)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:28](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L28)
+[models/discount-condition-product.ts:28](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L28)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:37](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L37)
+[models/discount-condition-product.ts:37](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L37)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:24](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L24)
+[models/discount-condition-product.ts:24](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L24)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:17](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L17)
+[models/discount-condition-product.ts:17](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L17)
 
 ___
 
@@ -78,4 +78,4 @@ ___
 
 #### Defined in
 
-[models/discount-condition-product.ts:34](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/discount-condition-product.ts#L34)
+[models/discount-condition-product.ts:34](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/discount-condition-product.ts#L34)

@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/claim-order.ts:45](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L45)
+[models/claim-order.ts:45](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L45)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:40](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L40)
+[models/claim-order.ts:40](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L40)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:38](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L38)
+[models/claim-order.ts:38](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L38)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:39](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L39)
+[models/claim-order.ts:39](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L39)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:43](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L43)
+[models/claim-order.ts:43](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L43)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:41](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L41)
+[models/claim-order.ts:41](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L41)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:46](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L46)
+[models/claim-order.ts:46](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L46)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:44](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L44)
+[models/claim-order.ts:44](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L44)
 
 ___
 
@@ -92,4 +92,4 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:42](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/models/claim-order.ts#L42)
+[models/claim-order.ts:42](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/claim-order.ts#L42)
