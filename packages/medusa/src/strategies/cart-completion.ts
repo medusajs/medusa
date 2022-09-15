@@ -120,6 +120,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                       cart.payment_session.status === "requires_more" ||
                       cart.payment_session.status === "pending"
                     ) {
+                      await cartService
+                        .withTransaction(transactionManager)
+                        .deleteTaxLines(id)
+
                       return {
                         response_code: 200,
                         response_body: {
