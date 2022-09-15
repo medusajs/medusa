@@ -1,12 +1,11 @@
+import { defaultStoreProductsRelations } from "."
 import {
-  CartService,
-  PricingService,
   ProductService,
+  PricingService,
+  CartService,
   RegionService,
 } from "../../../../services"
-
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { defaultStoreProductsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
