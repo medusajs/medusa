@@ -98,7 +98,7 @@ export class OrderEdit extends SoftDeletableEntity {
  *     type: array
  *     description: Line item changes array.
  *     items:
- *       $ref: "#/components/schemas/order_item_changes"
+ *       $ref: "#/components/schemas/order_item_change"
  *   internal_note:
  *     description: "An optional note with additional details about the order edit."
  *     type: string

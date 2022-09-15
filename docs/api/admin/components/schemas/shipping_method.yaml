@@ -74,3 +74,6 @@ properties:
       may contain information such as a drop point id.
     type: object
     example: {}
+  includes_tax:
+    description: '[EXPERIMENTAL] Indicates if the shipping method price include tax'
+    type: boolean

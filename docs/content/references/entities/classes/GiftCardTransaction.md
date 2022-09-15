@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/gift-card-transaction.ts:40](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L40)
+[models/gift-card-transaction.ts:40](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L40)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:43](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L43)
+[models/gift-card-transaction.ts:43](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L43)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:29](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L29)
+[models/gift-card-transaction.ts:29](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L29)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:25](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L25)
+[models/gift-card-transaction.ts:25](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L25)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:22](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L22)
+[models/gift-card-transaction.ts:22](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L22)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:46](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L46)
+[models/gift-card-transaction.ts:46](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L46)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:37](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L37)
+[models/gift-card-transaction.ts:37](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L37)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:33](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L33)
+[models/gift-card-transaction.ts:33](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L33)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:49](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L49)
+[models/gift-card-transaction.ts:49](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L49)
 
 ## Methods
 
@@ -112,4 +112,4 @@ ___
 
 #### Defined in
 
-[models/gift-card-transaction.ts:51](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/gift-card-transaction.ts#L51)
+[models/gift-card-transaction.ts:51](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/gift-card-transaction.ts#L51)

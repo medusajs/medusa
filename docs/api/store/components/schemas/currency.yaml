@@ -26,3 +26,6 @@ properties:
     description: The written name of the currency
     type: string
     example: US Dollar
+  includes_tax:
+    description: '[EXPERIMENTAL] Does the currency prices include tax'
+    type: boolean

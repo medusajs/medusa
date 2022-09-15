@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/shipping-option.ts:22](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L22)
+[models/shipping-option.ts:24](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L24)
 
 ___
 
@@ -22,4 +22,4 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:21](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L21)
+[models/shipping-option.ts:23](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L23)

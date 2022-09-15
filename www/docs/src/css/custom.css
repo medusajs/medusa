@@ -581,10 +581,6 @@ html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link.menu__l
   padding-bottom: 6px;
 }
 
-.redocusaurus .menu-content {
-  width: var(--doc-sidebar-width);
-}
-
 .navbar-github-link {
   overflow: visible;
 }

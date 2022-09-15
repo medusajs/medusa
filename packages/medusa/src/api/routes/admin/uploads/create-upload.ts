@@ -3,8 +3,8 @@ import fs from "fs"
 /**
  * @oas [post] /uploads
  * operationId: "PostUploads"
- * summary: "Upload a file"
- * description: "Uploads a file to the specific fileservice that is installed in Medusa."
+ * summary: "Upload files"
+ * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -32,7 +32,8 @@ import fs from "fs"
  *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
- *       --data-binary '{file_path}'
+ *       --form 'files=@"<FILE_PATH_1>"' \
+ *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

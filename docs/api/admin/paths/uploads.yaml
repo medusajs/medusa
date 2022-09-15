@@ -1,7 +1,9 @@
 post:
   operationId: PostUploads
-  summary: Upload a file
-  description: Uploads a file to the specific fileservice that is installed in Medusa.
+  summary: Upload files
+  description: >-
+    Uploads at least one file to the specific fileservice that is installed in
+    Medusa.
   x-authenticated: true
   requestBody:
     content:

@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/fulfillment-provider.ts:6](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/fulfillment-provider.ts#L6)
+[models/fulfillment-provider.ts:6](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/fulfillment-provider.ts#L6)
 
 ___
 
@@ -28,4 +28,4 @@ ___
 
 #### Defined in
 
-[models/fulfillment-provider.ts:9](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/fulfillment-provider.ts#L9)
+[models/fulfillment-provider.ts:9](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/fulfillment-provider.ts#L9)
