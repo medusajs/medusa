@@ -14,7 +14,12 @@ const {
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleRegionFactory, simpleProductFactory } = require("../../factories")
+const {
+  simpleRegionFactory,
+  simpleProductFactory,
+  simpleCartFactory,
+  simpleShippingOptionFactory,
+} = require("../../factories")
 const { MedusaError } = require("medusa-core-utils")
 
 jest.setTimeout(30000)
@@ -311,16 +316,11 @@ describe("/store/carts", () => {
       expect.assertions(2)
 
       const api = useApi()
-      const manager = dbConnection.manager
 
       const region = await simpleRegionFactory(dbConnection)
       const product = await simpleProductFactory(dbConnection)
-      const product1 = await simpleProductFactory(dbConnection)
 
-      const cartRes = await api.post("/store/carts", {
-        region_id: region.id,
-      })
-
+      const cartRes = await api.post("/store/carts", {})
       const cartId = cartRes.data.cart.id
 
       await api.post(`/store/carts/${cartId}/line-items`, {
@@ -350,6 +350,76 @@ describe("/store/carts", () => {
         relations: ["tax_lines"],
       })
 
+      expect(lineItem.tax_lines).toHaveLength(0)
+    })
+
+    it("should remove taxlines when a payment authorization is pending", async () => {
+      const cartId = "cart-id-tax-line-testing-for-pending-payment"
+
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection)
+      const shippingOption = await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+      })
+      const shippingOption1 = await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+      })
+      const product = await simpleProductFactory(dbConnection)
+
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        id: cartId,
+      })
+
+      await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: shippingOption.id,
+        },
+        { withCredentials: true }
+      )
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+      await api.post(`/store/carts/${cartId}/payment-sessions`)
+
+      const cartResponse = await api.get(`/store/carts/${cartId}`)
+
+      const completedOrder = await api.post(`/store/carts/${cartId}/complete`)
+
+      expect(completedOrder.status).toEqual(200)
+      expect(completedOrder.data).toEqual(
+        expect.objectContaining({
+          data: expect.any(Object),
+          payment_status: "pending",
+          type: "cart",
+        })
+      )
+
+      const lineItem = await dbConnection.manager.findOne(LineItem, {
+        where: {
+          id: cartResponse.data.cart.items[0].id,
+        },
+        relations: ["tax_lines"],
+      })
+
+      const cartWithShippingMethod1 = await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: shippingOption1.id,
+        },
+        { withCredentials: true }
+      )
+
+      expect(
+        cartWithShippingMethod1.data.cart.shipping_methods[0].shipping_option_id
+      ).toEqual(shippingOption1.id)
       expect(lineItem.tax_lines).toHaveLength(0)
     })
   })
