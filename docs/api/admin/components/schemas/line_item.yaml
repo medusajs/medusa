@@ -157,6 +157,9 @@ properties:
     type: integer
     description: The total of the gift card of the line item
     example: 0
+  includes_tax:
+    description: '[EXPERIMENTAL] Indicates if the line item unit_price include tax'
+    type: boolean
   created_at:
     type: string
     description: The date with timezone at which the resource was created.
