@@ -18,7 +18,6 @@ import {
   TotalsService,
 } from "./index"
 import { CreateOrderEditInput } from "../types/order-edit"
-import { EventBusService, OrderService } from "./index"
 import { UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
