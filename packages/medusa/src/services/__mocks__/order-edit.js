@@ -30,7 +30,38 @@ export const orderEditServiceMock = {
     return Promise.resolve(undefined)
   }),
   computeLineItems: jest.fn().mockImplementation((orderEdit) => {
-    return Promise.resolve(orderEdit)
+    return Promise.resolve({
+      items: [
+        {
+          id: IdMap.getId("existingLine"),
+          title: "merge line",
+          description: "This is a new line",
+          thumbnail: "test-img-yeah.com/thumb",
+          content: {
+            unit_price: 123,
+            variant: {
+              id: IdMap.getId("can-cover"),
+            },
+            product: {
+              id: IdMap.getId("validId"),
+            },
+            quantity: 1,
+          },
+          quantity: 10,
+        },
+      ],
+      removedItems: [],
+    })
+  }),
+  create: jest.fn().mockImplementation((data, context) => {
+    return Promise.resolve({
+      order_id: data.order_id,
+      internal_note: data.internal_note,
+      created_by: context.loggedInUserId,
+    })
+  }),
+  getTotals: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
   }),
   delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()

@@ -115,14 +115,16 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       await simpleLineItemFactory(dbConnection, {
         id: lineItemUpdateId,
-        order_id: orderEdit.order_id,
+        order_id: null,
         variant_id: product1.variants[0].id,
+        unit_price: 1000,
         quantity: 2,
       })
       await simpleLineItemFactory(dbConnection, {
         id: lineItemCreateId,
-        order_id: orderEdit.order_id,
+        order_id: null,
         variant_id: product3.variants[0].id,
+        unit_price: 100,
         quantity: 2,
       })
 
@@ -175,6 +177,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           removed_items: expect.arrayContaining([
             expect.objectContaining({ id: lineItemId2, quantity: 1 }),
           ]),
+          shipping_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          discount_total: 0,
+          tax_total: 0,
+          total: 2200,
+          subtotal: 2200,
         })
       )
       expect(response.status).toEqual(200)
@@ -290,6 +299,128 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             `Cannot delete order edit with status ${status}`
           )
         })
+    })
+  })
+
+  describe("POST /admin/order-edits", () => {
+    let orderId
+    const prodId1 = IdMap.getId("prodId1")
+    const prodId2 = IdMap.getId("prodId2")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const lineItemId2 = IdMap.getId("line-item-2")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+      const product2 = await simpleProductFactory(dbConnection, {
+        id: prodId2,
+      })
+
+      const order = await simpleOrderFactory(dbConnection, {
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product1.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+          {
+            id: lineItemId2,
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+      orderId = order.id
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("creates and order edit", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderId,
+          internal_note: "This is an internal note",
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          order_id: orderId,
+          created_by: "admin_user",
+          requested_by: null,
+          canceled_by: null,
+          confirmed_by: null,
+          internal_note: "This is an internal note",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItemId1,
+              quantity: 1,
+              fulfilled_quantity: 1,
+              shipped_quantity: 1,
+              unit_price: 1000,
+            }),
+            expect.objectContaining({
+              id: lineItemId2,
+              quantity: 1,
+              fulfilled_quantity: 1,
+              shipped_quantity: 1,
+              unit_price: 1000,
+            }),
+          ]),
+          shipping_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          discount_total: 0,
+          tax_total: 0,
+          total: 2000,
+          subtotal: 2000,
+        })
+      )
+    })
+
+    it("throw an error if an active order edit already exists", async () => {
+      const api = useApi()
+
+      const payload = {
+        order_id: orderId,
+        internal_note: "This is an internal note",
+      }
+
+      await api.post(`/admin/order-edits/`, payload, adminHeaders)
+      const err = await api
+        .post(`/admin/order-edits/`, payload, adminHeaders)
+        .catch((e) => e)
+
+      expect(err.message).toBe("Request failed with status code 400")
+      expect(err.response.data.message).toBe(
+        `An active order edit already exists for the order ${payload.order_id}`
+      )
     })
   })
 })

@@ -243,11 +243,12 @@ class TotalsService extends TransactionBaseService {
             TaxInclusivePricingFeatureFlag.key
           ) && shippingMethod.includes_tax
 
-        totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-          [],
-          totals.tax_lines,
-          calculationContext
-        )
+        totals.original_tax_total =
+          await this.taxCalculationStrategy_.calculate(
+            [],
+            totals.tax_lines,
+            calculationContext
+          )
         totals.tax_total = totals.original_tax_total
 
         if (includesTax) {
@@ -904,11 +905,12 @@ class TotalsService extends TransactionBaseService {
         calculationContext
       )
       calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-        [lineItem],
-        lineItemTotals.tax_lines,
-        calculationContext
-      )
+      lineItemTotals.original_tax_total =
+        await this.taxCalculationStrategy_.calculate(
+          [lineItem],
+          lineItemTotals.tax_lines,
+          calculationContext
+        )
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -986,9 +988,7 @@ class TotalsService extends TransactionBaseService {
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
    */
-  async getGiftCardTotal(
-    cartOrOrder: Cart | Order
-  ): Promise<{
+  async getGiftCardTotal(cartOrOrder: Cart | Order): Promise<{
     total: number
     tax_total: number
   }> {
