@@ -68,7 +68,9 @@ export default async (req: Request, res: Response) => {
 
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
+
   const manager: EntityManager = req.scope.resolve("manager")
+
   const order_edit = await manager.transaction(async (transactionManager) => {
     return await orderEditService
       .withTransaction(transactionManager)
