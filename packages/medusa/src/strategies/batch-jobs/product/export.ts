@@ -148,6 +148,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
       let dynamicSalesChannelsColumnCount = 0
+      let dynamicCollectionsColumnCount = 0
       let pricesData = new Set<string>()
 
       while (offset < productCount) {
@@ -174,6 +175,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
           shapeData.salesChannelsColumnCount,
           dynamicSalesChannelsColumnCount
         )
+        dynamicCollectionsColumnCount = Math.max(
+          shapeData.collectionsColumnCount,
+          dynamicCollectionsColumnCount
+        )
         pricesData = new Set([...pricesData, ...shapeData.pricesData])
 
         offset += products.length
@@ -188,6 +193,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
               dynamicSalesChannelsColumnCount,
+              dynamicCollectionsColumnCount,
               prices: [...pricesData].map((stringifyData) =>
                 JSON.parse(stringifyData)
               ),
@@ -317,12 +323,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       dynamicImageColumnCount,
       dynamicOptionColumnCount,
       dynamicSalesChannelsColumnCount,
+      dynamicCollectionsColumnCount,
     } = batchJob?.context?.shape ?? {}
 
     this.appendMoneyAmountDescriptors(prices)
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
     this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
+    this.appendCollectionsDescriptors(dynamicCollectionsColumnCount)
 
     return (
       [...this.columnDescriptors.keys()].join(this.DELIMITER_) + this.NEWLINE_
@@ -333,6 +341,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     for (let i = 0; i < maxImagesCount; ++i) {
       this.columnDescriptors.set(`Image ${i + 1} Url`, {
         accessor: (product: Product) => product?.images[i]?.url ?? "",
+        entityName: "product",
+      })
+    }
+  }
+
+  private appendCollectionsDescriptors(maxCollectionsCount: number): void {
+    for (let i = 0; i < maxCollectionsCount; ++i) {
+      this.columnDescriptors.set(`Collection ${i + 1} Name`, {
+        accessor: (product: Product) => product?.collections[i]?.title ?? "",
         entityName: "product",
       })
     }
@@ -382,7 +399,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                   variantPrice.currency_code &&
                   priceData.currency_code &&
                   variantPrice.currency_code.toLowerCase() ===
-                    priceData.currency_code.toLowerCase()
+                  priceData.currency_code.toLowerCase()
                 )
               })
               return price?.amount?.toString() ?? ""
@@ -394,10 +411,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       if (priceData.region) {
         this.columnDescriptors.set(
-          `Price ${priceData.region.name} ${
-            priceData.region?.currency_code
-              ? "[" + priceData.region?.currency_code.toUpperCase() + "]"
-              : ""
+          `Price ${priceData.region.name} ${priceData.region?.currency_code
+            ? "[" + priceData.region?.currency_code.toUpperCase() + "]"
+            : ""
           }`,
           {
             accessor: (variant: ProductVariant) => {
@@ -406,9 +422,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                   variantPrice.region &&
                   priceData.region &&
                   variantPrice.region?.name?.toLowerCase() ===
-                    priceData.region?.name?.toLowerCase() &&
+                  priceData.region?.name?.toLowerCase() &&
                   variantPrice.region?.id?.toLowerCase() ===
-                    priceData.region?.id?.toLowerCase()
+                  priceData.region?.id?.toLowerCase()
                 )
               })
               return price?.amount?.toString() ?? ""
@@ -480,11 +496,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     optionColumnCount: number
     imageColumnCount: number
     salesChannelsColumnCount: number
+    collectionsColumnCount: number
     pricesData: Set<string>
   } {
     let optionColumnCount = 0
     let imageColumnCount = 0
     let salesChannelsColumnCount = 0
+    let collectionsColumnCount = 0
     const pricesData = new Set<string>()
 
     // Retrieve the highest count of each object to build the dynamic columns later
@@ -504,6 +522,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
           salesChannelCount
         )
       }
+      const collectionCount = product?.collections?.length ?? 0
+      collectionsColumnCount = Math.max(
+        collectionsColumnCount,
+        collectionCount
+      )
 
       for (const variant of product?.variants ?? []) {
         if (variant.prices?.length) {
@@ -513,10 +536,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                 currency_code: price.currency_code,
                 region: price.region
                   ? {
-                      currency_code: price.region.currency_code,
-                      name: price.region.name,
-                      id: price.region.id,
-                    }
+                    currency_code: price.region.currency_code,
+                    name: price.region.name,
+                    id: price.region.id,
+                  }
                   : null,
               })
             )
@@ -530,6 +553,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       imageColumnCount,
       salesChannelsColumnCount,
       pricesData,
+      collectionsColumnCount
     }
   }
 }

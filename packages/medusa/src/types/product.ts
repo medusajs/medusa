@@ -2,6 +2,7 @@ import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
+  IsDefined,
   IsEnum,
   IsOptional,
   IsString,
@@ -146,7 +147,7 @@ export type CreateProductInput = {
   handle?: string
   status?: ProductStatus
   type?: CreateProductProductTypeInput
-  collection_id?: string
+  collections?: CreateProductProductCollectionInput[]
   tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
   variants?: CreateProductProductVariantInput[]
@@ -160,6 +161,10 @@ export type CreateProductInput = {
   mid_code?: string
   material?: string
   metadata?: Record<string, unknown>
+}
+
+export type CreateProductProductCollectionInput = {
+  id: string
 }
 
 export type CreateProductProductTagInput = {
@@ -249,6 +254,11 @@ export type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
 
 export class ProductSalesChannelReq {
   @IsString()
+  id: string
+}
+
+export class ProductCollectionReq {
+  @IsDefined()
   id: string
 }
 

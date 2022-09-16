@@ -33,6 +33,7 @@ import {
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
+import { ProductCollectionRepository } from "../repositories/product-collection"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -46,6 +47,7 @@ type InjectedDependencies = {
   searchService: SearchService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  productCollectionRepository: typeof ProductCollectionRepository
 }
 
 class ProductService extends TransactionBaseService {
@@ -62,6 +64,7 @@ class ProductService extends TransactionBaseService {
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly productCollectionRepository_: typeof ProductCollectionRepository
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -82,6 +85,7 @@ class ProductService extends TransactionBaseService {
     imageRepository,
     searchService,
     featureFlagRouter,
+    productCollectionRepository
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -97,6 +101,7 @@ class ProductService extends TransactionBaseService {
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
     this.featureFlagRouter_ = featureFlagRouter
+    this.productCollectionRepository_ = productCollectionRepository
   }
 
   /**
@@ -344,6 +349,7 @@ class ProductService extends TransactionBaseService {
   async create(productObject: CreateProductInput): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productCollectionRepository = manager.getCustomRepository(this.productCollectionRepository_)
       const productTagRepo = manager.getCustomRepository(
         this.productTagRepository_
       )
@@ -358,6 +364,7 @@ class ProductService extends TransactionBaseService {
       const {
         options,
         tags,
+        collections,
         type,
         images,
         sales_channels: salesChannels,
@@ -382,6 +389,10 @@ class ProductService extends TransactionBaseService {
 
         if (tags?.length) {
           product.tags = await productTagRepo.upsertTags(tags)
+        }
+
+        if (collections?.length) {
+          product.collections = await productCollectionRepository.findByIds(collections.map(c => c.id))
         }
 
         if (typeof type !== `undefined`) {
@@ -446,6 +457,7 @@ class ProductService extends TransactionBaseService {
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productCollectionRepository = manager.getCustomRepository(this.productCollectionRepository_)
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
       )
@@ -483,6 +495,7 @@ class ProductService extends TransactionBaseService {
         metadata,
         images,
         tags,
+        collections,
         type,
         sales_channels: salesChannels,
         ...rest
@@ -508,6 +521,10 @@ class ProductService extends TransactionBaseService {
         product.tags = await productTagRepo.upsertTags(tags)
       }
 
+      if (collections?.length) {
+        product.collections = await productCollectionRepository.findByIds(collections.map(c => c.id))
+      }
+      
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {

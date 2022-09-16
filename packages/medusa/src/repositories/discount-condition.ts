@@ -88,11 +88,11 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         break
       }
       case DiscountConditionType.PRODUCT_COLLECTIONS: {
-        resourceKey = "collection_id"
+        joinTableKey = "product_id"
+        resourceKey = "product_collection_id"
         joinTableForeignKey =
           DiscountConditionJoinTableForeignKey.PRODUCT_COLLECTION_ID
-        joinTable = "product"
-
+        joinTable = "product_collections"
         conditionTable = DiscountConditionProductCollection
         break
       }
@@ -254,7 +254,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         condId: condition.id,
         resourceId: productId,
       })
-
+      console.log(numConditions,'numConditions')
       if (
         condition.operator === DiscountConditionOperator.IN &&
         numConditions === 0

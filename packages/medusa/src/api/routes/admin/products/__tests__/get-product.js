@@ -41,7 +41,6 @@ describe("GET /admin/products/:id", () => {
             "discountable",
             "thumbnail",
             "profile_id",
-            "collection_id",
             "type_id",
             "weight",
             "length",
@@ -64,7 +63,7 @@ describe("GET /admin/products/:id", () => {
             "options",
             "tags",
             "type",
-            "collection",
+            "collections",
           ],
         }
       )

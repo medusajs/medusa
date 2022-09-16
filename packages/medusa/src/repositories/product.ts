@@ -6,7 +6,8 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { PriceList,
+import {
+  PriceList,
   Product,
   SalesChannel
 } from "../models"
@@ -349,11 +350,12 @@ export class ProductRepository extends Repository<Product> {
     options: FindWithoutRelationsOptions = { where: {} },
     relations: string[] = []
   ): Promise<[Product[], number]> {
+    const collections = options.where?.collections
     const cleanedOptions = this._cleanOptions(options)
 
     let qb = this.createQueryBuilder("product")
       .leftJoinAndSelect("product.variants", "variant")
-      .leftJoinAndSelect("product.collection", "collection")
+      .leftJoinAndSelect("product.collections", "collection")
       .select(["product.id"])
       .where(cleanedOptions.where)
       .andWhere(
@@ -368,6 +370,12 @@ export class ProductRepository extends Repository<Product> {
       .skip(cleanedOptions.skip)
       .take(cleanedOptions.take)
 
+    if (collections) {
+      qb.andWhere(`collection.id IN (:...collection_ids)`, {
+        collection_ids: collections.value,
+      })
+    }
+    
     if (cleanedOptions.withDeleted) {
       qb = qb.withDeleted()
     }
@@ -396,6 +404,10 @@ export class ProductRepository extends Repository<Product> {
 
     if ("price_list_id" in where) {
       delete where?.price_list_id
+    }
+
+    if ("collections" in where) {
+      delete where?.collections
     }
 
     return {

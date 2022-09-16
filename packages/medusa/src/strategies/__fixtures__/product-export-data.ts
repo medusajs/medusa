@@ -18,7 +18,7 @@ export const productsToExport = [
         description: "SC 1\nSC 1 second line\nSC 1 third line\nSC 1 forth line",
       },
     ],
-    collection: {
+    collections: [{
       created_at: "randomString",
       deleted_at: null,
       handle: "test-collection1",
@@ -26,8 +26,7 @@ export const productsToExport = [
       metadata: null,
       title: "Test collection 1",
       updated_at: "randomString",
-    },
-    collection_id: IdMap.getId("product-export-collection_1"),
+    }],
     created_at: "randomString",
     deleted_at: null,
     description:

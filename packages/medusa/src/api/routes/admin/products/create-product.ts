@@ -19,6 +19,7 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import {
+  ProductCollectionReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
@@ -505,8 +506,10 @@ export class AdminPostProductsReq {
   type?: ProductTypeReq
 
   @IsOptional()
-  @IsString()
-  collection_id?: string
+  @Type(() => ProductCollectionReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  collections?: ProductCollectionReq[]
 
   @IsOptional()
   @Type(() => ProductTagReq)
