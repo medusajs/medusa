@@ -403,7 +403,7 @@ describe("/admin/discounts", () => {
           expect.objectContaining({
             id: "dynamic-discount",
             code: "Dyn100",
-          })
+          }),
         ])
       )
     })
@@ -2363,6 +2363,105 @@ describe("/admin/discounts", () => {
           "DiscountCondition with id test-condition was not found for Discount test-discount-2"
         )
       }
+    })
+  })
+
+  describe("GET /admin/discounts/code/:code", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should retrieve discount using uppercase code", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts/code/TEST", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+    })
+
+    it("should retrieve discount using lowercase code", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts/code/test", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+    })
+
+    it("should retrieve discount using mixed casing code", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts/code/TesT", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
     })
   })
 })
