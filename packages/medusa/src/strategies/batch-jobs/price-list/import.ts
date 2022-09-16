@@ -437,7 +437,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .delete({ fileKey })
 
-    // await this.deleteOpsFiles(batchJob.id)
+    await this.deleteOpsFiles(batchJob.id)
   }
 
   /**
@@ -494,7 +494,7 @@ const CSVSchema: PriceListImportCsvSchema = {
     { name: "SKU", mapTo: PriceListRowKeys.VARIANT_SKU },
     {
       name: "Price Region",
-      match: /Price .* \[([A-Z]{3})\]/,
+      match: /Price (.*) \[([A-Z]{3})\]/,
       reducer: (
         builtLine: TBuiltPriceListImportLine,
         key: string,
@@ -507,7 +507,8 @@ const CSVSchema: PriceListImportCsvSchema = {
           return builtLine
         }
 
-        const regionName = key.split(" ")[1]
+        const [, regionName] =
+          key.trim().match(/Price (.*) \[([A-Z]{3})\]/) || []
         builtLine[PriceListRowKeys.PRICES].push({
           amount: parseFloat(value),
           region_name: regionName,
@@ -531,7 +532,7 @@ const CSVSchema: PriceListImportCsvSchema = {
           return builtLine
         }
 
-        const currency = key.split(" ")[1]
+        const currency = key.trim().split(" ")[1]
         builtLine[PriceListRowKeys.PRICES].push({
           amount: parseFloat(value),
           currency_code: currency.toLowerCase(),

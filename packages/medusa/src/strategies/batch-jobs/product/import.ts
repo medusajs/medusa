@@ -838,7 +838,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRICES
     {
       name: "Price Region",
-      match: /Price .* \[([A-Z]{3})\]/,
+      match: /Price (.*) \[([A-Z]{3})\]/,
       reducer: (
         builtLine: TParsedProductImportRowData,
         key,
@@ -850,7 +850,8 @@ const CSVSchema: ProductImportCsvSchema = {
           return builtLine
         }
 
-        const regionName = key.split(" ")[1]
+        const [, regionName] =
+          key.trim().match(/Price (.*) \[([A-Z]{3})\]/) || []
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
@@ -875,7 +876,8 @@ const CSVSchema: ProductImportCsvSchema = {
           return builtLine
         }
 
-        const currency = key.split(" ")[1]
+        const currency = key.trim().split(" ")[1]
+
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
