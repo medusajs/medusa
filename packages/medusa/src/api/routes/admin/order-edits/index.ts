@@ -8,6 +8,7 @@ import {
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 import { OrderEdit } from "../../../../models"
+import { DeleteResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -28,9 +29,12 @@ export default (app) => {
     middlewares.wrap(require("./get-order-edit").default)
   )
 
+  route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
+
   return app
 }
 
 export type AdminOrdersEditsRes = {
   order_edit: OrderEdit
 }
+export type AdminOrderEditDeleteRes = DeleteResponse

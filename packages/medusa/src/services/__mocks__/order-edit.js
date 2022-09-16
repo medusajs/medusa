@@ -32,6 +32,9 @@ export const orderEditServiceMock = {
   computeLineItems: jest.fn().mockImplementation((orderEdit) => {
     return Promise.resolve(orderEdit)
   }),
+  delete: jest.fn().mockImplementation((_) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

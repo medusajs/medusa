@@ -1,4 +1,12 @@
-import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import {
+  AfterLoad,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm"
 
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
@@ -8,6 +16,14 @@ import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 import { LineItem } from "./line-item"
 import { Order } from "./order"
+
+export enum OrderEditStatus {
+  CONFIRMED = "confirmed",
+  DECLINED = "declined",
+  REQUESTED = "requested",
+  CREATED = "created",
+  CANCELED = "canceled",
+}
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderEdit extends SoftDeletableEntity {
@@ -63,12 +79,32 @@ export class OrderEdit extends SoftDeletableEntity {
   total: number
   difference_due: number
 
+  status: OrderEditStatus
+
   items: LineItem[]
   removed_items: LineItem[]
 
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oe")
+  }
+
+  @AfterLoad()
+  loadStatus(): void {
+    if (this.requested_at) {
+      this.status = OrderEditStatus.REQUESTED
+    }
+    if (this.declined_at) {
+      this.status = OrderEditStatus.DECLINED
+    }
+    if (this.confirmed_at) {
+      this.status = OrderEditStatus.CONFIRMED
+    }
+    if (this.canceled_at) {
+      this.status = OrderEditStatus.CANCELED
+    }
+
+    this.status = this.status ?? OrderEditStatus.CREATED
   }
 }
 
@@ -158,6 +194,6 @@ export class OrderEdit extends SoftDeletableEntity {
  *   removed_items:
  *     type: array
  *     description: Computed line items from the changes that have been marked as deleted.
- *     removed_items:
+ *     items:
  *       $ref: "#/components/schemas/line_item"
  */
