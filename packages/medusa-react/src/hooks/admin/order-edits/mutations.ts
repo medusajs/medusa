@@ -2,7 +2,6 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
 
 import {
-  AdminOrdersEditsRes,
   AdminOrderEditDeleteRes,
   AdminPostOrderEditsOrderEditReq,
   AdminOrderEditsRes,
@@ -10,7 +9,6 @@ import {
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
-import { useMedusa } from "../../../contexts/medusa"
 import { useMedusa } from "../../../contexts"
 import { adminOrderEditsKeys } from "."
 
@@ -50,10 +48,10 @@ export const useAdminDeleteOrderEdit = (
 export const useAdminUpdateOrderEdit = (
   id: string,
   options?: UseMutationOptions<
-    Response<AdminOrdersEditsRes>,
+    Response<AdminOrderEditsRes>,
     Error,
     AdminPostOrderEditsOrderEditReq
-    >
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
