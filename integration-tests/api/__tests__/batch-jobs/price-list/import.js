@@ -81,7 +81,6 @@ describe("Price list import batch job", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    copyTemplateFile()
   })
 
   afterEach(async () => {
@@ -92,6 +91,8 @@ describe("Price list import batch job", () => {
   it("should import a csv file", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
+
+    copyTemplateFile()
 
     const product = await simpleProductFactory(dbConnection, {
       variants: [
@@ -207,5 +208,83 @@ describe("Price list import batch job", () => {
         }),
       ])
     )
+  })
+
+  it("should fail with invalid import format", async () => {
+    jest.setTimeout(1000000)
+    const api = useApi()
+
+    const product = await simpleProductFactory(dbConnection, {
+      variants: [
+        { id: "test-pl-variant" },
+        { id: "test-pl-sku-variant", sku: "pl-sku" },
+      ],
+    })
+
+    await simpleRegionFactory(dbConnection, {
+      id: "test-pl-region",
+      name: "PL Region",
+      currency_code: "eur",
+    })
+
+    const priceList = await simplePriceListFactory(dbConnection, {
+      id: "pl_my_price_list",
+      name: "Test price list",
+      prices: [
+        {
+          variant_id: product.variants[0].id,
+          currency_code: "usd",
+          amount: 1000,
+        },
+        {
+          variant_id: product.variants[0].id,
+          currency_code: "eur",
+          amount: 2080,
+        },
+      ],
+    })
+
+    const response = await api.post(
+      "/admin/batch-jobs",
+      {
+        type: "price-list-import",
+        context: {
+          price_list_id: priceList.id,
+          fileKey: "invalid-format.csv",
+        },
+      },
+      adminReqConfig
+    )
+
+    const batchJobId = response.data.batch_job.id
+
+    expect(batchJobId).toBeTruthy()
+
+    // Pull to check the status until it is completed
+    let batchJob
+    let shouldContinuePulling = true
+    while (shouldContinuePulling) {
+      const res = await api.get(
+        `/admin/batch-jobs/${batchJobId}`,
+        adminReqConfig
+      )
+
+      await new Promise((resolve, _) => {
+        setTimeout(resolve, 1000)
+      })
+
+      batchJob = res.data.batch_job
+
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
+    }
+
+    expect(batchJob.status).toBe("failed")
+    expect(batchJob.result).toEqual({
+      errors: [
+        "The csv file parsing failed due to: Unable to treat column non-descript-column from the csv file. No target column found in the provided schema",
+      ],
+    })
   })
 })
