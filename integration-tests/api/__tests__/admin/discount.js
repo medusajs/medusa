@@ -2463,5 +2463,22 @@ describe("/admin/discounts", () => {
         })
       )
     })
+
+    it("should respond with 404 on non-existing code", async () => {
+      const api = useApi()
+
+      try {
+        await api.get("/admin/discounts/code/non-existing", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.message).toBe(
+          "Discount with code non-existing was not found"
+        )
+      }
+    })
   })
 })
