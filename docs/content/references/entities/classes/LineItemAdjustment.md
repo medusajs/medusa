@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/line-item-adjustment.ts:45](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L45)
+[models/line-item-adjustment.ts:45](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L45)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:34](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L34)
+[models/line-item-adjustment.ts:34](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L34)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:38](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L38)
+[models/line-item-adjustment.ts:38](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L38)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:42](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L42)
+[models/line-item-adjustment.ts:42](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L42)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:23](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L23)
+[models/line-item-adjustment.ts:23](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L23)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:31](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L31)
+[models/line-item-adjustment.ts:31](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L31)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:27](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L27)
+[models/line-item-adjustment.ts:27](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L27)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:48](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L48)
+[models/line-item-adjustment.ts:48](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L48)
 
 ## Methods
 
@@ -102,4 +102,4 @@ ___
 
 #### Defined in
 
-[models/line-item-adjustment.ts:50](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/line-item-adjustment.ts#L50)
+[models/line-item-adjustment.ts:50](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/line-item-adjustment.ts#L50)

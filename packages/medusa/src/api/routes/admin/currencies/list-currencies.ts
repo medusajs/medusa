@@ -1,8 +1,10 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../../../../models"
 import { CurrencyService } from "../../../../services"
+import { FindPaginationParams } from "../../../../types/common"
 import { ExtendedRequest } from "../../../../types/global"
-import { FindConfig, FindPaginationParams } from "../../../../types/common"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [get] /currencies
@@ -66,8 +68,10 @@ export class AdminGetCurrenciesParams extends FindPaginationParams {
   @IsOptional()
   code?: string
 
-  @IsBoolean()
-  @IsOptional()
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsBoolean(),
+    IsOptional(),
+  ])
   includes_tax?: boolean
 
   @IsString()

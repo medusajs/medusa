@@ -7,6 +7,7 @@
 - [CartService](classes/CartService.md)
 - [ClaimItemService](classes/ClaimItemService.md)
 - [ClaimService](classes/ClaimService.md)
+- [CurrencyService](classes/CurrencyService.md)
 - [CustomShippingOptionService](classes/CustomShippingOptionService.md)
 - [CustomerGroupService](classes/CustomerGroupService.md)
 - [CustomerService](classes/CustomerService.md)

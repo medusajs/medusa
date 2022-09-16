@@ -20,7 +20,8 @@ class IdempotencyKeyService extends TransactionBaseService {
   protected readonly idempotencyKeyRepository_: typeof IdempotencyKeyRepository
 
   constructor({ manager, idempotencyKeyRepository }: InjectedDependencies) {
-    super({ manager, idempotencyKeyRepository })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.idempotencyKeyRepository_ = idempotencyKeyRepository

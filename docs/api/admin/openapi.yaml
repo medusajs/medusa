@@ -139,6 +139,10 @@ paths:
     $ref: paths/collections.yaml
   /collections/{id}:
     $ref: paths/collections_{id}.yaml
+  /currencies:
+    $ref: paths/currencies.yaml
+  /currencies/{code}:
+    $ref: paths/currencies_{code}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
