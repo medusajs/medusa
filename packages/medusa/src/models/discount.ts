@@ -6,14 +6,14 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
+  ManyToOne
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
-import { DiscountRule } from "./discount-rule"
-import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { DiscountRule } from "./discount-rule"
+import { Region } from "./region"
 
 @Entity()
 export class Discount extends SoftDeletableEntity {
@@ -79,10 +79,10 @@ export class Discount extends SoftDeletableEntity {
 
   @BeforeInsert()
   private upperCaseCode(): void {
+    this.code = this.code.toUpperCase()
     if (this.id) return
 
     this.id = generateEntityId(this.id, "disc")
-    this.code = this.code.toUpperCase()
   }
 }
 
