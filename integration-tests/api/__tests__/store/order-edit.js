@@ -114,14 +114,16 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
 
       await simpleLineItemFactory(dbConnection, {
         id: lineItemUpdateId,
-        order_id: orderEdit.order_id,
+        order_id: null,
         variant_id: product1.variants[0].id,
+        unit_price: 1000,
         quantity: 2,
       })
       await simpleLineItemFactory(dbConnection, {
         id: lineItemCreateId,
-        order_id: orderEdit.order_id,
+        order_id: null,
         variant_id: product3.variants[0].id,
+        unit_price: 100,
         quantity: 2,
       })
 
@@ -168,6 +170,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
           removed_items: expect.arrayContaining([
             expect.objectContaining({ id: lineItemId2, quantity: 1 }),
           ]),
+          shipping_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          discount_total: 0,
+          tax_total: 0,
+          total: 2200,
+          subtotal: 2200,
         })
       )
 
