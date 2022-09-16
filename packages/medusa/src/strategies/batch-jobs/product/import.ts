@@ -1,6 +1,6 @@
 /* eslint-disable valid-jsdoc */
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { computerizeAmount, MedusaError } from "medusa-core-utils"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
@@ -198,11 +198,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
       if (price.regionName) {
         try {
-          record.region_id = (
-            await this.regionService_
-              .withTransaction(transactionManager)
-              .retrieveByName(price.regionName)
-          )?.id
+          const region = await this.regionService_
+            .withTransaction(transactionManager)
+            .retrieveByName(price.regionName)
+
+          record.region_id = region.id
+          record.currency_code = region.currency_code
         } catch (e) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
@@ -213,6 +214,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         record.currency_code = price.currency_code
       }
 
+      record.amount = computerizeAmount(record.amount, record.currency_code)
       prices.push(record)
     }
 
@@ -855,7 +857,7 @@ const CSVSchema: ProductImportCsvSchema = {
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
-          amount: value,
+          amount: parseFloat(value),
           regionName,
         })
 
@@ -881,7 +883,7 @@ const CSVSchema: ProductImportCsvSchema = {
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
-          amount: value,
+          amount: parseFloat(value),
           currency_code: currency,
         })
 
@@ -955,3 +957,4 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
     },
   ],
 }
+
