@@ -495,11 +495,6 @@ module.exports = {
           label: "CLI Reference",
         },
         {
-          type: "doc",
-          id: "contribution-guidelines",
-          label: "Contribution Guidelines",
-        },
-        {
           type: "ref",
           id: "references/entities/classes/Address",
           label: "Entities Reference",
@@ -520,6 +515,11 @@ module.exports = {
           label: "Services Reference",
         },
       ]
+    },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
     },
   ],
   userGuideSidebar: [
