@@ -288,7 +288,7 @@ class DiscountService extends TransactionBaseService {
       if (!discount) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Discount with code ${normalizedCode} was not found`
+          `Discount with code ${discountCode} was not found`
         )
       }
     }
