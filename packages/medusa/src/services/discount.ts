@@ -6,19 +6,21 @@ import {
   DeepPartial,
   EntityManager,
   ILike,
-  SelectQueryBuilder,
+  SelectQueryBuilder
 } from "typeorm"
 import {
   EventBusService,
   ProductService,
   RegionService,
-  TotalsService,
+  TotalsService
 } from "."
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
   AllocationType as DiscountAllocation,
   DiscountRule,
-  DiscountRuleType,
+  DiscountRuleType
 } from "../models/discount-rule"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
@@ -31,16 +33,14 @@ import {
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
   UpdateDiscountInput,
-  UpdateDiscountRuleInput,
+  UpdateDiscountRuleInput
 } from "../types/discount"
+import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { formatException } from "../utils/exception-formatter"
-import DiscountConditionService from "./discount-condition"
-import CustomerService from "./customer"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import CustomerService from "./customer"
+import DiscountConditionService from "./discount-condition"
 
 /**
  * Provides layer to manipulate discounts.
@@ -276,11 +276,13 @@ class DiscountService extends TransactionBaseService {
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    let query = buildQuery({ code: discountCode, is_dynamic: false }, config)
+    const normalizedCode = discountCode.toUpperCase()
+
+    let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
     let discount = await discountRepo.findOne(query)
 
     if (!discount) {
-      query = buildQuery({ code: discountCode, is_dynamic: true }, config)
+      query = buildQuery({ code: normalizedCode, is_dynamic: true }, config)
       discount = await discountRepo.findOne(query)
 
       if (!discount) {
