@@ -194,6 +194,6 @@ export class OrderEdit extends SoftDeletableEntity {
  *   removed_items:
  *     type: array
  *     description: Computed line items from the changes that have been marked as deleted.
- *     removed_items:
+ *     items:
  *       $ref: "#/components/schemas/line_item"
  */
