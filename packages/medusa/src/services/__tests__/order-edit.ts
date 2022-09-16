@@ -81,6 +81,10 @@ const lineItemServiceMock = {
 }
 
 describe("OrderEditService", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   const orderEditRepository = MockRepository({
     findOneWithRelations: (relations, query) => {
       if (query?.where?.id === IdMap.getId("order-edit-with-changes")) {
