@@ -1,7 +1,6 @@
-import { Connection, createConnection, LoggerOptions } from "typeorm"
+import { DataSource, DataSourceOptions } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
-import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -9,15 +8,17 @@ type Options = {
   container: AwilixContainer
 }
 
+export let dataSource: DataSource
+
 export default async ({
   container,
   configModule,
-}: Options): Promise<Connection> => {
+}: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
-  const connection = await createConnection({
+  dataSource = new DataSource({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
@@ -25,13 +26,15 @@ export default async ({
     entities,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
-  } as ConnectionOptions)
+  } as DataSourceOptions)
+
+  await dataSource.initialize()
 
   if (isSqlite) {
-    await connection.query(`PRAGMA foreign_keys = OFF`)
-    await connection.synchronize()
-    await connection.query(`PRAGMA foreign_keys = ON`)
+    await dataSource.query(`PRAGMA foreign_keys = OFF`)
+    await dataSource.synchronize()
+    await dataSource.query(`PRAGMA foreign_keys = ON`)
   }
 
-  return connection
+  return dataSource
 }

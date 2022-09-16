@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager } from "typeorm"
+import { Brackets, EntityManager, FindOneOptions } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
   Address,
@@ -25,7 +25,7 @@ import {
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, buildRelations, buildSelects, setMetadata } from "../utils"
 import CartService from "./cart"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -160,18 +160,19 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Order[]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-    const query = buildQuery(selector, config)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
+    const query = buildQuery(selector, config)
+
     if (select && select.length) {
-      query.select = select
+      query.select = buildSelects(select)
     }
 
     if (relations && relations.length) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
     const raw = await orderRepo.find(query)
@@ -194,7 +195,7 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Order[], number]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     let q
     if (selector.q) {
@@ -217,7 +218,7 @@ class OrderService extends TransactionBaseService {
         },
       }
 
-      query.where = (qb): void => {
+      query.where = ((qb): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -229,20 +230,22 @@ class OrderService extends TransactionBaseService {
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
           })
         )
-      }
+      }) as any
     }
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
     if (select && select.length) {
-      query.select = select
+      query.select = buildSelects(select)
     }
 
-    const rels = relations
-    delete query.relations
+    query.relations = relations ? buildRelations(relations) : undefined
 
-    const raw = await orderRepo.findWithRelations(rels, query)
+    const raw = await orderRepo.find({
+      ...query,
+      relationLoadStrategy: "query",
+    })
     const count = await orderRepo.count(query)
     const orders = await Promise.all(
       raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
@@ -330,26 +333,27 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
     const query = {
       where: { id: orderId },
-    } as FindConfig<Order>
+    } as FindOneOptions<Order>
 
     if (relations && relations.length > 0) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
     if (select && select.length > 0) {
-      query.select = select
+      query.select = buildSelects(select)
     }
 
-    const rels = query.relations
-    delete query.relations
-    const raw = await orderRepo.findOneWithRelations(rels, query)
+    const raw = await orderRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -364,27 +368,26 @@ class OrderService extends TransactionBaseService {
    * Gets an order by cart id.
    * @param cartId - cart id to find order
    * @param config - the config to be used to find order
-   * @return the order document
-   */
+   * @return the order document   */
   async retrieveByCartId(
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
     const query = {
       where: { cart_id: cartId },
-    } as FindConfig<Order>
+    } as FindOneOptions<Order>
 
     if (relations && relations.length > 0) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
     if (select && select.length > 0) {
-      query.select = select
+      query.select = buildSelects(select)
     }
 
     const raw = await orderRepo.findOne(query)
@@ -409,26 +412,27 @@ class OrderService extends TransactionBaseService {
     externalId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
     const query = {
       where: { external_id: externalId },
-    } as FindConfig<Order>
+    } as FindOneOptions<Order>
 
     if (relations && relations.length > 0) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
     if (select && select.length > 0) {
-      query.select = select
+      query.select = buildSelects(select)
     }
 
-    const rels = query.relations
-    delete query.relations
-    const raw = await orderRepo.findOneWithRelations(rels, query)
+    const raw = await orderRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -471,7 +475,7 @@ class OrderService extends TransactionBaseService {
 
       order.status = OrderStatus.COMPLETED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return orderRepo.save(order)
     })
   }
@@ -557,7 +561,7 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       const toCreate = {
         payment_status: "awaiting",
@@ -727,7 +731,7 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -752,7 +756,7 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.manager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
@@ -792,7 +796,7 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.manager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
@@ -953,7 +957,7 @@ class OrderService extends TransactionBaseService {
         order[key] = value
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1033,7 +1037,7 @@ class OrderService extends TransactionBaseService {
       order.payment_status = PaymentStatus.CANCELED
       order.canceled_at = new Date()
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1053,7 +1057,7 @@ class OrderService extends TransactionBaseService {
    */
   async capturePayment(orderId: string): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
       if (order.status === "canceled") {
@@ -1256,7 +1260,7 @@ class OrderService extends TransactionBaseService {
           }
         }
       }
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       order.fulfillments = [...order.fulfillments, ...fulfillments]
 
@@ -1300,7 +1304,7 @@ class OrderService extends TransactionBaseService {
 
       order.fulfillment_status = FulfillmentStatus.CANCELED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const updated = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1358,7 +1362,7 @@ class OrderService extends TransactionBaseService {
       }
 
       order.status = OrderStatus.ARCHIVED
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return await orderRepo.save(order)
     })
   }
@@ -1569,7 +1573,7 @@ class OrderService extends TransactionBaseService {
 
       const refundAmount = customRefundAmount || receivedReturn.refund_amount
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       if (refundAmount > order.refundable_amount) {
         order.fulfillment_status = FulfillmentStatus.REQUIRES_ACTION

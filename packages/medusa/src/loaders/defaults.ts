@@ -1,6 +1,6 @@
 import {
-  BaseNotificationService,
   BaseFulfillmentService,
+  BaseNotificationService,
   BasePaymentService,
 } from "medusa-interfaces"
 import { currencies } from "../utils/currencies"
@@ -78,11 +78,12 @@ export default async ({
   const entityManager = container.resolve<EntityManager>("manager")
 
   await entityManager.transaction(async (manager: EntityManager) => {
-    const countryRepo = manager.getCustomRepository(countryRepository)
-    const hasCountries = await countryRepo.findOne()
+    const countryRepo = manager.withRepository(countryRepository)
+    const hasCountries = !!(await countryRepo.count())
     if (!hasCountries) {
       for (const c of countries) {
-        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name") VALUES ($1, $2, $3, $4, $5)`
+        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name")
+                       VALUES ($1, $2, $3, $4, $5)`
 
         const iso2 = c.alpha2.toLowerCase()
         const iso3 = c.alpha3.toLowerCase()
@@ -102,11 +103,12 @@ export default async ({
   })
 
   await entityManager.transaction(async (manager: EntityManager) => {
-    const currencyRepo = manager.getCustomRepository(currencyRepository)
-    const hasCurrencies = await currencyRepo.findOne()
+    const currencyRepo = manager.withRepository(currencyRepository)
+    const hasCurrencies = !!(await currencyRepo.count())
     if (!hasCurrencies) {
       for (const [, c] of Object.entries(currencies)) {
-        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name") VALUES ($1, $2, $3, $4)`
+        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name")
+                       VALUES ($1, $2, $3, $4)`
 
         const code = c.code.toLowerCase()
         const sym = c.symbol

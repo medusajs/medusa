@@ -54,9 +54,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
-      this.moneyAmountRepository_
-    )
+    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
     const [prices, count] = await moneyRepo.findManyForVariantInRegion(
       variant_id,
@@ -143,9 +141,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
-      this.moneyAmountRepository_
-    )
+    const moneyRepo = this.manager_.withRepository(this.moneyAmountRepository_)
 
     const [prices, count] = await moneyRepo.findManyForVariantInRegion(
       variant_id,

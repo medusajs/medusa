@@ -1,8 +1,8 @@
 import _ from "lodash"
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ShippingOptionService from "../shipping-option"
-import { FlagRouter } from "../../utils/flag-router";
-import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
+import { FlagRouter } from "../../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 describe("ShippingOptionService", () => {
   describe("retrieve", () => {
@@ -308,8 +308,8 @@ describe("ShippingOptionService", () => {
       softRemove: (q) => {
         return Promise.resolve()
       },
-      findOne: (i) =>
-        i.where.id === IdMap.getId("requirement_id")
+      findOne: (q) =>
+        q.where.id === IdMap.getId("requirement_id")
           ? { id: IdMap.getId("requirement_id") }
           : null,
     })
@@ -335,7 +335,10 @@ describe("ShippingOptionService", () => {
     })
 
     it("is idempotent", async () => {
-      await optionService.removeRequirement(IdMap.getId("validId"), "something")
+      await optionService.removeRequirement(
+        IdMap.getId("requirement_id"),
+        "something"
+      )
 
       expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(1)
     })
@@ -645,7 +648,7 @@ describe("ShippingOptionService", () => {
       totalsService,
       fulfillmentProviderService: providerService,
       featureFlagRouter: new FlagRouter({
-        [TaxInclusivePricingFeatureFlag.key]: true
+        [TaxInclusivePricingFeatureFlag.key]: true,
       }),
     })
 
@@ -653,11 +656,11 @@ describe("ShippingOptionService", () => {
       jest.clearAllMocks()
     })
 
-    it("should create a shipping method that also includes the taxes",  async () => {
+    it("should create a shipping method that also includes the taxes", async () => {
       await optionService.createShippingMethod("random_id", {}, { price: 10 })
       expect(shippingMethodRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
-          includes_tax: true
+          includes_tax: true,
         })
       )
     })

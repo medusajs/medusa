@@ -30,7 +30,14 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import {
+  buildLegacySelectOrRelationsFrom,
+  buildQuery,
+  buildRelations,
+  buildSelects,
+  isDefined,
+  setMetadata,
+} from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
@@ -117,7 +124,7 @@ class ProductService extends TransactionBaseService {
     }
   ): Promise<Product[]> {
     const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
+    const productRepo = manager.withRepository(this.productRepository_)
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
     if (q) {
@@ -153,7 +160,7 @@ class ProductService extends TransactionBaseService {
     }
   ): Promise<[Product[], number]> {
     const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
+    const productRepo = manager.withRepository(this.productRepository_)
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
@@ -175,7 +182,7 @@ class ProductService extends TransactionBaseService {
    */
   async count(selector: Selector<Product> = {}): Promise<number> {
     const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
+    const productRepo = manager.withRepository(this.productRepository_)
     const query = buildQuery(selector)
     return await productRepo.count(query)
   }
@@ -240,12 +247,12 @@ class ProductService extends TransactionBaseService {
     }
   ): Promise<Product> {
     const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
+    const productRepo = manager.withRepository(this.productRepository_)
 
     const { relations, ...query } = buildQuery(selector, config)
 
     const product = await productRepo.findOneWithRelations(
-      relations,
+      relations && buildLegacySelectOrRelationsFrom(relations),
       query as FindWithoutRelationsOptions
     )
 
@@ -320,7 +327,7 @@ class ProductService extends TransactionBaseService {
 
   async listTypes(): Promise<ProductType[]> {
     const manager = this.manager_
-    const productTypeRepository = manager.getCustomRepository(
+    const productTypeRepository = manager.withRepository(
       this.productTypeRepository_
     )
 
@@ -329,9 +336,7 @@ class ProductService extends TransactionBaseService {
 
   async listTagsByUsage(count = 10): Promise<ProductTag[]> {
     const manager = this.manager_
-    const productTagRepo = manager.getCustomRepository(
-      this.productTagRepository_
-    )
+    const productTagRepo = manager.withRepository(this.productTagRepository_)
 
     return await productTagRepo.listTagsByUsage(count)
   }
@@ -343,17 +348,13 @@ class ProductService extends TransactionBaseService {
    */
   async create(productObject: CreateProductInput): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-      const productTagRepo = manager.getCustomRepository(
-        this.productTagRepository_
-      )
-      const productTypeRepo = manager.getCustomRepository(
+      const productRepo = manager.withRepository(this.productRepository_)
+      const productTagRepo = manager.withRepository(this.productTagRepository_)
+      const productTypeRepo = manager.withRepository(
         this.productTypeRepository_
       )
-      const imageRepo = manager.getCustomRepository(this.imageRepository_)
-      const optionRepo = manager.getCustomRepository(
-        this.productOptionRepository_
-      )
+      const imageRepo = manager.withRepository(this.imageRepository_)
+      const optionRepo = manager.withRepository(this.productOptionRepository_)
 
       const {
         options,
@@ -445,17 +446,15 @@ class ProductService extends TransactionBaseService {
     update: UpdateProductInput
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-      const productVariantRepo = manager.getCustomRepository(
+      const productRepo = manager.withRepository(this.productRepository_)
+      const productVariantRepo = manager.withRepository(
         this.productVariantRepository_
       )
-      const productTagRepo = manager.getCustomRepository(
-        this.productTagRepository_
-      )
-      const productTypeRepo = manager.getCustomRepository(
+      const productTagRepo = manager.withRepository(this.productTagRepository_)
+      const productTypeRepo = manager.withRepository(
         this.productTypeRepository_
       )
-      const imageRepo = manager.getCustomRepository(this.imageRepository_)
+      const imageRepo = manager.withRepository(this.imageRepository_)
 
       const relations = ["variants", "tags", "images"]
 
@@ -600,13 +599,17 @@ class ProductService extends TransactionBaseService {
    */
   async delete(productId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       // Should not fail, if product does not exist, since delete is idempotent
-      const product = await productRepo.findOne(
-        { id: productId },
-        { relations: ["variants", "variants.prices", "variants.options"] }
-      )
+      const product = await productRepo.findOne({
+        where: { id: productId },
+        relations: buildRelations([
+          "variants",
+          "variants.prices",
+          "variants.options",
+        ]),
+      })
 
       if (!product) {
         return
@@ -634,7 +637,7 @@ class ProductService extends TransactionBaseService {
    */
   async addOption(productId: string, optionTitle: string): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
-      const productOptionRepo = manager.getCustomRepository(
+      const productOptionRepo = manager.withRepository(
         this.productOptionRepository_
       )
 
@@ -680,7 +683,7 @@ class ProductService extends TransactionBaseService {
     variantOrder: string[]
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const product = await this.retrieve(productId, {
         relations: ["variants"],
@@ -727,7 +730,7 @@ class ProductService extends TransactionBaseService {
     data: ProductOptionInput
   ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
-      const productOptionRepo = manager.getCustomRepository(
+      const productOptionRepo = manager.withRepository(
         this.productOptionRepository_
       )
 
@@ -781,8 +784,8 @@ class ProductService extends TransactionBaseService {
   async retrieveOptionByTitle(
     title: string,
     productId: string
-  ): Promise<ProductOption | undefined> {
-    const productOptionRepo = this.manager_.getCustomRepository(
+  ): Promise<ProductOption | null> {
+    const productOptionRepo = this.manager_.withRepository(
       this.productOptionRepository_
     )
 
@@ -802,7 +805,7 @@ class ProductService extends TransactionBaseService {
     optionId: string
   ): Promise<Product | void> {
     return await this.atomicPhase_(async (manager) => {
-      const productOptionRepo = manager.getCustomRepository(
+      const productOptionRepo = manager.withRepository(
         this.productOptionRepository_
       )
 
@@ -885,11 +888,11 @@ class ProductService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
+      query.relations = buildRelations(config.relations)
     }
 
     if (config.select && config.select.length > 0) {
-      query.select = config.select
+      query.select = buildSelects(config.select)
     }
 
     const rels = query.relations
@@ -897,7 +900,7 @@ class ProductService extends TransactionBaseService {
 
     return {
       query: query as FindWithoutRelationsOptions,
-      relations: rels as (keyof Product)[],
+      relations: buildLegacySelectOrRelationsFrom(rels) as (keyof Product)[],
       q,
     }
   }

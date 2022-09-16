@@ -63,7 +63,7 @@ describe("GiftCardService", () => {
 
   describe("retrieve", () => {
     const giftCardRepo = MockRepository({
-      findOneWithRelations: () => {
+      findOne: () => {
         return Promise.resolve({})
       },
     })
@@ -83,22 +83,21 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
-        ["region"],
-        {
-          where: {
-            id: IdMap.getId("gift-card"),
-          },
-          select: ["id"],
-        }
-      )
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        where: {
+          id: IdMap.getId("gift-card"),
+        },
+        relations: { region: true },
+        select: { id: true },
+        relationLoadStrategy: "query",
+      })
     })
   })
 
   describe("retrieveByCode", () => {
     const giftCardRepo = MockRepository({
-      findOneWithRelations: () => {
+      findOne: () => {
         return Promise.resolve({})
       },
     })
@@ -118,16 +117,15 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
-        ["region"],
-        {
-          where: {
-            code: "1234-1234-1234-1234",
-          },
-          select: ["id"],
-        }
-      )
+      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
+        relationLoadStrategy: "query",
+        where: {
+          code: "1234-1234-1234-1234",
+        },
+        select: { id: true },
+        relations: { region: true },
+      })
     })
   })
 
@@ -140,7 +138,7 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOneWithRelations: (s) => {
+      findOne: (s) => {
         return Promise.resolve(giftCard)
       },
       save: (s) => {

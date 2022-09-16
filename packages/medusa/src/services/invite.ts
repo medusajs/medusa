@@ -80,7 +80,7 @@ class InviteService extends TransactionBaseService {
   }
 
   async list(selector, config = {}): Promise<ListInvite[]> {
-    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
+    const inviteRepo = this.manager_.withRepository(InviteRepository)
 
     const query = buildQuery(selector, config)
 
@@ -100,10 +100,9 @@ class InviteService extends TransactionBaseService {
     validDuration = DEFAULT_VALID_DURATION
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const inviteRepository =
-        this.manager_.getCustomRepository(InviteRepository)
+      const inviteRepository = this.manager_.withRepository(InviteRepository)
 
-      const userRepo = this.manager_.getCustomRepository(UserRepository)
+      const userRepo = this.manager_.withRepository(UserRepository)
 
       const userEntity = await userRepo.findOne({
         where: { email: user },
@@ -167,8 +166,7 @@ class InviteService extends TransactionBaseService {
    */
   async delete(inviteId): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const inviteRepo: InviteRepository =
-        manager.getCustomRepository(InviteRepository)
+      const inviteRepo = manager.withRepository(InviteRepository)
 
       // Should not fail, if invite does not exist, since delete is idempotent
       const invite = await inviteRepo.findOne({ where: { id: inviteId } })
@@ -195,10 +193,8 @@ class InviteService extends TransactionBaseService {
     const { invite_id, user_email } = decoded
 
     return await this.atomicPhase_(async (m) => {
-      const userRepo = m.getCustomRepository(this.userRepo_)
-      const inviteRepo: InviteRepository = m.getCustomRepository(
-        this.inviteRepository_
-      )
+      const userRepo = m.withRepository(this.userRepo_)
+      const inviteRepo = m.withRepository(this.inviteRepository_)
 
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
 
@@ -251,9 +247,9 @@ class InviteService extends TransactionBaseService {
   }
 
   async resend(id): Promise<void> {
-    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
+    const inviteRepo = this.manager_.withRepository(InviteRepository)
 
-    const invite = await inviteRepo.findOne({ id })
+    const invite = await inviteRepo.findOne({ where: { id } })
 
     if (!invite) {
       throw new MedusaError(

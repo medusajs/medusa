@@ -1,5 +1,4 @@
-import { EntityRepository, Repository } from "typeorm"
-import { DraftOrder } from "../models/draft-order"
+import { DraftOrder } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(DraftOrder)
-export class DraftOrderRepository extends Repository<DraftOrder> {}
+export const DraftOrderRepository = dataSource.getRepository(DraftOrder)

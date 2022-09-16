@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, FindOneOptions } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
@@ -12,12 +12,12 @@ import {
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
+  CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
-  CreateShippingOptionInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
@@ -100,7 +100,7 @@ class ShippingOptionService extends TransactionBaseService {
         )
       }
 
-      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
       const existingReq = await reqRepo.findOne({
         where: { id: requirement.id },
@@ -149,7 +149,7 @@ class ShippingOptionService extends TransactionBaseService {
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return optRepo.find(query)
@@ -165,7 +165,7 @@ class ShippingOptionService extends TransactionBaseService {
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return await optRepo.findAndCount(query)
@@ -183,23 +183,10 @@ class ShippingOptionService extends TransactionBaseService {
     options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
   ): Promise<ShippingOption> {
     const manager = this.manager_
-    const soRepo: ShippingOptionRepository = manager.getCustomRepository(
-      this.optionRepository_
-    )
+    const soRepo = manager.withRepository(this.optionRepository_)
 
-    const query: ExtendedFindConfig<ShippingOption> = {
-      where: { id: optionId },
-    }
-
-    if (options.select) {
-      query.select = options.select
-    }
-
-    if (options.relations) {
-      query.relations = options.relations
-    }
-
-    const option = await soRepo.findOne(query)
+    const query = buildQuery({ id: optionId }, options)
+    const option = await soRepo.findOne(query as FindOneOptions)
 
     if (!option) {
       throw new MedusaError(
@@ -223,9 +210,7 @@ class ShippingOptionService extends TransactionBaseService {
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
-        this.methodRepository_
-      )
+      const methodRepo = manager.withRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
       if (!method) {
@@ -255,7 +240,7 @@ class ShippingOptionService extends TransactionBaseService {
       : [shippingMethods]
 
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
       return await methodRepo.remove(removeEntities)
     })
   }
@@ -277,7 +262,7 @@ class ShippingOptionService extends TransactionBaseService {
         relations: ["requirements"],
       })
 
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
 
       if (isDefined(config.cart)) {
         await this.validateCartOption(option, config.cart)
@@ -406,7 +391,7 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
       const region = await this.regionService_
@@ -629,7 +614,7 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return await optionRepo.save(option)
     })
   }
@@ -645,7 +630,7 @@ class ShippingOptionService extends TransactionBaseService {
       try {
         const option = await this.retrieve(optionId)
 
-        const optionRepo = manager.getCustomRepository(this.optionRepository_)
+        const optionRepo = manager.withRepository(this.optionRepository_)
 
         return optionRepo.softRemove(option)
       } catch (error) {
@@ -681,7 +666,7 @@ class ShippingOptionService extends TransactionBaseService {
 
       option.requirements.push(validatedReq)
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return optionRepo.save(option)
     })
   }
@@ -693,17 +678,16 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async removeRequirement(
     requirementId
-  ): Promise<ShippingOptionRequirement | void> {
+  ): Promise<DeepPartial<ShippingOptionRequirement> | null | void> {
     return await this.atomicPhase_(async (manager) => {
-      const reqRepo: ShippingOptionRequirementRepository =
-        manager.getCustomRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
       const requirement = await reqRepo.findOne({
         where: { id: requirementId },
       })
       // Delete is idempotent, but we return a promise to allow then-chaining
-      if (typeof requirement === "undefined") {
-        return Promise.resolve()
+      if (requirement == undefined) {
+        return
       }
 
       return await reqRepo.softRemove(requirement)

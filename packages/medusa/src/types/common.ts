@@ -11,11 +11,14 @@ import {
   FindManyOptions,
   FindOneOptions,
   FindOperator,
+  FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 import { BaseEntity } from "../interfaces"
 import { ClassConstructor } from "./global"
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -36,15 +39,23 @@ export type Writable<T> = {
     | FindOperator<string[]>
 }
 
-export type ExtendedFindConfig<
-  TEntity,
-  TWhereKeys = TEntity
-> = FindConfig<TEntity> &
-  (FindOneOptions<TEntity> | FindManyOptions<TEntity>) & {
-    where: Partial<Writable<TWhereKeys>>
-    withDeleted?: boolean
-    relations?: string[]
-  }
+export interface FindConfig<Entity> {
+  select?: (keyof Entity)[]
+  skip?: number
+  take?: number
+  relations?: string[]
+  order?: FindOptionsOrder<Entity>
+}
+
+export type ExtendedFindConfig<TEntity> = (
+  | Omit<FindOneOptions<TEntity>, "where" | "relations">
+  | Omit<FindManyOptions<TEntity>, "where" | "relations">
+) & {
+  relations?: FindOptionsRelations<TEntity>
+  where: FindOptionsWhere<TEntity>
+  skip?: number
+  take?: number
+}
 
 export type QuerySelector<TEntity> = Selector<TEntity> & { q?: string }
 
@@ -68,14 +79,6 @@ export type TotalField =
   | "refundable_amount"
   | "gift_card_total"
   | "gift_card_tax_total"
-
-export interface FindConfig<Entity> {
-  select?: (keyof Entity)[]
-  skip?: number
-  take?: number
-  relations?: string[]
-  order?: Record<string, "ASC" | "DESC">
-}
 
 export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
   select?: FindManyOptions<TModel>["select"]

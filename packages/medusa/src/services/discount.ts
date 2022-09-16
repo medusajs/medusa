@@ -122,7 +122,7 @@ class DiscountService extends TransactionBaseService {
     config: FindConfig<Discount> = { relations: [], skip: 0, take: 10 }
   ): Promise<Discount[]> {
     const manager = this.manager_
-    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+    const discountRepo = manager.withRepository(this.discountRepository_)
 
     const query = buildQuery(selector as Selector<Discount>, config)
     return await discountRepo.find(query)
@@ -142,7 +142,7 @@ class DiscountService extends TransactionBaseService {
     }
   ): Promise<[Discount[], number]> {
     const manager = this.manager_
-    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+    const discountRepo = manager.withRepository(this.discountRepository_)
 
     let q
     if ("q" in selector) {
@@ -157,7 +157,7 @@ class DiscountService extends TransactionBaseService {
 
       delete where.code
 
-      query.where = (qb: SelectQueryBuilder<Discount>): void => {
+      query.where = ((qb: SelectQueryBuilder<Discount>): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -165,7 +165,7 @@ class DiscountService extends TransactionBaseService {
             qb.where({ code: ILike(`%${q}%`) })
           })
         )
-      }
+      }) as any
     }
 
     const [discounts, count] = await discountRepo.findAndCount(query)
@@ -181,8 +181,8 @@ class DiscountService extends TransactionBaseService {
    */
   async create(discount: CreateDiscountInput): Promise<Discount> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
-      const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
+      const ruleRepo = manager.withRepository(this.discountRuleRepository_)
 
       const conditions = discount.rule?.conditions
 
@@ -249,7 +249,7 @@ class DiscountService extends TransactionBaseService {
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
     const manager = this.manager_
-    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+    const discountRepo = manager.withRepository(this.discountRepository_)
 
     const query = buildQuery({ id: discountId }, config)
     const discount = await discountRepo.findOne(query)
@@ -275,7 +275,7 @@ class DiscountService extends TransactionBaseService {
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
     const manager = this.manager_
-    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+    const discountRepo = manager.withRepository(this.discountRepository_)
 
     const normalizedCode = discountCode.toUpperCase()
 
@@ -308,12 +308,8 @@ class DiscountService extends TransactionBaseService {
     update: UpdateDiscountInput
   ): Promise<Discount> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo: DiscountRepository = manager.getCustomRepository(
-        this.discountRepository_
-      )
-      const ruleRepo: DiscountRuleRepository = manager.getCustomRepository(
-        this.discountRuleRepository_
-      )
+      const discountRepo = manager.withRepository(this.discountRepository_)
+      const ruleRepo = manager.withRepository(this.discountRuleRepository_)
 
       const discount = await this.retrieve(discountId, {
         relations: ["rule"],
@@ -405,7 +401,7 @@ class DiscountService extends TransactionBaseService {
     data: CreateDynamicDiscountInput
   ): Promise<Discount> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
 
       const discount = await this.retrieve(discountId)
 
@@ -453,7 +449,7 @@ class DiscountService extends TransactionBaseService {
    */
   async deleteDynamicCode(discountId: string, code: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
       const discount = await discountRepo.findOne({
         where: { parent_discount_id: discountId, code },
       })
@@ -474,7 +470,7 @@ class DiscountService extends TransactionBaseService {
    */
   async addRegion(discountId: string, regionId: string): Promise<Discount> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
 
       const discount = await this.retrieve(discountId, {
         relations: ["regions", "rule"],
@@ -509,7 +505,7 @@ class DiscountService extends TransactionBaseService {
    */
   async removeRegion(discountId: string, regionId: string): Promise<Discount> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
 
       const discount = await this.retrieve(discountId, {
         relations: ["regions"],
@@ -534,7 +530,7 @@ class DiscountService extends TransactionBaseService {
    */
   async delete(discountId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const discountRepo = manager.withRepository(this.discountRepository_)
 
       const discount = await discountRepo.findOne({ where: { id: discountId } })
 
@@ -551,8 +547,9 @@ class DiscountService extends TransactionBaseService {
     productId: string | undefined
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       // In case of custom line items, we don't have a product id.
       // Instead of throwing, we simply invalidate the discount.
@@ -737,8 +734,9 @@ class DiscountService extends TransactionBaseService {
     customerId: string | undefined
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       // Instead of throwing on missing customer id, we simply invalidate the discount
       if (!customerId) {

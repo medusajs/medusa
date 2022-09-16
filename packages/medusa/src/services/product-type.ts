@@ -32,7 +32,7 @@ class ProductTypeService extends TransactionBaseService {
     id: string,
     config: FindConfig<ProductType> = {}
   ): Promise<ProductType> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+    const typeRepo = this.manager_.withRepository(this.typeRepository_)
 
     const query = buildQuery({ id }, config)
     const type = await typeRepo.findOne(query)
@@ -57,7 +57,7 @@ class ProductTypeService extends TransactionBaseService {
     selector: FilterableProductTypeProps = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<ProductType[]> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+    const typeRepo = this.manager_.withRepository(this.typeRepository_)
 
     const query = buildQuery(selector, config)
     return await typeRepo.find(query)
@@ -73,7 +73,7 @@ class ProductTypeService extends TransactionBaseService {
     selector: FilterableProductTypeProps = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<[ProductType[], number]> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+    const typeRepo = this.manager_.withRepository(this.typeRepository_)
 
     let q: string | undefined = undefined
     if ("q" in selector) {
@@ -88,9 +88,9 @@ class ProductTypeService extends TransactionBaseService {
 
       delete where.value
 
-      query.where = (qb: SelectQueryBuilder<ProductType>): void => {
+      query.where = ((qb: SelectQueryBuilder<ProductType>): void => {
         qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
-      }
+      }) as any
     }
 
     return await typeRepo.findAndCount(query)

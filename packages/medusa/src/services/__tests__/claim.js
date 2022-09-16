@@ -1,4 +1,4 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ClaimService from "../claim"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 
@@ -309,7 +309,7 @@ describe("ClaimService", () => {
 
       expect(claimRepo.findOne).toHaveBeenCalledWith({
         where: { id: "claim_id" },
-        relations: ["order"],
+        relations: { order: true },
       })
     })
   })

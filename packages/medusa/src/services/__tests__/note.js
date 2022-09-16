@@ -1,5 +1,5 @@
 import NoteService from "../note"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 describe("NoteService", () => {
@@ -33,7 +33,7 @@ describe("NoteService", () => {
         where: {
           resource_id: IdMap.getId("note"),
         },
-        relations: ["author"],
+        relations: { author: true },
       })
     })
   })
@@ -68,7 +68,7 @@ describe("NoteService", () => {
       expect(noteRepo.findOne).toHaveBeenCalledTimes(1)
       expect(noteRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("note") },
-        relations: ["author"],
+        relations: { author: true },
       })
     })
 

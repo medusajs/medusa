@@ -34,7 +34,7 @@ class ProductTagService extends TransactionBaseService {
     tagId: string,
     config: FindConfig<ProductTag> = {}
   ): Promise<ProductTag> {
-    const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
+    const tagRepo = this.manager_.withRepository(this.tagRepo_)
 
     const query = buildQuery({ id: tagId }, config)
     const tag = await tagRepo.findOne(query)
@@ -56,7 +56,7 @@ class ProductTagService extends TransactionBaseService {
    */
   async create(tag: Partial<ProductTag>): Promise<ProductTag> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const tagRepo = manager.getCustomRepository(this.tagRepo_)
+      const tagRepo = manager.withRepository(this.tagRepo_)
 
       const productTag = tagRepo.create(tag)
       return await tagRepo.save(productTag)
@@ -73,7 +73,7 @@ class ProductTagService extends TransactionBaseService {
     selector: FilterableProductTagProps = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<ProductTag[]> {
-    const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
+    const tagRepo = this.manager_.withRepository(this.tagRepo_)
 
     const query = buildQuery(selector, config)
     return await tagRepo.find(query)
@@ -89,7 +89,7 @@ class ProductTagService extends TransactionBaseService {
     selector: FilterableProductTagProps = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<[ProductTag[], number]> {
-    const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
+    const tagRepo = this.manager_.withRepository(this.tagRepo_)
 
     let q: string | undefined = undefined
     if ("q" in selector) {
@@ -104,9 +104,9 @@ class ProductTagService extends TransactionBaseService {
 
       delete where.value
 
-      query.where = (qb: SelectQueryBuilder<ProductTag>): void => {
+      query.where = ((qb: SelectQueryBuilder<ProductTag>): void => {
         qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
-      }
+      }) as any
     }
 
     return await tagRepo.findAndCount(query)

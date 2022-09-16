@@ -1,29 +1,31 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ProductType } from "../models/product-type"
+import { ProductType } from "../models"
+import { dataSource } from "../loaders/database"
 
 type UpsertTypeInput = Partial<ProductType> & {
   value: string
 }
-@EntityRepository(ProductType)
-export class ProductTypeRepository extends Repository<ProductType> {
-  async upsertType(type?: UpsertTypeInput): Promise<ProductType | null> {
-    if (!type) {
-      return null
-    }
 
-    const existing = await this.findOne({
-      where: { value: type.value },
-    })
+export const ProductTypeRepository = dataSource
+  .getRepository(ProductType)
+  .extend({
+    async upsertType(type?: UpsertTypeInput): Promise<ProductType | null> {
+      if (!type) {
+        return null
+      }
 
-    if (existing) {
-      return existing
-    }
+      const existing = await this.findOne({
+        where: { value: type.value },
+      })
 
-    const created = this.create({
-      value: type.value,
-    })
-    const result = await this.save(created)
+      if (existing) {
+        return existing
+      }
 
-    return result
-  }
-}
+      const created = this.create({
+        value: type.value,
+      })
+      const result = await this.save(created)
+
+      return result
+    },
+  })

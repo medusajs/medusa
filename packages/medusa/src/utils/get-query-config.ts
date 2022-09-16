@@ -3,6 +3,7 @@ import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
 import { BaseEntity } from "../interfaces"
 import { isDefined } from "."
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -51,7 +52,7 @@ export function getListConfig<TModel extends BaseEntity>(
   expand?: string[],
   limit = 50,
   offset = 0,
-  order?: { [k: symbol]: "DESC" | "ASC" }
+  order?: FindOptionsOrder<TModel>
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
@@ -67,9 +68,11 @@ export function getListConfig<TModel extends BaseEntity>(
     expandFields = expand
   }
 
-  const orderBy: Record<string, "DESC" | "ASC"> = order ?? {
-    created_at: "DESC",
-  }
+  const orderBy =
+    order ??
+    ({
+      created_at: "DESC",
+    } as FindOptionsOrder<TModel>)
 
   return {
     select: includeFields.length ? includeFields : defaultFields,
@@ -104,15 +107,15 @@ export function prepareListQuery<
     validateRelations(expandRelations, queryConfig.allowedRelations)
   }
 
-  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  let orderBy: FindOptionsOrder<TEntity> | undefined
   if (isDefined(order)) {
     let orderField = order
     if (order.startsWith("-")) {
       const [, field] = order.split("-")
       orderField = field
-      orderBy = { [field]: "DESC" }
+      orderBy = { [field]: "DESC" } as FindOptionsOrder<TEntity>
     } else {
-      orderBy = { [order]: "ASC" }
+      orderBy = { [order]: "ASC" } as FindOptionsOrder<TEntity>
     }
 
     if (

@@ -29,7 +29,7 @@ class ShippingTaxRateService extends TransactionBaseService {
     selector: FilterableShippingTaxRateProps,
     config: FindConfig<ShippingTaxRate> = { relations: [], skip: 0, take: 20 }
   ): Promise<ShippingTaxRate[]> {
-    const sTaxRateRepo = this.manager_.getCustomRepository(
+    const sTaxRateRepo = this.manager_.withRepository(
       this.shippingTaxRateRepository_
     )
 

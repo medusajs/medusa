@@ -6,12 +6,7 @@ import { TransactionBaseService } from "../interfaces"
 import { GiftCard } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
-import {
-  ExtendedFindConfig,
-  FindConfig,
-  QuerySelector,
-  Selector,
-} from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
@@ -27,6 +22,7 @@ type InjectedDependencies = {
   regionService: RegionService
   eventBusService: EventBusService
 }
+
 /**
  * Provides layer to manipulate gift cards.
  */
@@ -87,7 +83,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<[GiftCard[], number]> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -95,15 +91,15 @@ class GiftCardService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query: ExtendedFindConfig<
-      GiftCard,
-      QuerySelector<GiftCard>
-    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+    const query = buildQuery<QuerySelector<GiftCard>, GiftCard>(
+      selector,
+      config
+    )
 
-    const rels = query.relations
-    delete query.relations
-
-    return await giftCardRepo.listGiftCardsAndCount(query, rels, q)
+    return await giftCardRepo.listGiftCardsAndCount(
+      { ...query, relationLoadStrategy: "query" },
+      q
+    )
   }
 
   /**
@@ -116,7 +112,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<GiftCard[]> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -124,22 +120,23 @@ class GiftCardService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query: ExtendedFindConfig<
-      GiftCard,
-      QuerySelector<GiftCard>
-    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+    const query = buildQuery<QuerySelector<GiftCard>, GiftCard>(
+      selector,
+      config
+    )
 
-    const rels = query.relations
-    delete query.relations
-
-    return await giftCardRepo.listGiftCards(query, rels, q)
+    const [giftCards] = await giftCardRepo.listGiftCardsAndCount(
+      { ...query, relationLoadStrategy: "query" },
+      q
+    )
+    return giftCards
   }
 
   async createTransaction(
     data: CreateGiftCardTransactionInput
   ): Promise<string> {
     const manager = this.manager_
-    const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
+    const gctRepo = manager.withRepository(this.giftCardTransactionRepo_)
     const created = gctRepo.create(data)
     const saved = await gctRepo.save(created)
     return saved.id
@@ -152,7 +149,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async create(giftCard: CreateGiftCardInput): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       // Will throw if region does not exist
       const region = await this.regionService_
@@ -185,14 +182,14 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-    const giftCard = await giftCardRepo.findOneWithRelations(
-      relations as (keyof GiftCard)[],
-      query
-    )
+    const giftCard = await giftCardRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
 
     if (!giftCard) {
       const selectorConstraints = Object.entries(selector)
@@ -239,7 +236,7 @@ class GiftCardService extends TransactionBaseService {
     update: UpdateGiftCardInput
   ): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       const giftCard = await this.retrieve(giftCardId)
 
@@ -282,7 +279,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async delete(giftCardId: string): Promise<GiftCard | void> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 
