@@ -209,7 +209,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       })
 
       expect(orderEdit).toBeUndefined()
-
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
