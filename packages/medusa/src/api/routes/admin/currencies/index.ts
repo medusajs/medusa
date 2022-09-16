@@ -4,7 +4,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
-  transformQuery,
+  transformQuery
 } from "../../../middlewares"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { AdminGetCurrenciesParams } from "./list-currencies"
@@ -14,7 +14,6 @@ export default (app) => {
   const route = Router()
   app.use(
     "/currencies",
-    isFeatureFlagEnabled(TaxInclusivePricingFeatureFlag.key),
     route
   )
 
@@ -29,6 +28,7 @@ export default (app) => {
   route.post(
     "/:code",
     transformBody(AdminPostCurrenciesCurrencyReq),
+    isFeatureFlagEnabled(TaxInclusivePricingFeatureFlag.key),
     middlewares.wrap(require("./update-currency").default)
   )
 
@@ -45,3 +45,4 @@ export type AdminCurrenciesRes = {
 
 export * from "./list-currencies"
 export * from "./update-currency"
+

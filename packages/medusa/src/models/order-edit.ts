@@ -1,4 +1,12 @@
-import { BeforeInsert, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import {
+  AfterLoad,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm"
 
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
@@ -8,6 +16,14 @@ import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 import { LineItem } from "./line-item"
 import { Order } from "./order"
+
+export enum OrderEditStatus {
+  CONFIRMED = "confirmed",
+  DECLINED = "declined",
+  REQUESTED = "requested",
+  CREATED = "created",
+  CANCELED = "canceled",
+}
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderEdit extends SoftDeletableEntity {
@@ -57,17 +73,42 @@ export class OrderEdit extends SoftDeletableEntity {
   canceled_at?: Date
 
   // Computed
-  subtotal: number
-  discount_total?: number
-  tax_total: number
+  shipping_total: number
+  discount_total: number
+  tax_total: number | null
   total: number
+  subtotal: number
+  gift_card_total: number
+  gift_card_tax_total: number
+
   difference_due: number
 
+  status: OrderEditStatus
+
   items: LineItem[]
+  removed_items: LineItem[]
 
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oe")
+  }
+
+  @AfterLoad()
+  loadStatus(): void {
+    if (this.requested_at) {
+      this.status = OrderEditStatus.REQUESTED
+    }
+    if (this.declined_at) {
+      this.status = OrderEditStatus.DECLINED
+    }
+    if (this.confirmed_at) {
+      this.status = OrderEditStatus.CONFIRMED
+    }
+    if (this.canceled_at) {
+      this.status = OrderEditStatus.CANCELED
+    }
+
+    this.status = this.status ?? OrderEditStatus.CREATED
   }
 }
 
@@ -97,7 +138,7 @@ export class OrderEdit extends SoftDeletableEntity {
  *     type: array
  *     description: Line item changes array.
  *     items:
- *       $ref: "#/components/schemas/order_item_changes"
+ *       $ref: "#/components/schemas/order_item_change"
  *   internal_note:
  *     description: "An optional note with additional details about the order edit."
  *     type: string
@@ -131,11 +172,23 @@ export class OrderEdit extends SoftDeletableEntity {
  *     type: string
  *   subtotal:
  *     type: integer
- *     description: The subtotal for line items computed from changes.
+ *     description: The total of subtotal
  *     example: 8000
  *   discount_total:
  *     type: integer
  *     description: The total of discount
+ *     example: 800
+ *   shipping_total:
+ *     type: integer
+ *     description: The total of the shipping amount
+ *     example: 800
+ *   gift_card_total:
+ *     type: integer
+ *     description: The total of the gift card amount
+ *     example: 800
+ *   gift_card_tax_total:
+ *     type: integer
+ *     description: The total of the gift card tax amount
  *     example: 800
  *   tax_total:
  *     type: integer
@@ -152,6 +205,11 @@ export class OrderEdit extends SoftDeletableEntity {
  *   items:
  *     type: array
  *     description: Computed line items from the changes.
+ *     items:
+ *       $ref: "#/components/schemas/line_item"
+ *   removed_items:
+ *     type: array
+ *     description: Computed line items from the changes that have been marked as deleted.
  *     items:
  *       $ref: "#/components/schemas/line_item"
  */
