@@ -7,6 +7,7 @@ import {
   LineItem,
   OrderEdit,
   OrderEditItemChangeType,
+  OrderEditStatus,
   OrderItemChange,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
@@ -113,5 +114,28 @@ export default class OrderEditService extends TransactionBaseService {
     })
 
     return { items, removedItems }
+  }
+
+  async delete(orderEditId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      const edit = await orderEditRepo.findOne({ where: { id: orderEditId } })
+
+      if (!edit) {
+        return
+      }
+
+      if (edit.status !== OrderEditStatus.CREATED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot delete order edit with status ${edit.status}`
+        )
+      }
+
+      await orderEditRepo.softRemove(edit)
+    })
   }
 }
