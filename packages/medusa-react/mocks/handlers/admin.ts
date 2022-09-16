@@ -1664,6 +1664,18 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/order-edits/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
   rest.get("/store/order-edits/:id", (req, res, ctx) => {
     const { id } = req.params
     return res(
