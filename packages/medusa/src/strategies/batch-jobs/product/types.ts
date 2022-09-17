@@ -3,6 +3,7 @@ import { FileService } from "medusa-interfaces"
 
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -30,6 +31,7 @@ export type InjectedProps = {
   productVariantService: ProductVariantService
   shippingProfileService: ShippingProfileService
   salesChannelService: SalesChannelService
+  productCollectionService: ProductCollectionService
   regionService: RegionService
   fileService: typeof FileService
 

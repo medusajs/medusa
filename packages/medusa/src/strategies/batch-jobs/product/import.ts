@@ -6,6 +6,7 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -26,7 +27,7 @@ import {
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
-import { BatchJob, SalesChannel } from "../../../models"
+import { BatchJob, ProductCollection, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -59,6 +60,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly productCollectionService_: ProductCollectionService
 
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
@@ -76,6 +78,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     fileService,
     manager,
     featureFlagRouter,
+    productCollectionService
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -89,6 +92,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       columns: [
         ...CSVSchema.columns,
         ...(isSalesChannelsFeatureOn ? SalesChannelsSchema.columns : []),
+        ...CollectionsSchema.columns
       ],
     })
 
@@ -102,6 +106,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
+    this.productCollectionService_ = productCollectionService
   }
 
   buildTemplate(): Promise<string> {
@@ -358,6 +363,46 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     return salesChannels
   }
 
+  private async processCollections(
+    data: Pick<ProductCollection, "handle" | "id">[]
+  ): Promise<ProductCollection[]> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
+
+    const collections: ProductCollection[] = []
+
+    for (const input of data) {
+      let collection: ProductCollection | null = null
+
+      if (input.id) {
+        try {
+          collection = await productCollectionServiceTx.retrieve(input.id, {
+            select: ["id"],
+          })
+        } catch (e) {
+          // noop - check if the channel exists with provided name
+        }
+      }
+
+      if (!collection) {
+        try {
+          collection = (await productCollectionServiceTx.retrieveByHandle(input.handle, {
+            select: ["id"],
+          })) as ProductCollection
+        } catch (e) {
+          // noop
+        }
+      }
+
+      if (collection) {
+        collections.push(collection)
+      }
+    }
+
+    return collections
+  }
+
   /**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
@@ -396,6 +441,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             >[]
           )
         }
+        if (productOp["product.collections"]) {
+          productData["collecitons"] = await this.processCollections(
+            productOp["product.collecitons"] as Pick<
+              ProductCollection,
+              "handle" | "id"
+            >[]
+          )
+        }
+
 
         await productServiceTx.create(productData)
       } catch (e) {
@@ -437,6 +491,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
               "name" | "id"
+            >[]
+          )
+        }
+
+        if (productOp["product.collections"]) {
+          productData["collecitons"] = await this.processCollections(
+            productOp["product.collecitons"] as Pick<
+              ProductCollection,
+              "handle" | "id"
             >[]
           )
         }
@@ -752,9 +815,6 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Origin Country", mapTo: "product.origin_country" },
     { name: "Product MID Code", mapTo: "product.mid_code" },
     { name: "Product Material", mapTo: "product.material" },
-    // PRODUCT-COLLECTION
-    { name: "Product Collection Title", mapTo: "product.collection.title" },
-    { name: "Product Collection Handle", mapTo: "product.collection.handle" },
     // PRODUCT-TYPE
     { name: "Product Type", mapTo: "product.type.value" },
     // PRODUCT-TAGS
@@ -941,6 +1001,55 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
         }
         ;(
           builtLine["product.sales_channels"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          id: value,
+        })
+
+        return builtLine
+      },
+    },
+  ],
+}
+
+const CollectionsSchema: ProductImportCsvSchema = {
+  columns: [
+    {
+      name: "Collection Handle",
+      match: /Collection \d+ Handle/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.collections"] =
+          builtLine["product.collections"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ; (
+          builtLine["product.collections"] as Record<
+            string,
+            string | number
+          >[]
+        ).push({
+          name: value,
+        })
+
+        return builtLine
+      },
+    },
+    {
+      name: "Collection Id",
+      match: /Collection \d+ Id/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.collections"] =
+          builtLine["product.collections"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+        ; (
+          builtLine["product.collections"] as Record<
             string,
             string | number
           >[]
