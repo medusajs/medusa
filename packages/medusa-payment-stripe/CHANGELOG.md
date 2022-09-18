@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.44-stripe-fix.0
+
+### Patch Changes
+
+- [#2230](https://github.com/medusajs/medusa/pull/2230) [`271df36a6`](https://github.com/medusajs/medusa/commit/271df36a6b100ac82cf2955440b6c6883a4c1c8a) Thanks [@srindom](https://github.com/srindom)! - Add withTransaction
+
 ## 1.1.43
 
 ### Patch Changes
