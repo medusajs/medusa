@@ -1,11 +1,14 @@
 import Stripe from "stripe"
 import { PaymentService } from "medusa-interfaces"
-import { PaymentSessionStatus } from '@medusajs/medusa/dist'
+import { PaymentSessionStatus } from "@medusajs/medusa/dist"
 
 class StripeProviderService extends PaymentService {
   static identifier = "stripe"
 
-  constructor({ customerService, totalsService, regionService }, options) {
+  constructor(
+    { customerService, totalsService, regionService, manager },
+    options
+  ) {
     super()
 
     /**
@@ -30,6 +33,26 @@ class StripeProviderService extends PaymentService {
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
+
+    this.manager_ = manager
+  }
+
+  withTransaction(manager) {
+    if (!manager) {
+      return this
+    }
+
+    const cloned = new this.constructor(
+      {
+        customerService: this.customerService_,
+        regionService: this.regionService_,
+        totalsService: this.totalsService_,
+        manager,
+      },
+      this.options_
+    )
+
+    return cloned
   }
 
   /**
@@ -96,14 +119,17 @@ class StripeProviderService extends PaymentService {
    */
   async createCustomer(customer) {
     try {
+      const manager = this.manager_
       const stripeCustomer = await this.stripe_.customers.create({
         email: customer.email,
       })
 
       if (customer.id) {
-        await this.customerService_.update(customer.id, {
-          metadata: { stripe_id: stripeCustomer.id },
-        })
+        await this.customerService_
+          .withTransaction(manager)
+          .update(customer.id, {
+            metadata: { stripe_id: stripeCustomer.id },
+          })
       }
 
       return stripeCustomer
@@ -119,13 +145,19 @@ class StripeProviderService extends PaymentService {
    * @returns {object} Stripe payment intent
    */
   async createPayment(cart) {
+    const manager = this.manager_
+
     const { customer_id, region_id, email } = cart
-    const { currency_code } = await this.regionService_.retrieve(region_id)
+    const { currency_code } = await this.regionService_
+      .withTransaction(manager)
+      .retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      description: cart?.context?.payment_description ?? this.options_?.payment_description,
+      description:
+        cart?.context?.payment_description ??
+        this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
       setup_future_usage: "on_session",
@@ -134,7 +166,9 @@ class StripeProviderService extends PaymentService {
     }
 
     if (customer_id) {
-      const customer = await this.customerService_.retrieve(customer_id)
+      const customer = await this.customerService_
+        .withTransaction(manager)
+        .retrieve(customer_id)
 
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
@@ -154,9 +188,7 @@ class StripeProviderService extends PaymentService {
       intentRequest.customer = stripeCustomer.id
     }
 
-    return await this.stripe_.paymentIntents.create(
-      intentRequest
-    )
+    return await this.stripe_.paymentIntents.create(intentRequest)
   }
 
   /**
