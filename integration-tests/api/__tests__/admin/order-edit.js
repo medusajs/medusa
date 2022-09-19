@@ -428,6 +428,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const orderEditId = IdMap.getId("order-edit-1")
     const prodId1 = IdMap.getId("prodId1")
     const lineItemId1 = IdMap.getId("line-item-1")
+    const orderId1 = IdMap.getId("order-id-1")
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
@@ -437,6 +438,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       })
 
       const order = await simpleOrderFactory(dbConnection, {
+        id: orderId1,
         email: "test@testson.com",
         tax_rate: null,
         fulfillment_status: "fulfilled",
@@ -489,6 +491,25 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           canceled_by: null,
           confirmed_by: null,
           internal_note: "changed note",
+          /*
+           * Computed items are appended to the response
+           */
+          items: [
+            expect.objectContaining({
+              id: lineItemId1,
+              order_id: orderId1,
+            }),
+          ],
+          /*
+           * Computed totals are appended to the response
+           */
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 1000,
+          tax_total: 0,
+          total: 1000,
         })
       )
     })
