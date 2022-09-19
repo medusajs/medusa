@@ -17,7 +17,7 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
 } = require("../../factories")
-const { OrderEditItemChangeType } = require("@medusajs/medusa")
+const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
@@ -212,6 +212,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         adminHeaders
       )
 
+      const orderEdit = await dbConnection.manager.findOne(OrderEdit, {
+        where: { id },
+        withDeleted: true,
+      })
+
+      expect(orderEdit).toBeUndefined()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
