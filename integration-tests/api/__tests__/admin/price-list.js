@@ -1,4 +1,5 @@
 const path = require("path")
+const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const startServerWithEnvironment =
@@ -14,7 +15,6 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { Region } = require("@medusajs/medusa")
 
 const adminReqConfig = {
   headers: {
