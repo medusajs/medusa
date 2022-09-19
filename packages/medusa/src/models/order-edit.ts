@@ -12,7 +12,7 @@ import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { resolveDbType } from "../utils/db-aware-column"
 import { OrderItemChange } from "./order-item-change"
-import { SoftDeletableEntity } from "../interfaces"
+import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 import { LineItem } from "./line-item"
 import { Order } from "./order"
@@ -26,7 +26,7 @@ export enum OrderEditStatus {
 }
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
-export class OrderEdit extends SoftDeletableEntity {
+export class OrderEdit extends BaseEntity {
   @Column()
   order_id: string
 
