@@ -309,7 +309,7 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      await orderEditRepo.softRemove(edit)
+      await orderEditRepo.remove(edit)
     })
   }
 }
