@@ -44,6 +44,7 @@ describe("PriceListService", () => {
     priceListRepository,
     moneyAmountRepository,
     featureFlagRouter: new FlagRouter({}),
+    regionService: RegionServiceMock,
   })
 
   beforeEach(async () => {
@@ -129,7 +130,8 @@ describe("PriceListService", () => {
     updateRelatedMoneyAmountRepository.save = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
-    updateRelatedMoneyAmountRepository.updatePriceListPrices = new MoneyAmountRepository().updatePriceListPrices
+    updateRelatedMoneyAmountRepository.updatePriceListPrices =
+      new MoneyAmountRepository().updatePriceListPrices
 
     const updateRelatedPriceListService = new PriceListService({
       manager: MockManager,
