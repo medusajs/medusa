@@ -12,6 +12,10 @@ import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { TotalsServiceMock } from "../__mocks__/totals"
 
+const orderEditToUpdate = {
+  id: IdMap.getId("order-edit-to-update"),
+}
+
 const orderEditWithChanges = {
   id: IdMap.getId("order-edit-with-changes"),
   order: {
@@ -77,6 +81,10 @@ const lineItemServiceMock = {
 }
 
 describe("OrderEditService", () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   const orderEditRepository = MockRepository({
     findOneWithRelations: (relations, query) => {
       if (query?.where?.id === IdMap.getId("order-edit-with-changes")) {
@@ -111,6 +119,16 @@ describe("OrderEditService", () => {
         where: { id: IdMap.getId("order-edit-with-changes") },
       }
     )
+  })
+
+  it("should update an order edit with the right arguments", async () => {
+    await orderEditService.update(IdMap.getId("order-edit-to-update"), {
+      internal_note: "test note",
+    })
+    expect(orderEditRepository.save).toHaveBeenCalledTimes(1)
+    expect(orderEditRepository.save).toHaveBeenCalledWith({
+      internal_note: "test note",
+    })
   })
 
   it("should compute the items from the changes and attach them to the orderEdit", async () => {

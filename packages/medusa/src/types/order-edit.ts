@@ -1,5 +1,9 @@
 import { OrderEdit } from "../models"
 
+export type UpdateOrderEditInput = {
+  internal_note?: string
+}
+
 export const defaultOrderEditRelations: string[] = [
   "changes",
   "changes.line_item",

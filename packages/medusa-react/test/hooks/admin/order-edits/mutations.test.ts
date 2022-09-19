@@ -1,10 +1,13 @@
+import { renderHook } from "@testing-library/react-hooks"
+
 import {
   useAdminCreateOrderEdit,
+  useAdminUpdateOrderEdit,
   useAdminDeleteOrderEdit,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { createWrapper } from "../../../utils"
 import { fixtures } from "../../../../mocks/data"
+import { fixtures } from "../../../../mocks/data"
+import { createWrapper } from "../../../utils"
 
 describe("useAdminDelete hook", () => {
   test("Deletes an order edit", async () => {
@@ -22,6 +25,33 @@ describe("useAdminDelete hook", () => {
         id,
         object: "order_edit",
         deleted: true,
+      })
+    )
+  })
+})
+
+describe("useAdminUpdateOrderEdit hook", () => {
+  test("updates an order edit and returns it", async () => {
+    const orderEdit = {
+      internal_note: "changed note",
+    }
+
+    const { result, waitFor } = renderHook(
+      () => useAdminUpdateOrderEdit(fixtures.get("order_edit").id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate(orderEdit)
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.order_edit).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("order_edit"),
+        ...orderEdit,
       })
     )
   })

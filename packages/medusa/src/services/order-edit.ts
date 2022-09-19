@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 import { FindConfig } from "../types/common"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
@@ -18,6 +18,7 @@ import {
   TotalsService,
 } from "./index"
 import { CreateOrderEditInput } from "../types/order-edit"
+import { UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -31,6 +32,7 @@ type InjectedDependencies = {
 export default class OrderEditService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "order-edit.created",
+    UPDATED: "order-edit.updated",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -256,6 +258,35 @@ export default class OrderEditService extends TransactionBaseService {
         .emit(OrderEditService.Events.CREATED, { id: orderEdit.id })
 
       return orderEdit
+    })
+  }
+
+  async update(
+    orderEditId: string,
+    data: UpdateOrderEditInput
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      const orderEdit = await this.retrieve(orderEditId)
+
+      for (const key of Object.keys(data)) {
+        if (isDefined(data[key])) {
+          orderEdit[key] = data[key]
+        }
+      }
+
+      const result = await orderEditRepo.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.UPDATED, {
+          id: result.id,
+        })
+
+      return result
     })
   }
 
