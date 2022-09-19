@@ -1,7 +1,8 @@
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
-const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
@@ -43,6 +44,7 @@ describe("/admin/price-lists", () => {
       await adminSeeder(dbConnection)
       await customerSeeder(dbConnection)
       await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -69,6 +71,11 @@ describe("/admin/price-lists", () => {
           {
             amount: 85,
             currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          {
+            amount: 105,
+            region_id: "region-pl-infer-currency",
             variant_id: "test-variant",
           },
         ],
@@ -104,6 +111,12 @@ describe("/admin/price-lists", () => {
               id: expect.any(String),
               amount: 85,
               currency_code: "usd",
+              variant_id: "test-variant",
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              amount: 105,
+              currency_code: "hrk",
               variant_id: "test-variant",
             }),
           ],
@@ -1157,7 +1170,7 @@ describe("/admin/price-lists", () => {
                   amount: 150,
                   price_list_id: "test-list",
                 }),
-              ],)
+              ]),
             }),
             expect.objectContaining({
               id: "test-variant-2",
@@ -1209,9 +1222,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.count).toEqual(1)
       expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: "test-prod-2" }),
-        ])
+        expect.arrayContaining([expect.objectContaining({ id: "test-prod-2" })])
       )
     })
 
@@ -1487,9 +1498,10 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/price-lists", () => {
       response = await api
         .post(
           `/admin/price-lists/${priceListIncludesTaxId}`,
-          { includes_tax: true, },
+          { includes_tax: true },
           adminReqConfig
-        ).catch((err) => {
+        )
+        .catch((err) => {
           console.log(err)
         })
 
