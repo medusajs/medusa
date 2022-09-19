@@ -10,6 +10,7 @@ const { useDb, initDb } = require("../../../helpers/use-db")
 const {
   simpleProductFactory,
   simplePriceListFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
@@ -55,11 +56,9 @@ describe("/admin/price-lists", () => {
     it("creates a price list", async () => {
       const api = useApi()
 
-      await manager.insert(Region, {
+      const region = await simpleRegionFactory(dbConnection, {
         id: "region-pl-infer-currency",
-        name: "Test Region HRK",
         currency_code: "hrk",
-        tax_rate: 0,
       })
 
       const payload = {
@@ -82,7 +81,7 @@ describe("/admin/price-lists", () => {
           },
           {
             amount: 105,
-            region_id: "region-pl-infer-currency",
+            region_id: region.id,
             variant_id: "test-variant",
           },
         ],
@@ -123,7 +122,7 @@ describe("/admin/price-lists", () => {
             expect.objectContaining({
               id: expect.any(String),
               amount: 105,
-              currency_code: "hrk",
+              currency_code: region.currency_code,
               variant_id: "test-variant",
             }),
           ],
