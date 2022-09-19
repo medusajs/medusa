@@ -14,6 +14,7 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+const { Region } = require("@medusajs/medusa")
 
 const adminReqConfig = {
   headers: {
@@ -44,7 +45,6 @@ describe("/admin/price-lists", () => {
       await adminSeeder(dbConnection)
       await customerSeeder(dbConnection)
       await productSeeder(dbConnection)
-      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -54,6 +54,13 @@ describe("/admin/price-lists", () => {
 
     it("creates a price list", async () => {
       const api = useApi()
+
+      await manager.insert(Region, {
+        id: "region-pl-infer-currency",
+        name: "Test Region HRK",
+        currency_code: "hrk",
+        tax_rate: 0,
+      })
 
       const payload = {
         name: "VIP Summer sale",

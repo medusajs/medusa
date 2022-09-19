@@ -22,13 +22,6 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
-  await manager.insert(Region, {
-    id: "region-pl-infer-currency",
-    name: "Test Region HRK",
-    currency_code: "hrk",
-    tax_rate: 0,
-  })
-
   const moneyAmount1 = await manager.create(MoneyAmount, {
     id: "ma_test_1",
     amount: 100,
