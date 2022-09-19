@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 import { FindConfig } from "../types/common"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
@@ -273,7 +273,7 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEdit = await this.retrieve(orderEditId)
 
       for (const key of Object.keys(data)) {
-        if (typeof data[key] !== `undefined`) {
+        if (isDefined(data[key])) {
           orderEdit[key] = data[key]
         }
       }

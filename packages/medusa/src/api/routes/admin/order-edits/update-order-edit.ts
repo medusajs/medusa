@@ -71,13 +71,13 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const order_edit = await manager.transaction(async (transactionManager) => {
+  const orderEdit = await manager.transaction(async (transactionManager) => {
     return await orderEditService
       .withTransaction(transactionManager)
       .update(id, validatedBody)
   })
 
-  res.status(200).json({ order_edit })
+  res.status(200).json({ order_edit: orderEdit })
 }
 
 export class AdminPostOrderEditsOrderEditReq {
