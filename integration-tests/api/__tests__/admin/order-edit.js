@@ -40,7 +40,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -770,6 +770,106 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           subtotal: 1000,
           tax_total: 100,
           total: 1100,
+        })
+      )
+    })
+  })
+
+  describe("POST /admin/order-edits/:id/items", () => {
+    const orderEditId = IdMap.getId("order-edit-1")
+    const prodId1 = IdMap.getId("prodId1")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const orderId1 = IdMap.getId("order-id-1")
+    const toBeAddedVariantId = IdMap.getId("variant id")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: toBeAddedVariantId }],
+      })
+
+      const order = await simpleOrderFactory(dbConnection, {
+        id: orderId1,
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product1.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: order.id,
+        created_by: "admin_user",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("creates line item that will be added to the order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/order-edits/${orderEditId}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          created_by: "admin_user",
+          requested_by: null,
+          canceled_by: null,
+          confirmed_by: null,
+          changes: [],
+          /*
+           * Computed items are appended to the response
+           */
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItemId1,
+              order_id: orderId1,
+            }),
+            expect.objectContaining({
+              variant: { id: toBeAddedVariantId },
+              quantity: 2,
+              order_id: orderId1,
+            }),
+          ]),
+          /*
+           * Computed totals are appended to the response
+           */
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 1000,
+          tax_total: 0,
+          total: 1000,
         })
       )
     })

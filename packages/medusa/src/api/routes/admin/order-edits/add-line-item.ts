@@ -71,7 +71,9 @@ export default async (req: Request, res: Response) => {
 
     await orderEditServiceTx.addLineItem(id, data)
 
-    const orderEdit = await orderEditServiceTx.retrieve(id)
+    const orderEdit = await orderEditServiceTx.retrieve(id, {
+      relations: ["changes"],
+    })
 
     const { items, removedItems } = await orderEditServiceTx.computeLineItems(
       orderEdit.id
