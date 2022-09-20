@@ -60,7 +60,5 @@ export default async (req: Request, res: Response) => {
     orderEdit
   )
 
-  console.log(orderEdit1)
-
   return res.json({ order_edit: orderEdit })
 }
