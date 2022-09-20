@@ -78,7 +78,6 @@ export type PriceListImportCsvSchema = CsvSchema<
  */
 export type PriceListImportJobContext = {
   price_list_id: string
-  total: number
   fileKey: string
 }
 

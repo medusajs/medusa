@@ -1,4 +1,3 @@
-/* eslint-disable valid-jsdoc */
 import { EntityManager } from "typeorm"
 import { MedusaError, computerizeAmount } from "medusa-core-utils"
 
@@ -10,8 +9,6 @@ import {
   ProductVariantService,
   PriceListService,
   RegionService,
-  SalesChannelService,
-  ShippingProfileService,
 } from "../../../services"
 import { CreateBatchJobInput } from "../../../types/batch-job"
 import {
@@ -53,9 +50,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
   protected readonly priceListService_: PriceListService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
-  protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
-  protected readonly shippingProfileService_: ShippingProfileService
 
   protected readonly csvParser_: CsvParser<
     PriceListImportCsvSchema,
@@ -110,6 +105,8 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     batchJob: CreateBatchJobInput,
     reqContext: any
   ): Promise<CreateBatchJobInput> {
+    const manager = this.transactionManager_ ?? this.manager_
+
     if (!batchJob.context?.price_list_id) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -117,24 +114,29 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       )
     }
 
+    // Validate that PriceList exists
+    const priceListId = batchJob.context.price_list_id as string
+    await this.priceListService_.withTransaction(manager).retrieve(priceListId)
+
     return batchJob
   }
 
   /**
-   * Generate instructions for update/create of products/variants from parsed CSV rows.
+   * Generate instructions for creation of prices from parsed CSV rows.
    *
+   * @param priceListId - the ID of the price list where the prices will be created
    * @param csvData - An array of parsed CSV rows.
    */
   async getImportInstructions(
     priceListId: string,
     csvData: TParsedPriceListImportRowData[]
   ): Promise<Record<OperationType, PriceListImportOperation[]>> {
-    const manager = this.transactionManager_ ?? this.manager_
-
     // Validate that PriceList exists
+    const manager = this.transactionManager_ ?? this.manager_
     await this.priceListService_.withTransaction(manager).retrieve(priceListId)
 
     const pricesToCreate: PriceListImportOperation[] = []
+
     for (const row of csvData) {
       let variantId = row[PriceListRowKeys.VARIANT_ID]
 
@@ -438,30 +440,6 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       .delete({ fileKey })
 
     await this.deleteOpsFiles(batchJob.id)
-  }
-
-  /**
-   * Store the progress in the batch job `result` column.
-   * Method is called after every update/create operation,
-   * but after every `BATCH_SIZE` processed rows info is written to the DB.
-   *
-   * @param batchJobId - An id of the current batch job being processed.
-   */
-  private async updateProgress(batchJobId: string): Promise<void> {
-    const newCount = (this.processedCounter[batchJobId] || 0) + 1
-    this.processedCounter[batchJobId] = newCount
-
-    if (newCount % BATCH_SIZE !== 0) {
-      return
-    }
-
-    await this.batchJobService_
-      .withTransaction(this.transactionManager_ ?? this.manager_)
-      .update(batchJobId, {
-        result: {
-          advancement_count: newCount,
-        },
-      })
   }
 
   private static buildFilename(
