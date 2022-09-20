@@ -25,6 +25,7 @@ class CartSubscriber {
             "tax_total",
             "shipping_total",
             "discount_total",
+            "gift_card_total",
             "total",
           ],
           relations: [
