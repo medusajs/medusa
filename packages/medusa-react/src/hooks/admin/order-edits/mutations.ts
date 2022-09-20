@@ -1,13 +1,16 @@
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import { Response } from "@medusajs/medusa-js"
+
 import {
   AdminOrderEditDeleteRes,
+  AdminPostOrderEditsOrderEditReq,
   AdminOrderEditsRes,
   AdminPostOrderEditsReq,
 } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminOrderEditsKeys } from "."
+
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
+import { adminOrderEditsKeys } from "."
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -37,6 +40,28 @@ export const useAdminDeleteOrderEdit = (
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(id), adminOrderEditsKeys.lists()],
+      options
+    )
+  )
+}
+
+export const useAdminUpdateOrderEdit = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminOrderEditsRes>,
+    Error,
+    AdminPostOrderEditsOrderEditReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminPostOrderEditsOrderEditReq) =>
+      client.admin.orderEdits.update(id, payload),
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
       options
     )
   )

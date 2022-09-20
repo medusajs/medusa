@@ -1,7 +1,8 @@
 import {
-  AdminOrderEditDeleteRes,
   AdminOrderEditsRes,
   AdminPostOrderEditsReq,
+  AdminOrderEditDeleteRes,
+  AdminPostOrderEditsOrderEditReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -20,6 +21,15 @@ class AdminOrderEditsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditsRes> {
     const path = `/admin/order-edits`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  update(
+    id: string,
+    payload: AdminPostOrderEditsOrderEditReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
