@@ -1,12 +1,15 @@
 const path = require("path")
+const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
 const apisPath = path.join(__dirname, "../../docs/api")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
+const announcementBar = JSON.parse(fs.readFileSync('./announcement.json'))
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config = {
   title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
@@ -32,14 +35,6 @@ module.exports = {
     ]
   ],
   themeConfig: {
-    announcementBar: {
-      id: 'release-1-4-1',
-      content:
-        'New Release! Version 1.4.1 of Medusa is out now! Read all about it <a href="https://github.com/medusajs/medusa/releases/tag/v1.4.1">here</a>.',
-      backgroundColor: '#7C53FF',
-      textColor: '#fff',
-      isCloseable: false,
-    },
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
@@ -227,3 +222,9 @@ module.exports = {
     ],
   ],
 }
+
+if (Object.keys(announcementBar).length) {
+  config.themeConfig.announcementBar = announcementBar
+}
+
+module.exports = config
