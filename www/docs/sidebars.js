@@ -262,6 +262,11 @@ module.exports = {
               id: "advanced/admin/import-products",
               label: "Import Products"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
           ]
         },
       ]
@@ -314,6 +319,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/batch-jobs/index",
           label: "Batch Jobs"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/taxes/inclusive-pricing",
+          label: "Tax Inclusive Pricing"
         },
       ]
     },
