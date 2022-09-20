@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [get] /order-edits/{id}/decline
+ * @oas [post] /order-edits/{id}/decline
  * operationId: "PostOrderEditsOrderEditDecline"
  * summary: "Decline an OrderEdit"
  * description: "Declines a OrderEdit."
@@ -24,7 +24,7 @@ import { OrderEditService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/order-edits/{id}'
+ *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}'
  * tags:
  *   - OrderEdit
  * responses:
