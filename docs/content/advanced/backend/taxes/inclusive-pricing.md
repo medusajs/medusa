@@ -4,7 +4,12 @@ In this document, you’ll learn how tax-inclusive pricing works in Medusa.
 
 :::note
 
-Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. To enable it, set the environment variable `MEDUSA_FF_TAX_INCLUSIVE_PRICING` to `true`, and [run migrations](../migrations/index.md#run-migration).
+Tax Inclusive Pricing is currently in beta mode and guarded by a feature flag. To use Tax-Inclusive Pricing either:
+
+1. Enable the `MEDUSA_FF_TAX_INCLUSIVE_PRICING` environment variable;
+2. Or enable the `tax_inclusive_pricing` key in the Medusa server's settings.
+
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
 
 :::
 

@@ -234,6 +234,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/feature-flags/toggle",
+          label: "Toggle Feature Flags"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/cron-jobs/create",
           label: "Create a Cron Job"
         },
