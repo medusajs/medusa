@@ -252,7 +252,18 @@ module.exports = {
               label: "Implement Checkout"
             },
           ]
-        }
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+          ]
+        },
       ]
     },
     {
@@ -484,11 +495,6 @@ module.exports = {
           label: "CLI Reference",
         },
         {
-          type: "doc",
-          id: "contribution-guidelines",
-          label: "Contribution Guidelines",
-        },
-        {
           type: "ref",
           id: "references/entities/classes/Address",
           label: "Entities Reference",
@@ -509,6 +515,11 @@ module.exports = {
           label: "Services Reference",
         },
       ]
+    },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
     },
   ],
   userGuideSidebar: [

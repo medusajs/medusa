@@ -51,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *           tax_rate:
  *             description: "The tax rate to use on Orders in the Region."
  *             type: number
- *          includes_tax:
+ *           includes_tax:
  *             description: "[EXPERIMENTAL] Tax included in prices of region"
  *             type: boolean
  *           payment_providers:

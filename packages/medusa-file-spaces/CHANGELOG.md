@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0
+
+### Minor Changes
+
+- [#2171](https://github.com/medusajs/medusa/pull/2171) [`ee8fe3a88`](https://github.com/medusajs/medusa/commit/ee8fe3a88bb1af20ed8976bd5cf0146da140e29f) Thanks [@fPolic](https://github.com/fPolic)! - Add return `fileKey` for Spaces upload
+
 ## 1.2.5
 
 ### Patch Changes
