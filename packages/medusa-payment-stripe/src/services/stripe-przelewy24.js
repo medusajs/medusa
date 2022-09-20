@@ -15,7 +15,13 @@ class Przelewy24ProviderService extends AbstractPaymentService {
     options
   ) {
     super(
-      { stripeProviderService, customerService, totalsService, regionService },
+      {
+        stripeProviderService,
+        customerService,
+        totalsService,
+        regionService,
+        manager,
+      },
       options
     )
 
