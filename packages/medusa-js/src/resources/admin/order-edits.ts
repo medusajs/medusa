@@ -8,6 +8,7 @@ import {
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import { AdminPostOrderEditsLineItemReq } from "@medusajs/medusa/dist/api/routes/admin/order-edits/add-line-item"
 
 class AdminOrderEditsResource extends BaseResource {
   retrieve(
@@ -41,6 +42,15 @@ class AdminOrderEditsResource extends BaseResource {
   ): ResponsePromise<AdminOrderEditDeleteRes> {
     const path = `/admin/order-edits/${id}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  addLineItem(
+    id: string,
+    payload: AdminPostOrderEditsLineItemReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${id}/items`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   deleteItemChange(

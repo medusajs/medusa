@@ -13,6 +13,7 @@ import {
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
 import { adminOrderEditsKeys } from "."
+import { AdminPostOrderEditsLineItemReq } from "@medusajs/medusa/dist/api/routes/admin/order-edits/add-line-item"
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -106,6 +107,27 @@ export const useAdminUpdateOrderEdit = (
   return useMutation(
     (payload: AdminPostOrderEditsOrderEditReq) =>
       client.admin.orderEdits.update(id, payload),
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      options
+    )
+  )
+}
+
+export const useAdminOrderEditLineItem = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminOrderEditsRes>,
+    Error,
+    AdminPostOrderEditsLineItemReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostOrderEditsLineItemReq) =>
+      client.admin.orderEdits.addLineItem(id, payload),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],

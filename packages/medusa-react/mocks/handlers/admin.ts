@@ -1705,6 +1705,15 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/order-edits/:id/items", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
+      })
+    )
+  }),
+
   rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
     return res(
       ctx.status(200),
