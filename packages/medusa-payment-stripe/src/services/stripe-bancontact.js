@@ -7,11 +7,23 @@ class BancontactProviderService extends AbstractPaymentService {
   static identifier = "stripe-bancontact"
 
   constructor(
-    { stripeProviderService, customerService, totalsService, regionService, manager },
+    {
+      stripeProviderService,
+      customerService,
+      totalsService,
+      regionService,
+      manager,
+    },
     options
   ) {
     super(
-      { stripeProviderService, customerService, totalsService, regionService, manager },
+      {
+        stripeProviderService,
+        customerService,
+        totalsService,
+        regionService,
+        manager,
+      },
       options
     )
 
@@ -79,7 +91,9 @@ class BancontactProviderService extends AbstractPaymentService {
    * @return {Promise<object>} Stripe customer
    */
   async createCustomer(customer) {
-    return await this.stripeProviderService_.withTransaction(this.manager_).createCustomer(customer)
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createCustomer(customer)
   }
 
   /**
@@ -90,10 +104,14 @@ class BancontactProviderService extends AbstractPaymentService {
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
-    const region = await this.regionService_.withTransaction(this.manager_).retrieve(region_id)
+    const region = await this.regionService_
+      .withTransaction(this.manager_)
+      .retrieve(region_id)
     const { currency_code } = region
 
-    const amount = await this.totalsService_.withTransaction(this.manager_).getTotal(cart)
+    const amount = await this.totalsService_
+      .withTransaction(this.manager_)
+      .getTotal(cart)
 
     const intentRequest = {
       amount: Math.round(amount),
@@ -106,7 +124,9 @@ class BancontactProviderService extends AbstractPaymentService {
     }
 
     if (customer_id) {
-      const customer = await this.customerService_.withTransaction(this.manager_).retrieve(customer_id)
+      const customer = await this.customerService_
+        .withTransaction(this.manager_)
+        .retrieve(customer_id)
 
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
