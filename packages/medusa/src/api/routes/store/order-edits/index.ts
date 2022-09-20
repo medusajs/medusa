@@ -11,7 +11,7 @@ import {
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 import { OrderEdit } from "../../../../models"
-import { StorePostOrderEditsOrderEditCancel } from "./decline-order-edit"
+import { StorePostOrderEditsOrderEditDecline } from "./decline-order-edit"
 
 const route = Router()
 
@@ -39,7 +39,7 @@ export default (app) => {
 
   route.post(
     "/:id/decline",
-    transformBody(StorePostOrderEditsOrderEditCancel),
+    transformBody(StorePostOrderEditsOrderEditDecline),
     middlewares.wrap(require("./decline-order-edit").default)
   )
 

@@ -2,23 +2,22 @@ import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /order-edits/{id}/cancel
- * operationId: "PostOrderEditsOrderEditCancel"
- * summary: "Cancel an OrderEdit"
- * description: "Cancels a OrderEdit."
+ * @oas [get] /order-edits/{id}/decline
+ * operationId: "PostOrderEditsOrderEditDecline"
+ * summary: "Decline an OrderEdit"
+ * description: "Declines a OrderEdit."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
- *   - (body) declined_reason= {string} The reason for canceling the OrderEdit.
+ *   - (body) declined_reason= {string} The reason for declining the OrderEdit.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.cancel(orderEditId)
+ *       medusa.orderEdit.decline(orderEditId)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       });
@@ -49,7 +48,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req: Request, res: Response) => {
   const { id } = req.params
   const { validatedBody } = req as {
-    validatedBody: StorePostOrderEditsOrderEditCancel
+    validatedBody: StorePostOrderEditsOrderEditDecline
   }
 
   const orderEditService: OrderEditService =
@@ -71,7 +70,7 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ order_edit: orderEdit })
 }
 
-export class StorePostOrderEditsOrderEditCancel {
+export class StorePostOrderEditsOrderEditDecline {
   @IsOptional()
   @IsString()
   declined_reason?: string
