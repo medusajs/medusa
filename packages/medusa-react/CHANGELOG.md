@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1-stripe-migration.0
+
+### Patch Changes
+
+- Updated dependencies [[`6132711ee`](https://github.com/medusajs/medusa/commit/6132711eef797219f1b93e4bc4bdb1dd47655308), [`6e9f29493`](https://github.com/medusajs/medusa/commit/6e9f2949361e0643d21cbabff67b367f504a716e), [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4)]:
+  - @medusajs/medusa-js@1.3.1-stripe-migration.0
+  - @medusajs/medusa@1.4.2-stripe-migration.0
+
 ## 1.0.0
 
 ### Minor Changes

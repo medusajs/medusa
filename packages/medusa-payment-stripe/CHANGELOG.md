@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.44-stripe-migration.0
+
+### Patch Changes
+
+- [#1790](https://github.com/medusajs/medusa/pull/1790) [`6e9f29493`](https://github.com/medusajs/medusa/commit/6e9f2949361e0643d21cbabff67b367f504a716e) Thanks [@adrien2p](https://github.com/adrien2p)! - Migrate Stripe providers to the new AbstractPaymentService
+
 ## 1.1.43
 
 ### Patch Changes
