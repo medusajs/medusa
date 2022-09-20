@@ -10,7 +10,7 @@ import { OrderEditService } from "../../../../services"
  * description: "Declines a OrderEdit."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
- *   - (body) declined_reason= {string} The reason for declining the OrderEdit.
+ *   - (body) declined_reason {string} The reason for declining the OrderEdit.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
