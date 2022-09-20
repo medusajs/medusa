@@ -10,6 +10,15 @@ class OrderEditsResource extends BaseResource {
     const path = `/store/order-edits/${id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
+
+  decline(
+    id: string, 
+    declinedReason: string,
+    customHeaders: Record<string, any> = {}
+  ) {
+    const path = `/store/order-edits/${id}/decline`
+    return this.client.request("POST", path, { declined_reason: declinedReason }, {}, customHeaders)
+  }
 }
 
 export default OrderEditsResource
