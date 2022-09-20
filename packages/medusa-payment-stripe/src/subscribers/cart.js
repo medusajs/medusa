@@ -39,19 +39,20 @@ class CartSubscriber {
           ],
         })
 
-    if (!cart.payment_sessions?.length) {
-      return Promise.resolve()
-    }
+      if (!cart.payment_sessions?.length) {
+        return Promise.resolve()
+      }
 
-    const session = cart.payment_sessions.find(
-      (ps) => ps.provider_id === "stripe"
-    )
+      const session = cart.payment_sessions.find(
+        (ps) => ps.provider_id === "stripe"
+      )
 
-    if (session) {
-      return await this.paymentProviderService_
-        .withTransaction(transactionManager)
-        .updateSession(session, cart)
-    }
+      if (session) {
+        return await this.paymentProviderService_
+          .withTransaction(transactionManager)
+          .updateSession(session, cart)
+      }
+    })
   }
 }
 
