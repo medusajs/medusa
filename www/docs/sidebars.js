@@ -176,6 +176,10 @@ module.exports = {
             },
           ]
         },
+        {
+          type: "doc",
+          id: "usage/local-development",
+        },
       ]
     },
     {
