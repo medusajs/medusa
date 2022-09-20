@@ -1507,14 +1507,12 @@ class CartService extends TransactionBaseService {
           cartId,
           {
             select: [
-              "id",
               "total",
               "subtotal",
               "tax_total",
               "discount_total",
               "shipping_total",
               "gift_card_total",
-              "customer_id",
             ],
             relations: [
               "items",
