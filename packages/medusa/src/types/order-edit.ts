@@ -9,6 +9,13 @@ export type CreateOrderEditInput = {
   internal_note?: string
 }
 
+export type AddOrderEditLineItemInput = {
+  quantity: number
+  variant_id: string
+
+  metadata?: Record<string, unknown>
+}
+
 export type CreateOrderEditItemChangeInput = {
   type: OrderEditItemChangeType
   order_edit_id: string
