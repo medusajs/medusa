@@ -790,13 +790,16 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       })
 
       const toBeAddedProduct = await simpleProductFactory(dbConnection, {
-        variants: [{ id: toBeAddedVariantId }],
+        variants: [
+          {
+            id: toBeAddedVariantId,
+            prices: [{ currency: "usd", amount: 200 }],
+          },
+        ],
       })
 
       const order = await simpleOrderFactory(dbConnection, {
         id: orderId1,
-        email: "test@testson.com",
-        tax_rate: null,
         fulfillment_status: "fulfilled",
         payment_status: "captured",
         region: {
@@ -845,19 +848,36 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
-          changes: [],
+          changes: [
+            expect.objectContaining({
+              type: "item_add",
+              order_edit_id: orderEditId,
+              original_line_item_id: null,
+              line_item_id: expect.any(String),
+            }),
+          ],
           /*
            * Computed items are appended to the response
            */
           items: expect.arrayContaining([
+            // already existing item on the order
             expect.objectContaining({
               id: lineItemId1,
               order_id: orderId1,
+              tax_lines: [],
             }),
+            // NEW line item
             expect.objectContaining({
-              variant: { id: toBeAddedVariantId },
+              variant: expect.objectContaining({ id: toBeAddedVariantId }),
               quantity: 2,
-              order_id: orderId1,
+              order_id: null, // <-- NOT associated with the order at this point
+              tax_lines: [
+                expect.objectContaining({
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                }),
+              ],
             }),
           ]),
           /*
@@ -867,12 +887,67 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 1000,
-          tax_total: 0,
-          total: 1000,
+          subtotal: 1000 + 2 * 200,
+          tax_total: 0.125 * 1000 + 0.125 * 2 * 200,
+          total: 1400 + 175,
         })
       )
     })
+
+    it("adding line item to the order edit will fail because quantity exceeds available inventory", async () => {})
+
+    // it("adding line item to the order edit will calculate adjustments for that item", async () => {
+    //   const api = useApi()
+    //
+    //   const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+    //     variants: [{ id: toBeAddedVariantId }],
+    //   })
+    //
+    //   const orderWithDiscount = await simpleOrderFactory(dbConnection, {
+    //     // tax_rate: null,
+    //     discounts: [
+    //       {
+    //         id: "test-discount",
+    //         code: "TEST",
+    //         rule: {
+    //           type: "percentage",
+    //           value: "10",
+    //           allocation: "item",
+    //           conditions: [
+    //             {
+    //               type: "products",
+    //               operator: "in",
+    //               products: [toBeAddedProduct.id],
+    //             },
+    //           ],
+    //         },
+    //       },
+    //     ],
+    //     fulfillment_status: "fulfilled",
+    //     region: {
+    //       id: "test-region",
+    //       name: "Test region",
+    //       // tax_rate: 12.5,
+    //     },
+    //   })
+    //
+    //   await simpleOrderEditFactory(dbConnection, {
+    //     id: orderEditId,
+    //     order_id: orderWithDiscount.id,
+    //     created_by: "admin_user",
+    //   })
+    //
+    //   const response = await api.post(
+    //     `/admin/order-edits/${orderEditId}/items`,
+    //     { variant_id: toBeAddedVariantId, quantity: 2 },
+    //     adminHeaders
+    //   )
+    //
+    //   expect(response.status).toEqual(200)
+    //   // expect(response.data.order_edit).toEqual()
+    //
+    //   console.log(response.data.order_edit)
+    // })
   })
 
   describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {

@@ -26,6 +26,7 @@ import LineItemAdjustmentService from "./line-item-adjustment"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
 import LineItemAdjustmentService from "./line-item-adjustment"
 import TaxProviderService from "./tax-provider"
+import InventoryService from "./inventory"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -36,6 +37,7 @@ type InjectedDependencies = {
   totalsService: TotalsService
   lineItemService: LineItemService
   eventBusService: EventBusService
+  inventoryService: InventoryService
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
@@ -62,6 +64,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
+  protected readonly inventoryService_: InventoryService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly totalsService_: TotalsService
@@ -80,6 +83,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
+    inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -94,6 +98,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
+    this.inventoryService_ = inventoryService
   }
 
   async retrieve(
@@ -478,6 +483,7 @@ export default class OrderEditService extends TransactionBaseService {
   async addLineItem(orderEditId: string, data: AddOrderEditLineItemInput) {
     return await this.atomicPhase_(async (manager) => {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
       const orderEditItemChangeRepo = manager.getCustomRepository(
         this.orderItemChangeRepository_
       )
@@ -487,10 +493,16 @@ export default class OrderEditService extends TransactionBaseService {
       )
 
       const orderEdit = await this.retrieve(orderEditId, {
-        relations: ["order", "order.cart", "changes"],
+        relations: ["order", "order.cart", "order.region", "changes"],
       })
 
       const regionId = orderEdit.order.region_id
+
+      // 0. check inventory
+
+      await this.inventoryService_
+        .withTransaction(manager)
+        .confirmInventory(data.variant_id, data.quantity)
 
       // 1. generate new line item from data
 
@@ -503,9 +515,8 @@ export default class OrderEditService extends TransactionBaseService {
         }
       )
 
-      const lineItem = await lineItemServiceTx.create(newItem)
-
-      // TODO: check quantity with inventory service `confirmInventory` ?
+      let lineItem = await lineItemServiceTx.create(newItem)
+      lineItem = await lineItemServiceTx.retrieve(lineItem.id)
 
       // 2. generate line item adjustments
 
