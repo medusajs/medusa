@@ -89,3 +89,20 @@ export const useAdminUpdateOrderEdit = (
     )
   )
 }
+
+export const useAdminRequestOrderEditConfirmation = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.orderEdits.requestConfirmation(id),
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      options
+    )
+  )
+}
