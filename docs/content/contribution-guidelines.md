@@ -125,6 +125,35 @@ When a command uses the global option `-g`, add it at the end of the NPM command
 npm install @medusajs/medusa-cli -g
 ```
 
+## Linting with Vale
+
+Medusa uses Vale to lint documentation pages and perform checks on incoming PRs into the repository.
+
+### Result of PR Checks
+
+You can check the result of running the "lint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
+
+### Run Vale Locally
+
+If you want to check your work locally, you can do that by:
+
+1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
+2. Change to the `docs` directory:
+
+```bash
+cd docs
+```
+
+3\. Run the `run-vale` script:
+
+```bash
+./run-vale.sh error
+```
+
+### VS Code Extension
+
+To facilitate writing documentation, you can optionally use the [Vale VS Code extension](https://github.com/errata-ai/vale-vscode). This will show you any errors in your documentation while writing it.
+
 ## Need Additional Help
 
 If you need any additional help while contributing, you can join Medusa's [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.
