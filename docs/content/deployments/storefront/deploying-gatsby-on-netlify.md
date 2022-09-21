@@ -146,7 +146,7 @@ If you click on it, you’ll be redirected to the deployed storefront website.
 
 :::caution
 
-At this point, you will face errors related to CORS while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Server section](#configure-cors-variable-on-the-medusa-server).
+At this point, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Server section](#configure-cors-variable-on-the-medusa-server).
 
 :::
 

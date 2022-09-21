@@ -2,7 +2,7 @@
 
 In this document, you’ll learn what Batch Jobs are and how they work in Medusa.
 
-## What are Batch Jobs?
+## What are Batch Jobs
 
 Batch Jobs are tasks that can be performed asynchronously and iteratively. They can be [created using the Admin API](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobs), then, once confirmed, they are processed asynchronously.
 
@@ -56,6 +56,6 @@ If the batch job fails at any point in this flow, its status is changed to `fail
 
 ![Flowchart summarizing the batch job's flow from creation to completion](https://i.imgur.com/Qja0kAz.png)
 
-## What’s Next?
+## What’s Next
 
 - Learn about the [Batch Job’s events](../subscribers/events-list.md#batch-jobs-events).

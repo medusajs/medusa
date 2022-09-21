@@ -91,7 +91,7 @@ The default port is set in `package.json` in the `develop` script:
 
 If you wish to change the port you can simply change the `7000` to your desired port.
 
-However, if you change your Medusa admin port, you need to change it in your Medusa server. The Medusa server has the Medusa admin and store URLs set in the configurations to avoid CORS issues.
+However, if you change your Medusa admin port, you need to change it in your Medusa server. The Medusa server has the Medusa admin and store URLs set in the configurations to avoid Cross-Origin Resource Sharing (CORS) issues.
 
 To change the URL of the Medusa admin in the server, add a new environment variable `ADMIN_CORS` or modify it if you already have it to your Admin URL:
 

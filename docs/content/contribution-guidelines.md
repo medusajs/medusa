@@ -41,7 +41,7 @@ If you’re fixing errors in an existing documentation page, you can scroll down
 
 If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done creating a PR in the Medusa repository.
 
-For more details on how to contribute, check out [the contribution guidelines on our repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
 ### Branch Name
 
@@ -111,7 +111,11 @@ Don't use commands in their abbrivated terms. For example, instead of `npm i` us
 
 Make sure to always use the `run` command when the command runs a script.
 
+<!-- vale off -->
+
 For example, even though you can run the `start` script using NPM with `npm start`, however, to make sure it’s transformed properly to a Yarn command, you must add the `run` keyword before `start`.
+
+<!-- vale on -->
 
 ### Global Option
 
@@ -121,6 +125,6 @@ When a command uses the global option `-g`, add it at the end of the NPM command
 npm install @medusajs/medusa-cli -g
 ```
 
-## Need Additional Help?
+## Need Additional Help
 
-If you need any additional help while contributing, you can join our [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.
+If you need any additional help while contributing, you can join Medusa's [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.

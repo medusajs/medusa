@@ -128,7 +128,7 @@ If you click on it, you’ll be redirected to the deployed admin website.
 
 :::note
 
-Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa server. Follow along in the [Configure CORS on the Medusa Server](#configure-cors-variable-on-the-medusa-server) section.
+Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa server. Follow along in the [Configure Cross-Origin Resource Sharing (CORS) on the Medusa Server](#configure-cors-variable-on-the-medusa-server) section.
 
 :::
 

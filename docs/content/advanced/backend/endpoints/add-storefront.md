@@ -53,7 +53,7 @@ import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 ```
 
-Then, create an object that will hold the CORS configurations:
+Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations:
 
 ```js
 const corsOptions = {

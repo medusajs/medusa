@@ -20,7 +20,7 @@ A Payment Provider in Medusa is a method to handle payments in selected regions.
 
 Payment Providers can be integrated with third-party services that handle payment operations such as capturing a payment. An example of a Payment Provider is Stripe.
 
-Payment Providers can also be related to a custom way of handling payment operations. An example of that is cash on delivery (COD) payment methods or Medusa’s [manual payment provider plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) which provides a minimal implementation of a payment provider and allows store operators to manually handle order payments.
+Payment Providers can also be related to a custom way of handling payment operations. An example of that is Cash on Delivery (COD) payment methods or Medusa’s [manual payment provider plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) which provides a minimal implementation of a payment provider and allows store operators to manually handle order payments.
 
 ### How Payment Provider is Created
 

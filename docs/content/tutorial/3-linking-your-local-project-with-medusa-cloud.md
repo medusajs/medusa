@@ -2,6 +2,8 @@
 title: Linking your local project with Medusa Cloud
 ---
 
+<!-- vale off -->
+
 # Linking your local project with Medusa Cloud
 
 ## Introduction
@@ -64,3 +66,5 @@ You are all set to start developing on your Medusa project. If you haven't alrea
 - [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
 
 The final step to take from here is to deploy your Medusa project. We will cover how this is done in the next part of the tutorial (Coming soon!).
+
+<!-- vale on -->

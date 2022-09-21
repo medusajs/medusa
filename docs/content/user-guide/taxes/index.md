@@ -14,7 +14,7 @@ Taxes are calculated for products and shipping methods on checkout. Medusa provi
 
 ---
 
-## How are Taxes Created?
+## How are Taxes Created
 
 Once a region is created, a default tax rate is created for that region. You can specify the rate and code of the tax rate during the creation of the region.
 

@@ -1,5 +1,5 @@
 extends: substitution
-message: Consider using '%s' instead of '%s'
+message: Use '%s' instead of '%s'
 link: https://docs.medusajs.com/contribution-guidelines#expand-commands
 level: error
 scope: code
@@ -8,3 +8,4 @@ ignorecase: false
 swap:
   npm i: npm install
   npm start: npm run start
+  npm build: npm run build
