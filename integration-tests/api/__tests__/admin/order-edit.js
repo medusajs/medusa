@@ -430,6 +430,44 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
   })
 
+  describe("POST /admin/order-edits/:id/request-confirmation", () => {
+    let orderEditId
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const { id } = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+      })
+
+      orderEditId = id
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("requests order edit", async () => {
+      const api = useApi()
+
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request-confirmation`,
+        {},
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+  })
+
   describe("POST /admin/order-edits/:id", () => {
     const orderEditId = IdMap.getId("order-edit-1")
     const prodId1 = IdMap.getId("prodId1")
