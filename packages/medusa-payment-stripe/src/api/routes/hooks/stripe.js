@@ -14,6 +14,7 @@ export default async (req, res) => {
 
   const paymentIntent = event.data.object
 
+  const manager = req.scope.resolve("manager")
   const cartService = req.scope.resolve("cartService")
   const orderService = req.scope.resolve("orderService")
 
