@@ -57,6 +57,13 @@ export const orderEditServiceMock = {
         declined_reason: "Wrong size",
         declined_at: new Date(),
       })
+      if (orderId === IdMap.getId("testCancelOrderEdit")) {
+      return Promise.resolve({
+        ...orderEdits.testCreatedOrder,
+        id: orderId,
+        canceled_at: new Date(),
+        status: "canceled",
+      })
     }
     if (orderId === IdMap.getId("testRequestOrder")) {
       return Promise.resolve({
@@ -109,6 +116,9 @@ export const orderEditServiceMock = {
       requested_by: userId,
     })
   }),
+  cancel: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
+  })
 }
 
 const mock = jest.fn().mockImplementation(() => {
