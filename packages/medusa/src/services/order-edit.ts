@@ -408,10 +408,7 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      if (
-        orderEdit?.status === OrderEditStatus.CONFIRMED ||
-        orderEdit?.status === OrderEditStatus.CANCELED
-      ) {
+      if (orderEdit.confirmed_at !== null || orderEdit.canceled_at !== null) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `Cannot delete and item change from a ${orderEdit.status} order edit`
