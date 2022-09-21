@@ -176,6 +176,10 @@ module.exports = {
             },
           ]
         },
+        {
+          type: "doc",
+          id: "usage/local-development",
+        },
       ]
     },
     {
@@ -231,6 +235,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/migrations/index",
           label: "Create a Migration"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/feature-flags/toggle",
+          label: "Toggle Feature Flags"
         },
         {
           type: "doc",
