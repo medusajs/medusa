@@ -1,0 +1,43 @@
+import { IdMap } from "medusa-test-utils"
+import { request } from "../../../../../helpers/test-request"
+import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
+import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
+
+describe("DELETE /admin/order-edits/:id", () => {
+  describe("deletes an order edit", () => {
+    const orderEditId = IdMap.getId("testCancelOrderEdit")
+    let subject
+
+    beforeAll(async () => {
+      subject = await request("POST", `/admin/order-edits/${orderEditId}/cancel`, {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+        flags: [OrderEditingFeatureFlag],
+      })
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls orderService retrieve", () => {
+      expect(orderEditServiceMock.cancel).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, IdMap.getId("admin_user"))
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns delete result", () => {
+      expect(subject.body.order_edit).toEqual(expect.objectContaining({
+        id: orderEditId, 
+        canceled_at: expect.any(String), 
+        status: 'canceled'
+      }))
+    })
+  })
+})
