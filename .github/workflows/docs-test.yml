@@ -1,4 +1,4 @@
-name: Docusaurus Documentation Test
+name: Documentation Tests
 on: 
   pull_request:
     paths:
@@ -34,3 +34,21 @@ jobs:
           cd www/docs
           yarn install
           yarn build
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get Directories to Scan
+        working-directory: docs
+        run: ./get-files.sh
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@0dec3032fa59c4097deece7cf6ee3261b27bb3f1
+        with:
+          files: ${{ steps.directories.LIST }}
+          fail_on_error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
