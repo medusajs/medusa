@@ -6,7 +6,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 /**
- * @oas [post] /currencies/:code
+ * @oas [post] /currencies/{code}
  * operationId: "PostCurrenciesCurrency"
  * summary: "Update a Currency"
  * description: "Update a Currency"
@@ -20,7 +20,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *         properties:
  *           includes_tax:
  *             type: boolean
- *             description: [EXPERIMENTAL] Tax included in prices of currency.
+ *             description: "[EXPERIMENTAL] Tax included in prices of currency."
  * tags:
  *   - Currency
  * responses:

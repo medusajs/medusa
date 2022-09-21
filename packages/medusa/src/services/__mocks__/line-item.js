@@ -2,16 +2,22 @@ import { IdMap } from "medusa-test-utils"
 import { MedusaError } from "medusa-core-utils"
 
 export const LineItemServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  list: jest.fn().mockImplementation((data) => {
+    return Promise.resolve([])
+  }),
+  retrieve: jest.fn().mockImplementation((data) => {
+    return Promise.resolve({})
+  }),
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve({ ...data })
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve({ ...data })
   }),
-  validate: jest.fn().mockImplementation(data => {
+  validate: jest.fn().mockImplementation((data) => {
     if (data.title === "invalid lineitem") {
       throw new Error(`"content" is required`)
     }

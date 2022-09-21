@@ -57,7 +57,16 @@ import { Type } from "class-transformer"
  *   - (query) cart_id {string} to search for.
  *   - (query) email {string} to search for.
  *   - (query) region_id {string} to search for.
- *   - (query) currency_code {string} to search for.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to set prices based on.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  *   - (query) tax_rate {string} to search for.
  *   - in: query
  *     name: created_at

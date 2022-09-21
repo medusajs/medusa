@@ -55,7 +55,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostDraftOrdersDraftOrderLineItemsItem
-  summary: Update a Line Item for a Draft Order
+  summary: Update a Line Item
   description: Updates a Line Item for a Draft Order
   x-authenticated: true
   parameters:

@@ -55,7 +55,12 @@ properties:
       the relation `prices` is expanded.
     type: array
     items:
-      $ref: ./money_amount.yaml
+      oneOf:
+        - $ref: ./money_amount.yaml
+        - $ref: ./customer_group.yaml
+  includes_tax:
+    description: '[EXPERIMENTAL] Does the price list prices include tax'
+    type: boolean
   created_at:
     type: string
     description: The date with timezone at which the resource was created.

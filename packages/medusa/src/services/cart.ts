@@ -2095,6 +2095,7 @@ class CartService extends TransactionBaseService {
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, updatedCart)
+
         return updatedCart
       }
     )
@@ -2127,6 +2128,25 @@ class CartService extends TransactionBaseService {
           .createTaxLines(cart, calculationContext)
 
         return cart
+      }
+    )
+  }
+
+  async deleteTaxLines(id: string): Promise<void> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cart = await this.retrieve(id, {
+          relations: [
+            "items",
+            "items.tax_lines",
+            "shipping_methods",
+            "shipping_methods.tax_lines",
+          ],
+        })
+        await transactionManager.remove(cart.items.flatMap((i) => i.tax_lines))
+        await transactionManager.remove(
+          cart.shipping_methods.flatMap((s) => s.tax_lines)
+        )
       }
     )
   }

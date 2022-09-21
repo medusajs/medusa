@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/shipping-option.ts:65](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L65)
+[models/shipping-option.ts:67](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L67)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:59](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L59)
+[models/shipping-option.ts:61](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L61)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:73](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L73)
+[models/shipping-option.ts:75](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L75)
 
 ___
 
@@ -76,7 +76,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -90,7 +90,17 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+
+___
+
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+[models/shipping-option.ts:81](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L81)
 
 ___
 
@@ -100,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:62](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L62)
+[models/shipping-option.ts:64](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L64)
 
 ___
 
@@ -110,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:76](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L76)
+[models/shipping-option.ts:78](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L78)
 
 ___
 
@@ -120,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:29](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L29)
+[models/shipping-option.ts:31](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L31)
 
 ___
 
@@ -130,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:56](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L56)
+[models/shipping-option.ts:58](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L58)
 
 ___
 
@@ -140,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:45](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L45)
+[models/shipping-option.ts:47](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L47)
 
 ___
 
@@ -150,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:41](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L41)
+[models/shipping-option.ts:43](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L43)
 
 ___
 
@@ -160,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:53](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L53)
+[models/shipping-option.ts:55](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L55)
 
 ___
 
@@ -170,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:49](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L49)
+[models/shipping-option.ts:51](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L51)
 
 ___
 
@@ -180,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:37](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L37)
+[models/shipping-option.ts:39](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L39)
 
 ___
 
@@ -190,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:33](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L33)
+[models/shipping-option.ts:35](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L35)
 
 ___
 
@@ -200,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option.ts:70](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L70)
+[models/shipping-option.ts:72](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L72)
 
 ___
 
@@ -214,7 +224,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -228,4 +238,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/shipping-option.ts:78](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/shipping-option.ts#L78)
+[models/shipping-option.ts:83](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/shipping-option.ts#L83)

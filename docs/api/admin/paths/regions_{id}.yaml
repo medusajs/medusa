@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetRegionsRegion
-  summary: Retrieve a Region
+  summary: Get a Region
   description: Retrieves a Region.
   x-authenticated: true
   parameters:
@@ -149,6 +149,9 @@ post:
             tax_rate:
               description: The tax rate to use on Orders in the Region.
               type: number
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of region'
+              type: boolean
             payment_providers:
               description: >-
                 A list of Payment Provider IDs that should be enabled for the

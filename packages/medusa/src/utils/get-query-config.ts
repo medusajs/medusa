@@ -145,6 +145,17 @@ export function prepareRetrieveQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
+  if (queryConfig?.allowedFields?.length) {
+    expandFields?.forEach((field) => {
+      if (!queryConfig?.allowedFields?.includes(field as string)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Field ${field.toString()} is not valid`
+        )
+      }
+    })
+  }
+
   return getRetrieveConfig<TEntity>(
     queryConfig?.defaultFields as (keyof TEntity)[],
     (queryConfig?.defaultRelations ?? []) as string[],

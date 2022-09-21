@@ -53,6 +53,9 @@ post:
               type: array
               items:
                 type: string
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of region'
+              type: boolean
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

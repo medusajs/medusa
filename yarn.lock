@@ -4340,11 +4340,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@^1.2.6, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@^1.3.0, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.3.6
+    "@medusajs/medusa": ^1.4.0
     "@types/jest": ^26.0.19
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -4356,7 +4356,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.3.6, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.4.0, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -24055,7 +24055,7 @@ __metadata:
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": 1.x
+    "@medusajs/medusa": 1.4.0
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24199,7 +24199,7 @@ __metadata:
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa-js": ^1.2.6
+    "@medusajs/medusa-js": ^1.3.0
     "@size-limit/preset-small-lib": ^6.0.4
     "@storybook/addon-contexts": ^5.3.21
     "@storybook/addon-essentials": ^6.3.12
@@ -24230,7 +24230,7 @@ __metadata:
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.3.6
+    "@medusajs/medusa": ^1.4.0
     react: ">=16"
     react-query: ">= 3.29.0"
   languageName: unknown

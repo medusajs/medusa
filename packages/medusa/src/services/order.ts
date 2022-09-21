@@ -11,7 +11,6 @@ import {
   Order,
   OrderStatus,
   Payment,
-  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
