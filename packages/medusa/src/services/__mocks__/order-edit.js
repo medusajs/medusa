@@ -93,6 +93,14 @@ export const orderEditServiceMock = {
   deleteItemChange: jest.fn().mockImplementation((_) => {
     return Promise.resolve()
   }),
+  requestConfirmation: jest.fn().mockImplementation((orderEditId, userId) => {
+    return Promise.resolve({
+      ...orderEdits.testCreatedOrder,
+      id: orderEditId,
+      requested_at: new Date(),
+      requested_by: userId,
+    })
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

@@ -97,7 +97,11 @@ describe("OrderEditService", () => {
         return { ...orderEditWithChanges, status: OrderEditStatus.CONFIRMED }
       }
       if (query?.where?.id === IdMap.getId("declined-order-edit")) {
-        return { ...orderEditWithChanges, declined_reason: 'wrong size', status: OrderEditStatus.DECLINED }
+        return {
+          ...orderEditWithChanges,
+          declined_reason: "wrong size",
+          status: OrderEditStatus.DECLINED,
+        }
       }
 
       return {}
@@ -221,19 +225,47 @@ describe("OrderEditService", () => {
       )
     })
     it("fails to decline an already declined order edit", async () => {
-        const result = await orderEditService.decline(IdMap.getId("declined-order-edit"), {
+      const result = await orderEditService.decline(
+        IdMap.getId("declined-order-edit"),
+        {
           declinedReason: "I requested a different color for the new product",
           loggedInUser: "admin_user",
-        })
+        }
+      )
 
-        expect(result).toEqual(
-          expect.objectContaining({
-            id: IdMap.getId("order-edit-with-changes"),
-            declined_at: expect.any(Date),
-            declined_reason: "wrong size",
-            declined_by: "admin_user",
-          })
-        )
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: IdMap.getId("order-edit-with-changes"),
+          declined_at: expect.any(Date),
+          declined_reason: "wrong size",
+          declined_by: "admin_user",
+        })
+      )
+    })
+  })
+
+  describe("requestConfirmation", () => {
+    it("sets fields correctly for update", async () => {
+      const orderEditId = IdMap.getId("order-edit-with-changes")
+      const userId = IdMap.getId("user-id")
+
+      const result = await orderEditService.requestConfirmation(
+        orderEditId,
+        userId
+      )
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          requested_at: expect.any(Date),
+          requested_by: userId,
+        })
+      )
+
+      expect(orderEditRepository.save).toHaveBeenCalledWith({
+        ...orderEditWithChanges,
+        requested_at: expect.any(Date),
+        requested_by: userId,
+      })
     })
   })
 })

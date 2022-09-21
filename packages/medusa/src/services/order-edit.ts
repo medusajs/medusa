@@ -35,6 +35,7 @@ export default class OrderEditService extends TransactionBaseService {
     CREATED: "order-edit.created",
     UPDATED: "order-edit.updated",
     DECLINED: "order-edit.declined",
+    REQUESTED: "order-edit.requested",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -416,6 +417,29 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       return await this.orderEditItemChangeService_.delete(itemChangeId)
+    })
+  }
+
+  async requestConfirmation(
+    orderEditId: string,
+    userId: string
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+      const orderEdit = await this.retrieve(orderEditId)
+
+      orderEdit.requested_at = new Date()
+      orderEdit.requested_by = userId
+
+      const updated = await orderEditRepo.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.REQUESTED, { id: orderEditId })
+
+      return updated
     })
   }
 }
