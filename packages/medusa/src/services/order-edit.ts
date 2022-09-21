@@ -33,7 +33,7 @@ export default class OrderEditService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "order-edit.created",
     UPDATED: "order-edit.updated",
-    CANCELED: "order-edit.canceled",
+    DECLINED: "order-edit.declined",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -351,7 +351,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(OrderEditService.Events.CANCELED, {
+        .emit(OrderEditService.Events.DECLINED, {
           id: result.id,
         })
 
