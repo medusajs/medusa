@@ -8,7 +8,7 @@ import { OrderEditService } from "../../../../services"
  * @oas [post] /order-edits/:id/items
  * operationId: "PostOrderEditsLineItem"
  * summary: "Add an line item to an order (edit)"
- * description: "Created a OrderEdit LineItem."
+ * description: "Create an OrderEdit LineItem."
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript

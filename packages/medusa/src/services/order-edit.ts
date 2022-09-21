@@ -492,9 +492,17 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEdit = await this.retrieve(orderEditId, {
         relations: [
           "order",
+
           "order.cart",
+          "order.cart.customer",
           "order.cart.discounts",
           "order.cart.discounts.rule",
+          "order.cart.gift_cards",
+          "order.cart.region",
+          "order.cart.region.tax_rates",
+          "order.cart.shipping_address",
+          "order.cart.shipping_methods",
+
           "order.region",
         ],
       })
