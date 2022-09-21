@@ -1,6 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
   EventBusService,
+  InventoryService,
   LineItemService,
   OrderEditItemChangeService,
   OrderEditService,
@@ -17,6 +18,7 @@ import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-cha
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import LineItemAdjustmentService from "../line-item-adjustment"
+import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -76,6 +78,21 @@ const orderEditWithChanges = {
     },
   ],
 }
+
+const orderEditWithAddedLineItem = {
+  id: IdMap.getId("order-edit-with-changes"),
+  order: {
+    id: IdMap.getId("order-edit-change"),
+    cart: {
+      discounts: [{ rule: {} }],
+    },
+    region: { id: IdMap.getId("test-region") },
+  },
+}
+
+const orderItemChangeRepositoryMock = MockRepository({
+  save: (f) => Promise.resolve(f),
+})
 
 const lineItemServiceMock = {
   ...LineItemServiceMock,
@@ -179,9 +196,11 @@ describe("OrderEditService", () => {
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
-    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
+    inventoryService: InventoryServiceMock as unknown as InventoryService,
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
+    orderItemChangeRepository: orderItemChangeRepositoryMock,
+    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
@@ -391,5 +410,20 @@ describe("OrderEditService", () => {
         }
       )
     })
+  })
+
+  it("should add a line item to an order edit", async () => {
+    await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
+      variant_id: IdMap.getId("to-be-added-variant"),
+      quantity: 3,
+    })
+
+    expect(InventoryServiceMock.confirmInventory).toHaveBeenCalledTimes(1)
+    expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
+    expect(
+      LineItemAdjustmentServiceMock.createAdjustments
+    ).toHaveBeenCalledTimes(1)
+    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
+    expect(orderItemChangeRepositoryMock.save).toHaveBeenCalledTimes(1)
   })
 })

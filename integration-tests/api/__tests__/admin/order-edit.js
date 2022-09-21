@@ -19,7 +19,6 @@ const {
   simpleDiscountFactory,
   simpleCartFactory,
   simpleRegionFactory,
-  simplePaymentFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
@@ -41,7 +40,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: true,
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
