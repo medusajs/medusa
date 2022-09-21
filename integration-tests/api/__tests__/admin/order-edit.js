@@ -19,7 +19,7 @@ const {
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
-jest.setTimeout(3000000)
+jest.setTimeout(30000)
 
 const adminHeaders = {
   headers: {
@@ -521,7 +521,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
   })
 
-  describe.only("DELETE /admin/order-edits/:id/changes/:change_id", () => {
+  describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {
     let product
     const orderId1 = IdMap.getId("order-id-1")
     const orderEditId = IdMap.getId("order-edit-1")
