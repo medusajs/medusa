@@ -18,7 +18,7 @@ import { OrderEditService } from "../../../../services"
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.requestConfirmation(edit_id)
  *         .then({ order_edit }) => {
- *           console.log(order_edit.id);
+ *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
