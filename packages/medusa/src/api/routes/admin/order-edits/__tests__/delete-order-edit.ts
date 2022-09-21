@@ -23,7 +23,7 @@ describe("DELETE /admin/order-edits/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService retrieve", () => {
+    it("calls orderEditService delete", () => {
       expect(orderEditServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.delete).toHaveBeenCalledWith(orderEditId)
     })

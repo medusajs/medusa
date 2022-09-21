@@ -5,6 +5,7 @@ import { default as wrap } from "./await-middleware"
 
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
+export { validateOrderEditItemChange } from "./order-edit/validate-order-edit-item-change"
 export { transformQuery } from "./transform-query"
 export { transformBody } from "./transform-body"
 

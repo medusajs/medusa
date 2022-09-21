@@ -2,6 +2,7 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
   EventBusService,
   LineItemService,
+  OrderEditItemChangeService,
   OrderEditService,
   OrderService,
   TotalsService,
@@ -11,6 +12,7 @@ import { OrderServiceMock } from "../__mocks__/order"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { TotalsServiceMock } from "../__mocks__/totals"
+import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -115,6 +117,8 @@ describe("OrderEditService", () => {
     eventBusService: EventBusServiceMock as unknown as EventBusService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
+    orderEditItemChangeService:
+      orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {

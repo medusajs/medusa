@@ -14,11 +14,11 @@ import { TransactionBaseService } from "../interfaces"
 import {
   EventBusService,
   LineItemService,
+  OrderEditItemChangeService,
   OrderService,
   TotalsService,
 } from "./index"
-import { CreateOrderEditInput } from "../types/order-edit"
-import { UpdateOrderEditInput } from "../types/order-edit"
+import { CreateOrderEditInput, UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -27,6 +27,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   totalsService: TotalsService
   lineItemService: LineItemService
+  orderEditItemChangeService: OrderEditItemChangeService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -43,6 +44,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly totalsService_: TotalsService
+  protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
     manager,
@@ -51,6 +53,7 @@ export default class OrderEditService extends TransactionBaseService {
     lineItemService,
     eventBusService,
     totalsService,
+    orderEditItemChangeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -61,6 +64,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
+    this.orderEditItemChangeService_ = orderEditItemChangeService
   }
 
   async retrieve(
@@ -381,5 +385,34 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.total = totals.total
 
     return orderEdit
+  }
+
+  async deleteItemChange(itemChangeId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const itemChange = await this.orderEditItemChangeService_.retrieve(
+        itemChangeId,
+        { relations: ["order_edit"] }
+      )
+      const orderEdit = itemChange.order_edit
+
+      if (!orderEdit) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Order edit for the item change ${itemChangeId} not found.`
+        )
+      }
+
+      if (
+        orderEdit.status === OrderEditStatus.CONFIRMED ||
+        orderEdit.status === OrderEditStatus.CANCELED
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot delete and item change from a ${orderEdit.status} order edit`
+        )
+      }
+
+      return await this.orderEditItemChangeService_.delete(itemChangeId)
+    })
   }
 }
