@@ -37,8 +37,15 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
 
       - name: Get Directories to Scan
         working-directory: docs
@@ -46,9 +53,9 @@ jobs:
         id: directories
 
       - name: Vale Linter
-        uses: errata-ai/vale-action@0dec3032fa59c4097deece7cf6ee3261b27bb3f1
+        uses: errata-ai/vale-action@reviewdog
         with:
-          files: ${{ steps.directories.LIST }}
+          files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
