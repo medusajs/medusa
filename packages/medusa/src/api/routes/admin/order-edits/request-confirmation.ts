@@ -5,7 +5,7 @@ import { OrderEditService } from "../../../../services"
  * @oas [post] /order-edits/{id}/request-confirmation
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request order edit confirmation"
- * description: "Request customer confirmation ofs an Order Edit"
+ * description: "Request customer confirmation of an Order Edit"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Note to request confirmation from.
@@ -17,13 +17,13 @@ import { OrderEditService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.requestConfirmation(edit_id)
- *       .then({ order_edit }) => {
- *         console.log(order_edit.id);
- *       });
+ *         .then({ order_edit }) => {
+ *           console.log(order_edit.id);
+ *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/request-confirmation' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/request-confirmation' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
