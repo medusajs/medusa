@@ -86,7 +86,7 @@ class CustomerService extends TransactionBaseService {
       const payload = { customer_id: customer.id, exp: expiry }
       const token = jwt.sign(payload, secret)
       // Notify subscribers
-      this.eventBusService_
+      void this.eventBusService_
         .withTransaction(manager)
         .emit(CustomerService.Events.PASSWORD_RESET, {
           id: customerId,
@@ -488,7 +488,7 @@ class CustomerService extends TransactionBaseService {
       )
 
       if (shouldAdd) {
-        const created = await addressRepository.create({
+        const created = addressRepository.create({
           ...address,
           customer_id: customerId,
         })

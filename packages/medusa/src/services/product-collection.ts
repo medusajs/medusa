@@ -28,7 +28,7 @@ class ProductCollectionService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly eventBus_: EventBusService
-
+  // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: typeof ProductRepository
 
@@ -119,7 +119,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
 
       try {
-        const productCollection = await collectionRepo.create(collection)
+        const productCollection = collectionRepo.create(collection)
         return await collectionRepo.save(productCollection)
       } catch (error) {
         throw formatException(error)

@@ -19,8 +19,8 @@ import {
   TaxProviderService,
 } from "../services"
 import { CurrencyRepository } from "../repositories/currency"
-import { FlagRouter } from "../utils/flag-router";
-import SalesChannelFeatureFlag from "./feature-flags/sales-channels";
+import { FlagRouter } from "../utils/flag-router"
+import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
 import { AbstractPaymentService, AbstractTaxService } from "../interfaces"
 
 const silentResolution = <T>(
@@ -69,7 +69,9 @@ export default async ({
   const profileService = container.resolve<ShippingProfileService>(
     "shippingProfileService"
   )
-  const salesChannelService = container.resolve<SalesChannelService>("salesChannelService")
+  const salesChannelService = container.resolve<SalesChannelService>(
+    "salesChannelService"
+  )
   const logger = container.resolve<Logger>("logger")
   const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
 
@@ -120,11 +122,9 @@ export default async ({
     await storeService.withTransaction(manager).create()
 
     const payProviders =
-      silentResolution<(typeof BasePaymentService | AbstractPaymentService<never>)[]>(
-        container,
-        "paymentProviders",
-        logger
-      ) || []
+      silentResolution<
+        (typeof BasePaymentService | AbstractPaymentService<never>)[]
+      >(container, "paymentProviders", logger) || []
     const payIds = payProviders.map((p) => p.getIdentifier())
 
     const pProviderService = container.resolve<PaymentProviderService>(
@@ -173,7 +173,9 @@ export default async ({
     await profileService.withTransaction(manager).createDefault()
     await profileService.withTransaction(manager).createGiftCardDefault()
 
-    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
     if (isSalesChannelEnabled) {
       await salesChannelService.withTransaction(manager).createDefault()
     }

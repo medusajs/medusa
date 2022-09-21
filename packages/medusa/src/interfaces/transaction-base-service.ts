@@ -15,7 +15,7 @@ export abstract class TransactionBaseService {
       return this
     }
 
-    const cloned = new (<any>this.constructor)(
+    const cloned = new (this.constructor as any)(
       {
         ...this.__container__,
         manager: transactionManager,
@@ -111,14 +111,14 @@ export abstract class TransactionBaseService {
         try {
           result = await this.manager_.transaction(
             isolation as IsolationLevel,
-            (m) => doWork(m)
+            async (m) => doWork(m)
           )
           return result
         } catch (error) {
           if (this.shouldRetryTransaction_(error)) {
             return this.manager_.transaction(
               isolation as IsolationLevel,
-              (m): Promise<never | TResult> => doWork(m)
+              async (m): Promise<never | TResult> => doWork(m)
             )
           } else {
             if (errorHandler) {
@@ -130,7 +130,7 @@ export abstract class TransactionBaseService {
       }
 
       try {
-        return await this.manager_.transaction((m) => doWork(m))
+        return await this.manager_.transaction(async (m) => doWork(m))
       } catch (error) {
         if (errorHandler) {
           const result = await errorHandler(error)

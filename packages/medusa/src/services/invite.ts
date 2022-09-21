@@ -144,7 +144,7 @@ class InviteService extends BaseService {
         invite = await inviteRepository.save(invite)
       } else if (!invite) {
         // if no invite is found, create a new one
-        const created = await inviteRepository.create({
+        const created = inviteRepository.create({
           role,
           token: "",
           user_email: user,

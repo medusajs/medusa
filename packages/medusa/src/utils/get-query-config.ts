@@ -28,9 +28,9 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
-      typeof field === "string" ? field.trim() : field
-    ) as (keyof TModel)[]
+    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
+      return typeof field === "string" ? field.trim() : field
+    }) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []

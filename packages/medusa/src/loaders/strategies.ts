@@ -40,7 +40,6 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
   })
 
   core.forEach((fn) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
 

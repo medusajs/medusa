@@ -238,6 +238,7 @@ export class StoreGetCustomersCustomerOrdersPaginationParams {
   expand?: string
 }
 
+// eslint-disable-next-line max-len
 export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCustomerOrdersPaginationParams {
   @IsString()
   @IsOptional()
