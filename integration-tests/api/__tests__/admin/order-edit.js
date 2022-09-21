@@ -17,8 +17,9 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
   simpleDiscountFactory,
-  simpleRegionFactory,
   simpleCartFactory,
+  simpleRegionFactory,
+  simplePaymentFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
@@ -848,6 +849,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           requested_by: null,
           canceled_by: null,
           confirmed_by: null,
+          // "Add item" change has been created
           changes: [
             expect.objectContaining({
               type: "item_add",
@@ -894,60 +896,75 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
     })
 
-    it("adding line item to the order edit will fail because quantity exceeds available inventory", async () => {})
+    it("adding line item to the order edit will create adjustments for that item", async () => {
+      const api = useApi()
 
-    // it("adding line item to the order edit will calculate adjustments for that item", async () => {
-    //   const api = useApi()
-    //
-    //   const toBeAddedProduct = await simpleProductFactory(dbConnection, {
-    //     variants: [{ id: toBeAddedVariantId }],
-    //   })
-    //
-    //   const orderWithDiscount = await simpleOrderFactory(dbConnection, {
-    //     // tax_rate: null,
-    //     discounts: [
-    //       {
-    //         id: "test-discount",
-    //         code: "TEST",
-    //         rule: {
-    //           type: "percentage",
-    //           value: "10",
-    //           allocation: "item",
-    //           conditions: [
-    //             {
-    //               type: "products",
-    //               operator: "in",
-    //               products: [toBeAddedProduct.id],
-    //             },
-    //           ],
-    //         },
-    //       },
-    //     ],
-    //     fulfillment_status: "fulfilled",
-    //     region: {
-    //       id: "test-region",
-    //       name: "Test region",
-    //       // tax_rate: 12.5,
-    //     },
-    //   })
-    //
-    //   await simpleOrderEditFactory(dbConnection, {
-    //     id: orderEditId,
-    //     order_id: orderWithDiscount.id,
-    //     created_by: "admin_user",
-    //   })
-    //
-    //   const response = await api.post(
-    //     `/admin/order-edits/${orderEditId}/items`,
-    //     { variant_id: toBeAddedVariantId, quantity: 2 },
-    //     adminHeaders
-    //   )
-    //
-    //   expect(response.status).toEqual(200)
-    //   // expect(response.data.order_edit).toEqual()
-    //
-    //   console.log(response.data.order_edit)
-    // })
+      const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+
+      const initialProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "initial-variant" }],
+      })
+
+      const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: toBeAddedVariantId }],
+      })
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "20PERCENT",
+        rule: {
+          type: "percentage",
+          allocation: "item",
+          value: 20,
+        },
+        regions: [region.id],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "testy@test.com",
+        region: region.id,
+        line_items: [
+          { variant_id: initialProduct.variants[0].id, quantity: 1 },
+        ],
+      })
+
+      // Apply the discount on the cart and complete the cart to create an order.
+
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: "20PERCENT" }],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      const orderWithDiscount = completeRes.data.data
+
+      // Create an order edit for the created order
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: orderWithDiscount.id,
+        created_by: "admin_user",
+      })
+
+      const response = await api.post(
+        `/admin/order-edits/${orderEditId}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit.items[0]).toEqual(
+        expect.objectContaining({
+          adjustments: [
+            expect.objectContaining({
+              discount_id: discount.id,
+              amount: 40,
+            }),
+          ],
+        })
+      )
+    })
   })
 
   describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {
