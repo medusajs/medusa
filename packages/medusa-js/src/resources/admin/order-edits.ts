@@ -58,6 +58,14 @@ class AdminOrderEditsResource extends BaseResource {
     const path = `/admin/order-edits/${id}/request`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
+  
+  cancel(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${id}/cancel`
+    return this.client.request("POST", path, undefined, {}, customHeaders)
+  }
 }
 
 export default AdminOrderEditsResource
