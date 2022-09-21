@@ -394,20 +394,23 @@ export default class OrderEditService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const itemChange = await this.orderEditItemChangeService_.retrieve(
         itemChangeId,
-        { relations: ["order_edit"] }
+        { select: ["id", "order_edit_id"] }
       )
-      const orderEdit = itemChange.order_edit
 
-      if (orderEdit.id !== orderEditId) {
+      const orderEdit = await this.retrieve(orderEditId, {
+        select: ["id", "confirmed_at", "canceled_at"],
+      })
+
+      if (orderEdit.id !== itemChange.order_edit_id) {
         throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Invalid item change id doesn't belong to orderEditId.`
+          MedusaError.Types.INVALID_DATA,
+          `The item change you are trying to delete doesn't belong to the OrderEdit with id: ${orderEditId}.`
         )
       }
 
       if (
-        orderEdit.status === OrderEditStatus.CONFIRMED ||
-        orderEdit.status === OrderEditStatus.CANCELED
+        orderEdit?.status === OrderEditStatus.CONFIRMED ||
+        orderEdit?.status === OrderEditStatus.CANCELED
       ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,

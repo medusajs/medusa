@@ -677,6 +677,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         .catch((e) => e)
 
       expect(response.response.status).toEqual(400)
+      expect(response.response.data.message).toEqual(
+        `The item change you are trying to delete doesn't belong to the OrderEdit with id: ${orderEditId}.`
+      )
     })
 
     it("return an error if the order edit is confirmed", async () => {
