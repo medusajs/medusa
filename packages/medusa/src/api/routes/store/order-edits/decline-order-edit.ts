@@ -7,7 +7,7 @@ import { OrderEditService } from "../../../../services"
  * @oas [post] /order-edits/{id}/decline
  * operationId: "PostOrderEditsOrderEditDecline"
  * summary: "Decline an OrderEdit"
- * description: "Declines a OrderEdit."
+ * description: "Declines an OrderEdit."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
  * requestBody:
@@ -25,13 +25,13 @@ import { OrderEditService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.orderEdit.decline(orderEditId)
- *       .then(({ order_edit }) => {
- *         console.log(order_edit.id);
- *       });
+ *         .then(({ order_edit }) => {
+ *           console.log(order_edit.id);
+ *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}'
+ *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/decline'
  * tags:
  *   - OrderEdit
  * responses:
@@ -63,12 +63,13 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const userId = req.user?.customer_id
+  const userId = req.user?.customer_id ?? req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (manager) => {
-    await orderEditService
-      .withTransaction(manager)
-      .decline(id, validatedBody.declined_reason, userId)
+    await orderEditService.withTransaction(manager).decline(id, {
+      declinedReason: validatedBody.declined_reason,
+      loggedInUser: userId,
+    })
   })
   let orderEdit = await orderEditService.retrieve(id)
 

@@ -30,7 +30,7 @@ describe("GET /store/order-edits/:id", () => {
 
     it("calls orderService decline", () => {
       expect(orderEditServiceMock.decline).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.decline).toHaveBeenCalledWith(orderEditId, "test", undefined)
+      expect(orderEditServiceMock.decline).toHaveBeenCalledWith(orderEditId, { declinedReason: "test", loggedInUser: undefined})
       expect(orderEditServiceMock.decorateLineItemsAndTotals).toHaveBeenCalledTimes(1)
     })
 

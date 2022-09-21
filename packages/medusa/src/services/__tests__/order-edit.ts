@@ -92,10 +92,10 @@ describe("OrderEditService", () => {
         return orderEditWithChanges
       }
       if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
-        return {...orderEditWithChanges, status: OrderEditStatus.CONFIRMED}
+        return { ...orderEditWithChanges, status: OrderEditStatus.CONFIRMED }
       }
       if (query?.where?.id === IdMap.getId("declined-order-edit")) {
-        return {...orderEditWithChanges, status: OrderEditStatus.DECLINED}
+        return { ...orderEditWithChanges, declined_reason: 'wrong size', status: OrderEditStatus.DECLINED }
       }
 
       return {}
@@ -190,31 +190,46 @@ describe("OrderEditService", () => {
   describe("decline", () => {
     it("declines an order edit", async () => {
       const result = await orderEditService.decline(
-        IdMap.getId("order-edit-with-changes"), 
-        "I requested a different color for the new product", 
-        "admin_user"
+        IdMap.getId("order-edit-with-changes"),
+        {
+          declinedReason: "I requested a different color for the new product",
+          loggedInUser: "admin_user",
+        }
       )
 
-      expect(result).toEqual(expect.objectContaining({
-        id: IdMap.getId("order-edit-with-changes"),
-        declined_at: expect.any(Date),
-        declined_reason: "I requested a different color for the new product",
-        declined_by: 'admin_user'
-      }))
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: IdMap.getId("order-edit-with-changes"),
+          declined_at: expect.any(Date),
+          declined_reason: "I requested a different color for the new product",
+          declined_by: "admin_user",
+        })
+      )
     })
     it("fails to decline a confirmed order edit", async () => {
-      await expect(orderEditService.decline(
-        IdMap.getId("confirmed-order-edit"), 
-        "I requested a different color for the new product", 
-        "admin_user"
-      )).rejects.toThrowError("Cannot decline an order edit with status confirmed.")
+      await expect(
+        orderEditService.decline(IdMap.getId("confirmed-order-edit"), {
+          declinedReason: "I requested a different color for the new product",
+          loggedInUser: "admin_user",
+        })
+      ).rejects.toThrowError(
+        "Cannot decline an order edit with status confirmed."
+      )
     })
     it("fails to decline an already declined order edit", async () => {
-      await expect(orderEditService.decline(
-        IdMap.getId("declined-order-edit"), 
-        "I requested a different color for the new product", 
-        "admin_user"
-      )).rejects.toThrowError("Cannot decline an order edit that has already been declined.")
+        const result = await orderEditService.decline(IdMap.getId("declined-order-edit"), {
+          declinedReason: "I requested a different color for the new product",
+          loggedInUser: "admin_user",
+        })
+
+        expect(result).toEqual(
+          expect.objectContaining({
+            id: IdMap.getId("order-edit-with-changes"),
+            declined_at: expect.any(Date),
+            declined_reason: "wrong size",
+            declined_by: "admin_user",
+          })
+        )
     })
   })
 })

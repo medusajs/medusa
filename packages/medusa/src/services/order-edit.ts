@@ -316,27 +316,25 @@ export default class OrderEditService extends TransactionBaseService {
 
   async decline(
     orderEditId: string,
-    declinedReason: string | undefined,
-    customerId?: string
+    context: {
+      declinedReason?: string
+      loggedInUser?: string
+    }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepo = manager.getCustomRepository(
         this.orderEditRepository_
       )
 
+      const { loggedInUser, declinedReason } = context
+
       const orderEdit = await this.retrieve(orderEditId)
 
       if (orderEdit.status === OrderEditStatus.DECLINED) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot decline an order edit that has already been declined."
-        )
+        return orderEdit
       }
 
-      if (
-        orderEdit.status !== OrderEditStatus.CREATED &&
-        orderEdit.status !== OrderEditStatus.REQUESTED
-      ) {
+      if (orderEdit.status !== OrderEditStatus.REQUESTED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `Cannot decline an order edit with status ${orderEdit.status}.`
@@ -344,7 +342,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.declined_at = new Date()
-      orderEdit.declined_by = customerId
+      orderEdit.declined_by = loggedInUser
       orderEdit.declined_reason = declinedReason
 
       const result = await orderEditRepo.save(orderEdit)
