@@ -4,7 +4,7 @@ import { orderEditServiceMock } from "../../../../../services/__mocks__/order-ed
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("GET /admin/order-edits/:id", () => {
-  describe("successfully gets an order edit", () => {
+  describe("successfully requests an order edit", () => {
     const orderEditId = IdMap.getId("testRequestOrder")
     let subject
 

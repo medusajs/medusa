@@ -58,11 +58,13 @@ export default async (req, res) => {
 
   const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
 
-  const orderEdit = await manager.transaction(async (transactionManager) => {
-    return await orderEditService
+  await manager.transaction(async (transactionManager) => {
+    await orderEditService
       .withTransaction(transactionManager)
       .requestConfirmation(id, loggedInUserId)
   })
+
+  const orderEdit = await orderEditService.retrieve(id)
 
   res.status(200).send({
     order_edit: orderEdit,

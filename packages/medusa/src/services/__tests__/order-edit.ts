@@ -245,15 +245,22 @@ describe("OrderEditService", () => {
   })
 
   describe("requestConfirmation", () => {
-    it("sets fields correctly for update", async () => {
-      const orderEditId = IdMap.getId("order-edit-with-changes")
-      const userId = IdMap.getId("user-id")
+    const orderEditId = IdMap.getId("order-edit-with-changes")
+    const userId = IdMap.getId("user-id")
+    let result
 
-      const result = await orderEditService.requestConfirmation(
-        orderEditId,
-        userId
+    beforeEach(async () => {
+      result = await orderEditService.requestConfirmation(orderEditId, userId)
+    })
+
+    it("emits requested event", () => {
+      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+        OrderEditService.Events.REQUESTED,
+        { id: orderEditId }
       )
+    })
 
+    it("sets fields correctly for update", async () => {
       expect(result).toEqual(
         expect.objectContaining({
           requested_at: expect.any(Date),
