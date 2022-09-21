@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /order-edits
  * operationId: "PostOrderEdits"
  * summary: "Cancel an OrderEdit"
- * description: "Cancels am OrderEdit."
+ * description: "Cancels an OrderEdit."
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript

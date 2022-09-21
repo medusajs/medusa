@@ -3,8 +3,8 @@ import { request } from "../../../../../helpers/test-request"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
-describe("DELETE /admin/order-edits/:id", () => {
-  describe("deletes an order edit", () => {
+describe("POST /admin/order-edits/:id/cancel", () => {
+  describe("cancels an order edit", () => {
     const orderEditId = IdMap.getId("testCancelOrderEdit")
     let subject
 
@@ -23,7 +23,7 @@ describe("DELETE /admin/order-edits/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService retrieve", () => {
+    it("calls orderService cancel", () => {
       expect(orderEditServiceMock.cancel).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, IdMap.getId("admin_user"))
     })
@@ -32,7 +32,7 @@ describe("DELETE /admin/order-edits/:id", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("returns delete result", () => {
+    it("returns cancel result", () => {
       expect(subject.body.order_edit).toEqual(expect.objectContaining({
         id: orderEditId, 
         canceled_at: expect.any(String), 

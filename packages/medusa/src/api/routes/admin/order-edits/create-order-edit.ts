@@ -11,7 +11,7 @@ import {
  * @oas [post] /order-edits
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
- * description: "Create an OrderEdit."
+ * description: "Creates an OrderEdit."
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
