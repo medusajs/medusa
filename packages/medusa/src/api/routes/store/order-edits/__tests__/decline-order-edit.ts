@@ -6,19 +6,20 @@ import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../../types/order-edit"
+import { storeOrderEditNotAllowedFields } from "../index"
 
-describe("GET /admin/order-edits/:id", () => {
+describe("GET /store/order-edits/:id", () => {
   describe("successfully gets an order edit", () => {
-    const orderEditId = IdMap.getId("testCreatedOrder")
+    const orderEditId = IdMap.getId("testDeclineOrderEdit")
     let subject
 
+    const payload = {
+      declined_reason: "test",
+    }
+
     beforeAll(async () => {
-      subject = await request("GET", `/admin/order-edits/${orderEditId}`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+      subject = await request("POST", `/store/order-edits/${orderEditId}/decline`, {
+        payload,
         flags: [OrderEditingFeatureFlag],
       })
     })
@@ -27,16 +28,13 @@ describe("GET /admin/order-edits/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService retrieve", () => {
-      expect(orderEditServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.retrieve).toHaveBeenCalledWith(orderEditId, {
-        select: defaultOrderEditFields,
-        relations: defaultOrderEditRelations,
-      })
+    it("calls orderService decline", () => {
+      expect(orderEditServiceMock.decline).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.decline).toHaveBeenCalledWith(orderEditId, { declinedReason: "test", loggedInUser: undefined})
       expect(orderEditServiceMock.decorateLineItemsAndTotals).toHaveBeenCalledTimes(1)
     })
 
-    it("returns order", () => {
+    it("returns orderEdit", () => {
       expect(subject.body.order_edit.id).toEqual(orderEditId)
     })
   })
