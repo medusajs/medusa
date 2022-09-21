@@ -101,7 +101,11 @@ The code snippet must be written using NPM, and the `npm2yarn` plugin will autom
 
 ### Expand Commands
 
+<!-- vale off -->
+
 Don't use commands in their abbrivated terms. For example, instead of `npm i` use `npm install`.
+
+<!-- vale on -->
 
 ### Run Command
 
