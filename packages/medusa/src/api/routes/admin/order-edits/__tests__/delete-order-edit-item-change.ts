@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
-import { orderEditItemChangeServiceMock } from "../../../../../services/__mocks__/order-edit-item-change"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
 describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {
@@ -29,18 +28,10 @@ describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderEditItemChangeService retrieveItemChangeByOrderEdit", () => {
-      expect(
-        orderEditItemChangeServiceMock.retrieveItemChangeByOrderEdit
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        orderEditItemChangeServiceMock.retrieveItemChangeByOrderEdit
-      ).toHaveBeenCalledWith(orderEditItemChangeId, orderEditId)
-    })
-
     it("calls orderEditService delete", () => {
       expect(orderEditServiceMock.deleteItemChange).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.deleteItemChange).toHaveBeenCalledWith(
+        orderEditId,
         orderEditItemChangeId
       )
     })

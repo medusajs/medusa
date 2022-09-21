@@ -636,7 +636,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       expect(res.data.order_edit.changes.length).toBe(0)
     })
 
-    it("return 404 if the item change does not belong to the order edit", async () => {
+    it("return invalid error if the item change does not belong to the order edit", async () => {
       await simpleOrderEditFactory(dbConnection, {
         id: orderEditId,
         order_id: orderId1,
@@ -676,7 +676,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         )
         .catch((e) => e)
 
-      expect(response.response.status).toEqual(404)
+      expect(response.response.status).toEqual(400)
     })
 
     it("return an error if the order edit is confirmed", async () => {

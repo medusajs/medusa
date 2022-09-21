@@ -43,8 +43,8 @@ class AdminOrderEditsResource extends BaseResource {
   }
 
   deleteItemChange(
-    itemChangeId: string,
     orderEditId: string,
+    itemChangeId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditItemChangeDeleteRes> {
     const path = `/admin/order-edits/${orderEditId}/changes/${itemChangeId}`

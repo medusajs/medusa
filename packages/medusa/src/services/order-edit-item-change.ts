@@ -2,7 +2,7 @@ import { TransactionBaseService } from "../interfaces"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
 import { EntityManager, In } from "typeorm"
 import { EventBusService, LineItemService } from "./index"
-import { FindConfig, Selector } from "../types/common"
+import { FindConfig } from "../types/common"
 import { OrderItemChange } from "../models"
 import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
@@ -41,8 +41,8 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
   }
 
-  protected async retrieve_(
-    selector: Selector<OrderItemChange>,
+  async retrieve(
+    id: string,
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange> {
     const manager = this.transactionManager_ ?? this.manager_
@@ -50,39 +50,17 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
       this.orderItemChangeRepository_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery({ id }, config)
     const itemChange = await orderItemChangeRepo.findOne(query)
 
     if (!itemChange) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
-
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order edit item change with ${selectorConstraints} was not found`
+        `Order edit item change ${id} was not found`
       )
     }
 
     return itemChange
-  }
-
-  async retrieve(
-    itemChangeId: string,
-    config: FindConfig<OrderItemChange> = {}
-  ): Promise<OrderItemChange> {
-    return await this.retrieve_({ id: itemChangeId }, config)
-  }
-
-  async retrieveItemChangeByOrderEdit(
-    itemChangeId: string,
-    orderEditId: string,
-    config: FindConfig<OrderItemChange> = {}
-  ): Promise<OrderItemChange> {
-    return await this.retrieve_(
-      { id: itemChangeId, order_edit_id: orderEditId },
-      config
-    )
   }
 
   async delete(itemChangeIds: string | string[]): Promise<void> {

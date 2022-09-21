@@ -387,7 +387,10 @@ export default class OrderEditService extends TransactionBaseService {
     return orderEdit
   }
 
-  async deleteItemChange(itemChangeId: string): Promise<void> {
+  async deleteItemChange(
+    orderEditId: string,
+    itemChangeId: string
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const itemChange = await this.orderEditItemChangeService_.retrieve(
         itemChangeId,
@@ -395,10 +398,10 @@ export default class OrderEditService extends TransactionBaseService {
       )
       const orderEdit = itemChange.order_edit
 
-      if (!orderEdit) {
+      if (orderEdit.id !== orderEditId) {
         throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Order edit for the item change ${itemChangeId} not found.`
+          MedusaError.Types.NOT_ALLOWED,
+          `Invalid item change id doesn't belong to orderEditId.`
         )
       }
 

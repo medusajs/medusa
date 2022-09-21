@@ -3,7 +3,6 @@ import { Router } from "express"
 import middlewares, {
   transformBody,
   transformQuery,
-  validateOrderEditItemChange,
 } from "../../../middlewares"
 import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
@@ -51,7 +50,6 @@ export default (app) => {
 
   route.delete(
     "/:id/changes/:change_id",
-    validateOrderEditItemChange,
     middlewares.wrap(require("./delete-order-edit-item-change").default)
   )
 

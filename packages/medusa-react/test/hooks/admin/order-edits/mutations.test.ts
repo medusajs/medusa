@@ -14,7 +14,7 @@ describe("useAdminDeleteOrderEditItemChange hook", () => {
     const id = "oe_1"
     const itemChangeId = "oeic_1"
     const { result, waitFor } = renderHook(
-      () => useAdminDeleteOrderEditItemChange(itemChangeId, id),
+      () => useAdminDeleteOrderEditItemChange(id, itemChangeId),
       {
         wrapper: createWrapper(),
       }

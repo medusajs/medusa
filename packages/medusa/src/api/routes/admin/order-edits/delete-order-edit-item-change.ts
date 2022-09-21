@@ -53,7 +53,7 @@ import { OrderEditService } from "../../../../services"
  *     $ref: "#/components/responses/400_error"
  */
 export default async (req, res) => {
-  const { change_id } = req.params
+  const { id, change_id } = req.params
 
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
@@ -63,7 +63,7 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .deleteItemChange(change_id)
+      .deleteItemChange(id, change_id)
   })
 
   res.status(200).send({

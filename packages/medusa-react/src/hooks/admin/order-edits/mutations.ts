@@ -47,8 +47,8 @@ export const useAdminDeleteOrderEdit = (
 }
 
 export const useAdminDeleteOrderEditItemChange = (
-  itemChangeId: string,
   orderEditId: string,
+  itemChangeId: string,
   options?: UseMutationOptions<
     Response<AdminOrderEditItemChangeDeleteRes>,
     Error,
@@ -59,7 +59,7 @@ export const useAdminDeleteOrderEditItemChange = (
   const queryClient = useQueryClient()
 
   return useMutation(
-    () => client.admin.orderEdits.deleteItemChange(itemChangeId, orderEditId),
+    () => client.admin.orderEdits.deleteItemChange(orderEditId, itemChangeId),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
