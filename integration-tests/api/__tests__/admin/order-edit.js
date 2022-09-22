@@ -490,7 +490,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       const api = useApi()
 
       try {
-        console.log(orderEditIdNoChanges)
         await api.post(
           `/admin/order-edits/${orderEditIdNoChanges}/request`,
           {},
