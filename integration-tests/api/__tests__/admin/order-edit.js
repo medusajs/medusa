@@ -994,9 +994,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 500, // 1 * 100$ + 2 * 200$
-          discount_total: 100, // discount == 20%
-          total: 440, // tax rate== 10%
-          tax_total: 40,
+          discount_total: 100, // discount === 20%
+          tax_total: 40, // tax rate === 10%
+          total: 440,
         })
       )
     })
