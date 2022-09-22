@@ -1,3 +1,4 @@
+<!-- vale off -->
 # Quickstart w. Docker
 
 This quick start is intended for developers, that have already configured their local development environment and familiarised them selves with all the technologies and frameworks used throughout the Medusa eco-system.
@@ -84,3 +85,5 @@ Add custom endpoint to your Medusa project
 Install and configure additional plugins
 
 Build a storefront using our [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
+
+<!-- vale on -->

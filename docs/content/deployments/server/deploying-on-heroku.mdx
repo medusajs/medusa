@@ -20,7 +20,7 @@ Alternatively, you can use this button to deploy the Medusa server to Heroku dir
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow our [quickstart guide](../../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.md).
 
 Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
 
@@ -135,7 +135,7 @@ heroku buildpacks:set heroku/nodejs
 
 Upstash adds the Redis URL under the environment variable `UPSTASH_REDIS_URL`. However, Medusa looks for the `REDIS_URL` environment variable when initializing the connection with Redis.
 
-So, retrieve the value of `UPSTASH_REDIS_URL` with the following command:
+Retrieve the value of `UPSTASH_REDIS_URL` with the following command:
 
 ```bash
 heroku config:get UPSTASH_REDIS_URL
@@ -153,7 +153,7 @@ Where `<YOUR_REDIS_URL>` is the value you received from the previous command.
 
 #### Configure the PostgreSQL Database URL
 
-If you're using the Heroku PostgreSQL Add-on, it should configure the environment variable `DATABASE_URL`. So, you don't need to perform any additional actions.
+If you're using the Heroku PostgreSQL Add-on, it should configure the environment variable `DATABASE_URL`. In that case, you don't need to perform any additional actions.
 
 However, if you use another add-on, make sure to set the environment variable `DATABASE_URL` to the PostgreSQL Database URL.
 
@@ -270,7 +270,7 @@ Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>
 
 ## Add Environment Variables
 
-You’ll likely need to add environment variables later such as Admin CORS and Store CORS variables.
+You’ll likely need to add environment variables later such as Admin Cross-Origin Resource Sharing (CORS) and Store CORS variables.
 
 To set or change an environment variable's value, you can use the following command:
 

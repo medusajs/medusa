@@ -4,7 +4,7 @@ This document guides you through setting up Stripe payments in your Medusa serve
 
 ## Video Guide
 
-You can also follow our video guide to learn how the setup works:
+You can also follow this video guide to learn how the setup works:
 
 <div>
   <video width="100%" height="100%" playsinline autoplay muted controls>
@@ -26,7 +26,7 @@ Before you proceed with this guide, make sure you create a [Stripe account](http
 
 This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa server.
 
-If you don’t have a Medusa server installed yet, you must follow our [quickstart guide](../quickstart/quick-start) first.
+If you don’t have a Medusa server installed yet, you must follow the [quickstart guide](../quickstart/quick-start) first.
 
 ### Install the Stripe Plugin
 
@@ -61,7 +61,7 @@ You might find that this code is already available but commented out. You can pr
 
 :::
 
-The Stripe plugin uses 2 configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
+The Stripe plugin uses two configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
 
 ### Retrieve Stripe's Keys
 

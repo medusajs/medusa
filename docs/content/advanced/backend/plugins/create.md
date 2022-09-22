@@ -301,9 +301,9 @@ rm -rf node_modules
 cd <SERVER_PATH>/node_modules/<PLUGIN_NAME>
 npm install
 cd <PLUGIN_PATH>
-npm build
+npm run build
 cd <SERVER_PATH>
-npm start
+npm run start
 ```
 
 Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.

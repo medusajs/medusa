@@ -1,6 +1,6 @@
 # Strapi
 
-In this document, you’ll learn how to integrate Strapi with Medusa to add rich CMS functionalities.
+In this document, you’ll learn how to integrate Strapi with Medusa to add rich Content Management System (CMS) functionalities.
 
 :::info
 

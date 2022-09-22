@@ -8,7 +8,7 @@ It is assumed you’re already familiar with [Subscribers in Medusa and how to l
 
 ## Legend
 
-Events in this document are listed under the entity they’re associated with. They’re listed in a table of 3 columns:
+Events in this document are listed under the entity they’re associated with. They’re listed in a table of three columns:
 
 1. **Event Name:** The name you use to subscribe a handler for the event.
 2. **Description:** When this event is triggered.

@@ -100,7 +100,7 @@ When an event is triggered that your Notification Provider is registered as a ha
 
 In this method, you can perform the necessary operation to send the Notification. Following the example above, you can send an email to the customer when they place an order.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. `eventName`: This is the name of the event that was triggered. For example, `order.placed`.
 2. `eventData`: This is the data payload of the event that was triggered. For example, if the `order.placed` event is triggered, the `eventData` object contains the property `id` which is the ID of the order that was placed.
@@ -156,7 +156,7 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](overview.md#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
 2. `config`: In the Resend Notification endpoint you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
@@ -240,7 +240,7 @@ Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either our [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) starter storefronts in minutes.
 
 :::
 
