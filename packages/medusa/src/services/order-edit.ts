@@ -1,7 +1,8 @@
 import { EntityManager, IsNull } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
   Cart,
@@ -23,9 +24,12 @@ import {
 import { AddOrderEditLineItemInput, CreateOrderEditInput, UpdateOrderEditInput } from "../types/order-edit"
 import region from "./region"
 import LineItemAdjustmentService from "./line-item-adjustment"
+import {
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+  UpdateOrderEditInput,
+} from "../types/order-edit"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import TaxProviderService from "./tax-provider"
 import InventoryService from "./inventory"
 
 type InjectedDependencies = {
@@ -41,8 +45,6 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
-  lineItemAdjustmentService: LineItemAdjustmentService
-  taxProviderService: TaxProviderService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -68,10 +70,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly inventoryService_: InventoryService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
-  protected readonly totalsService_: TotalsService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
-  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
-  protected readonly taxProviderService_: TaxProviderService
 
   constructor({
     manager,
