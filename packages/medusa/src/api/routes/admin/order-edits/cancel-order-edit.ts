@@ -9,6 +9,8 @@ import { EntityManager } from "typeorm"
  * summary: "Cancel an OrderEdit"
  * description: "Cancels an OrderEdit."
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the OrderEdit.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
