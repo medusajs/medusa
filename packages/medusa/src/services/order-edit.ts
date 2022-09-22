@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, IsNull } from "typeorm"
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined } from "../utils"
 import { MedusaError } from "medusa-core-utils"
@@ -102,7 +102,15 @@ export default class OrderEditService extends TransactionBaseService {
       this.orderEditRepository_
     )
 
-    const query = buildQuery({ order_id: orderId }, config)
+    const query = buildQuery(
+      {
+        order_id: orderId,
+        confirmed_at: IsNull(),
+        canceled_at: IsNull(),
+        declined_at: IsNull(),
+      },
+      config
+    )
     return await orderEditRepository.findOne(query)
   }
 
