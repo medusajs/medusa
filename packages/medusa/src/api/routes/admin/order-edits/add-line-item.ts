@@ -3,6 +3,10 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 
 import { OrderEditService } from "../../../../services"
+import {
+  defaultOrderEditFields,
+  defaultOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits/:id/items
@@ -24,7 +28,7 @@ import { OrderEditService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/oe_123/items' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items' \
  *       --header 'Authorization: Bearer {api_token}'
  *       -d '{ "variant_id": "some_variant_id", "quantity": 3 }'
  * security:
@@ -71,25 +75,16 @@ export default async (req: Request, res: Response) => {
 
     await orderEditServiceTx.addLineItem(id, data)
 
-    const orderEdit = await orderEditServiceTx.retrieve(id, {
-      relations: ["changes"],
+    let orderEdit = await orderEditService.retrieve(id, {
+      select: defaultOrderEditFields,
+      relations: defaultOrderEditRelations,
     })
 
-    const { items, removedItems } = await orderEditServiceTx.computeLineItems(
-      orderEdit.id
-    )
+    orderEdit = await orderEditService.decorateLineItemsAndTotals(orderEdit)
 
-    orderEdit.items = items
-    orderEdit.removed_items = removedItems
-
-    const totals = await orderEditServiceTx.getTotals(orderEdit.id)
-    orderEdit.discount_total = totals.discount_total
-    orderEdit.gift_card_total = totals.gift_card_total
-    orderEdit.gift_card_tax_total = totals.gift_card_tax_total
-    orderEdit.shipping_total = totals.shipping_total
-    orderEdit.subtotal = totals.subtotal
-    orderEdit.tax_total = totals.tax_total
-    orderEdit.total = totals.total
+    res.status(200).send({
+      order_edit: orderEdit,
+    })
 
     return orderEdit
   })
