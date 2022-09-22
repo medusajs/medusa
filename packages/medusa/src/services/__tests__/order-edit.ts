@@ -2,6 +2,7 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
   EventBusService,
   LineItemService,
+  OrderEditItemChangeService,
   OrderEditService,
   OrderService,
   TotalsService,
@@ -11,6 +12,7 @@ import { OrderServiceMock } from "../__mocks__/order"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { TotalsServiceMock } from "../__mocks__/totals"
+import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -18,7 +20,6 @@ const orderEditToUpdate = {
 
 const orderEditWithChanges = {
   id: IdMap.getId("order-edit-with-changes"),
-  status: OrderEditStatus.REQUESTED,
   order: {
     id: IdMap.getId("order-edit-with-changes-order"),
     items: [
@@ -92,10 +93,28 @@ describe("OrderEditService", () => {
         return orderEditWithChanges
       }
       if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
-        return { ...orderEditWithChanges, status: OrderEditStatus.CONFIRMED }
+        return {
+          ...orderEditWithChanges,
+          id: IdMap.getId("confirmed-order-edit"),
+          status: OrderEditStatus.CONFIRMED,
+        }
+      }
+      if (query?.where?.id === IdMap.getId("requested-order-edit")) {
+        return {
+          ...orderEditWithChanges,
+          id: IdMap.getId("requested-order-edit"),
+          status: OrderEditStatus.REQUESTED,
+        }
       }
       if (query?.where?.id === IdMap.getId("declined-order-edit")) {
-        return { ...orderEditWithChanges, declined_reason: 'wrong size', status: OrderEditStatus.DECLINED }
+        return {
+          ...orderEditWithChanges,
+          id: IdMap.getId("declined-order-edit"),
+          declined_reason: "wrong size",
+          declined_at: new Date(),
+          declined_by: "admin_user",
+          status: OrderEditStatus.DECLINED,
+        }
       }
 
       return {}
@@ -115,6 +134,8 @@ describe("OrderEditService", () => {
     eventBusService: EventBusServiceMock as unknown as EventBusService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
+    orderEditItemChangeService:
+      orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
@@ -190,7 +211,7 @@ describe("OrderEditService", () => {
   describe("decline", () => {
     it("declines an order edit", async () => {
       const result = await orderEditService.decline(
-        IdMap.getId("order-edit-with-changes"),
+        IdMap.getId("requested-order-edit"),
         {
           declinedReason: "I requested a different color for the new product",
           loggedInUser: "admin_user",
@@ -199,13 +220,14 @@ describe("OrderEditService", () => {
 
       expect(result).toEqual(
         expect.objectContaining({
-          id: IdMap.getId("order-edit-with-changes"),
+          id: IdMap.getId("requested-order-edit"),
           declined_at: expect.any(Date),
           declined_reason: "I requested a different color for the new product",
           declined_by: "admin_user",
         })
       )
     })
+
     it("fails to decline a confirmed order edit", async () => {
       await expect(
         orderEditService.decline(IdMap.getId("confirmed-order-edit"), {
@@ -216,20 +238,87 @@ describe("OrderEditService", () => {
         "Cannot decline an order edit with status confirmed."
       )
     })
-    it("fails to decline an already declined order edit", async () => {
-        const result = await orderEditService.decline(IdMap.getId("declined-order-edit"), {
+
+    it("fails to re-decline an already declined order edit", async () => {
+      const result = await orderEditService.decline(
+        IdMap.getId("declined-order-edit"),
+        {
           declinedReason: "I requested a different color for the new product",
           loggedInUser: "admin_user",
-        })
+        }
+      )
 
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: IdMap.getId("declined-order-edit"),
+          declined_at: expect.any(Date),
+          declined_reason: "wrong size",
+          declined_by: "admin_user",
+          status: "declined",
+        })
+      )
+    })
+  })
+
+  describe("requestConfirmation", () => {
+    describe("created edit", () => {
+      const orderEditId = IdMap.getId("order-edit-with-changes")
+      const userId = IdMap.getId("user-id")
+      let result
+
+      beforeEach(async () => {
+        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+      })
+
+      it("sets fields correctly for update", async () => {
         expect(result).toEqual(
           expect.objectContaining({
-            id: IdMap.getId("order-edit-with-changes"),
-            declined_at: expect.any(Date),
-            declined_reason: "wrong size",
-            declined_by: "admin_user",
+            requested_at: expect.any(Date),
+            requested_by: userId,
           })
         )
+
+        expect(orderEditRepository.save).toHaveBeenCalledWith({
+          ...orderEditWithChanges,
+          requested_at: expect.any(Date),
+          requested_by: userId,
+        })
+        
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          OrderEditService.Events.REQUESTED,
+          { id: orderEditId }
+        )
+      })
+
+    })
+
+    describe("requested edit", () => {
+      const orderEditId = IdMap.getId("requested-order-edit")
+      const userId = IdMap.getId("user-id")
+      let result
+
+      beforeEach(async () => {
+        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+      })
+
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("doesn't emit requested event", () => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+      })
+
+      it("doesn't call save", async () => {
+        expect(result).toEqual(
+          expect.objectContaining({
+            requested_at: expect.any(Date),
+            requested_by: userId,
+          })
+        )
+
+        expect(orderEditRepository.save).toHaveBeenCalledTimes(0)
+      })
     })
   })
 })

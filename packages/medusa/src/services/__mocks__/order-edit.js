@@ -58,6 +58,14 @@ export const orderEditServiceMock = {
         declined_at: new Date(),
       })
     }
+    if (orderId === IdMap.getId("testRequestOrder")) {
+      return Promise.resolve({
+        ...orderEdits.testCreatedOrder,
+        id: IdMap.getId("testRequestOrder"),
+        requested_by: IdMap.getId("admin_user"),
+        requested_at: new Date(),
+      })
+    }
     return Promise.resolve(undefined)
   }),
   computeLineItems: jest.fn().mockImplementation((orderEdit) => {
@@ -88,6 +96,17 @@ export const orderEditServiceMock = {
     const withLineItems = computeLineItems(orderEdit)
     return Promise.resolve({
       ...withLineItems,
+    })
+  }),
+  deleteItemChange: jest.fn().mockImplementation((_) => {
+    return Promise.resolve()
+  }),
+  requestConfirmation: jest.fn().mockImplementation((orderEditId, userId) => {
+    return Promise.resolve({
+      ...orderEdits.testCreatedOrder,
+      id: orderEditId,
+      requested_at: new Date(),
+      requested_by: userId,
     })
   }),
 }

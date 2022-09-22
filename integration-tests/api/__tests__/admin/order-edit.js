@@ -489,6 +489,97 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
   })
 
+  describe("POST /admin/order-edits/:id/request", () => {
+    let orderEditId
+    let orderEditIdNoChanges
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection)
+
+      const { id, order_id } = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+      })
+
+      const noChangesEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+      })
+
+      await simpleLineItemFactory(dbConnection, {
+        order_id: order_id,
+        variant_id: product1.variants[0].id,
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        order_edit_id: id,
+        type: "item_add",
+      })
+
+      orderEditId = id
+      orderEditIdNoChanges = noChangesEdit.id
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("requests order edit", async () => {
+      const api = useApi()
+
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request`,
+        {},
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+
+    it("fails to request an order edit with no changes", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      try {
+        await api.post(
+          `/admin/order-edits/${orderEditIdNoChanges}/request`,
+          {},
+          adminHeaders
+        )
+      } catch (err) {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toEqual(
+          "Cannot request a confirmation on an edit with no changes"
+        )
+      }
+    })
+    it("requests order edit", async () => {
+      const api = useApi()
+
+      const result = await api
+        .post(`/admin/order-edits/${orderEditId}/request`, {}, adminHeaders)
+        .catch((err) => console.log(err))
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+  })
+
   describe("POST /admin/order-edits/:id", () => {
     const orderEditId = IdMap.getId("order-edit-1")
     const prodId1 = IdMap.getId("prodId1")
@@ -576,6 +667,232 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           tax_total: 0,
           total: 1000,
         })
+      )
+    })
+  })
+
+  describe("DELETE /admin/order-edits/:id/changes/:change_id", () => {
+    let product
+    const orderId1 = IdMap.getId("order-id-1")
+    const orderEditId = IdMap.getId("order-edit-1")
+    const orderEditId2 = IdMap.getId("order-edit-2")
+    const prodId1 = IdMap.getId("prodId1")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const changeUpdateId = IdMap.getId("order-id-1-change-1")
+    const changeUpdateId2 = IdMap.getId("order-id-1-change-2")
+    const lineItemUpdateId = IdMap.getId("line-item-1-update")
+    const lineItemUpdateId2 = IdMap.getId("line-item-1-update-2")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      product = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId1,
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await simpleLineItemFactory(dbConnection, {
+        id: lineItemUpdateId,
+        order_id: null,
+        variant_id: product.variants[0].id,
+        unit_price: 100,
+        quantity: 2,
+      })
+
+      await simpleLineItemFactory(dbConnection, {
+        id: lineItemUpdateId2,
+        order_id: null,
+        variant_id: product.variants[0].id,
+        unit_price: 100,
+        quantity: 2,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("deletes an item change from an order edit", async () => {
+      await simpleLineItemFactory(dbConnection, {
+        id: lineItemUpdateId,
+        order_id: null,
+        variant_id: product.variants[0].id,
+        unit_price: 100,
+        quantity: 2,
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "test internal note",
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        id: changeUpdateId,
+        type: OrderEditItemChangeType.ITEM_UPDATE,
+        line_item_id: lineItemUpdateId,
+        original_line_item_id: lineItemId1,
+        order_edit_id: orderEditId,
+      })
+
+      const api = useApi()
+
+      let res = await api.get(`/admin/order-edits/${orderEditId}`, adminHeaders)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.order_edit.changes.length).toBe(1)
+
+      res = await api.delete(
+        `/admin/order-edits/${orderEditId}/changes/${changeUpdateId}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data).toEqual(
+        expect.objectContaining({
+          id: changeUpdateId,
+          object: "item_change",
+          deleted: true,
+        })
+      )
+
+      res = await api.get(`/admin/order-edits/${orderEditId}`, adminHeaders)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.order_edit.changes.length).toBe(0)
+    })
+
+    it("return invalid error if the item change does not belong to the order edit", async () => {
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "test internal note 2",
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        id: changeUpdateId,
+        type: OrderEditItemChangeType.ITEM_UPDATE,
+        line_item_id: lineItemUpdateId,
+        original_line_item_id: lineItemId1,
+        order_edit_id: orderEditId,
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId2,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "test internal note 2",
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        id: changeUpdateId2,
+        type: OrderEditItemChangeType.ITEM_UPDATE,
+        line_item_id: lineItemUpdateId2,
+        original_line_item_id: lineItemId1,
+        order_edit_id: orderEditId2,
+      })
+
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          `/admin/order-edits/${orderEditId}/changes/${changeUpdateId2}`,
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(response.response.status).toEqual(400)
+      expect(response.response.data.message).toEqual(
+        `The item change you are trying to delete doesn't belong to the OrderEdit with id: ${orderEditId}.`
+      )
+    })
+
+    it("return an error if the order edit is confirmed", async () => {
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "test internal note 3",
+        confirmed_at: new Date(),
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        id: changeUpdateId,
+        type: OrderEditItemChangeType.ITEM_UPDATE,
+        line_item_id: lineItemUpdateId,
+        original_line_item_id: lineItemId1,
+        order_edit_id: orderEditId,
+      })
+
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          `/admin/order-edits/${orderEditId}/changes/${changeUpdateId}`,
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(response.response.status).toEqual(400)
+      expect(response.response.data.message).toEqual(
+        "Cannot delete and item change from a confirmed order edit"
+      )
+    })
+
+    it("return an error if the order edit is canceled", async () => {
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "test internal note 4",
+        canceled_at: new Date(),
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        id: changeUpdateId,
+        type: OrderEditItemChangeType.ITEM_UPDATE,
+        line_item_id: lineItemUpdateId,
+        original_line_item_id: lineItemId1,
+        order_edit_id: orderEditId,
+      })
+
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          `/admin/order-edits/${orderEditId}/changes/${changeUpdateId}`,
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(response.response.status).toEqual(400)
+      expect(response.response.data.message).toEqual(
+        "Cannot delete and item change from a canceled order edit"
       )
     })
   })

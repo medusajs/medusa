@@ -61,6 +61,7 @@ export const LineItemServiceMock = {
         metadata,
       })
     }),
+  delete: jest.fn().mockImplementation(() => Promise.resolve()),
 }
 
 const mock = jest.fn().mockImplementation(() => {

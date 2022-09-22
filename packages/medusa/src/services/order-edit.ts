@@ -14,6 +14,7 @@ import { TransactionBaseService } from "../interfaces"
 import {
   EventBusService,
   LineItemService,
+  OrderEditItemChangeService,
   OrderService,
   TotalsService,
 } from "./index"
@@ -26,6 +27,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   totalsService: TotalsService
   lineItemService: LineItemService
+  orderEditItemChangeService: OrderEditItemChangeService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -33,6 +35,7 @@ export default class OrderEditService extends TransactionBaseService {
     CREATED: "order-edit.created",
     UPDATED: "order-edit.updated",
     DECLINED: "order-edit.declined",
+    REQUESTED: "order-edit.requested",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -42,6 +45,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly totalsService_: TotalsService
+  protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
     manager,
@@ -50,6 +54,7 @@ export default class OrderEditService extends TransactionBaseService {
     lineItemService,
     eventBusService,
     totalsService,
+    orderEditItemChangeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -60,6 +65,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
+    this.orderEditItemChangeService_ = orderEditItemChangeService
   }
 
   async retrieve(
@@ -388,5 +394,77 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.total = totals.total
 
     return orderEdit
+  }
+
+  async deleteItemChange(
+    orderEditId: string,
+    itemChangeId: string
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const itemChange = await this.orderEditItemChangeService_.retrieve(
+        itemChangeId,
+        { select: ["id", "order_edit_id"] }
+      )
+
+      const orderEdit = await this.retrieve(orderEditId, {
+        select: ["id", "confirmed_at", "canceled_at"],
+      })
+
+      if (orderEdit.id !== itemChange.order_edit_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The item change you are trying to delete doesn't belong to the OrderEdit with id: ${orderEditId}.`
+        )
+      }
+
+      if (orderEdit.confirmed_at !== null || orderEdit.canceled_at !== null) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot delete and item change from a ${orderEdit.status} order edit`
+        )
+      }
+
+      return await this.orderEditItemChangeService_.delete(itemChangeId)
+    })
+  }
+
+  async requestConfirmation(
+    orderEditId: string,
+    context: {
+      loggedInUser?: string
+    }
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      let orderEdit = await this.retrieve(orderEditId, {
+        relations: ["changes"],
+        select: ["id", "requested_at"],
+      })
+
+      if (!orderEdit.changes?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot request a confirmation on an edit with no changes"
+        )
+      }
+
+      if (orderEdit.requested_at) {
+        return orderEdit
+      }
+
+      orderEdit.requested_at = new Date()
+      orderEdit.requested_by = context.loggedInUser
+
+      orderEdit = await orderEditRepo.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.REQUESTED, { id: orderEditId })
+
+      return orderEdit
+    })
   }
 }

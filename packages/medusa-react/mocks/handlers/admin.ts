@@ -1696,6 +1696,19 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          requested_at: new Date(),
+          status: "requested"
+        },
+      })
+    )
+  }),
+
   rest.delete("/admin/order-edits/:id", (req, res, ctx) => {
     const { id } = req.params
     return res(
@@ -1703,7 +1716,19 @@ export const adminHandlers = [
       ctx.json({
         id,
         object: "order_edit",
-        deleted: true
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/order-edits/:id/changes/:change_id", (req, res, ctx) => {
+    const { change_id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: change_id,
+        object: "item_change",
+        deleted: true,
       })
     )
   }),

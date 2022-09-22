@@ -48,6 +48,15 @@ export default (app) => {
 
   route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
+  route.delete(
+    "/:id/changes/:change_id",
+    middlewares.wrap(require("./delete-order-edit-item-change").default)
+  )
+
+  route.post(
+    "/:id/request",
+    middlewares.wrap(require("./request-confirmation").default)
+  )
   return app
 }
 
@@ -55,7 +64,11 @@ export type AdminOrderEditsRes = {
   order_edit: OrderEdit
 }
 export type AdminOrderEditDeleteRes = DeleteResponse
+export type AdminOrderEditItemChangeDeleteRes = {
+  id: string
+  object: "item_change"
+  deleted: boolean
+}
 
 export * from "./update-order-edit"
-
 export * from "./create-order-edit"
