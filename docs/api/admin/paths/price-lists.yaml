@@ -1,6 +1,6 @@
 post:
   operationId: PostPriceListsPriceList
-  summary: Creates a Price List
+  summary: Create a Price List
   description: Creates a Price List
   x-authenticated: true
   requestBody:
@@ -82,6 +82,9 @@ post:
                   id:
                     description: The ID of a customer group
                     type: string
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of price list'
+              type: boolean
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

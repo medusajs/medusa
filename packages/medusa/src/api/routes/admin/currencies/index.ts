@@ -12,11 +12,7 @@ import { AdminPostCurrenciesCurrencyReq } from "./update-currency"
 
 export default (app) => {
   const route = Router()
-  app.use(
-    "/currencies",
-    isFeatureFlagEnabled(TaxInclusivePricingFeatureFlag.key),
-    route
-  )
+  app.use("/currencies", route)
 
   route.get(
     "/",
@@ -29,6 +25,7 @@ export default (app) => {
   route.post(
     "/:code",
     transformBody(AdminPostCurrenciesCurrencyReq),
+    isFeatureFlagEnabled(TaxInclusivePricingFeatureFlag.key),
     middlewares.wrap(require("./update-currency").default)
   )
 

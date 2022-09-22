@@ -1,6 +1,6 @@
 get:
   operationId: GetStore
-  summary: Retrieve Store details.
+  summary: Get Store details
   description: Retrieves the Store details
   x-authenticated: true
   x-codeSamples:
@@ -40,7 +40,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostStore
-  summary: Update Store details.
+  summary: Update Store Details
   description: Updates the Store details
   x-authenticated: true
   requestBody:

@@ -1,6 +1,6 @@
 delete:
   operationId: PostRegionsRegionCountriesCountry
-  summary: Remove Country
+  summary: Delete Country
   x-authenticated: true
   description: Removes a Country from the list of Countries in a Region
   parameters:

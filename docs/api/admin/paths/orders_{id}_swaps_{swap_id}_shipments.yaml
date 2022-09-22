@@ -33,7 +33,7 @@ post:
                 type: string
             no_notification:
               description: >-
-                If set to true no notification will be send related to this
+                If set to true no notification will be sent related to this
                 Claim.
               type: boolean
   x-codeSamples:

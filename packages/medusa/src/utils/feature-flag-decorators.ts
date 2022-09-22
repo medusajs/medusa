@@ -1,13 +1,13 @@
 import { Column, ColumnOptions, Entity, EntityOptions } from "typeorm"
 import { featureFlagRouter } from "../loaders/feature-flags"
 
- /**
-  * If that file is required in a non node environment then the setImmediate timer does not exists.
-  * This can happen when a client package require a server based package and that one of the import
-  * require to import that file which is using the setImmediate.
-  * In order to take care of those cases, the setImmediate timer will use the one provided by the api (node)
-  * if possible and will provide a mock in a browser like environment.
-  */
+/**
+ * If that file is required in a non node environment then the setImmediate timer does not exists.
+ * This can happen when a client package require a server based package and that one of the import
+ * require to import that file which is using the setImmediate.
+ * In order to take care of those cases, the setImmediate timer will use the one provided by the api (node)
+ * if possible and will provide a mock in a browser like environment.
+ */
 let setImmediate_
 try {
   setImmediate_ = setImmediate
@@ -15,7 +15,7 @@ try {
   console.warn(
     "[feature-flag-decorator.ts] setImmediate will use a mock, this happen when this file is required in a browser environment and should not impact you"
   )
-  setImmediate_ = ((callback: () => void | Promise<void>) => callback())
+  setImmediate_ = (callback: () => void | Promise<void>) => callback()
 }
 
 export function FeatureFlagColumn(

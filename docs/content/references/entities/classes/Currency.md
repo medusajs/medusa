@@ -18,7 +18,17 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/currency.ts:6](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/currency.ts#L6)
+[models/currency.ts:8](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/currency.ts#L8)
+
+___
+
+### includes\_tax
+
+• `Optional` **includes\_tax**: `boolean`
+
+#### Defined in
+
+[models/currency.ts:20](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/currency.ts#L20)
 
 ___
 
@@ -28,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/currency.ts:15](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/currency.ts#L15)
+[models/currency.ts:17](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/currency.ts#L17)
 
 ___
 
@@ -38,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/currency.ts:9](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/currency.ts#L9)
+[models/currency.ts:11](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/currency.ts#L11)
 
 ___
 
@@ -48,4 +58,4 @@ ___
 
 #### Defined in
 
-[models/currency.ts:12](https://github.com/medusajs/medusa/blob/70139d0bb/packages/medusa/src/models/currency.ts#L12)
+[models/currency.ts:14](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/currency.ts#L14)

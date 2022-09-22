@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetShippingOptionsOption
-  summary: Retrieve a Shipping Option
+  summary: Get a Shipping Option
   description: Retrieves a Shipping Option.
   x-authenticated: true
   parameters:
@@ -154,6 +154,9 @@ post:
                   amount:
                     description: The amount to compare with.
                     type: integer
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+              type: boolean
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

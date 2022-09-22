@@ -15,6 +15,18 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a Product."
  * parameters:
  *   - (path) id=* {string} The id of the Product.
+ *   - (query) cart_id {string} The ID of the customer's cart.
+ *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to set prices based on. This is helpful to ensure correct prices are retrieved for a currency.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

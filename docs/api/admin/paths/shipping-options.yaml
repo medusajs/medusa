@@ -74,6 +74,9 @@ post:
             metadata:
               description: An optional set of key-value pairs with additional information.
               type: object
+            includes_tax:
+              description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+              type: boolean
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

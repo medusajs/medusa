@@ -1,6 +1,6 @@
 get:
   operationId: GetVariants
-  summary: Retrieve Product Variants
+  summary: Get Product Variants
   description: Retrieves a list of Product Variants
   parameters:
     - in: query

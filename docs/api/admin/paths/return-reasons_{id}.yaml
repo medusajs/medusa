@@ -1,6 +1,6 @@
 delete:
   operationId: DeleteReturnReason
-  summary: Delete a return reason
+  summary: Delete a Return Reason
   description: Deletes a return reason.
   x-authenticated: true
   parameters:
@@ -56,7 +56,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetReturnReasonsReason
-  summary: Retrieve a Return Reason
+  summary: Get a Return Reason
   description: Retrieves a Return Reason.
   x-authenticated: true
   parameters:
