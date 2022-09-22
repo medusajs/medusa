@@ -535,6 +535,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       // 3. generate tax lines
 
+      orderEdit.order.items = [lineItem]
       const calcContext = await this.totalsService_
         .withTransaction(manager)
         .getCalculationContext(orderEdit.order)
