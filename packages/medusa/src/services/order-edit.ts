@@ -422,7 +422,9 @@ export default class OrderEditService extends TransactionBaseService {
 
   async requestConfirmation(
     orderEditId: string,
-    userId: string
+    context: {
+      loggedInUser?: string
+    }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepo = manager.getCustomRepository(
@@ -432,7 +434,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       if (!orderEdit.requested_at) {
         orderEdit.requested_at = new Date()
-        orderEdit.requested_by = userId
+        orderEdit.requested_by = context.loggedInUser
 
         orderEdit = await orderEditRepo.save(orderEdit)
       }

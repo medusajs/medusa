@@ -1,5 +1,9 @@
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
+import {
+  defaultOrderEditFields,
+  defaultOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits/{id}/request
@@ -56,15 +60,18 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
+  const loggedInUser = (req.user?.id ?? req.user?.userId) as string
 
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .requestConfirmation(id, loggedInUserId)
+      .requestConfirmation(id, { loggedInUser })
   })
 
-  const orderEdit = await orderEditService.retrieve(id)
+  const orderEdit = await orderEditService.retrieve(id, {
+    relations: defaultOrderEditRelations,
+    select: defaultOrderEditFields,
+  })
 
   res.status(200).send({
     order_edit: orderEdit,
