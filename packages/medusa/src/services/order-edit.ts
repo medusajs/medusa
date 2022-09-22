@@ -433,7 +433,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       let orderEdit = await this.retrieve(orderEditId, {
         relations: ["changes"],
-        select: ["id", "requested_at", "changes"],
+        select: ["id", "requested_at"],
       })
 
       if (!orderEdit.changes?.length) {
