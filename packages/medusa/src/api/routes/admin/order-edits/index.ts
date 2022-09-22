@@ -54,7 +54,7 @@ export default (app) => {
   )
 
   route.post(
-    "/:id/request-confirmation",
+    "/:id/request",
     middlewares.wrap(require("./request-confirmation").default)
   )
   return app

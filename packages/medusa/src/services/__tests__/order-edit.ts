@@ -20,7 +20,6 @@ const orderEditToUpdate = {
 
 const orderEditWithChanges = {
   id: IdMap.getId("order-edit-with-changes"),
-  status: OrderEditStatus.REQUESTED,
   order: {
     id: IdMap.getId("order-edit-with-changes-order"),
     items: [
@@ -94,12 +93,26 @@ describe("OrderEditService", () => {
         return orderEditWithChanges
       }
       if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
-        return { ...orderEditWithChanges, status: OrderEditStatus.CONFIRMED }
+        return {
+          ...orderEditWithChanges,
+          id: IdMap.getId("confirmed-order-edit"),
+          status: OrderEditStatus.CONFIRMED,
+        }
+      }
+      if (query?.where?.id === IdMap.getId("requested-order-edit")) {
+        return {
+          ...orderEditWithChanges,
+          id: IdMap.getId("requested-order-edit"),
+          status: OrderEditStatus.REQUESTED,
+        }
       }
       if (query?.where?.id === IdMap.getId("declined-order-edit")) {
         return {
           ...orderEditWithChanges,
+          id: IdMap.getId("declined-order-edit"),
           declined_reason: "wrong size",
+          declined_at: new Date(),
+          declined_by: "admin_user",
           status: OrderEditStatus.DECLINED,
         }
       }
@@ -198,7 +211,7 @@ describe("OrderEditService", () => {
   describe("decline", () => {
     it("declines an order edit", async () => {
       const result = await orderEditService.decline(
-        IdMap.getId("order-edit-with-changes"),
+        IdMap.getId("requested-order-edit"),
         {
           declinedReason: "I requested a different color for the new product",
           loggedInUser: "admin_user",
@@ -207,13 +220,14 @@ describe("OrderEditService", () => {
 
       expect(result).toEqual(
         expect.objectContaining({
-          id: IdMap.getId("order-edit-with-changes"),
+          id: IdMap.getId("requested-order-edit"),
           declined_at: expect.any(Date),
           declined_reason: "I requested a different color for the new product",
           declined_by: "admin_user",
         })
       )
     })
+
     it("fails to decline a confirmed order edit", async () => {
       await expect(
         orderEditService.decline(IdMap.getId("confirmed-order-edit"), {
@@ -224,7 +238,8 @@ describe("OrderEditService", () => {
         "Cannot decline an order edit with status confirmed."
       )
     })
-    it("fails to decline an already declined order edit", async () => {
+
+    it("fails to re-decline an already declined order edit", async () => {
       const result = await orderEditService.decline(
         IdMap.getId("declined-order-edit"),
         {
@@ -235,43 +250,79 @@ describe("OrderEditService", () => {
 
       expect(result).toEqual(
         expect.objectContaining({
-          id: IdMap.getId("order-edit-with-changes"),
+          id: IdMap.getId("declined-order-edit"),
           declined_at: expect.any(Date),
           declined_reason: "wrong size",
           declined_by: "admin_user",
+          status: "declined",
         })
       )
     })
   })
 
   describe("requestConfirmation", () => {
-    const orderEditId = IdMap.getId("order-edit-with-changes")
-    const userId = IdMap.getId("user-id")
-    let result
+    describe("created edit", () => {
+      const orderEditId = IdMap.getId("order-edit-with-changes")
+      const userId = IdMap.getId("user-id")
+      let result
 
-    beforeEach(async () => {
-      result = await orderEditService.requestConfirmation(orderEditId, userId)
-    })
+      beforeEach(async () => {
+        result = await orderEditService.requestConfirmation(orderEditId, userId)
+      })
 
-    it("emits requested event", () => {
-      expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-        OrderEditService.Events.REQUESTED,
-        { id: orderEditId }
-      )
-    })
+      it("sets fields correctly for update", () => {
+        expect(result).toEqual(
+          expect.objectContaining({
+            requested_at: expect.any(Date),
+            requested_by: userId,
+          })
+        )
 
-    it("sets fields correctly for update", async () => {
-      expect(result).toEqual(
-        expect.objectContaining({
+        expect(orderEditRepository.save).toHaveBeenCalledWith({
+          ...orderEditWithChanges,
           requested_at: expect.any(Date),
           requested_by: userId,
         })
-      )
+      })
 
-      expect(orderEditRepository.save).toHaveBeenCalledWith({
-        ...orderEditWithChanges,
-        requested_at: expect.any(Date),
-        requested_by: userId,
+      it("emits requested event", () => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          OrderEditService.Events.REQUESTED,
+          { id: orderEditId }
+        )
+      })
+
+    })
+
+    describe("requested edit", () => {
+      const orderEditId = IdMap.getId("requested-order-edit")
+      const userId = IdMap.getId("user-id")
+      let result
+
+      beforeEach(async () => {
+        result = await orderEditService.requestConfirmation(orderEditId, userId)
+      })
+
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("emits requested event", () => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          OrderEditService.Events.REQUESTED,
+          { id: orderEditId }
+        )
+      })
+
+      it("doesn't call save", async () => {
+        expect(result).toEqual(
+          expect.objectContaining({
+            requested_at: expect.any(Date),
+            requested_by: userId,
+          })
+        )
+
+        expect(orderEditRepository.save).toHaveBeenCalledTimes(0)
       })
     })
   })
