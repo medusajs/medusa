@@ -3,10 +3,18 @@ import {
   EventBusService,
   LineItemService,
   OrderEditItemChangeService,
+  TaxProviderService,
 } from "../index"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { FindManyOptions, In } from "typeorm"
 import { LineItemServiceMock } from "../__mocks__/line-item"
+
+const taxProviderServiceMock = {
+  withTransaction: function () {
+    return this
+  },
+  clearLineItemsTaxLines: jest.fn().mockImplementation(() => Promise.resolve()),
+}
 
 describe("OrderEditItemChangeService", () => {
   afterEach(() => {
@@ -32,6 +40,7 @@ describe("OrderEditItemChangeService", () => {
     orderItemChangeRepository,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
     lineItemService: LineItemServiceMock as unknown as LineItemService,
+    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })
 
   it("should remove a item change", async () => {
@@ -42,6 +51,13 @@ describe("OrderEditItemChangeService", () => {
     expect(orderItemChangeRepository.delete).toHaveBeenCalledWith({
       id: In([itemChangeId]),
     })
+
+    expect(taxProviderServiceMock.clearLineItemsTaxLines).toHaveBeenCalledTimes(
+      1
+    )
+    expect(taxProviderServiceMock.clearLineItemsTaxLines).toHaveBeenCalledWith([
+      "li_" + itemChangeId,
+    ])
 
     expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
     expect(EventBusServiceMock.emit).toHaveBeenCalledWith(

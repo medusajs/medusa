@@ -6,12 +6,14 @@ import { FindConfig } from "../types/common"
 import { OrderItemChange } from "../models"
 import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
+import TaxProviderService from "./tax-provider"
 
 type InjectedDependencies = {
   manager: EntityManager
   orderItemChangeRepository: typeof OrderItemChangeRepository
   eventBusService: EventBusService
   lineItemService: LineItemService
+  taxProviderService: TaxProviderService
 }
 
 export default class OrderEditItemChangeService extends TransactionBaseService {
@@ -25,12 +27,14 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
   protected readonly orderItemChangeRepository_: typeof OrderItemChangeRepository
   protected readonly eventBus_: EventBusService
   protected readonly lineItemService_: LineItemService
+  protected readonly taxProviderService_: TaxProviderService
 
   constructor({
     manager,
     orderItemChangeRepository,
     eventBusService,
     lineItemService,
+    taxProviderService,
   }: InjectedDependencies) {
     // @ts-ignore
     super(arguments[0])
@@ -39,6 +43,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     this.orderItemChangeRepository_ = orderItemChangeRepository
     this.eventBus_ = eventBusService
     this.lineItemService_ = lineItemService
+    this.taxProviderService_ = taxProviderService
   }
 
   async retrieve(
@@ -86,8 +91,12 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
         .filter(Boolean) as string[]
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
       await Promise.all([
-        lineItemIdsToRemove.map((id) => lineItemServiceTx.delete(id)),
+        ...lineItemIdsToRemove.map((id) => lineItemServiceTx.delete(id)),
+        this.taxProviderService_
+          .withTransaction(manager)
+          .clearLineItemsTaxLines(lineItemIdsToRemove),
       ])
 
       await orderItemChangeRepo.delete({ id: In(itemChangeIds as string[]) })
