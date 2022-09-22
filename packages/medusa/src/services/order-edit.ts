@@ -545,7 +545,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       // 4. generate change record (with new line item)
 
-      await this.orderEditItemChangeService_.create({
+      await this.orderEditItemChangeService_.withTransaction(manager).create({
         type: OrderEditItemChangeType.ITEM_ADD,
         line_item_id: lineItem.id,
         order_edit_id: orderEditId,

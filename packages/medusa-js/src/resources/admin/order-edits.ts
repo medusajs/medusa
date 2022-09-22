@@ -5,7 +5,6 @@ import {
   AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-  AdminOrderEditDeleteRes,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsLineItemReq,
 } from "@medusajs/medusa"
