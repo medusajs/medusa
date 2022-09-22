@@ -90,16 +90,15 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
         })
         .filter(Boolean) as string[]
 
-      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+      await orderItemChangeRepo.delete({ id: In(itemChangeIds as string[]) })
 
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       await Promise.all([
         ...lineItemIdsToRemove.map((id) => lineItemServiceTx.delete(id)),
         this.taxProviderService_
           .withTransaction(manager)
           .clearLineItemsTaxLines(lineItemIdsToRemove),
       ])
-
-      await orderItemChangeRepo.delete({ id: In(itemChangeIds as string[]) })
 
       await this.eventBus_
         .withTransaction(manager)
