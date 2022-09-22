@@ -551,10 +551,6 @@ export default class OrderEditService extends TransactionBaseService {
         order_edit_id: orderEditId,
       })
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(OrderEditService.Events.ITEM_ADDED, { id: lineItemId })
-
       return this.retrieve(orderEditId)
     })
   }
