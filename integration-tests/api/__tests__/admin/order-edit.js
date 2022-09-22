@@ -430,6 +430,97 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
   })
 
+  describe("POST /admin/order-edits/:id/request", () => {
+    let orderEditId
+    let orderEditIdNoChanges
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection)
+
+      const { id, order_id } = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+      })
+
+      const noChangesEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+      })
+
+      await simpleLineItemFactory(dbConnection, {
+        order_id: order_id,
+        variant_id: product1.variants[0].id,
+      })
+
+      await simpleOrderItemChangeFactory(dbConnection, {
+        order_edit_id: id,
+        type: "item_add",
+      })
+
+      orderEditId = id
+      orderEditIdNoChanges = noChangesEdit.id
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("requests order edit", async () => {
+      const api = useApi()
+
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request`,
+        {},
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+
+    it("fails to request an order edit with no changes", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      try {
+        await api.post(
+          `/admin/order-edits/${orderEditIdNoChanges}/request`,
+          {},
+          adminHeaders
+        )
+      } catch (err) {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toEqual(
+          "Cannot request a confirmation on an edit with no changes"
+        )
+      }
+    })
+    it("requests order edit", async () => {
+      const api = useApi()
+
+      const result = await api
+        .post(`/admin/order-edits/${orderEditId}/request`, {}, adminHeaders)
+        .catch((err) => console.log(err))
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+  })
+
   describe("POST /admin/order-edits/:id", () => {
     const orderEditId = IdMap.getId("order-edit-1")
     const prodId1 = IdMap.getId("prodId1")
