@@ -247,6 +247,11 @@ module.exports = {
           label: "Create a Cron Job"
         },
         {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/create",
+          label: "Create Batch Job Strategy"
+        },
+        {
           type: "category",
           label: "Storefront",
           items: [
