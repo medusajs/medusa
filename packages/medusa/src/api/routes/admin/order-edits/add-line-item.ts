@@ -69,27 +69,25 @@ export default async (req: Request, res: Response) => {
 
   const data = req.validatedBody as AdminPostOrderEditsLineItemReq
 
-  const orderEdit = await manager.transaction(async (transactionManager) => {
+  await manager.transaction(async (transactionManager) => {
     const orderEditServiceTx =
       orderEditService.withTransaction(transactionManager)
 
     await orderEditServiceTx.addLineItem(id, data)
 
-    let orderEdit = await orderEditService.retrieve(id, {
-      select: defaultOrderEditFields,
-      relations: defaultOrderEditRelations,
-    })
-
-    orderEdit = await orderEditService.decorateLineItemsAndTotals(orderEdit)
-
-    res.status(200).send({
-      order_edit: orderEdit,
-    })
-
     return orderEdit
   })
 
-  return res.json({ order_edit: orderEdit })
+  let orderEdit = await orderEditService.retrieve(id, {
+    select: defaultOrderEditFields,
+    relations: defaultOrderEditRelations,
+  })
+
+  orderEdit = await orderEditService.decorateLineItemsAndTotals(orderEdit)
+
+  res.status(200).send({
+    order_edit: orderEdit,
+  })
 }
 
 export class AdminPostOrderEditsLineItemReq {
