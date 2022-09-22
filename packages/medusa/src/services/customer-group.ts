@@ -9,8 +9,7 @@ import {
   CustomerGroupUpdate,
   FilterableCustomerGroupProps,
 } from "../types/customer-groups"
-import { isDefined } from "../utils"
-import { formatException } from "../utils/exception-formatter"
+import { isDefined, formatException, PostgresError } from "../utils"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -97,7 +96,7 @@ class CustomerGroupService extends BaseService {
 
         return result
       } catch (err) {
-        if (err.code === "23505") {
+        if (err.code === PostgresError.DUPLICATE_ERROR) {
           throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
         }
         throw err
@@ -130,7 +129,7 @@ class CustomerGroupService extends BaseService {
         return await cgRepo.addCustomers(id, ids)
       },
       async (error) => {
-        if (error.code === "23503") {
+        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
           await this.retrieve(id)
 
           const existingCustomers = await this.customerService_.list({

@@ -33,7 +33,7 @@ describe("GET /store/order-edits/:id", () => {
           (field) => !storeOrderEditNotAllowedFields.includes(field)
         ),
       })
-      expect(orderEditServiceMock.computeLineItems).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.decorateLineItemsAndTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns order", () => {

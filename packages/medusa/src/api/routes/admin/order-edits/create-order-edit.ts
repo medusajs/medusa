@@ -67,20 +67,7 @@ export default async (req: Request, res: Response) => {
       orderEditService.withTransaction(transactionManager)
     const orderEdit = await orderEditServiceTx.create(data, { loggedInUserId })
 
-    const { items } = await orderEditServiceTx.computeLineItems(orderEdit.id)
-    orderEdit.items = items
-    orderEdit.removed_items = []
-
-    const totals = await orderEditServiceTx.getTotals(orderEdit.id)
-    orderEdit.discount_total = totals.discount_total
-    orderEdit.gift_card_total = totals.gift_card_total
-    orderEdit.gift_card_tax_total = totals.gift_card_tax_total
-    orderEdit.shipping_total = totals.shipping_total
-    orderEdit.subtotal = totals.subtotal
-    orderEdit.tax_total = totals.tax_total
-    orderEdit.total = totals.total
-
-    return orderEdit
+    return await orderEditServiceTx.decorateLineItemsAndTotals(orderEdit)
   })
 
   return res.json({ order_edit: orderEdit })

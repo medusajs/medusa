@@ -16,7 +16,7 @@ import {
   TaxRateListByConfig,
   UpdateTaxRateInput,
 } from "../types/tax-rate"
-import { isDefined } from "../utils"
+import { isDefined, PostgresError } from "../utils"
 
 class TaxRateService extends BaseService {
   private manager_: EntityManager
@@ -213,14 +213,14 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
           // something is not found.
           await Promise.all([
             this.retrieve(id, { select: ["id"] }),
-            ...ids.map((pId) =>
+            ...ids.map(async (pId) =>
               this.productService_.retrieve(pId, { select: ["id"] })
             ),
           ])
@@ -249,7 +249,7 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
@@ -259,7 +259,7 @@ class TaxRateService extends BaseService {
               select: ["id"],
             }) as Promise<unknown>,
             ...ids.map(
-              (pId) =>
+              async (pId) =>
                 this.productTypeService_.retrieve(pId, {
                   select: ["id"],
                 }) as Promise<unknown>
@@ -302,14 +302,14 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
           // something is not found.
           await Promise.all([
             this.retrieve(id, { select: ["id"] }),
-            ...ids.map((sId) =>
+            ...ids.map(async (sId) =>
               this.shippingOptionService_.retrieve(sId, { select: ["id"] })
             ),
           ])

@@ -61,10 +61,10 @@ export abstract class AbstractPaymentService<T extends TransactionBaseService>
   protected static identifier: string
 
   public getIdentifier(): string {
-    if (!(<typeof AbstractPaymentService>this.constructor).identifier) {
-      throw new Error('Missing static property "identifier".')
+    if (!(this.constructor as typeof AbstractPaymentService).identifier) {
+      throw new Error(`Missing static property "identifier".`)
     }
-    return (<typeof AbstractPaymentService>this.constructor).identifier
+    return (this.constructor as typeof AbstractPaymentService).identifier
   }
 
   public abstract getPaymentData(
@@ -102,7 +102,7 @@ export abstract class AbstractPaymentService<T extends TransactionBaseService>
   public abstract deletePayment(paymentSession: PaymentSession): Promise<void>
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public retrieveSavedMethods(customer: Customer): Promise<Data[]> {
+  public async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
     return Promise.resolve([])
   }
 

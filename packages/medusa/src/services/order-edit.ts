@@ -14,11 +14,11 @@ import { TransactionBaseService } from "../interfaces"
 import {
   EventBusService,
   LineItemService,
+  OrderEditItemChangeService,
   OrderService,
   TotalsService,
 } from "./index"
-import { CreateOrderEditInput } from "../types/order-edit"
-import { UpdateOrderEditInput } from "../types/order-edit"
+import { CreateOrderEditInput, UpdateOrderEditInput } from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -27,12 +27,14 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   totalsService: TotalsService
   lineItemService: LineItemService
+  orderEditItemChangeService: OrderEditItemChangeService
 }
 
 export default class OrderEditService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "order-edit.created",
     UPDATED: "order-edit.updated",
+    DECLINED: "order-edit.declined",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -42,6 +44,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly totalsService_: TotalsService
+  protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
     manager,
@@ -50,6 +53,7 @@ export default class OrderEditService extends TransactionBaseService {
     lineItemService,
     eventBusService,
     totalsService,
+    orderEditItemChangeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -60,6 +64,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
+    this.orderEditItemChangeService_ = orderEditItemChangeService
   }
 
   async retrieve(
@@ -310,6 +315,107 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       await orderEditRepo.remove(edit)
+    })
+  }
+
+  async decline(
+    orderEditId: string,
+    context: {
+      declinedReason?: string
+      loggedInUser?: string
+    }
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      const { loggedInUser, declinedReason } = context
+
+      const orderEdit = await this.retrieve(orderEditId)
+
+      if (orderEdit.status === OrderEditStatus.DECLINED) {
+        return orderEdit
+      }
+
+      if (orderEdit.status !== OrderEditStatus.REQUESTED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot decline an order edit with status ${orderEdit.status}.`
+        )
+      }
+
+      orderEdit.declined_at = new Date()
+      orderEdit.declined_by = loggedInUser
+      orderEdit.declined_reason = declinedReason
+
+      const result = await orderEditRepo.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.DECLINED, {
+          id: result.id,
+        })
+
+      return result
+    })
+  }
+
+  async decorateLineItemsAndTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
+    const lineItemDecoratedOrderEdit = await this.decorateLineItems(orderEdit)
+    return await this.decorateTotals(lineItemDecoratedOrderEdit)
+  }
+
+  async decorateLineItems(orderEdit: OrderEdit): Promise<OrderEdit> {
+    const { items, removedItems } = await this.computeLineItems(orderEdit.id)
+    orderEdit.items = items
+    orderEdit.removed_items = removedItems
+
+    return orderEdit
+  }
+
+  async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
+    const totals = await this.getTotals(orderEdit.id)
+    orderEdit.discount_total = totals.discount_total
+    orderEdit.gift_card_total = totals.gift_card_total
+    orderEdit.gift_card_tax_total = totals.gift_card_tax_total
+    orderEdit.shipping_total = totals.shipping_total
+    orderEdit.subtotal = totals.subtotal
+    orderEdit.tax_total = totals.tax_total
+    orderEdit.total = totals.total
+
+    return orderEdit
+  }
+
+  async deleteItemChange(
+    orderEditId: string,
+    itemChangeId: string
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const itemChange = await this.orderEditItemChangeService_.retrieve(
+        itemChangeId,
+        { select: ["id", "order_edit_id"] }
+      )
+
+      const orderEdit = await this.retrieve(orderEditId, {
+        select: ["id", "confirmed_at", "canceled_at"],
+      })
+
+      if (orderEdit.id !== itemChange.order_edit_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The item change you are trying to delete doesn't belong to the OrderEdit with id: ${orderEditId}.`
+        )
+      }
+
+      if (orderEdit.confirmed_at !== null || orderEdit.canceled_at !== null) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot delete and item change from a ${orderEdit.status} order edit`
+        )
+      }
+
+      return await this.orderEditItemChangeService_.delete(itemChangeId)
     })
   }
 }
