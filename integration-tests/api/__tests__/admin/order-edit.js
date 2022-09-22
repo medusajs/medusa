@@ -314,6 +314,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const prodId2 = IdMap.getId("prodId2")
     const lineItemId1 = IdMap.getId("line-item-1")
     const lineItemId2 = IdMap.getId("line-item-2")
+    const confirmedOrderEditId = IdMap.getId("confirmed-order-edit")
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
@@ -426,6 +427,64 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       expect(err.message).toBe("Request failed with status code 400")
       expect(err.response.data.message).toBe(
         `An active order edit already exists for the order ${payload.order_id}`
+      )
+    })
+
+    it("created a new order edit if none are active anymore", async () => {
+      const api = useApi()
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: confirmedOrderEditId,
+        order_id: orderId,
+        internal_note: "test",
+        confirmed_at: new Date(),
+        created_by: "admin_user",
+      })
+
+      const payload = {
+        order_id: orderId,
+        internal_note: "This is an internal note",
+      }
+
+      const response = await api.post(
+        `/admin/order-edits/`,
+        payload,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          order_id: orderId,
+          created_by: "admin_user",
+          requested_by: null,
+          canceled_by: null,
+          confirmed_by: null,
+          internal_note: "This is an internal note",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItemId1,
+              quantity: 1,
+              fulfilled_quantity: 1,
+              shipped_quantity: 1,
+              unit_price: 1000,
+            }),
+            expect.objectContaining({
+              id: lineItemId2,
+              quantity: 1,
+              fulfilled_quantity: 1,
+              shipped_quantity: 1,
+              unit_price: 1000,
+            }),
+          ]),
+          shipping_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          discount_total: 0,
+          tax_total: 0,
+          total: 2000,
+          subtotal: 2000,
+        })
       )
     })
   })
