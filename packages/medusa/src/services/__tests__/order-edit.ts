@@ -270,7 +270,7 @@ describe("OrderEditService", () => {
         result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
       })
 
-      it("sets fields correctly for update", () => {
+      it("sets fields correctly for update", async () => {
         expect(result).toEqual(
           expect.objectContaining({
             requested_at: expect.any(Date),
@@ -283,9 +283,7 @@ describe("OrderEditService", () => {
           requested_at: expect.any(Date),
           requested_by: userId,
         })
-      })
-
-      it("emits requested event", () => {
+        
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
           OrderEditService.Events.REQUESTED,
           { id: orderEditId }
@@ -307,11 +305,8 @@ describe("OrderEditService", () => {
         jest.clearAllMocks()
       })
 
-      it("emits requested event", () => {
-        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-          OrderEditService.Events.REQUESTED,
-          { id: orderEditId }
-        )
+      it("doesn't emit requested event", () => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
 
       it("doesn't call save", async () => {

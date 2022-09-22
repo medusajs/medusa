@@ -443,12 +443,14 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      if (!orderEdit.requested_at) {
-        orderEdit.requested_at = new Date()
-        orderEdit.requested_by = context.loggedInUser
-
-        orderEdit = await orderEditRepo.save(orderEdit)
+      if (orderEdit.requested_at) {
+        return orderEdit
       }
+
+      orderEdit.requested_at = new Date()
+      orderEdit.requested_by = context.loggedInUser
+
+      orderEdit = await orderEditRepo.save(orderEdit)
 
       await this.eventBusService_
         .withTransaction(manager)
