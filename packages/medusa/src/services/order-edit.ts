@@ -430,7 +430,18 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditRepo = manager.getCustomRepository(
         this.orderEditRepository_
       )
-      let orderEdit = await this.retrieve(orderEditId)
+
+      let orderEdit = await this.retrieve(orderEditId, {
+        relations: ["changes"],
+        select: ["id", "requested_at", "changes"],
+      })
+
+      if (!orderEdit.changes?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot request a confirmation on an edit with no changes"
+        )
+      }
 
       if (!orderEdit.requested_at) {
         orderEdit.requested_at = new Date()
