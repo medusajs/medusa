@@ -80,17 +80,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add PayPal to Regions
 
-Run your Medusa server and Medusa admin, then open the Medusa admin and login.
-
-Choose Settings from the Sidebar. Then, choose Regions.
-
-![Region Settings](https://i.imgur.com/wRkmbLY.png)
-
-Then, choose the regions you want to add PayPal as a payment provider. In the right-side settings, scroll down to “Payment Providers” and choose “paypal”.
-
-![Choose PayPal](https://i.imgur.com/AJ2Yez8.png)
-
-Once you’re done, click Save. PayPal is now a payment provider in your store in the regions you added it to.
+You can refer to [this documentation in the user guide](../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like PayPal to a region.
 
 ## Storefront Setup
 

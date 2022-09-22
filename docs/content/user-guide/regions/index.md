@@ -31,5 +31,5 @@ For example, if you have Stripe enabled as a payment provider in a region create
 ## Learn More About Regions
 
 - [Manage Regions](./manage.mdx)
-- [Manage Payment and Fulfillment Providers](./providers.md)
-- [Manage Shipping Options in a Region](./shipping-options.md)
+- [Manage Payment and Fulfillment Providers](./providers.mdx)
+- [Manage Shipping Options in a Region](./shipping-options.mdx)
