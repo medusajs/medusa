@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react-hooks"
-
 import {
   useAdminCreateOrderEdit,
   useAdminDeleteOrderEdit,
@@ -110,7 +109,7 @@ describe("useAdminCreateOrderEdit hook", () => {
   })
 })
 
-describe("useAdminRequestConfirmation hook", () => {
+describe("useAdminRequestOrderEditConfirmation hook", () => {
   test("Requests an order edit", async () => {
     const { result, waitFor } = renderHook(() => useAdminRequestOrderEditConfirmation(fixtures.get("order_edit").id), {
       wrapper: createWrapper(),

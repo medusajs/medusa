@@ -55,7 +55,7 @@ class AdminOrderEditsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditsRes> {
-    const path = `/admin/order-edits/${id}/request-confirmation`
+    const path = `/admin/order-edits/${id}/request`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 }

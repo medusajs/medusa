@@ -4,12 +4,12 @@ import { orderEditServiceMock } from "../../../../../services/__mocks__/order-ed
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("GET /admin/order-edits/:id", () => {
-  describe("successfully requests an order edit", () => {
+  describe("successfully requests an order edit confirmation", () => {
     const orderEditId = IdMap.getId("testRequestOrder")
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/order-edits/${orderEditId}/request-confirmation`, {
+      subject = await request("POST", `/admin/order-edits/${orderEditId}/request`, {
         adminSession: {
           jwt: {
             userId: IdMap.getId("admin_user"),
@@ -23,7 +23,7 @@ describe("GET /admin/order-edits/:id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService requestConcfirmation", () => {
+    it("calls orderEditService requestConfirmation", () => {
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(orderEditId, IdMap.getId("admin_user"))
     })

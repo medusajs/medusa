@@ -2,13 +2,13 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [post] /order-edits/{id}/request-confirmation
+ * @oas [post] /order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request order edit confirmation"
  * description: "Request customer confirmation of an Order Edit"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Note to request confirmation from.
+ *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,7 +23,7 @@ import { OrderEditService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/request-confirmation' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/request' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

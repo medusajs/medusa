@@ -428,18 +428,20 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditRepo = manager.getCustomRepository(
         this.orderEditRepository_
       )
-      const orderEdit = await this.retrieve(orderEditId)
+      let orderEdit = await this.retrieve(orderEditId)
 
-      orderEdit.requested_at = new Date()
-      orderEdit.requested_by = userId
+      if (!orderEdit.requested_at) {
+        orderEdit.requested_at = new Date()
+        orderEdit.requested_by = userId
 
-      const updated = await orderEditRepo.save(orderEdit)
+        orderEdit = await orderEditRepo.save(orderEdit)
+      }
 
       await this.eventBusService_
         .withTransaction(manager)
         .emit(OrderEditService.Events.REQUESTED, { id: orderEditId })
 
-      return updated
+      return orderEdit
     })
   }
 }

@@ -1696,7 +1696,7 @@ export const adminHandlers = [
     )
   }),
 
-  rest.post("/admin/order-edits/:id/request-confirmation", (req, res, ctx) => {
+  rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
