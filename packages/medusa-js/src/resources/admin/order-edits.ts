@@ -2,6 +2,7 @@ import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
   AdminOrderEditsRes,
+  AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
 } from "@medusajs/medusa"
@@ -50,7 +51,7 @@ class AdminOrderEditsResource extends BaseResource {
     const path = `/admin/order-edits/${orderEditId}/changes/${itemChangeId}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
-  
+
   requestConfirmation(
     id: string,
     customHeaders: Record<string, any> = {}
@@ -58,13 +59,23 @@ class AdminOrderEditsResource extends BaseResource {
     const path = `/admin/order-edits/${id}/request`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
-  
+
   cancel(
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditsRes> {
     const path = `/admin/order-edits/${id}/cancel`
     return this.client.request("POST", path, undefined, {}, customHeaders)
+  }
+
+  updateLineItem(
+    orderEditId: string,
+    itemId: string,
+    payload: AdminPostOrderEditsEditLineItemsLineItemReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${orderEditId}/items/${itemId}`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

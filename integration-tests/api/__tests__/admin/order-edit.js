@@ -1094,4 +1094,316 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       }
     })
   })
+
+  describe("POST /admin/order-edits/:id/items/:item_id", () => {
+    let product
+    const orderId1 = IdMap.getId("order-id-1")
+    const orderEditId1 = IdMap.getId("order-edit-id-1")
+    const prodId1 = IdMap.getId("prodId1")
+    const lineItemId1 = IdMap.getId("line-item-1")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      product = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId1,
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId1,
+        order_id: orderId1,
+        created_by: "admin_user",
+        internal_note: "Test node",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("create an order edit item change of type update", async () => {
+      const api = useApi()
+
+      let res = await api.post(
+        `/admin/order-edits/${orderEditId1}/items/${lineItemId1}`,
+        { quantity: 2 },
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.order_edit.changes).toHaveLength(1)
+      expect(res.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+              type: "item_update",
+              order_edit_id: orderEditId1,
+              original_line_item_id: lineItemId1,
+              line_item_id: expect.any(String),
+              line_item: {
+                id: expect.any(String),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: null,
+                order_id: null,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 2,
+                fulfilled_quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: 1,
+                metadata: null,
+                variant: expect.any(Object),
+              },
+              original_line_item: {
+                id: lineItemId1,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: null,
+                order_id: orderId1,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 1,
+                fulfilled_quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: 1,
+                metadata: null,
+                variant: expect.any(Object),
+              },
+            }),
+          ]),
+          status: "created",
+          order_id: orderId1,
+          internal_note: "Test node",
+          created_by: "admin_user",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItemId1,
+              cart_id: null,
+              order_id: null,
+              swap_id: null,
+              claim_order_id: null,
+              title: expect.any(String),
+              is_return: false,
+              is_giftcard: false,
+              should_merge: true,
+              allow_discounts: true,
+              has_shipping: null,
+              unit_price: 1000,
+              variant_id: expect.any(String),
+              quantity: 2,
+              fulfilled_quantity: 1,
+              returned_quantity: null,
+              shipped_quantity: 1,
+              metadata: null,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                  metadata: null,
+                  item_id: expect.any(String),
+                }),
+              ]),
+              adjustments: expect.arrayContaining([]),
+            }),
+          ]),
+          removed_items: expect.arrayContaining([]),
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 2000,
+          tax_total: 250,
+          total: 2250,
+        })
+      )
+    })
+
+    it("update an existing order edit item change of type update", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/order-edits/${orderEditId1}/items/${lineItemId1}`,
+        { quantity: 2 },
+        adminHeaders
+      )
+
+      await api.post(
+        `/admin/order-edits/${orderEditId1}/items/${lineItemId1}`,
+        { quantity: 3 },
+        adminHeaders
+      )
+
+      const res = await api.get(
+        `/admin/order-edits/${orderEditId1}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.order_edit.changes).toHaveLength(1)
+      expect(res.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+              type: "item_update",
+              order_edit_id: orderEditId1,
+              original_line_item_id: lineItemId1,
+              line_item_id: expect.any(String),
+              line_item: {
+                id: expect.any(String),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: null,
+                order_id: null,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 3,
+                fulfilled_quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: 1,
+                metadata: null,
+                variant: expect.any(Object),
+              },
+              original_line_item: {
+                id: lineItemId1,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: null,
+                order_id: orderId1,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 1,
+                fulfilled_quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: 1,
+                metadata: null,
+                variant: expect.any(Object),
+              },
+            }),
+          ]),
+          status: "created",
+          order_id: orderId1,
+          internal_note: "Test node",
+          created_by: "admin_user",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItemId1,
+              cart_id: null,
+              order_id: null,
+              swap_id: null,
+              claim_order_id: null,
+              title: expect.any(String),
+              is_return: false,
+              is_giftcard: false,
+              should_merge: true,
+              allow_discounts: true,
+              has_shipping: null,
+              unit_price: 1000,
+              variant_id: expect.any(String),
+              quantity: 3,
+              fulfilled_quantity: 1,
+              returned_quantity: null,
+              shipped_quantity: 1,
+              metadata: null,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                  metadata: null,
+                  item_id: expect.any(String),
+                }),
+              ]),
+              adjustments: expect.arrayContaining([]),
+            }),
+          ]),
+          removed_items: expect.arrayContaining([]),
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 3000,
+          tax_total: 375,
+          total: 3375,
+        })
+      )
+    })
+  })
 })
