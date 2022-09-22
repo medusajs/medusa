@@ -71,7 +71,7 @@ npm install dotenv --save
 
 ## Database Configuration
 
-Medusa supports 2 database types: SQLite and PostgreSQL.
+Medusa supports two database types: SQLite and PostgreSQL.
 
 :::tip
 
@@ -81,7 +81,7 @@ You can use SQLite for development purposes, however, it’s recommended to use 
 
 ### SQLite Configurations
 
-For SQLite you mainly need 2 configurations:
+For SQLite you mainly need two configurations:
 
 ```jsx
 module.exports = {
@@ -103,7 +103,7 @@ Before getting started with configuring PostgreSQL, you should have created a Po
 
 :::
 
-For PostgreSQL you mainly need 2 configurations:
+For PostgreSQL you mainly need two configurations:
 
 ```jsx
 module.exports = {

@@ -22,7 +22,7 @@ You also must have a [Twilio account created](https://www.twilio.com/sms) so if 
 
 ## Retrieve Credentials
 
-For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these 3 from your [Twilio Console’s homepage](https://console.twilio.com).
+For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these three from your [Twilio Console’s homepage](https://console.twilio.com).
 
 ## Install Plugin
 

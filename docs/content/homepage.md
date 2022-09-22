@@ -48,13 +48,13 @@ It's also recommended to learn how to [set up your development environment](tuto
 
 The Medusa Admin provides you with a lot of functionalities and configurations such as Product Management, Order Management, Discounts and Promotions, and more.
 
-You can install the Medusa admin in 2 steps by following the [Medusa Admin quickstart guide](admin/quickstart.md).
+You can install the Medusa admin in two steps by following the [Medusa Admin quickstart guide](admin/quickstart.md).
 
 ### The Storefront
 
 The final step is to set up a storefront to sell your products.
 
-Medusa provides 2 starter storefronts, one built with [Next.js](./starters/nextjs-medusa-starter.md) and one with [Gatsby](./starters/gatsby-medusa-starter.md), that you can use to quickly set up your store and start selling.
+Medusa provides two starter storefronts, one built with [Next.js](./starters/nextjs-medusa-starter.md) and one with [Gatsby](./starters/gatsby-medusa-starter.md), that you can use to quickly set up your store and start selling.
 
 Alternatively, you can build your own storefront with any frontend framework of your choice just by connecting to your server with the [Storefront REST APIs](https://docs.medusajs.com/api/store).
 

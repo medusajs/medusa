@@ -45,7 +45,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ### Test Your Server
 
-After these 3 steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
 
 ```bash
 curl localhost:9000/store/products | python -m json.tool

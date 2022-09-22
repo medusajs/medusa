@@ -461,7 +461,7 @@ terraform apply
 
 You’ll be asked to confirm creating all the necessary resources in Qovery. Enter `yes` and the deployment will start.
 
-The deployment can take up to 30 minutes to finish. You’ll be able to track its status both in your terminal and in the [Qovery Console](https://console.qovery.com/).
+The deployment can take up to thirty minutes to finish. You’ll be able to track its status both in your terminal and in the [Qovery Console](https://console.qovery.com/).
 
 :::tip
 

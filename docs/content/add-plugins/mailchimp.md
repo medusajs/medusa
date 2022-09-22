@@ -22,7 +22,7 @@ You also need a Mailchimp account, so please [create one](https://mailchimp.com/
 
 ## Obtain Mailchimp Keys
 
-To integrate the plugin into Medusa you need 2 keys: The API Key and the Newsletter list or Audience ID. The API Key acts as a credential for your account, whereas the Newsletter list ID determines which audience should the subscribed customers be added to.
+To integrate the plugin into Medusa you need two keys: The API Key and the Newsletter list or Audience ID. The API Key acts as a credential for your account, whereas the Newsletter list ID determines which audience should the subscribed customers be added to.
 
 You can follow [this guide](https://mailchimp.com/help/about-api-keys/#Find_or_generate_your_API_key) from Mailchimp’s documentation to obtain an API Key.
 

@@ -163,7 +163,7 @@ Once you’re done, click Next to move on to the next step.
 
 In this section, you’ll add environment variables that are essential to your Medusa server.
 
-You should see 2 ways to add environment variables: Global or specific to the Web Service.
+You should see two ways to add environment variables: Global or specific to the Web Service.
 
 ![Global environment variables and web service environment variables](https://i.imgur.com/VOYykPT.png)
 

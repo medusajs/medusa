@@ -77,7 +77,7 @@ constructor({}, options) {
 
 When the admin is creating shipping options available for customers during checkout, they choose one of the fulfillment options provided by underlying fulfillment providers.
 
-For example, if you’re integrating UPS as a fulfillment provider, you might support 2 fulfillment options: UPS Express Shipping and UPS Access Point.
+For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point.
 
 These fulfillment options are defined in the `getFulfillmentOptions` method. This method should return an array of options.
 
@@ -124,7 +124,7 @@ When the customer chooses a shipping option on checkout, the shipping option and
 
 `validateFulfillmentOption` is called when a `POST` request is sent to [`/carts/:id/shipping-methods`](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
-This method accepts 3 parameters:
+This method accepts three parameters:
 
 1. The shipping option data.
 2. The `data` object passed in the body of the request.
@@ -156,7 +156,7 @@ After an order is placed, it can be fulfilled either manually by the admin or us
 
 This method gives you access to the fulfillment being created as well as other details in case you need to perform any additional actions with the third-party provider.
 
-This method accepts 4 parameters:
+This method accepts four parameters:
 
 1. The data of the shipping method associated with the order.
 2. An array of items in the order to be fulfilled. The admin can choose all or some of the items to fulfill.
@@ -210,7 +210,7 @@ canCalculate(data) {
 
 This method is called on checkout when the shipping method is being created if the `price_type` of the selected shipping option is `calculated`.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. The `data` parameter of the selected shipping option.
 2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).

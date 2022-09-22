@@ -1,12 +1,12 @@
 # Shipping Architecture Overview
 
-This document gives an overview of the shipping architecture and its 4 most important components.
+This document gives an overview of the shipping architecture and its four most important components.
 
 ## Introduction
 
 In Medusa, the Shipping architecture relies on 4 components: **Fulfillment Provider**, **Shipping Profiles**, **Shipping Options**, and **Shipping Methods**.
 
-The distinction between the 4 is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
+The distinction between the four is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
 
 It’s also constructed to support multiple regions, provide different shipment configurations and options for different product types, provide promotional shipments for your customers, and much more.
 

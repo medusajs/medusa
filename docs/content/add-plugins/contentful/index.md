@@ -36,7 +36,7 @@ This installs a new Medusa server in the directory `medusa-contentful`.
 
 ### Add Contentful Environment Variables
 
-Change to the `medusa-contentful` directory. In `.env` you’ll find 3 variables:
+Change to the `medusa-contentful` directory. In `.env` you’ll find three variables:
 
 ```bash
 CONTENTFUL_SPACE_ID=

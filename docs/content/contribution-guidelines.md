@@ -53,7 +53,11 @@ Make sure that the branch name starts with `docs/`. For example, `docs/fix-servi
 
 When you create a pull request, prefix the title with “docs:”. Make sure to keep “docs” in small letters.
 
+<!-- vale off -->
+
 In the body of the PR, explain clearly what the PR does. If the PR solves an issue, use [closing keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) with the issue number. For example, “Closes #1333”.
+
+<!-- vale on -->
 
 ## Sidebar
 
@@ -153,6 +157,30 @@ cd docs
 ### VS Code Extension
 
 To facilitate writing documentation, you can optionally use the [Vale VS Code extension](https://github.com/errata-ai/vale-vscode). This will show you any errors in your documentation while writing it.
+
+### Linter Exceptions
+
+If it's needed to break some style guide rules in a document, you can wrap the parts that the linter shouldn't scan with the following comments in the `md` or `mdx` files:
+
+```md
+<!-- vale off -->
+
+content that shouldn't be scanned for errors here...
+
+<!-- vale on -->
+```
+
+You can also disable specific rules. For example:
+
+```md
+<!-- vale docs.Numbers = NO -->
+
+Medusa supports Node versions 14 and 16.
+
+<!-- vale docs.Numbers = YES -->
+```
+
+If you use this in your PR, you must justify its usage.
 
 ## Need Additional Help
 
