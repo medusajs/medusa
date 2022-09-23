@@ -9,14 +9,18 @@ describe("GET /admin/order-edits/:id", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/order-edits/${orderEditId}/request`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
+      subject = await request(
+        "POST",
+        `/admin/order-edits/${orderEditId}/request`,
+        {
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
           },
-        },
-        flags: [OrderEditingFeatureFlag],
-      })
+          flags: [OrderEditingFeatureFlag],
+        }
+      )
     })
 
     afterAll(() => {
@@ -25,15 +29,20 @@ describe("GET /admin/order-edits/:id", () => {
 
     it("calls orderEditService requestConfirmation", () => {
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(orderEditId, {loggedInUser: IdMap.getId("admin_user")})
+      expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(
+        orderEditId,
+        { loggedInUser: IdMap.getId("admin_user") }
+      )
     })
 
     it("returns updated orderEdit", () => {
-      expect(subject.body.order_edit).toEqual(expect.objectContaining({
-        id: orderEditId, 
-        requested_at: expect.any(String),
-        requested_by: IdMap.getId("admin_user")
-      }))
+      expect(subject.body.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: IdMap.getId("admin_user"),
+        })
+      )
     })
   })
 })

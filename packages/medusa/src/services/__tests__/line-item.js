@@ -1,6 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FlagRouter } from "../../utils/flag-router"
 import LineItemService from "../line-item"
+import { PricingServiceMock } from "../__mocks__/pricing"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { RegionServiceMock } from "../__mocks__/region"
+
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -515,6 +519,67 @@ describe("LineItemService", () => {
           should_merge: true,
           includes_tax: false,
         })
+      })
+    })
+
+    describe("clone", () => {
+      const buildExpectedLineItem = (id) => ({
+        id,
+        original_item_id: id,
+        tax_lines: [
+          {
+            rate: 10,
+            item_id: id,
+          },
+        ],
+        adjustments: [
+          {
+            amount: 10,
+            item_id: id,
+          },
+        ],
+      })
+
+      const lineItemRepository = MockRepository({
+        create: (data) => data,
+        save: (data) => data,
+        find: (selector) => {
+          return selector.where.id.value.map(buildExpectedLineItem)
+        },
+      })
+
+      const featureFlagRouter = new FlagRouter({})
+
+      const lineItemService = new LineItemService({
+        manager: MockManager,
+        pricingService: PricingServiceMock,
+        lineItemRepository,
+        productVariantService: ProductVariantServiceMock,
+        regionService: RegionServiceMock,
+        cartRepository: MockRepository,
+        featureFlagRouter,
+      })
+
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully clone line items with tax lines and adjustments", async () => {
+        const lineItemId1 = IdMap.getId("line-item-1")
+        const lineItemId2 = IdMap.getId("line-item-2")
+
+        await lineItemService.clone([lineItemId1, lineItemId2])
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith([
+          buildExpectedLineItem(lineItemId1),
+          buildExpectedLineItem(lineItemId2),
+        ])
+        expect(lineItemRepository.save).toHaveBeenCalledWith([
+          buildExpectedLineItem(lineItemId1),
+          buildExpectedLineItem(lineItemId2),
+        ])
       })
     })
   })

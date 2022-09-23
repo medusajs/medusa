@@ -3,10 +3,9 @@ import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import {
-  defaultOrderEditFields,
-  defaultOrderEditRelations,
+  defaultStoreOrderEditFields,
+  defaultStoreOrderEditRelations,
 } from "../../../../../types/order-edit"
-import { storeOrderEditNotAllowedFields } from "../index"
 
 describe("GET /store/order-edits/:id", () => {
   describe("successfully gets an order edit", () => {
@@ -26,14 +25,10 @@ describe("GET /store/order-edits/:id", () => {
     it("calls orderService retrieve", () => {
       expect(orderEditServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.retrieve).toHaveBeenCalledWith(orderEditId, {
-        select: defaultOrderEditFields.filter(
-          (field) => !storeOrderEditNotAllowedFields.includes(field)
-        ),
-        relations: defaultOrderEditRelations.filter(
-          (field) => !storeOrderEditNotAllowedFields.includes(field)
-        ),
+        select: defaultStoreOrderEditFields,
+        relations: defaultStoreOrderEditRelations,
       })
-      expect(orderEditServiceMock.decorateLineItemsAndTotals).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns order", () => {

@@ -33,7 +33,7 @@ describe("GET /admin/order-edits/:id", () => {
         select: defaultOrderEditFields,
         relations: defaultOrderEditRelations,
       })
-      expect(orderEditServiceMock.decorateLineItemsAndTotals).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns order", () => {

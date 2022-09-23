@@ -50,6 +50,23 @@ export function FeatureFlagDecorators(
   }
 }
 
+export function FeatureFlagClassDecorators(
+  featureFlag: string,
+  decorators: ClassDecorator[]
+): ClassDecorator {
+  return function (target) {
+    setImmediate_((): any => {
+      if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
+        return
+      }
+
+      decorators.forEach((decorator: ClassDecorator) => {
+        decorator(target)
+      })
+    })
+  }
+}
+
 export function FeatureFlagEntity(
   featureFlag: string,
   name?: string,

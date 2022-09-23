@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { LineItemTaxLine } from "../models"
@@ -19,6 +19,7 @@ import {
   RegionService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
+import { isDefined } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -362,6 +363,56 @@ class LineItemService extends BaseService {
     )
 
     return itemTaxLineRepo.create(args)
+  }
+
+  async clone(
+    ids: string | string[],
+    data: { orderEditId?: string; order_id?: string | null },
+    options: { setOriginalLineItemId?: boolean } = {}
+  ): Promise<LineItem[]> {
+    ids = typeof ids === "string" ? [ids] : ids
+
+    return await this.atomicPhase_(async (manager) => {
+      let lineItems: DeepPartial<LineItem>[] = await this.list(
+        {
+          id: In(ids as string[]),
+        },
+        {
+          relations: ["tax_lines", "adjustments"],
+        }
+      )
+
+      const lineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
+
+      lineItems = lineItems.map(
+        (item) =>
+          ({
+            ...item,
+            id: undefined,
+            tax_lines: item.tax_lines?.map((line) => ({
+              ...line,
+              id: undefined,
+              item_id: undefined,
+            })),
+            adjustments: item.adjustments?.map((adj) => ({
+              ...adj,
+              id: undefined,
+              item_id: undefined,
+            })),
+            order_id: isDefined(data?.order_id) ? data.order_id : item.order_id,
+            order_edit_id: data?.orderEditId,
+            original_item_id: options?.setOriginalLineItemId
+              ? item.id
+              : undefined,
+          } as DeepPartial<LineItem>)
+      )
+
+      const clonedLineItemEntities = lineItemRepository.create(lineItems)
+      const cloned = await lineItemRepository.save(clonedLineItemEntities)
+      return cloned
+    })
   }
 }
 
