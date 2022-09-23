@@ -52,6 +52,16 @@ class ManualPaymentService extends PaymentService {
     return sessionData.data
   }
 
+  /**
+   .
+   * @param {object} sessionData - payment session data.
+   * @param {object} update - payment session update data.
+   * @returns {object} existing data merged with update data
+   */
+  async updatePaymentData(sessionData, update) {
+    return { ...sessionData.data, ...update.data }
+  }
+
   async deletePayment() {
     return
   }
