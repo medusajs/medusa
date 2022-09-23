@@ -367,10 +367,13 @@ class LineItemService extends BaseService {
 
   async clone(
     ids: string | string[],
-    data: { orderEditId?: string; order_id?: string | null },
-    options: { setOriginalLineItemId?: boolean } = {}
+    context: {
+      data?: { orderEditId?: string; order_id?: string | null }
+      options?: { setOriginalLineItemId?: boolean }
+    } = {}
   ): Promise<LineItem[]> {
     ids = typeof ids === "string" ? [ids] : ids
+    const { data, options } = context
 
     return await this.atomicPhase_(async (manager) => {
       let lineItems: DeepPartial<LineItem>[] = await this.list(
@@ -401,7 +404,9 @@ class LineItemService extends BaseService {
               id: undefined,
               item_id: undefined,
             })),
-            order_id: isDefined(data?.order_id) ? data.order_id : item.order_id,
+            order_id: isDefined(data?.order_id)
+              ? data?.order_id
+              : item.order_id,
             order_edit_id: data?.orderEditId,
             original_item_id: options?.setOriginalLineItemId
               ? item.id
@@ -410,8 +415,7 @@ class LineItemService extends BaseService {
       )
 
       const clonedLineItemEntities = lineItemRepository.create(lineItems)
-      const cloned = await lineItemRepository.save(clonedLineItemEntities)
-      return cloned
+      return await lineItemRepository.save(clonedLineItemEntities)
     })
   }
 }

@@ -523,7 +523,7 @@ describe("LineItemService", () => {
     })
 
     describe("clone", () => {
-      const buildExpectedLineItem = (id) => ({
+      const buildLineItem = (id) => ({
         id,
         original_item_id: id,
         tax_lines: [
@@ -539,12 +539,26 @@ describe("LineItemService", () => {
           },
         ],
       })
+      const buildExpectedLineItem = (id) =>
+        expect.objectContaining({
+          original_item_id: id,
+          tax_lines: expect.arrayContaining([
+            expect.objectContaining({
+              rate: 10,
+            }),
+          ]),
+          adjustments: expect.arrayContaining([
+            expect.objectContaining({
+              amount: 10,
+            }),
+          ]),
+        })
 
       const lineItemRepository = MockRepository({
         create: (data) => data,
         save: (data) => data,
         find: (selector) => {
-          return selector.where.id.value.map(buildExpectedLineItem)
+          return selector.where.id.value.map(buildLineItem)
         },
       })
 
@@ -568,18 +582,24 @@ describe("LineItemService", () => {
         const lineItemId1 = IdMap.getId("line-item-1")
         const lineItemId2 = IdMap.getId("line-item-2")
 
-        await lineItemService.clone([lineItemId1, lineItemId2])
+        await lineItemService.clone([lineItemId1, lineItemId2], {
+          options: { setOriginalLineItemId: true },
+        })
 
-        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
         expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
-        expect(lineItemRepository.create).toHaveBeenCalledWith([
-          buildExpectedLineItem(lineItemId1),
-          buildExpectedLineItem(lineItemId2),
-        ])
-        expect(lineItemRepository.save).toHaveBeenCalledWith([
-          buildExpectedLineItem(lineItemId1),
-          buildExpectedLineItem(lineItemId2),
-        ])
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith(
+          expect.arrayContaining([
+            buildExpectedLineItem(lineItemId1),
+            buildExpectedLineItem(lineItemId2),
+          ])
+        )
+        expect(lineItemRepository.save).toHaveBeenCalledWith(
+          expect.arrayContaining([
+            buildExpectedLineItem(lineItemId1),
+            buildExpectedLineItem(lineItemId2),
+          ])
+        )
       })
     })
   })

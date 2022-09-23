@@ -207,8 +207,13 @@ export default class OrderEditService extends TransactionBaseService {
       )
       const lineItemIds = orderLineItems.map(({ id }) => id)
       await lineItemServiceTx.clone(lineItemIds, {
-        orderEditId: orderEdit.id,
-        order_id: null,
+        data: {
+          orderEditId: orderEdit.id,
+          order_id: null,
+        },
+        options: {
+          setOriginalLineItemId: true,
+        },
       })
 
       await this.eventBusService_
