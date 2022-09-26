@@ -195,7 +195,6 @@ describe("OrderEditService", () => {
     inventoryService: InventoryServiceMock as unknown as InventoryService,
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
-    orderItemChangeRepository: orderItemChangeRepositoryMock,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })
 
@@ -414,7 +413,6 @@ describe("OrderEditService", () => {
       quantity: 3,
     })
 
-    expect(InventoryServiceMock.confirmInventory).toHaveBeenCalledTimes(1)
     expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
     expect(
       LineItemAdjustmentServiceMock.createAdjustments

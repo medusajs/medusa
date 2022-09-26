@@ -6,7 +6,6 @@ import { buildQuery, isDefined } from "../utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
   Cart,
-  LineItem,
   Order,
   OrderEdit,
   OrderEditItemChangeType,
@@ -15,6 +14,7 @@ import {
 import { TransactionBaseService } from "../interfaces"
 import {
   EventBusService,
+  LineItemAdjustmentService,
   LineItemService,
   OrderEditItemChangeService,
   OrderService,
@@ -29,8 +29,6 @@ import {
   CreateOrderEditInput,
   UpdateOrderEditInput,
 } from "../types/order-edit"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import InventoryService from "./inventory"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -40,7 +38,6 @@ type InjectedDependencies = {
   totalsService: TotalsService
   lineItemService: LineItemService
   eventBusService: EventBusService
-  inventoryService: InventoryService
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
@@ -65,7 +62,6 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
-  protected readonly inventoryService_: InventoryService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
@@ -80,7 +76,6 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
-    inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -94,7 +89,6 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
-    this.inventoryService_ = inventoryService
   }
 
   async retrieve(
