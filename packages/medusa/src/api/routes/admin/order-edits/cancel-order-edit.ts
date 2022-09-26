@@ -59,7 +59,7 @@ export default async (req: Request, res: Response) => {
 
   const manager = req.scope.resolve("manager") as EntityManager
 
-  const userId = req.user.id ?? req.user.userId
+  const userId = req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (transactionManager) => {
     await orderEditService
