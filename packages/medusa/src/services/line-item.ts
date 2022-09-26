@@ -10,7 +10,7 @@ import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { FindConfig } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
 import {
   PricingService,
@@ -99,7 +99,7 @@ class LineItemService extends BaseService {
   }
 
   async list(
-    selector,
+    selector: Selector<LineItem>,
     config: FindConfig<LineItem> = {
       skip: 0,
       take: 50,
@@ -432,6 +432,23 @@ class LineItemService extends BaseService {
 
       const clonedLineItemEntities = lineItemRepository.create(lineItems)
       return await lineItemRepository.save(clonedLineItemEntities)
+    })
+  }
+
+  async deleteAdjustments(lineItemId: string) {
+    return await this.atomicPhase_(async (manager) => {
+      const item = await this.retrieve(lineItemId, {
+        relation: ["adjustments"],
+      })
+
+      const lineItemAdjustmentServiceTx =
+        this.lineItemAdjustmentService_.withTransaction(manager)
+
+      await Promise.all(
+        item.adjustments.map((adjustment) =>
+          lineItemAdjustmentServiceTx.delete(adjustment.id)
+        )
+      )
     })
   }
 }

@@ -478,7 +478,7 @@ export default class OrderEditService extends TransactionBaseService {
         relations: [
           "order",
 
-          "order.cart",
+          "order.cart", // TODO -> remove this; how do we pass discount info to computation methods
           "order.cart.customer",
           "order.cart.discounts",
           "order.cart.discounts.rule",
@@ -512,27 +512,41 @@ export default class OrderEditService extends TransactionBaseService {
         }
       )
 
-      const { id: lineItemId } = await lineItemServiceTx.create(newItem)
-      const lineItem = await lineItemServiceTx.retrieve(lineItemId)
+      const [lineItem] = await lineItemServiceTx.cloneTo(orderEditId, newItem)
 
-      // 2. generate line item adjustments
+      // 2. clear all adjustments for all cloned line items related to this order edit
 
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .createAdjustments(orderEdit.order.cart, lineItem)
+      const orderEditLineItems = await this.lineItemService_.list({
+        order_edit_id: orderEditId,
+      })
 
-      // 3. generate tax lines
+      await Promise.all(
+        orderEditLineItems.map((oeItem) =>
+          lineItemServiceTx.deleteAdjustments(oeItem.id)
+        )
+      )
 
-      orderEdit.order.items = [lineItem]
+      // 3. (re)generate line item adjustments for all cloned items
+
+      await Promise.all(
+        orderEditLineItems.map((oeItem) =>
+          this.lineItemAdjustmentService_
+            .withTransaction(manager)
+            .createAdjustments(orderEdit.order.cart, oeItem)
+        )
+      )
+
+      // 4. generate tax lines
+
       const calcContext = await this.totalsService_
         .withTransaction(manager)
         .getCalculationContext(orderEdit.order)
 
       await this.taxProviderService_
         .withTransaction(manager)
-        .createTaxLines([lineItem], calcContext)
+        .createTaxLines(orderEditLineItems, calcContext)
 
-      // 4. generate change record (with new line item)
+      // 5. generate change record (with new line item)
 
       await this.orderEditItemChangeService_.withTransaction(manager).create({
         type: OrderEditItemChangeType.ITEM_ADD,
