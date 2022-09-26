@@ -40,11 +40,11 @@ The batch job strategy class must extend the `AbstractBatchJobStrategy` class wh
 
 For example, you can define the following class in the file you created:
 
-```tsx
+```typescript
 import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
 import { EntityManager } from 'typeorm'
 
-class ImportStrategy extends AbstractBatchJobStrategy {
+class MyImportStrategy extends AbstractBatchJobStrategy {
   protected batchJobService_: BatchJobService
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
@@ -57,8 +57,14 @@ class ImportStrategy extends AbstractBatchJobStrategy {
   }
 }
 
-export default ImportStrategy
+export default MyImportStrategy
 ```
+
+:::note
+
+This is the base implementation of a batch job strategy. You can learn about all the different methods and properties in [this documentation](./create.md#3-define-required-properties).
+
+:::
 
 ### 3. Set the batchType Property
 
@@ -68,8 +74,8 @@ Since only one batch job strategy can handle a batch job type, you can overwrite
 
 So, for example, to overwrite the product import strategy set the `batchType` property in your strategy to `product-import`:
 
-```tsx
-class ImportStrategy extends AbstractBatchJobStrategy {
+```typescript
+class MyImportStrategy extends AbstractBatchJobStrategy {
   static batchType = 'product-import'
   //...
 }
@@ -85,7 +91,7 @@ Refer to the [Create a Batch Job documentation](./create.md#3-define-required-pr
 
 Before you can test out your batch job strategy, you must run the `build` command:
 
-```tsx
+```bash npm2yarn
 npm run build
 ```
 
