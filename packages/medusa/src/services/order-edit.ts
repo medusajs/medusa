@@ -10,6 +10,7 @@ import {
   OrderEdit,
   OrderEditItemChangeType,
   OrderEditStatus,
+  OrderItemChange,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -24,7 +25,9 @@ import {
 import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
+  CreateOrderEditItemChangeInput,
 } from "../types/order-edit"
+import region from "./region"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -47,6 +50,7 @@ export default class OrderEditService extends TransactionBaseService {
     REQUESTED: "order-edit.requested",
     CANCELED: "order-edit.canceled",
     CONFIRMED: "order-edit.confirmed",
+    ITEM_REMOVED: "order-edit.item-removed",
   }
 
   protected readonly manager_: EntityManager
@@ -386,6 +390,67 @@ export default class OrderEditService extends TransactionBaseService {
         })
 
       await this.refreshAdjustments(orderEditId)
+    })
+  }
+
+  async removeLineItem(
+    orderEditId: string,
+    lineItemId: string
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEdit = await this.retrieve(orderEditId, {
+        select: [
+          "id",
+          "created_at",
+          "requested_at",
+          "confirmed_at",
+          "declined_at",
+          "canceled_at",
+        ],
+        relations: ["items"],
+      })
+
+      const isOrderEditActive = OrderEditService.isOrderEditActive(orderEdit)
+
+      if (!isOrderEditActive) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Can not update an item on the order edit ${orderEditId} with the status ${orderEdit.status}`
+        )
+      }
+
+      const deleteLineItem = orderEdit.items.find(
+        (it) => it.original_item_id === lineItemId
+      )
+
+      if (typeof deleteLineItem === "undefined") {
+        return orderEdit
+      }
+
+      await this.lineItemService_
+        .withTransaction(manager)
+        .delete(deleteLineItem.id)
+
+      await this.refreshAdjustments(orderEditId)
+
+      const editChange: CreateOrderEditItemChangeInput = {
+        original_line_item_id: lineItemId,
+        type: OrderEditItemChangeType.ITEM_REMOVE,
+        order_edit_id: orderEdit.id,
+      }
+
+      // save change
+      await this.orderEditItemChangeService_
+        .withTransaction(manager)
+        .create(editChange)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.ITEM_REMOVED, {
+          id: orderEdit.id,
+        })
+
+      return orderEdit
     })
   }
 
