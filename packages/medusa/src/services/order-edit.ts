@@ -437,7 +437,10 @@ export default class OrderEditService extends TransactionBaseService {
     )
   }
 
-  async cancel(orderEditId: string, userId: string): Promise<OrderEdit> {
+  async cancel(
+    orderEditId: string,
+    context: { loggedInUser?: string }
+  ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
         this.orderEditRepository_
@@ -461,7 +464,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.canceled_at = new Date()
-      orderEdit.canceled_by = userId
+      orderEdit.canceled_by = context.loggedInUser
 
       const saved = await orderEditRepository.save(orderEdit)
 

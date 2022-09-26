@@ -64,7 +64,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .cancel(id, userId)
+      .cancel(id, { loggedInUser: userId })
   })
 
   const orderEdit = await orderEditService.retrieve(id)
