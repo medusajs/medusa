@@ -7,23 +7,16 @@ In this document you will learn how to make a container of Medusa's app on Docke
 
 ### Node.js
 Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
 ```bash
 node -v
 ```
+
 You can install Node from the [official website](https://nodejs.org/en/).
 
 ### Docker Desktop
+
 It is assumed that you have Docker installed on your system. You can install it from [Docker's website](https://docs.docker.com/get-docker/).
-
-## Introduction
-
-With all the tools and technologies in place, let's get started by setting up a default project. Our starter is shipped with a very basic configuration, that includes the following plugins:
-
-- Stripe as payment provider
-- SendGrid as email notification provider
-- Manual fulfilment as fulfilment provider
-
-Additionally, we will spin up a PostgreSQL database and a Redis server, both required for Medusa to run. In this quick start, we will use docker to seamlessly set up these resources.
 
 ## Create Medusa Server with Docker
 
@@ -74,17 +67,20 @@ Running the above command does the following:
 
 Once done, your server will be accessible at `http://localhost:9000`.
 
-You can test out your server using tools like Postman or sending a cURL request:
+You can test out your server using tools like Postman or by sending a cURL request:
 
 ```bash
 curl -X GET localhost:9000/store/products | python -m json.tool
 ```
 
 :::note
+
 This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
+
 ```bash
 curl localhost:9000/store/products
 ```
+
 :::
 
 ## Additional steps
