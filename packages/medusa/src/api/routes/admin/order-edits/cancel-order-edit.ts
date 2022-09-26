@@ -4,8 +4,8 @@ import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /order-edits
- * operationId: "PostOrderEdits"
+ * @oas [post] /order-edits/{id}/cancel
+ * operationId: "PostOrderEditsOrderEditCancel"
  * summary: "Cancel an OrderEdit"
  * description: "Cancels an OrderEdit."
  * x-authenticated: true
@@ -20,7 +20,7 @@ import { EntityManager } from "typeorm"
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdit.cancel(orderEditId)
  *         .then(({ order_edit }) => {
- *           console.log(order_edit.id);
+ *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
@@ -59,7 +59,7 @@ export default async (req: Request, res: Response) => {
 
   const manager = req.scope.resolve("manager") as EntityManager
 
-  const userId = req.user?.id ?? req.user?.userId ?? ""
+  const userId = req.user.id ?? req.user.userId
 
   await manager.transaction(async (transactionManager) => {
     await orderEditService
