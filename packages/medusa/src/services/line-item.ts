@@ -411,14 +411,15 @@ class LineItemService extends BaseService {
       lineItems = lineItems.map((item) => ({
         ...item,
         ...lineItemData,
+        id: undefined,
         order_id,
         swap_id,
         claim_order_id,
         cart_id,
         order_edit_id,
         original_item_id: options?.setOriginalLineItemId ? item.id : undefined,
-        tax_lines: item.tax_lines?.map((line) => ({
-          ...line,
+        tax_lines: item.tax_lines?.map((tax_line) => ({
+          ...tax_line,
           id: undefined,
           item_id: undefined,
         })),

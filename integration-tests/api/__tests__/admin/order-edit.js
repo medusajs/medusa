@@ -382,9 +382,10 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             unit_price: 1000,
             tax_lines: [
               {
+                item_id: lineItemId1,
                 rate: 10,
-                code: "code1",
-                name: "code1",
+                code: "default",
+                name: "default",
               },
             ],
           },
@@ -397,9 +398,10 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             unit_price: 1000,
             tax_lines: [
               {
+                item_id: lineItemId2,
                 rate: 10,
-                code: "code1",
-                name: "code1",
+                code: "default",
+                name: "default",
               },
             ],
           },
