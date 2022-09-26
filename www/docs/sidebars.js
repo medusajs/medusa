@@ -288,6 +288,7 @@ module.exports = {
           id: "advanced/backend/batch-jobs/customize-import",
         },
         {
+          type: "doc",
           id: "advanced/backend/price-selection-strategy/override",
           label: "Override Price Selection"
         },
