@@ -100,8 +100,7 @@ export class LineItem extends BaseEntity {
   @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
     ManyToOne(
       () => OrderEdit,
-      (orderEdit) => orderEdit.items,
-      { onDelete: "CASCADE" }
+      (orderEdit) => orderEdit.items
     ),
     JoinColumn({ name: "order_edit_id" }),
   ])
@@ -327,6 +326,9 @@ export class LineItem extends BaseEntity {
  *     type: string
  *   order_edit_id:
  *     description: "[EXPERIMENTAL] The ID of the order edit to which a cloned item belongs"
+ *     type: string
+ *   order_edit:
+ *     description: "[EXPERIMENTAL] The order edit joined"
  *     type: object
  *   created_at:
  *     type: string

@@ -32,10 +32,19 @@ export class lineItemOriginalItemRelation1663059812400
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+      `DROP INDEX IF EXISTS "unique_li_original_item_id_order_edit_id_order_id"`
+    )
+    await queryRunner.query(
       `ALTER TABLE "line_item" DROP CONSTRAINT "line_item_original_item_fk"`
     )
     await queryRunner.query(
+      `ALTER TABLE "line_item" DROP CONSTRAINT "line_item_order_edit_fk"`
+    )
+    await queryRunner.query(
       `ALTER TABLE "line_item" DROP COLUMN "original_item_id"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "line_item" DROP COLUMN "order_edit_id"`
     )
   }
 }

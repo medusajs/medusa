@@ -272,7 +272,7 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      await this.deleteClonedItem(id)
+      await this.deleteClonedItems(id)
       await orderEditRepo.remove(edit)
     })
   }
@@ -405,7 +405,7 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
-  protected async deleteClonedItem(orderEditId: string): Promise<void> {
+  protected async deleteClonedItems(orderEditId: string): Promise<void> {
     const manager = this.transactionManager_ ?? this.manager_
     const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
     const lineItemAdjustmentServiceTx =

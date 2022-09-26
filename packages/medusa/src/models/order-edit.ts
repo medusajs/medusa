@@ -206,9 +206,4 @@ export class OrderEdit extends BaseEntity {
  *     description: Computed line items from the changes.
  *     items:
  *       $ref: "#/components/schemas/line_item"
- *   removed_items:
- *     type: array
- *     description: Computed line items from the changes that have been marked as deleted.
- *     items:
- *       $ref: "#/components/schemas/line_item"
  */
