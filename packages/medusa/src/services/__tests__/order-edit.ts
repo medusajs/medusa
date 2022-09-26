@@ -84,7 +84,7 @@ const lineItemServiceMock = {
       id,
     })
   }),
-  clone: () => [],
+  cloneTo: () => [],
 }
 
 describe("OrderEditService", () => {

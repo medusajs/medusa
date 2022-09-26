@@ -34,12 +34,11 @@ import { OrderEdit } from "./order-edit"
 @Check(`"quantity" > 0`)
 @FeatureFlagClassDecorators(OrderEditingFeatureFlag.key, [
   Index(
-    "unique_li_original_item_id_order_edit_id_order_id",
-    ["order_edit_id", "original_item_id", "order_id"],
+    "unique_li_original_item_id_order_edit_id",
+    ["order_edit_id", "original_item_id"],
     {
       unique: true,
-      where:
-        "WHERE original_item_id IS NOT NULL AND order_id IS NOT NULL AND order_edit_id IS NOT NULL",
+      where: "WHERE original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
     }
   ),
 ])
@@ -104,7 +103,7 @@ export class LineItem extends BaseEntity {
     ),
     JoinColumn({ name: "order_edit_id" }),
   ])
-  order_edit?: string | null
+  order_edit?: OrderEdit | null
 
   @Column()
   title: string

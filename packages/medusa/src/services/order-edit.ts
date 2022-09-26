@@ -131,7 +131,7 @@ export default class OrderEditService extends TransactionBaseService {
     const manager = this.transactionManager_ ?? this.manager_
     const { order_id, items } = await this.retrieve(orderEditId, {
       select: ["id", "order_id", "items"],
-      relations: ["items", "items.tax_lines"],
+      relations: ["items", "items.tax_lines", "items.adjustments"],
     })
     const order = await this.orderService_
       .withTransaction(manager)
@@ -206,14 +206,8 @@ export default class OrderEditService extends TransactionBaseService {
         }
       )
       const lineItemIds = orderLineItems.map(({ id }) => id)
-      await lineItemServiceTx.clone(lineItemIds, {
-        data: {
-          orderEditId: orderEdit.id,
-          order_id: null,
-        },
-        options: {
-          setOriginalLineItemId: true,
-        },
+      await lineItemServiceTx.cloneTo(lineItemIds, {
+        order_edit_id: orderEdit.id,
       })
 
       await this.eventBusService_
@@ -424,16 +418,21 @@ export default class OrderEditService extends TransactionBaseService {
     )
     const clonedItemIds = clonedLineItems.map((item) => item.id)
 
-    await Promise.all([
+    await Promise.all(
+      [
+        taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
+        clonedItemIds.map((id) => {
+          return lineItemAdjustmentServiceTx.delete({
+            item_id: id,
+          })
+        }),
+      ].flat()
+    )
+
+    await Promise.all(
       clonedItemIds.map((id) => {
         return lineItemServiceTx.delete(id)
-      }),
-      taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
-      clonedItemIds.map((id) => {
-        return lineItemAdjustmentServiceTx.delete({
-          item_id: id,
-        })
-      }),
-    ])
+      })
+    )
   }
 }

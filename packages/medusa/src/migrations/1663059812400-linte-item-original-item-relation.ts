@@ -26,13 +26,13 @@ export class lineItemOriginalItemRelation1663059812400
     )
 
     await queryRunner.query(
-      `CREATE UNIQUE INDEX "unique_li_original_item_id_order_edit_id_order_id" ON "line_item" ("order_edit_id", "original_item_id", "order_id") WHERE original_item_id IS NOT NULL AND order_id IS NOT NULL AND order_edit_id IS NOT NULL`
+      `CREATE UNIQUE INDEX "unique_li_original_item_id_order_edit_id" ON "line_item" ("order_edit_id", "original_item_id") WHERE original_item_id IS NOT NULL AND order_edit_id IS NOT NULL`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DROP INDEX IF EXISTS "unique_li_original_item_id_order_edit_id_order_id"`
+      `DROP INDEX IF EXISTS "unique_li_original_item_id_order_edit_id"`
     )
     await queryRunner.query(
       `ALTER TABLE "line_item" DROP CONSTRAINT "line_item_original_item_fk"`

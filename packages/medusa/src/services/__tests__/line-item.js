@@ -526,6 +526,8 @@ describe("LineItemService", () => {
       const buildLineItem = (id) => ({
         id,
         original_item_id: id,
+        swap_id: "test",
+        order_id: "test",
         tax_lines: [
           {
             rate: 10,
@@ -542,6 +544,11 @@ describe("LineItemService", () => {
       const buildExpectedLineItem = (id) =>
         expect.objectContaining({
           original_item_id: id,
+          swap_id: undefined,
+          claim_order_id: undefined,
+          cart_id: undefined,
+          order_edit_id: undefined,
+          order_id: "test",
           tax_lines: expect.arrayContaining([
             expect.objectContaining({
               rate: 10,
@@ -582,8 +589,8 @@ describe("LineItemService", () => {
         const lineItemId1 = IdMap.getId("line-item-1")
         const lineItemId2 = IdMap.getId("line-item-2")
 
-        await lineItemService.clone([lineItemId1, lineItemId2], {
-          options: { setOriginalLineItemId: true },
+        await lineItemService.cloneTo([lineItemId1, lineItemId2], {
+          order_id: "test",
         })
 
         expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
@@ -599,6 +606,19 @@ describe("LineItemService", () => {
             buildExpectedLineItem(lineItemId1),
             buildExpectedLineItem(lineItemId2),
           ])
+        )
+      })
+
+      it("throw on clone line items if none of the foreign keys is specified", async () => {
+        const lineItemId1 = IdMap.getId("line-item-1")
+        const lineItemId2 = IdMap.getId("line-item-2")
+
+        const err = await lineItemService
+          .cloneTo([lineItemId1, lineItemId2])
+          .catch((e) => e)
+
+        expect(err.message).toBe(
+          "Unable to clone a line item that is not attached to at least one of: order_edit, order, swap, claim or cart."
         )
       })
     })
