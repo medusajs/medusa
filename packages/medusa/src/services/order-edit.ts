@@ -507,12 +507,6 @@ export default class OrderEditService extends TransactionBaseService {
 
       const regionId = orderEdit.order.region_id
 
-      // 0. check inventory
-
-      await this.inventoryService_
-        .withTransaction(manager)
-        .confirmInventory(data.variant_id, data.quantity)
-
       // 1. generate new line item from data
 
       const newItem = await lineItemServiceTx.generate(
