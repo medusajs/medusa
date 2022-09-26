@@ -292,38 +292,6 @@ module.exports = {
           id: "advanced/backend/price-selection-strategy/override",
           label: "Override Price Selection"
         },
-        {
-          type: "category",
-          label: "Storefront",
-          items: [
-            {
-              type: "doc",
-              id: "guides/carts-in-medusa",
-              label: "Implement Cart"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
-              label: "Implement Checkout"
-            },
-          ]
-        },
-        {
-          type: "category",
-          label: "Admin",
-          items: [
-            {
-              type: "doc",
-              id: "advanced/admin/import-products",
-              label: "Import Products"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
-            },
-          ]
-        },
       ]
     },
     {
