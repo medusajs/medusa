@@ -364,7 +364,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     context: {
       loggedInUser?: string
-    }
+    } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepo = manager.getCustomRepository(
@@ -439,7 +439,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async cancel(
     orderEditId: string,
-    context: { loggedInUser?: string }
+    context: { loggedInUser?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
