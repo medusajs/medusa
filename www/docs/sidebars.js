@@ -187,6 +187,38 @@ module.exports = {
       label: "How-to Guides",
       items: [
         {
+          type: "category",
+          label: "Storefront",
+          items: [
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
+              label: "Implement Cart"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
+              label: "Implement Checkout"
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
+          ]
+        },
+        {
           type: "doc",
           id: "advanced/backend/endpoints/add-storefront",
           label: "Create Endpoint for Storefront"
@@ -252,36 +284,8 @@ module.exports = {
           label: "Create Batch Job Strategy"
         },
         {
-          type: "category",
-          label: "Storefront",
-          items: [
-            {
-              type: "doc",
-              id: "guides/carts-in-medusa",
-              label: "Implement Cart"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
-              label: "Implement Checkout"
-            },
-          ]
-        },
-        {
-          type: "category",
-          label: "Admin",
-          items: [
-            {
-              type: "doc",
-              id: "advanced/admin/import-products",
-              label: "Import Products"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
-            },
-          ]
+          type: "doc",
+          id: "advanced/backend/batch-jobs/customize-import",
         },
       ]
     },
