@@ -53,6 +53,10 @@ export default (app) => {
     middlewares.wrap(require("./delete-order-edit-item-change").default)
   )
 
+  route.post(
+    "/:id/request",
+    middlewares.wrap(require("./request-confirmation").default)
+  )
   return app
 }
 

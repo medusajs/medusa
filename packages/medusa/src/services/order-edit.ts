@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, IsNull } from "typeorm"
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined } from "../utils"
 import { MedusaError } from "medusa-core-utils"
@@ -35,6 +35,7 @@ export default class OrderEditService extends TransactionBaseService {
     CREATED: "order-edit.created",
     UPDATED: "order-edit.updated",
     DECLINED: "order-edit.declined",
+    REQUESTED: "order-edit.requested",
   }
 
   protected transactionManager_: EntityManager | undefined
@@ -101,7 +102,15 @@ export default class OrderEditService extends TransactionBaseService {
       this.orderEditRepository_
     )
 
-    const query = buildQuery({ order_id: orderId }, config)
+    const query = buildQuery(
+      {
+        order_id: orderId,
+        confirmed_at: IsNull(),
+        canceled_at: IsNull(),
+        declined_at: IsNull(),
+      },
+      config
+    )
     return await orderEditRepository.findOne(query)
   }
 
@@ -416,6 +425,46 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       return await this.orderEditItemChangeService_.delete(itemChangeId)
+    })
+  }
+
+  async requestConfirmation(
+    orderEditId: string,
+    context: {
+      loggedInUser?: string
+    }
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      let orderEdit = await this.retrieve(orderEditId, {
+        relations: ["changes"],
+        select: ["id", "requested_at"],
+      })
+
+      if (!orderEdit.changes?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot request a confirmation on an edit with no changes"
+        )
+      }
+
+      if (orderEdit.requested_at) {
+        return orderEdit
+      }
+
+      orderEdit.requested_at = new Date()
+      orderEdit.requested_by = context.loggedInUser
+
+      orderEdit = await orderEditRepo.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.REQUESTED, { id: orderEditId })
+
+      return orderEdit
     })
   }
 }
