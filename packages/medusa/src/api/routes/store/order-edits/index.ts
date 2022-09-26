@@ -7,8 +7,8 @@ import { EmptyQueryParams } from "../../../../types/common"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import {
-  defaultOrderEditFields,
-  defaultOrderEditRelations,
+  defaultStoreOrderEditFields,
+  defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
 import { OrderEdit } from "../../../../models"
 import { StorePostOrderEditsOrderEditDecline } from "./decline-order-edit"
@@ -25,13 +25,9 @@ export default (app) => {
   route.get(
     "/:id",
     transformQuery(EmptyQueryParams, {
-      defaultRelations: defaultOrderEditRelations.filter(
-        (field) => !storeOrderEditNotAllowedFields.includes(field)
-      ),
-      defaultFields: defaultOrderEditFields.filter(
-        (field) => !storeOrderEditNotAllowedFields.includes(field)
-      ),
-      allowedFields: defaultOrderEditFields,
+      defaultRelations: defaultStoreOrderEditRelations,
+      defaultFields: defaultStoreOrderEditFields,
+      allowedFields: defaultStoreOrderEditFields,
       isList: false,
     }),
     middlewares.wrap(require("./get-order-edit").default)
@@ -54,10 +50,3 @@ export type StoreOrderEditsRes = {
 }
 
 export * from "./decline-order-edit"
-
-export const storeOrderEditNotAllowedFields = [
-  "internal_note",
-  "created_by",
-  "confirmed_by",
-  "canceled_by",
-]

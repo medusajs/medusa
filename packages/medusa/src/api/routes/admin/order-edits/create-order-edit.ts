@@ -2,6 +2,10 @@ import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
+import {
+  defaultOrderEditFields,
+  defaultOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits
@@ -62,13 +66,19 @@ export default async (req: Request, res: Response) => {
   const data = req.validatedBody as AdminPostOrderEditsReq
   const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
 
-  const orderEdit = await manager.transaction(async (transactionManager) => {
-    const orderEditServiceTx =
-      orderEditService.withTransaction(transactionManager)
-    const orderEdit = await orderEditServiceTx.create(data, { loggedInUserId })
+  const createdOrderEdit = await manager.transaction(
+    async (transactionManager) => {
+      return await orderEditService
+        .withTransaction(transactionManager)
+        .create(data, { loggedInUserId })
+    }
+  )
 
-    return await orderEditServiceTx.decorateLineItemsAndTotals(orderEdit)
+  let orderEdit = await orderEditService.retrieve(createdOrderEdit.id, {
+    select: defaultOrderEditFields,
+    relations: defaultOrderEditRelations,
   })
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   return res.json({ order_edit: orderEdit })
 }

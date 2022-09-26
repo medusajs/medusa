@@ -5,6 +5,7 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
+  TaxProviderService,
   TotalsService,
 } from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
@@ -13,6 +14,9 @@ import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import LineItemAdjustmentService from "../line-item-adjustment"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -80,6 +84,7 @@ const lineItemServiceMock = {
       id,
     })
   }),
+  cloneTo: () => [],
 }
 
 describe("OrderEditService", () => {
@@ -88,7 +93,10 @@ describe("OrderEditService", () => {
   })
 
   const orderEditRepository = MockRepository({
-    findOneWithRelations: (relations, query) => {
+    findOne: (query) => {
+      if (query?.where?.id === IdMap.getId("order-edit-to-update")) {
+        return orderEditToUpdate
+      }
       if (query?.where?.id === IdMap.getId("order-edit-with-changes")) {
         return orderEditWithChanges
       }
@@ -117,7 +125,7 @@ describe("OrderEditService", () => {
         }
       }
 
-      return {}
+      return
     },
     create: (data) => {
       return {
@@ -136,17 +144,17 @@ describe("OrderEditService", () => {
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
+    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
+    lineItemAdjustmentService:
+      LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
     await orderEditService.retrieve(IdMap.getId("order-edit-with-changes"))
-    expect(orderEditRepository.findOneWithRelations).toHaveBeenCalledTimes(1)
-    expect(orderEditRepository.findOneWithRelations).toHaveBeenCalledWith(
-      undefined,
-      {
-        where: { id: IdMap.getId("order-edit-with-changes") },
-      }
-    )
+    expect(orderEditRepository.findOne).toHaveBeenCalledTimes(1)
+    expect(orderEditRepository.findOne).toHaveBeenCalledWith({
+      where: { id: IdMap.getId("order-edit-with-changes") },
+    })
   })
 
   it("should update an order edit with the right arguments", async () => {
@@ -155,35 +163,9 @@ describe("OrderEditService", () => {
     })
     expect(orderEditRepository.save).toHaveBeenCalledTimes(1)
     expect(orderEditRepository.save).toHaveBeenCalledWith({
+      id: IdMap.getId("order-edit-to-update"),
       internal_note: "test note",
     })
-  })
-
-  it("should compute the items from the changes and attach them to the orderEdit", async () => {
-    const { items, removedItems } = await orderEditService.computeLineItems(
-      IdMap.getId("order-edit-with-changes")
-    )
-
-    expect(items.length).toBe(2)
-    expect(items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: IdMap.getId("line-item-2"),
-        }),
-        expect.objectContaining({
-          id: IdMap.getId("line-item-3"),
-        }),
-      ])
-    )
-
-    expect(removedItems.length).toBe(1)
-    expect(removedItems).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: IdMap.getId("line-item-1"),
-        }),
-      ])
-    )
   })
 
   it("should create an order edit and call the repository with the right arguments as well as the event bus service", async () => {
@@ -267,7 +249,9 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+        result = await orderEditService.requestConfirmation(orderEditId, {
+          loggedInUser: userId,
+        })
       })
 
       it("sets fields correctly for update", async () => {
@@ -283,13 +267,12 @@ describe("OrderEditService", () => {
           requested_at: expect.any(Date),
           requested_by: userId,
         })
-        
+
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
           OrderEditService.Events.REQUESTED,
           { id: orderEditId }
         )
       })
-
     })
 
     describe("requested edit", () => {
@@ -298,7 +281,9 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+        result = await orderEditService.requestConfirmation(orderEditId, {
+          loggedInUser: userId,
+        })
       })
 
       afterEach(() => {

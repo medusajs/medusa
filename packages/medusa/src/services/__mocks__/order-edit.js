@@ -92,7 +92,7 @@ export const orderEditServiceMock = {
   delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()
   }),
-  decorateLineItemsAndTotals: jest.fn().mockImplementation((orderEdit) => {
+  decorateTotals: jest.fn().mockImplementation((orderEdit) => {
     const withLineItems = computeLineItems(orderEdit)
     return Promise.resolve({
       ...withLineItems,

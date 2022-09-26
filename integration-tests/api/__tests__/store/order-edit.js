@@ -21,12 +21,6 @@ const { OrderEditItemChangeType } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
-const adminHeaders = {
-  headers: {
-    Authorization: "Bearer test_token",
-  },
-}
-
 describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
   let medusaProcess
   let dbConnection
@@ -93,6 +87,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code1",
+                name: "code1",
+              },
+            ],
           },
           {
             id: lineItemId2,
@@ -101,6 +102,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code2",
+                name: "code2",
+              },
+            ],
           },
         ],
       })
@@ -162,24 +170,44 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          requested_by: null,
-          items: expect.arrayContaining([
-            expect.objectContaining({ id: lineItemCreateId, quantity: 2 }),
-            expect.objectContaining({ id: lineItemId1, quantity: 2 }),
+          items: expect.arrayContaining([]),
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              type: "item_add",
+              order_edit_id: orderEditId,
+              original_line_item_id: null,
+              line_item_id: lineItemCreateId,
+              line_item: expect.any(Object),
+              original_line_item: null,
+            }),
+            expect.objectContaining({
+              type: "item_update",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId1,
+              line_item_id: lineItemUpdateId,
+              line_item: expect.any(Object),
+              original_line_item: expect.any(Object),
+            }),
+            expect.objectContaining({
+              type: "item_remove",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId2,
+              line_item_id: null,
+              line_item: null,
+              original_line_item: expect.any(Object),
+            }),
           ]),
-          removed_items: expect.arrayContaining([
-            expect.objectContaining({ id: lineItemId2, quantity: 1 }),
-          ]),
+          // Items are cloned during the creation which explain why it is 0 for a fake order edit since it does
+          // not use the logic of the service. Must be check in another test
           shipping_total: 0,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           discount_total: 0,
           tax_total: 0,
-          total: 2200,
-          subtotal: 2200,
+          total: 0,
+          subtotal: 0,
         })
       )
-
       expect(response.data.order_edit.internal_note).not.toBeDefined()
       expect(response.data.order_edit.created_by).not.toBeDefined()
       expect(response.data.order_edit.canceled_by).not.toBeDefined()

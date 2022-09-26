@@ -94,6 +94,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code1",
+                name: "code1",
+              },
+            ],
           },
           {
             id: lineItemId2,
@@ -102,6 +109,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code2",
+                name: "code2",
+              },
+            ],
           },
         ],
       })
@@ -170,20 +184,42 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           canceled_by: null,
           confirmed_by: null,
           internal_note: "test internal note",
-          items: expect.arrayContaining([
-            expect.objectContaining({ id: lineItemCreateId, quantity: 2 }),
-            expect.objectContaining({ id: lineItemId1, quantity: 2 }),
+          items: expect.arrayContaining([]),
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              type: "item_add",
+              order_edit_id: orderEditId,
+              original_line_item_id: null,
+              line_item_id: lineItemCreateId,
+              line_item: expect.any(Object),
+              original_line_item: null,
+            }),
+            expect.objectContaining({
+              type: "item_update",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId1,
+              line_item_id: lineItemUpdateId,
+              line_item: expect.any(Object),
+              original_line_item: expect.any(Object),
+            }),
+            expect.objectContaining({
+              type: "item_remove",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId2,
+              line_item_id: null,
+              line_item: null,
+              original_line_item: expect.any(Object),
+            }),
           ]),
-          removed_items: expect.arrayContaining([
-            expect.objectContaining({ id: lineItemId2, quantity: 1 }),
-          ]),
+          // Items are cloned during the creation which explain why it is 0 for a fake order edit since it does
+          // not use the logic of the service. Must be check in another test
           shipping_total: 0,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           discount_total: 0,
           tax_total: 0,
-          total: 2200,
-          subtotal: 2200,
+          total: 0,
+          subtotal: 0,
         })
       )
       expect(response.status).toEqual(200)
@@ -344,6 +380,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                item_id: lineItemId1,
+                rate: 10,
+                code: "default",
+                name: "default",
+              },
+            ],
           },
           {
             id: lineItemId2,
@@ -352,6 +396,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                item_id: lineItemId2,
+                rate: 10,
+                code: "default",
+                name: "default",
+              },
+            ],
           },
         ],
       })
@@ -363,7 +415,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it("creates and order edit", async () => {
+    it("creates an order edit", async () => {
       const api = useApi()
 
       const response = await api.post(
@@ -384,29 +436,46 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           canceled_by: null,
           confirmed_by: null,
           internal_note: "This is an internal note",
+          // The items are cloned from the items of the order
           items: expect.arrayContaining([
             expect.objectContaining({
-              id: lineItemId1,
+              id: expect.not.stringContaining(lineItemId1),
+              order_id: null,
+              order_edit_id: expect.any(String),
+              original_item_id: lineItemId1,
               quantity: 1,
               fulfilled_quantity: 1,
               shipped_quantity: 1,
               unit_price: 1000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 10,
+                }),
+              ]),
             }),
             expect.objectContaining({
-              id: lineItemId2,
+              id: expect.not.stringContaining(lineItemId2),
+              order_id: null,
+              order_edit_id: expect.any(String),
+              original_item_id: lineItemId2,
               quantity: 1,
               fulfilled_quantity: 1,
               shipped_quantity: 1,
               unit_price: 1000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 10,
+                }),
+              ]),
             }),
           ]),
           shipping_total: 0,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           discount_total: 0,
-          tax_total: 0,
-          total: 2000,
+          tax_total: 200,
           subtotal: 2000,
+          total: 2200,
         })
       )
     })
@@ -461,29 +530,46 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           canceled_by: null,
           confirmed_by: null,
           internal_note: "This is an internal note",
+          // The items are cloned from the items of the order
           items: expect.arrayContaining([
             expect.objectContaining({
-              id: lineItemId1,
+              id: expect.not.stringContaining(lineItemId1),
+              order_id: null,
+              order_edit_id: expect.any(String),
+              original_item_id: lineItemId1,
               quantity: 1,
               fulfilled_quantity: 1,
               shipped_quantity: 1,
               unit_price: 1000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 10,
+                }),
+              ]),
             }),
             expect.objectContaining({
-              id: lineItemId2,
+              id: expect.not.stringContaining(lineItemId2),
+              order_id: null,
+              order_edit_id: expect.any(String),
+              original_item_id: lineItemId2,
               quantity: 1,
               fulfilled_quantity: 1,
               shipped_quantity: 1,
               unit_price: 1000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 10,
+                }),
+              ]),
             }),
           ]),
           shipping_total: 0,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           discount_total: 0,
-          tax_total: 0,
-          total: 2000,
+          tax_total: 200,
           subtotal: 2000,
+          total: 2200,
         })
       )
     })
@@ -581,7 +667,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
   })
 
   describe("POST /admin/order-edits/:id", () => {
-    const orderEditId = IdMap.getId("order-edit-1")
+    let orderEditId
     const prodId1 = IdMap.getId("prodId1")
     const lineItemId1 = IdMap.getId("line-item-1")
     const orderId1 = IdMap.getId("order-id-1")
@@ -612,16 +698,27 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             fulfilled_quantity: 1,
             shipped_quantity: 1,
             unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code1",
+                name: "code1",
+              },
+            ],
           },
         ],
       })
 
-      await simpleOrderEditFactory(dbConnection, {
-        id: orderEditId,
-        order_id: order.id,
-        created_by: "admin_user",
-        internal_note: "test internal note",
-      })
+      const api = useApi()
+      const response = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderId1,
+          internal_note: "This is an internal note",
+        },
+        adminHeaders
+      )
+      orderEditId = response.data.order_edit.id
     })
 
     afterEach(async () => {
@@ -647,25 +744,29 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           canceled_by: null,
           confirmed_by: null,
           internal_note: "changed note",
-          /*
-           * Computed items are appended to the response
-           */
-          items: [
+          items: expect.arrayContaining([
             expect.objectContaining({
-              id: lineItemId1,
-              order_id: orderId1,
+              order_id: null,
+              order_edit_id: orderEditId,
+              original_item_id: lineItemId1,
+              quantity: 1,
+              fulfilled_quantity: 1,
+              shipped_quantity: 1,
+              unit_price: 1000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 10,
+                }),
+              ]),
             }),
-          ],
-          /*
-           * Computed totals are appended to the response
-           */
+          ]),
           discount_total: 0,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 1000,
-          tax_total: 0,
-          total: 1000,
+          tax_total: 100,
+          total: 1100,
         })
       )
     })

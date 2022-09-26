@@ -3,6 +3,10 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import { OrderEditService } from "../../../../services"
+import {
+  defaultOrderEditFields,
+  defaultOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits/{id}
@@ -71,26 +75,19 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const orderEdit = await manager.transaction(async (transactionManager) => {
-    const orderEditServiceTx =
-      orderEditService.withTransaction(transactionManager)
+  const updatedOrderEdit = await manager.transaction(
+    async (transactionManager) => {
+      return await orderEditService
+        .withTransaction(transactionManager)
+        .update(id, validatedBody)
+    }
+  )
 
-    const _orderEdit = await orderEditServiceTx.update(id, validatedBody)
-
-    const { items } = await orderEditServiceTx.computeLineItems(_orderEdit.id)
-    _orderEdit.items = items
-
-    const totals = await orderEditServiceTx.getTotals(_orderEdit.id)
-    _orderEdit.discount_total = totals.discount_total
-    _orderEdit.gift_card_total = totals.gift_card_total
-    _orderEdit.gift_card_tax_total = totals.gift_card_tax_total
-    _orderEdit.shipping_total = totals.shipping_total
-    _orderEdit.subtotal = totals.subtotal
-    _orderEdit.tax_total = totals.tax_total
-    _orderEdit.total = totals.total
-
-    return _orderEdit
+  let orderEdit = await orderEditService.retrieve(updatedOrderEdit.id, {
+    select: defaultOrderEditFields,
+    relations: defaultOrderEditRelations,
   })
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   res.status(200).json({ order_edit: orderEdit })
 }

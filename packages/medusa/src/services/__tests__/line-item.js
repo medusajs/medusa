@@ -1,6 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FlagRouter } from "../../utils/flag-router"
 import LineItemService from "../line-item"
+import { PricingServiceMock } from "../__mocks__/pricing"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { RegionServiceMock } from "../__mocks__/region"
+
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -515,6 +519,107 @@ describe("LineItemService", () => {
           should_merge: true,
           includes_tax: false,
         })
+      })
+    })
+
+    describe("clone", () => {
+      const buildLineItem = (id) => ({
+        id,
+        original_item_id: id,
+        swap_id: "test",
+        order_id: "test",
+        tax_lines: [
+          {
+            rate: 10,
+            item_id: id,
+          },
+        ],
+        adjustments: [
+          {
+            amount: 10,
+            item_id: id,
+          },
+        ],
+      })
+      const buildExpectedLineItem = (id) =>
+        expect.objectContaining({
+          original_item_id: id,
+          swap_id: undefined,
+          claim_order_id: undefined,
+          cart_id: undefined,
+          order_edit_id: undefined,
+          order_id: "test",
+          tax_lines: expect.arrayContaining([
+            expect.objectContaining({
+              rate: 10,
+            }),
+          ]),
+          adjustments: expect.arrayContaining([
+            expect.objectContaining({
+              amount: 10,
+            }),
+          ]),
+        })
+
+      const lineItemRepository = MockRepository({
+        create: (data) => data,
+        save: (data) => data,
+        find: (selector) => {
+          return selector.where.id.value.map(buildLineItem)
+        },
+      })
+
+      const featureFlagRouter = new FlagRouter({})
+
+      const lineItemService = new LineItemService({
+        manager: MockManager,
+        pricingService: PricingServiceMock,
+        lineItemRepository,
+        productVariantService: ProductVariantServiceMock,
+        regionService: RegionServiceMock,
+        cartRepository: MockRepository,
+        featureFlagRouter,
+      })
+
+      beforeEach(async () => {
+        jest.clearAllMocks()
+      })
+
+      it("successfully clone line items with tax lines and adjustments", async () => {
+        const lineItemId1 = IdMap.getId("line-item-1")
+        const lineItemId2 = IdMap.getId("line-item-2")
+
+        await lineItemService.cloneTo([lineItemId1, lineItemId2], {
+          order_id: "test",
+        })
+
+        expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith(
+          expect.arrayContaining([
+            buildExpectedLineItem(lineItemId1),
+            buildExpectedLineItem(lineItemId2),
+          ])
+        )
+        expect(lineItemRepository.save).toHaveBeenCalledWith(
+          expect.arrayContaining([
+            buildExpectedLineItem(lineItemId1),
+            buildExpectedLineItem(lineItemId2),
+          ])
+        )
+      })
+
+      it("throw on clone line items if none of the foreign keys is specified", async () => {
+        const lineItemId1 = IdMap.getId("line-item-1")
+        const lineItemId2 = IdMap.getId("line-item-2")
+
+        const err = await lineItemService
+          .cloneTo([lineItemId1, lineItemId2])
+          .catch((e) => e)
+
+        expect(err.message).toBe(
+          "Unable to clone a line item that is not attached to at least one of: order_edit, order, swap, claim or cart."
+        )
       })
     })
   })

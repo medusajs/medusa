@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { LineItemTaxLine } from "../models"
@@ -362,6 +362,77 @@ class LineItemService extends BaseService {
     )
 
     return itemTaxLineRepo.create(args)
+  }
+
+  async cloneTo(
+    ids: string | string[],
+    data: DeepPartial<LineItem> = {},
+    options: { setOriginalLineItemId?: boolean } = {
+      setOriginalLineItemId: true,
+    }
+  ): Promise<LineItem[]> {
+    ids = typeof ids === "string" ? [ids] : ids
+    return await this.atomicPhase_(async (manager) => {
+      let lineItems: DeepPartial<LineItem>[] = await this.list(
+        {
+          id: In(ids as string[]),
+        },
+        {
+          relations: ["tax_lines", "adjustments"],
+        }
+      )
+
+      const lineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
+
+      const {
+        order_id,
+        swap_id,
+        claim_order_id,
+        cart_id,
+        order_edit_id,
+        ...lineItemData
+      } = data
+
+      if (
+        !order_id &&
+        !swap_id &&
+        !claim_order_id &&
+        !cart_id &&
+        !order_edit_id
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Unable to clone a line item that is not attached to at least one of: order_edit, order, swap, claim or cart."
+        )
+      }
+
+      lineItems = lineItems.map((item) => ({
+        ...item,
+        ...lineItemData,
+        id: undefined,
+        order_id,
+        swap_id,
+        claim_order_id,
+        cart_id,
+        order_edit_id,
+        original_item_id: options?.setOriginalLineItemId ? item.id : undefined,
+        tax_lines: item.tax_lines?.map((tax_line) => ({
+          ...tax_line,
+          id: undefined,
+          item_id: undefined,
+        })),
+        adjustments: item.adjustments?.map((adj) => ({
+          ...adj,
+          id: undefined,
+          item_id: undefined,
+        })),
+      }))
+
+      const clonedLineItemEntities = lineItemRepository.create(lineItems)
+      return await lineItemRepository.save(clonedLineItemEntities)
+    })
   }
 }
 
