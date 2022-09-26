@@ -254,7 +254,6 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         condId: condition.id,
         resourceId: productId,
       })
-      console.log(numConditions,'numConditions')
       if (
         condition.operator === DiscountConditionOperator.IN &&
         numConditions === 0
