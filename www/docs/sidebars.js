@@ -252,6 +252,11 @@ module.exports = {
           label: "Create Batch Job Strategy"
         },
         {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/override",
+          label: "Override Price Selection"
+        },
+        {
           type: "category",
           label: "Storefront",
           items: [
@@ -338,6 +343,14 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-lists/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/index"
         },
       ]
     },
