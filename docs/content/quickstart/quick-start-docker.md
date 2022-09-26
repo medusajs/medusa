@@ -1,4 +1,3 @@
-
 # Quickstart using Docker
 
 In this document you will learn how to make a container of Medusa's app on Docker. Docker is an open source platform for building, deploying, and managing containerized applications.
