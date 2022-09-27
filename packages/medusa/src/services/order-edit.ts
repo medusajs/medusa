@@ -327,19 +327,18 @@ export default class OrderEditService extends TransactionBaseService {
    * - If the item change already exists then update the quantity of the line item as well as the line adjustments and tax lines
    * - If the item change does not exist then create the item change and cloned the original line item with the quantity as well as the line adjustments and tax lines
    * @param orderEditId
-   * @param originalLineItemId
+   * @param itemId
    * @param data
    */
   async updateLineItem(
     orderEditId: string,
-    originalLineItemId: string,
+    itemId: string,
     data: { quantity: number }
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const orderEdit = await this.retrieve(orderEditId, {
         select: [
           "id",
-          "items",
           "order_id",
           "created_at",
           "requested_at",
@@ -347,7 +346,6 @@ export default class OrderEditService extends TransactionBaseService {
           "declined_at",
           "canceled_at",
         ],
-        relations: ["items"],
       })
 
       const isOrderEditActive = OrderEditService.isOrderEditActive(orderEdit)
@@ -358,14 +356,16 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      const clonedLineItem = orderEdit.items?.find(
-        (item) => item.original_item_id === originalLineItemId
-      )
+      const lineItem = await this.lineItemService_
+        .withTransaction(manager)
+        .retrieve(itemId, {
+          select: ["id", "order_edit_id", "original_item_id"],
+        })
 
-      if (!clonedLineItem) {
+      if (lineItem.order_edit_id !== orderEditId) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Invalid line item id ${originalLineItemId} unable to find the line item on the order edit for the order ${orderEdit.order_id}.`
+          `Invalid line item id ${itemId} it does not belong to the same order edit ${orderEdit.order_id}.`
         )
       }
 
@@ -375,7 +375,7 @@ export default class OrderEditService extends TransactionBaseService {
       let change = (
         await orderEditItemChangeServiceTx.list(
           {
-            original_line_item_id: originalLineItemId,
+            line_item_id: itemId,
             type: OrderEditItemChangeType.ITEM_UPDATE,
           },
           {
@@ -388,8 +388,8 @@ export default class OrderEditService extends TransactionBaseService {
         change = await orderEditItemChangeServiceTx.create({
           type: OrderEditItemChangeType.ITEM_UPDATE,
           order_edit_id: orderEditId,
-          original_line_item_id: originalLineItemId,
-          line_item_id: clonedLineItem.id,
+          original_line_item_id: lineItem.original_item_id,
+          line_item_id: itemId,
         })
       }
 

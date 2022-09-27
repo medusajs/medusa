@@ -9,13 +9,13 @@ import {
 
 /**
  * @oas [post] /order-edits/{id}/items/{item_id}
- * operationId: "PostOrderEditsEditLineItemsLineItems"
+ * operationId: "PostOrderEditsEditLineItemsLineItem"
  * summary: "Create or update the order edit change holding the line item changes"
  * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.
- *   - (path) item_id=* {string} The ID of the order line item to update.
+ *   - (path) item_id=* {string} The ID of the order edit item to update.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,7 +26,7 @@ import {
  *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
