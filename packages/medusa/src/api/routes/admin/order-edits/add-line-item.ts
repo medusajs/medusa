@@ -9,10 +9,12 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/:id/items
+ * @oas [post] /order-edits/{id}/items
  * operationId: "PostOrderEditsLineItem"
  * summary: "Add an line item to an order (edit)"
  * description: "Create an OrderEdit LineItem."
+ * parameters:
+ *   - (path) id=* {string} The ID of the Order Edit.
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -23,8 +25,8 @@ import {
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdit.addLineItem({ variant_id, quantity })
  *       .then(({ order_edit }) => {
- *         console.log(order_edit.id);
- *       });
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
