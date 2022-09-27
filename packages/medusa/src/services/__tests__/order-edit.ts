@@ -1,7 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
   EventBusService,
-  InventoryService,
   LineItemService,
   OrderEditItemChangeService,
   OrderEditService,
@@ -18,7 +17,6 @@ import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-cha
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import LineItemAdjustmentService from "../line-item-adjustment"
-import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -192,7 +190,6 @@ describe("OrderEditService", () => {
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
-    inventoryService: InventoryServiceMock as unknown as InventoryService,
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
@@ -408,15 +405,17 @@ describe("OrderEditService", () => {
   })
 
   it("should add a line item to an order edit", async () => {
+    jest
+      .spyOn(orderEditService, "refreshAdjustments")
+      .mockImplementation(async () => {})
+
     await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
       variant_id: IdMap.getId("to-be-added-variant"),
       quantity: 3,
     })
 
     expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
-    expect(
-      LineItemAdjustmentServiceMock.createAdjustments
-    ).toHaveBeenCalledTimes(1)
+    expect(orderEditService.refreshAdjustments).toHaveBeenCalledTimes(1)
     expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
     expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
   })
