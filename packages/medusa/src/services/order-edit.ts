@@ -399,24 +399,22 @@ export default class OrderEditService extends TransactionBaseService {
           quantity: data.quantity,
         })
 
-      await this.refreshAdjustmentAndTaxLines(orderEditId)
+      await this.refreshAdjustments(orderEditId)
     })
   }
 
-  protected async refreshAdjustmentAndTaxLines(
-    orderEditId: string
+  protected async refreshTaxLines(
+    orderEditId: string,
+    itemIds: string | string[]
   ): Promise<void> {
     const manager = this.transactionManager_ ?? this.manager_
 
-    const lineItemAdjustmentServiceTx =
-      this.lineItemAdjustmentService_.withTransaction(manager)
     const taxProviderServiceTx =
       this.taxProviderService_.withTransaction(manager)
 
     const orderEdit = await this.retrieve(orderEditId, {
       relations: [
         "items",
-        "items.adjustments",
         "order",
         "order.customer",
         "order.discounts",
@@ -428,11 +426,38 @@ export default class OrderEditService extends TransactionBaseService {
       ],
     })
 
-    const clonedItemIds: string[] = []
+    const localCart = {
+      ...orderEdit.order,
+      object: "cart",
+      items: orderEdit.items,
+    } as unknown as Cart
+
+    const calcContext = await this.totalsService_
+      .withTransaction(manager)
+      .getCalculationContext(localCart, {
+        exclude_shipping: true,
+      })
+
+    const ids = typeof itemIds === "string" ? [itemIds] : itemIds
+    await taxProviderServiceTx.clearLineItemsTaxLines(ids)
+
+    const items = orderEdit.items.filter((item) => itemIds.includes(item.id))
+    await taxProviderServiceTx.createTaxLines(items, calcContext)
+  }
+
+  async refreshAdjustments(orderEditId: string) {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    const lineItemAdjustmentServiceTx =
+      this.lineItemAdjustmentService_.withTransaction(manager)
+
+    const orderEdit = await this.retrieve(orderEditId, {
+      relations: ["items", "items.adjustments"],
+    })
+
     const clonedItemAdjustmentIds: string[] = []
 
     orderEdit.items.forEach((item) => {
-      clonedItemIds.push(item.id)
       if (item.adjustments?.length) {
         item.adjustments.forEach((adjustment) => {
           clonedItemAdjustmentIds.push(adjustment.id)
@@ -440,10 +465,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
     })
 
-    await Promise.all([
-      lineItemAdjustmentServiceTx.delete(clonedItemAdjustmentIds),
-      taxProviderServiceTx.clearLineItemsTaxLines(clonedItemIds),
-    ])
+    await lineItemAdjustmentServiceTx.delete(clonedItemAdjustmentIds)
 
     const localCart = {
       ...orderEdit.order,
@@ -452,14 +474,6 @@ export default class OrderEditService extends TransactionBaseService {
     } as unknown as Cart
 
     await lineItemAdjustmentServiceTx.createAdjustments(localCart)
-
-    const calcContext = await this.totalsService_
-      .withTransaction(manager)
-      .getCalculationContext(localCart, {
-        exclude_shipping: true,
-      })
-
-    await taxProviderServiceTx.createTaxLines(localCart, calcContext)
   }
 
   async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
