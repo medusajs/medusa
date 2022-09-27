@@ -220,6 +220,10 @@ module.exports = {
               id: "advanced/backend/taxes/manual-calculation",
               label: "Calculate Taxes Manually"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/price-lists/use-api"
+            },
           ]
         },
         {
