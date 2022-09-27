@@ -434,23 +434,6 @@ class LineItemService extends BaseService {
       return await lineItemRepository.save(clonedLineItemEntities)
     })
   }
-
-  async deleteAdjustments(lineItemId: string) {
-    return await this.atomicPhase_(async (manager) => {
-      const item = await this.retrieve(lineItemId, {
-        relation: ["adjustments"],
-      })
-
-      const lineItemAdjustmentServiceTx =
-        this.lineItemAdjustmentService_.withTransaction(manager)
-
-      await Promise.all(
-        item.adjustments.map((adjustment) =>
-          lineItemAdjustmentServiceTx.delete(adjustment.id)
-        )
-      )
-    })
-  }
 }
 
 export default LineItemService

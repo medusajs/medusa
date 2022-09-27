@@ -475,21 +475,7 @@ export default class OrderEditService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       const orderEdit = await this.retrieve(orderEditId, {
-        relations: [
-          "order",
-
-          "order.cart", // TODO -> remove this; how do we pass discount info to computation methods
-          "order.cart.customer",
-          "order.cart.discounts",
-          "order.cart.discounts.rule",
-          "order.cart.gift_cards",
-          "order.cart.region",
-          "order.cart.region.tax_rates",
-          "order.cart.shipping_address",
-          "order.cart.shipping_methods",
-
-          "order.region",
-        ],
+        relations: ["order.region"],
       })
 
       if (!OrderEditService.isOrderEditActive(orderEdit)) {
@@ -500,8 +486,6 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       const regionId = orderEdit.order.region_id
-
-      // 1. generate new line item from data
 
       const newItem = await lineItemServiceTx.generate(
         data.variant_id,
@@ -514,45 +498,13 @@ export default class OrderEditService extends TransactionBaseService {
 
       const [lineItem] = await lineItemServiceTx.cloneTo(orderEditId, newItem)
 
-      // 2. clear all adjustments for all cloned line items related to this order edit
-
-      const orderEditLineItems = await this.lineItemService_.list({
-        order_edit_id: orderEditId,
-      })
-
-      await Promise.all(
-        orderEditLineItems.map((oeItem) =>
-          lineItemServiceTx.deleteAdjustments(oeItem.id)
-        )
-      )
-
-      // 3. (re)generate line item adjustments for all cloned items
-
-      await Promise.all(
-        orderEditLineItems.map((oeItem) =>
-          this.lineItemAdjustmentService_
-            .withTransaction(manager)
-            .createAdjustments(orderEdit.order.cart, oeItem)
-        )
-      )
-
-      // 4. generate tax lines
-
-      const calcContext = await this.totalsService_
-        .withTransaction(manager)
-        .getCalculationContext(orderEdit.order)
-
-      await this.taxProviderService_
-        .withTransaction(manager)
-        .createTaxLines(orderEditLineItems, calcContext)
-
-      // 5. generate change record (with new line item)
-
       await this.orderEditItemChangeService_.withTransaction(manager).create({
         type: OrderEditItemChangeType.ITEM_ADD,
         line_item_id: lineItem.id,
         order_edit_id: orderEditId,
       })
+
+      await this.refreshAdjustmentAndTaxLines(orderEditId)
 
       return this.retrieve(orderEditId)
     })
@@ -704,6 +656,65 @@ export default class OrderEditService extends TransactionBaseService {
 
       return saved
     })
+  }
+
+  protected async refreshAdjustmentAndTaxLines(
+    orderEditId: string
+  ): Promise<void> {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    const lineItemAdjustmentServiceTx =
+      this.lineItemAdjustmentService_.withTransaction(manager)
+    const taxProviderServiceTx =
+      this.taxProviderService_.withTransaction(manager)
+
+    const orderEdit = await this.retrieve(orderEditId, {
+      relations: [
+        "items",
+        "items.adjustments",
+        "order",
+        "order.customer",
+        "order.discounts",
+        "order.discounts.rule",
+        "order.gift_cards",
+        "order.region",
+        "order.shipping_address",
+        "order.shipping_methods",
+      ],
+    })
+
+    const clonedItemIds: string[] = []
+    const clonedItemAdjustmentIds: string[] = []
+
+    orderEdit.items.forEach((item) => {
+      clonedItemIds.push(item.id)
+      if (item.adjustments?.length) {
+        item.adjustments.forEach((adjustment) => {
+          clonedItemAdjustmentIds.push(adjustment.id)
+        })
+      }
+    })
+
+    await Promise.all([
+      lineItemAdjustmentServiceTx.delete(clonedItemAdjustmentIds),
+      taxProviderServiceTx.clearLineItemsTaxLines(clonedItemIds),
+    ])
+
+    const localCart = {
+      ...orderEdit.order,
+      object: "cart",
+      items: orderEdit.items,
+    } as unknown as Cart
+
+    await lineItemAdjustmentServiceTx.createAdjustments(localCart)
+
+    const calcContext = await this.totalsService_
+      .withTransaction(manager)
+      .getCalculationContext(localCart, {
+        exclude_shipping: true,
+      })
+
+    await taxProviderServiceTx.createTaxLines(localCart, calcContext)
   }
 
   private static isOrderEditActive(orderEdit: OrderEdit): boolean {
