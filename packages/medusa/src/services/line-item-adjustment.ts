@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import {
   Cart,
   DiscountRuleType,
@@ -159,27 +159,28 @@ class LineItemAdjustmentService extends BaseService {
 
   /**
    * Deletes line item adjustments matching a selector
-   * @param selectorOrId - the query object for find or the line item adjustment id
+   * @param selectorOrIds - the query object for find or the line item adjustment id
    * @return the result of the delete operation
    */
   async delete(
-    selectorOrId: string | FilterableLineItemAdjustmentProps
+    selectorOrIds: string | string[] | FilterableLineItemAdjustmentProps
   ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
         manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-      if (typeof selectorOrId === "string") {
-        return await this.delete({ id: selectorOrId })
+      if (typeof selectorOrIds === "string" || Array.isArray(selectorOrIds)) {
+        const ids =
+          typeof selectorOrIds === "string" ? [selectorOrIds] : selectorOrIds
+        return await lineItemAdjustmentRepo.delete({ id: In(ids) })
       }
 
-      const query = this.buildQuery_(selectorOrId)
+      const query = this.buildQuery_(selectorOrIds)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
 
       await lineItemAdjustmentRepo.remove(lineItemAdjustments)
-
-      return Promise.resolve()
+      return
     })
   }
 

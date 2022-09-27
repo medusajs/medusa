@@ -81,7 +81,7 @@ export default async (req: Request, res: Response) => {
     select: defaultOrderEditFields,
     relations: defaultOrderEditRelations,
   })
-  orderEdit = await orderEditService.decorateLineItemsAndTotals(orderEdit)
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   res.status(200).send({
     order_edit: orderEdit,
