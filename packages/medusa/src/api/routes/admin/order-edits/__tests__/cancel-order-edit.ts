@@ -25,7 +25,7 @@ describe("POST /admin/order-edits/:id/cancel", () => {
 
     it("calls orderService cancel", () => {
       expect(orderEditServiceMock.cancel).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, IdMap.getId("admin_user"))
+      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, {loggedInUser: IdMap.getId("admin_user")})
     })
 
     it("returns 200", () => {

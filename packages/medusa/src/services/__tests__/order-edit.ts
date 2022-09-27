@@ -305,7 +305,7 @@ describe("OrderEditService", () => {
         const id = IdMap.getId("order-edit-with-changes")
         const userId = IdMap.getId("user-id")
 
-        await orderEditService.cancel(id, userId)
+        await orderEditService.cancel(id, {loggedInUser: userId})
 
         expect(orderEditRepository.save).toHaveBeenCalledWith({
           ...orderEditWithChanges,
