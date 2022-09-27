@@ -323,9 +323,9 @@ export default class OrderEditService extends TransactionBaseService {
   }
 
   /**
-   * Create or update order edit item change line item and apply the quatity
-   * - If the item change already exists then update the quantity of the line item as well as the line adjustments and tax lines
-   * - If the item change does not exist then create the item change and cloned the original line item with the quantity as well as the line adjustments and tax lines
+   * Create or update order edit item change line item and apply the quantity
+   * - If the item change already exists then update the quantity of the line item as well as the line adjustments
+   * - If the item change does not exist then create the item change of type update and apply the quantity as well as update the line adjustments
    * @param orderEditId
    * @param itemId
    * @param data
@@ -372,23 +372,23 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditItemChangeServiceTx =
         this.orderEditItemChangeService_.withTransaction(manager)
 
+      // Can be of type update or add
       let change = (
         await orderEditItemChangeServiceTx.list(
-          {
-            line_item_id: itemId,
-            type: OrderEditItemChangeType.ITEM_UPDATE,
-          },
+          { line_item_id: itemId },
           {
             select: ["line_item_id", "original_line_item_id"],
           }
         )
       ).pop()
 
+      // if a change does not exist it means that we are updating an existing item and therefore creating an update change.
+      // otherwise we are updating either a change of type ADD or UPDATE
       if (!change) {
         change = await orderEditItemChangeServiceTx.create({
           type: OrderEditItemChangeType.ITEM_UPDATE,
           order_edit_id: orderEditId,
-          original_line_item_id: lineItem.original_item_id,
+          original_line_item_id: lineItem.original_item_id as string,
           line_item_id: itemId,
         })
       }
