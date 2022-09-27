@@ -423,7 +423,7 @@ export default class OrderEditService extends TransactionBaseService {
       [
         taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
         clonedItemIds.map(async (id) => {
-          return lineItemAdjustmentServiceTx.delete({
+          return await lineItemAdjustmentServiceTx.delete({
             item_id: id,
           })
         }),
@@ -432,7 +432,7 @@ export default class OrderEditService extends TransactionBaseService {
 
     await Promise.all(
       clonedItemIds.map(async (id) => {
-        return lineItemServiceTx.delete(id)
+        return await lineItemServiceTx.delete(id)
       })
     )
   }
