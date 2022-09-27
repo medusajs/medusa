@@ -40,7 +40,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: true,
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -847,9 +847,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
               line_item_id: expect.any(String),
             }),
           ],
-          /*
-           * Computed items are appended to the response
-           */
           items: expect.arrayContaining([
             expect.objectContaining({
               variant: expect.objectContaining({ id: toBeAddedVariantId }),
@@ -1091,7 +1088,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 500, // 1 * 100$ + 2 * 200$
-          discount_total: 30, // discount === 20%
+          discount_total: 30, // discount === fixed 30
           tax_total: 47, // tax rate === 10%
           total: 470 + 47,
         })
