@@ -928,17 +928,21 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       // Create an order edit for the created order
 
-      await simpleOrderEditFactory(dbConnection, {
-        id: orderEditId,
-        order_id: orderWithDiscount.id,
-        created_by: "admin_user",
-      })
+      const { data: order_edit } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderWithDiscount.id,
+        },
+        adminHeaders
+      )
 
       const response = await api.post(
         `/admin/order-edits/${orderEditId}/items`,
         { variant_id: toBeAddedVariantId, quantity: 2 },
         adminHeaders
       )
+
+      console.log(response.data.order_edit)
 
       expect(response.status).toEqual(200)
       expect(response.data.order_edit).toEqual(
