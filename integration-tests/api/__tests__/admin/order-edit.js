@@ -997,4 +997,101 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
     })
   })
+
+  describe("POST /admin/order-edits/:id", () => {
+    const cancellableEditId = IdMap.getId("order-edit-1")
+    const canceledEditId = IdMap.getId("order-edit-2")
+    const confirmedEditId = IdMap.getId("order-edit-3")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: cancellableEditId,
+        created_by: "admin_user",
+        internal_note: "test internal note",
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: canceledEditId,
+        canceled_at: new Date(),
+        canceled_by: "admin_user",
+        created_by: "admin_user",
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: confirmedEditId,
+        confirmed_at: new Date(),
+        confirmed_by: "admin_user",
+        created_by: "admin_user",
+        internal_note: "test internal note",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("cancels an order edit", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/order-edits/${cancellableEditId}/cancel`,
+        {},
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: cancellableEditId,
+          created_by: "admin_user",
+          canceled_by: "admin_user",
+          canceled_at: expect.any(String),
+          status: "canceled",
+        })
+      )
+    })
+
+    it("cancels an already cancelled order edit", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/order-edits/${canceledEditId}/cancel`,
+        {},
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: canceledEditId,
+          created_by: "admin_user",
+          canceled_by: "admin_user",
+          canceled_at: expect.any(String),
+          status: "canceled",
+        })
+      )
+    })
+
+    it("cancels an already cancelled order edit", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      try {
+        await api.post(
+          `/admin/order-edits/${confirmedEditId}/cancel`,
+          {},
+          adminHeaders
+        )
+      } catch (err) {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.message).toEqual(
+          "Cannot cancel order edit with status confirmed"
+        )
+      }
+    })
+  })
 })
