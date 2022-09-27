@@ -208,6 +208,7 @@ class LineItemService extends BaseService {
       includes_tax?: boolean
       metadata?: Record<string, unknown>
       customer_id?: string
+      order_edit_id?: string
       cart?: Cart
     } = {}
   ): Promise<LineItem> {
@@ -257,6 +258,7 @@ class LineItemService extends BaseService {
           is_giftcard: variant.product.is_giftcard,
           metadata: context?.metadata || {},
           should_merge: shouldMerge,
+          order_edit_id: context.order_edit_id || null,
         }
 
         if (
