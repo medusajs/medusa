@@ -10,7 +10,7 @@ import {
 
 /**
  * @oas [post] /order-edits/{id}/items
- * operationId: "PostOrderEditsLineItem"
+ * operationId: "PostOrderEditsEditLineItems"
  * summary: "Add an line item to an order (edit)"
  * description: "Create an OrderEdit LineItem."
  * parameters:
@@ -23,7 +23,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.addLineItem({ variant_id, quantity })
+ *       medusa.admin.orderEdit.addLineItem(order_edit_id, { variant_id, quantity })
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
@@ -69,7 +69,7 @@ export default async (req: Request, res: Response) => {
 
   const manager = req.scope.resolve("manager") as EntityManager
 
-  const data = req.validatedBody as AdminPostOrderEditsLineItemReq
+  const data = req.validatedBody as AdminPostOrderEditsEditLineItemsReq
 
   await manager.transaction(async (transactionManager) => {
     const orderEditServiceTx =
@@ -92,7 +92,7 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class AdminPostOrderEditsLineItemReq {
+export class AdminPostOrderEditsEditLineItemsReq {
   @IsString()
   variant_id: string
 

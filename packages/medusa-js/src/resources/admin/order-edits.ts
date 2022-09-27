@@ -6,7 +6,7 @@ import {
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
   AdminPostOrderEditsOrderEditReq,
-  AdminPostOrderEditsLineItemReq,
+  AdminPostOrderEditsEditLineItemsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -47,7 +47,7 @@ class AdminOrderEditsResource extends BaseResource {
 
   addLineItem(
     id: string,
-    payload: AdminPostOrderEditsLineItemReq,
+    payload: AdminPostOrderEditsEditLineItemsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditsRes> {
     const path = `/admin/order-edits/${id}/items`

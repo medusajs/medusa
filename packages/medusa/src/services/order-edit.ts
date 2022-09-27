@@ -470,7 +470,10 @@ export default class OrderEditService extends TransactionBaseService {
     return orderEdit
   }
 
-  async addLineItem(orderEditId: string, data: AddOrderEditLineItemInput) {
+  async addLineItem(
+    orderEditId: string,
+    data: AddOrderEditLineItemInput
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
@@ -537,8 +540,6 @@ export default class OrderEditService extends TransactionBaseService {
       await this.taxProviderService_
         .withTransaction(manager)
         .createTaxLines([lineItem], calcContext)
-
-      return this.retrieve(orderEditId)
     })
   }
 

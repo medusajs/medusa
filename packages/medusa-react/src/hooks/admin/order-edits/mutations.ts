@@ -8,7 +8,7 @@ import {
   AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-  AdminPostOrderEditsLineItemReq,
+  AdminPostOrderEditsEditLineItemsReq,
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -120,13 +120,13 @@ export const useAdminOrderEditLineItem = (
   options?: UseMutationOptions<
     Response<AdminOrderEditsRes>,
     Error,
-    AdminPostOrderEditsLineItemReq
+    AdminPostOrderEditsEditLineItemsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: AdminPostOrderEditsLineItemReq) =>
+    (payload: AdminPostOrderEditsEditLineItemsReq) =>
       client.admin.orderEdits.addLineItem(id, payload),
     buildOptions(
       queryClient,
