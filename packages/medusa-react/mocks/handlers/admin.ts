@@ -1695,12 +1695,29 @@ export const adminHandlers = [
       })
     )
   }),
-  
+
   rest.post("/admin/order-edits/:id/cancel", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
-        order_edit: { ...fixtures.get("order_edit"), canceled_at: new Date(), status: 'canceled' },
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          canceled_at: new Date(),
+          status: "canceled",
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/confirm", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          confirmed_at: new Date(),
+          status: "confirmed",
+        },
       })
     )
   }),

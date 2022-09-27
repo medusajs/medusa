@@ -1,22 +1,20 @@
 import { IdMap } from "medusa-test-utils"
 
-export const orderEdits = {
-  testCreatedOrder: {
-    id: IdMap.getId("testCreatedOrder"),
-    order_id: "empty-id",
-    internal_note: "internal note",
-    declined_reason: null,
-    declined_at: null,
-    declined_by: null,
-    canceled_at: null,
-    canceled_by: null,
-    requested_at: null,
-    requested_by: null,
-    created_at: new Date(),
-    created_by: "admin_user",
-    confirmed_at: null,
-    confirmed_by: null,
-  },
+export const orderEdit = {
+  id: IdMap.getId("testCreatedOrder"),
+  order_id: "empty-id",
+  internal_note: "internal note",
+  declined_reason: null,
+  declined_at: null,
+  declined_by: null,
+  canceled_at: null,
+  canceled_by: null,
+  requested_at: null,
+  requested_by: null,
+  created_at: new Date(),
+  created_by: "admin_user",
+  confirmed_at: null,
+  confirmed_by: null,
 }
 
 const computeLineItems = (orderEdit) => ({
@@ -48,11 +46,20 @@ export const orderEditServiceMock = {
   },
   retrieve: jest.fn().mockImplementation((orderId) => {
     if (orderId === IdMap.getId("testCreatedOrder")) {
-      return Promise.resolve(orderEdits.testCreatedOrder)
+      return Promise.resolve(orderEdit)
+    }
+    if (orderId === IdMap.getId("testConfirmOrderEdit")) {
+      return Promise.resolve({
+        ...orderEdit,
+        id: IdMap.getId("testConfirmOrderEdit"),
+        confirmed_at: new Date(),
+        confirmed_by: "admin_user",
+        status: "confirmed",
+      })
     }
     if (orderId === IdMap.getId("testDeclineOrderEdit")) {
       return Promise.resolve({
-        ...orderEdits.testCreatedOrder,
+        ...orderEdit,
         id: IdMap.getId("testDeclineOrderEdit"),
         declined_reason: "Wrong size",
         declined_at: new Date(),
@@ -60,7 +67,7 @@ export const orderEditServiceMock = {
     }
     if (orderId === IdMap.getId("testCancelOrderEdit")) {
       return Promise.resolve({
-        ...orderEdits.testCreatedOrder,
+        ...orderEdit,
         id: orderId,
         canceled_at: new Date(),
         status: "canceled",
@@ -68,7 +75,7 @@ export const orderEditServiceMock = {
     }
     if (orderId === IdMap.getId("testRequestOrder")) {
       return Promise.resolve({
-        ...orderEdits.testCreatedOrder,
+        ...orderEdit,
         id: IdMap.getId("testRequestOrder"),
         requested_by: IdMap.getId("admin_user"),
         requested_at: new Date(),
@@ -111,13 +118,16 @@ export const orderEditServiceMock = {
   }),
   requestConfirmation: jest.fn().mockImplementation((orderEditId, userId) => {
     return Promise.resolve({
-      ...orderEdits.testCreatedOrder,
+      ...orderEdit,
       id: orderEditId,
       requested_at: new Date(),
       requested_by: userId,
     })
   }),
   cancel: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
+  }),
+  confirm: jest.fn().mockImplementation(() => {
     return Promise.resolve({})
   }),
   updateLineItem: jest.fn().mockImplementation((_) => {

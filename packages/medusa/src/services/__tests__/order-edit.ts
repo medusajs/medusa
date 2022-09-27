@@ -258,7 +258,7 @@ describe("OrderEditService", () => {
         IdMap.getId("requested-order-edit"),
         {
           declinedReason: "I requested a different color for the new product",
-          loggedInUser: "admin_user",
+          loggedInUserId: "admin_user",
         }
       )
 
@@ -276,7 +276,7 @@ describe("OrderEditService", () => {
       await expect(
         orderEditService.decline(IdMap.getId("confirmed-order-edit"), {
           declinedReason: "I requested a different color for the new product",
-          loggedInUser: "admin_user",
+          loggedInUserId: "admin_user",
         })
       ).rejects.toThrowError(
         "Cannot decline an order edit with status confirmed."
@@ -288,7 +288,7 @@ describe("OrderEditService", () => {
         IdMap.getId("declined-order-edit"),
         {
           declinedReason: "I requested a different color for the new product",
-          loggedInUser: "admin_user",
+          loggedInUserId: "admin_user",
         }
       )
 
@@ -312,7 +312,7 @@ describe("OrderEditService", () => {
 
       beforeEach(async () => {
         result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUser: userId,
+          loggedInUserId: userId,
         })
       })
 
@@ -344,7 +344,7 @@ describe("OrderEditService", () => {
 
       beforeEach(async () => {
         result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUser: userId,
+          loggedInUserId: userId,
         })
       })
 
@@ -358,7 +358,7 @@ describe("OrderEditService", () => {
         const id = IdMap.getId("order-edit-with-changes")
         const userId = IdMap.getId("user-id")
 
-        await orderEditService.cancel(id, { loggedInUser: userId })
+        await orderEditService.cancel(id, { loggedInUserId: userId })
 
         expect(orderEditRepository.save).toHaveBeenCalledWith({
           ...orderEditWithChanges,
@@ -401,6 +401,39 @@ describe("OrderEditService", () => {
           }
         }
       )
+    })
+
+    describe("confirm", () => {
+      it("confirms an order edit", async () => {
+        const id = IdMap.getId("order-edit-with-changes")
+        const userId = IdMap.getId("user-id")
+
+        await orderEditService.confirm(id, { loggedInUserId: userId })
+
+        expect(orderEditRepository.save).toHaveBeenCalledWith({
+          ...orderEditWithChanges,
+          confirmed_by: userId,
+          confirmed_at: expect.any(Date),
+        })
+
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          OrderEditService.Events.CONFIRMED,
+          { id }
+        )
+      })
+
+      it("Returns early in case of an already confirmed order edit", async () => {
+        const id = IdMap.getId("confirmed-order-edit")
+        const userId = IdMap.getId("user-id")
+
+        const result = await orderEditService.confirm(id, userId)
+
+        expect(result).toEqual(expect.objectContaining({ status: "confirmed" }))
+
+        expect(orderEditRepository.save).toHaveBeenCalledTimes(0)
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+      })
     })
   })
 

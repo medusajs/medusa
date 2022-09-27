@@ -59,6 +59,11 @@ export default (app) => {
     middlewares.wrap(require("./add-line-item").default)
   )
 
+  route.post(
+    "/:id/confirm",
+    middlewares.wrap(require("./confirm-order-edit").default)
+  )
+
   route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
   route.delete(

@@ -1,9 +1,5 @@
 import { OrderEdit, OrderEditItemChangeType } from "../models"
 
-export type UpdateOrderEditInput = {
-  internal_note?: string
-}
-
 export type CreateOrderEditInput = {
   order_id: string
   internal_note?: string
