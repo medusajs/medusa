@@ -50,7 +50,6 @@ export default class OrderEditService extends TransactionBaseService {
     DECLINED: "order-edit.declined",
     REQUESTED: "order-edit.requested",
     CANCELED: "order-edit.canceled",
-    ITEM_ADDED: "order-edit.item-added",
   }
 
   protected readonly manager_: EntityManager
