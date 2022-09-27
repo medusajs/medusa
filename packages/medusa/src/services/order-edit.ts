@@ -83,7 +83,7 @@ export default class OrderEditService extends TransactionBaseService {
   async retrieve(
     orderEditId: string,
     config: FindConfig<OrderEdit> = {}
-  ): Promise<OrderEdit | never> {
+  ): Promise<OrderEdit> {
     const manager = this.transactionManager_ ?? this.manager_
     const orderEditRepository = manager.getCustomRepository(
       this.orderEditRepository_
@@ -338,6 +338,7 @@ export default class OrderEditService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const orderEdit = await this.retrieve(orderEditId, {
         select: [
+          "id",
           "items",
           "order_id",
           "created_at",
@@ -346,6 +347,7 @@ export default class OrderEditService extends TransactionBaseService {
           "declined_at",
           "canceled_at",
         ],
+        relations: ["items"],
       })
 
       const isOrderEditActive = OrderEditService.isOrderEditActive(orderEdit)
@@ -383,19 +385,19 @@ export default class OrderEditService extends TransactionBaseService {
       ).pop()
 
       if (!change) {
-        await orderEditItemChangeServiceTx.create({
+        change = await orderEditItemChangeServiceTx.create({
           type: OrderEditItemChangeType.ITEM_UPDATE,
           order_edit_id: orderEditId,
           original_line_item_id: originalLineItemId,
           line_item_id: clonedLineItem.id,
         })
-      } else {
-        await this.lineItemService_
-          .withTransaction(manager)
-          .update(change.line_item_id!, {
-            quantity: data.quantity,
-          })
       }
+
+      await this.lineItemService_
+        .withTransaction(manager)
+        .update(change.line_item_id!, {
+          quantity: data.quantity,
+        })
 
       await this.refreshAdjustmentAndTaxLines(orderEditId)
     })
@@ -443,23 +445,21 @@ export default class OrderEditService extends TransactionBaseService {
       taxProviderServiceTx.clearLineItemsTaxLines(clonedItemIds),
     ])
 
-    const cartOrOrder = {
+    const localCart = {
       ...orderEdit.order,
+      object: "cart",
       items: orderEdit.items,
-    }
+    } as unknown as Cart
 
-    await lineItemAdjustmentServiceTx.createAdjustments(
-      cartOrOrder as unknown as Cart
-    )
+    await lineItemAdjustmentServiceTx.createAdjustments(localCart)
 
     const calcContext = await this.totalsService_
       .withTransaction(manager)
-      .getCalculationContext(cartOrOrder as Order, { exclude_shipping: true })
+      .getCalculationContext(localCart, {
+        exclude_shipping: true,
+      })
 
-    await taxProviderServiceTx.createTaxLines(
-      cartOrOrder as unknown as Cart,
-      calcContext
-    )
+    await taxProviderServiceTx.createTaxLines(localCart, calcContext)
   }
 
   async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
