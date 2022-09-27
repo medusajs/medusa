@@ -90,11 +90,19 @@ const lineItemServiceMock = {
     ])
   }),
   retrieve: jest.fn().mockImplementation((id) => {
-    return Promise.resolve({
+    const data = {
       id,
       quantity: 1,
       fulfilled_quantity: 1,
-    })
+    }
+
+    if (id === IdMap.getId("line-item-1")) {
+      return Promise.resolve({
+        ...data,
+        order_edit_id: IdMap.getId("order-edit-update-line-item"),
+      })
+    }
+    return Promise.resolve(data)
   }),
   cloneTo: () => [],
 }

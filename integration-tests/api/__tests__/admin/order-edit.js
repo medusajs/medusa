@@ -1185,9 +1185,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
 
       const orderEditId = order_edit.id
+      const updateItemId = order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      ).id
 
       const response = await api.post(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
         adminHeaders
       )
@@ -1351,15 +1354,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
 
       const orderEditId = order_edit.id
+      const updateItemId = order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      ).id
 
       await api.post(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
         adminHeaders
       )
 
       const response = await api.post(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 3 },
         adminHeaders
       )
@@ -1563,10 +1569,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         },
         adminHeaders
       )
+
       const orderEditId = order_edit.id
+      const updateItemId = order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      ).id
 
       let response = await api.post(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
         adminHeaders
       )
@@ -1659,7 +1669,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
 
       response = await api.post(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 3 },
         adminHeaders
       )
