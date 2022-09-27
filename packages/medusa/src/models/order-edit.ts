@@ -2,7 +2,6 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
-  CreateDateColumn,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -72,6 +71,9 @@ export class OrderEdit extends BaseEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at?: Date
 
+  @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
+  items: LineItem[]
+
   // Computed
   shipping_total: number
   discount_total: number
@@ -84,9 +86,6 @@ export class OrderEdit extends BaseEntity {
   difference_due: number
 
   status: OrderEditStatus
-
-  items: LineItem[]
-  removed_items: LineItem[]
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -205,11 +204,6 @@ export class OrderEdit extends BaseEntity {
  *   items:
  *     type: array
  *     description: Computed line items from the changes.
- *     items:
- *       $ref: "#/components/schemas/line_item"
- *   removed_items:
- *     type: array
- *     description: Computed line items from the changes that have been marked as deleted.
  *     items:
  *       $ref: "#/components/schemas/line_item"
  */

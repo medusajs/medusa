@@ -46,6 +46,11 @@ export default (app) => {
     middlewares.wrap(require("./update-order-edit").default)
   )
 
+  route.post(
+    "/:id/cancel",
+    middlewares.wrap(require("./cancel-order-edit").default)
+  )
+
   route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
   route.delete(
