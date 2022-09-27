@@ -231,7 +231,6 @@ describe("OrderEditService", () => {
     expect(
       LineItemAdjustmentServiceMock.createAdjustments
     ).toHaveBeenCalledTimes(1)
-    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
   })
 
   describe("decline", () => {
