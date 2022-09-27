@@ -1,89 +1,106 @@
-<!-- vale off -->
-# Quickstart w. Docker
+# Quickstart using Docker
 
-This quick start is intended for developers, that have already configured their local development environment and familiarised them selves with all the technologies and frameworks used throughout the Medusa eco-system.
+In this document you will learn how to make a container of Medusa's app on Docker. Docker is an open source platform for building, deploying, and managing containerized applications.
 
-If this is not the case, please head over to our Getting Started tutorial for a thorough walkthrough.
+## Prerequisites
 
-## Introduction
+### Node.js
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
 
-With all the tools and technologies in place, let's get started by setting up a default project. Our starter is shipped with a very basic configuration, that includes the following plugins:
+```bash
+node -v
+```
 
-- Stripe as payment provider
-- SendGrid as email notification provider
-- Manual fulfilment as fulfilment provider
+You can install Node from the [official website](https://nodejs.org/en/).
 
-Additionally, we will spin up a PostgreSQL database and a Redis server, both required for Medusa to run. In this quick start, we will use docker to seamlessly set up these resources.
+### Docker Desktop
 
-## Get started
+It is assumed that you have Docker installed on your system. You can install it from [Docker's website](https://docs.docker.com/get-docker/).
 
-1. Clone our starter project from Github
+## Create Medusa Server with Docker
+
+### 1. Clone Medusa's starter project from Github
 
 ```bash
 git clone https://github.com/medusajs/medusa-starter-default.git my-medusa-starter
 ```
 
-2. Once cloned, we will jump into our project directory and get started with our configuration.
-
+### 2. Change to the newly created project directory
 ```bash
 cd my-medusa-starter
 ```
 
-3. Get your environment variables ready using our template
+### 3.  Rename the environment variables(.env) file
 
 ```bash
 mv .env.template .env
 ```
 
-4. Setup accounts for included plugins. This step is optional but required for placing orders.
+### 4. Start your server
 
-Create a Stripe account and add your API key and webhook secret to `.env`
-Create a SendGrid account and add your API key to `.env`
-
-```bash
-...
-STRIPE_API_KEY="some_stripe_key"
-STRIPE_WEBHOOK_SECRET="some_webhook_secret"
-SENDGRID_API_KEY="some_sendgrid_key"
-..
-```
-
-5. Start your server
+Make sure the Docker Desktop app is running. Then, run the following command:
 
 ```bash
 docker-compose up --build
 ```
 
-We will use docker-compose and Docker to start up our development environment. Running the above command will do the following:
+:::note
 
-1. Build images for our Medusa project, a PostgreSQL database and a Redis server
-2. Run migrations for our newly created database
-3. Seed our database with some entities, that will allow us to easily get started.
+If you get the error `ERROR: for postgres  Cannot start service postgres: Ports are not available`, change the ports used for PostgreSQL in `docker-compose.yml` to something like this:
 
-   These include:
+```yml
+  postgres:
+    ports:
+      - "5433:5433"
+```
 
-   - A user with email `admin@medusa-test.com` and password `supersecret`
-   - A region called Default Region with a small subset of countries
-   - A shipping option called Standard Shipping, that costs 10 EUR
-   - A product called Cool Test Product
-   - A variant of that product that costs 195 EUR
+:::
 
-Once done, our server will be accessible at `http://localhost:9000`.
+Running the above command does the following:
 
-## Try it out
+1. Build images for your Medusa project, a PostgreSQL database and a Redis server
+2. Run migrations for your newly created database
 
-Let's try out our Medusa server by fetching some products.
+
+## Test Your Server
+
+Once done, your server will be accessible at `http://localhost:9000`.
+
+You can test out your server using tools like Postman or by sending a cURL request:
 
 ```bash
 curl -X GET localhost:9000/store/products | python -m json.tool
 ```
 
-## What's next?
+:::note
 
-Add custom endpoint to your Medusa project
+This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
 
-Install and configure additional plugins
+```bash
+curl localhost:9000/store/products
+```
 
-Build a storefront using our [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
+:::
 
-<!-- vale on -->
+## Additional steps
+
+### File Service Plugin
+
+To upload product images to your Medusa server, you must install and configure one of the following file service plugins:
+
+- [MinIO](../add-plugins/minio.md) (Recommended for local development)
+- [S3](../add-plugins/s3.md)
+- [DigitalOcean Spaces](../add-plugins/spaces.md)
+
+### Server Configurations
+
+It's important to configure your Medusa server properly and learn how environment variables are loaded.
+
+You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
+
+## What's next :rocket:
+
+- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
+- Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
+- Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
+- Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.
