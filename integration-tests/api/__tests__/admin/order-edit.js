@@ -22,7 +22,7 @@ const {
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
-jest.setTimeout(3000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
