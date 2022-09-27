@@ -948,35 +948,35 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           order_id: orderWithDiscount.id,
-          // items: [
-          //   // New line item
-          //   expect.objectContaining({
-          //     adjustments: [
-          //       expect.objectContaining({
-          //         discount_id: discount.id,
-          //         amount: 80,
-          //       }),
-          //     ],
-          //     tax_lines: [expect.objectContaining({ rate: 10 })],
-          //     unit_price: 200,
-          //     quantity: 2,
-          //   }),
-          //   // Already existing line item
-          //   expect.objectContaining({
-          //     adjustments: [
-          //       expect.objectContaining({
-          //         discount_id: discount.id,
-          //         amount: 20,
-          //       }),
-          //     ],
-          //     tax_lines: [expect.objectContaining({ rate: 10 })],
-          //     unit_price: 100,
-          //     quantity: 1,
-          //     variant: expect.objectContaining({
-          //       id: initialProduct.variants[0].id,
-          //     }),
-          //   }),
-          // ],
+          items: expect.arrayContaining([
+            // New line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 80,
+                }),
+              ],
+              tax_lines: [expect.objectContaining({ rate: 10 })],
+              unit_price: 200,
+              quantity: 2,
+            }),
+            // Already existing line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 20,
+                }),
+              ],
+              tax_lines: [expect.objectContaining({ rate: 10 })],
+              unit_price: 100,
+              quantity: 1,
+              variant: expect.objectContaining({
+                id: initialProduct.variants[0].id,
+              }),
+            }),
+          ]),
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
