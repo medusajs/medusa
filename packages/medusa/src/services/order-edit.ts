@@ -403,18 +403,17 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
-  protected async refreshTaxLines(
-    orderEditId: string,
-    itemIds: string | string[]
-  ): Promise<void> {
+  async refreshAdjustments(orderEditId: string) {
     const manager = this.transactionManager_ ?? this.manager_
 
-    const taxProviderServiceTx =
-      this.taxProviderService_.withTransaction(manager)
+    const lineItemAdjustmentServiceTx =
+      this.lineItemAdjustmentService_.withTransaction(manager)
 
     const orderEdit = await this.retrieve(orderEditId, {
       relations: [
         "items",
+        "items.adjustments",
+        "items.tax_lines",
         "order",
         "order.customer",
         "order.discounts",
@@ -424,35 +423,6 @@ export default class OrderEditService extends TransactionBaseService {
         "order.shipping_address",
         "order.shipping_methods",
       ],
-    })
-
-    const localCart = {
-      ...orderEdit.order,
-      object: "cart",
-      items: orderEdit.items,
-    } as unknown as Cart
-
-    const calcContext = await this.totalsService_
-      .withTransaction(manager)
-      .getCalculationContext(localCart, {
-        exclude_shipping: true,
-      })
-
-    const ids = typeof itemIds === "string" ? [itemIds] : itemIds
-    await taxProviderServiceTx.clearLineItemsTaxLines(ids)
-
-    const items = orderEdit.items.filter((item) => itemIds.includes(item.id))
-    await taxProviderServiceTx.createTaxLines(items, calcContext)
-  }
-
-  async refreshAdjustments(orderEditId: string) {
-    const manager = this.transactionManager_ ?? this.manager_
-
-    const lineItemAdjustmentServiceTx =
-      this.lineItemAdjustmentService_.withTransaction(manager)
-
-    const orderEdit = await this.retrieve(orderEditId, {
-      relations: ["items", "items.adjustments"],
     })
 
     const clonedItemAdjustmentIds: string[] = []
