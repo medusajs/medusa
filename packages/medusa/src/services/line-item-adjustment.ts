@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 
 import {
   Cart,
@@ -165,7 +165,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
         return
       }
 
-      const query = buildQuery(selectorOrId)
+      const query = buildQuery(selectorOrIds)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
 
