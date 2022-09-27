@@ -1139,7 +1139,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             tax_lines: [
               {
                 item_id: lineItemId1,
-                rate: 10,
+                rate: 12.5,
                 code: "default",
                 name: "default",
               },
@@ -1155,7 +1155,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             tax_lines: [
               {
                 item_id: lineItemId2,
-                rate: 10,
+                rate: 12.5,
                 code: "default",
                 name: "default",
               },
