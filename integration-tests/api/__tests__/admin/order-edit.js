@@ -985,7 +985,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
     })
 
-    it("adding line item to the order edit with will create adjustments for fixed discount case", async () => {
+    it("adding line item to the order edit will create adjustments for fixed discount case", async () => {
       const api = useApi()
 
       const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
