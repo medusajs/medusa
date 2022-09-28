@@ -406,7 +406,6 @@ describe("LineItemService", () => {
           metadata: {},
           should_merge: true,
           includes_tax: true,
-          order_edit_id: null,
         })
       })
     })
@@ -518,7 +517,6 @@ describe("LineItemService", () => {
           metadata: {},
           should_merge: true,
           includes_tax: false,
-          order_edit_id: null,
         })
       })
     })
