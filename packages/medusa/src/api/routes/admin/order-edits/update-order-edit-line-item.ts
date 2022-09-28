@@ -1,18 +1,21 @@
-import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
+import { OrderEditService } from "../../../../services"
+import { Request, Response } from "express"
+import { IsNumber } from "class-validator"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits
- * operationId: "PostOrderEdits"
- * summary: "Create an OrderEdit"
- * description: "Creates an OrderEdit."
+ * @oas [post] /order-edits/{id}/items/{item_id}
+ * operationId: "PostOrderEditsEditLineItemsLineItem"
+ * summary: "Create or update the order edit change holding the line item changes"
+ * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Order Edit to delete.
+ *   - (path) item_id=* {string} The ID of the order edit item to update.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -20,16 +23,16 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.create({ order_id, internal_note })
+ *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
  *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
+ *       -d '{ "quantity": 5 }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -58,36 +61,34 @@ import {
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const orderEditService = req.scope.resolve(
-    "orderEditService"
-  ) as OrderEditService
-  const manager = req.scope.resolve("manager") as EntityManager
+  const { id, item_id } = req.params
 
-  const data = req.validatedBody as AdminPostOrderEditsReq
-  const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
+  const validatedBody =
+    req.validatedBody as AdminPostOrderEditsEditLineItemsLineItemReq
 
-  const createdOrderEdit = await manager.transaction(
-    async (transactionManager) => {
-      return await orderEditService
-        .withTransaction(transactionManager)
-        .create(data, { loggedInUserId })
-    }
-  )
+  const orderEditService: OrderEditService =
+    req.scope.resolve("orderEditService")
 
-  let orderEdit = await orderEditService.retrieve(createdOrderEdit.id, {
+  const manager: EntityManager = req.scope.resolve("manager")
+
+  await manager.transaction(async (transactionManager) => {
+    await orderEditService
+      .withTransaction(transactionManager)
+      .updateLineItem(id, item_id, validatedBody)
+  })
+
+  let orderEdit = await orderEditService.retrieve(id, {
     select: defaultOrderEditFields,
     relations: defaultOrderEditRelations,
   })
   orderEdit = await orderEditService.decorateTotals(orderEdit)
 
-  return res.json({ order_edit: orderEdit })
+  res.status(200).send({
+    order_edit: orderEdit,
+  })
 }
 
-export class AdminPostOrderEditsReq {
-  @IsString()
-  order_id: string
-
-  @IsOptional()
-  @IsString()
-  internal_note?: string
+export class AdminPostOrderEditsEditLineItemsLineItemReq {
+  @IsNumber()
+  quantity: number
 }

@@ -1,4 +1,4 @@
-import { OrderEdit } from "../models"
+import { OrderEdit, OrderEditItemChangeType } from "../models"
 
 export type UpdateOrderEditInput = {
   internal_note?: string
@@ -9,11 +9,26 @@ export type CreateOrderEditInput = {
   internal_note?: string
 }
 
+export type AddOrderEditLineItemInput = {
+  quantity: number
+  variant_id: string
+
+  metadata?: Record<string, unknown>
+}
+
+export type CreateOrderEditItemChangeInput = {
+  type: OrderEditItemChangeType
+  order_edit_id: string
+  original_line_item_id?: string
+  line_item_id?: string
+}
+
 export const defaultOrderEditRelations: string[] = [
   "changes",
   "changes.line_item",
   "changes.original_line_item",
   "items",
+  "items.adjustments",
   "items.tax_lines",
 ]
 

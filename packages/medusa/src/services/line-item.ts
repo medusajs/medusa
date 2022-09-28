@@ -2,23 +2,22 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { LineItemTaxLine } from "../models"
-import { Cart } from "../models/cart"
-import { LineItem } from "../models/line-item"
-import { LineItemAdjustment } from "../models/line-item-adjustment"
+
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { FindConfig } from "../types/common"
+import { Cart, LineItemTaxLine, LineItem, LineItemAdjustment } from "../models"
+import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
+import LineItemAdjustmentService from "./line-item-adjustment"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   PricingService,
   ProductService,
   ProductVariantService,
   RegionService,
 } from "./index"
-import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -99,7 +98,7 @@ class LineItemService extends BaseService {
   }
 
   async list(
-    selector,
+    selector: Selector<LineItem>,
     config: FindConfig<LineItem> = {
       skip: 0,
       take: 50,
@@ -208,6 +207,7 @@ class LineItemService extends BaseService {
       includes_tax?: boolean
       metadata?: Record<string, unknown>
       customer_id?: string
+      order_edit_id?: string
       cart?: Cart
     } = {}
   ): Promise<LineItem> {
@@ -265,6 +265,12 @@ class LineItemService extends BaseService {
           )
         ) {
           rawLineItem.includes_tax = unitPriceIncludesTax
+        }
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)
+        ) {
+          rawLineItem.order_edit_id = context.order_edit_id || null
         }
 
         const lineItemRepo = transactionManager.getCustomRepository(
