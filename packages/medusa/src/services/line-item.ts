@@ -315,10 +315,10 @@ class LineItemService extends BaseService {
    * @param data - the properties to update the line item(s)
    * @return the updated line item(s)
    */
-  async update<T = string | FindConfig<LineItem>>(
-    idOrSelector: T,
+  async update(
+    idOrSelector: string | Selector<LineItem>,
     data: Partial<LineItem>
-  ): Promise<T extends string ? LineItem : LineItem[]> {
+  ): Promise<LineItem[]> {
     const { metadata, ...rest } = data
 
     return await this.atomicPhase_(
@@ -331,6 +331,11 @@ class LineItemService extends BaseService {
           typeof idOrSelector === "string" ? { id: idOrSelector } : idOrSelector
 
         let lineItems = await this.list(selector)
+
+        if (!lineItems.length) {
+          return
+        }
+
         lineItems = lineItems.map((item) => {
           const lineItemMetadata = metadata
             ? setMetadata(item, metadata)
