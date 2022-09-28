@@ -239,7 +239,7 @@ npm run start
 
 If your `start` script uses the `medusa develop` command, whenever you make changes in the `src` directory the `build` command will automatically run and the server will restart.
 
-::
+:::
 
 You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication) for more details.
 
