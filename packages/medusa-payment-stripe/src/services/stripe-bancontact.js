@@ -1,7 +1,5 @@
 import Stripe from "stripe"
-import { AbstractPaymentService } from "@medusajs/medusa"
-import { PaymentSessionData } from "@medusajs/medusa/src/interfaces"
-import { Cart } from "@medusajs/medusa/src/models"
+import { AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
 
 class BancontactProviderService extends AbstractPaymentService {
   static identifier = "stripe-bancontact"
