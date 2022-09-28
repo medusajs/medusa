@@ -236,7 +236,9 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       await manager.query(
-        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+        `UPDATE "product_variant"
+         SET manage_inventory= false
+         WHERE id = 'test-variant'`
       )
 
       const initialInventoryRes = await api.get("/store/variants/test-variant")
@@ -1346,7 +1348,9 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       await manager.query(
-        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+        `UPDATE "product_variant"
+         SET manage_inventory= false
+         WHERE id = 'test-variant'`
       )
 
       const returned = await api.post(
@@ -2057,7 +2061,7 @@ describe("/admin/orders", () => {
       expect(received.status).toEqual(200)
     })
 
-    it("creates a return on a swap", async () => {
+    it.only("creates a return on a swap", async () => {
       const api = useApi()
 
       const returnOnSwap = await api.post(
@@ -2069,6 +2073,7 @@ describe("/admin/orders", () => {
               quantity: 1,
             },
           ],
+          return_shipping: { option_id: "test-return-option" },
         },
         {
           headers: {
@@ -2078,6 +2083,24 @@ describe("/admin/orders", () => {
       )
 
       expect(returnOnSwap.status).toEqual(200)
+
+      const orderId = returnOnSwap.data.order.id
+      const responseOrder = await api.get(`/admin/orders/${orderId}`, {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      const targetReturn = responseOrder.data.order.returns.find(
+        (returnOrder) => {
+          return !!returnOrder.items.find(
+            (item) => item.item_id === "test-item-swapped"
+          )
+        }
+      )
+      expect(responseOrder.status).toEqual(200)
+      expect(targetReturn.shipping_method).toBeTruthy()
+      expect(targetReturn.shipping_method.tax_lines).toHaveLength(1)
     })
 
     it("creates a return on an order", async () => {
