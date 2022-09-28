@@ -84,3 +84,4 @@ Since the line item belongs to a cart, there’s no need to pass the `region_id`
 ## What’s Next 🚀
 
 - Learn more about [price selection strategies](../price-selection-strategy/index.md).
+- Learn [how to use the PriceList Admin APIs](./use-api.mdx).
