@@ -8,13 +8,13 @@ import {
 } from "../../../../types/order-edit"
 
 /**
- * @oas [post] /order-edits/{id}/items/{item_id}
- * operationId: "PostOrderEditsEditLineItemsLineItem"
- * summary: "Create or update the order edit change holding the line item changes"
- * description: "Create or update the order edit change holding the line item changes"
+ * @oas [delete] /order-edits/{id}/items/{item_id}
+ * operationId: "DeleteOrderEditsEditLineItemsLineItem"
+ * summary: "Delete line items from an order edit and create change item"
+ * description: "Delete line items from an order edit and create change item"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to update.
+ *   - (path) id=* {string} The ID of the Order Edit to delete from.
  *   - (path) item_id=* {string} The ID of the order edit item to update.
  * x-codeSamples:
  *   - lang: JavaScript
@@ -30,9 +30,8 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
  *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "quantity": 5 }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -63,9 +62,6 @@ import {
 export default async (req: Request, res: Response) => {
   const { id, item_id } = req.params
 
-  const validatedBody =
-    req.validatedBody as AdminPostOrderEditsEditLineItemsLineItemReq
-
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
@@ -74,7 +70,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .updateLineItem(id, item_id, validatedBody)
+      .removeLineItem(id, item_id)
   })
 
   let orderEdit = await orderEditService.retrieve(id, {
@@ -86,9 +82,4 @@ export default async (req: Request, res: Response) => {
   res.status(200).send({
     order_edit: orderEdit,
   })
-}
-
-export class AdminPostOrderEditsEditLineItemsLineItemReq {
-  @IsNumber()
-  quantity: number
 }
