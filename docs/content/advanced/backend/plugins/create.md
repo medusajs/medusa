@@ -26,21 +26,6 @@ By convention, all plugin names start with `medusa` followed by a descriptive na
 
 Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
 
-### Project Structure
-
-The command above creates a new directory `medusa-plugin-custom` that holds essentially the same codebase you would have for a Medusa server. This is because a plugin has the same directory structure as a Medusa server.
-
-Under the `src` directory is where the code of your plugin resides. After running the previous command, you should have at least 3 directories inside the `src` directory:
-
-- `api` is where you can add custom endpoints.
-- `services` is where you can add custom services.
-- `subscribers` is where you can add custom subscribers.
-
-You can also add more directories and files to your plugin including:
-
-- `src/models` for adding custom entities or extending existing entities.
-- `src/migrations` for migrations that make changes to the database schema.
-
 ## Change Dependencies in package.json
 
 A basic Medusa server installed with the `medusa new` command has dependencies similar to this:
@@ -113,17 +98,17 @@ A basic Medusa installation comes with the following scripts:
 ```json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
-  "build": "babel src -d dist --extensions \".ts,.js\"",
+  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
   "start": "medusa develop"
 }
 ```
 
-The `seed` and `start` scripts are not necessary for plugin development so you can remove them.
+The `seed` and `start` scripts aren't necessary for plugin development so you can remove them.
 
 It’s also recommended to add the `watch` script that automatically compiles your files if they are changed:
 
 ```json
-"watch": "babel -w src --out-dir . --ignore **/__tests__"
+"watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
 ```
 
 This is helpful when testing the plugin.
@@ -150,14 +135,63 @@ npm install --save-dev cross-env
 
 ## Develop your Plugin
 
-Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that is relevant to your plugin.
+Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that's relevant to your plugin.
 
-This guide does not cover how to create each of those files or components. If you’re interested in learning how to do that, you can check out these guides:
+### Plugin Structure
+
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, etc...
+
+However, before you test the changes on a Medusa server or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
+
+For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
+
+If files and directories aren't placed in the root of your plugin, the Medusa server won't detect or load them.
+
+An example of a plugin's directory before testing or publishing:
+
+```
+medusa-plugin-custom
+|
+|_ _ _ api
+|      |
+|      |
+|      |_ _ _ index.js
+|
+|
+|
+|_ _ _ migrations
+|      |
+|      |
+|      |_ _ _ <TIMESTAMP>_UserChanged.js
+|
+|
+|_ _ _ src
+|      |
+|      |
+|      |_ _ _ api
+|      |     |
+|      |     |
+|      |     |_ _ _ index.ts
+|      |
+|      |
+|      |_ _ _ migrations
+|      |
+|      |
+|      |_ _ _ <TIMESTAMP>_UserChanged.ts
+|
+|
+|_ _ _ package.json
+//... other files
+```
+
+### Development Resources
+
+This guide doesn't cover how to create each of those files or components. If you’re interested in learning how to do that, you can check out these guides:
 
 - How to create endpoints for [storefront](../endpoints/add-storefront.md) and [admin](../endpoints/add-admin.md)
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../subscribers/create-subscriber.md)
-- How to create an entity
+- How to [create an entity](./../entities/index.md)
 - How to [create a migration](../migrations/index.md)
 
 ## Add Plugin Configuration
