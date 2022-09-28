@@ -1,4 +1,4 @@
-import { EntityManager, IsNull } from "typeorm"
+import { DeepPartial, EntityManager, IsNull } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
@@ -25,7 +25,6 @@ import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
 } from "../types/order-edit"
-import { DeepPartial } from "typeorm/common/DeepPartial"
 
 type InjectedDependencies = {
   manager: EntityManager
