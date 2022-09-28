@@ -1599,6 +1599,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         "Cannot confirm an order edit with status canceled"
       )
     })
+
+    it("confirms an already declined order edit", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const declinedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+        declined_at: new Date(),
+        declined_by: "admin_user",
+      })
+
+      const err = await api
+        .post(
+          `/admin/order-edits/${canceledOrderEdit.id}/confirm`,
+          {},
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Cannot confirm an order edit with status declined"
+      )
+    })
   })
 
   describe("POST /admin/order-edits/:id/items/:item_id", () => {

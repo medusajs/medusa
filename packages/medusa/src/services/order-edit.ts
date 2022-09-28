@@ -639,7 +639,11 @@ export default class OrderEditService extends TransactionBaseService {
 
       let orderEdit = await this.retrieve(orderEditId)
 
-      if (orderEdit.status === OrderEditStatus.CANCELED) {
+      if (
+        [OrderEditStatus.CANCELED, OrderEditStatus.DECLINED].includes(
+          orderEdit.status
+        )
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `Cannot confirm an order edit with status ${orderEdit.status}`
