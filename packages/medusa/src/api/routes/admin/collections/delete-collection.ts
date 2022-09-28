@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
 
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
  * @oas [delete] /collections/{id}
  * operationId: "DeleteCollectionsCollection"
- * summary: "Delete a Product Collection"
+ * summary: "Delete a Collection"
  * description: "Deletes a Product Collection."
  * x-authenticated: true
  * parameters:
@@ -72,9 +72,10 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await productCollectionService.withTransaction(transactionManager).delete(id)
+    return await productCollectionService
+      .withTransaction(transactionManager)
+      .delete(id)
   })
-
 
   res.json({
     id,

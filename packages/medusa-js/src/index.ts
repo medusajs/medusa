@@ -7,6 +7,7 @@ import CollectionsResource from "./resources/collections"
 import CustomersResource from "./resources/customers"
 import GiftCardsResource from "./resources/gift-cards"
 import OrdersResource from "./resources/orders"
+import OrderEditsResource from "./resources/order-edits"
 import PaymentMethodsResource from "./resources/payment-methods"
 import ProductsResource from "./resources/products"
 import RegionsResource from "./resources/regions"
@@ -24,6 +25,7 @@ class Medusa {
   public customers: CustomersResource
   public errors: MedusaError
   public orders: OrdersResource
+  public orderEdits: OrderEditsResource
   public products: ProductsResource
   public regions: RegionsResource
   public returnReasons: ReturnReasonsResource
@@ -44,6 +46,7 @@ class Medusa {
     this.customers = new CustomersResource(this.client)
     this.errors = new MedusaError()
     this.orders = new OrdersResource(this.client)
+    this.orderEdits = new OrderEditsResource(this.client)
     this.products = new ProductsResource(this.client)
     this.regions = new RegionsResource(this.client)
     this.returnReasons = new ReturnReasonsResource(this.client)

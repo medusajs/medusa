@@ -6,50 +6,9 @@ import TabItem from '@theme/TabItem';
 
 This document will guide you to set up your development environment to efficiently and properly use Medusa.
 
-## Prerequisite Background Knowledge
-
-### JavaScript
-
-Medusa is built with JavaScript. If you’re not familiar with JavaScript, it is the language that runs in your browser to create dynamic web applications and has over the past decade gained a lot of traction as a backend language. If you wish to customize or extend Medusa, it is highly recommended that you learn how JavaScript works. 
-
-You can learn more about JavaScript with the [Basic JavaScript course from freeCodeCamp.](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/#basic-javascript)
-
-### Express
-
-Medusa uses [Express](https://expressjs.com), a Node.js web application framework, to create your ecommerce server. It facilitates creating REST APIs in Node.js. If you’re interested in customizing Medusa or understanding more about how it works, you should learn more about Express.
-
-You can learn more about Node.js and Express with the [Free 8-hour-long Node.js + Express course from freeCodeCamp](https://www.freecodecamp.org/news/free-8-hour-node-express-course/).
-
-### SQL
-
-SQL is a programming language used to interact with relational databases and store data in your ecommerce server. To understand how different entities relate to each other in Medusa it is helpful to have a good understanding of SQL. 
-
-You can learn more about SQL and relational databases with the [SQL and Databases course from freeCodeCamp.](https://www.freecodecamp.org/news/sql-and-databases-full-course/)
-
-### Command Line Interface (CLI)
-
-To install and use Medusa, you’ll need to be familiar with CLI tools. If you’re not familiar with the command line, it is a text interface for your computer. It is used to run commands such as starting a program, performing a task, or interfacing with the files on your computer.
-
-If you have never used the command line before you can check out [this tutorial](https://www.learnenough.com/command-line-tutorial) to get the basics in place.
-
-### Additional Information
-
-To get a further understanding of what powers Medusa you can lookup these concepts:
-
-- [REST APIs](https://en.wikipedia.org/wiki/Representational_state_transfer)
-- [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
-- [Idempotency Keys](https://brandur.org/idempotency-keys)
-
-## Installations[](https://docs.medusajs.com/tutorial/set-up-your-development-environment#installations)
+## Required Tools
 
 To get your development environment ready you need to install the following tools:
-
-- [Node.js](#nodejs)
-- [Git](#git)
-- [Postgresql](#postgresql)
-- [Redis](#redis)
-- [Medusa CLI](#medusa-cli)
-- [Code Editor](#code-editor)
 
 ### Node.js
 
@@ -166,6 +125,20 @@ You can also check out [git’s guide](https://git-scm.com/download/mac) for mor
 
 </TabItem>
 </Tabs>
+
+### Medusa CLI
+
+The final installation required to get started with Medusa is the Medusa CLI. It is an NPM package you can install globally on your machine to get instant access to commands that help you manage and run your Medusa project.
+
+You can install Medusa’s CLI with the following command:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+```
+
+## Optional Tools
+
+These tools are not required to have to run a Medusa server, but we highly recommend that you have them installed.
 
 ### PostgreSQL
 
@@ -297,27 +270,6 @@ To install Redis without Homebrew you can check out [Redis’s guide on installi
 
 </TabItem>
 </Tabs>
-
-### Medusa CLI
-
-The final installation required to get started with Medusa is the Medusa CLI. It is an NPM package you can install globally on your machine to get instant access to commands that help you manage and run your Medusa project.
-
-You can install Medusa’s CLI with the following command:
-
-```bash npm2yarn
-npm install @medusajs/medusa-cli -g
-```
-
-### Code editor
-
-If you don't already have a code editor of choice, we recommend using [VSCode](https://code.visualstudio.com/) as it is a widely used IDE (Integrated Development Environment) by developers.
-
-Here are some other options:
-
-- [Atom](https://atom.io/)
-- [Neovim](https://neovim.io/) (if you are super old school there's also plain [Vim](https://www.vim.org/))
-
-It is not important which editor you use as long as you feel comfortable working with it.
 
 ## What’s Next 🚀
 

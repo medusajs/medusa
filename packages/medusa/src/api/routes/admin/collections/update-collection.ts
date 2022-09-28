@@ -1,12 +1,12 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
  * @oas [post] /collections/{id}
  * operationId: "PostCollectionsCollection"
- * summary: "Update a Product Collection"
+ * summary: "Update a Collection"
  * description: "Updates a Product Collection."
  * x-authenticated: true
  * parameters:

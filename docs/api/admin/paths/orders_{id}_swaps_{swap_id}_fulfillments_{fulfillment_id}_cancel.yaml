@@ -1,7 +1,7 @@
 post:
   operationId: PostOrdersSwapFulfillmentsCancel
-  summary: Cancels a fulfilmment related to a Swap
-  description: Registers a Fulfillment as canceled.
+  summary: Cancel Swap's Fulfilmment
+  description: Registers a Swap's Fulfillment as canceled.
   x-authenticated: true
   parameters:
     - in: path

@@ -15,3 +15,32 @@ A webhook listener is exposed at `/webshipper/shipments` to listen for shipment 
   coo_countries: [an array of countries in which a Certificate of Origin will be attached] (default: "all")
   delete_on_cancel [determines whether Webshipper orders are deleted when a Medusa fulfillment is canceled] (default: false)
 ```
+
+## Personal Customs Numbers
+
+In countries like South Korea a personal customs number is required to clear customs. The Webshipper fulfillment plugin is able pass this information to Webshipper given that the number is stored in `order.shipping_address.metadata.personal_customs_no`.
+
+### Modifications in checkout flow
+
+To pass the information along you should dynamically show an input field to the customer when they are shopping from a region that requires a personal customs number, and make sure that the metadata field is set when updating the cart shipping address.
+
+```js
+const onUpdateAddress = async () => {
+  const address = {
+    first_name: "John",
+    last_name: "Johnson",
+    ...,
+    metadata: {
+      personal_customs_no: "my-customs-number"
+    }
+  }
+
+  await medusaClient.carts
+    .update(cartId, {
+      shipping_address: address
+    })
+    .then(() => {
+      console.log("Good stuff - Webshipper will pass along the customs number")
+    })
+}
+```

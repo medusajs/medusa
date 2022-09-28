@@ -11,7 +11,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
- * summary: "Batch update prices for a Price List"
+ * summary: "Update Prices"
  * description: "Batch update prices for a Price List"
  * x-authenticated: true
  * parameters:

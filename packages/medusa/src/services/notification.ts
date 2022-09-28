@@ -30,6 +30,7 @@ class NotificationService extends TransactionBaseService {
   }
   protected readonly logger_: Logger
   protected readonly notificationRepository_: typeof NotificationRepository
+  // eslint-disable-next-line max-len
   protected readonly notificationProviderRepository_: typeof NotificationProviderRepository
 
   constructor(container: InjectedDependencies) {
@@ -170,7 +171,7 @@ class NotificationService extends TransactionBaseService {
    * @param data - the data the event was sent with
    * @return the result of notification subscribed
    */
-  handleEvent(
+  async handleEvent(
     eventName: string,
     data: Record<string, unknown>
   ): Promise<void | undefined | Notification[]> {
@@ -267,8 +268,9 @@ class NotificationService extends TransactionBaseService {
       const notiRepo = transactionManager.getCustomRepository(
         this.notificationRepository_
       )
+      const resendNoti: Record<string, unknown> = { ...notification, id: null }
       const created = notiRepo.create({
-        ...notification,
+        ...resendNoti,
         to,
         data,
         parent_id: id,

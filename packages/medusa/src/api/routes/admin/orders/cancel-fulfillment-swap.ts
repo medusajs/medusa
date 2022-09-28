@@ -11,8 +11,8 @@ import { MedusaError } from "medusa-core-utils"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
- * summary: "Cancels a fulfilmment related to a Swap"
- * description: "Registers a Fulfillment as canceled."
+ * summary: "Cancel Swap's Fulfilmment"
+ * description: "Registers a Swap's Fulfillment as canceled."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Swap relates to.

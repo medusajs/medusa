@@ -1,4 +1,4 @@
-import { isDefined } from "./is-defined";
+import { isDefined } from "./is-defined"
 
 export function removeUndefinedProperties<T extends object>(inputObj: T): T {
   const removeProperties = (obj: T) => {
@@ -23,19 +23,24 @@ function removeUndefinedDeeply(input: unknown): any {
     if (input === null || input === "null") {
       return null
     } else if (Array.isArray(input)) {
-      return input.map((item) => {
-        return removeUndefinedDeeply(item)
-      }).filter(v => isDefined(v))
-    } else if (Object.prototype.toString.call(input) === '[object Date]') {
+      return input
+        .map((item) => {
+          return removeUndefinedDeeply(item)
+        })
+        .filter((v) => isDefined(v))
+    } else if (Object.prototype.toString.call(input) === "[object Date]") {
       return input
     } else if (typeof input === "object") {
-       return Object.keys(input).reduce((acc: Record<string, unknown>, key: string) => {
-         if (typeof input[key] === "undefined") {
-           return acc
-         }
-         acc[key] = removeUndefinedDeeply(input[key])
-         return acc
-       }, {})
+      return Object.keys(input).reduce(
+        (acc: Record<string, unknown>, key: string) => {
+          if (typeof input[key] === "undefined") {
+            return acc
+          }
+          acc[key] = removeUndefinedDeeply(input[key])
+          return acc
+        },
+        {}
+      )
     } else {
       return input
     }

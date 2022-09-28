@@ -261,7 +261,7 @@ export default class EventBusService {
     )
 
     return await Promise.all(
-      observers.map((subscriber) => {
+      observers.map(async (subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
             `An error occurred while processing ${eventName}: ${err}`
@@ -286,7 +286,7 @@ export default class EventBusService {
     this.logger_.info(`Processing cron job: ${eventName}`)
 
     return await Promise.all(
-      observers.map((subscriber) => {
+      observers.map(async (subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`

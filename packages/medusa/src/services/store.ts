@@ -67,7 +67,7 @@ class StoreService extends TransactionBaseService {
           return store
         }
 
-        const newStore = await storeRepository.create()
+        const newStore = storeRepository.create()
         // Add default currency (USD) to store currencies
         const usd = await currencyRepository.findOne({
           code: "usd",

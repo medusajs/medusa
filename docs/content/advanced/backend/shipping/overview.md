@@ -41,7 +41,7 @@ Once the Fulfillment Provider is added to the server, the store operator will be
 
 ### FulfillmentProvider Entity Overview
 
-The `FulfillmentProvider` entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+The [`FulfillmentProvider`](../../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
 
 ## Shipping Profile
 
@@ -63,7 +63,7 @@ For example, shipping heavy items might be more expensive than others, which wou
 
 ### ShippingProfile Entity Overview
 
-The `ShippingProfile` entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
+The [`ShippingProfile`](../../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
 
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
@@ -89,7 +89,7 @@ Think of a shipping option as a template defined by the admin that indicates wha
 
 ### ShippingOption Entity Overview
 
-The `ShippingOption` entity belongs to the `ShippingProfile` entity.
+The [`ShippingOption`](../../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
 
 The `ShippingOption` entity also belongs to a `FulfillmentProvider`. This can be either a custom third-party provider or one of Medusa’s default fulfillment providers.
 
@@ -121,11 +121,11 @@ When handling the order and fulfilling it, you, as a developer, will be mostly i
 
 This separation allows for developers to implement the custom integration with third-party fulfillment providers as necessary while also ensuring that the admin has full control of their store.
 
-## ShippingMethod Entity Overview
+### ShippingMethod Entity Overview
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
-The `ShippingMethod` entity belongs to a `ShippingOption`.
+The [`ShippingMethod`](../../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
 
 Similar to the `data` attribute explained for the `ShippingOption` entity, a `ShippingMethod` has a similar `data` attribute that includes all the data to be sent to the fulfillment provider when fulfilling the order.
 

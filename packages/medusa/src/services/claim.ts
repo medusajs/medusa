@@ -345,7 +345,7 @@ export default class ClaimService extends TransactionBaseService {
           }
 
           newItems = await Promise.all(
-            additional_items.map((i) =>
+            additional_items.map(async (i) =>
               lineItemServiceTx.generate(
                 i.variant_id,
                 order.region_id,

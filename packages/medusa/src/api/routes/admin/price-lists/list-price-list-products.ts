@@ -22,7 +22,7 @@ import { isDefined } from "../../../../utils"
 /**
  * @oas [get] /price-lists/{id}/products
  * operationId: "GetPriceListsPriceListProducts"
- * summary: "List Product in a Price List"
+ * summary: "List Products"
  * description: "Retrieves a list of Product that are part of a Price List"
  * x-authenticated: true
  * parameters:
@@ -213,6 +213,7 @@ export default async (req: Request, res) => {
   })
 }
 
+// eslint-disable-next-line max-len
 export class AdminGetPriceListsPriceListProductsParams extends extendedFindParamsMixin(
   { limit: 50 }
 ) {

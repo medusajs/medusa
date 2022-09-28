@@ -12,41 +12,45 @@ class MeiliSearchService extends SearchService {
     this.client_ = new MeiliSearch(options.config)
   }
 
-  createIndex(indexName, options) {
-    return this.client_.createIndex(indexName, options)
+  async createIndex(indexName, options) {
+    return await this.client_.createIndex(indexName, options)
   }
 
   getIndex(indexName) {
     return this.client_.index(indexName)
   }
 
-  addDocuments(indexName, documents, type) {
+  async addDocuments(indexName, documents, type) {
     const transformedDocuments = this.getTransformedDocuments(type, documents)
-    return this.client_.index(indexName).addDocuments(transformedDocuments)
+    return await this.client_
+      .index(indexName)
+      .addDocuments(transformedDocuments)
   }
 
-  replaceDocuments(indexName, documents, type) {
+  async replaceDocuments(indexName, documents, type) {
     const transformedDocuments = this.getTransformedDocuments(type, documents)
-    return this.client_.index(indexName).addDocuments(transformedDocuments)
+    return await this.client_
+      .index(indexName)
+      .addDocuments(transformedDocuments)
   }
 
-  deleteDocument(indexName, document_id) {
-    return this.client_.index(indexName).deleteDocument(document_id)
+  async deleteDocument(indexName, document_id) {
+    return await this.client_.index(indexName).deleteDocument(document_id)
   }
 
-  deleteAllDocuments(indexName) {
-    return this.client_.index(indexName).deleteAllDocuments()
+  async deleteAllDocuments(indexName) {
+    return await this.client_.index(indexName).deleteAllDocuments()
   }
 
-  search(indexName, query, options) {
+  async search(indexName, query, options) {
     const { paginationOptions, filter, additionalOptions } = options
-    return this.client_
+    return await this.client_
       .index(indexName)
       .search(query, { filter, ...paginationOptions, ...additionalOptions })
   }
 
-  updateSettings(indexName, settings) {
-    return this.client_.index(indexName).updateSettings(settings)
+  async updateSettings(indexName, settings) {
+    return await this.client_.index(indexName).updateSettings(settings)
   }
 
   getTransformedDocuments(type, documents) {

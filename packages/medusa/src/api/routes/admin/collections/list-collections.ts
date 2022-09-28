@@ -9,7 +9,7 @@ import { Type } from "class-transformer"
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
- * summary: "List Product Collections"
+ * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."
  * x-authenticated: true
  * parameters:
@@ -146,7 +146,7 @@ export default async (req: Request, res: Response) => {
   const {
     validatedQuery: { limit, offset },
     filterableFields,
-    listConfig
+    listConfig,
   } = req
 
   const [collections, count] = await productCollectionService.listAndCount(
@@ -174,6 +174,7 @@ export class AdminGetCollectionsPaginationParams {
   offset = 0
 }
 
+// eslint-disable-next-line max-len
 export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationParams {
   @IsOptional()
   @IsString()

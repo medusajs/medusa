@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /store
  * operationId: "PostStore"
- * summary: "Update Store details."
+ * summary: "Update Store Details"
  * description: "Updates the Store details"
  * x-authenticated: true
  * requestBody:

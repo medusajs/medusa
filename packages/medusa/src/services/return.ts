@@ -151,7 +151,7 @@ class ReturnService extends TransactionBaseService {
    * @param config - the config object for find
    * @return the result of the find operation
    */
-  list(
+  async list(
     selector: Selector<Return>,
     config: FindConfig<Return> = {
       skip: 0,
@@ -453,7 +453,7 @@ class ReturnService extends TransactionBaseService {
         })
       )
 
-      const created = (await returnRepository.create(returnObject)) as Return
+      const created = returnRepository.create(returnObject)
       const result = await returnRepository.save(created)
 
       if (method && method.option_id) {

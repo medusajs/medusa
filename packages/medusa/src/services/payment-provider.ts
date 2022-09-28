@@ -38,6 +38,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
   protected readonly container_: InjectedDependencies
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
+  // eslint-disable-next-line max-len
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository

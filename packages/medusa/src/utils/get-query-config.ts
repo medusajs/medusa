@@ -28,9 +28,9 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
-      typeof field === "string" ? field.trim() : field
-    ) as (keyof TModel)[]
+    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
+      return typeof field === "string" ? field.trim() : field
+    }) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []
@@ -143,6 +143,17 @@ export function prepareRetrieveQuery<
   let expandFields: (keyof TEntity)[] | undefined = undefined
   if (fields) {
     expandFields = fields.split(",") as (keyof TEntity)[]
+  }
+
+  if (queryConfig?.allowedFields?.length) {
+    expandFields?.forEach((field) => {
+      if (!queryConfig?.allowedFields?.includes(field as string)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Field ${field.toString()} is not valid`
+        )
+      }
+    })
   }
 
   return getRetrieveConfig<TEntity>(

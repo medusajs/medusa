@@ -23,7 +23,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 /**
  * @oas [post] /price-lists
  * operationId: "PostPriceListsPriceList"
- * summary: "Creates a Price List"
+ * summary: "Create a Price List"
  * description: "Creates a Price List"
  * x-authenticated: true
  * requestBody:

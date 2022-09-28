@@ -1,5 +1,4 @@
 import { rest } from "msw"
-import { body } from "msw/lib/types/context"
 import { fixtures } from "../data"
 
 export const adminHandlers = [
@@ -114,8 +113,8 @@ export const adminHandlers = [
       ctx.json({
         collection: {
           ...fixtures.get("product_collection"),
-          products: [fixtures.get("product")]
-        }
+          products: [fixtures.get("product")],
+        },
       })
     )
   }),
@@ -126,7 +125,7 @@ export const adminHandlers = [
       ctx.json({
         id: req.params.id,
         object: "product-collection",
-        removed_products: [fixtures.get("product").id]
+        removed_products: [fixtures.get("product").id],
       })
     )
   }),
@@ -892,7 +891,7 @@ export const adminHandlers = [
         discount_condition: {
           ...fixtures
             .get("discount")
-            .rule.conditions.find(c => c.id === req.params.conditionId),
+            .rule.conditions.find((c) => c.id === req.params.conditionId),
         },
       })
     )
@@ -1654,6 +1653,95 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/order-edits/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: fixtures.get("order_edit"),
+        id,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
+  rest.get("/store/order-edits/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: fixtures.get("store_order_edit"),
+        id,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
+      })
+    )
+  }),
+  
+  rest.post("/admin/order-edits/:id/cancel", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), canceled_at: new Date(), status: 'canceled' },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          requested_at: new Date(),
+          status: "requested"
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/order-edits/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id,
+        object: "order_edit",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/order-edits/:id/changes/:change_id", (req, res, ctx) => {
+    const { change_id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: change_id,
+        object: "item_change",
+        deleted: true,
+      })
+    )
+  }),
+
   rest.get("/admin/auth", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -1764,6 +1852,27 @@ export const adminHandlers = [
       ctx.status(200),
       ctx.json({
         sales_channel: fixtures.get("sales_channel"),
+      })
+    )
+  }),
+
+  rest.get("/admin/currencies", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        count: 1,
+        limit: 20,
+        offset: 20,
+        currencies: fixtures.list("currency", 1),
+      })
+    )
+  }),
+
+  rest.post("/admin/currencies/:code", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        currency: { ...fixtures.get("currency"), ...(req.body as any) },
       })
     )
   }),
