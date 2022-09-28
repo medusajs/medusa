@@ -2,9 +2,10 @@ import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
   AdminOrderEditsRes,
-  AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
+  AdminPostOrderEditsEditLineItemsReq,
+  AdminPostOrderEditsEditLineItemsLineItemReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -41,6 +42,15 @@ class AdminOrderEditsResource extends BaseResource {
   ): ResponsePromise<AdminOrderEditDeleteRes> {
     const path = `/admin/order-edits/${id}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  addLineItem(
+    id: string,
+    payload: AdminPostOrderEditsEditLineItemsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${id}/items`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   deleteItemChange(

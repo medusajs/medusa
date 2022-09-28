@@ -1,6 +1,6 @@
 import { TransactionBaseService } from "../interfaces"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
-import { EntityManager, In } from "typeorm"
+import { DeepPartial, EntityManager, In } from "typeorm"
 import { EventBusService, LineItemService } from "./index"
 import { FindConfig, Selector } from "../types/common"
 import { OrderItemChange } from "../models"

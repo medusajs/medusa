@@ -17,8 +17,8 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
   simpleDiscountFactory,
-  simpleRegionFactory,
   simpleCartFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
@@ -770,6 +770,327 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           subtotal: 1000,
           tax_total: 100,
           total: 1100,
+        })
+      )
+    })
+  })
+
+  describe("POST /admin/order-edits/:id/items", () => {
+    const orderEditId = IdMap.getId("order-edit-1")
+    const prodId1 = IdMap.getId("prodId1")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const orderId1 = IdMap.getId("order-id-1")
+    const toBeAddedVariantId = IdMap.getId("variant id")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: toBeAddedVariantId,
+            prices: [{ currency: "usd", amount: 200 }],
+          },
+        ],
+      })
+
+      const order = await simpleOrderFactory(dbConnection, {
+        id: orderId1,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: orderEditId,
+        order_id: order.id,
+        created_by: "admin_user",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("creates line item that will be added to the order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/order-edits/${orderEditId}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          created_by: "admin_user",
+          requested_by: null,
+          canceled_by: null,
+          confirmed_by: null,
+          // "Add item" change has been created
+          changes: [
+            expect.objectContaining({
+              type: "item_add",
+              order_edit_id: orderEditId,
+              original_line_item_id: null,
+              line_item_id: expect.any(String),
+            }),
+          ],
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              variant: expect.objectContaining({ id: toBeAddedVariantId }),
+              quantity: 2,
+              order_id: null, // <-- NOT associated with the order at this point
+              tax_lines: [
+                expect.objectContaining({
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                }),
+              ],
+            }),
+          ]),
+          /*
+           * Computed totals are appended to the response
+           */
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 2 * 200,
+          tax_total: 0.125 * 2 * 200,
+          total: 400 + 50,
+        })
+      )
+    })
+
+    it("adding line item to the order edit will create adjustments percentage discount", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+
+      const initialProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "initial-variant" }],
+      })
+
+      const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: toBeAddedVariantId,
+            prices: [{ currency: "usd", amount: 200 }],
+          },
+        ],
+      })
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "20PERCENT",
+        rule: {
+          type: "percentage",
+          allocation: "item",
+          value: 20,
+        },
+        regions: [region.id],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "testy@test.com",
+        region: region.id,
+        line_items: [
+          { variant_id: initialProduct.variants[0].id, quantity: 1 },
+        ],
+      })
+
+      // Apply the discount on the cart and complete the cart to create an order.
+
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: "20PERCENT" }],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      const orderWithDiscount = completeRes.data.data
+
+      // Create an order edit for the created order
+
+      const {
+        data: { order_edit },
+      } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderWithDiscount.id,
+        },
+        adminHeaders
+      )
+
+      const response = await api.post(
+        `/admin/order-edits/${order_edit.id}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          order_id: orderWithDiscount.id,
+          items: expect.arrayContaining([
+            // New line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 80,
+                }),
+              ],
+              tax_lines: [expect.objectContaining({ rate: 10 })],
+              unit_price: 200,
+              quantity: 2,
+            }),
+            // Already existing line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 20,
+                }),
+              ],
+              tax_lines: [expect.objectContaining({ rate: 10 })],
+              unit_price: 100,
+              quantity: 1,
+              variant: expect.objectContaining({
+                id: initialProduct.variants[0].id,
+              }),
+            }),
+          ]),
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 500, // 1 * 100$ + 2 * 200$
+          discount_total: 100, // discount === 20%
+          tax_total: 40, // tax rate === 10%
+          total: 440,
+        })
+      )
+    })
+
+    it("adding line item to the order edit will create adjustments for fixed discount case", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+
+      const initialProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "initial-variant" }],
+      })
+
+      const toBeAddedProduct = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: toBeAddedVariantId,
+            prices: [{ currency: "usd", amount: 200 }],
+          },
+        ],
+      })
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "30FIXED",
+        rule: {
+          type: "fixed",
+          value: 30,
+        },
+        regions: [region.id],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "testy@test.com",
+        region: region.id,
+        line_items: [
+          { variant_id: initialProduct.variants[0].id, quantity: 1 },
+        ],
+      })
+
+      // Apply the discount on the cart and complete the cart to create an order.
+
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: "30FIXED" }],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      const orderWithDiscount = completeRes.data.data
+
+      // all fixed discount is allocated to single initial line item
+      expect(orderWithDiscount.items[0].adjustments[0].amount).toEqual(30)
+
+      // Create an order edit for the created order
+
+      const {
+        data: { order_edit },
+      } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderWithDiscount.id,
+        },
+        adminHeaders
+      )
+
+      const response = await api.post(
+        `/admin/order-edits/${order_edit.id}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          order_id: orderWithDiscount.id,
+          items: expect.arrayContaining([
+            // New line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 24,
+                }),
+              ],
+              unit_price: 200,
+              quantity: 2,
+            }),
+            // Already existing line item
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 6,
+                }),
+              ],
+              unit_price: 100,
+              quantity: 1,
+              variant: expect.objectContaining({
+                id: initialProduct.variants[0].id,
+              }),
+            }),
+          ]),
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 500, // 1 * 100$ + 2 * 200$
+          discount_total: 30, // discount === fixed 30
+          tax_total: 47, // tax rate === 10%
+          total: 470 + 47,
         })
       )
     })
@@ -1575,14 +1896,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         (item) => item.original_item_id === lineItemId1
       ).id
 
-      await api.post(
+      let response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
-        adminHeaders
-      )
-
-      let response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
         adminHeaders
       )
 
@@ -1696,14 +2012,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         })
       )
 
-      await api.post(
+      response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 3 },
-        adminHeaders
-      )
-
-      response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
         adminHeaders
       )
 

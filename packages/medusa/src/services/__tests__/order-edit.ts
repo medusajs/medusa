@@ -77,6 +77,17 @@ const orderEditWithChanges = {
   ],
 }
 
+const orderEditWithAddedLineItem = {
+  id: IdMap.getId("order-edit-with-changes"),
+  order: {
+    id: IdMap.getId("order-edit-change"),
+    cart: {
+      discounts: [{ rule: {} }],
+    },
+    region: { id: IdMap.getId("test-region") },
+  },
+}
+
 const lineItemServiceMock = {
   ...LineItemServiceMock,
   list: jest.fn().mockImplementation(() => {
@@ -179,9 +190,9 @@ describe("OrderEditService", () => {
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
-    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
+    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
@@ -391,5 +402,21 @@ describe("OrderEditService", () => {
         }
       )
     })
+  })
+
+  it("should add a line item to an order edit", async () => {
+    jest
+      .spyOn(orderEditService, "refreshAdjustments")
+      .mockImplementation(async () => {})
+
+    await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
+      variant_id: IdMap.getId("to-be-added-variant"),
+      quantity: 3,
+    })
+
+    expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
+    expect(orderEditService.refreshAdjustments).toHaveBeenCalledTimes(1)
+    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
   })
 })
