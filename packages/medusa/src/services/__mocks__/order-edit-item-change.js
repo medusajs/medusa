@@ -13,6 +13,12 @@ export const orderEditItemChangeServiceMock = {
   delete: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),
+  create: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
+  }),
+  list: jest.fn().mockImplementation(() => {
+    return Promise.resolve([])
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

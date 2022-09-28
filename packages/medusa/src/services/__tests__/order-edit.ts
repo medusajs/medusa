@@ -35,6 +35,16 @@ const orderEditWithChanges = {
       },
     ],
   },
+  items: [
+    {
+      original_item_id: IdMap.getId("line-item-1"),
+      id: IdMap.getId("cloned-line-item-1"),
+    },
+    {
+      original_item_id: IdMap.getId("line-item-2"),
+      id: IdMap.getId("cloned-line-item-2"),
+    },
+  ],
   changes: [
     {
       type: OrderEditItemChangeType.ITEM_REMOVE,
@@ -80,9 +90,19 @@ const lineItemServiceMock = {
     ])
   }),
   retrieve: jest.fn().mockImplementation((id) => {
-    return Promise.resolve({
+    const data = {
       id,
-    })
+      quantity: 1,
+      fulfilled_quantity: 1,
+    }
+
+    if (id === IdMap.getId("line-item-1")) {
+      return Promise.resolve({
+        ...data,
+        order_edit_id: IdMap.getId("order-edit-update-line-item"),
+      })
+    }
+    return Promise.resolve(data)
   }),
   cloneTo: () => [],
 }
@@ -99,6 +119,12 @@ describe("OrderEditService", () => {
       }
       if (query?.where?.id === IdMap.getId("order-edit-with-changes")) {
         return orderEditWithChanges
+      }
+      if (query?.where?.id === IdMap.getId("order-edit-update-line-item")) {
+        return {
+          ...orderEditWithChanges,
+          changes: [],
+        }
       }
       if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
         return {
@@ -197,6 +223,22 @@ describe("OrderEditService", () => {
       OrderEditService.Events.CREATED,
       { id: expect.any(String) }
     )
+  })
+
+  it("should update a line item  and create an item change to an order edit", async () => {
+    await orderEditService.updateLineItem(
+      IdMap.getId("order-edit-update-line-item"),
+      IdMap.getId("line-item-1"),
+      {
+        quantity: 3,
+      }
+    )
+
+    expect(orderEditItemChangeServiceMock.list).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
+    expect(
+      LineItemAdjustmentServiceMock.createAdjustments
+    ).toHaveBeenCalledTimes(1)
   })
 
   describe("decline", () => {
@@ -305,7 +347,7 @@ describe("OrderEditService", () => {
         const id = IdMap.getId("order-edit-with-changes")
         const userId = IdMap.getId("user-id")
 
-        await orderEditService.cancel(id, {loggedInUser: userId})
+        await orderEditService.cancel(id, { loggedInUser: userId })
 
         expect(orderEditRepository.save).toHaveBeenCalledWith({
           ...orderEditWithChanges,

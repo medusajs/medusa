@@ -1712,7 +1712,7 @@ export const adminHandlers = [
         order_edit: {
           ...fixtures.get("order_edit"),
           requested_at: new Date(),
-          status: "requested"
+          status: "requested",
         },
       })
     )
@@ -1738,6 +1738,22 @@ export const adminHandlers = [
         id: change_id,
         object: "item_change",
         deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              quantity: (req.body as any).quantity,
+            },
+          ],
+        },
       })
     )
   }),
