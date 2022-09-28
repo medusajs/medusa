@@ -4,7 +4,7 @@ import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
+import { DeleteResponse, FindParams } from "../../../../types/common"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import {
@@ -33,7 +33,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: defaultOrderEditRelations,
       defaultFields: defaultOrderEditFields,
       isList: false,

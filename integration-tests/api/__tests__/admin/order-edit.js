@@ -1520,7 +1520,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
 
       const discountCode = "FIX_DISCOUNT"
-      await simpleDiscountFactory(dbConnection, {
+      const discount = await simpleDiscountFactory(dbConnection, {
         code: discountCode,
         rule: {
           type: "fixed",
@@ -1575,14 +1575,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         (item) => item.original_item_id === lineItemId1
       ).id
 
-      let response = await api.post(
+      await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
         adminHeaders
       )
 
+      let response = await api.get(
+        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
+        adminHeaders
+      )
+
       expect(response.status).toEqual(200)
       expect(response.data.order_edit.changes).toHaveLength(1)
+
+      let item1 = response.data.order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      )
+      expect(item1.adjustments).toHaveLength(1)
+
+      let item2 = response.data.order_edit.items.find(
+        (item) => item.original_item_id === lineItemId2
+      )
+      expect(item2.adjustments).toHaveLength(1)
+
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -1629,6 +1645,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
                   rate: 10,
                 }),
               ]),
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 1333,
+                }),
+              ]),
             }),
             expect.objectContaining({
               id: expect.any(String),
@@ -1656,6 +1678,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
                   rate: 10,
                 }),
               ]),
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 667,
+                }),
+              ]),
             }),
           ]),
           discount_total: 2000,
@@ -1668,14 +1696,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         })
       )
 
-      response = await api.post(
+      await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 3 },
         adminHeaders
       )
 
+      response = await api.get(
+        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
+        adminHeaders
+      )
+
       expect(response.status).toEqual(200)
       expect(response.data.order_edit.changes).toHaveLength(1)
+
+      item1 = response.data.order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      )
+      expect(item1.adjustments).toHaveLength(1)
+
+      item2 = response.data.order_edit.items.find(
+        (item) => item.original_item_id === lineItemId2
+      )
+      expect(item2.adjustments).toHaveLength(1)
+
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -1722,6 +1766,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
                   rate: 10,
                 }),
               ]),
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 1500,
+                }),
+              ]),
             }),
             expect.objectContaining({
               id: expect.any(String),
@@ -1747,6 +1797,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
               tax_lines: expect.arrayContaining([
                 expect.objectContaining({
                   rate: 10,
+                }),
+              ]),
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  discount_id: discount.id,
+                  amount: 500,
                 }),
               ]),
             }),
