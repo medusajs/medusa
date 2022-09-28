@@ -5,7 +5,6 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
-  ProductService,
   ProductVariantService,
   PriceListService,
   RegionService,
@@ -22,14 +21,8 @@ import {
   TBuiltPriceListImportLine,
   TParsedPriceListImportRowData,
 } from "./types"
-import { FlagRouter } from "../../../utils/flag-router"
 
-/**
- * Process this many variant rows before reporting progress.
- */
-const BATCH_SIZE = 100
-
-/**
+/*
  * Default strategy class used for a batch import of products/variants.
  */
 class PriceListImportStrategy extends AbstractBatchJobStrategy {
@@ -39,8 +32,6 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
 
   private processedCounter: Record<string, number> = {}
 
-  protected readonly featureFlagRouter_: FlagRouter
-
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -48,7 +39,6 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
 
   protected readonly regionService_: RegionService
   protected readonly priceListService_: PriceListService
-  protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
   protected readonly productVariantService_: ProductVariantService
 
