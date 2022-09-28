@@ -4,7 +4,6 @@ import LineItemService from "../line-item"
 import { PricingServiceMock } from "../__mocks__/pricing"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
-
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -407,6 +406,7 @@ describe("LineItemService", () => {
           metadata: {},
           should_merge: true,
           includes_tax: true,
+          order_edit_id: null,
         })
       })
     })
@@ -518,6 +518,7 @@ describe("LineItemService", () => {
           metadata: {},
           should_merge: true,
           includes_tax: false,
+          order_edit_id: null,
         })
       })
     })
