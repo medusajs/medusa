@@ -1,14 +1,43 @@
 import { renderHook } from "@testing-library/react-hooks"
 import {
+  useAdminCancelOrderEdit,
   useAdminCreateOrderEdit,
   useAdminDeleteOrderEdit,
   useAdminDeleteOrderEditItemChange,
-  useAdminUpdateOrderEdit,
+  useAdminOrderEditUpdateLineItem,
   useAdminRequestOrderEditConfirmation,
-  useAdminCancelOrderEdit,
+  useAdminUpdateOrderEdit,
 } from "../../../../src/"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
+
+describe("useAdminOrderEditUpdateLineItem hook", () => {
+  test("Update line item of an order edit and create or update an item change", async () => {
+    const id = "oe_1"
+    const itemId = "item_1"
+    const { result, waitFor } = renderHook(
+      () => useAdminOrderEditUpdateLineItem(id, itemId),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({ quantity: 3 })
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.order_edit).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("order_edit"),
+        changes: expect.arrayContaining([
+          expect.objectContaining({
+            quantity: 3,
+          }),
+        ]),
+      })
+    )
+  })
+})
 
 describe("useAdminDeleteOrderEditItemChange hook", () => {
   test("Deletes an order edit item change", async () => {
@@ -112,9 +141,12 @@ describe("useAdminCreateOrderEdit hook", () => {
 
 describe("useAdminRequestOrderEditConfirmation hook", () => {
   test("Requests an order edit", async () => {
-    const { result, waitFor } = renderHook(() => useAdminRequestOrderEditConfirmation(fixtures.get("order_edit").id), {
-      wrapper: createWrapper(),
-    })
+    const { result, waitFor } = renderHook(
+      () => useAdminRequestOrderEditConfirmation(fixtures.get("order_edit").id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
 
     result.current.mutate()
 
@@ -123,9 +155,9 @@ describe("useAdminRequestOrderEditConfirmation hook", () => {
     expect(result.current.data.response.status).toEqual(200)
     expect(result.current.data?.order_edit).toEqual(
       expect.objectContaining({
-          ...fixtures.get("order_edit"),
-          requested_at: expect.any(String),
-          status: 'requested'
+        ...fixtures.get("order_edit"),
+        requested_at: expect.any(String),
+        status: "requested",
       })
     )
   })
@@ -133,10 +165,12 @@ describe("useAdminRequestOrderEditConfirmation hook", () => {
 
 describe("useAdminCancelOrderEdit hook", () => {
   test("cancel an order edit", async () => {
-
-    const { result, waitFor } = renderHook(() => useAdminCancelOrderEdit(fixtures.get("order_edit").id), {
-      wrapper: createWrapper(),
-    })
+    const { result, waitFor } = renderHook(
+      () => useAdminCancelOrderEdit(fixtures.get("order_edit").id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
 
     result.current.mutate()
 
@@ -148,7 +182,7 @@ describe("useAdminCancelOrderEdit hook", () => {
         order_edit: {
           ...fixtures.get("order_edit"),
           canceled_at: expect.any(String),
-          status: 'canceled'
+          status: "canceled",
         },
       })
     )

@@ -5,6 +5,7 @@ import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
   AdminOrderEditsRes,
+  AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
 } from "@medusajs/medusa"
@@ -60,6 +61,29 @@ export const useAdminDeleteOrderEditItemChange = (
 
   return useMutation(
     () => client.admin.orderEdits.deleteItemChange(orderEditId, itemChangeId),
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
+      options
+    )
+  )
+}
+
+export const useAdminOrderEditUpdateLineItem = (
+  orderEditId: string,
+  itemId: string,
+  options?: UseMutationOptions<
+    Response<AdminOrderEditsRes>,
+    Error,
+    AdminPostOrderEditsEditLineItemsLineItemReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminPostOrderEditsEditLineItemsLineItemReq) =>
+      client.admin.orderEdits.updateLineItem(orderEditId, itemId, payload),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
