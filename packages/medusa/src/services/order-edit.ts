@@ -21,14 +21,12 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { AddOrderEditLineItemInput, CreateOrderEditInput, UpdateOrderEditInput } from "../types/order-edit"
-import region from "./region"
-import LineItemAdjustmentService from "./line-item-adjustment"
 import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
   UpdateOrderEditInput,
 } from "../types/order-edit"
+import region from "./region"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -688,49 +686,6 @@ export default class OrderEditService extends TransactionBaseService {
 
       return saved
     })
-  }
-
-  async refreshAdjustments(orderEditId: string) {
-    const manager = this.transactionManager_ ?? this.manager_
-
-    const lineItemAdjustmentServiceTx =
-      this.lineItemAdjustmentService_.withTransaction(manager)
-
-    const orderEdit = await this.retrieve(orderEditId, {
-      relations: [
-        "items",
-        "items.adjustments",
-        "items.tax_lines",
-        "order",
-        "order.customer",
-        "order.discounts",
-        "order.discounts.rule",
-        "order.gift_cards",
-        "order.region",
-        "order.shipping_address",
-        "order.shipping_methods",
-      ],
-    })
-
-    const clonedItemAdjustmentIds: string[] = []
-
-    orderEdit.items.forEach((item) => {
-      if (item.adjustments?.length) {
-        item.adjustments.forEach((adjustment) => {
-          clonedItemAdjustmentIds.push(adjustment.id)
-        })
-      }
-    })
-
-    await lineItemAdjustmentServiceTx.delete(clonedItemAdjustmentIds)
-
-    const localCart = {
-      ...orderEdit.order,
-      object: "cart",
-      items: orderEdit.items,
-    } as unknown as Cart
-
-    await lineItemAdjustmentServiceTx.createAdjustments(localCart)
   }
 
   private static isOrderEditActive(orderEdit: OrderEdit): boolean {

@@ -2,11 +2,10 @@ import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
   AdminOrderEditsRes,
-  AdminPostOrderEditsEditLineItemsLineItemReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-  AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsEditLineItemsReq,
+  AdminPostOrderEditsEditLineItemsLineItemReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
