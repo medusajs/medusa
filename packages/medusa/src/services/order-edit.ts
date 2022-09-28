@@ -475,7 +475,7 @@ export default class OrderEditService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       const orderEdit = await this.retrieve(orderEditId, {
-        relations: ["order"],
+        relations: ["order", "order.region"],
       })
 
       if (!OrderEditService.isOrderEditActive(orderEdit)) {
