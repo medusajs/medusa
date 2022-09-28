@@ -1,7 +1,8 @@
 import { Router } from "express"
 
-import { PaginatedResponse } from "../../../../types/common"
 import { ProductVariant } from "../../../../models/product-variant"
+import { PaginatedResponse } from "../../../../types/common"
+import { PricedVariant } from "../../../../types/pricing"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -69,7 +70,7 @@ export const allowedAdminVariantRelations: (keyof ProductVariant)[] = [
 ]
 
 export type AdminVariantsListRes = PaginatedResponse & {
-  variants: ProductVariant[]
+  variants: PricedVariant[]
 }
 
 export * from "./list-variants"

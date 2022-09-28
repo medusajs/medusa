@@ -13,3 +13,9 @@ export class PriceSelectionParams {
   @IsString()
   currency_code?: string
 }
+
+export class AdminPriceSelectionParams extends PriceSelectionParams {
+  @IsOptional()
+  @IsString()
+  customer_id?: string
+}
