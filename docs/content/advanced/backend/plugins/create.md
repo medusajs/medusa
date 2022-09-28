@@ -22,26 +22,13 @@ Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Med
 
 By convention, all plugin names start with `medusa` followed by a descriptive name of what the plugin does. For example, the Stripe plugin is named `medusa-payment-stripe`.
 
+## Changes to package.json
+
 ### Rename Project Name
 
 Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
 
-### Project Structure
-
-The command above creates a new directory `medusa-plugin-custom` that holds essentially the same codebase you would have for a Medusa server. This is because a plugin has the same directory structure as a Medusa server.
-
-Under the `src` directory is where the code of your plugin resides. After running the previous command, you should have at least 3 directories inside the `src` directory:
-
-- `api` is where you can add custom endpoints.
-- `services` is where you can add custom services.
-- `subscribers` is where you can add custom subscribers.
-
-You can also add more directories and files to your plugin including:
-
-- `src/models` for adding custom entities or extending existing entities.
-- `src/migrations` for migrations that make changes to the database schema.
-
-## Change Dependencies in package.json
+### Change Dependencies
 
 A basic Medusa server installed with the `medusa new` command has dependencies similar to this:
 
@@ -93,44 +80,39 @@ Once you’re done making these changes, re-run the install command to update yo
 npm install
 ```
 
-## Recommended Changes in package.json
-
 This section includes recommended changes to your `package.json`. You can skip any of these changes if you don’t find them necessary to your plugin.
 
-### Change Basic Info
+### Recommended: Change scripts
 
-`package.json` holds information that further describes the package or the author that created the package. It is recommended to make the following changes:
+:::caution
 
-- `description`: Change this to a sentence that describes what your plugin does.
-- `author`: Your name and email.
-- `repository`: The repository that holds your plugin’s codebase.
-- `keywords`: This should hold the keywords that are related to your plugin. It’s recommended that all plugins use the keywords `medusa-plugin` or `medusa`.
+If you don't make changes to the `build` and `watch` commands, please be aware of the [expected plugin structure](#plugin-structure).
 
-### Change scripts
+:::
 
 A basic Medusa installation comes with the following scripts:
 
 ```json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
-  "build": "babel src -d dist --extensions \".ts,.js\"",
+  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
   "start": "medusa develop"
 }
 ```
 
-The `seed` and `start` scripts are not necessary for plugin development so you can remove them.
+The `seed` and `start` scripts aren't necessary for plugin development so you can remove them.
 
 It’s also recommended to add the `watch` script that automatically compiles your files if they are changed:
 
 ```json
-"watch": "babel -w src --out-dir . --ignore **/__tests__"
+"watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
 ```
 
 This is helpful when testing the plugin.
 
 :::note
 
-Testing the plugin is covered in a later section.
+Testing the plugin is covered in a [later section](#test-your-plugin).
 
 :::
 
@@ -148,16 +130,64 @@ This script requires installing the package `cross-env` as a development depende
 npm install --save-dev cross-env
 ```
 
+### Recommended: Change Basic Info
+
+`package.json` holds information that further describes the package or the author that created the package. It is recommended to make the following changes:
+
+- `description`: Change this to a sentence that describes what your plugin does.
+- `author`: Your name and email.
+- `repository`: The repository that holds your plugin’s codebase.
+- `keywords`: This should hold the keywords that are related to your plugin. It’s recommended that all plugins use the keywords `medusa-plugin` or `medusa`.
+
 ## Develop your Plugin
 
-Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that is relevant to your plugin.
+Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that's relevant to your plugin.
 
-This guide does not cover how to create each of those files or components. If you’re interested in learning how to do that, you can check out these guides:
+### Plugin Structure
+
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, etc...
+
+However, before you test the changes on a Medusa server or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
+
+For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
+
+If files and directories aren't placed in the root of your plugin, the Medusa server won't detect or load them.
+
+An example of a plugin's directory before testing or publishing:
+
+```
+medusa-plugin-custom
+|
+|_ _ _ api
+|      |
+|      |_ _ _ index.js
+|
+|_ _ _ migrations
+|      |
+|      |_ _ _ <TIMESTAMP>_UserChanged.js
+|
+|_ _ _ src
+|      |
+|      |_ _ _ api
+|      |     |
+|      |     |_ _ _ index.ts
+|      |
+|      |_ _ _ migrations
+|      |
+|      |_ _ _ <TIMESTAMP>_UserChanged.ts
+|
+|_ _ _ package.json
+//... other files
+```
+
+### Development Resources
+
+This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
 - How to create endpoints for [storefront](../endpoints/add-storefront.md) and [admin](../endpoints/add-admin.md)
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../subscribers/create-subscriber.md)
-- How to create an entity
+- How to [create an entity](./../entities/index.md)
 - How to [create a migration](../migrations/index.md)
 
 ## Add Plugin Configuration
@@ -318,7 +348,7 @@ It is safe to ignore any `cross-env: command not found` error you may receive.
 
 Not all files that you use while developing your plugin are necessary to be published.
 
-For example, the files you add in the `src` directory are compiled to a `dist` directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files under the `dist` directory.
+For example, the files you add in the `src` directory are compiled to the root of the plugin directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files in the root.
 
 So, you can ignore files and directories like `src` from the final published NPM package.
 
@@ -352,6 +382,14 @@ develop.sh
 Once you’re done developing your plugin you can publish the package on NPM’s registry so that other developers can benefit from it and use it.
 
 Before you publish a plugin, you must [create an account on NPM](https://www.npmjs.com/signup).
+
+### Prepare Plugin
+
+Before you publish or update your plugin, make sure to run the `prepare` command [defined earlier](#recommended-change-scripts):
+
+```bash npm2yarn
+npm run prepare
+```
 
 ### Login
 
