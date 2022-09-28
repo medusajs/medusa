@@ -2,6 +2,10 @@ import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
+import {
+  defaultStoreOrderEditFields,
+  defaultStoreOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits/{id}/decline
@@ -71,9 +75,12 @@ export default async (req: Request, res: Response) => {
       loggedInUser: userId,
     })
   })
-  let orderEdit = await orderEditService.retrieve(id)
 
-  orderEdit = await orderEditService.decorateLineItemsAndTotals(orderEdit)
+  let orderEdit = await orderEditService.retrieve(id, {
+    select: defaultStoreOrderEditFields,
+    relations: defaultStoreOrderEditRelations,
+  })
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   res.status(200).json({ order_edit: orderEdit })
 }

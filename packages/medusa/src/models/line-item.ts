@@ -9,7 +9,7 @@ import {
   OneToMany,
 } from "typeorm"
 
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity } from "../interfaces"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -18,14 +18,30 @@ import { LineItemTaxLine } from "./line-item-tax-line"
 import { Order } from "./order"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { generateEntityId } from "../utils"
+import {
+  FeatureFlagClassDecorators,
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
+import { OrderEdit } from "./order-edit"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
 @Check(`"returned_quantity" <= "quantity"`)
 @Check(`"quantity" > 0`)
+@FeatureFlagClassDecorators(OrderEditingFeatureFlag.key, [
+  Index(
+    "unique_li_original_item_id_order_edit_id",
+    ["order_edit_id", "original_item_id"],
+    {
+      unique: true,
+      where: "WHERE original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
+    }
+  ),
+])
 @Entity()
 export class LineItem extends BaseEntity {
   @Index()
@@ -67,6 +83,27 @@ export class LineItem extends BaseEntity {
     cascade: ["insert"],
   })
   adjustments: LineItemAdjustment[]
+
+  @FeatureFlagColumn(OrderEditingFeatureFlag.key, {
+    nullable: true,
+    type: "varchar",
+  })
+  original_item_id?: string | null
+
+  @FeatureFlagColumn(OrderEditingFeatureFlag.key, {
+    nullable: true,
+    type: "varchar",
+  })
+  order_edit_id?: string | null
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    ManyToOne(
+      () => OrderEdit,
+      (orderEdit) => orderEdit.items
+    ),
+    JoinColumn({ name: "order_edit_id" }),
+  ])
+  order_edit?: OrderEdit | null
 
   @Column()
   title: string
@@ -283,6 +320,15 @@ export class LineItem extends BaseEntity {
  *   includes_tax:
  *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
  *     type: boolean
+ *   original_item_id:
+ *     description: "[EXPERIMENTAL] The id of the original line item"
+ *     type: string
+ *   order_edit_id:
+ *     description: "[EXPERIMENTAL] The ID of the order edit to which a cloned item belongs"
+ *     type: string
+ *   order_edit:
+ *     description: "[EXPERIMENTAL] The order edit joined"
+ *     type: object
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
