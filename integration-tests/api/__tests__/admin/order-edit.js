@@ -1549,7 +1549,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
 
     it("confirms an already confirmed order edit", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
@@ -1577,7 +1576,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
 
     it("confirms an already canceled order edit", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const canceledOrderEdit = await simpleOrderEditFactory(dbConnection, {
