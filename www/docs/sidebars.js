@@ -295,6 +295,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/batch-jobs/customize-import",
         },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/override",
+          label: "Override Price Selection"
+        },
       ]
     },
     {
@@ -350,6 +355,14 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-lists/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/index"
         },
       ]
     },
