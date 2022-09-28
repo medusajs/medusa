@@ -10,6 +10,9 @@ export const orderEditItemChangeServiceMock = {
         order_edit_id: orderEditId,
       })
     }),
+  create: jest.fn().mockImplementation((data) => {
+    return Promise.resolve(data)
+  }),
   delete: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),

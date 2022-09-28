@@ -1,7 +1,8 @@
 import { EntityManager, IsNull } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
   Cart,
@@ -13,26 +14,30 @@ import {
 import { TransactionBaseService } from "../interfaces"
 import {
   EventBusService,
+  LineItemAdjustmentService,
   LineItemService,
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { CreateOrderEditInput, UpdateOrderEditInput } from "../types/order-edit"
-import region from "./region"
-import LineItemAdjustmentService from "./line-item-adjustment"
+import {
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+  UpdateOrderEditInput,
+} from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
   orderEditRepository: typeof OrderEditRepository
+
   orderService: OrderService
-  eventBusService: EventBusService
   totalsService: TotalsService
   lineItemService: LineItemService
-  orderEditItemChangeService: OrderEditItemChangeService
-  lineItemAdjustmentService: LineItemAdjustmentService
+  eventBusService: EventBusService
   taxProviderService: TaxProviderService
+  lineItemAdjustmentService: LineItemAdjustmentService
+  orderEditItemChangeService: OrderEditItemChangeService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -44,16 +49,18 @@ export default class OrderEditService extends TransactionBaseService {
     CANCELED: "order-edit.canceled",
   }
 
-  protected transactionManager_: EntityManager | undefined
   protected readonly manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly orderEditRepository_: typeof OrderEditRepository
+
   protected readonly orderService_: OrderService
+  protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
-  protected readonly totalsService_: TotalsService
-  protected readonly orderEditItemChangeService_: OrderEditItemChangeService
-  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly taxProviderService_: TaxProviderService
+  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
+  protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
     manager,
@@ -457,6 +464,78 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.total = totals.total
 
     return orderEdit
+  }
+
+  async addLineItem(
+    orderEditId: string,
+    data: AddOrderEditLineItemInput
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
+      const orderEdit = await this.retrieve(orderEditId, {
+        relations: ["order", "order.region"],
+      })
+
+      if (!OrderEditService.isOrderEditActive(orderEdit)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Can not add an item to the edit with status ${orderEdit.status}`
+        )
+      }
+
+      const regionId = orderEdit.order.region_id
+
+      /**
+       * Create new line item and refresh adjustments for all cloned order edit items
+       */
+
+      const lineItemData = await lineItemServiceTx.generate(
+        data.variant_id,
+        regionId,
+        data.quantity,
+        {
+          customer_id: orderEdit.order.customer_id,
+          metadata: data.metadata,
+          order_edit_id: orderEditId,
+        }
+      )
+
+      let lineItem = await lineItemServiceTx.create(lineItemData)
+      lineItem = await lineItemServiceTx.retrieve(lineItem.id)
+
+      await this.refreshAdjustments(orderEditId)
+
+      /**
+       * Generate a change record
+       */
+
+      await this.orderEditItemChangeService_.withTransaction(manager).create({
+        type: OrderEditItemChangeType.ITEM_ADD,
+        line_item_id: lineItem.id,
+        order_edit_id: orderEditId,
+      })
+
+      /**
+       * Compute tax lines
+       */
+
+      const localCart = {
+        ...orderEdit.order,
+        object: "cart",
+        items: [lineItem],
+      } as unknown as Cart
+
+      const calcContext = await this.totalsService_
+        .withTransaction(manager)
+        .getCalculationContext(localCart, {
+          exclude_shipping: true,
+        })
+
+      await this.taxProviderService_
+        .withTransaction(manager)
+        .createTaxLines([lineItem], calcContext)
+    })
   }
 
   async deleteItemChange(

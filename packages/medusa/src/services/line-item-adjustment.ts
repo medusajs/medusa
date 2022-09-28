@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { EntityManager, In } from "typeorm"
+
 import {
   Cart,
   DiscountRuleType,
@@ -12,6 +12,8 @@ import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustme
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import DiscountService from "./discount"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata } from "../utils"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -23,44 +25,34 @@ type AdjustmentContext = {
   variant: ProductVariant
 }
 
-type GeneratedAdjustment = Omit<LineItem, "id" | "item_id">
+type GeneratedAdjustment = {
+  amount: number
+  discount_id: string
+  description: string
+}
 
 /**
  * Provides layer to manipulate line item adjustments.
  * @extends BaseService
  */
-class LineItemAdjustmentService extends BaseService {
-  private manager_: EntityManager
-  private lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
-  private discountService: DiscountService
+class LineItemAdjustmentService extends TransactionBaseService {
+  protected readonly manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  private readonly lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
+  private readonly discountService: DiscountService
 
   constructor({
     manager,
     lineItemAdjustmentRepository,
     discountService,
   }: LineItemAdjustmentServiceProps) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.manager_ = manager
     this.lineItemAdjustmentRepo_ = lineItemAdjustmentRepository
     this.discountService = discountService
-  }
-
-  withTransaction(
-    transactionManager: EntityManager
-  ): LineItemAdjustmentService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new LineItemAdjustmentService({
-      manager: transactionManager,
-      lineItemAdjustmentRepository: this.lineItemAdjustmentRepo_,
-      discountService: this.discountService,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -76,7 +68,7 @@ class LineItemAdjustmentService extends BaseService {
     const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
       this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-    const query = this.buildQuery_({ id }, config)
+    const query = buildQuery({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
 
     if (!lineItemAdjustment) {
@@ -124,10 +116,7 @@ class LineItemAdjustmentService extends BaseService {
       const { metadata, ...rest } = data
 
       if (metadata) {
-        lineItemAdjustment.metadata = this.setMetadata_(
-          lineItemAdjustment,
-          metadata
-        )
+        lineItemAdjustment.metadata = setMetadata(lineItemAdjustment, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -153,7 +142,7 @@ class LineItemAdjustmentService extends BaseService {
       this.lineItemAdjustmentRepo_
     )
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await lineItemAdjustmentRepo.find(query)
   }
 
@@ -172,15 +161,15 @@ class LineItemAdjustmentService extends BaseService {
       if (typeof selectorOrIds === "string" || Array.isArray(selectorOrIds)) {
         const ids =
           typeof selectorOrIds === "string" ? [selectorOrIds] : selectorOrIds
-        return await lineItemAdjustmentRepo.delete({ id: In(ids) })
+        await lineItemAdjustmentRepo.delete({ id: In(ids) })
+        return
       }
 
-      const query = this.buildQuery_(selectorOrIds)
+      const query = buildQuery(selectorOrIds)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
 
       await lineItemAdjustmentRepo.remove(lineItemAdjustments)
-      return
     })
   }
 

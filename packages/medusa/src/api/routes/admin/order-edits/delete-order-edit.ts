@@ -8,7 +8,7 @@ import { OrderEditService } from "../../../../services"
  * description: "Deletes an Order Edit"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Note to delete.
+ *   - (path) id=* {string} The ID of the Order Edit to delete.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
