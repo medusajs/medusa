@@ -1903,7 +1903,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
 
       let response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
+        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 
@@ -2024,7 +2024,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
 
       response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,items,items.tax_lines,items.adjustments`,
+        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 
