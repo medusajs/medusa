@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.4.2-stripe-pp-migration.0
+
+### Patch Changes
+
+- [#1790](https://github.com/medusajs/medusa/pull/1790) [`4905f4664`](https://github.com/medusajs/medusa/commit/4905f466449d0ca41dd867764b4494beaefe18a6) Thanks [@adrien2p](https://github.com/adrien2p)! - Migrate Stripe providers to the new AbstractPaymentService
+
+* [#2224](https://github.com/medusajs/medusa/pull/2224) [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Normalize discount code before querying DB in `DiscountService.retrieveByCode`
+
 ## 1.4.1
 
 ### Patch Changes
