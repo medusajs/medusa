@@ -5,6 +5,7 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
+  TaxProviderService,
   TotalsService,
 } from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
@@ -13,6 +14,9 @@ import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import LineItemAdjustmentService from "../line-item-adjustment"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -31,6 +35,16 @@ const orderEditWithChanges = {
       },
     ],
   },
+  items: [
+    {
+      original_item_id: IdMap.getId("line-item-1"),
+      id: IdMap.getId("cloned-line-item-1"),
+    },
+    {
+      original_item_id: IdMap.getId("line-item-2"),
+      id: IdMap.getId("cloned-line-item-2"),
+    },
+  ],
   changes: [
     {
       type: OrderEditItemChangeType.ITEM_REMOVE,
@@ -63,6 +77,17 @@ const orderEditWithChanges = {
   ],
 }
 
+const orderEditWithAddedLineItem = {
+  id: IdMap.getId("order-edit-with-changes"),
+  order: {
+    id: IdMap.getId("order-edit-change"),
+    cart: {
+      discounts: [{ rule: {} }],
+    },
+    region: { id: IdMap.getId("test-region") },
+  },
+}
+
 const lineItemServiceMock = {
   ...LineItemServiceMock,
   list: jest.fn().mockImplementation(() => {
@@ -76,10 +101,21 @@ const lineItemServiceMock = {
     ])
   }),
   retrieve: jest.fn().mockImplementation((id) => {
-    return Promise.resolve({
+    const data = {
       id,
-    })
+      quantity: 1,
+      fulfilled_quantity: 1,
+    }
+
+    if (id === IdMap.getId("line-item-1")) {
+      return Promise.resolve({
+        ...data,
+        order_edit_id: IdMap.getId("order-edit-update-line-item"),
+      })
+    }
+    return Promise.resolve(data)
   }),
+  cloneTo: () => [],
 }
 
 describe("OrderEditService", () => {
@@ -88,9 +124,18 @@ describe("OrderEditService", () => {
   })
 
   const orderEditRepository = MockRepository({
-    findOneWithRelations: (relations, query) => {
+    findOne: (query) => {
+      if (query?.where?.id === IdMap.getId("order-edit-to-update")) {
+        return orderEditToUpdate
+      }
       if (query?.where?.id === IdMap.getId("order-edit-with-changes")) {
         return orderEditWithChanges
+      }
+      if (query?.where?.id === IdMap.getId("order-edit-update-line-item")) {
+        return {
+          ...orderEditWithChanges,
+          changes: [],
+        }
       }
       if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
         return {
@@ -116,8 +161,17 @@ describe("OrderEditService", () => {
           status: OrderEditStatus.DECLINED,
         }
       }
+      if (query?.where?.id === IdMap.getId("canceled-order-edit")) {
+        return { ...orderEditWithChanges, status: "canceled" }
+      }
+      if (query?.where?.id === IdMap.getId("confirmed-order-edit")) {
+        return { ...orderEditWithChanges, status: "confirmed" }
+      }
+      if (query?.where?.id === IdMap.getId("declined-order-edit")) {
+        return { ...orderEditWithChanges, status: "declined" }
+      }
 
-      return {}
+      return
     },
     create: (data) => {
       return {
@@ -136,17 +190,17 @@ describe("OrderEditService", () => {
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
+    lineItemAdjustmentService:
+      LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
+    taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
     await orderEditService.retrieve(IdMap.getId("order-edit-with-changes"))
-    expect(orderEditRepository.findOneWithRelations).toHaveBeenCalledTimes(1)
-    expect(orderEditRepository.findOneWithRelations).toHaveBeenCalledWith(
-      undefined,
-      {
-        where: { id: IdMap.getId("order-edit-with-changes") },
-      }
-    )
+    expect(orderEditRepository.findOne).toHaveBeenCalledTimes(1)
+    expect(orderEditRepository.findOne).toHaveBeenCalledWith({
+      where: { id: IdMap.getId("order-edit-with-changes") },
+    })
   })
 
   it("should update an order edit with the right arguments", async () => {
@@ -155,35 +209,9 @@ describe("OrderEditService", () => {
     })
     expect(orderEditRepository.save).toHaveBeenCalledTimes(1)
     expect(orderEditRepository.save).toHaveBeenCalledWith({
+      id: IdMap.getId("order-edit-to-update"),
       internal_note: "test note",
     })
-  })
-
-  it("should compute the items from the changes and attach them to the orderEdit", async () => {
-    const { items, removedItems } = await orderEditService.computeLineItems(
-      IdMap.getId("order-edit-with-changes")
-    )
-
-    expect(items.length).toBe(2)
-    expect(items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: IdMap.getId("line-item-2"),
-        }),
-        expect.objectContaining({
-          id: IdMap.getId("line-item-3"),
-        }),
-      ])
-    )
-
-    expect(removedItems.length).toBe(1)
-    expect(removedItems).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: IdMap.getId("line-item-1"),
-        }),
-      ])
-    )
   })
 
   it("should create an order edit and call the repository with the right arguments as well as the event bus service", async () => {
@@ -206,6 +234,22 @@ describe("OrderEditService", () => {
       OrderEditService.Events.CREATED,
       { id: expect.any(String) }
     )
+  })
+
+  it("should update a line item  and create an item change to an order edit", async () => {
+    await orderEditService.updateLineItem(
+      IdMap.getId("order-edit-update-line-item"),
+      IdMap.getId("line-item-1"),
+      {
+        quantity: 3,
+      }
+    )
+
+    expect(orderEditItemChangeServiceMock.list).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
+    expect(
+      LineItemAdjustmentServiceMock.createAdjustments
+    ).toHaveBeenCalledTimes(1)
   })
 
   describe("decline", () => {
@@ -267,7 +311,9 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+        result = await orderEditService.requestConfirmation(orderEditId, {
+          loggedInUser: userId,
+        })
       })
 
       it("sets fields correctly for update", async () => {
@@ -283,13 +329,12 @@ describe("OrderEditService", () => {
           requested_at: expect.any(Date),
           requested_by: userId,
         })
-        
+
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
           OrderEditService.Events.REQUESTED,
           { id: orderEditId }
         )
       })
-
     })
 
     describe("requested edit", () => {
@@ -298,27 +343,80 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {loggedInUser: userId})
+        result = await orderEditService.requestConfirmation(orderEditId, {
+          loggedInUser: userId,
+        })
       })
 
       afterEach(() => {
         jest.clearAllMocks()
       })
+    })
 
-      it("doesn't emit requested event", () => {
+    describe("cancel", () => {
+      it("Cancels an order edit", async () => {
+        const id = IdMap.getId("order-edit-with-changes")
+        const userId = IdMap.getId("user-id")
+
+        await orderEditService.cancel(id, { loggedInUser: userId })
+
+        expect(orderEditRepository.save).toHaveBeenCalledWith({
+          ...orderEditWithChanges,
+          canceled_by: userId,
+          canceled_at: expect.any(Date),
+        })
+
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          OrderEditService.Events.CANCELED,
+          { id }
+        )
+      })
+
+      it("Returns early in case of an already canceled order edit", async () => {
+        const id = IdMap.getId("canceled-order-edit")
+        const userId = IdMap.getId("user-id")
+
+        const result = await orderEditService.cancel(id, userId)
+
+        expect(result).toEqual(expect.objectContaining({ status: "canceled" }))
+
+        expect(orderEditRepository.save).toHaveBeenCalledTimes(0)
         expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
 
-      it("doesn't call save", async () => {
-        expect(result).toEqual(
-          expect.objectContaining({
-            requested_at: expect.any(Date),
-            requested_by: userId,
-          })
-        )
+      test.each(["confirmed", "declined"])(
+        "Fails to cancel an edit with status %s",
+        async (status) => {
+          expect.assertions(1)
+          const id = IdMap.getId(`${status}-order-edit`)
+          const userId = IdMap.getId("user-id")
 
-        expect(orderEditRepository.save).toHaveBeenCalledTimes(0)
-      })
+          try {
+            await orderEditService.cancel(id, userId)
+          } catch (err) {
+            expect(err.message).toEqual(
+              `Cannot cancel order edit with status ${status}`
+            )
+          }
+        }
+      )
     })
+  })
+
+  it("should add a line item to an order edit", async () => {
+    jest
+      .spyOn(orderEditService, "refreshAdjustments")
+      .mockImplementation(async () => {})
+
+    await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
+      variant_id: IdMap.getId("to-be-added-variant"),
+      quantity: 3,
+    })
+
+    expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
+    expect(orderEditService.refreshAdjustments).toHaveBeenCalledTimes(1)
+    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
   })
 })

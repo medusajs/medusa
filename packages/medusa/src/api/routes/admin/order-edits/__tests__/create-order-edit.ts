@@ -33,6 +33,7 @@ describe("POST /admin/order-edits", () => {
     })
 
     it("calls order edit service create", () => {
+      expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.create).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.create).toHaveBeenCalledWith(
         {

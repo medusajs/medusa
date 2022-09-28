@@ -8,7 +8,7 @@ import { OrderEditService } from "../../../../services"
  * description: "Deletes an Order Edit"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Note to delete.
+ *   - (path) id=* {string} The ID of the Order Edit to delete.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -17,9 +17,9 @@ import { OrderEditService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.delete(edit_id)
- *       .then(({ id, object, deleted }) => {
- *         console.log(id);
- *       });
+ *         .then(({ id, object, deleted }) => {
+ *           console.log(id)
+ *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
