@@ -333,7 +333,14 @@ class LineItemService extends BaseService {
         let lineItems = await this.list(selector)
 
         if (!lineItems.length) {
-          return
+          const selectorConstraints = Object.entries(selector)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(", ")
+
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Line item with ${selectorConstraints} was not found`
+          )
         }
 
         lineItems = lineItems.map((item) => {
