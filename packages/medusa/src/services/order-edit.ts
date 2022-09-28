@@ -475,7 +475,7 @@ export default class OrderEditService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       const orderEdit = await this.retrieve(orderEditId, {
-        relations: ["order", "order.region"],
+        relations: ["order"],
       })
 
       if (!OrderEditService.isOrderEditActive(orderEdit)) {
@@ -496,15 +496,14 @@ export default class OrderEditService extends TransactionBaseService {
         regionId,
         data.quantity,
         {
+          customer_id: orderEdit.order.customer_id,
           metadata: data.metadata,
           order_edit_id: orderEditId,
         }
       )
 
       let lineItem = await lineItemServiceTx.create(lineItemData)
-      lineItem = await lineItemServiceTx.retrieve(lineItem.id, {
-        relations: ["variant"],
-      })
+      lineItem = await lineItemServiceTx.retrieve(lineItem.id)
 
       await this.refreshAdjustments(orderEditId)
 

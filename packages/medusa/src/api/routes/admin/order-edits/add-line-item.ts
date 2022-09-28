@@ -24,9 +24,9 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdit.addLineItem(order_edit_id, { variant_id, quantity })
- *       .then(({ order_edit }) => {
- *         console.log(order_edit.id)
- *       })
+ *        .then(({ order_edit }) => {
+ *           console.log(order_edit.id)
+ *        })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -72,12 +72,9 @@ export default async (req: Request, res: Response) => {
   const data = req.validatedBody as AdminPostOrderEditsEditLineItemsReq
 
   await manager.transaction(async (transactionManager) => {
-    const orderEditServiceTx =
-      orderEditService.withTransaction(transactionManager)
-
-    await orderEditServiceTx.addLineItem(id, data)
-
-    return orderEdit
+    await orderEditService
+      .withTransaction(transactionManager)
+      .addLineItem(id, data)
   })
 
   let orderEdit = await orderEditService.retrieve(id, {
