@@ -1599,7 +1599,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
 
     it("confirms an already declined order edit", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const declinedOrderEdit = await simpleOrderEditFactory(dbConnection, {
