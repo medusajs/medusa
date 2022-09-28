@@ -1896,14 +1896,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         (item) => item.original_item_id === lineItemId1
       ).id
 
-      await api.post(
+      let response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 2 },
-        adminHeaders
-      )
-
-      let response = await api.get(
-        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 
@@ -2017,14 +2012,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         })
       )
 
-      await api.post(
+      response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
         { quantity: 3 },
-        adminHeaders
-      )
-
-      response = await api.get(
-        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 
