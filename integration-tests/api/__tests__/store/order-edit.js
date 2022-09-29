@@ -313,4 +313,68 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         })
     })
   })
+
+  describe("POST /store/order-edits/:id/complete", () => {
+    let requestedOrderEdit
+    let confirmedOrderEdit
+    let createdOrderEdit
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      requestedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-1"),
+        created_by: "admin_user",
+        requested_at: new Date(),
+      })
+
+      confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-2"),
+        created_by: "admin_user",
+        confirmed_at: new Date(),
+        confirmed_by: "admin_user",
+      })
+
+      createdOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-3"),
+        created_by: "admin_user",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    // TODO once payment collection is done
+    /*it("complete an order edit", async () => {})*/
+
+    it("idempotently complete an already confirmed order edit", async () => {
+      const api = useApi()
+      const result = await api.post(
+        `/store/order-edits/${confirmedOrderEdit.id}/complete`
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: confirmedOrderEdit.id,
+          status: "confirmed",
+          confirmed_at: expect.any(String),
+        })
+      )
+    })
+
+    it("fails to complete a non requested order edit", async () => {
+      const api = useApi()
+      const err = await api
+        .post(`/store/order-edits/${createdOrderEdit.id}/complete`)
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toBe(
+        `Cannot complete an order edit with status created`
+      )
+    })
+  })
 })

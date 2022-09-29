@@ -680,6 +680,39 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
+  async complete(
+    orderEditId: string,
+    context: { loggedInUserId?: string }
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEdit = await this.retrieve(orderEditId)
+
+      if (orderEdit.status === OrderEditStatus.CONFIRMED) {
+        return orderEdit
+      }
+
+      if (orderEdit.status !== OrderEditStatus.REQUESTED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot complete an order edit with status ${orderEdit.status}`
+        )
+      }
+
+      // TODO once payment collection is done
+      /*const paymentCollection = await this.paymentCollectionService_.withTransaction(manager).retrieve(orderEdit.payment_collection_id)
+      if (!paymentCollection.authorized_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Unable to complete an order edit if the payment is not authorized"
+        )
+      }*/
+
+      return await this.confirm(orderEditId, {
+        loggedInUserId: context.loggedInUserId,
+      })
+    })
+  }
+
   protected async retrieveActive(
     orderId: string,
     config: FindConfig<OrderEdit> = {}

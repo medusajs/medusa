@@ -65,6 +65,13 @@ export const orderEditServiceMock = {
         declined_at: new Date(),
       })
     }
+    if (orderId === IdMap.getId("testCompleteOrderEdit")) {
+      return Promise.resolve({
+        ...orderEdit,
+        id: IdMap.getId("testCompleteOrderEdit"),
+        confirmed_at: new Date(),
+      })
+    }
     if (orderId === IdMap.getId("testCancelOrderEdit")) {
       return Promise.resolve({
         ...orderEdit,
@@ -128,6 +135,9 @@ export const orderEditServiceMock = {
     return Promise.resolve({})
   }),
   confirm: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
+  }),
+  complete: jest.fn().mockImplementation(() => {
     return Promise.resolve({})
   }),
   updateLineItem: jest.fn().mockImplementation((_) => {
