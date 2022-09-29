@@ -6,7 +6,7 @@ import { DeepPartial } from "typeorm/common/DeepPartial"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { Cart, LineItemTaxLine, LineItem, LineItemAdjustment } from "../models"
+import { Cart, LineItem, LineItemAdjustment, LineItemTaxLine } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
 import LineItemAdjustmentService from "./line-item-adjustment"
@@ -18,6 +18,7 @@ import {
   ProductVariantService,
   RegionService,
 } from "./index"
+import { setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -310,11 +311,14 @@ class LineItemService extends BaseService {
 
   /**
    * Updates a line item
-   * @param {string} id - the id of the line item to update
-   * @param {Partial<LineItem>} data - the properties to update on line item
-   * @return {Promise<LineItem>} the update line item
+   * @param idOrSelector - the id or selector of the line item(s) to update
+   * @param data - the properties to update the line item(s)
+   * @return the updated line item(s)
    */
-  async update(id: string, data: Partial<LineItem>): Promise<LineItem> {
+  async update(
+    idOrSelector: string | Selector<LineItem>,
+    data: Partial<LineItem>
+  ): Promise<LineItem[]> {
     const { metadata, ...rest } = data
 
     return await this.atomicPhase_(
@@ -323,17 +327,34 @@ class LineItemService extends BaseService {
           this.lineItemRepository_
         )
 
-        const lineItem = await this.retrieve(id).then((lineItem) => {
-          const lineItemMetadata = metadata
-            ? this.setMetadata_(lineItem, metadata)
-            : lineItem.metadata
+        const selector =
+          typeof idOrSelector === "string" ? { id: idOrSelector } : idOrSelector
 
-          return Object.assign(lineItem, {
+        let lineItems = await this.list(selector)
+
+        if (!lineItems.length) {
+          const selectorConstraints = Object.entries(selector)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(", ")
+
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Line item with ${selectorConstraints} was not found`
+          )
+        }
+
+        lineItems = lineItems.map((item) => {
+          const lineItemMetadata = metadata
+            ? setMetadata(item, metadata)
+            : item.metadata
+
+          return Object.assign(item, {
             ...rest,
             metadata: lineItemMetadata,
           })
         })
-        return await lineItemRepository.save(lineItem)
+
+        return await lineItemRepository.save(lineItems)
       }
     )
   }

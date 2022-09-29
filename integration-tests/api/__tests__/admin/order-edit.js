@@ -1322,7 +1322,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     })
   })
 
-  describe("POST /admin/order-edits/:id", () => {
+  describe("POST /admin/order-edits/:id/cancel", () => {
     const cancellableEditId = IdMap.getId("order-edit-1")
     const canceledEditId = IdMap.getId("order-edit-2")
     const confirmedEditId = IdMap.getId("order-edit-3")
@@ -1387,7 +1387,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         {},
         adminHeaders
       )
-
       expect(response.status).toEqual(200)
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
@@ -1416,6 +1415,210 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           "Cannot cancel order edit with status confirmed"
         )
       }
+    })
+  })
+
+  describe("POST /admin/order-edits/:id/confirm", () => {
+    let product, product2
+    const prodId1 = IdMap.getId("product-1")
+    const prodId2 = IdMap.getId("product-2")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const lineItemId2 = IdMap.getId("line-item-2")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      product = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        id: prodId2,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("confirms an order edit", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "adrien@test.com",
+        region: region.id,
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+          {
+            id: lineItemId2,
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      const order = completeRes.data.data
+
+      let response = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: order.id,
+          internal_note: "This is an internal note",
+        },
+        adminHeaders
+      )
+
+      const orderEditId = response.data.order_edit.id
+
+      const itemToUpdate = response.data.order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      )
+
+      response = await api.post(
+        `/admin/order-edits/${orderEditId}/items/${itemToUpdate.id}`,
+        { quantity: 2 },
+        adminHeaders
+      )
+
+      const orderEditItems = response.data.order_edit.items
+
+      response = await api.post(
+        `/admin/order-edits/${orderEditId}/confirm`,
+        {},
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          created_by: "admin_user",
+          confirmed_by: "admin_user",
+          confirmed_at: expect.any(String),
+          status: "confirmed",
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 3000,
+          tax_total: 300,
+          total: 3300,
+        })
+      )
+
+      response = await api.get(`/admin/orders/${order.id}`, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: orderEditItems[0].id,
+              original_item_id: orderEditItems[0].original_item_id,
+            }),
+            expect.objectContaining({
+              id: orderEditItems[1].id,
+              original_item_id: orderEditItems[1].original_item_id,
+            }),
+          ]),
+          shipping_total: 0,
+          discount_total: 0,
+          tax_total: 300,
+          refunded_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          subtotal: 3000,
+          total: 3300,
+          paid_total: 2200,
+          refundable_amount: 2200,
+        })
+      )
+    })
+
+    it("confirms an already confirmed order edit", async () => {
+      const api = useApi()
+
+      const confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+        confirmed_at: new Date(),
+        confirmed_by: "admin_user",
+      })
+
+      const response = await api.post(
+        `/admin/order-edits/${confirmedOrderEdit.id}/confirm`,
+        {},
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: confirmedOrderEdit.id,
+          created_by: "admin_user",
+          confirmed_by: "admin_user",
+          confirmed_at: expect.any(String),
+          status: "confirmed",
+        })
+      )
+    })
+
+    it("confirms an already canceled order edit", async () => {
+      const api = useApi()
+
+      const canceledOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+        canceled_at: new Date(),
+        canceled_by: "admin_user",
+      })
+
+      const err = await api
+        .post(
+          `/admin/order-edits/${canceledOrderEdit.id}/confirm`,
+          {},
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Cannot confirm an order edit with status canceled"
+      )
+    })
+
+    it("confirms an already declined order edit", async () => {
+      const api = useApi()
+
+      const declinedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        created_by: "admin_user",
+        declined_at: new Date(),
+        declined_by: "admin_user",
+      })
+
+      const err = await api
+        .post(
+          `/admin/order-edits/${declinedOrderEdit.id}/confirm`,
+          {},
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Cannot confirm an order edit with status declined"
+      )
     })
   })
 

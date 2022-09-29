@@ -1838,6 +1838,9 @@ class CartService extends TransactionBaseService {
           relations: ["countries"],
         })
 
+      const lineItemServiceTx =
+        this.lineItemService_.withTransaction(transactionManager)
+
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {
@@ -1856,21 +1859,19 @@ class CartService extends TransactionBaseService {
               availablePrice !== undefined &&
               availablePrice.calculatedPrice !== null
             ) {
-              return this.lineItemService_
-                .withTransaction(transactionManager)
-                .update(item.id, {
-                  has_shipping: false,
-                  unit_price: availablePrice.calculatedPrice,
-                })
+              return lineItemServiceTx.update(item.id, {
+                has_shipping: false,
+                unit_price: availablePrice.calculatedPrice,
+              })
             } else {
-              await this.lineItemService_
-                .withTransaction(transactionManager)
-                .delete(item.id)
+              await lineItemServiceTx.delete(item.id)
               return
             }
           })
         )
-      ).filter((item): item is LineItem => !!item)
+      )
+        .flat()
+        .filter((item): item is LineItem => !!item)
     }
   }
 

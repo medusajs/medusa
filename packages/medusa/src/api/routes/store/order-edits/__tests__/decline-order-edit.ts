@@ -31,7 +31,7 @@ describe("GET /store/order-edits/:id", () => {
       expect(orderEditServiceMock.decline).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.decline).toHaveBeenCalledWith(orderEditId, {
         declinedReason: "test",
-        loggedInUser: undefined,
+        loggedInUserId: undefined,
       })
       expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
     })
