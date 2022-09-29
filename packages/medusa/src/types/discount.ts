@@ -161,5 +161,5 @@ export type CreateDynamicDiscountInput = {
   code: string
   ends_at?: Date
   usage_limit: number
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

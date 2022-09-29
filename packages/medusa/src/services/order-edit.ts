@@ -1,4 +1,4 @@
-import { EntityManager, IsNull } from "typeorm"
+import { DeepPartial, EntityManager, IsNull } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
@@ -24,7 +24,6 @@ import {
 import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
-  UpdateOrderEditInput,
 } from "../types/order-edit"
 
 type InjectedDependencies = {
@@ -47,6 +46,7 @@ export default class OrderEditService extends TransactionBaseService {
     DECLINED: "order-edit.declined",
     REQUESTED: "order-edit.requested",
     CANCELED: "order-edit.canceled",
+    CONFIRMED: "order-edit.confirmed",
   }
 
   protected readonly manager_: EntityManager
@@ -107,27 +107,6 @@ export default class OrderEditService extends TransactionBaseService {
     }
 
     return orderEdit
-  }
-
-  protected async retrieveActive(
-    orderId: string,
-    config: FindConfig<OrderEdit> = {}
-  ): Promise<OrderEdit | undefined> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.getCustomRepository(
-      this.orderEditRepository_
-    )
-
-    const query = buildQuery(
-      {
-        order_id: orderId,
-        confirmed_at: IsNull(),
-        canceled_at: IsNull(),
-        declined_at: IsNull(),
-      },
-      config
-    )
-    return await orderEditRepository.findOne(query)
   }
 
   /**
@@ -235,7 +214,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async update(
     orderEditId: string,
-    data: UpdateOrderEditInput
+    data: DeepPartial<OrderEdit>
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepo = manager.getCustomRepository(
@@ -290,7 +269,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     context: {
       declinedReason?: string
-      loggedInUser?: string
+      loggedInUserId?: string
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -298,7 +277,7 @@ export default class OrderEditService extends TransactionBaseService {
         this.orderEditRepository_
       )
 
-      const { loggedInUser, declinedReason } = context
+      const { loggedInUserId, declinedReason } = context
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -314,7 +293,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.declined_at = new Date()
-      orderEdit.declined_by = loggedInUser
+      orderEdit.declined_by = loggedInUserId
       orderEdit.declined_reason = declinedReason
 
       const result = await orderEditRepo.save(orderEdit)
@@ -573,7 +552,7 @@ export default class OrderEditService extends TransactionBaseService {
   async requestConfirmation(
     orderEditId: string,
     context: {
-      loggedInUser?: string
+      loggedInUserId?: string
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -598,7 +577,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.requested_at = new Date()
-      orderEdit.requested_by = context.loggedInUser
+      orderEdit.requested_by = context.loggedInUserId
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -608,6 +587,118 @@ export default class OrderEditService extends TransactionBaseService {
 
       return orderEdit
     })
+  }
+
+  async cancel(
+    orderEditId: string,
+    context: { loggedInUserId?: string } = {}
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepository = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      const orderEdit = await this.retrieve(orderEditId)
+
+      if (orderEdit.status === OrderEditStatus.CANCELED) {
+        return orderEdit
+      }
+
+      if (
+        [OrderEditStatus.CONFIRMED, OrderEditStatus.DECLINED].includes(
+          orderEdit.status
+        )
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot cancel order edit with status ${orderEdit.status}`
+        )
+      }
+
+      orderEdit.canceled_at = new Date()
+      orderEdit.canceled_by = context.loggedInUserId
+
+      const saved = await orderEditRepository.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.CANCELED, { id: orderEditId })
+
+      return saved
+    })
+  }
+
+  async confirm(
+    orderEditId: string,
+    context: { loggedInUserId?: string } = {}
+  ): Promise<OrderEdit> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEditRepository = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
+
+      let orderEdit = await this.retrieve(orderEditId)
+
+      if (
+        [OrderEditStatus.CANCELED, OrderEditStatus.DECLINED].includes(
+          orderEdit.status
+        )
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Cannot confirm an order edit with status ${orderEdit.status}`
+        )
+      }
+
+      if (orderEdit.status === OrderEditStatus.CONFIRMED) {
+        return orderEdit
+      }
+
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
+      await Promise.all([
+        lineItemServiceTx.update(
+          { order_id: orderEdit.order_id },
+          { order_id: null }
+        ),
+        lineItemServiceTx.update(
+          { order_edit_id: orderEditId },
+          { order_id: orderEdit.order_id }
+        ),
+      ])
+
+      orderEdit.confirmed_at = new Date()
+      orderEdit.confirmed_by = context.loggedInUserId
+
+      orderEdit = await orderEditRepository.save(orderEdit)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(OrderEditService.Events.CONFIRMED, { id: orderEditId })
+
+      return orderEdit
+    })
+  }
+
+  protected async retrieveActive(
+    orderId: string,
+    config: FindConfig<OrderEdit> = {}
+  ): Promise<OrderEdit | undefined> {
+    const manager = this.transactionManager_ ?? this.manager_
+    const orderEditRepository = manager.getCustomRepository(
+      this.orderEditRepository_
+    )
+
+    const query = buildQuery(
+      {
+        order_id: orderId,
+        confirmed_at: IsNull(),
+        canceled_at: IsNull(),
+        declined_at: IsNull(),
+      },
+      config
+    )
+    return await orderEditRepository.findOne(query)
   }
 
   protected async deleteClonedItems(orderEditId: string): Promise<void> {
@@ -645,45 +736,6 @@ export default class OrderEditService extends TransactionBaseService {
         return await lineItemServiceTx.delete(id)
       })
     )
-  }
-
-  async cancel(
-    orderEditId: string,
-    context: { loggedInUser?: string } = {}
-  ): Promise<OrderEdit> {
-    return await this.atomicPhase_(async (manager) => {
-      const orderEditRepository = manager.getCustomRepository(
-        this.orderEditRepository_
-      )
-
-      const orderEdit = await this.retrieve(orderEditId)
-
-      if (orderEdit.status === OrderEditStatus.CANCELED) {
-        return orderEdit
-      }
-
-      if (
-        [OrderEditStatus.CONFIRMED, OrderEditStatus.DECLINED].includes(
-          orderEdit.status
-        )
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot cancel order edit with status ${orderEdit.status}`
-        )
-      }
-
-      orderEdit.canceled_at = new Date()
-      orderEdit.canceled_by = context.loggedInUser
-
-      const saved = await orderEditRepository.save(orderEdit)
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(OrderEditService.Events.CANCELED, { id: orderEditId })
-
-      return saved
-    })
   }
 
   private static isOrderEditActive(orderEdit: OrderEdit): boolean {

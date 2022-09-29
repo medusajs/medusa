@@ -57,7 +57,7 @@ export type CreateProductVariantInput = {
   width?: number
   options: ProductVariantOption[]
   prices: ProductVariantPrice[]
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export type UpdateProductVariantInput = {
@@ -81,7 +81,7 @@ export type UpdateProductVariantInput = {
   width?: number
   options?: ProductVariantOption[]
   prices?: ProductVariantPrice[]
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export class FilterableProductVariantProps {

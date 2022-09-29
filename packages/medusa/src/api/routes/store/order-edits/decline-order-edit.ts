@@ -72,7 +72,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (manager) => {
     await orderEditService.withTransaction(manager).decline(id, {
       declinedReason: validatedBody.declined_reason,
-      loggedInUser: userId,
+      loggedInUserId: userId,
     })
   })
 

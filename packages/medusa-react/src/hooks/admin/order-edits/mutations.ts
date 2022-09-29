@@ -153,20 +153,32 @@ export const useAdminRequestOrderEditConfirmation = (
   )
 }
 
-
 export const useAdminCancelOrderEdit = (
   id: string,
-  options?: UseMutationOptions<
-    Response<AdminOrderEditsRes>,
-    Error
-  >
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    () =>
-      client.admin.orderEdits.cancel(id),
+    () => client.admin.orderEdits.cancel(id),
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      options
+    )
+  )
+}
+
+export const useAdminConfirmOrderEdit = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.orderEdits.confirm(id),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],

@@ -3,19 +3,19 @@ import { request } from "../../../../../helpers/test-request"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
-describe("POST /admin/order-edits/:id/cancel", () => {
-  describe("cancels an order edit", () => {
-    const orderEditId = IdMap.getId("testCancelOrderEdit")
+describe("POST /admin/order-edits/:id/confirm", () => {
+  describe("confirms an order edit", () => {
+    const orderEditId = IdMap.getId("testConfirmOrderEdit")
     let subject
 
     beforeAll(async () => {
       subject = await request(
         "POST",
-        `/admin/order-edits/${orderEditId}/cancel`,
+        `/admin/order-edits/${orderEditId}/confirm`,
         {
           adminSession: {
             jwt: {
-              userId: IdMap.getId("admin_user"),
+              userId: "admin_user",
             },
           },
           flags: [OrderEditingFeatureFlag],
@@ -27,10 +27,10 @@ describe("POST /admin/order-edits/:id/cancel", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService cancel", () => {
-      expect(orderEditServiceMock.cancel).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, {
-        loggedInUserId: IdMap.getId("admin_user"),
+    it("calls orderService confirm", () => {
+      expect(orderEditServiceMock.confirm).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.confirm).toHaveBeenCalledWith(orderEditId, {
+        loggedInUserId: "admin_user",
       })
     })
 
@@ -38,12 +38,13 @@ describe("POST /admin/order-edits/:id/cancel", () => {
       expect(subject.status).toEqual(200)
     })
 
-    it("returns cancel result", () => {
+    it("returns confirm result", () => {
       expect(subject.body.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
-          canceled_at: expect.any(String),
-          status: "canceled",
+          confirmed_at: expect.any(String),
+          confirmed_by: "admin_user",
+          status: "confirmed",
         })
       )
     })
