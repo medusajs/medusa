@@ -39,6 +39,11 @@ export default (app) => {
     middlewares.wrap(require("./decline-order-edit").default)
   )
 
+  route.post(
+    "/:id/complete",
+    middlewares.wrap(require("./complete-order-edit").default)
+  )
+
   return app
 }
 

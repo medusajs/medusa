@@ -1,15 +1,15 @@
-import { useDeclineOrderEdit } from "../../../../src/"
+import { useCompleteOrderEdit, useDeclineOrderEdit } from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
-describe("useCreateLineItem hook", () => {
-  test("creates a line item", async () => {
+describe("useDeclineOrderEdit hook", () => {
+  test("decline an order edit", async () => {
     const declineBody = {
       declined_reason: "Wrong color",
     }
 
     const { result, waitFor } = renderHook(
-      () => useDeclineOrderEdit("test-cart"),
+      () => useDeclineOrderEdit("store_order_edit"),
       {
         wrapper: createWrapper(),
       }
@@ -24,6 +24,28 @@ describe("useCreateLineItem hook", () => {
       expect.objectContaining({
         status: "declined",
         ...declineBody,
+      })
+    )
+  })
+})
+
+describe("useCompleteOrderEdit hook", () => {
+  test("complete an order edit", async () => {
+    const { result, waitFor } = renderHook(
+      () => useCompleteOrderEdit("store_order_edit"),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate()
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.order_edit).toEqual(
+      expect.objectContaining({
+        status: "confirmed",
       })
     )
   })

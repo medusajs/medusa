@@ -20,6 +20,8 @@ import LineItemAdjustmentService from "../line-item-adjustment"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
+  created_at: new Date(),
+  status: "created",
 }
 
 const orderEditWithChanges = {
@@ -208,10 +210,12 @@ describe("OrderEditService", () => {
       internal_note: "test note",
     })
     expect(orderEditRepository.save).toHaveBeenCalledTimes(1)
-    expect(orderEditRepository.save).toHaveBeenCalledWith({
-      id: IdMap.getId("order-edit-to-update"),
-      internal_note: "test note",
-    })
+    expect(orderEditRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: IdMap.getId("order-edit-to-update"),
+        internal_note: "test note",
+      })
+    )
   })
 
   it("should create an order edit and call the repository with the right arguments as well as the event bus service", async () => {
@@ -304,6 +308,22 @@ describe("OrderEditService", () => {
     })
   })
 
+  it("should add a line item to an order edit", async () => {
+    jest
+      .spyOn(orderEditService, "refreshAdjustments")
+      .mockImplementation(async () => {})
+
+    await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
+      variant_id: IdMap.getId("to-be-added-variant"),
+      quantity: 3,
+    })
+
+    expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
+    expect(orderEditService.refreshAdjustments).toHaveBeenCalledTimes(1)
+    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
+  })
+
   describe("requestConfirmation", () => {
     describe("created edit", () => {
       const orderEditId = IdMap.getId("order-edit-with-changes")
@@ -377,7 +397,9 @@ describe("OrderEditService", () => {
         const id = IdMap.getId("canceled-order-edit")
         const userId = IdMap.getId("user-id")
 
-        const result = await orderEditService.cancel(id, userId)
+        const result = await orderEditService.cancel(id, {
+          loggedInUserId: userId,
+        })
 
         expect(result).toEqual(expect.objectContaining({ status: "canceled" }))
 
@@ -393,7 +415,7 @@ describe("OrderEditService", () => {
           const userId = IdMap.getId("user-id")
 
           try {
-            await orderEditService.cancel(id, userId)
+            await orderEditService.cancel(id, { loggedInUserId: userId })
           } catch (err) {
             expect(err.message).toEqual(
               `Cannot cancel order edit with status ${status}`
@@ -423,11 +445,13 @@ describe("OrderEditService", () => {
         )
       })
 
-      it("Returns early in case of an already confirmed order edit", async () => {
+      it("returns early in case of an already confirmed order edit", async () => {
         const id = IdMap.getId("confirmed-order-edit")
         const userId = IdMap.getId("user-id")
 
-        const result = await orderEditService.confirm(id, userId)
+        const result = await orderEditService.confirm(id, {
+          loggedInUserId: userId,
+        })
 
         expect(result).toEqual(expect.objectContaining({ status: "confirmed" }))
 
@@ -435,21 +459,5 @@ describe("OrderEditService", () => {
         expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
     })
-  })
-
-  it("should add a line item to an order edit", async () => {
-    jest
-      .spyOn(orderEditService, "refreshAdjustments")
-      .mockImplementation(async () => {})
-
-    await orderEditService.addLineItem(IdMap.getId("order-edit-with-changes"), {
-      variant_id: IdMap.getId("to-be-added-variant"),
-      quantity: 3,
-    })
-
-    expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
-    expect(orderEditService.refreshAdjustments).toHaveBeenCalledTimes(1)
-    expect(taxProviderServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
-    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
   })
 })
