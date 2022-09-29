@@ -27,7 +27,6 @@ import {
   CreateOrderEditInput,
   CreateOrderEditItemChangeInput,
 } from "../types/order-edit"
-import region from "./region"
 
 type InjectedDependencies = {
   manager: EntityManager
