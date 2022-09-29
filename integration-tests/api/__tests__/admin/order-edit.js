@@ -1609,7 +1609,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       const err = await api
         .post(
-          `/admin/order-edits/${canceledOrderEdit.id}/confirm`,
+          `/admin/order-edits/${declinedOrderEdit.id}/confirm`,
           {},
           adminHeaders
         )
