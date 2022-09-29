@@ -91,6 +91,7 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   defaultFields?: (keyof TEntity | string)[]
   defaultRelations?: string[]
   allowedFields?: string[]
+  allowedRelations?: string[]
   defaultLimit?: number
   isList?: boolean
 }
