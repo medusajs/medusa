@@ -63,6 +63,7 @@ export const orderEditServiceMock = {
         id: IdMap.getId("testDeclineOrderEdit"),
         declined_reason: "Wrong size",
         declined_at: new Date(),
+        status: "declined",
       })
     }
     if (orderId === IdMap.getId("testCompleteOrderEdit")) {
@@ -70,6 +71,7 @@ export const orderEditServiceMock = {
         ...orderEdit,
         id: IdMap.getId("testCompleteOrderEdit"),
         confirmed_at: new Date(),
+        status: "completed",
       })
     }
     if (orderId === IdMap.getId("testCancelOrderEdit")) {
@@ -86,6 +88,7 @@ export const orderEditServiceMock = {
         id: IdMap.getId("testRequestOrder"),
         requested_by: IdMap.getId("admin_user"),
         requested_at: new Date(),
+        status: "requested",
       })
     }
     return Promise.resolve(undefined)

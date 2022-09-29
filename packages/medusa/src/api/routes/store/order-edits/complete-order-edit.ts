@@ -5,6 +5,8 @@ import {
   defaultStoreOrderEditFields,
   defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
+import { OrderEditStatus } from "../../../../models"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /order-edits/{id}/complete
@@ -21,7 +23,7 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.orderEdit.complete(orderEditId)
  *         .then(({ order_edit }) => {
- *           console.log(order_edit.id);
+ *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
@@ -58,7 +60,30 @@ export default async (req: Request, res: Response) => {
   const userId = req.user?.customer_id ?? req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (manager) => {
-    await orderEditService.withTransaction(manager).complete(id, {
+    const orderEditServiceTx = orderEditService.withTransaction(manager)
+    const orderEdit = await orderEditServiceTx.retrieve(id)
+
+    if (orderEdit.status === OrderEditStatus.CONFIRMED) {
+      return orderEdit
+    }
+
+    if (orderEdit.status !== OrderEditStatus.REQUESTED) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot complete an order edit with status ${orderEdit.status}`
+      )
+    }
+
+    // TODO once payment collection is done
+    /*const paymentCollection = await this.paymentCollectionService_.withTransaction(manager).retrieve(orderEdit.payment_collection_id)
+    if (!paymentCollection.authorized_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Unable to complete an order edit if the payment is not authorized"
+      )
+    }*/
+
+    return await orderEditServiceTx.confirm(id, {
       loggedInUserId: userId,
     })
   })

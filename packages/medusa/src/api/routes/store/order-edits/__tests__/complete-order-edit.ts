@@ -5,7 +5,7 @@ import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-
 
 describe("GET /store/order-edits/:id/complete", () => {
   describe("successfully complete an order edit", () => {
-    const orderEditId = IdMap.getId("testCompleteOrderEdit")
+    const orderEditId = IdMap.getId("testRequestOrder")
     let subject
 
     beforeAll(async () => {
@@ -22,11 +22,39 @@ describe("GET /store/order-edits/:id/complete", () => {
       jest.clearAllMocks()
     })
 
-    it("calls orderService complete", () => {
-      expect(orderEditServiceMock.complete).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.complete).toHaveBeenCalledWith(orderEditId, {
+    it("calls orderService confirm", () => {
+      expect(orderEditServiceMock.confirm).toHaveBeenCalledTimes(1)
+      expect(orderEditServiceMock.confirm).toHaveBeenCalledWith(orderEditId, {
         loggedInUserId: undefined,
       })
+      expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
+    })
+
+    it("returns orderEdit", () => {
+      expect(subject.body.order_edit.id).toEqual(orderEditId)
+    })
+  })
+
+  describe("idempotently complete an order edit", () => {
+    const orderEditId = IdMap.getId("testConfirmOrderEdit")
+    let subject
+
+    beforeAll(async () => {
+      subject = await request(
+        "POST",
+        `/store/order-edits/${orderEditId}/complete`,
+        {
+          flags: [OrderEditingFeatureFlag],
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls orderService confirm", () => {
+      expect(orderEditServiceMock.confirm).toHaveBeenCalledTimes(0)
       expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
     })
 
