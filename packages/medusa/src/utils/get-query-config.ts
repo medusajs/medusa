@@ -96,11 +96,11 @@ export function prepareListQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
-  if (isDefined(expandFields) && queryConfig?.allowedFields?.length) {
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
     validateFields(expandFields as string[], queryConfig.allowedFields)
   }
 
-  if (expandRelations && queryConfig?.allowedRelations?.length) {
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
     validateRelations(expandRelations, queryConfig.allowedRelations)
   }
 
@@ -153,11 +153,11 @@ export function prepareRetrieveQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
-  if (isDefined(expandFields) && queryConfig?.allowedFields?.length) {
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
     validateFields(expandFields as string[], queryConfig.allowedFields)
   }
 
-  if (expandRelations && queryConfig?.allowedRelations?.length) {
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
     validateRelations(expandRelations, queryConfig.allowedRelations)
   }
 
