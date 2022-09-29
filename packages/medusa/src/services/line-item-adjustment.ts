@@ -33,7 +33,6 @@ type GeneratedAdjustment = {
 
 /**
  * Provides layer to manipulate line item adjustments.
- * @extends BaseService
  */
 class LineItemAdjustmentService extends TransactionBaseService {
   protected readonly manager_: EntityManager

@@ -38,12 +38,7 @@ class ProductCollectionService extends TransactionBaseService {
     productRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      productCollectionRepository,
-      productRepository,
-      eventBusService,
-    })
+    super(arguments[0])
     this.manager_ = manager
 
     this.productCollectionRepository_ = productCollectionRepository

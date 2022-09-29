@@ -19,7 +19,6 @@ type InjectedDependencies = {
 
 /**
  * Provides layer to manipulate store settings.
- * @extends BaseService
  */
 class StoreService extends TransactionBaseService {
   protected manager_: EntityManager
