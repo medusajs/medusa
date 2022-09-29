@@ -14,7 +14,7 @@ export type CreateClaimInput = {
   refund_amount?: number
   shipping_address?: AddressPayload
   no_notification?: boolean
-  metadata?: object
+  metadata?: Record<string, unknown>
   order: Order
   claim_order_id?: string
   shipping_address_id?: string
@@ -67,7 +67,7 @@ type UpdateClaimItemInput = {
   reason?: string
   images: UpdateClaimItemImageInput[]
   tags: UpdateClaimItemTagInput[]
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 type UpdateClaimItemImageInput = {
