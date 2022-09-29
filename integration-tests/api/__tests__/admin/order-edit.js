@@ -40,7 +40,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -1623,7 +1623,8 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
   })
 
   describe("POST /admin/order-edits/:id/items/:item_id", () => {
-    let product, product2
+    let product
+    let product2
     const orderId = IdMap.getId("order-1")
     const prodId1 = IdMap.getId("product-1")
     const prodId2 = IdMap.getId("product-2")
@@ -2328,6 +2329,364 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           subtotal: 4000,
           tax_total: 200,
           total: 2200,
+        })
+      )
+    })
+  })
+
+  describe("DELETE /admin/order-edits/:id/items/:item_id", () => {
+    let product
+    let product2
+    let discountOrder
+    const orderId = IdMap.getId("order-1")
+    const discountOrderId = IdMap.getId("order-2")
+    const prodId1 = IdMap.getId("product-1")
+    const prodId2 = IdMap.getId("product-2")
+    const lineItemId1 = IdMap.getId("line-item-1")
+    const lineItemId2 = IdMap.getId("line-item-2")
+    const lineItemId1Discount = IdMap.getId("line-item-1-discount")
+    const lineItemId2Discount = IdMap.getId("line-item-2-discount")
+
+    beforeEach(async () => {
+      const api = useApi()
+      await adminSeeder(dbConnection)
+
+      product = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        id: prodId2,
+      })
+
+      const reagion = await simpleRegionFactory(dbConnection, {
+        id: "test-region",
+        name: "Test region",
+        tax_rate: 12.5,
+      })
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId,
+        email: "test-2@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region_id: "test-region",
+        line_items: [
+          {
+            id: lineItemId1,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                item_id: lineItemId1,
+                rate: 12.5,
+                code: "default",
+                name: "default",
+              },
+            ],
+          },
+          {
+            id: lineItemId2,
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                item_id: lineItemId2,
+                rate: 12.5,
+                code: "default",
+                name: "default",
+              },
+            ],
+          },
+        ],
+      })
+
+      const discountCode = "FIX_DISCOUNT"
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: discountCode,
+        rule: {
+          type: "fixed",
+          allocation: "total",
+          value: 500,
+        },
+        regions: ["test-region"],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "adrien@test.com",
+        region: "test-region",
+        line_items: [
+          {
+            id: lineItemId1Discount,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+          {
+            id: lineItemId2Discount,
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: discountCode }],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      discountOrder = completeRes.data.data
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("creates an order edit item change of type delete on line item delete", async () => {
+      const api = useApi()
+
+      const {
+        data: { order_edit },
+      } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderId,
+        },
+        adminHeaders
+      )
+
+      const orderEditId = order_edit.id
+      const updateItemId = order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      ).id
+
+      const response = await api.delete(
+        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit.changes).toHaveLength(1)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+              type: "item_remove",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId1,
+              line_item_id: null,
+              line_item: null,
+              original_line_item: expect.objectContaining({
+                id: lineItemId1,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: null,
+                order_id: orderId,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 1,
+                fulfilled_quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: 1,
+                metadata: null,
+                variant: expect.any(Object),
+              }),
+            }),
+          ]),
+          status: "created",
+          order_id: orderId,
+          internal_note: "This is an internal note",
+          created_by: "admin_user",
+          items: [
+            expect.objectContaining({
+              id: expect.any(String),
+              original_item_id: lineItemId2,
+              order_edit_id: orderEditId,
+              cart_id: null,
+              order_id: null,
+              swap_id: null,
+              claim_order_id: null,
+              title: expect.any(String),
+              is_return: false,
+              is_giftcard: false,
+              should_merge: true,
+              allow_discounts: true,
+              has_shipping: null,
+              unit_price: 1000,
+              variant_id: expect.any(String),
+              quantity: 1,
+              fulfilled_quantity: 1,
+              returned_quantity: null,
+              shipped_quantity: 1,
+              metadata: null,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                }),
+              ]),
+            }),
+          ],
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 1000,
+          tax_total: 125,
+          total: 1125,
+        })
+      )
+    })
+
+    it("creates an order edit item change of type delete on line item delete and adjusts item allocated discount", async () => {
+      const api = useApi()
+
+      const {
+        data: { order_edit },
+      } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: discountOrder.id,
+        },
+        adminHeaders
+      )
+
+      console.log("line item id")
+      console.log(lineItemId1Discount)
+
+      const orderEditId = order_edit.id
+      await api.delete(
+        `/admin/order-edits/${orderEditId}/items/${lineItemId1Discount}`,
+        adminHeaders
+      )
+
+      const response = await api.get(
+        `/admin/order-edits/${orderEditId}?expand=changes,changes.original_line_item,items,items.tax_lines,items.adjustments`,
+        adminHeaders
+      )
+      console.log(JSON.stringify(discountOrder))
+      console.log(JSON.stringify(response.data.order_edit))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit.changes).toHaveLength(1)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          changes: [
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+              type: "item_remove",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId1Discount,
+              line_item_id: null,
+              original_line_item: expect.objectContaining({
+                id: lineItemId1Discount,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                cart_id: expect.any(String),
+                order_id: discountOrder.id,
+                swap_id: null,
+                claim_order_id: null,
+                title: expect.any(String),
+                description: "",
+                thumbnail: "",
+                is_return: false,
+                is_giftcard: false,
+                should_merge: true,
+                allow_discounts: true,
+                has_shipping: null,
+                unit_price: 1000,
+                variant_id: expect.any(String),
+                quantity: 1,
+                returned_quantity: null,
+                shipped_quantity: null,
+                metadata: null,
+                variant: expect.any(Object),
+              }),
+            }),
+          ],
+          status: "created",
+          order_id: discountOrder.id,
+          created_by: "admin_user",
+          items: [
+            expect.objectContaining({
+              id: expect.any(String),
+              original_item_id: lineItemId2Discount,
+              order_edit_id: orderEditId,
+              cart_id: null,
+              order_id: null,
+              swap_id: null,
+              claim_order_id: null,
+              title: expect.any(String),
+              description: "",
+              thumbnail: "",
+              is_return: false,
+              is_giftcard: false,
+              should_merge: true,
+              allow_discounts: true,
+              has_shipping: null,
+              unit_price: 1000,
+              variant_id: expect.any(String),
+              quantity: 1,
+              returned_quantity: null,
+              metadata: null,
+              adjustments: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  item_id: expect.any(String),
+                  description: "discount",
+                  discount_id: expect.any(String),
+                  amount: 500,
+                  metadata: null,
+                }),
+              ],
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                }),
+              ]),
+            }),
+          ],
+          discount_total: 500,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 1000,
+          tax_total: 63,
+          total: 563,
         })
       )
     })
