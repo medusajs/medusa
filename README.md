@@ -37,7 +37,7 @@ An open-source composable commerce engine built for developers.
 
 ## Getting Started
 
-You can install Medusa locally or manually on your server by either following our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start) or the following steps:
+You can install Medusa by either following our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start) or the following steps:
 
 1. **Install Medusa CLI**
 
