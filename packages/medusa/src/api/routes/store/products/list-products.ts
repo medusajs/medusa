@@ -1,28 +1,30 @@
-import {
-  CartService,
-  ProductService,
-  RegionService,
-} from "../../../../services"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
 import { omit, pickBy } from "lodash"
+import {
+  CartService,
+  ProductService,
+  RegionService
+} from "../../../../services"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import { IsType } from "../../../../utils/validators/is-type"
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingService from "../../../../services/pricing"
-import { Product } from "../../../../models"
 import { defaultStoreProductsRelations } from "."
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { validator } from "../../../../utils/validator"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Product } from "../../../../models"
+import PricingService from "../../../../services/pricing"
+import { DateComparisonOperator } from "../../../../types/common"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { isDefined } from "../../../../utils"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /products
@@ -293,6 +295,12 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @IsString()
   @IsOptional()
   type?: string
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsOptional(),
+    IsArray(),
+  ])
+  sales_channel_id?: string[]
 
   @IsOptional()
   @ValidateNested()

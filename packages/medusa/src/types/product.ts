@@ -5,15 +5,17 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { Product, ProductOptionValue, ProductStatus } from "../models"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
   FindConfig,
-  StringComparisonOperator,
+  StringComparisonOperator
 } from "./common"
 import { PriceListLoadConfig } from "./price-list"
 
@@ -66,8 +68,10 @@ export class FilterableProductProps {
   @IsOptional()
   type?: string
 
-  @IsArray()
-  @IsOptional()
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsOptional(),
+    IsArray(),
+  ])
   sales_channel_id?: string[]
 
   @IsOptional()

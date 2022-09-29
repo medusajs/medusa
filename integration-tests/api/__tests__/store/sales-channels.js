@@ -126,8 +126,11 @@ describe("sales channels", () => {
   })
 
   describe("POST /store/cart/:id", () => {
-    let salesChannel1, salesChannel2, disabledSalesChannel
-    let product1, product2
+    let salesChannel1
+    let salesChannel2
+    let disabledSalesChannel
+    let product1
+    let product2
     let cart
 
     beforeEach(async () => {
@@ -287,6 +290,96 @@ describe("sales channels", () => {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
+    })
+  })
+
+  describe("GET /store/products", () => {
+    let salesChannel1
+    let salesChannel2
+    let product1
+    let product2
+    beforeEach(async () => {
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel1",
+        description: "salesChannel1",
+      })
+
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel2",
+        description: "salesChannel2",
+      })
+
+      product1 = await simpleProductFactory(dbConnection, {
+        title: "prod 1",
+        status: "published",
+        sales_channels: [salesChannel1],
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        title: "prod 2",
+        status: "published",
+        sales_channels: [salesChannel2],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("returns products from a specific sales channel", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/products?sales_channel_id[]=${salesChannel1.id}`
+      )
+
+      expect(response.data.products.length).toBe(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+        ])
+      )
+    })
+
+    it("returns products from multiples sales channels", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/products?sales_channel_id[]=${salesChannel1.id}&sales_channel_id[]=${salesChannel2.id}`
+      )
+
+      expect(response.data.products.length).toBe(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+        ])
+      )
+    })
+
+    it("returns all products by default", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/products`)
+
+      expect(response.data.products.length).toBe(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+          }),
+        ])
+      )
     })
   })
 })

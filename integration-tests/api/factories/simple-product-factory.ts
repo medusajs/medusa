@@ -4,17 +4,17 @@ import {
   ProductTag,
   ProductType,
   ShippingProfile,
-  ShippingProfileType,
+  ShippingProfileType
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
 import {
   ProductVariantFactoryData,
-  simpleProductVariantFactory,
+  simpleProductVariantFactory
 } from "./simple-product-variant-factory"
 import {
   SalesChannelFactoryData,
-  simpleSalesChannelFactory,
+  simpleSalesChannelFactory
 } from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
@@ -94,7 +94,7 @@ export const simpleProductFactory = async (
 
   toSave.sales_channels = sales_channels
 
-  await manager.save(toSave)
+  const test = await manager.save(toSave)
 
   const optionId = `${prodId}-option`
   const options = data.options || [{ id: optionId, title: "Size" }]
