@@ -3,7 +3,7 @@ import "reflect-metadata"
 import { Order } from "../../../.."
 import {
   DeleteResponse,
-  EmptyQueryParams,
+  FindParams,
   PaginatedResponse,
 } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
@@ -45,7 +45,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
@@ -260,6 +260,7 @@ export const defaultAdminOrdersRelations = [
   "claims",
   "claims.return_order",
   "claims.return_order.shipping_method",
+  "claims.return_order.shipping_method.tax_lines",
   "claims.shipping_methods",
   "claims.shipping_address",
   "claims.additional_items",
@@ -271,8 +272,11 @@ export const defaultAdminOrdersRelations = [
   // "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
+  "swaps.return_order.shipping_method",
+  "swaps.return_order.shipping_method.tax_lines",
   "swaps.payment",
   "swaps.shipping_methods",
+  "swaps.shipping_methods.tax_lines",
   "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
