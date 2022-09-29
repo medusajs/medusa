@@ -28,9 +28,14 @@ export default async function ({ port, directory }) {
   chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
     Logger.info(`${f} changed: restarting...`)
+
+    if (process.platform === "win32") {
+      execSync(`taskkill /PID ${child.pid} /F /T`)
+    }
+
     child.kill("SIGINT")
 
-    execSync(`${babelPath} src -d dist --extensions \".ts,.js\"`, {
+    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })

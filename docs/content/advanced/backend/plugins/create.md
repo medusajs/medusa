@@ -158,7 +158,7 @@ This guide does not cover how to create each of those files or components. If yo
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../subscribers/create-subscriber.md)
 - How to create an entity
-- How to [create a migration](../migrations.md)
+- How to [create a migration](../migrations/index.md)
 
 ## Add Plugin Configuration
 
@@ -260,7 +260,7 @@ const plugins = [
 
 :::note
 
-If your plugin has migrations, you must run them before you start the server. Check out the [Migrations guide](../migrations.md#run-migration) for more details.
+If your plugin has migrations, you must run them before you start the server. Check out the [Migrations guide](../migrations/overview.md#migrate-command) for more details.
 
 :::
 

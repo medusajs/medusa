@@ -1,11 +1,13 @@
-import { MoneyAmount, ProductVariant, Product, ShippingOption } from "../models"
-import { TaxServiceRate } from "./tax-service"
 import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
+import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
+import { TaxServiceRate } from "./tax-service"
 
 export type ProductVariantPricing = {
   prices: MoneyAmount[]
   original_price: number | null
   calculated_price: number | null
+  original_price_includes_tax?: boolean | null
+  calculated_price_includes_tax?: boolean | null
   calculated_price_type?: string | null
 } & TaxedPricing
 
@@ -26,6 +28,7 @@ export type PricingContext = {
 export type ShippingOptionPricing = {
   price_incl_tax: number | null
   tax_rates: TaxServiceRate[] | null
+  tax_amount: number
 }
 
 export type PricedShippingOption = Partial<ShippingOption> &

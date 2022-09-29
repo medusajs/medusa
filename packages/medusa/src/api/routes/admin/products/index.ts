@@ -1,7 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Product, ProductTag, ProductType } from "../../../.."
-import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
+import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { PricedProduct } from "../../../../types/pricing"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
@@ -70,7 +70,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
       allowedFields: allowedAdminProductFields,

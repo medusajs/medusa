@@ -20,7 +20,7 @@ import { Type } from "class-transformer"
 /**
  * @oas [get] /customers/me/orders
  * operationId: GetCustomersCustomerOrders
- * summary: Retrieve Customer Orders
+ * summary: List Orders
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
  * parameters:
@@ -57,7 +57,16 @@ import { Type } from "class-transformer"
  *   - (query) cart_id {string} to search for.
  *   - (query) email {string} to search for.
  *   - (query) region_id {string} to search for.
- *   - (query) currency_code {string} to search for.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to set prices based on.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  *   - (query) tax_rate {string} to search for.
  *   - in: query
  *     name: created_at
@@ -129,6 +138,24 @@ import { Type } from "class-transformer"
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
  *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.listOrders()
+ *       .then(({ orders, limit, offset, count }) => {
+ *         console.log(orders);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
+ *       --header 'Cookie: connect.sid={sid}'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:
@@ -151,6 +178,18 @@ import { Type } from "class-transformer"
  *             limit:
  *               type: integer
  *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
   const id: string | undefined = req.user?.customer_id
@@ -199,6 +238,7 @@ export class StoreGetCustomersCustomerOrdersPaginationParams {
   expand?: string
 }
 
+// eslint-disable-next-line max-len
 export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCustomerOrdersPaginationParams {
   @IsString()
   @IsOptional()

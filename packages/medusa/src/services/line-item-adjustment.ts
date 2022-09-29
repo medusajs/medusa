@@ -1,14 +1,19 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
-import { Cart } from "../models/cart"
-import { LineItem } from "../models/line-item"
-import { LineItemAdjustment } from "../models/line-item-adjustment"
-import { ProductVariant } from "../models/product-variant"
+import { EntityManager, In } from "typeorm"
+
+import {
+  Cart,
+  DiscountRuleType,
+  LineItem,
+  LineItemAdjustment,
+  ProductVariant,
+} from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import DiscountService from "./discount"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata } from "../utils"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -20,44 +25,33 @@ type AdjustmentContext = {
   variant: ProductVariant
 }
 
-type GeneratedAdjustment = Omit<LineItem, "id" | "item_id">
+type GeneratedAdjustment = {
+  amount: number
+  discount_id: string
+  description: string
+}
 
 /**
  * Provides layer to manipulate line item adjustments.
- * @extends BaseService
  */
-class LineItemAdjustmentService extends BaseService {
-  private manager_: EntityManager
-  private lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
-  private discountService: DiscountService
+class LineItemAdjustmentService extends TransactionBaseService {
+  protected readonly manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  private readonly lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
+  private readonly discountService: DiscountService
 
   constructor({
     manager,
     lineItemAdjustmentRepository,
     discountService,
   }: LineItemAdjustmentServiceProps) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.manager_ = manager
     this.lineItemAdjustmentRepo_ = lineItemAdjustmentRepository
     this.discountService = discountService
-  }
-
-  withTransaction(
-    transactionManager: EntityManager
-  ): LineItemAdjustmentService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new LineItemAdjustmentService({
-      manager: transactionManager,
-      lineItemAdjustmentRepository: this.lineItemAdjustmentRepo_,
-      discountService: this.discountService,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -73,7 +67,7 @@ class LineItemAdjustmentService extends BaseService {
     const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
       this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-    const query = this.buildQuery_({ id }, config)
+    const query = buildQuery({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
 
     if (!lineItemAdjustment) {
@@ -121,10 +115,7 @@ class LineItemAdjustmentService extends BaseService {
       const { metadata, ...rest } = data
 
       if (metadata) {
-        lineItemAdjustment.metadata = this.setMetadata_(
-          lineItemAdjustment,
-          metadata
-        )
+        lineItemAdjustment.metadata = setMetadata(lineItemAdjustment, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -150,33 +141,34 @@ class LineItemAdjustmentService extends BaseService {
       this.lineItemAdjustmentRepo_
     )
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await lineItemAdjustmentRepo.find(query)
   }
 
   /**
    * Deletes line item adjustments matching a selector
-   * @param selectorOrId - the query object for find or the line item adjustment id
+   * @param selectorOrIds - the query object for find or the line item adjustment id
    * @return the result of the delete operation
    */
   async delete(
-    selectorOrId: string | FilterableLineItemAdjustmentProps
+    selectorOrIds: string | string[] | FilterableLineItemAdjustmentProps
   ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
         manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-      if (typeof selectorOrId === "string") {
-        return await this.delete({ id: selectorOrId })
+      if (typeof selectorOrIds === "string" || Array.isArray(selectorOrIds)) {
+        const ids =
+          typeof selectorOrIds === "string" ? [selectorOrIds] : selectorOrIds
+        await lineItemAdjustmentRepo.delete({ id: In(ids) })
+        return
       }
 
-      const query = this.buildQuery_(selectorOrId)
+      const query = buildQuery(selectorOrIds)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
 
       await lineItemAdjustmentRepo.remove(lineItemAdjustments)
-
-      return Promise.resolve()
     })
   }
 
@@ -206,7 +198,7 @@ class LineItemAdjustmentService extends BaseService {
       }
 
       const [discount] = cart.discounts.filter(
-        (d) => d.rule.type !== "free_shipping"
+        (d) => d.rule.type !== DiscountRuleType.FREE_SHIPPING
       )
 
       // if no discount is applied to the cart then return
@@ -295,7 +287,7 @@ class LineItemAdjustmentService extends BaseService {
     }
 
     return await Promise.all(
-      cart.items.map((li) => this.createAdjustmentForLineItem(cart, li))
+      cart.items.map(async (li) => this.createAdjustmentForLineItem(cart, li))
     )
   }
 }

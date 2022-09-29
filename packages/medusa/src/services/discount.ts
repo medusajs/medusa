@@ -14,6 +14,8 @@ import {
   RegionService,
   TotalsService,
 } from "."
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
   AllocationType as DiscountAllocation,
@@ -33,12 +35,12 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
+import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { formatException } from "../utils/exception-formatter"
-import DiscountConditionService from "./discount-condition"
+import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
+import DiscountConditionService from "./discount-condition"
 
 /**
  * Provides layer to manipulate discounts.
@@ -52,12 +54,14 @@ class DiscountService extends TransactionBaseService {
   protected readonly customerService_: CustomerService
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
   protected readonly giftCardRepository_: typeof GiftCardRepository
+  // eslint-disable-next-line max-len
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly discountConditionService_: DiscountConditionService
   protected readonly totalsService_: TotalsService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -71,6 +75,7 @@ class DiscountService extends TransactionBaseService {
     regionService,
     customerService,
     eventBusService,
+    featureFlagRouter,
   }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -86,6 +91,7 @@ class DiscountService extends TransactionBaseService {
     this.regionService_ = regionService
     this.customerService_ = customerService
     this.eventBus_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -197,7 +203,7 @@ class DiscountService extends TransactionBaseService {
       try {
         if (discount.regions) {
           discount.regions = (await Promise.all(
-            discount.regions.map((regionId) =>
+            discount.regions.map(async (regionId) =>
               this.regionService_.withTransaction(manager).retrieve(regionId)
             )
           )) as Region[]
@@ -271,11 +277,13 @@ class DiscountService extends TransactionBaseService {
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    let query = buildQuery({ code: discountCode, is_dynamic: false }, config)
+    const normalizedCode = discountCode.toUpperCase()
+
+    let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
     let discount = await discountRepo.findOne(query)
 
     if (!discount) {
-      query = buildQuery({ code: discountCode, is_dynamic: true }, config)
+      query = buildQuery({ code: normalizedCode, is_dynamic: true }, config)
       discount = await discountRepo.findOne(query)
 
       if (!discount) {
@@ -348,12 +356,14 @@ class DiscountService extends TransactionBaseService {
 
       if (regions) {
         discount.regions = await Promise.all(
-          regions.map((regionId) => this.regionService_.retrieve(regionId))
+          regions.map(async (regionId) =>
+            this.regionService_.retrieve(regionId)
+          )
         )
       }
 
       if (metadata) {
-        discount.metadata = await setMetadata(discount, metadata)
+        discount.metadata = setMetadata(discount, metadata)
       }
 
       if (rule) {
@@ -579,7 +589,23 @@ class DiscountService extends TransactionBaseService {
 
       const { type, value, allocation } = discount.rule
 
-      const fullItemPrice = lineItem.unit_price * lineItem.quantity
+      let fullItemPrice = lineItem.unit_price * lineItem.quantity
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        lineItem.includes_tax
+      ) {
+        const lineItemTotals = await this.totalsService_.getLineItemTotals(
+          lineItem,
+          cart,
+          {
+            include_tax: true,
+            exclude_gift_cards: true,
+          }
+        )
+        fullItemPrice = lineItemTotals.subtotal
+      }
 
       if (type === DiscountRuleType.PERCENTAGE) {
         adjustment = Math.round((fullItemPrice / 100) * value)
@@ -590,12 +616,11 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const subtotal = this.totalsService_.getSubtotal(cart, {
+        const subtotal = await this.totalsService_.getSubtotal(cart, {
           excludeNonDiscounts: true,
         })
         const nominator = Math.min(value, subtotal)
-        const itemRelativeToSubtotal = lineItem.unit_price / subtotal
-        const totalItemPercentage = itemRelativeToSubtotal * lineItem.quantity
+        const totalItemPercentage = fullItemPrice / subtotal
         adjustment = Math.round(nominator * totalItemPercentage)
       } else {
         adjustment = value * lineItem.quantity

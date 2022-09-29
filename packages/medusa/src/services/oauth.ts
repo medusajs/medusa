@@ -79,31 +79,27 @@ class Oauth extends TransactionBaseService {
   }
 
   async create(data: CreateOauthInput): Promise<OAuthModel> {
-    return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
 
-      const application = repo.create({
-        display_name: data.display_name,
-        application_name: data.application_name,
-        install_url: data.install_url,
-        uninstall_url: data.uninstall_url,
-      })
-
-      return await repo.save(application)
+    const application = repo.create({
+      display_name: data.display_name,
+      application_name: data.application_name,
+      install_url: data.install_url,
+      uninstall_url: data.uninstall_url,
     })
+
+    return await repo.save(application)
   }
 
   async update(id: string, update: UpdateOauthInput): Promise<OAuthModel> {
-    return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(this.oauthRepository_)
-      const oauth = await this.retrieve(id)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const oauth = await this.retrieve(id)
 
-      if ("data" in update) {
-        oauth.data = update.data
-      }
+    if ("data" in update) {
+      oauth.data = update.data
+    }
 
-      return await repo.save(oauth)
-    })
+    return await repo.save(oauth)
   }
 
   async registerOauthApp(appDetails: CreateOauthInput): Promise<OAuthModel> {

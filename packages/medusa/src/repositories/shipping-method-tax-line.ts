@@ -3,6 +3,7 @@ import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 @EntityRepository(ShippingMethodTaxLine)
+// eslint-disable-next-line max-len
 export class ShippingMethodTaxLineRepository extends Repository<ShippingMethodTaxLine> {
   async upsertLines(
     lines: ShippingMethodTaxLine[]

@@ -6,10 +6,20 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
-import { ProductOptionRepository } from "../../../repositories/product-option"
 import { CsvSchema } from "../../../interfaces/csv-parser"
+import { FlagRouter } from "../../../utils/flag-router"
+import { BatchJob } from "../../../models"
+
+export type ProductImportBatchJob = BatchJob & {
+  result: Pick<BatchJob, "result"> & {
+    operations: {
+      [K in keyof typeof OperationType]: number
+    }
+  }
+}
 
 /**
  * DI props for the Product import strategy
@@ -19,9 +29,11 @@ export type InjectedProps = {
   productService: ProductService
   productVariantService: ProductVariantService
   shippingProfileService: ShippingProfileService
+  salesChannelService: SalesChannelService
   regionService: RegionService
   fileService: typeof FileService
 
+  featureFlagRouter: FlagRouter
   manager: EntityManager
 }
 

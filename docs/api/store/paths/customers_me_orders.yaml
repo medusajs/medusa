@@ -1,6 +1,6 @@
 get:
   operationId: GetCustomersCustomerOrders
-  summary: Retrieve Customer Orders
+  summary: List Orders
   description: Retrieves a list of a Customer's Orders.
   x-authenticated: true
   parameters:
@@ -63,9 +63,14 @@ get:
         type: string
     - in: query
       name: currency_code
-      description: to search for.
+      style: form
+      explode: false
+      description: The 3 character ISO currency code to set prices based on.
       schema:
         type: string
+        externalDocs:
+          url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+          description: See a list of codes.
     - in: query
       name: tax_rate
       description: to search for.
@@ -163,6 +168,17 @@ get:
         resulting orders.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customers_me_orders/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customers_me_orders/getundefined
+  security:
+    - cookie_auth: []
   tags:
     - Customer
   responses:
@@ -185,3 +201,15 @@ get:
               limit:
                 type: integer
                 description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

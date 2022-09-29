@@ -187,6 +187,13 @@ properties:
       is expanded.
     items:
       $ref: ./line_item.yaml
+  edits:
+    type: array
+    description: >-
+      [EXPERIMENTAL] Order edits done on the order. Available if the relation
+      `edits` is expanded.
+    items:
+      $ref: ./order_edit.yaml
   gift_card_transactions:
     type: array
     description: >-

@@ -14,6 +14,8 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
   return !!val
 }
 
+export const featureFlagRouter = new FlagRouter({})
+
 export default (
   configModule: { featureFlags?: Record<string, string | boolean> } = {},
   logger?: Logger,
@@ -28,7 +30,6 @@ export default (
 
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const flagSettings: FlagSettings = require(flag).default
     if (!flagSettings) {
       continue
@@ -60,5 +61,9 @@ export default (
     }
   }
 
-  return new FlagRouter(flagConfig)
+  for (const flag of Object.keys(flagConfig)) {
+    featureFlagRouter.setFlag(flag, flagConfig[flag])
+  }
+
+  return featureFlagRouter
 }

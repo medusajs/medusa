@@ -96,12 +96,7 @@ class BatchJobService extends TransactionBaseService {
     eventBusService,
     strategyResolverService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      batchJobRepository,
-      eventBusService,
-      strategyResolverService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
@@ -372,11 +367,13 @@ class BatchJobService extends TransactionBaseService {
     data: CreateBatchJobInput,
     req: Request
   ): Promise<CreateBatchJobInput | never> {
-    return await this.atomicPhase_(async () => {
+    return await this.atomicPhase_(async (transactionManager) => {
       const batchStrategy = this.strategyResolver_.resolveBatchJobByType(
         data.type
       )
-      return await batchStrategy.prepareBatchJobForProcessing(data, req)
+      return await batchStrategy
+        .withTransaction(transactionManager)
+        .prepareBatchJobForProcessing(data, req)
     })
   }
 }

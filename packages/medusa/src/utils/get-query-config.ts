@@ -1,7 +1,7 @@
 import { pick } from "lodash"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity } from "../interfaces"
 import { isDefined } from "."
 
 export function pickByConfig<TModel extends BaseEntity>(
@@ -28,9 +28,9 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
-      typeof field === "string" ? field.trim() : field
-    ) as (keyof TModel)[]
+    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
+      return typeof field === "string" ? field.trim() : field
+    }) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []
@@ -96,6 +96,14 @@ export function prepareListQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
+    validateFields(expandFields as string[], queryConfig.allowedFields)
+  }
+
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
+    validateRelations(expandRelations, queryConfig.allowedRelations)
+  }
+
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
   if (isDefined(order)) {
     let orderField = order
@@ -145,10 +153,53 @@ export function prepareRetrieveQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
+    validateFields(expandFields as string[], queryConfig.allowedFields)
+  }
+
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
+    validateRelations(expandRelations, queryConfig.allowedRelations)
+  }
+
   return getRetrieveConfig<TEntity>(
     queryConfig?.defaultFields as (keyof TEntity)[],
     (queryConfig?.defaultRelations ?? []) as string[],
     expandFields,
     expandRelations
   )
+}
+
+function validateRelations(
+  relations: string[],
+  allowed: string[]
+): void | never {
+  const disallowedRelationsFound: string[] = []
+  relations?.forEach((field) => {
+    if (!allowed.includes(field as string)) {
+      disallowedRelationsFound.push(field)
+    }
+  })
+
+  if (disallowedRelationsFound.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Relations [${disallowedRelationsFound.join(", ")}] are not valid`
+    )
+  }
+}
+
+function validateFields(fields: string[], allowed: string[]): void | never {
+  const disallowedFieldsFound: string[] = []
+  fields?.forEach((field) => {
+    if (!allowed.includes(field as string)) {
+      disallowedFieldsFound.push(field)
+    }
+  })
+
+  if (disallowedFieldsFound.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Fields [${disallowedFieldsFound.join(", ")}] are not valid`
+    )
+  }
 }

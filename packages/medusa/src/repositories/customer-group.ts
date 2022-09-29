@@ -23,7 +23,7 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
 
     return customerGroup as CustomerGroup
   }
-  
+
   async removeCustomers(
     groupId: string,
     customerIds: string[]

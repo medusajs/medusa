@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Store } from "../models"
+import { Currency, Store } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
 import { StoreRepository } from "../repositories/store"
 import { FindConfig } from "../types/common"
 import { UpdateStoreInput } from "../types/store"
 import { buildQuery, setMetadata } from "../utils"
-import { currencies, Currency } from "../utils/currencies"
+import { currencies } from "../utils/currencies"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -19,7 +19,6 @@ type InjectedDependencies = {
 
 /**
  * Provides layer to manipulate store settings.
- * @extends BaseService
  */
 class StoreService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -67,7 +66,7 @@ class StoreService extends TransactionBaseService {
           return store
         }
 
-        const newStore = await storeRepository.create()
+        const newStore = storeRepository.create()
         // Add default currency (USD) to store currencies
         const usd = await currencyRepository.findOne({
           code: "usd",

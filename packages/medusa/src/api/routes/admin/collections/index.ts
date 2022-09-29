@@ -2,7 +2,10 @@ import { Router } from "express"
 import "reflect-metadata"
 import { ProductCollection } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformBody, transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { AdminGetCollectionsParams } from "./list-collections"
 import { AdminPostCollectionsReq } from "./create-collection"
 import { AdminPostCollectionsCollectionReq } from "./update-collection"
@@ -20,14 +23,11 @@ export default (app) => {
   )
   route.get(
     "/",
-    transformQuery(
-      AdminGetCollectionsParams,
-      {
-        defaultRelations: defaultAdminCollectionsRelations,
-        defaultFields: defaultAdminCollectionsFields,
-        isList: true,
-      }
-    ),
+    transformQuery(AdminGetCollectionsParams, {
+      defaultRelations: defaultAdminCollectionsRelations,
+      defaultFields: defaultAdminCollectionsFields,
+      isList: true,
+    }),
     middlewares.wrap(require("./list-collections").default)
   )
 

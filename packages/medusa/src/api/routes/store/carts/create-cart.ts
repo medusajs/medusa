@@ -1,4 +1,7 @@
-import { CartService, LineItemService, RegionService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import reqIp from "request-ip"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsInt,
@@ -7,18 +10,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreCartFields, defaultStoreCartRelations, } from "."
 
-import { Cart } from "../../../../models";
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import {
+  CartService,
+  LineItemService,
+  RegionService,
+} from "../../../../services"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import { Cart } from "../../../../models"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { MedusaError } from "medusa-core-utils"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
-import { Type } from "class-transformer"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import reqIp from "request-ip"
-import { isDefined } from "../../../../utils";
+import { CartCreateProps } from "../../../../types/cart"
+import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /carts
@@ -65,6 +70,20 @@ import { isDefined } from "../../../../utils";
  *             example:
  *               ip: "::1"
  *               user_agent: "Chrome"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.create()
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts'
  * tags:
  *   - Cart
  * responses:
@@ -76,6 +95,16 @@ import { isDefined } from "../../../../utils";
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const validated = req.validatedBody as StorePostCartReq
@@ -107,16 +136,31 @@ export default async (req, res) => {
     regionId = regions[0].id
   }
 
+  const toCreate: Partial<CartCreateProps> = {
+    region_id: regionId,
+    sales_channel_id: validated.sales_channel_id,
+    context: {
+      ...reqContext,
+      ...validated.context,
+    },
+  }
+
+  if (req.user && req.user.customer_id) {
+    const customerService = req.scope.resolve("customerService")
+    const customer = await customerService.retrieve(req.user.customer_id)
+    toCreate["customer_id"] = customer.id
+    toCreate["email"] = customer.email
+  }
+
+  if (validated.country_code) {
+    toCreate["shipping_address"] = {
+      country_code: validated.country_code.toLowerCase(),
+    }
+  }
+
   let cart: Cart
   await entityManager.transaction(async (manager) => {
-    cart = await cartService.withTransaction(manager).create({
-      ...validated,
-      context: {
-        ...reqContext,
-        ...validated.context,
-      },
-      region_id: regionId,
-     })
+    cart = await cartService.withTransaction(manager).create(toCreate)
 
     if (validated.items) {
       await Promise.all(

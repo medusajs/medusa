@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.38
+
+### Patch Changes
+
+- [#2069](https://github.com/medusajs/medusa/pull/2069) [`ad717b953`](https://github.com/medusajs/medusa/commit/ad717b9533a0500e20c4e312d1ee48b35ea9d5e1) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Remove deprecated dependency `@hapi/joi`
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +13,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-economic
 
-
-
-
-
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.35...medusa-plugin-economic@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-economic
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.34...medusa-plugin-economic@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-economic
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-economic@1.1.33...medusa-plugin-economic@1.1.34) (2021-12-08)
 
