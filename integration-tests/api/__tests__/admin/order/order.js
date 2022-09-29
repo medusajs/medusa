@@ -23,7 +23,7 @@ const {
   partial,
 } = require("../../../helpers/call-helpers")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 describe("/admin/orders", () => {
   let medusaProcess
@@ -1959,7 +1959,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      // find item to test returned quantiy for
+      // find item to test returned quantity for
       const toTest = returnedOrderSecond.data.order.items.find(
         (i) => i.id === "test-item-many"
       )
@@ -2061,7 +2061,55 @@ describe("/admin/orders", () => {
       expect(received.status).toEqual(200)
     })
 
-    it.only("creates a return on a swap", async () => {
+    it("creates a swap with return and return shipping", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          return_shipping: { option_id: "test-return-option", price: 0 },
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+
+      const swap = response.data.order.swaps[0]
+      expect(swap.return_order.items).toHaveLength(1)
+      expect(swap.return_order.items[0]).toEqual(
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+        })
+      )
+
+      expect(swap.return_order.shipping_method).toEqual(
+        expect.objectContaining({
+          price: 0,
+          shipping_option_id: "test-return-option",
+        })
+      )
+
+      expect(swap.return_order.shipping_method.tax_lines).toHaveLength(1)
+      expect(swap.return_order.shipping_method.tax_lines[0]).toEqual(
+        expect.objectContaining({
+          rate: 0,
+          name: "default",
+        })
+      )
+    })
+
+    it("creates a return on a swap", async () => {
       const api = useApi()
 
       const returnOnSwap = await api.post(
@@ -2073,7 +2121,6 @@ describe("/admin/orders", () => {
               quantity: 1,
             },
           ],
-          return_shipping: { option_id: "test-return-option" },
         },
         {
           headers: {
@@ -2083,24 +2130,6 @@ describe("/admin/orders", () => {
       )
 
       expect(returnOnSwap.status).toEqual(200)
-
-      const orderId = returnOnSwap.data.order.id
-      const responseOrder = await api.get(`/admin/orders/${orderId}`, {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      })
-
-      const targetReturn = responseOrder.data.order.returns.find(
-        (returnOrder) => {
-          return !!returnOrder.items.find(
-            (item) => item.item_id === "test-item-swapped"
-          )
-        }
-      )
-      expect(responseOrder.status).toEqual(200)
-      expect(targetReturn.shipping_method).toBeTruthy()
-      expect(targetReturn.shipping_method.tax_lines).toHaveLength(1)
     })
 
     it("creates a return on an order", async () => {
