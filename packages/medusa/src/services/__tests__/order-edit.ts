@@ -210,10 +210,12 @@ describe("OrderEditService", () => {
       internal_note: "test note",
     })
     expect(orderEditRepository.save).toHaveBeenCalledTimes(1)
-    expect(orderEditRepository.save).toHaveBeenCalledWith({
-      id: IdMap.getId("order-edit-to-update"),
-      internal_note: "test note",
-    })
+    expect(orderEditRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: IdMap.getId("order-edit-to-update"),
+        internal_note: "test note",
+      })
+    )
   })
 
   it("should create an order edit and call the repository with the right arguments as well as the event bus service", async () => {
@@ -503,7 +505,7 @@ describe("OrderEditService", () => {
         await orderEditService.complete(id, { loggedInUserId: userId })
       } catch (err) {
         expect(err.message).toEqual(
-          `Cannot to complete an order edit with status created`
+          `Cannot complete an order edit with status created`
         )
       }
     })
