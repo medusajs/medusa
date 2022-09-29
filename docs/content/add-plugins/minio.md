@@ -117,19 +117,19 @@ Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to t
 
 ![Image Uploaded on Admin](https://i.imgur.com/alabX2i.png)
 
-## Additional Configuration for Exports
+## Additional Configuration for Exports/Imports
 
-Medusa v1.3.3 introduced the Export API. For example, you can now export your products from the Medusa Admin on the Products page.
+Medusa provides Import and Export functionalities such as exporting orders or importing products.
 
 ![Export button in Products page in Medusa Admin](https://i.imgur.com/uyK4id8.png)
 
 :::note
 
-Exports require using Redis to handle the event queue, and using PostgreSQL for the database. If you don’t use Redis or PostgreSQL, you can follow [this documentation to install](../tutorial/0-set-up-your-development-environment.mdx#postgresql) and then [configure them on your Medusa server](../usage/configurations.md#postgresql-configurations).
+Exports and Imports require using Redis to handle the event queue, and using PostgreSQL for the database. If you don’t use Redis or PostgreSQL, you can follow [this documentation to install](../tutorial/0-set-up-your-development-environment.mdx#postgresql) and then [configure them on your Medusa server](../usage/configurations.md#postgresql-configurations).
 
 :::
 
-When using MinIO, you must create a private bucket that will store these product exports. To do that, follow along the [steps mentioned earlier to create a bucket](#create-a-minio-bucket), but keep Access Policy set to private.
+When using MinIO, you must create a private bucket that will store the files necessary to perform the import or export. To do that, follow along the [steps mentioned earlier to create a private bucket](#create-a-minio-bucket), but keep Access Policy set to private.
 
 Then, add the following environment variable on your Medusa server:
 
