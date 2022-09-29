@@ -46,7 +46,7 @@ export const defaultOrderEditFields: (keyof OrderEdit)[] = [
   "internal_note",
 ]
 
-export const storeOrderEditNotAllowedFields = [
+export const storeOrderEditNotAllowedFieldsAndRelations = [
   "internal_note",
   "created_by",
   "confirmed_by",
@@ -54,8 +54,8 @@ export const storeOrderEditNotAllowedFields = [
 ]
 
 export const defaultStoreOrderEditRelations = defaultOrderEditRelations.filter(
-  (field) => !storeOrderEditNotAllowedFields.includes(field)
+  (field) => !storeOrderEditNotAllowedFieldsAndRelations.includes(field)
 )
 export const defaultStoreOrderEditFields = defaultOrderEditFields.filter(
-  (field) => !storeOrderEditNotAllowedFields.includes(field)
+  (field) => !storeOrderEditNotAllowedFieldsAndRelations.includes(field)
 )
