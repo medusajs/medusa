@@ -353,7 +353,7 @@ class LineItemService extends TransactionBaseService {
   }
 
   /**
-   * Deletes a line item.
+   * Deletes a line item with the tax lines.
    * @param {string} id - the id of the line item to delete
    * @return {Promise<LineItem | undefined>} the result of the delete operation
    */
