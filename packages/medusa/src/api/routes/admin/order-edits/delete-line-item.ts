@@ -9,13 +9,13 @@ import {
 
 /**
  * @oas [delete] /order-edits/{id}/items/{item_id}
- * operationId: "DeleteOrderEditsEditLineItemsLineItem"
+ * operationId: "DeleteOrderEditsDeleteLineItemsLineItem"
  * summary: "Delete line items from an order edit and create change item"
  * description: "Delete line items from an order edit and create change item"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete from.
- *   - (path) item_id=* {string} The ID of the order edit item to update.
+ *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -368,7 +368,7 @@ class LineItemService extends TransactionBaseService {
           this.itemTaxLineRepo_
         )
 
-        const lineItem = await this.retrieve(id) // , { relations: ["tax_lines"] }
+        const lineItem = await this.retrieve(id)
 
         await itemTaxLineRepo.delete({ item_id: id })
 
