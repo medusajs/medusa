@@ -43,9 +43,13 @@ If you’re adding a new page or contributing to the codebase, fork the reposito
 
 For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
-### Branch Name
+### Base Branch
 
 When you make edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
+
+Documentation contributions always use `master` as the base branch.
+
+### Branch Name
 
 Make sure that the branch name starts with `docs/`. For example, `docs/fix-services`.
 
