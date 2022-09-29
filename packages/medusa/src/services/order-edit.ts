@@ -429,7 +429,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       await this.lineItemService_
         .withTransaction(manager)
-        .delete(deleteLineItem.id)
+        .deleteWithTaxLines(deleteLineItem.id)
 
       await this.refreshAdjustments(orderEditId)
 

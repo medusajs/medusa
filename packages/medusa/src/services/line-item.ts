@@ -353,6 +353,31 @@ class LineItemService extends TransactionBaseService {
   }
 
   /**
+   * Deletes a line item.
+   * @param {string} id - the id of the line item to delete
+   * @return {Promise<LineItem | undefined>} the result of the delete operation
+   */
+  async deleteWithTaxLines(id: string): Promise<LineItem | undefined> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const lineItemRepository = transactionManager.getCustomRepository(
+          this.lineItemRepository_
+        )
+
+        const itemTaxLineRepo = transactionManager.getCustomRepository(
+          this.itemTaxLineRepo_
+        )
+
+        const lineItem = await this.retrieve(id) // , { relations: ["tax_lines"] }
+
+        await itemTaxLineRepo.delete({ item_id: id })
+
+        return await lineItemRepository.remove(lineItem)
+      }
+    )
+  }
+
+  /**
    * Create a line item tax line.
    * @param args - tax line partial passed to the repo create method
    * @return a new line item tax line
