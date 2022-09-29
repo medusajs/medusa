@@ -307,7 +307,7 @@ export class AdminPostProductsProductVariantsVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @IsOptional()

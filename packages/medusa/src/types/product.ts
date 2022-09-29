@@ -197,7 +197,7 @@ export type CreateProductProductVariantInput = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string }[]
 }
@@ -220,7 +220,7 @@ export type UpdateProductProductVariantDTO = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string; option_id: string }[]
 }
