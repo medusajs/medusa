@@ -94,7 +94,7 @@ export const simpleProductFactory = async (
 
   toSave.sales_channels = sales_channels
 
-  const test = await manager.save(toSave)
+  await manager.save(toSave)
 
   const optionId = `${prodId}-option`
   const options = data.options || [{ id: optionId, title: "Size" }]
