@@ -119,5 +119,5 @@ export class AdminPostCustomerGroupsGroupReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

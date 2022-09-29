@@ -213,6 +213,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       expect(response.data.order_edit.canceled_by).not.toBeDefined()
       expect(response.data.order_edit.confirmed_by).not.toBeDefined()
     })
+
+    it("fails to get an order edit with disallowed fields query params", async () => {
+      const api = useApi()
+
+      const err = await api
+        .get(`/store/order-edits/${orderEditId}?fields=internal_note,order_id`)
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Fields [internal_note] are not valid"
+      )
+    })
   })
 
   describe("POST /store/order-edits/:id/decline", () => {

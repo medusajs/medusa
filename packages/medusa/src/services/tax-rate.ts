@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { ProductTaxRate } from "../models/product-tax-rate"
 import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
@@ -16,14 +15,18 @@ import {
   TaxRateListByConfig,
   UpdateTaxRateInput,
 } from "../types/tax-rate"
-import { isDefined, PostgresError } from "../utils"
+import { buildQuery, isDefined, PostgresError } from "../utils"
+import { TransactionBaseService } from "../interfaces"
+import { FindConditions } from "typeorm/find-options/FindConditions"
 
-class TaxRateService extends BaseService {
-  private manager_: EntityManager
-  private productService_: ProductService
-  private productTypeService_: ProductTypeService
-  private shippingOptionService_: ShippingOptionService
-  private taxRateRepository_: typeof TaxRateRepository
+class TaxRateService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly productService_: ProductService
+  protected readonly productTypeService_: ProductTypeService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly taxRateRepository_: typeof TaxRateRepository
 
   constructor({
     manager,
@@ -32,32 +35,13 @@ class TaxRateService extends BaseService {
     shippingOptionService,
     taxRateRepository,
   }) {
-    super()
+    super(arguments[0])
 
     this.manager_ = manager
     this.taxRateRepository_ = taxRateRepository
     this.productService_ = productService
     this.productTypeService_ = productTypeService
     this.shippingOptionService_ = shippingOptionService
-  }
-
-  withTransaction(transactionManager: EntityManager): TaxRateService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new TaxRateService({
-      manager: transactionManager,
-      taxRateRepository: this.taxRateRepository_,
-      productService: this.productService_,
-      productTypeService: this.productTypeService_,
-      shippingOptionService: this.shippingOptionService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-    cloned.manager_ = transactionManager
-
-    return cloned
   }
 
   async list(
@@ -67,7 +51,7 @@ class TaxRateService extends BaseService {
     const taxRateRepo = this.manager_.getCustomRepository(
       this.taxRateRepository_
     )
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await taxRateRepo.findWithResolution(query)
   }
 
@@ -78,7 +62,7 @@ class TaxRateService extends BaseService {
     const taxRateRepo = this.manager_.getCustomRepository(
       this.taxRateRepository_
     )
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await taxRateRepo.findAndCountWithResolution(query)
   }
 
@@ -88,7 +72,7 @@ class TaxRateService extends BaseService {
   ): Promise<TaxRate> {
     const manager = this.manager_
     const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-    const query = this.buildQuery_({ id }, config)
+    const query = buildQuery({ id }, config)
 
     const taxRate = await taxRateRepo.findOneWithResolution(query)
     if (!taxRate) {
@@ -135,8 +119,8 @@ class TaxRateService extends BaseService {
   async delete(id: string | string[]): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      const query = this.buildQuery_({ id })
-      await taxRateRepo.delete(query.where)
+      const query = buildQuery({ id })
+      await taxRateRepo.delete(query.where as FindConditions<TaxRate>)
     })
   }
 
@@ -274,7 +258,7 @@ class TaxRateService extends BaseService {
     id: string,
     optionIds: string | string[],
     replace = false
-  ): Promise<ShippingTaxRate> {
+  ): Promise<ShippingTaxRate[]> {
     let ids: string[]
     if (typeof optionIds === "string") {
       ids = [optionIds]
