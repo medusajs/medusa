@@ -218,7 +218,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       const api = useApi()
 
       const err = await api
-        .get(`/store/order-edits/${orderEditId}?fields=internal_note`)
+        .get(`/store/order-edits/${orderEditId}?fields=internal_note,order_id`)
         .catch((e) => e)
 
       expect(err.response.data.message).toBe(
