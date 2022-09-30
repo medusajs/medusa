@@ -38,7 +38,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     lineItemService,
     taxProviderService,
   }: InjectedDependencies) {
-    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
