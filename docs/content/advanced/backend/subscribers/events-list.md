@@ -8,7 +8,7 @@ It is assumed you’re already familiar with [Subscribers in Medusa and how to l
 
 ## Legend
 
-Events in this document are listed under the entity they’re associated with. They’re listed in a table of 3 columns:
+Events in this document are listed under the entity they’re associated with. They’re listed in a table of three columns:
 
 1. **Event Name:** The name you use to subscribe a handler for the event.
 2. **Description:** When this event is triggered.
@@ -1687,13 +1687,12 @@ This section holds all events related to sales channels.
 
 :::note
 
-As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag. To use Sales Channels, add the following environment variable:
+As of Medusa v1.3.5, Sales Channels are available but guarded by a feature flag. To use Sales Channels either:
 
-```bash
-MEDUSA_FF_SALES_CHANNELS=true
-```
+1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
+2. Or enable the `sales_channels` key in the Medusa server's settings.
 
-Then, run the [migrations](../migrations/overview.md#how-to-run-migrations).
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
 
 :::
 

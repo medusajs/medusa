@@ -52,7 +52,7 @@ To customize the components, pages, and UI of your Gatsby storefront, just edit 
 
 The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa server. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
 
-Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. We will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
+Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. The Medusa team will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
 
 ### Change Port
 
@@ -77,7 +77,7 @@ STORE_CORS=http://localhost:<PORT>
 
 :::info
 
-For more details about the Store CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
 
 :::
 

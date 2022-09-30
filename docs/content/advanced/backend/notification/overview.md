@@ -6,7 +6,7 @@ This document gives an overview of the notification architecture and how it work
 
 Medusa provides a Notification API to mainly handle sending and resending notifications when an event occurs. For example, sending an email to the customer when they place an order.
 
-The Notification architecture is made up of 2 main components: the Notification Provider and the Notification. Simply put, the Notification Provider handles the sending and resending of a Notification.
+The Notification architecture is made up of two main components: the Notification Provider and the Notification. Simply put, the Notification Provider handles the sending and resending of a Notification.
 
 ## Notification Provider
 
@@ -48,7 +48,7 @@ A Notification also represents a resent notification. So, when a notification is
 
 ### Notification Entity Overview
 
-The 2 most important properties in the `Notification` entity are the `to` and `data` properties. 
+The two most important properties in the `Notification` entity are the `to` and `data` properties. 
 
 The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to.
 

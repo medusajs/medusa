@@ -26,6 +26,4 @@ In the list, you can see price list details such as the name, description, and s
 
 ## Learn More About Price Lists
 
-- [Create a Price List](./create.md)
-- [Edit a Price List](./edit.md)
-- [Delete a Price List](./delete.md)
+- [Manage a Price List](./manage.mdx)

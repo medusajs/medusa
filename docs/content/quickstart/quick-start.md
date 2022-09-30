@@ -45,7 +45,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ### Test Your Server
 
-After these 3 steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
 
 ```bash
 curl localhost:9000/store/products | python -m json.tool
@@ -79,7 +79,7 @@ You can learn more about configuring your server and loading environment variabl
 
 ## What's next :rocket:
 
-- Install our [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
+- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.

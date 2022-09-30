@@ -8,7 +8,7 @@ DigitalOcean is a reliable hosting provider that provides different ways to host
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow our [quickstart guide](../../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.md).
 
 Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
 
@@ -163,7 +163,7 @@ Once you’re done, click Next to move on to the next step.
 
 In this section, you’ll add environment variables that are essential to your Medusa server.
 
-You should see 2 ways to add environment variables: Global or specific to the Web Service.
+You should see two ways to add environment variables: Global or specific to the Web Service.
 
 ![Global environment variables and web service environment variables](https://i.imgur.com/VOYykPT.png)
 
@@ -263,7 +263,7 @@ Make sure to replace `<EMAIL>` and `<PASSWORD>` with the credentials you want to
 
 ## Add Environment Variables
 
-You’ll likely need to add environment variables later such as Admin CORS and Store CORS variables. 
+You’ll likely need to add environment variables later such as Admin Cross-Origin Resource Sharing (CORS) and Store CORS variables.
 
 To add environment variables, on the App’s page click on Settings and choose the Web Service component.
 

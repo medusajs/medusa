@@ -56,6 +56,8 @@ All PRs should include tests for the changes that are included. We have two type
 - **Unit tests** found under `packages/*/src/services/__tests__` and `packages/*/src/api/routes/*/__tests__`
 - **Integration tests** found in `integration-tests/*/__tests__`
 
+Check out our [local development documentation](https://docs.medusajs.com/usage/local-development) to learn how to test your changes both in the Medusa repository and in a local server.
+
 ### Documentation
 
 - We generally encourage to document your changes through comments in your code.
