@@ -24,38 +24,17 @@ It is assumed you already have a Medusa server installed before following along 
 
 It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
 
-## Install the JS Client
+### JS Client
 
-It is recommended to use Medusa’s JS Client in your storefront. You can install it using the following command:
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
 
-```bash npm2yarn
-npm install @medusajs/medusa-js
-```
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
 
-:::note
+### Authenticated Admin User
 
-This document alternatively shows code examples using [JavaScript’s Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). Make sure to replace `<SERVER_URL>` in those examples with your server URL.
+You must be an authenticated admin user before following along with the steps in the tutorial.
 
-:::
-
-Then, initialize the Medusa JS Client in a single file that all of your components can access:
-
-```jsx
-import Medusa from '@medusajs/medusa-js';
-
-export const client = new Medusa({
-  baseUrl: '<SERVER_URL>',
-  maxRetries: 3
-});
-```
-
-Where `<SERVER_URL>` is the URL of your server. If you’re using a local server, it runs on `http://localhost:9000` by default.
-
-:::caution
-
-Make sure to include `http://` in the URL when sending requests to the local server. Otherwise, all requests will fail.
-
-:::
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
 
 ## Create a Cart
 
