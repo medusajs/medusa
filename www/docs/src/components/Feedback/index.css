@@ -1,0 +1,123 @@
+.inline-feedback {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inline-question,
+.feedback-message {
+  display: flex;
+  flex-direction: column;
+}
+
+.inline-feedback span,
+.inline-question span {
+  font-weight: bold;
+}
+
+.inline-feedback span {
+  margin-right: 13px;
+}
+
+.inline-question span {
+  margin-bottom: 13px;
+}
+
+.feedback-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid #E5E7EB;
+  color: var(--ifm-font-color-base);
+}
+
+.feedback-btn:focus {
+  box-shadow: 0px 0px 0px 4px rgba(124, 58, 237, 0.1);
+}
+
+html:not([data-theme="dark"]) .feedback-btn:hover {
+  background: #F3F4F6;
+}
+
+html:not([data-theme="dark"]) .feedback-btn:active,
+html:not([data-theme="dark"]) .feedback-btn:disabled {
+  background: #E5E7EB;
+}
+
+[data-theme="dark"] .feedback-btn,
+[data-theme="dark"] .inline-question textarea {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.feedback-btn:not(:last-child) {
+  margin-right: 13px;
+}
+
+.inline-question .feedback-btn {
+  margin-top: 13px;
+  width: fit-content;
+}
+
+.inline-question textarea {
+  border-radius: 4px;
+  background-color: transparent;
+  border: 1px solid #E5E7EB;
+  padding: 8px;
+  font-family: var(--ifm-font-family-base);
+}
+
+.feedback-message {
+  text-align: center;
+  font-size: 18px;
+}
+
+.fade-in {
+	-webkit-animation: fade-in .3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: fade-in .3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-out {
+	-webkit-animation: fade-out .3s ease-out both;
+	        animation: fade-out .3s ease-out both;
+}
+
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
