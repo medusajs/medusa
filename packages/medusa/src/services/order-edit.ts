@@ -403,7 +403,6 @@ export default class OrderEditService extends TransactionBaseService {
           "declined_at",
           "canceled_at",
         ],
-        relations: ["items"],
       })
 
       const isOrderEditActive = OrderEditService.isOrderEditActive(orderEdit)
