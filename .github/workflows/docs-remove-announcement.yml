@@ -31,9 +31,6 @@ jobs:
         with:
           extension: docs-remove-announcement
 
-      - name: Build Packages
-        run: yarn build
-
       - name: Remove Announcement Bar
         run: yarn generate:announcement --expire
 
