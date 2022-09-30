@@ -3,7 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
-describe("POST /admin/order-edits/:id/cancel", () => {
+describe("DELETE /admin/order-edits/:id/items/:item_id", () => {
   describe("deletes a line item", () => {
     const lineItemId = IdMap.getId("testLineItem")
     const orderEditId = IdMap.getId("testCreatedOrder")

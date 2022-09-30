@@ -1419,7 +1419,8 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
   })
 
   describe("POST /admin/order-edits/:id/confirm", () => {
-    let product, product2
+    let product
+    let product2
     const prodId1 = IdMap.getId("product-1")
     const prodId2 = IdMap.getId("product-2")
     const lineItemId1 = IdMap.getId("line-item-1")
@@ -2462,23 +2463,27 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       const {
         data: { order_edit },
-      } = await api.post(
-        `/admin/order-edits/`,
-        {
-          order_id: orderId,
-        },
-        adminHeaders
-      )
+      } = await api
+        .post(
+          `/admin/order-edits/`,
+          {
+            order_id: orderId,
+          },
+          adminHeaders
+        )
+        .catch(console.log)
 
       const orderEditId = order_edit.id
-      const updateItemId = order_edit.items.find(
-        (item) => item.original_item_id === lineItemId1
+      const editLineItemId = order_edit.items.find(
+        (it) => it.original_item_id === lineItemId1
       ).id
 
-      const response = await api.delete(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1}`,
-        adminHeaders
-      )
+      const response = await api
+        .delete(
+          `/admin/order-edits/${orderEditId}/items/${editLineItemId}`,
+          adminHeaders
+        )
+        .catch(console.log)
 
       expect(response.status).toEqual(200)
       expect(response.data.order_edit.changes).toHaveLength(1)
@@ -2591,14 +2596,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         adminHeaders
       )
 
+      const editLineItemId = order_edit.items.find(
+        (it) => it.original_item_id === lineItemId1Discount
+      ).id
+
       const orderEditId = order_edit.id
       await api.delete(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1Discount}`,
+        `/admin/order-edits/${orderEditId}/items/${editLineItemId}`,
         adminHeaders
       )
 
       const response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,changes.original_line_item,items,items.tax_lines,items.adjustments`,
+        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 
@@ -2721,14 +2730,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         adminHeaders
       )
 
+      const editLineItemId = order_edit.items.find(
+        (it) => it.original_item_id === lineItemId1Discount
+      ).id
+
       const orderEditId = order_edit.id
       await api.delete(
-        `/admin/order-edits/${orderEditId}/items/${lineItemId1Discount}`,
+        `/admin/order-edits/${orderEditId}/items/${editLineItemId}`,
         adminHeaders
       )
 
       const response = await api.get(
-        `/admin/order-edits/${orderEditId}?expand=changes,changes.original_line_item,items,items.tax_lines,items.adjustments`,
+        `/admin/order-edits/${orderEditId}`,
         adminHeaders
       )
 

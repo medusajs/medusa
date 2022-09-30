@@ -9,7 +9,7 @@ import {
 
 /**
  * @oas [delete] /order-edits/{id}/items/{item_id}
- * operationId: "DeleteOrderEditsDeleteLineItemsLineItem"
+ * operationId: "DeleteOrderEditsOrderEditLineItemsLineItem"
  * summary: "Delete line items from an order edit and create change item"
  * description: "Delete line items from an order edit and create change item"
  * x-authenticated: true
@@ -23,7 +23,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
+ *       medusa.admin.orderEdits.removeLineItem(order_edit_id, line_item_id)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })

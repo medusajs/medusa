@@ -16,6 +16,7 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  TaxProviderService,
 } from "./index"
 import { buildQuery, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
@@ -30,6 +31,7 @@ type InjectedDependencies = {
   pricingService: PricingService
   regionService: RegionService
   lineItemAdjustmentService: LineItemAdjustmentService
+  taxProviderService: TaxProviderService
   featureFlagRouter: FlagRouter
 }
 
@@ -46,6 +48,7 @@ class LineItemService extends TransactionBaseService {
   protected readonly regionService_: RegionService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
+  protected readonly taxProviderService_: TaxProviderService
 
   constructor({
     manager,
@@ -57,6 +60,7 @@ class LineItemService extends TransactionBaseService {
     regionService,
     cartRepository,
     lineItemAdjustmentService,
+    taxProviderService,
     featureFlagRouter,
   }: InjectedDependencies) {
     super(arguments[0])
@@ -70,6 +74,7 @@ class LineItemService extends TransactionBaseService {
     this.regionService_ = regionService
     this.cartRepository_ = cartRepository
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
+    this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
   }
 
@@ -354,8 +359,8 @@ class LineItemService extends TransactionBaseService {
 
   /**
    * Deletes a line item with the tax lines.
-   * @param {string} id - the id of the line item to delete
-   * @return {Promise<LineItem | undefined>} the result of the delete operation
+   * @param id - the id of the line item to delete
+   * @return the result of the delete operation
    */
   async deleteWithTaxLines(id: string): Promise<LineItem | undefined> {
     return await this.atomicPhase_(
@@ -364,15 +369,11 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        const itemTaxLineRepo = transactionManager.getCustomRepository(
-          this.itemTaxLineRepo_
-        )
+        await this.taxProviderService_
+          .withTransaction(transactionManager)
+          .clearLineItemsTaxLines([id])
 
-        const lineItem = await this.retrieve(id)
-
-        await itemTaxLineRepo.delete({ item_id: id })
-
-        return await lineItemRepository.remove(lineItem)
+        return await this.delete(id)
       }
     )
   }

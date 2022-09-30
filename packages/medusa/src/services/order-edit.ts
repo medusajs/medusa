@@ -392,10 +392,7 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
-  async removeLineItem(
-    orderEditId: string,
-    lineItemId: string
-  ): Promise<OrderEdit> {
+  async removeLineItem(orderEditId: string, lineItemId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const orderEdit = await this.retrieve(orderEditId, {
         select: [
@@ -418,38 +415,44 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      const deleteLineItem = orderEdit.items.find(
-        (it) => it.original_item_id === lineItemId
-      )
+      const lineItem = await this.lineItemService_
+        .withTransaction(manager)
+        .retrieve(lineItemId, {
+          select: ["id", "order_edit_id", "original_item_id"],
+        })
+        .catch(() => void 0)
 
-      if (typeof deleteLineItem === "undefined") {
-        return orderEdit
+      if (!lineItem) {
+        return
+      }
+
+      if (
+        lineItem.order_edit_id !== orderEditId ||
+        !lineItem.original_item_id
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid line item id ${lineItemId} it does not belong to the same order edit ${orderEdit.order_id}.`
+        )
       }
 
       await this.lineItemService_
         .withTransaction(manager)
-        .deleteWithTaxLines(deleteLineItem.id)
+        .deleteWithTaxLines(lineItem.id)
 
       await this.refreshAdjustments(orderEditId)
 
-      const editChange: CreateOrderEditItemChangeInput = {
-        original_line_item_id: lineItemId,
+      await this.orderEditItemChangeService_.withTransaction(manager).create({
+        original_line_item_id: lineItem.original_item_id,
         type: OrderEditItemChangeType.ITEM_REMOVE,
         order_edit_id: orderEdit.id,
-      }
-
-      // save change
-      await this.orderEditItemChangeService_
-        .withTransaction(manager)
-        .create(editChange)
+      })
 
       await this.eventBusService_
         .withTransaction(manager)
         .emit(OrderEditService.Events.ITEM_REMOVED, {
           id: orderEdit.id,
         })
-
-      return orderEdit
     })
   }
 
