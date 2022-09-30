@@ -117,27 +117,29 @@ Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to t
 
 ![Image Uploaded on Admin](https://i.imgur.com/alabX2i.png)
 
-## Additional Configuration for Exports
+## Private Buckets
 
-Medusa v1.3.3 introduced the Export API. For example, you can now export your products from the Medusa Admin on the Products page.
+### Handle Exports
 
-![Export button in Products page in Medusa Admin](https://i.imgur.com/uyK4id8.png)
+Medusa provides export functionalities including exporting products and orders. For exports to work, you must [set up a private bucket](#create-private-bucket).
 
-:::note
+### Handle Imports
 
-Exports require using Redis to handle the event queue, and using PostgreSQL for the database. If you don’t use Redis or PostgreSQL, you can follow [this documentation to install](../tutorial/0-set-up-your-development-environment.mdx#postgresql) and then [configure them on your Medusa server](../usage/configurations.md#postgresql-configurations).
+Medusa provides import functionalities including importing products. For imports to work, you must [set the private bucket](#add-private-bucket-environment-variable) to be the same as the public bucket.
 
-:::
+### Create Private Bucket
 
-When using MinIO, you must create a private bucket that will store these product exports. To do that, follow along the [steps mentioned earlier to create a bucket](#create-a-minio-bucket), but keep Access Policy set to private.
+To create a private bucket, follow along the [steps mentioned earlier](#create-a-minio-bucket), but keep Access Policy set to private.
 
-Then, add the following environment variable on your Medusa server:
+### Add Private Bucket Environment Variable
+
+Add the following environment variable on your Medusa server:
 
 ```bash
 MINIO_PRIVATE_BUCKET=exports
 ```
 
-Finally, add a new option to the plugin’s options in `medusa-config.js`:
+Then, add a new option to the plugin’s options in `medusa-config.js`:
 
 ```jsx
 {
@@ -148,16 +150,6 @@ Finally, add a new option to the plugin’s options in `medusa-config.js`:
     },
 },
 ```
-
-If you start your Medusa server now and click on Export Products on the Medusa admin, the export will run in the background. When ready, it should be available for download.
-
-![Export is available for download on the Medusa Admin](https://i.imgur.com/Xc61Wg1.png)
-
-:::tip
-
-If you face any errors, make sure you have the latest version of the plugin installed.
-
-:::
 
 ### Use Different Secret and Access Keys
 
