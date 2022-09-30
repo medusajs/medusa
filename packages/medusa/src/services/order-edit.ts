@@ -10,7 +10,6 @@ import {
   OrderEdit,
   OrderEditItemChangeType,
   OrderEditStatus,
-  OrderItemChange,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -25,7 +24,6 @@ import {
 import {
   AddOrderEditLineItemInput,
   CreateOrderEditInput,
-  CreateOrderEditItemChangeInput,
 } from "../types/order-edit"
 
 type InjectedDependencies = {
@@ -49,7 +47,6 @@ export default class OrderEditService extends TransactionBaseService {
     REQUESTED: "order-edit.requested",
     CANCELED: "order-edit.canceled",
     CONFIRMED: "order-edit.confirmed",
-    ITEM_REMOVED: "order-edit.item-removed",
   }
 
   protected readonly manager_: EntityManager
@@ -446,12 +443,6 @@ export default class OrderEditService extends TransactionBaseService {
         type: OrderEditItemChangeType.ITEM_REMOVE,
         order_edit_id: orderEdit.id,
       })
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(OrderEditService.Events.ITEM_REMOVED, {
-          id: orderEdit.id,
-        })
     })
   }
 
