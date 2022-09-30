@@ -125,7 +125,9 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       await Promise.all([
-        ...lineItemIdsToRemove.map(async (id) => lineItemServiceTx.delete(id)),
+        ...lineItemIdsToRemove.map(
+          async (id) => await lineItemServiceTx.delete(id)
+        ),
         this.taxProviderService_
           .withTransaction(manager)
           .clearLineItemsTaxLines(lineItemIdsToRemove),
