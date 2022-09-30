@@ -10,6 +10,7 @@ import {
   useAdminOrderEditLineItem,
   useAdminCancelOrderEdit,
   useAdminUpdateOrderEdit,
+  useAdminOrderEditDeleteLineItem,
 } from "../../../../src/"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
@@ -243,6 +244,35 @@ describe("useAdminConfirmOrderEdit hook", () => {
           confirmed_at: expect.any(String),
           status: "confirmed",
         },
+      })
+    )
+  })
+})
+
+
+describe("useAdminOrderEditDeleteLineItem hook", () => {
+  test("Remove line item of an order edit and create an item change", async () => {
+    const id = "oe_1"
+    const itemId = "item_1"
+    const { result, waitFor } = renderHook(
+      () => useAdminOrderEditDeleteLineItem(id, itemId),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate()
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.order_edit).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("order_edit"),
+        changes: expect.arrayContaining([
+          expect.objectContaining({
+            type: 'item_remove'
+          }),
+        ]),
       })
     )
   })

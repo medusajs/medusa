@@ -22,10 +22,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     relations.push("sales_channel")
   }
 
-  if (featureFlagRouter.isFeatureEnabled(OrderEditingFeatureFlag.key)) {
-    relations.push("edits")
-  }
-
   /**
    * List orders
    */
