@@ -141,6 +141,10 @@ const config = {
               label: "GitHub",
               href: "https://github.com/medusajs/medusa",
             },
+            {
+              label: "Integrations",
+              href: "https://medusajs.notion.site/1a0ada9903874e0185d0b8ce0591b359?v=0631285851ba4021aa07c3b48dd4801a",
+            },
           ],
         },
       ],
