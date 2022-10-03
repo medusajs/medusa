@@ -22,14 +22,14 @@ This document assumes you already have a Medusa server installed. If you don’t
 npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
 ```
 
-2. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
+1. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
 cd my-medusa-storefront
 mv .env.template .env.local
 ```
 
-3. Make sure the Medusa server is running, then run the local Next.js server:
+1. Make sure the Medusa server is running, then run the local Next.js server:
 
 ```bash
 npm run dev
