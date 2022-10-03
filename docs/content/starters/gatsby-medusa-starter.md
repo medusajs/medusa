@@ -31,10 +31,8 @@ gatsby new my-medusa-storefront https://github.com/medusajs/gatsby-starter-medus
 2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
-cd my-medusa-storefront
-```
 
-```bash
+cd my-medusa-storefront
 mv .env.template .env.development
 ```
 
