@@ -79,7 +79,7 @@ export default async ({
 
   await entityManager.transaction(async (manager: EntityManager) => {
     const countryRepo = manager.withRepository(countryRepository)
-    const hasCountries = !!(await countryRepo.count())
+    const hasCountries = !!(await countryRepo.findAndCount())[1]
     if (!hasCountries) {
       for (const c of countries) {
         const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name")

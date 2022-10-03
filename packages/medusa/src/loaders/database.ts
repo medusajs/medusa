@@ -1,4 +1,4 @@
-import { DataSource, DataSourceOptions } from "typeorm"
+import { DataSource, DataSourceOptions, Repository } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
@@ -9,6 +9,12 @@ type Options = {
 }
 
 export let dataSource: DataSource
+
+if (process.env.NODE_ENV === "test") {
+  dataSource = {
+    getRepository: (target) => new Repository(target, {} as any) as any,
+  } as unknown as DataSource
+}
 
 export default async ({
   container,

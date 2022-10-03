@@ -1,7 +1,7 @@
-import InviteService from "../invite"
 import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { MedusaError } from "medusa-core-utils"
+import InviteService from "../invite"
 
 // const _MockManager
 
@@ -201,7 +201,7 @@ describe("InviteService", () => {
     const inviteRepo = MockRepository({
       findOne: (q) => {
         return Promise.resolve({
-          id: q.id,
+          id: q.where.id,
           role: "admin",
           user_email: "test@test.com",
         })
