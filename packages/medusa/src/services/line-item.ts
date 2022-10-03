@@ -348,13 +348,12 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        return await lineItemRepository
-          .findOne({ where: { id } })
-          .then((lineItem) => {
-            if (lineItem) {
-              return lineItemRepository.remove(lineItem))
-            }
-          }
+        const lineItem = await lineItemRepository.findOne({ where: { id } })
+        if (lineItem) {
+          return lineItemRepository.remove(lineItem)
+        }
+
+        return
       }
     )
   }
