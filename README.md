@@ -54,6 +54,7 @@ You can install Medusa by either following our [Quickstart guide](https://docs.m
 3. **Start your Medusa engine**
 
     ```bash
+    cd my-medusa-store
     medusa develop
     ```
 
