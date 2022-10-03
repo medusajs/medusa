@@ -38,19 +38,19 @@ Medusa comes with a set of building blocks that allow you to create unique digit
 
 ## Where to Get Started
 
-### The Medusa Server
+### Headless Backend
 
 You can follow the [quickstart guide](quickstart/quick-start.md) to install and run a Medusa server.
 
 It's also recommended to learn how to [set up your development environment](tutorial/set-up-your-development-environment) with the required tools and services to run a Medusa server, then [configure your Medusa server](usage/configurations.md).
 
-### The Medusa Admin
+### Admin Dashboard
 
 The Medusa Admin provides you with a lot of functionalities and configurations such as Product Management, Order Management, Discounts and Promotions, and more.
 
 You can install the Medusa admin in two steps by following the [Medusa Admin quickstart guide](admin/quickstart.md).
 
-### The Storefront
+### Storefront
 
 The final step is to set up a storefront to sell your products.
 
