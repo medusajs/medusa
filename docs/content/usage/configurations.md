@@ -24,7 +24,6 @@ This change in how environment variables are loaded was introduced in version 1.
 
 :::
 
-
 ## Database Configuration
 
 Medusa supports two database types: SQLite and PostgreSQL.
