@@ -4,7 +4,7 @@ If you are experiencing connection issues when trying to access your Medusa serv
 
 You might see a log in your browser console, that looks like this:
 
-![CORS error log](https://i.imgur.com/jnHK115.png)
+![CORS error log](https://user-images.githubusercontent.com/11460645/193607957-ab160585-03c6-4b3c-b2cc-001f5bd6aa9d.png)
 
 In your `medusa-config.js` , you should ensure that you've configured your CORS settings correctly. By default, the Medusa starter runs on port `9000`, Medusa Admin runs on port `7000`, and the storefront starters run on port `8000`.
 
