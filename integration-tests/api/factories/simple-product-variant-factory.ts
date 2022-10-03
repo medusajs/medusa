@@ -1,9 +1,9 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import {
+  MoneyAmount,
   ProductOptionValue,
   ProductVariant,
-  MoneyAmount,
 } from "@medusajs/medusa"
 
 export type ProductVariantFactoryData = {
@@ -18,7 +18,7 @@ export type ProductVariantFactoryData = {
 }
 
 export const simpleProductVariantFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ProductVariantFactoryData,
   seed?: number
 ): Promise<ProductVariant> => {
@@ -26,7 +26,7 @@ export const simpleProductVariantFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const id = data.id || `simple-variant-${Math.random() * 1000}`
   const toSave = manager.create(ProductVariant, {

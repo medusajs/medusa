@@ -1,6 +1,6 @@
 import { Customer } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
   CustomerGroupFactoryData,
   simpleCustomerGroupFactory,
@@ -13,7 +13,7 @@ export type CustomerFactoryData = {
 }
 
 export const simpleCustomerFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: CustomerFactoryData = {},
   seed?: number
 ): Promise<Customer> => {
@@ -21,7 +21,7 @@ export const simpleCustomerFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const customerId = data.id || `simple-customer-${Math.random() * 1000}`
   const c = manager.create(Customer, {
@@ -34,7 +34,7 @@ export const simpleCustomerFactory = async (
   if (data.groups) {
     const groups = []
     for (const g of data.groups) {
-      const created = await simpleCustomerGroupFactory(connection, g)
+      const created = await simpleCustomerGroupFactory(dataSource, g)
       groups.push(created)
     }
 

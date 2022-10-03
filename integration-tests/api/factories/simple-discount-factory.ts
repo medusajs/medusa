@@ -2,13 +2,13 @@ import {
   AllocationType,
   Discount,
   DiscountRule,
-  DiscountRuleType
+  DiscountRuleType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
   DiscountConditionFactoryData,
-  simpleDiscountConditionFactory
+  simpleDiscountConditionFactory,
 } from "./simple-discount-condition-factory"
 
 export type DiscountRuleFactoryData = {
@@ -29,7 +29,7 @@ export type DiscountFactoryData = {
 }
 
 export const simpleDiscountFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: DiscountFactoryData = {},
   seed?: number
 ): Promise<Discount> => {
@@ -37,7 +37,7 @@ export const simpleDiscountFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const ruleData = data.rule ?? ({} as DiscountRuleFactoryData)
   const ruleToSave = manager.create(DiscountRule, {
@@ -51,7 +51,7 @@ export const simpleDiscountFactory = async (
   if (data?.rule?.conditions) {
     for (const condition of data.rule.conditions) {
       await simpleDiscountConditionFactory(
-        connection,
+        dataSource,
         { ...condition, rule_id: dRule.id },
         1
       )

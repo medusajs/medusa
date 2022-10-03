@@ -50,3 +50,4 @@ export const ProductTagRepository = dataSource
       return upsertedTags
     },
   })
+export default ProductTagRepository

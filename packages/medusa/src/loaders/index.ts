@@ -10,11 +10,11 @@ import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection, getManager } from "typeorm"
+import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader from "./database"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
@@ -107,17 +107,17 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity("Initializing repositories")
-  track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container })
-  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
-  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
-
   const dbActivity = Logger.activity("Initializing database")
   track("DATABASE_INIT_STARTED")
   const dbConnection = await databaseLoader({ container, configModule })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
+
+  const repoActivity = Logger.activity("Initializing repositories")
+  track("REPOSITORIES_INIT_STARTED")
+  repositoriesLoader({ container })
+  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
+  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
   container.register({ manager: asValue(dbConnection.manager) })
 
@@ -142,7 +142,7 @@ export default async ({
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) })
+    container.register({ manager: asValue(dataSource.manager) })
     ;(req as any).scope = container.createScope()
     next()
   })

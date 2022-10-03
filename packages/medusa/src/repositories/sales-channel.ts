@@ -67,3 +67,4 @@ export const SalesChannelRepository = dataSource
         .execute()
     },
   })
+export default SalesChannelRepository

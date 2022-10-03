@@ -384,3 +384,4 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     return [entities, count]
   },
 })
+export default ProductRepository

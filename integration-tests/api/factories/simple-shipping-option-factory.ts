@@ -5,7 +5,7 @@ import {
   ShippingProfileType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type ShippingOptionFactoryData = {
   id?: string
@@ -20,7 +20,7 @@ export type ShippingOptionFactoryData = {
 }
 
 export const simpleShippingOptionFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ShippingOptionFactoryData,
   seed?: number
 ): Promise<ShippingOption> => {
@@ -28,7 +28,7 @@ export const simpleShippingOptionFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: ShippingProfileType.DEFAULT,
   })

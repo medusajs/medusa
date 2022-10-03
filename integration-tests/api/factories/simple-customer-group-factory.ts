@@ -1,6 +1,6 @@
 import { CustomerGroup } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type CustomerGroupFactoryData = {
   id?: string
@@ -8,7 +8,7 @@ export type CustomerGroupFactoryData = {
 }
 
 export const simpleCustomerGroupFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: CustomerGroupFactoryData = {},
   seed?: number
 ): Promise<CustomerGroup> => {
@@ -16,7 +16,7 @@ export const simpleCustomerGroupFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const customerGroupId =
     data.id || `simple-customer-group-${Math.random() * 1000}`

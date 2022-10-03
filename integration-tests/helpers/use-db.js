@@ -1,7 +1,7 @@
 const path = require("path")
 
 const { dropDatabase } = require("pg-god")
-const { createConnection } = require("typeorm")
+const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 
 const DB_HOST = process.env.DB_HOST
@@ -26,13 +26,13 @@ const keepTables = [
   "currency",
 ]
 
-let connectionType = "postgresql"
+let dataSourceType = "postgresql"
 
 const DbTestUtil = {
   db_: null,
 
-  setDb: function (connection) {
-    this.db_ = connection
+  setDb: function (dataSource) {
+    this.db_ = dataSource
   },
 
   clear: async function () {
@@ -45,7 +45,7 @@ const DbTestUtil = {
     const entities = this.db_.entityMetadatas
     const manager = this.db_.manager
 
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = OFF`)
     } else {
       await manager.query(`SET session_replication_role = 'replica';`)
@@ -59,9 +59,10 @@ const DbTestUtil = {
         continue
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
+      await manager.query(`DELETE
+                           FROM "${entity.tableName}";`)
     }
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
     } else {
       await manager.query(`SET session_replication_role = 'origin';`)
@@ -106,16 +107,18 @@ module.exports = {
     const entities = modelsLoader({}, { register: false })
 
     if (projectConfig.database_type === "sqlite") {
-      connectionType = "sqlite"
-      const dbConnection = await createConnection({
+      dataSourceType = "sqlite"
+      const dataSource = new DataSource({
         type: "sqlite",
         database: projectConfig.database_database,
         synchronize: true,
         entities,
       })
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      const dbDataSource = await dataSource.initialize()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     } else {
       await dbFactory.createFromTemplate(DB_NAME)
 
@@ -152,17 +155,19 @@ module.exports = {
         (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
       )
 
-      const dbConnection = await createConnection({
+      const dbDataSource = new DataSource({
         type: "postgres",
         url: DB_URL,
         entities: enabledEntities,
         migrations: enabledMigrations,
       })
 
-      await dbConnection.runMigrations()
+      await dbDataSource.initialize()
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      await dbDataSource.runMigrations()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     }
   },
   useDb: function () {

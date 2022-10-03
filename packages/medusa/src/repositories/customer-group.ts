@@ -43,3 +43,4 @@ export const CustomerGroupRepository = dataSource
         .execute()
     },
   })
+export default CustomerGroupRepository

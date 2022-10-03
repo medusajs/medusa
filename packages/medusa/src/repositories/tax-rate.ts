@@ -263,3 +263,4 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     return await rates.getMany()
   },
 })
+export default TaxRateRepository

@@ -1,18 +1,18 @@
 import { Product, SalesChannel } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type SalesChannelFactoryData = {
   name?: string
   description?: string
   is_disabled?: boolean
   id?: string
-  products?: Product[],
+  products?: Product[]
   is_default?: boolean
 }
 
 export const simpleSalesChannelFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: SalesChannelFactoryData = {},
   seed?: number
 ): Promise<SalesChannel> => {
@@ -20,7 +20,7 @@ export const simpleSalesChannelFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let salesChannel = manager.create(SalesChannel, {
     id: data.id ?? `simple-id-${Math.random() * 1000}`,

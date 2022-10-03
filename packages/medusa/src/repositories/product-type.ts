@@ -29,3 +29,4 @@ export const ProductTypeRepository = dataSource
       return result
     },
   })
+export default ProductTypeRepository

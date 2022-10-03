@@ -219,3 +219,4 @@ export const MoneyAmountRepository = dataSource
       return await this.save([...existingPrices, ...newPriceEntities])
     },
   })
+export default MoneyAmountRepository

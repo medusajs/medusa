@@ -35,3 +35,4 @@ export const CustomerRepository = dataSource.getRepository(Customer).extend({
     })
   },
 })
+export default CustomerRepository

@@ -29,3 +29,4 @@ export const ImageRepository = dataSource.getRepository(Image).extend({
     return upsertedImgs
   },
 })
+export default ImageRepository

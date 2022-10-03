@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import { Address } from "@medusajs/medusa"
 
@@ -11,7 +11,7 @@ export type AddressFactoryData = {
 }
 
 export const simpleAddressFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: AddressFactoryData = {},
   seed?: number
 ): Promise<Address> => {
@@ -19,7 +19,7 @@ export const simpleAddressFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const address = manager.create(Address, {
     id: `simple-id-${Math.random() * 1000}`,

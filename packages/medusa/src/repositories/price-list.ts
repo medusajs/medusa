@@ -35,3 +35,4 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     })
   },
 })
+export default PriceListRepository

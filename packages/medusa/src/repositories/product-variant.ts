@@ -234,3 +234,4 @@ export const ProductVariantRepository = dataSource
       return groupedRelations
     },
   })
+export default ProductVariantRepository

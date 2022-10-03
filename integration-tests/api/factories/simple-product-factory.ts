@@ -4,17 +4,17 @@ import {
   ProductTag,
   ProductType,
   ShippingProfile,
-  ShippingProfileType
+  ShippingProfileType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
   ProductVariantFactoryData,
-  simpleProductVariantFactory
+  simpleProductVariantFactory,
 } from "./simple-product-variant-factory"
 import {
   SalesChannelFactoryData,
-  simpleSalesChannelFactory
+  simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
@@ -30,7 +30,7 @@ export type ProductFactoryData = {
 }
 
 export const simpleProductFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ProductFactoryData = {},
   seed?: number
 ): Promise<Product | undefined> => {
@@ -38,7 +38,7 @@ export const simpleProductFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: ShippingProfileType.DEFAULT,
@@ -53,7 +53,7 @@ export const simpleProductFactory = async (
     sales_channels = await Promise.all(
       data.sales_channels.map(
         async (salesChannel) =>
-          await simpleSalesChannelFactory(connection, salesChannel)
+          await simpleSalesChannelFactory(dataSource, salesChannel)
       )
     )
   }
@@ -126,7 +126,7 @@ export const simpleProductFactory = async (
         { option_id: optionId, value: faker.commerce.productAdjective() },
       ]
     }
-    await simpleProductVariantFactory(connection, factoryData)
+    await simpleProductVariantFactory(dataSource, factoryData)
   }
 
   return manager.findOne(

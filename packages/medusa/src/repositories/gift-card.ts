@@ -33,3 +33,4 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
     return await this.findAndCount(query_)
   },
 })
+export default GiftCardRepository

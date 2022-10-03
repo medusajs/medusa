@@ -1,10 +1,10 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import {
   Customer,
+  FulfillmentStatus,
   Order,
   PaymentStatus,
-  FulfillmentStatus,
 } from "@medusajs/medusa"
 import {
   DiscountFactoryData,
@@ -44,7 +44,7 @@ export type OrderFactoryData = {
 }
 
 export const simpleOrderFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: OrderFactoryData = {},
   seed?: number
 ): Promise<Order> => {
@@ -52,7 +52,7 @@ export const simpleOrderFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let currencyCode: string
   let regionId: string
@@ -62,13 +62,13 @@ export const simpleOrderFactory = async (
     regionId = data.region
     taxRate = data.tax_rate
   } else {
-    const region = await simpleRegionFactory(connection, data.region)
+    const region = await simpleRegionFactory(dataSource, data.region)
     taxRate =
       typeof data.tax_rate !== "undefined" ? data.tax_rate : region.tax_rate
     currencyCode = region.currency_code
     regionId = region.id
   }
-  const address = await simpleAddressFactory(connection, data.shipping_address)
+  const address = await simpleAddressFactory(dataSource, data.shipping_address)
 
   const customerToSave = manager.create(Customer, {
     email:
@@ -79,14 +79,14 @@ export const simpleOrderFactory = async (
   let discounts = []
   if (typeof data.discounts !== "undefined") {
     discounts = await Promise.all(
-      data.discounts.map((d) => simpleDiscountFactory(connection, d, seed))
+      data.discounts.map((d) => simpleDiscountFactory(dataSource, d, seed))
     )
   }
 
   let sales_channel
   if (typeof data.sales_channel !== "undefined") {
     sales_channel = await simpleSalesChannelFactory(
-      connection,
+      dataSource,
       data.sales_channel
     )
   }
@@ -111,7 +111,7 @@ export const simpleOrderFactory = async (
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {
-    await simpleShippingMethodFactory(connection, { ...sm, order_id: order.id })
+    await simpleShippingMethodFactory(dataSource, { ...sm, order_id: order.id })
   }
 
   const items =
@@ -127,7 +127,7 @@ export const simpleOrderFactory = async (
     }) || []
 
   for (const item of items) {
-    await simpleLineItemFactory(connection, { ...item, order_id: id })
+    await simpleLineItemFactory(dataSource, { ...item, order_id: id })
   }
 
   return order

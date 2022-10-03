@@ -1,12 +1,11 @@
 import {
-  PriceList,
   MoneyAmount,
-  PriceListType,
+  PriceList,
   PriceListStatus,
-  CustomerGroup,
+  PriceListType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { simpleCustomerGroupFactory } from "./simple-customer-group-factory"
 
 type ProductListPrice = {
@@ -30,7 +29,7 @@ export type PriceListFactoryData = {
 }
 
 export const simplePriceListFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: PriceListFactoryData = {},
   seed?: number
 ): Promise<PriceList> => {
@@ -38,7 +37,7 @@ export const simplePriceListFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const listId = data.id || `simple-price-list-${Math.random() * 1000}`
 
@@ -46,7 +45,7 @@ export const simplePriceListFactory = async (
   if (typeof data.customer_groups !== "undefined") {
     customerGroups = await Promise.all(
       data.customer_groups.map((group) =>
-        simpleCustomerGroupFactory(connection, { id: group })
+        simpleCustomerGroupFactory(dataSource, { id: group })
       )
     )
   }

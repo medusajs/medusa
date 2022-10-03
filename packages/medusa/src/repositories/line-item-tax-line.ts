@@ -34,3 +34,4 @@ export const LineItemTaxLineRepository = dataSource
         .execute()
     },
   })
+export default LineItemTaxLineRepository

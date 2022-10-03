@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import { LineItem, LineItemAdjustment, LineItemTaxLine } from "@medusajs/medusa"
 
@@ -34,7 +34,7 @@ export type LineItemFactoryData = {
 }
 
 export const simpleLineItemFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: LineItemFactoryData,
   seed?: number
 ): Promise<LineItem> => {
@@ -50,7 +50,7 @@ export const simpleLineItemFactory = async (
     Math
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const id = data.id || `simple-line-${Math.random() * 1000}`
   const toSave = manager.create(LineItem, {

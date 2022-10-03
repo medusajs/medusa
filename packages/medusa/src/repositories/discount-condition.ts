@@ -304,3 +304,4 @@ export const DiscountConditionRepository = dataSource
       return true
     },
   })
+export default DiscountConditionRepository

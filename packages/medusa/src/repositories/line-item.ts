@@ -28,3 +28,5 @@ export const LineItemRepository = dataSource.getRepository(LineItem).extend({
     return (await qb.getMany()) as (LineItem & { return_item: ReturnItem })[]
   },
 })
+
+export default LineItemRepository

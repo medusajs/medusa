@@ -39,3 +39,5 @@ export const ShippingMethodTaxLineRepository = dataSource
         .execute()
     },
   })
+
+export default ShippingMethodTaxLineRepository
