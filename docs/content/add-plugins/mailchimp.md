@@ -179,5 +179,5 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 
 ## What’s Next 🚀
 
-- Check out SendGrid plugin for more Email functionalities.
+- Check out [SendGrid plugin](../add-plugins/sendgrid.mdx) for more Email functionalities.
 - [Learn more about plugins.](../advanced/backend/plugins/overview.md)
