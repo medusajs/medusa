@@ -2,12 +2,6 @@
 
 This document will guide you through setting up your Medusa server in a few minutes.
 
-:::tip
-
-For a more detailed guide on how to set up your local environment to work with Medusa, check out the documentation on [how to set up your development environment](/tutorial/set-up-your-development-environment).
-
-:::
-
 Alternatively, you can use this button to deploy the Medusa server to Heroku directly:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/medusajs/medusa-starter-default/tree/feat/deploy-heroku)
@@ -29,6 +23,12 @@ You can install Node from the [official website](https://nodejs.org/en/).
    ```bash npm2yarn
    npm install @medusajs/medusa-cli -g
    ```
+
+   :::note
+
+   If you get a permission error when using NPM, check out [NPM's documentation for a solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+
+   :::
 
 ### 2. Create a new Medusa project
 
@@ -63,6 +63,18 @@ curl localhost:9000/store/products
 
 ## Additional Steps
 
+### Set Up Development Environment
+
+For an optimal experience developing with Medusa and to make sure you can use its advanced functionalities, you'll need to install more tools such as Redis or PostgreSQL.
+
+Follow [this documentation to learn how to set up your development environment](../tutorial/0-set-up-your-development-environment.mdx).
+
+### Server Configurations
+
+It's important to configure your Medusa server properly and learn how environment variables are loaded.
+
+You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
+
 ### File Service Plugin
 
 To upload product images to your Medusa server, you must install and configure one of the following file service plugins:
@@ -71,15 +83,9 @@ To upload product images to your Medusa server, you must install and configure o
 - [S3](../add-plugins/s3.md)
 - [DigitalOcean Spaces](../add-plugins/spaces.md)
 
-### Server Configurations
-
-It's important to configure your Medusa server properly and learn how environment variables are loaded.
-
-You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
-
 ## What's next :rocket:
 
-- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
+- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.
