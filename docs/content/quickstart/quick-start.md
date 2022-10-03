@@ -2,10 +2,6 @@
 
 This document will guide you through setting up your Medusa server in a few minutes.
 
-Alternatively, you can use this button to deploy the Medusa server to Heroku directly:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/medusajs/medusa-starter-default/tree/feat/deploy-heroku)
-
 ## Prerequisites
 
 Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
