@@ -6,7 +6,7 @@ A usual return flow follows the steps below:
 
 1. The customer requests a return - noting the items that they will be sending back. 
 2. The merchant provides the customer with a return label, that will be used on the package that is being sent back.
-3. The merchant receives the package at their warehouse, and registers the return as being received.
+3. The merchant receives the package at their warehouse and registers the return as being received.
 4. The merchant refunds the money to the customer, taking any potential return shipping requests into account. 
 
 A different flow that is less common follows the steps:
@@ -21,9 +21,9 @@ To create a return in Medusa Admin the store operator finds the original order a
 
 ## Swaps
 
-A swap can be used in cases where a customer wishes to exchange previously purchased items for different items. Usually this occurs if the customer wants to change the size or color of an item. In Medusa a swap can be initiated to handle the administrative tasks around swaps i.e. requesting a return, taking a payment from the customer for any shipping expenses and fulfilling the new items.
+A swap can be used in cases where a customer wishes to exchange previously purchased items for different items. Usually, this occurs if the customer wants to change the size or color of an item. In Medusa a swap can be initiated to handle the administrative tasks around swaps i.e. requesting a return, taking a payment from the customer for any shipping expenses, and fulfilling the new items.
 
-When a swap is created in Medusa Admin a return request will be initiated immediately generating return labels with the chosen fulfillment provider, furthermore a cart will be created and a payment link generated which can be sent to the customer to authorize a payment. When the return is received the swap can be marked as received and usually this will be where the new goods are to be sent out. The new goods are sent with the shipping method chosen by the customer in the payment process.
+When a swap is created in Medusa Admin a return request will be initiated immediately generating return labels with the chosen fulfillment provider, furthermore, a cart will be created and a payment link generated which can be sent to the customer to authorize a payment. When the return is received the swap can be marked as received and usually this will be where the new goods are to be sent out. The new goods are sent with the shipping method chosen by the customer in the payment process.
 
 Limitations: 
 - At the moment only swaps that require a payment are supported i.e. swaps that would result in a refund to the customer are not possible.
