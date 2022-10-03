@@ -1,7 +1,7 @@
 # Cart Service
 In Medusa a cart is where a customer can add items that they intend to purchase
 later. The Cart service is responsible for making the operations necessary for
-handling items in the cart and completing a checkout. 
+handling items in the cart and completing checkout. 
 
 ## Creating carts
 
@@ -18,7 +18,7 @@ have to ensure that you make a `POST /cart` call before you call `POST
 This can be circumvented by creating the cart as soon as the user enters your
 site. You will then be able to keep the region data in the cart, which will be
 ready for any `POST /cart/line-items`. This has the trade-off of creating many
-unnecessary carts, but is easier to implement.
+unnecessary carts but is easier to implement.
 
 ## Shopping
 
@@ -41,7 +41,7 @@ removes the line item with the given line id by calling `removeLineItem`.
 
 :::note Custom add to cart
 
-It is possible to make custom endpoints to add to cart. For example if you are
+It is possible to make custom endpoints to add to cart. For example, if you are
 creating a gift card plugin you may want to create a custom endpoint that
 accepts values like `amount` which can be set by the customer. As long as the
 controller compiles a valid `LineItem` it can safely call `addLineItem`
@@ -52,19 +52,18 @@ controller compiles a valid `LineItem` it can safely call `addLineItem`
 
 ### Initializing the checkout
 When the customer is ready to check out they will reach your checkout page. At
-this point you want to display which payment and shipping options are offered.
+this point, you want to display which payment and shipping options are offered.
 `POST /cart/payment-sessions` and `POST /cart/fulfillment-sessions` will
 initialize payment sessions and shipping methods offered by fulfillment
 providers. The payment sessions will typically have to be updated if any further
-changes to the cart total happens (shipping fee, promo codes, user exits
+changes to the cart total happen (shipping fee, promo codes, user exits
 checkout and adds more items to cart and returns to checkout). Medusa will make
 sure to update any payment sessions that have already been initialized. 
 
 In cases where shipping rates can vary based on order size, shipping address
 (with higher granularity than region) makes sense to call `POST
 /cart/fulfillment-providers` multiple times, e.g. if the customer updates their 
-shipping address and new shipping rates have to be calculated. On each call the 
-endpoint will make sure to only return relevant shipping methods.
+shipping address and new shipping rates have to be calculated. On each call, the endpoint will make sure to only return relevant shipping methods.
 
 Note that `POST /cart/payment-providers` should not be used to fetch available
 payment providers, only to initialize payment sessions. If you want to display
@@ -79,7 +78,7 @@ methods (`updateEmail`, `updateShippingAddress`, `updateBillingAddress`) to
 store the customer information in the cart.
 
 ### Handling payments and completing orders
-Authorization of payments happen with the payment provider. As such the typical
+Authorization of payments happens with the payment provider. As such the typical
 payment flow will be:
 
 1. the customer enters payment details
@@ -114,7 +113,7 @@ method will be saved once authorized.
 
 When the customer first enters the checkout page, fulfillment sessions should be
 initialized. The fulfillment session is responsible for fetching shipping 
-options with a fulfillment provider. E.g. your store has an integration with
+options with a fulfillment provider. For E.g. your store has an integration with
 your 3PL as a fulfillment provider. The 3PL has 4 shipping options: standard,
 express and fragile shipping as well as a parcel shop service where orders are 
 delivered to a local store.
@@ -123,10 +122,10 @@ The store operator will have set up which shipping options are available in the
 customer's region. I.e. the store operator may have created a shipping option 
 called Free Shipping, which uses the "Standard Shipping" method from the 3PL 
 integration, and which is free when the order value is above 100 USD. The store
-operator may have also created an Express Shipping option which uses the 
-"Express Shipping" method from the 3PL integration and which costs 20 USD. 
-The store operator has also created a Fragile Shipping option which uses the
-"Fragile Shipping" method from the 3PL integration and which has variable
+operator may have also created an Express Shipping option that uses the 
+"Express Shipping" method from the 3PL integration which costs 20 USD. 
+The store operator has also created a Fragile Shipping option that uses the
+"Fragile Shipping" method from the 3PL integration and has variable
 pricing depending on the size of the shipment. The variable pricing is
 calculated by the integration depending on cart. Finally, the store operator has
 defined a parcel shop option, which uses the 3PL's parcel shop shipping method.
