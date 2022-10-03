@@ -1,22 +1,15 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { defaultAdminVariantFields, defaultAdminVariantRelations } from "./"
 
 import { Type } from "class-transformer"
 import { omit } from "lodash"
-import { ProductVariant } from "../../../../models/product-variant"
 import {
   CartService,
   PricingService,
   RegionService,
 } from "../../../../services"
 import ProductVariantService from "../../../../services/product-variant"
-import {
-  FindConfig,
-  NumericalComparisonOperator,
-} from "../../../../types/common"
+import { NumericalComparisonOperator } from "../../../../types/common"
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 /**
@@ -129,57 +122,28 @@ export default async (req, res) => {
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
+
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const validated = await validator(AdminGetVariantsParams, req.query)
-
-  const { expand, offset, limit } = validated
-
-  let expandFields: string[] = []
-  if (expand) {
-    expandFields = expand.split(",")
-  }
-
-  let includeFields: (keyof ProductVariant)[] = []
-  if (validated.fields) {
-    const set = new Set(validated.fields.split(",")) as Set<
-      keyof ProductVariant
-    >
-    set.add("id")
-    includeFields = [...set]
-  }
-
-  const filterableFields: FilterableProductVariantProps = omit(validated, [
-    "ids",
-    "limit",
-    "offset",
-    "expand",
+  // We need to remove the price selection params from the array of fields
+  const cleanFilterableFields = omit(req.filterableFields, [
     "cart_id",
     "region_id",
     "currency_code",
     "customer_id",
   ])
 
-  const listConfig: FindConfig<ProductVariant> = {
-    select: includeFields.length ? includeFields : defaultAdminVariantFields,
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminVariantRelations,
-    skip: offset,
-    take: limit,
-  }
-
   const [rawVariants, count] = await variantService.listAndCount(
-    filterableFields,
-    listConfig
+    cleanFilterableFields,
+    req.listConfig
   )
 
-  let regionId = validated.region_id
-  let currencyCode = validated.currency_code
-  if (validated.cart_id) {
-    const cart = await cartService.retrieve(validated.cart_id, {
+  let regionId = req.validatedQuery.region_id
+  let currencyCode = req.validatedQuery.currency_code
+  if (req.validatedQuery.cart_id) {
+    const cart = await cartService.retrieve(req.validatedQuery.cart_id, {
       select: ["id", "region_id"],
     })
     const region = await regionService.retrieve(cart.region_id, {
@@ -190,14 +154,19 @@ export default async (req, res) => {
   }
 
   const variants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
+    cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
-    customer_id: validated.customer_id,
+    customer_id: req.validatedQuery.customer_id,
     include_discount_prices: true,
   })
 
-  res.json({ variants, count, offset, limit })
+  res.json({
+    variants,
+    count,
+    offset: req.listConfig.offset,
+    limit: req.listConfig.limit,
+  })
 }
 
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {
@@ -222,10 +191,6 @@ export class AdminGetVariantsParams extends AdminPriceSelectionParams {
   @IsString()
   @IsOptional()
   fields?: string
-
-  @IsOptional()
-  @IsString()
-  ids?: string
 
   @IsOptional()
   @IsType([String, [String]])
