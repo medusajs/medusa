@@ -26,9 +26,6 @@ npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medu
 
 ```bash
 cd my-medusa-storefront
-```
-
-```bash
 mv .env.template .env.local
 ```
 
