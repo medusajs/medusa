@@ -38,7 +38,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     lineItemService,
     taxProviderService,
   }: InjectedDependencies) {
-    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -125,7 +125,9 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       await Promise.all([
-        ...lineItemIdsToRemove.map((id) => lineItemServiceTx.delete(id)),
+        ...lineItemIdsToRemove.map(
+          async (id) => await lineItemServiceTx.delete(id)
+        ),
         this.taxProviderService_
           .withTransaction(manager)
           .clearLineItemsTaxLines(lineItemIdsToRemove),

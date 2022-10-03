@@ -41,7 +41,6 @@ type PriceListConstructorProps = {
 
 /**
  * Provides layer to manipulate product tags.
- * @extends BaseService
  */
 class PriceListService extends TransactionBaseService {
   protected manager_: EntityManager

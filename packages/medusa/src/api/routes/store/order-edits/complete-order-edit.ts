@@ -1,4 +1,3 @@
-import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
@@ -6,36 +5,30 @@ import {
   defaultStoreOrderEditFields,
   defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
+import { OrderEditStatus } from "../../../../models"
+import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /order-edits/{id}/decline
- * operationId: "PostOrderEditsOrderEditDecline"
- * summary: "Decline an OrderEdit"
- * description: "Declines an OrderEdit."
+ * @oas [post] /order-edits/{id}/complete
+ * operationId: "PostOrderEditsOrderEditComplete"
+ * summary: "Completes an OrderEdit"
+ * description: "Completes an OrderEdit."
  * parameters:
- *   - (path) id=* {string} The ID of the OrderEdit.
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         properties:
- *           declined_reason:
- *             type: string
- *             description: The reason for declining the OrderEdit.
+ *   - (path) id=* {string} The ID of the Order Edit.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.decline(orderEditId)
+ *       medusa.orderEdit.complete(orderEditId)
  *         .then(({ order_edit }) => {
- *           console.log(order_edit.id);
+ *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/decline'
+ *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/complete'
  * tags:
  *   - OrderEdit
  * responses:
@@ -58,9 +51,6 @@ import {
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
-  const { validatedBody } = req as {
-    validatedBody: StorePostOrderEditsOrderEditDecline
-  }
 
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
@@ -70,8 +60,30 @@ export default async (req: Request, res: Response) => {
   const userId = req.user?.customer_id ?? req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (manager) => {
-    await orderEditService.withTransaction(manager).decline(id, {
-      declinedReason: validatedBody.declined_reason,
+    const orderEditServiceTx = orderEditService.withTransaction(manager)
+    const orderEdit = await orderEditServiceTx.retrieve(id)
+
+    if (orderEdit.status === OrderEditStatus.CONFIRMED) {
+      return orderEdit
+    }
+
+    if (orderEdit.status !== OrderEditStatus.REQUESTED) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot complete an order edit with status ${orderEdit.status}`
+      )
+    }
+
+    // TODO once payment collection is done
+    /*const paymentCollection = await this.paymentCollectionService_.withTransaction(manager).retrieve(orderEdit.payment_collection_id)
+    if (!paymentCollection.authorized_at) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Unable to complete an order edit if the payment is not authorized"
+      )
+    }*/
+
+    return await orderEditServiceTx.confirm(id, {
       loggedInUserId: userId,
     })
   })
@@ -83,10 +95,4 @@ export default async (req: Request, res: Response) => {
   orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   res.status(200).json({ order_edit: orderEdit })
-}
-
-export class StorePostOrderEditsOrderEditDecline {
-  @IsOptional()
-  @IsString()
-  declined_reason?: string
 }

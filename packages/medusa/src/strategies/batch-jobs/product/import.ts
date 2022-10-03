@@ -966,4 +966,3 @@ const SalesChannelsSchema: ProductImportCsvSchema = {
     },
   ],
 }
-

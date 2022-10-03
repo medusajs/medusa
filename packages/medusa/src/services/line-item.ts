@@ -1,12 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { Cart, LineItemTaxLine, LineItem, LineItemAdjustment } from "../models"
+import { Cart, LineItem, LineItemAdjustment, LineItemTaxLine } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
 import LineItemAdjustmentService from "./line-item-adjustment"
@@ -17,7 +16,10 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  TaxProviderService,
 } from "./index"
+import { buildQuery, setMetadata } from "../utils"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -29,15 +31,14 @@ type InjectedDependencies = {
   pricingService: PricingService
   regionService: RegionService
   lineItemAdjustmentService: LineItemAdjustmentService
+  taxProviderService: TaxProviderService
   featureFlagRouter: FlagRouter
 }
 
-/**
- * Provides layer to manipulate line items.
- * @extends BaseService
- */
-class LineItemService extends BaseService {
-  protected readonly manager_: EntityManager
+class LineItemService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly itemTaxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly cartRepository_: typeof CartRepository
@@ -47,6 +48,7 @@ class LineItemService extends BaseService {
   protected readonly regionService_: RegionService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
+  protected readonly taxProviderService_: TaxProviderService
 
   constructor({
     manager,
@@ -58,9 +60,10 @@ class LineItemService extends BaseService {
     regionService,
     cartRepository,
     lineItemAdjustmentService,
+    taxProviderService,
     featureFlagRouter,
   }: InjectedDependencies) {
-    super()
+    super(arguments[0])
 
     this.manager_ = manager
     this.lineItemRepository_ = lineItemRepository
@@ -71,30 +74,8 @@ class LineItemService extends BaseService {
     this.regionService_ = regionService
     this.cartRepository_ = cartRepository
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
+    this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
-  }
-
-  withTransaction(transactionManager: EntityManager): LineItemService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new LineItemService({
-      manager: transactionManager,
-      lineItemRepository: this.lineItemRepository_,
-      lineItemTaxLineRepository: this.itemTaxLineRepo_,
-      productVariantService: this.productVariantService_,
-      productService: this.productService_,
-      pricingService: this.pricingService_,
-      regionService: this.regionService_,
-      cartRepository: this.cartRepository_,
-      lineItemAdjustmentService: this.lineItemAdjustmentService_,
-      featureFlagRouter: this.featureFlagRouter_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   async list(
@@ -107,15 +88,15 @@ class LineItemService extends BaseService {
   ): Promise<LineItem[]> {
     const manager = this.manager_
     const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await lineItemRepo.find(query)
   }
 
   /**
    * Retrieves a line item by its id.
-   * @param {string} id - the id of the line item to retrieve
-   * @param {object} config - the config to be used at query building
-   * @return {Promise<LineItem | never>} the line item
+   * @param id - the id of the line item to retrieve
+   * @param config - the config to be used at query building
+   * @return the line item
    */
   async retrieve(id: string, config = {}): Promise<LineItem | never> {
     const manager = this.manager_
@@ -123,8 +104,7 @@ class LineItemService extends BaseService {
       this.lineItemRepository_
     )
 
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
 
     const lineItem = await lineItemRepository.findOne(query)
 
@@ -141,9 +121,9 @@ class LineItemService extends BaseService {
   /**
    * Creates return line items for a given cart based on the return items in a
    * return.
-   * @param {string} returnId - the id to generate return items from.
-   * @param {string} cartId - the cart to assign the return line items to.
-   * @return {Promise<LineItem[]>} the created line items
+   * @param returnId - the id to generate return items from.
+   * @param cartId - the cart to assign the return line items to.
+   * @return the created line items
    */
   async createReturnLines(
     returnId: string,
@@ -292,8 +272,8 @@ class LineItemService extends BaseService {
 
   /**
    * Create a line item
-   * @param {Partial<LineItem>} data - the line item object to create
-   * @return {Promise<LineItem>} the created line item
+   * @param data - the line item object to create
+   * @return the created line item
    */
   async create(data: Partial<LineItem>): Promise<LineItem> {
     return await this.atomicPhase_(
@@ -310,11 +290,14 @@ class LineItemService extends BaseService {
 
   /**
    * Updates a line item
-   * @param {string} id - the id of the line item to update
-   * @param {Partial<LineItem>} data - the properties to update on line item
-   * @return {Promise<LineItem>} the update line item
+   * @param idOrSelector - the id or selector of the line item(s) to update
+   * @param data - the properties to update the line item(s)
+   * @return the updated line item(s)
    */
-  async update(id: string, data: Partial<LineItem>): Promise<LineItem> {
+  async update(
+    idOrSelector: string | Selector<LineItem>,
+    data: Partial<LineItem>
+  ): Promise<LineItem[]> {
     const { metadata, ...rest } = data
 
     return await this.atomicPhase_(
@@ -323,25 +306,42 @@ class LineItemService extends BaseService {
           this.lineItemRepository_
         )
 
-        const lineItem = await this.retrieve(id).then((lineItem) => {
-          const lineItemMetadata = metadata
-            ? this.setMetadata_(lineItem, metadata)
-            : lineItem.metadata
+        const selector =
+          typeof idOrSelector === "string" ? { id: idOrSelector } : idOrSelector
 
-          return Object.assign(lineItem, {
+        let lineItems = await this.list(selector)
+
+        if (!lineItems.length) {
+          const selectorConstraints = Object.entries(selector)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(", ")
+
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Line item with ${selectorConstraints} was not found`
+          )
+        }
+
+        lineItems = lineItems.map((item) => {
+          const lineItemMetadata = metadata
+            ? setMetadata(item, metadata)
+            : item.metadata
+
+          return Object.assign(item, {
             ...rest,
             metadata: lineItemMetadata,
           })
         })
-        return await lineItemRepository.save(lineItem)
+
+        return await lineItemRepository.save(lineItems)
       }
     )
   }
 
   /**
    * Deletes a line item.
-   * @param {string} id - the id of the line item to delete
-   * @return {Promise<LineItem | undefined>} the result of the delete operation
+   * @param id - the id of the line item to delete
+   * @return the result of the delete operation
    */
   async delete(id: string): Promise<LineItem | undefined> {
     return await this.atomicPhase_(
@@ -353,6 +353,27 @@ class LineItemService extends BaseService {
         return await lineItemRepository
           .findOne({ where: { id } })
           .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+      }
+    )
+  }
+
+  /**
+   * Deletes a line item with the tax lines.
+   * @param id - the id of the line item to delete
+   * @return the result of the delete operation
+   */
+  async deleteWithTaxLines(id: string): Promise<LineItem | undefined> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const lineItemRepository = transactionManager.getCustomRepository(
+          this.lineItemRepository_
+        )
+
+        await this.taxProviderService_
+          .withTransaction(transactionManager)
+          .clearLineItemsTaxLines([id])
+
+        return await this.delete(id)
       }
     )
   }

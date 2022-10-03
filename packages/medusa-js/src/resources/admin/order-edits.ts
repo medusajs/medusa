@@ -78,6 +78,14 @@ class AdminOrderEditsResource extends BaseResource {
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
+  confirm(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${id}/confirm`
+    return this.client.request("POST", path, undefined, {}, customHeaders)
+  }
+
   updateLineItem(
     orderEditId: string,
     itemId: string,
@@ -86,6 +94,15 @@ class AdminOrderEditsResource extends BaseResource {
   ): ResponsePromise<AdminOrderEditsRes> {
     const path = `/admin/order-edits/${orderEditId}/items/${itemId}`
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  removeLineItem(
+    orderEditId: string,
+    itemId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsRes> {
+    const path = `/admin/order-edits/${orderEditId}/items/${itemId}`
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 

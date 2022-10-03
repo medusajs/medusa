@@ -14,7 +14,7 @@ import {
  * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to delete.
+ *   - (path) id=* {string} The ID of the Order Edit to update.
  *   - (path) item_id=* {string} The ID of the order edit item to update.
  * x-codeSamples:
  *   - lang: JavaScript
@@ -30,7 +30,7 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
  *       --header 'Authorization: Bearer {api_token}'
  *       -d '{ "quantity": 5 }'
  * security:

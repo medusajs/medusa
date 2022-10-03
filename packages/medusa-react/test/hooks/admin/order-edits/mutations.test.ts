@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
 import {
   useAdminCancelOrderEdit,
+  useAdminConfirmOrderEdit,
   useAdminCreateOrderEdit,
   useAdminDeleteOrderEdit,
   useAdminDeleteOrderEditItemChange,
@@ -9,6 +10,7 @@ import {
   useAdminOrderEditLineItem,
   useAdminCancelOrderEdit,
   useAdminUpdateOrderEdit,
+  useAdminOrderEditDeleteLineItem,
 } from "../../../../src/"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
@@ -216,6 +218,61 @@ describe("useAdminCancelOrderEdit hook", () => {
           canceled_at: expect.any(String),
           status: "canceled",
         },
+      })
+    )
+  })
+})
+
+describe("useAdminConfirmOrderEdit hook", () => {
+  test("confirm an order edit", async () => {
+    const { result, waitFor } = renderHook(
+      () => useAdminConfirmOrderEdit(fixtures.get("order_edit").id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate()
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          confirmed_at: expect.any(String),
+          status: "confirmed",
+        },
+      })
+    )
+  })
+})
+
+
+describe("useAdminOrderEditDeleteLineItem hook", () => {
+  test("Remove line item of an order edit and create an item change", async () => {
+    const id = "oe_1"
+    const itemId = "item_1"
+    const { result, waitFor } = renderHook(
+      () => useAdminOrderEditDeleteLineItem(id, itemId),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate()
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.order_edit).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("order_edit"),
+        changes: expect.arrayContaining([
+          expect.objectContaining({
+            type: 'item_remove'
+          }),
+        ]),
       })
     )
   })

@@ -59,6 +59,11 @@ export default (app) => {
     middlewares.wrap(require("./add-line-item").default)
   )
 
+  route.post(
+    "/:id/confirm",
+    middlewares.wrap(require("./confirm-order-edit").default)
+  )
+
   route.delete("/:id", middlewares.wrap(require("./delete-order-edit").default))
 
   route.delete(
@@ -75,6 +80,11 @@ export default (app) => {
     "/:id/items/:item_id",
     transformBody(AdminPostOrderEditsEditLineItemsLineItemReq),
     middlewares.wrap(require("./update-order-edit-line-item").default)
+  )
+
+  route.delete(
+    "/:id/items/:item_id",
+    middlewares.wrap(require("./delete-line-item").default)
   )
 
   return app
