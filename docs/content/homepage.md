@@ -1,6 +1,6 @@
 ---
 id: homepage
-title: Overview
+title: Architecture Overview
 description: 'What is Medusa?'
 slug: /
 hide_table_of_contents: true

@@ -18,7 +18,7 @@ module.exports = {
         {
           type: "doc",
           id: "homepage",
-          label: "Overview",
+          label: "Architecture Overview",
         },
         {
           type: "doc",
