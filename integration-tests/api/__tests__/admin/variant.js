@@ -150,7 +150,11 @@ describe("/admin/products", () => {
 
   describe("GET /admin/variants price selection strategy", () => {
     beforeEach(async () => {
-      await storeProductSeeder(dbConnection)
+      try {
+        await storeProductSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+      }
       await adminSeeder(dbConnection)
 
       await simpleProductFactory(
@@ -189,71 +193,10 @@ describe("/admin/products", () => {
         }
       )
 
-      console.warn("response", response.data.variants)
-
       expect(response.data).toMatchSnapshot({
         variants: [
           {
-            allow_backorder: false,
-            barcode: "test-barcode",
-            created_at: expect.any(String),
-            deleted_at: null,
-            ean: "test-ean",
-            height: null,
-            hs_code: null,
             id: "test-variant",
-            inventory_quantity: 10,
-            length: null,
-            manage_inventory: true,
-            material: null,
-            metadata: null,
-            mid_code: null,
-            origin_country: null,
-            product_id: "test-product",
-            sku: "test-sku",
-            title: "Test variant",
-            upc: "test-upc",
-            updated_at: expect.any(String),
-            weight: null,
-            width: null,
-            options: [
-              {
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-              },
-            ],
-            prices: [
-              {
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                amount: 100,
-                currency_code: "usd",
-                deleted_at: null,
-                id: "test-price",
-                region_id: null,
-                min_quantity: null,
-                max_quantity: null,
-                price_list_id: null,
-                variant_id: "test-variant",
-              },
-              {
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                amount: 80,
-                currency_code: "usd",
-                deleted_at: null,
-                price_list_id: "pl",
-                id: "test-price-discount",
-                region_id: null,
-                variant_id: "test-variant",
-                price_list: {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  id: "pl",
-                },
-              },
-            ],
-            product: expect.any(Object),
             original_price: 100,
             calculated_price: 80,
             calculated_price_type: "sale",
@@ -261,7 +204,77 @@ describe("/admin/products", () => {
             calculated_price_incl_tax: null,
             original_tax: null,
             calculated_tax: null,
-            tax_rates: null,
+            options: expect.any(Array),
+            prices: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("selects prices based on the passed region id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/variants?id=test-variant-multi-reg&region_id=reg-europe",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data).toMatchSnapshot({
+        variants: [
+          {
+            id: "test-variant-multi-reg",
+            original_price: 100,
+            calculated_price: 80,
+            calculated_price_type: "sale",
+            original_price_incl_tax: 100,
+            calculated_price_incl_tax: 80,
+            original_tax: 0,
+            calculated_tax: 0,
+            options: expect.any(Array),
+            prices: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("selects prices based on the passed region id and customer id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/variants?id=test-variant-multi-reg&region_id=reg-europe&customer_id=test-customer",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data).toMatchSnapshot({
+        variants: [
+          {
+            id: "test-variant-multi-reg",
+            original_price: 100,
+            calculated_price: 40,
+            calculated_price_type: "sale",
+            original_price_incl_tax: 100,
+            calculated_price_incl_tax: 40,
+            original_tax: 0,
+            calculated_tax: 0,
+            prices: expect.any(Array),
+            options: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
           },
         ],
       })

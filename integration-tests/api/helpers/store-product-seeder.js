@@ -10,6 +10,8 @@ const {
   Image,
   Cart,
   PriceList,
+  CustomerGroup,
+  Customer,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -369,4 +371,125 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(gift_card)
+
+  await manager.insert(Region, {
+    id: "reg-europe",
+    name: "Test Region Europe",
+    currency_code: "eur",
+    tax_rate: 0,
+  })
+
+  const customer = await manager.create(Customer, {
+    id: "test-customer",
+    email: "john@doe.com",
+    first_name: "John",
+    last_name: "Doe",
+    password_hash:
+      "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+    has_account: true,
+  })
+
+  const customerGroup = await manager.create(CustomerGroup, {
+    id: "test-group",
+    name: "test-group",
+  })
+
+  await manager.save(customerGroup)
+  customer.groups = [customerGroup]
+  await manager.save(customer)
+
+  const priceListWithCustomers = await manager.create(PriceList, {
+    id: "pl_with_customers",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  priceListWithCustomers.customer_groups = [customerGroup]
+
+  await manager.save(priceListWithCustomers)
+
+  const productMultiReg = manager.create(Product, {
+    id: "test-product-multi-reg",
+    handle: "test-product-reg",
+    title: "Multi Reg Test product",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+    status: "published",
+    collection_id: "test-collection",
+    type: { id: "test-type", value: "test-type" },
+    tags: [
+      { id: "tag1", value: "123" },
+      { tag: "tag2", value: "456" },
+    ],
+  })
+
+  productMultiReg.images = [image]
+
+  await manager.save(productMultiReg)
+
+  const variantMultiReg = await manager.create(ProductVariant, {
+    id: "test-variant-multi-reg",
+    inventory_quantity: 10,
+    title: "Test variant",
+    variant_rank: 0,
+    sku: "test-sku-multi-reg",
+    ean: "test-ean-multi-reg",
+    upc: "test-upc-multi-reg",
+    barcode: "test-barcode_multi-reg",
+    product_id: "test-product-multi-reg",
+    prices: [
+      {
+        id: "test-price-multi-usd",
+        currency_code: "usd",
+        type: "default",
+        amount: 100,
+      },
+      {
+        id: "test-price-discount-multi-usd",
+        currency_code: "usd",
+        amount: 80,
+        price_list_id: "pl",
+      },
+      {
+        id: "test-price-discount-expired-multi-usd",
+        currency_code: "usd",
+        amount: 70,
+        price_list_id: "pl_expired",
+      },
+      {
+        id: "test-price-multi-eur",
+        currency_code: "eur",
+        amount: 100,
+      },
+      {
+        id: "test-price-discount-multi-eur",
+        currency_code: "eur",
+        amount: 80,
+        price_list_id: "pl",
+      },
+      {
+        id: "test-price-discount-multi-eur-with-customer",
+        currency_code: "eur",
+        amount: 40,
+        price_list_id: "pl_with_customers",
+      },
+      {
+        id: "test-price-discount-expired-multi-eur",
+        currency_code: "eur",
+        amount: 70,
+        price_list_id: "pl_expired",
+      },
+    ],
+    options: [
+      {
+        id: "test-variant-option-reg",
+        value: "Default variant",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(variantMultiReg)
 }
