@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.1-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81), [`678a06752`](https://github.com/medusajs/medusa/commit/678a06752a03f71d77265a874fd7d07361337862), [`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81), [`df62e618b`](https://github.com/medusajs/medusa/commit/df62e618bcc365ef376b96705d63b465b48b0191), [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4)]:
+  - @medusajs/medusa@1.4.2-alpha.0
+  - medusa-core-utils@1.1.32-alpha.0
+  - medusa-interfaces@1.3.4-alpha.0
+
 ## 1.0.0
 
 ### Patch Changes

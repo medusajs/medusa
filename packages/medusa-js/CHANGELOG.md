@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.3.1-alpha.0
+
+### Patch Changes
+
+- [#2207](https://github.com/medusajs/medusa/pull/2207) [`6132711ee`](https://github.com/medusajs/medusa/commit/6132711eef797219f1b93e4bc4bdb1dd47655308) Thanks [@sabakhilji](https://github.com/sabakhilji)! - Use correct payload type for resetting password in `medusa-js`
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81), [`678a06752`](https://github.com/medusajs/medusa/commit/678a06752a03f71d77265a874fd7d07361337862), [`df62e618b`](https://github.com/medusajs/medusa/commit/df62e618bcc365ef376b96705d63b465b48b0191), [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4)]:
+  - @medusajs/medusa@1.4.2-alpha.0
+
 ## 1.3.0
 
 ### Minor Changes
