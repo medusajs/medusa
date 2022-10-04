@@ -18,9 +18,9 @@ In addition, you need to configure a webhook listener on your PayPal Developer D
 
 Webhooks are used in scenarios where the customer might leave the page during the authorization and before the checkout flow is fully complete. It will then create the order or swap after the payment is authorized if they weren’t created
 
-Additionally, you need a Medusa server installed and set up. If not, you can follow our [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to get started.
+Additionally, you need a Medusa server installed and set up. If not, you can follow the [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to get started.
 
-You also need [Medusa Admin](../admin/quickstart.md) installed to enable PayPal as a payment provider. You can alternatively use our [REST APIs](https://docs.medusajs.com/api/admin).
+You also need [Medusa Admin](../admin/quickstart.md) installed to enable PayPal as a payment provider. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin).
 
 ## Medusa Server
 
@@ -80,17 +80,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add PayPal to Regions
 
-Run your Medusa server and Medusa admin, then open the Medusa admin and login.
-
-Choose Settings from the Sidebar. Then, choose Regions.
-
-![Region Settings](https://i.imgur.com/wRkmbLY.png)
-
-Then, choose the regions you want to add PayPal as a payment provider. In the right-side settings, scroll down to “Payment Providers” and choose “paypal”.
-
-![Choose PayPal](https://i.imgur.com/AJ2Yez8.png)
-
-Once you’re done, click Save. PayPal is now a payment provider in your store in the regions you added it to.
+You can refer to [this documentation in the user guide](../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like PayPal to a region.
 
 ## Storefront Setup
 

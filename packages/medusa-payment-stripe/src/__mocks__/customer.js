@@ -1,6 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 
 export const CustomerServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation((id) => {
     if (id === IdMap.getId("lebron")) {
       return Promise.resolve({

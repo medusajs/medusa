@@ -2,7 +2,7 @@
 
 In this document, you'll learn what Entities are in Medusa.
 
-## What are Entities?
+## What are Entities
 
 Entities in medusa represent tables in the database as classes. An example of this would be the `Order` entity which represents the `order` table in the database. Entities provide a uniform way of defining and interacting with data retrieved from the database.
 

@@ -2,7 +2,7 @@
 
 In this document, you'll learn about what Services are in Medusa.
 
-## What are Services?
+## What are Services
 
 Services in Medusa represent bundled helper methods that you want to use across your server. By convention, they represent a certain entity or functionality in your server.
 
