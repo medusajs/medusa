@@ -19,7 +19,7 @@ import { Request, Response } from "express"
  *   - (query) limit=10 {integer} The number of tags to return.
  *   - (query) offset=0 {integer} The number of items to skip before the results.
  *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id which is applied the the tags.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the tags.
  *   - in: query
  *     name: value
  *     style: form
