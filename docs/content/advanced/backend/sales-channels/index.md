@@ -27,12 +27,16 @@ The sales channel feature can be used in a variety of use cases including:
 - Specifying different products for each channel you sell in.
 - Support Omnichannel in your ecommerce store.
 
+---
+
 ## SalesChannel Entity Overview
 
 A sales channel is stored in the database as a [SalesChannel](../../../references/entities/classes/SalesChannel.md) entity. Some of its important attributes are:
 
 - `name`: The name of the sales channel.
 - `is_disabled`: A boolean value indicating of the Sales Channel is disabled or not.
+
+---
 
 ## Relations to Other Entities
 
@@ -61,6 +65,8 @@ The relation is implemented in the [Cart](../../../references/entities/classes/C
 Orders can optionally be associated with a sales channel. You can filter orders by a sales channel using the Storefront and Admin APIs.
 
 The relation is implemented in the [Order](../../../references/entities/classes/Order.md) entity. You can access the sales channel an order is associated with by expanding the `sales_channel` relation and using `order.sales_channel`. You can also access the ID of the sales channel using `order.sales_channel_id`.
+
+---
 
 ## What’s Next 🚀
 
