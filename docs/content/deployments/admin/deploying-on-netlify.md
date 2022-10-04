@@ -98,7 +98,7 @@ In the form that shows, keep all fields the same and click on the “Show advanc
 
 ![Show advanced Button](https://i.imgur.com/nUdwRbq.png)
 
-Under the “Advanced build settings” section click on the “New variable” button. This will show 2 inputs for the key and value of the environment variable.
+Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
 For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
 
@@ -128,7 +128,7 @@ If you click on it, you’ll be redirected to the deployed admin website.
 
 :::note
 
-Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa server. Follow along in the [Configure CORS on the Medusa Server](#configure-cors-variable-on-the-medusa-server) section.
+Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa server. Follow along in the [Configure Cross-Origin Resource Sharing (CORS) on the Medusa Server](#configure-cors-variable-on-the-medusa-server) section.
 
 :::
 
@@ -168,7 +168,7 @@ In your terminal, run the following command:
 netlify init
 ```
 
-You’ll have to follow 5 steps for the initialization:
+You’ll have to follow five steps for the initialization:
 
 ##### **Step 1: Create Netlify Website**
 

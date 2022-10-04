@@ -8,7 +8,7 @@ Medusa’s Migrations do not work with SQLite databases. They are intended to be
 
 :::
 
-## What are Migrations?
+## What are Migrations
 
 Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your server and for subsequent server upgrades later on.
 

@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/batch-job.ts:62](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L62)
+[models/batch-job.ts:62](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L62)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:59](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L59)
+[models/batch-job.ts:59](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L59)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:56](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L56)
+[models/batch-job.ts:56](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L56)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:33](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L33)
+[models/batch-job.ts:33](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L33)
 
 ___
 
@@ -72,7 +72,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:26](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L26)
+[models/batch-job.ts:26](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L26)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:30](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L30)
+[models/batch-job.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L30)
 
 ___
 
@@ -106,7 +106,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:47](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L47)
+[models/batch-job.ts:47](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L47)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:65](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L65)
+[models/batch-job.ts:65](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L65)
 
 ___
 
@@ -140,7 +140,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:50](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L50)
+[models/batch-job.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L50)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:53](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L53)
+[models/batch-job.ts:53](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L53)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:36](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L36)
+[models/batch-job.ts:36](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L36)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:67](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L67)
+[models/batch-job.ts:67](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L67)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:23](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L23)
+[models/batch-job.ts:23](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L23)
 
 ___
 
@@ -204,7 +204,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -218,7 +218,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/batch-job.ts:94](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L94)
+[models/batch-job.ts:94](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L94)
 
 ___
 
@@ -232,7 +232,7 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:69](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L69)
+[models/batch-job.ts:69](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L69)
 
 ___
 
@@ -246,4 +246,4 @@ ___
 
 #### Defined in
 
-[models/batch-job.ts:99](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/batch-job.ts#L99)
+[models/batch-job.ts:99](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/batch-job.ts#L99)
