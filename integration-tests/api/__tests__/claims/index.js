@@ -25,7 +25,7 @@ describe("Claims", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -201,6 +201,51 @@ describe("Claims", () => {
     )
 
     expect(response.status).toEqual(200)
+  })
+
+  test("tries to create a claim without reasons on claim items", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection)
+    const option = await simpleShippingOptionFactory(dbConnection, {
+      region_id: "test-region",
+    })
+    const api = useApi()
+
+    try {
+      await api.post(
+        `/admin/orders/${order.id}/claims`,
+        {
+          type: "replace",
+          shipping_methods: [
+            {
+              option_id: option.id,
+              price: 0,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+    } catch (error) {
+      const test = await dbConnection.manager.query(
+        `SELECT * FROM claim_order WHERE order_id = '${order.id}'`
+      )
+
+      console.log(test)
+    }
+
+    // expect(response.status).toEqual(200)
   })
 })
 

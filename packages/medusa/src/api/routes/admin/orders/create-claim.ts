@@ -1,4 +1,3 @@
-import { ClaimReason, ClaimType } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -8,15 +7,16 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimReason, ClaimType } from "../../../../models"
 
-import { AddressPayload } from "../../../../types/common"
-import { ClaimTypeValue } from "../../../../types/claim"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ClaimTypeValue } from "../../../../types/claim"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**

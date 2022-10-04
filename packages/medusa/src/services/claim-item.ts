@@ -52,6 +52,8 @@ class ClaimItemService extends TransactionBaseService {
         this.claimItemRepository_
       )
 
+      console.warn("Claim item service manager: ", manager)
+
       const { item_id, reason, quantity, tags, images, ...rest } = data
 
       if (
