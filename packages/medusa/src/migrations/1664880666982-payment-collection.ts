@@ -9,7 +9,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        CREATE TYPE "PAYMENT_COLLECTION_TYPE_ENUM" AS ENUM ('order_edit', 'single_payment');
+        CREATE TYPE "PAYMENT_COLLECTION_TYPE_ENUM" AS ENUM ('order_edit');
 
         CREATE TYPE "PAYMENT_COLLECTION_STATUS_ENUM" AS ENUM (
             'not_paid', 'awaiting', 'authorized', 'partially_authorized', 'captured',
@@ -31,7 +31,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
             region_id character varying NOT NULL,
             currency_code character varying NOT NULL,
             metadata jsonb NULL,
-            created_by character varying NULL,
+            created_by character varying NOT NULL,
             CONSTRAINT "PK_payment_collection_id" PRIMARY KEY ("id")
         );
         CREATE INDEX "IDX_payment_collection_region_id" ON "payment_collection" ("region_id") WHERE deleted_at IS NULL;

@@ -31,7 +31,6 @@ export enum PaymentCollectionStatus {
 
 export enum PaymentCollectionType {
   ORDER_EDIT = "order_edit",
-  SINGLE_PAYMENT = "single_payment",
 }
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
@@ -101,11 +100,11 @@ export class PaymentCollection extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb" })
   metadata: Record<string, unknown>
 
-  @Column({ nullable: true })
+  @Column()
   created_by: string
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "ps")
+    this.id = generateEntityId(this.id, "paycol")
   }
 }

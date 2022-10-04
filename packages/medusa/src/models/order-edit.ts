@@ -82,7 +82,7 @@ export class OrderEdit extends BaseEntity {
 
   @OneToOne(() => PaymentCollection)
   @JoinColumn({ name: "payment_collection_id" })
-  payment: PaymentCollection
+  payment_collection: PaymentCollection
 
   // Computed
   shipping_total: number
