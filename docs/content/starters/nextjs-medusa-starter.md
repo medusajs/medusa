@@ -1,4 +1,4 @@
-# Quickstart: Next.js Storefront
+# Next.js Storefront Quickstart
 
 This document guides you to install and set up the Next.js Storefront for your Medusa Server.
 
