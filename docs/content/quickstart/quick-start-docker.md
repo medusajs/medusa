@@ -1,6 +1,6 @@
 # Quickstart using Docker
 
-In this document, you will learn how to make a container of Medusa's app on Docker. Docker is an open-source platform for building, deploying, and managing containerized applications.
+In this document, you will learn how to make a container of Medusa's app on Docker. Docker is an open source platform for building, deploying, and managing containerized applications.
 
 ## Prerequisites
 
@@ -100,7 +100,7 @@ You can learn more about configuring your server and loading environment variabl
 
 ## What's next :rocket:
 
-- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your e-commerce storefront quickly.
-- Install the [Medusa Admin](../admin/quickstart.md) to supercharge your e-commerce experience with easy access to configurations and features.
+- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
+- Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, and Notifications, among other features.
