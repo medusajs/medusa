@@ -113,7 +113,6 @@ Medusa admin provides a lot of ecommerce features including managing RMA flows, 
 
 You can learn more about Medusa admin and its features in the [User Guide](../user-guide/index.mdx).
 
-
 ## What’s Next 🚀
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefront starters.
