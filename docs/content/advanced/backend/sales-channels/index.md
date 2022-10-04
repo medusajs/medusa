@@ -54,7 +54,7 @@ When you create a cart, you can optionally specify the sales channel it belongs 
 
 A cart can belong to only one sales channel. Only products that belong to the same sales channel as the cart can be added to it.
 
-The relation is implemented in the [Cart](../../../references/entities/classes/Cart.mdd) entity. You can access the sales channel a cart is associated with by expanding the `sales_channel` relation and using `cart.sales_channel`. You can also access the ID of the sales channel using `cart.sales_channel_id`.
+The relation is implemented in the [Cart](../../../references/entities/classes/Cart.md) entity. You can access the sales channel a cart is associated with by expanding the `sales_channel` relation and using `cart.sales_channel`. You can also access the ID of the sales channel using `cart.sales_channel_id`.
 
 ### Order
 
