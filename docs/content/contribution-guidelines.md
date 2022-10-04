@@ -135,7 +135,7 @@ npm install @medusajs/medusa-cli -g
 
 ## Linting with Vale
 
-Medusa uses Vale to lint documentation pages and performs checks on incoming PRs into the repository.
+Medusa uses Vale to lint documentation pages and perform checks on incoming PRs into the repository.
 
 ### Result of PR Checks
 
