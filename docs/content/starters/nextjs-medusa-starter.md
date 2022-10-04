@@ -25,6 +25,7 @@ npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medu
 2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
+cd my-medusa-storefront
 mv .env.template .env.local
 ```
 
