@@ -23,7 +23,7 @@ You’ll also find MDX files. MDX files combine the power of Markdown with React
 ## What You Can Contribute To
 
 - You can contribute to the Docusaurus codebase to add a new feature or fix a bug in the documentation website.
-- You can contribute to the documentation content either by fixing errors you find or adding documentation pages.
+- You can contribute to the documentation content either by fixing errors you find or by adding documentation pages.
 
 ## What You Can’t Contribute To
 
@@ -45,7 +45,7 @@ For more details on how to contribute, check out [the contribution guidelines in
 
 ### Base Branch
 
-When you make edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
+When you make an edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
 
 Documentation contributions always use `master` as the base branch.
 
@@ -69,17 +69,17 @@ When you add a new page to the documentation, you must add the new page in `www/
 
 ### Terminology
 
-When the documentation page is a conceptual or overview documentation, the label in the sidebar should start with a noun.
+When the documentation page is a conceptual or an overview documentation, the label in the sidebar should start with a noun.
 
-When the documentation page is a tutorial documentation, the label in the sidebar should start with a verb. An exception of this rule are integration documentations and upgrade guides.
+When the documentation page is tutorial documentation, the label in the sidebar should start with a verb. Exceptions to this rule are integration documentation and upgrade guides.
 
 ### Character Count
 
-The character count of the sidebar item's label must be at most twenty seven characters. For the API Reference, the sidebar item's label must be at most twenty five characters.
+The character count of the sidebar item's label must be at most twenty-seven characters. For the API Reference, the sidebar item's label must be at most twenty-five characters.
 
 ## Notes and Additional Information
 
-When displaying notes and additional information in a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
+When displaying notes and additional information on a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
 
 If the note is something developers have to be careful of doing or not doing, use the `caution` or `danger` admonitions based on how critical it is.
 
@@ -111,7 +111,7 @@ The code snippet must be written using NPM, and the `npm2yarn` plugin will autom
 
 <!-- vale off -->
 
-Don't use commands in their abbrivated terms. For example, instead of `npm i` use `npm install`.
+Don't use commands in their abbreviated terms. For example, instead of `npm i` use `npm install`.
 
 <!-- vale on -->
 

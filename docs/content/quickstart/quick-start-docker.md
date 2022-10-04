@@ -1,6 +1,6 @@
 # Quickstart using Docker
 
-In this document you will learn how to make a container of Medusa's app on Docker. Docker is an open source platform for building, deploying, and managing containerized applications.
+In this document, you will learn how to make a container of Medusa's app on Docker. Docker is an open source platform for building, deploying, and managing containerized applications.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ It is assumed that you have Docker installed on your system. You can install it 
 
 ## Create Medusa Server with Docker
 
-### 1. Clone Medusa's starter project from Github
+### 1. Clone Medusa's starter project from GitHub
 
 ```bash
 git clone https://github.com/medusajs/medusa-starter-default.git my-medusa-starter
@@ -58,7 +58,7 @@ If you get the error `ERROR: for postgres  Cannot start service postgres: Ports 
 
 Running the above command does the following:
 
-1. Build images for your Medusa project, a PostgreSQL database and a Redis server
+1. Build images for your Medusa project, a PostgreSQL database, and a Redis server
 2. Run migrations for your newly created database
 
 
@@ -103,4 +103,4 @@ You can learn more about configuring your server and loading environment variabl
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
-- Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.
+- Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, and Notifications, among other features.
