@@ -37,19 +37,7 @@ An open-source composable commerce engine built for developers.
 
 ## Getting Started
 
-### Deploy in 5 minutes
-
-You can deploy your Medusa server in 5 minutes just by clicking the button below.
-
-<p align="center">
-  <a href="https://heroku.com/deploy?template=https://github.com/medusajs/medusa-starter-default/tree/feat/deploy-heroku">
-    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
-  </a>
-</p>
-
-### Install Locally
-
-You can install Medusa locally or manually on your server by either following our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start) or the following steps:
+You can install Medusa by either following our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start) or the following steps:
 
 1. **Install Medusa CLI**
 
@@ -66,6 +54,7 @@ You can install Medusa locally or manually on your server by either following ou
 3. **Start your Medusa engine**
 
     ```bash
+    cd my-medusa-store
     medusa develop
     ```
 

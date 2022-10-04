@@ -12,6 +12,7 @@ export default async (req, res) => {
 
   const paymentIntent = event.data.object
 
+  const manager = req.scope.resolve("manager")
   const cartService = req.scope.resolve("cartService")
   const orderService = req.scope.resolve("orderService")
 
@@ -24,24 +25,19 @@ export default async (req, res) => {
   switch (event.type) {
     case "payment_intent.succeeded":
       if (order && order.payment_status !== "captured") {
-        await orderService.capturePayment(order.id)
+        await manager.transaction(async (manager) => {
+          await orderService.withTransaction(manager).capturePayment(order.id)
+        })
       }
-      break
-    //case "payment_intent.canceled":
-    //  if (order) {
-    //    await orderService.update(order._id, {
-    //      status: "canceled",
-    //    })
-    //  }
-    //  break
-    case "payment_intent.payment_failed":
-      // TODO: Not implemented yet
       break
     case "payment_intent.amount_capturable_updated":
       if (!order) {
-        await cartService.setPaymentSession(cartId, "stripe")
-        await cartService.authorizePayment(cartId)
-        await orderService.createFromCart(cartId)
+        await manager.transaction(async (manager) => {
+          const cartServiceTx = cartService.withTransaction(manager)
+          await cartServiceTx.setPaymentSession(cartId, "stripe")
+          await cartServiceTx.authorizePayment(cartId)
+          await orderService.withTransaction(manager).createFromCart(cartId)
+        })
       }
       break
     default:

@@ -2,7 +2,7 @@
 
 In this document, you'll learn how to deploy your Medusa server on Qovery with the help of Terraform. 
 
-[Qovery](https://www.qovery.com/) is a Continuous Deployment Platform that provides you with the developer experience of Heroku on top of your cloud provider (e.g. AWS, DigitalOcean).
+[Qovery](https://www.qovery.com/) is a Continuous Deployment Platform that provides you with the developer experience of Heroku on top of your cloud provider (For example, AWS, DigitalOcean).
 
 [Terraform](https://www.terraform.io/) is an open source infrastructure as code software (IaC) tool that allows you to easily deploy apps like Medusa and the resources it needs to Qovery using a single script.
 
@@ -16,7 +16,7 @@ This tutorial explains how to deploy Medusa to a Qovery organization with an AWS
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow our [quickstart guide](../../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.md).
 
 Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](../../usage/configurations.md) to learn how to do that.
 
@@ -240,7 +240,7 @@ Here’s an explanation of each of the variables and how to retrieve their varia
 - `qovery_create_cluster`: A boolean value indicating whether a new cluster should be created or not. If you already have a cluster that you want to use, you can set the value to `false` and set the value of `qovery_cluster_id`. Otherwise, set the value to `true` and set the values of `aws_access_key_id`, `aws_secret_access_key`, and `aws_region`.
 - `qovery_cluster_id`: The ID of the existing cluster to use (if `qovery_create_cluster` is set to `false`). You can use [Qovery’s REST API](https://api-doc.qovery.com/#tag/Clusters/operation/listOrganizationCluster) to retrieve the cluster ID. You can use the token you generated earlier for the Bearer authorization token as explained [here](https://hub.qovery.com/docs/using-qovery/interface/cli/#generate-api-token).
 - `aws_access_key_id`, `aws_secret_access_key`, and `aws_region`: The credentials used to create the cluster (if `qovery_create_cluster` is set to `true`). You can refer to [this guide](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys) to learn how to retrieve the `aws_access_key_id` and `aws_secret_access_key`.
-- `medusa_jwt_secret`: The value of the JWT Secret on your Medusa server. It’s recommended to use a strong randomly generated string.
+- `medusa_jwt_secret`: The value of the JSON Web Token (JWT) Secret on your Medusa server. It’s recommended to use a strong randomly generated string.
 - `medusa_cookie_secret`: The value of the Cookie Secret on your Medusa server. It’s recommended to use a strong randomly generated string.
 - `git_url`: The URL of the Git repository you created earlier. Make sure it ends with `.git`.
 - `git_branch`: The branch to use in the GitHub repo. By default it’s `master`.
@@ -461,7 +461,7 @@ terraform apply
 
 You’ll be asked to confirm creating all the necessary resources in Qovery. Enter `yes` and the deployment will start.
 
-The deployment can take up to 30 minutes to finish. You’ll be able to track its status both in your terminal and in the [Qovery Console](https://console.qovery.com/).
+The deployment can take up to thirty minutes to finish. You’ll be able to track its status both in your terminal and in the [Qovery Console](https://console.qovery.com/).
 
 :::tip
 
@@ -496,7 +496,7 @@ medusa user --email <EMAIL> --password <PASSWORD>
 
 ## Add Environment Variables
 
-You’ll likely need to add environment variables later such as Admin CORS and Store CORS variables.
+You’ll likely need to add environment variables later such as Admin Cross-Origin Resource Sharing (CORS) and Store CORS variables.
 
 To add environment variables, in your [Qovery Console](https://console.qovery.com/) go to the Medusa app and choose Environment Variables from the sidebar. You can add environment variables here at any point later on.
 
