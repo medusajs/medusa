@@ -52,7 +52,7 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
