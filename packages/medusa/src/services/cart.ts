@@ -1,9 +1,7 @@
 import { isEmpty, isEqual } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import {
   Address,
   Cart,
@@ -36,7 +34,6 @@ import CustomerService from "./customer"
 import DiscountService from "./discount"
 import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
-import { SalesChannelService } from "./index"
 import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import LineItemAdjustmentService from "./line-item-adjustment"
@@ -45,9 +42,11 @@ import ProductService from "./product"
 import ProductVariantService from "./product-variant"
 import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
-import StoreService from "./store"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import StoreService from "./store"
+import { SalesChannelService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager

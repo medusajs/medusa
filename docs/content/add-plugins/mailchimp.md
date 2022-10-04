@@ -10,19 +10,19 @@ By integrating Mailchimp with Medusa, customers will be able to subscribe from M
 
 :::note
 
-This plugin is only used to allow your customers to subscribe but does not actually do any email sending. If you want to send emails to customers based on specific events, for example, when an order is placed, you should check out our [SendGrid plugin](./sendgrid.mdx) instead.
+This plugin is only used to allow your customers to subscribe but does not actually do any email sending. If you want to send emails to customers based on specific events, for example, when an order is placed, you should check out the [SendGrid plugin](./sendgrid.mdx) instead.
 
 :::
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start).
+Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start).
 
 You also need a Mailchimp account, so please [create one](https://mailchimp.com/signup) before you start.
 
 ## Obtain Mailchimp Keys
 
-To integrate the plugin into Medusa you need 2 keys: The API Key and the Newsletter list or Audience ID. The API Key acts as a credential for your account, whereas the Newsletter list ID determines which audience should the subscribed customers be added to.
+To integrate the plugin into Medusa you need two keys: The API Key and the Newsletter list or Audience ID. The API Key acts as a credential for your account, whereas the Newsletter list ID determines which audience should the subscribed customers be added to.
 
 You can follow [this guide](https://mailchimp.com/help/about-api-keys/#Find_or_generate_your_API_key) from Mailchimp’s documentation to obtain an API Key.
 
@@ -179,5 +179,5 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 
 ## What’s Next 🚀
 
-- Check out SendGrid plugin for more Email functionalities.
+- Check out [SendGrid plugin](../add-plugins/sendgrid.mdx) for more Email functionalities.
 - [Learn more about plugins.](../advanced/backend/plugins/overview.md)

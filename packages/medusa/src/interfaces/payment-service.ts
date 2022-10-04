@@ -12,8 +12,7 @@ export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
 
-export interface PaymentService<T extends TransactionBaseService>
-  extends TransactionBaseService {
+export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
@@ -50,9 +49,9 @@ export interface PaymentService<T extends TransactionBaseService>
   getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
-export abstract class AbstractPaymentService<T extends TransactionBaseService>
+export abstract class AbstractPaymentService
   extends TransactionBaseService
-  implements PaymentService<T>
+  implements PaymentService
 {
   protected constructor(container: unknown, config?: Record<string, unknown>) {
     super(container, config)

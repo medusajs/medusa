@@ -4,7 +4,7 @@ In this document, you’ll learn how to create a cron job in Medusa.
 
 ## Overview
 
-Medusa allows you to create cron jobs that run at specific times during your server’s lifetime. For example, you can synchronize your inventory with an ERP system once a day.
+Medusa allows you to create cron jobs that run at specific times during your server’s lifetime. For example, you can synchronize your inventory with an Enterprise Resource Planning (ERP) system once a day.
 
 This guide explains how to create a cron job on your Medusa server. The cron job in this example will simply change the status of draft products to `published`.
 
@@ -12,7 +12,7 @@ This guide explains how to create a cron job on your Medusa server. The cron job
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.md) to get started.
 
 ### Redis
 

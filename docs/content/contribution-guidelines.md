@@ -41,11 +41,15 @@ If you’re fixing errors in an existing documentation page, you can scroll down
 
 If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done creating a PR in the Medusa repository.
 
-For more details on how to contribute, check out [the contribution guidelines on our repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
-### Branch Name
+### Base Branch
 
 When you make edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
+
+Documentation contributions always use `master` as the base branch.
+
+### Branch Name
 
 Make sure that the branch name starts with `docs/`. For example, `docs/fix-services`.
 
@@ -53,7 +57,11 @@ Make sure that the branch name starts with `docs/`. For example, `docs/fix-servi
 
 When you create a pull request, prefix the title with “docs:”. Make sure to keep “docs” in small letters.
 
+<!-- vale off -->
+
 In the body of the PR, explain clearly what the PR does. If the PR solves an issue, use [closing keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) with the issue number. For example, “Closes #1333”.
+
+<!-- vale on -->
 
 ## Sidebar
 
@@ -101,13 +109,21 @@ The code snippet must be written using NPM, and the `npm2yarn` plugin will autom
 
 ### Expand Commands
 
+<!-- vale off -->
+
 Don't use commands in their abbrivated terms. For example, instead of `npm i` use `npm install`.
+
+<!-- vale on -->
 
 ### Run Command
 
 Make sure to always use the `run` command when the command runs a script.
 
+<!-- vale off -->
+
 For example, even though you can run the `start` script using NPM with `npm start`, however, to make sure it’s transformed properly to a Yarn command, you must add the `run` keyword before `start`.
+
+<!-- vale on -->
 
 ### Global Option
 
@@ -117,6 +133,59 @@ When a command uses the global option `-g`, add it at the end of the NPM command
 npm install @medusajs/medusa-cli -g
 ```
 
-## Need Additional Help?
+## Linting with Vale
 
-If you need any additional help while contributing, you can join our [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.
+Medusa uses Vale to lint documentation pages and perform checks on incoming PRs into the repository.
+
+### Result of PR Checks
+
+You can check the result of running the "lint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
+
+### Run Vale Locally
+
+If you want to check your work locally, you can do that by:
+
+1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
+2. Change to the `docs` directory:
+
+```bash
+cd docs
+```
+
+3\. Run the `run-vale` script:
+
+```bash
+./run-vale.sh error
+```
+
+### VS Code Extension
+
+To facilitate writing documentation, you can optionally use the [Vale VS Code extension](https://github.com/errata-ai/vale-vscode). This will show you any errors in your documentation while writing it.
+
+### Linter Exceptions
+
+If it's needed to break some style guide rules in a document, you can wrap the parts that the linter shouldn't scan with the following comments in the `md` or `mdx` files:
+
+```md
+<!-- vale off -->
+
+content that shouldn't be scanned for errors here...
+
+<!-- vale on -->
+```
+
+You can also disable specific rules. For example:
+
+```md
+<!-- vale docs.Numbers = NO -->
+
+Medusa supports Node versions 14 and 16.
+
+<!-- vale docs.Numbers = YES -->
+```
+
+If you use this in your PR, you must justify its usage.
+
+## Need Additional Help
+
+If you need any additional help while contributing, you can join Medusa's [Discord server](https://discord.gg/medusajs) and ask Medusa’s core team as well as the community any questions.

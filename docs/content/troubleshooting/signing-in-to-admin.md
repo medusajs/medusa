@@ -15,4 +15,4 @@ medusa user -e some@email.com -p somepassword
 
 ## Additional Resources
 
-Learn more about our CLI tool in the [CLI reference](../cli/reference.md).
+Learn more about Medusa's CLI tool in the [CLI reference](../cli/reference.md).
