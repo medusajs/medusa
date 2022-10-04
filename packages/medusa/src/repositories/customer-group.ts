@@ -1,5 +1,30 @@
-import { DeleteResult, EntityRepository, In, Repository } from "typeorm"
-import { CustomerGroup } from "../models/customer-group"
+import {
+  DeleteResult,
+  EntityRepository,
+  FindOperator,
+  In,
+  Repository,
+  SelectQueryBuilder,
+} from "typeorm"
+import { CustomerGroup } from "../models"
+import { ExtendedFindConfig, Writable } from "../types/common"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+  queryEntityWithIds,
+  queryEntityWithoutRelations,
+} from "../utils/repository"
+
+export type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<CustomerGroup, Partial<Writable<CustomerGroup>>>,
+  "relations"
+>
+
+export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  where: DefaultWithoutRelations["where"] & {
+    discount_condition_id?: string | FindOperator<string>
+  }
+}
 
 @EntityRepository(CustomerGroup)
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
@@ -36,5 +61,79 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
         customer_id: In(customerIds),
       })
       .execute()
+  }
+
+  public async findWithRelationsAndCount(
+    relations: string[] = [],
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
+  ): Promise<[CustomerGroup[], number]> {
+    let count: number
+    let entities: CustomerGroup[]
+    if (Array.isArray(idsOrOptionsWithoutRelations)) {
+      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+        withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
+      })
+      count = entities.length
+    } else {
+      const customJoinsBuilders: ((
+        qb: SelectQueryBuilder<CustomerGroup>,
+        alias: string
+      ) => void)[] = []
+
+      if (idsOrOptionsWithoutRelations?.where?.discount_condition_id) {
+        const discountConditionId =
+          idsOrOptionsWithoutRelations?.where?.discount_condition_id
+        delete idsOrOptionsWithoutRelations?.where?.discount_condition_id
+
+        customJoinsBuilders.push(
+          (qb: SelectQueryBuilder<CustomerGroup>, alias: string) => {
+            qb.innerJoin(
+              "discount_condition_customer_group",
+              "dc_cg",
+              `dc_cg.customer_group_id = ${alias}.id AND dc_cg.condition_id = :dcId`,
+              { dcId: discountConditionId }
+            )
+          }
+        )
+      }
+
+      const result = await queryEntityWithoutRelations(
+        this,
+        idsOrOptionsWithoutRelations,
+        true,
+        customJoinsBuilders
+      )
+      entities = result[0]
+      count = result[1]
+    }
+    const entitiesIds = entities.map(({ id }) => id)
+
+    if (entitiesIds.length === 0) {
+      // no need to continue
+      return [[], count]
+    }
+
+    if (relations.length === 0) {
+      const toReturn = await this.findByIds(
+        entitiesIds,
+        idsOrOptionsWithoutRelations
+      )
+      return [toReturn, toReturn.length]
+    }
+
+    const groupedRelations = getGroupedRelations(relations)
+    const entitiesIdsWithRelations = await queryEntityWithIds(
+      this,
+      entitiesIds,
+      groupedRelations,
+      idsOrOptionsWithoutRelations.withDeleted,
+      idsOrOptionsWithoutRelations.select
+    )
+
+    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+    const entitiesToReturn =
+      mergeEntitiesWithRelations<CustomerGroup>(entitiesAndRelations)
+
+    return [entitiesToReturn, count]
   }
 }
