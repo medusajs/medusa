@@ -66,8 +66,11 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE "payment_collection_payments" ADD CONSTRAINT "FK_payment_collection_payments_payment_id" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 
+        ALTER TABLE order_edit ADD COLUMN payment_collection_id character varying NULL;
         CREATE INDEX "IDX_order_edit_payment_collection_id" ON "order_edit" ("payment_collection_id");
         ALTER TABLE "order_edit" ADD CONSTRAINT "FK_order_edit_payment_collection_id" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+        ALTER TABLE payment_session ADD COLUMN payment_authorized_at timestamp WITH time zone NULL;
     `)
 
     // Add missing indexes
@@ -87,6 +90,8 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE payment_collection_sessions DROP CONSTRAINT "FK_payment_collection_sessions_payment_session_id";
         ALTER TABLE payment_collection_payments DROP CONSTRAINT "FK_payment_collection_payments_payment_collection_id";
         ALTER TABLE payment_collection_payments DROP CONSTRAINT "FK_payment_collection_payments_payment_id";
+        ALTER TABLE order_edit DROP COLUMN payment_collection_id;
+        ALTER TABLE payment_session DROP COLUMN payment_authorized_at;
 
         DROP TABLE payment_collection;
         DROP TABLE payment_collection_sessions;
