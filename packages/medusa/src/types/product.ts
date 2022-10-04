@@ -12,11 +12,7 @@ import { Product, ProductOptionValue, ProductStatus } from "../models"
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import {
-  DateComparisonOperator,
-  FindConfig,
-  StringComparisonOperator,
-} from "./common"
+import { DateComparisonOperator, FindConfig } from "./common"
 import { PriceListLoadConfig } from "./price-list"
 
 /**
@@ -85,28 +81,6 @@ export class FilterableProductProps {
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
-}
-
-export class FilterableProductTagProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
 }
 
 /**

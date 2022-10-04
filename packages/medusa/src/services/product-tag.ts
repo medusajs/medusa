@@ -1,9 +1,8 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { EntityManager, ILike } from "typeorm"
 import { ProductTag } from "../models"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { FindConfig } from "../types/common"
-import { FilterableProductTagProps } from "../types/product"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 
@@ -70,7 +69,7 @@ class ProductTagService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductTagProps = {},
+    selector: Partial<ProductTag> = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<ProductTag[]> {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
@@ -86,13 +85,16 @@ class ProductTagService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: FilterableProductTagProps = {},
+    selector: Partial<ProductTag> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<[ProductTag[], number]> {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
 
-    let q: string | undefined = undefined
-    if ("q" in selector) {
+    let q: string | undefined
+    if ("q" in selector && selector.q) {
       q = selector.q
       delete selector.q
     }
@@ -100,13 +102,13 @@ class ProductTagService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     if (q) {
-      const where = query.where
+      query.where.value = ILike(`%${q}%`)
+    }
 
-      delete where.value
-
-      query.where = (qb: SelectQueryBuilder<ProductTag>): void => {
-        qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
-      }
+    if (query.where.discount_condition_id) {
+      const discountConditionId = query.where.discount_condition_id as string
+      delete query.where.discount_condition_id
+      return await tagRepo.findAndCountByConditionId(discountConditionId, query)
     }
 
     return await tagRepo.findAndCount(query)
