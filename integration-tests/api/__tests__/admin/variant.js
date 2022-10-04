@@ -6,6 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const { simpleProductFactory } = require("../../factories")
 
 const adminSeeder = require("../../helpers/admin-seeder")
+const adminVariantsSeeder = require("../../helpers/admin-variants-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const storeProductSeeder = require("../../helpers/store-product-seeder")
 
@@ -119,6 +120,7 @@ describe("/admin/products", () => {
 
     it("lists all product variants matching a specific product title", async () => {
       const api = useApi()
+
       const response = await api
         .get("/admin/variants?q=Test product1", {
           headers: {
@@ -151,29 +153,11 @@ describe("/admin/products", () => {
   describe("GET /admin/variants price selection strategy", () => {
     beforeEach(async () => {
       try {
-        await storeProductSeeder(dbConnection)
+        await adminVariantsSeeder(dbConnection)
       } catch (err) {
         console.log(err)
       }
       await adminSeeder(dbConnection)
-
-      await simpleProductFactory(
-        dbConnection,
-        {
-          title: "prod",
-          variants: [
-            {
-              title: "test1",
-              inventory_quantity: 10,
-            },
-            {
-              title: "test2",
-              inventory_quantity: 12,
-            },
-          ],
-        },
-        100
-      )
     })
 
     afterEach(async () => {
@@ -218,7 +202,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api.get(
-        "/admin/variants?id=test-variant-multi-reg&region_id=reg-europe",
+        "/admin/variants?id=test-variant&region_id=reg-europe",
         {
           headers: {
             Authorization: "Bearer test_token",
@@ -229,7 +213,7 @@ describe("/admin/products", () => {
       expect(response.data).toMatchSnapshot({
         variants: [
           {
-            id: "test-variant-multi-reg",
+            id: "test-variant",
             original_price: 100,
             calculated_price: 80,
             calculated_price_type: "sale",
@@ -251,7 +235,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api.get(
-        "/admin/variants?id=test-variant-multi-reg&region_id=reg-europe&customer_id=test-customer",
+        "/admin/variants?id=test-variant&region_id=reg-europe&customer_id=test-customer",
         {
           headers: {
             Authorization: "Bearer test_token",
@@ -262,7 +246,7 @@ describe("/admin/products", () => {
       expect(response.data).toMatchSnapshot({
         variants: [
           {
-            id: "test-variant-multi-reg",
+            id: "test-variant",
             original_price: 100,
             calculated_price: 40,
             calculated_price_type: "sale",
