@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.2-alpha.1
+
+### Patch Changes
+
+- Bump core utils
+
 ## 1.4.2-alpha.0
 
 ### Patch Changes

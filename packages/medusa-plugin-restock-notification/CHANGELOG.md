@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.1-alpha.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa@1.4.2-alpha.1
+
 ## 1.0.1-alpha.0
 
 ### Patch Changes
