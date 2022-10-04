@@ -14,7 +14,7 @@
 </h4>
 
 <p align="center">
-An open-source composable commerce engine built for developers.
+An open source composable commerce engine built for developers.
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -68,13 +68,13 @@ You can check out [this documentation for more details about setting up your env
 
 ## What is Medusa?
 
-Medusa is an open-source composable commerce engine built with Node.js. Medusa enables developers to build scalable and sophisticated commerce setups with low effort and great developer experience.
+Medusa is an open source composable commerce engine built with Node.js. Medusa enables developers to build scalable and sophisticated commerce setups with low effort and great developer experience.
 
 You can learn more about [Medusa’s architecture in our documentation](https://docs.medusajs.com/introduction).
 
 ### Features
 
-- **Orders, Exchanges, and Returns APIs:** Aside from the standard order management that comes with e-commerce platforms, Medusa also provides an easy and automated way to manage swaps, returns, and claims.
+- **Orders, Exchanges, and Returns APIs:** Aside from the standard order management that comes with ecommerce platforms, Medusa also provides an easy and automated way to manage swaps, returns, and claims.
 - **Products and Collections APIs:** Add products with extensive customization settings and sort them into collections.
 - **Region API:** Configure and manage multiple regions and currencies all from one platform.
 - **Plugin API:** Easily integrate fulfillment providers, payment providers, notification services, and many other custom tools and third-party services.
