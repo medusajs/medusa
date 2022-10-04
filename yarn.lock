@@ -4271,7 +4271,7 @@ __metadata:
     is-valid-path: ^0.1.1
     jest: ^25.5.2
     meant: ^1.0.1
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     medusa-telemetry: 0.0.13
     netrc-parser: ^3.1.6
     open: ^8.0.6
@@ -4342,7 +4342,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.2
     jsonwebtoken: ^8.5.1
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     medusa-interfaces: ^1.3.4-alpha.0
     medusa-test-utils: ^1.1.38-alpha.0
     morgan: ^1.9.1
@@ -23524,17 +23524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@npm:^1.1.32-alpha.0":
-  version: 1.1.32
-  resolution: "medusa-core-utils@npm:1.1.32"
-  dependencies:
-    joi: ^17.3.0
-    joi-objectid: ^3.0.1
-  checksum: 6bbc326d58fcc6fb150c6fa464f3eaa87764bc3d43e4c861f1d318dd8ba1db8b6dff9e5b7624ba30d592fc870ec0857863bc07c4a8fdc12a99b668135f8cb883
-  languageName: node
-  linkType: hard
-
-"medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@1.1.34-alpha.1, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -23555,6 +23545,16 @@ __metadata:
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
+
+"medusa-core-utils@npm:^1.1.32-alpha.0":
+  version: 1.1.32
+  resolution: "medusa-core-utils@npm:1.1.32"
+  dependencies:
+    joi: ^17.3.0
+    joi-objectid: ^3.0.1
+  checksum: 6bbc326d58fcc6fb150c6fa464f3eaa87764bc3d43e4c861f1d318dd8ba1db8b6dff9e5b7624ba30d592fc870ec0857863bc07c4a8fdc12a99b668135f8cb883
+  languageName: node
+  linkType: hard
 
 "medusa-dev-cli@workspace:packages/medusa-dev-cli":
   version: 0.0.0-use.local
@@ -23657,7 +23657,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     medusa-test-utils: ^1.1.38-alpha.0
     stripe: ^8.50.0
   peerDependencies:
@@ -23727,12 +23727,12 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     medusa-test-utils: ^1.1.38-alpha.0
     typeorm: ^0.2.29
     typescript: ^4.4.4
   peerDependencies:
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     typeorm: 0.x
   languageName: unknown
   linkType: soft
@@ -23866,7 +23866,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32-alpha.0
+    medusa-core-utils: 1.1.34-alpha.1
     medusa-test-utils: ^1.1.38-alpha.0
     stripe: ^8.50.0
   peerDependencies:
