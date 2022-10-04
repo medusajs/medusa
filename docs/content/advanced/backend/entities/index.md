@@ -2,20 +2,6 @@
 
 In this document, you’ll learn how you can create an [Entity](overview.md).
 
-## Prerequisites
-
-It’s recommended to create a `tsconfig.json` file in the root of your Medusa server with the following content:
-
-```jsx
-{
-  "compilerOptions": {
-    "experimentalDecorators": true
-  }
-}
-```
-
-This will remove any errors that show up in your IDE related to experimental decorators.
-
 ## Create the Entity
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
