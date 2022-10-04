@@ -109,7 +109,9 @@ For more details about the Admin CORS configuration, check out the [Configure yo
 
 ## Admin User Guide
 
-You can learn more about Medusa admin and its features in the [Medusa's User Guide](../user-guide).
+Medusa admin provides a lot of ecommerce features including managing RMA flows, store settings, products, orders, and much more.
+
+You can learn more about Medusa admin and its features in the [User Guide](../user-guide/index.mdx).
 
 
 ## What’s Next 🚀
