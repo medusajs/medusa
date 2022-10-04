@@ -39,7 +39,7 @@ When you contribute to the documentation content, make sure to follow the [docum
 
 If you’re fixing errors in an existing documentation page, you can scroll down to the end of the page and click on the “Edit this page” link. You’ll be redirected to the GitHub edit form of that page and you can make edits directly and submit a pull request (PR).
 
-If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch and make all changes necessary in your repository. Then, once you’re done creating a PR in the Medusa repository.
+If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done creating a PR in the Medusa repository.
 
 For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
