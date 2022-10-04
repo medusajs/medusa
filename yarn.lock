@@ -23524,7 +23524,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.1.32-alpha.0, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@npm:^1.1.32-alpha.0":
+  version: 1.1.32
+  resolution: "medusa-core-utils@npm:1.1.32"
+  dependencies:
+    joi: ^17.3.0
+    joi-objectid: ^3.0.1
+  checksum: 6bbc326d58fcc6fb150c6fa464f3eaa87764bc3d43e4c861f1d318dd8ba1db8b6dff9e5b7624ba30d592fc870ec0857863bc07c4a8fdc12a99b668135f8cb883
+  languageName: node
+  linkType: hard
+
+"medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:

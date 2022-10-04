@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.32-alpha.1
+
+### Patch Changes
+
+- Chore bump core uitls
+
 ## 1.1.32-alpha.0
 
 ### Patch Changes
