@@ -2,7 +2,7 @@
 
 <!-- vale docs.We = NO -->
 
-This document gives an overview of Medusa’s optional collected usage information, how it helps Medusa become a better platform, and how developers can opt out of this feature.
+This document gives an overview of Medusa’s optional collected usage information, how it helps Medusa become a better platform, and how developers can opt-out of this feature.
 
 ## Overview
 

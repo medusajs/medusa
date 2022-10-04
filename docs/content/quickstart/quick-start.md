@@ -20,11 +20,11 @@ You can install Node from the [official website](https://nodejs.org/en/).
    npm install @medusajs/medusa-cli -g
    ```
 
-   :::note
+:::note
 
-   If you get a permission error when using NPM, check out [NPM's documentation for a solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+If you get a permission error when using NPM, check out [NPM's documentation for a solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
 
-   :::
+:::
 
 ### 2. Create a new Medusa project
 
