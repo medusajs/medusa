@@ -1,10 +1,6 @@
 # Create an Entity
-
 In this document, you’ll learn how you can create an [Entity](overview.md).
-
-
 ## Create the Entity
-
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
 ```tsx
