@@ -364,6 +364,10 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/price-selection-strategy/index"
         },
+        {
+          type: "doc",
+          id: "advanced/backend/sales-channels/index"
+        },
       ]
     },
     {
