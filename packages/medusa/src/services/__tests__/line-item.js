@@ -168,21 +168,23 @@ import { RegionServiceMock } from "../__mocks__/region"
 
       describe("update", () => {
         const lineItemRepository = MockRepository({
-          findOne: () =>
-            Promise.resolve({
-              id: IdMap.getId("test-line-item"),
-              variant_id: IdMap.getId("test-variant"),
-              variant: {
-                id: IdMap.getId("test-variant"),
-                title: "Test variant",
+          find: () =>
+            Promise.resolve([
+              {
+                id: IdMap.getId("test-line-item"),
+                variant_id: IdMap.getId("test-variant"),
+                variant: {
+                  id: IdMap.getId("test-variant"),
+                  title: "Test variant",
+                },
+                cart_id: IdMap.getId("test-cart"),
+                title: "Test product",
+                description: "Test variant",
+                thumbnail: "",
+                unit_price: 50,
+                quantity: 1,
               },
-              cart_id: IdMap.getId("test-cart"),
-              title: "Test product",
-              description: "Test variant",
-              thumbnail: "",
-              unit_price: 50,
-              quantity: 1,
-            }),
+            ]),
         })
 
         const lineItemService = new LineItemService({
@@ -201,21 +203,23 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.save).toHaveBeenCalledWith({
-            id: IdMap.getId("test-line-item"),
-            variant_id: IdMap.getId("test-variant"),
-            variant: {
-              id: IdMap.getId("test-variant"),
-              title: "Test variant",
+          expect(lineItemRepository.save).toHaveBeenCalledWith([
+            {
+              id: IdMap.getId("test-line-item"),
+              variant_id: IdMap.getId("test-variant"),
+              variant: {
+                id: IdMap.getId("test-variant"),
+                title: "Test variant",
+              },
+              cart_id: IdMap.getId("test-cart"),
+              title: "Test product",
+              description: "Test variant",
+              thumbnail: "",
+              unit_price: 50,
+              quantity: 2,
+              has_shipping: true,
             },
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 50,
-            quantity: 2,
-            has_shipping: true,
-          })
+          ])
         })
 
         it("successfully updates a line item with metadata", async () => {
@@ -226,23 +230,25 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.save).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.save).toHaveBeenCalledWith({
-            id: IdMap.getId("test-line-item"),
-            variant_id: IdMap.getId("test-variant"),
-            variant: {
-              id: IdMap.getId("test-variant"),
-              title: "Test variant",
+          expect(lineItemRepository.save).toHaveBeenCalledWith([
+            {
+              id: IdMap.getId("test-line-item"),
+              variant_id: IdMap.getId("test-variant"),
+              variant: {
+                id: IdMap.getId("test-variant"),
+                title: "Test variant",
+              },
+              cart_id: IdMap.getId("test-cart"),
+              title: "Test product",
+              description: "Test variant",
+              thumbnail: "",
+              unit_price: 50,
+              quantity: 1,
+              metadata: {
+                testKey: "testValue",
+              },
             },
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 50,
-            quantity: 1,
-            metadata: {
-              testKey: "testValue",
-            },
-          })
+          ])
         })
       })
       describe("delete", () => {

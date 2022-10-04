@@ -1,7 +1,10 @@
 import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
+import {
+  defaultOrderEditFields,
+  defaultOrderEditRelations,
+} from "../../../../types/order-edit"
 
 /**
  * @oas [post] /order-edits/{id}/cancel
@@ -64,10 +67,13 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .cancel(id, { loggedInUser: userId })
+      .cancel(id, { loggedInUserId: userId })
   })
 
-  const orderEdit = await orderEditService.retrieve(id)
+  const orderEdit = await orderEditService.retrieve(id, {
+    select: defaultOrderEditFields,
+    relations: defaultOrderEditRelations,
+  })
 
   return res.json({ order_edit: orderEdit })
 }

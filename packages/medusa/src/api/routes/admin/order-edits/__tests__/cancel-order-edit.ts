@@ -9,14 +9,18 @@ describe("POST /admin/order-edits/:id/cancel", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("POST", `/admin/order-edits/${orderEditId}/cancel`, {
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
+      subject = await request(
+        "POST",
+        `/admin/order-edits/${orderEditId}/cancel`,
+        {
+          adminSession: {
+            jwt: {
+              userId: IdMap.getId("admin_user"),
+            },
           },
-        },
-        flags: [OrderEditingFeatureFlag],
-      })
+          flags: [OrderEditingFeatureFlag],
+        }
+      )
     })
 
     afterAll(() => {
@@ -25,7 +29,9 @@ describe("POST /admin/order-edits/:id/cancel", () => {
 
     it("calls orderService cancel", () => {
       expect(orderEditServiceMock.cancel).toHaveBeenCalledTimes(1)
-      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, {loggedInUser: IdMap.getId("admin_user")})
+      expect(orderEditServiceMock.cancel).toHaveBeenCalledWith(orderEditId, {
+        loggedInUserId: IdMap.getId("admin_user"),
+      })
     })
 
     it("returns 200", () => {
@@ -33,11 +39,13 @@ describe("POST /admin/order-edits/:id/cancel", () => {
     })
 
     it("returns cancel result", () => {
-      expect(subject.body.order_edit).toEqual(expect.objectContaining({
-        id: orderEditId, 
-        canceled_at: expect.any(String), 
-        status: 'canceled'
-      }))
+      expect(subject.body.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          canceled_at: expect.any(String),
+          status: "canceled",
+        })
+      )
     })
   })
 })

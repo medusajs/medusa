@@ -41,7 +41,6 @@ type PriceListConstructorProps = {
 
 /**
  * Provides layer to manipulate product tags.
- * @extends BaseService
  */
 class PriceListService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -246,6 +245,19 @@ class PriceListService extends TransactionBaseService {
       const priceList = await this.retrieve(id, { select: ["id"] })
 
       await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
+    })
+  }
+
+  /**
+   * Removes all prices from a price list and deletes the removed prices in bulk
+   * @param id - id of the price list
+   * @returns {Promise<void>} updated Price List
+   */
+  async clearPrices(id: string): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const priceList = await this.retrieve(id, { select: ["id"] })
+      await moneyAmountRepo.delete({ price_list_id: priceList.id })
     })
   }
 

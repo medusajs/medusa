@@ -27,6 +27,7 @@ type InjectedDependencies = {
   shippingProfileRepository: typeof ShippingProfileRepository
   productRepository: typeof ProductRepository
 }
+
 /**
  * Provides layer to manipulate profiles.
  * @constructor
@@ -51,14 +52,7 @@ class ShippingProfileService extends TransactionBaseService {
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      shippingProfileRepository,
-      productService,
-      productRepository,
-      shippingOptionService,
-      customShippingOptionService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository

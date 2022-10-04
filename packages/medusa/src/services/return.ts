@@ -74,19 +74,7 @@ class ReturnService extends TransactionBaseService {
     inventoryService,
     orderService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      totalsService,
-      lineItemService,
-      returnRepository,
-      returnItemRepository,
-      shippingOptionService,
-      returnReasonService,
-      taxProviderService,
-      fulfillmentProviderService,
-      inventoryService,
-      orderService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.totalsService_ = totalsService

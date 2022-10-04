@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
@@ -9,7 +8,14 @@ import {
   CustomerGroupUpdate,
   FilterableCustomerGroupProps,
 } from "../types/customer-groups"
-import { isDefined, formatException, PostgresError } from "../utils"
+import {
+  buildQuery,
+  formatException,
+  isDefined,
+  PostgresError,
+  setMetadata,
+} from "../utils"
+import { TransactionBaseService } from "../interfaces"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -17,46 +23,23 @@ type CustomerGroupConstructorProps = {
   customerService: CustomerService
 }
 
-/**
- * Provides layer to manipulate discounts.
- * @implements {BaseService}
- */
-class CustomerGroupService extends BaseService {
-  private manager_: EntityManager
+class CustomerGroupService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
-  private customerGroupRepository_: typeof CustomerGroupRepository
-
-  private customerService_: CustomerService
+  protected readonly customerGroupRepository_: typeof CustomerGroupRepository
+  protected readonly customerService_: CustomerService
 
   constructor({
     manager,
     customerGroupRepository,
     customerService,
   }: CustomerGroupConstructorProps) {
-    super()
+    super(arguments[0])
 
     this.manager_ = manager
-
     this.customerGroupRepository_ = customerGroupRepository
-
-    /** @private @const {CustomerGroupService} */
     this.customerService_ = customerService
-  }
-
-  withTransaction(transactionManager: EntityManager): CustomerGroupService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new CustomerGroupService({
-      manager: transactionManager,
-      customerGroupRepository: this.customerGroupRepository_,
-      customerService: this.customerService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   async retrieve(id: string, config = {}): Promise<CustomerGroup> {
@@ -64,8 +47,7 @@ class CustomerGroupService extends BaseService {
       this.customerGroupRepository_
     )
 
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
 
     const customerGroup = await cgRepo.findOne(query)
     if (!customerGroup) {
@@ -80,21 +62,18 @@ class CustomerGroupService extends BaseService {
 
   /**
    * Creates a customer group with the provided data.
-   * @param {DeepPartial<CustomerGroup>} group - the customer group to create
-   * @return {Promise} the result of the create operation
+   * @param group - the customer group to create
+   * @return the result of the create operation
    */
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       try {
         const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
           this.customerGroupRepository_
         )
 
         const created = cgRepo.create(group)
-
-        const result = await cgRepo.save(created)
-
-        return result
+        return await cgRepo.save(created)
       } catch (err) {
         if (err.code === PostgresError.DUPLICATE_ERROR) {
           throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
@@ -106,9 +85,9 @@ class CustomerGroupService extends BaseService {
 
   /**
    * Add a batch of customers to a customer group at once
-   * @param {string} id id of the customer group to add customers to
-   * @param {string[]} customerIds customer id's to add to the group
-   * @return {Promise<CustomerGroup>} the customer group after insertion
+   * @param id id of the customer group to add customers to
+   * @param customerIds customer id's to add to the group
+   * @return the customer group after insertion
    */
   async addCustomers(
     id: string,
@@ -121,14 +100,14 @@ class CustomerGroupService extends BaseService {
       ids = customerIds
     }
 
-    return this.atomicPhase_(
+    return await this.atomicPhase_(
       async (manager) => {
         const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
           this.customerGroupRepository_
         )
         return await cgRepo.addCustomers(id, ids)
       },
-      async (error) => {
+      async (error: any) => {
         if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
           await this.retrieve(id)
 
@@ -155,15 +134,15 @@ class CustomerGroupService extends BaseService {
   /**
    * Update a customer group.
    *
-   * @param {string} customerGroupId - id of the customer group
-   * @param {CustomerGroupUpdate} update - customer group partial data
+   * @param customerGroupId - id of the customer group
+   * @param update - customer group partial data
    * @returns resulting customer group
    */
   async update(
     customerGroupId: string,
     update: CustomerGroupUpdate
-  ): Promise<CustomerGroup[]> {
-    return this.atomicPhase_(async (manager) => {
+  ): Promise<CustomerGroup> {
+    return await this.atomicPhase_(async (manager) => {
       const { metadata, ...properties } = update
 
       const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
@@ -179,8 +158,9 @@ class CustomerGroupService extends BaseService {
       }
 
       if (isDefined(metadata)) {
-        customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
+        customerGroup.metadata = setMetadata(customerGroup, metadata)
       }
+
       return await cgRepo.save(customerGroup)
     })
   }
@@ -188,11 +168,11 @@ class CustomerGroupService extends BaseService {
   /**
    * Remove customer group
    *
-   * @param {string} groupId id of the customer group to delete
-   * @return {Promise} a promise
+   * @param groupId id of the customer group to delete
+   * @return a promise
    */
   async delete(groupId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
         this.customerGroupRepository_
       )
@@ -210,9 +190,9 @@ class CustomerGroupService extends BaseService {
   /**
    * List customer groups.
    *
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config to be used for find
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config to be used for find
+   * @return  the result of the find operation
    */
   async list(
     selector: FilterableCustomerGroupProps = {},
@@ -222,16 +202,16 @@ class CustomerGroupService extends BaseService {
       this.customerGroupRepository_
     )
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await cgRepo.find(query)
   }
 
   /**
    * Retrieve a list of customer groups and total count of records that match the query.
    *
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config to be used for find
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config to be used for find
+   * @return the result of the find operation
    */
   async listAndCount(
     selector: FilterableCustomerGroupProps = {},
@@ -247,26 +227,27 @@ class CustomerGroupService extends BaseService {
       delete selector.q
     }
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     if (q) {
       const where = query.where
 
       delete where.name
 
-      query.where = (qb: SelectQueryBuilder<CustomerGroup>): void => {
+      query.where = ((qb: SelectQueryBuilder<CustomerGroup>): void => {
         qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
-      }
+      }) as any
     }
+
     return await cgRepo.findAndCount(query)
   }
 
   /**
    * Remove list of customers from a customergroup
    *
-   * @param {string} id id of the customer group from which the customers are removed
-   * @param {string[] | string} customerIds id's of the customer to remove from group
-   * @return {Promise<CustomerGroup>} the customergroup with the provided id
+   * @param id id of the customer group from which the customers are removed
+   * @param customerIds id's of the customer to remove from group
+   * @return the customergroup with the provided id
    */
   async removeCustomer(
     id: string,

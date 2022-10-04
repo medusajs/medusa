@@ -8,7 +8,7 @@ export const LineItemServiceMock = {
   list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([])
   }),
-  retrieve: jest.fn().mockImplementation((data) => {
+  retrieve: jest.fn().mockImplementation((id) => {
     return Promise.resolve({})
   }),
   create: jest.fn().mockImplementation((data) => {

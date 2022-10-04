@@ -236,7 +236,9 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       await manager.query(
-        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+        `UPDATE "product_variant"
+         SET manage_inventory= false
+         WHERE id = 'test-variant'`
       )
 
       const initialInventoryRes = await api.get("/store/variants/test-variant")
@@ -1346,7 +1348,9 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       await manager.query(
-        `UPDATE "product_variant" SET manage_inventory=false WHERE id = 'test-variant'`
+        `UPDATE "product_variant"
+         SET manage_inventory= false
+         WHERE id = 'test-variant'`
       )
 
       const returned = await api.post(
@@ -1955,7 +1959,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      // find item to test returned quantiy for
+      // find item to test returned quantity for
       const toTest = returnedOrderSecond.data.order.items.find(
         (i) => i.id === "test-item-many"
       )
@@ -2055,6 +2059,54 @@ describe("/admin/orders", () => {
       )
 
       expect(received.status).toEqual(200)
+    })
+
+    it("creates a swap with return and return shipping", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/test-order/swaps",
+        {
+          return_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+          return_shipping: { option_id: "test-return-option", price: 0 },
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+
+      const swap = response.data.order.swaps[0]
+      expect(swap.return_order.items).toHaveLength(1)
+      expect(swap.return_order.items[0]).toEqual(
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+        })
+      )
+
+      expect(swap.return_order.shipping_method).toEqual(
+        expect.objectContaining({
+          price: 0,
+          shipping_option_id: "test-return-option",
+        })
+      )
+
+      expect(swap.return_order.shipping_method.tax_lines).toHaveLength(1)
+      expect(swap.return_order.shipping_method.tax_lines[0]).toEqual(
+        expect.objectContaining({
+          rate: 0,
+          name: "default",
+        })
+      )
     })
 
     it("creates a return on a swap", async () => {

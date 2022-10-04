@@ -111,12 +111,7 @@ class TotalsService extends TransactionBaseService {
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
-    super({
-      taxProviderService,
-      taxCalculationStrategy,
-      manager,
-      featureFlagRouter,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.taxProviderService_ = taxProviderService

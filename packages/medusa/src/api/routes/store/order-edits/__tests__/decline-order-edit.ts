@@ -3,8 +3,8 @@ import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
-describe("GET /store/order-edits/:id", () => {
-  describe("successfully gets an order edit", () => {
+describe("GET /store/order-edits/:id/decline", () => {
+  describe("successfully decline an order edit", () => {
     const orderEditId = IdMap.getId("testDeclineOrderEdit")
     let subject
 
@@ -31,7 +31,7 @@ describe("GET /store/order-edits/:id", () => {
       expect(orderEditServiceMock.decline).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.decline).toHaveBeenCalledWith(orderEditId, {
         declinedReason: "test",
-        loggedInUser: undefined,
+        loggedInUserId: undefined,
       })
       expect(orderEditServiceMock.decorateTotals).toHaveBeenCalledTimes(1)
     })

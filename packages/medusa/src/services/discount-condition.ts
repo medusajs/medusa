@@ -39,7 +39,7 @@ class DiscountConditionService extends TransactionBaseService {
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({ manager, discountConditionRepository, eventBusService })
+    super(arguments[0])
 
     this.manager_ = manager
     this.discountConditionRepository_ = discountConditionRepository

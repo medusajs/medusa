@@ -1695,12 +1695,38 @@ export const adminHandlers = [
       })
     )
   }),
-  
+
   rest.post("/admin/order-edits/:id/cancel", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
-        order_edit: { ...fixtures.get("order_edit"), canceled_at: new Date(), status: 'canceled' },
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          canceled_at: new Date(),
+          status: "canceled",
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/confirm", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          confirmed_at: new Date(),
+          status: "confirmed",
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/items", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
       })
     )
   }),
@@ -1712,7 +1738,7 @@ export const adminHandlers = [
         order_edit: {
           ...fixtures.get("order_edit"),
           requested_at: new Date(),
-          status: "requested"
+          status: "requested",
         },
       })
     )
@@ -1738,6 +1764,38 @@ export const adminHandlers = [
         id: change_id,
         object: "item_change",
         deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              quantity: (req.body as any).quantity,
+            },
+          ],
+        },
+      })
+    )
+  }),
+  
+  rest.delete("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              type: 'item_remove'
+            },
+          ],
+        },
       })
     )
   }),

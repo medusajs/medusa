@@ -8,7 +8,7 @@ import LineItemService from "./line-item"
 import { OrderRepository } from "../repositories/order"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { DraftOrder, DraftOrderStatus, Cart, CartType } from "../models"
+import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders"
 import { TransactionBaseService } from "../interfaces"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
@@ -59,17 +59,7 @@ class DraftOrderService extends TransactionBaseService {
     productVariantService,
     shippingOptionService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      draftOrderRepository,
-      paymentRepository,
-      orderRepository,
-      eventBusService,
-      cartService,
-      lineItemService,
-      productVariantService,
-      shippingOptionService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.draftOrderRepository_ = draftOrderRepository

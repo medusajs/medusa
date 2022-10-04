@@ -25,9 +25,9 @@ import {
  *       // must be previously logged in or use api token
  *       const params = {internal_note: "internal reason XY"}
  *       medusa.admin.orderEdit.update(orderEditId, params)
- *       .then(({ order_edit }) => {
- *         console.log(order_edit.id);
- *       });
+ *         .then(({ order_edit }) => {
+ *           console.log(order_edit.id)
+ *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |

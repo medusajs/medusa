@@ -1,18 +1,18 @@
 import { adminProductKeys } from "./queries"
 import {
-  AdminProductsDeleteRes,
-  AdminProductsRes,
-  AdminPostProductsProductReq,
-  AdminPostProductsReq,
-  AdminPostProductsProductVariantsReq,
-  AdminProductsDeleteVariantRes,
-  AdminPostProductsProductOptionsReq,
   AdminPostProductsProductOptionsOption,
+  AdminPostProductsProductOptionsReq,
+  AdminPostProductsProductReq,
+  AdminPostProductsProductVariantsReq,
+  AdminPostProductsReq,
   AdminProductsDeleteOptionRes,
+  AdminProductsDeleteRes,
+  AdminProductsDeleteVariantRes,
+  AdminProductsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
+import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 
 export const useAdminCreateProduct = (

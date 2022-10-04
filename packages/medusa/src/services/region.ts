@@ -39,7 +39,6 @@ type InjectedDependencies = {
 
 /**
  * Provides layer to manipulate regions.
- * @extends BaseService
  */
 class RegionService extends TransactionBaseService {
   static Events = {

@@ -1,4 +1,3 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
@@ -9,6 +8,7 @@ type InventoryServiceProps = {
   manager: EntityManager
   productVariantService: ProductVariantService
 }
+
 class InventoryService extends TransactionBaseService {
   protected readonly productVariantService_: ProductVariantService
 
@@ -16,7 +16,7 @@ class InventoryService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   constructor({ manager, productVariantService }: InventoryServiceProps) {
-    super({ manager, productVariantService })
+    super(arguments[0])
 
     this.manager_ = manager
     this.productVariantService_ = productVariantService
@@ -52,6 +52,7 @@ class InventoryService extends TransactionBaseService {
       }
     })
   }
+
   /**
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant

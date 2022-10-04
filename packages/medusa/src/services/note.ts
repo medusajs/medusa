@@ -31,7 +31,7 @@ class NoteService extends TransactionBaseService {
     noteRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({ manager, noteRepository, eventBusService })
+    super(arguments[0])
 
     this.manager_ = manager
     this.noteRepository_ = noteRepository

@@ -1,6 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService, UserService } from "."
 import { User } from ".."
@@ -9,6 +8,8 @@ import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
 import { ConfigModule } from "../types/global"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -16,21 +17,23 @@ const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
 type InviteServiceProps = {
   manager: EntityManager
   userService: UserService
-  userRepository: UserRepository
-  inviteRepository: InviteRepository
+  userRepository: typeof UserRepository
+  inviteRepository: typeof InviteRepository
   eventBusService: EventBusService
 }
 
-class InviteService extends BaseService {
+class InviteService extends TransactionBaseService {
   static Events = {
     CREATED: "invite.created",
   }
 
-  private manager_: EntityManager
-  private userService_: UserService
-  private userRepo_: UserRepository
-  private inviteRepository_: InviteRepository
-  private eventBus_: EventBusService
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly userService_: UserService
+  protected readonly userRepo_: typeof UserRepository
+  protected readonly inviteRepository_: typeof InviteRepository
+  protected readonly eventBus_: EventBusService
 
   protected readonly configModule_: ConfigModule
 
@@ -44,7 +47,8 @@ class InviteService extends BaseService {
     }: InviteServiceProps,
     configModule: ConfigModule
   ) {
-    super()
+    // @ts-ignore
+    super(...arguments)
 
     this.configModule_ = configModule
 
@@ -64,27 +68,6 @@ class InviteService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
-  withTransaction(manager): InviteService {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new InviteService(
-      {
-        manager,
-        inviteRepository: this.inviteRepository_,
-        userService: this.userService_,
-        userRepository: this.userRepo_,
-        eventBusService: this.eventBus_,
-      },
-      this.configModule_
-    )
-
-    cloned.transactionManager_ = manager
-
-    return cloned
-  }
-
   generateToken(data): string {
     const { jwt_secret } = this.configModule_.projectConfig
     if (jwt_secret) {
@@ -99,17 +82,17 @@ class InviteService extends BaseService {
   async list(selector, config = {}): Promise<ListInvite[]> {
     const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     return await inviteRepo.find(query)
   }
 
   /**
    * Updates an account_user.
-   * @param {string} user - user emails
-   * @param {string} role - role to assign to the user
-   * @param {number} validDuration - role to assign to the user
-   * @return {Promise} the result of create
+   * @param user - user emails
+   * @param role - role to assign to the user
+   * @param validDuration - role to assign to the user
+   * @return the result of create
    */
   async create(
     user: string,
@@ -178,12 +161,12 @@ class InviteService extends BaseService {
 
   /**
    * Deletes an invite from a given user id.
-   * @param {string} inviteId - the id of the invite to delete. Must be
+   * @param inviteId - the id of the invite to delete. Must be
    *   castable as an ObjectId
-   * @return {Promise} the result of the delete operation.
+   * @return the result of the delete operation.
    */
   async delete(inviteId): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const inviteRepo: InviteRepository =
         manager.getCustomRepository(InviteRepository)
 
@@ -191,12 +174,10 @@ class InviteService extends BaseService {
       const invite = await inviteRepo.findOne({ where: { id: inviteId } })
 
       if (!invite) {
-        return Promise.resolve()
+        return
       }
 
       await inviteRepo.delete({ id: invite.id })
-
-      return Promise.resolve()
     })
   }
 
@@ -213,7 +194,7 @@ class InviteService extends BaseService {
 
     const { invite_id, user_email } = decoded
 
-    return this.atomicPhase_(async (m) => {
+    return await this.atomicPhase_(async (m) => {
       const userRepo = m.getCustomRepository(this.userRepo_)
       const inviteRepo: InviteRepository = m.getCustomRepository(
         this.inviteRepository_
