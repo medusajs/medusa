@@ -69,13 +69,14 @@ class ProductTagService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: Partial<ProductTag> = {},
+    selector: Partial<ProductTag> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<ProductTag[]> {
-    const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
-
-    const query = buildQuery(selector, config)
-    return await tagRepo.find(query)
+    const [tags] = await this.listAndCount(selector, config)
+    return tags
   }
 
   /**
