@@ -1,4 +1,4 @@
-# Quickstart: Gatsby Storefront
+# Gatsby Storefront Quickstart
 
 This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
 
