@@ -71,7 +71,7 @@ When you add a new page to the documentation, you must add the new page in `www/
 
 When the documentation page is a conceptual or an overview documentation, the label in the sidebar should start with a noun.
 
-When the documentation page is tutorial documentation, the label in the sidebar should start with a verb Exceptions to this rule are integration documentation and upgrade guides.
+When the documentation page is tutorial documentation, the label in the sidebar should start with a verb. Exceptions to this rule are integration documentation and upgrade guides.
 
 ### Character Count
 
