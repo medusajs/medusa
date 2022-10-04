@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -26,6 +27,7 @@ export class Region extends SoftDeletableEntity {
   @Column()
   name: string
 
+  @Index()
   @Column()
   currency_code: string
 

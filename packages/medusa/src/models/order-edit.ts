@@ -2,19 +2,20 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from "typeorm"
 
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { resolveDbType } from "../utils/db-aware-column"
-import { OrderItemChange } from "./order-item-change"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
-import { LineItem } from "./line-item"
-import { Order } from "./order"
+
+import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
 export enum OrderEditStatus {
   CONFIRMED = "confirmed",
@@ -26,6 +27,7 @@ export enum OrderEditStatus {
 
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class OrderEdit extends BaseEntity {
+  @Index()
   @Column()
   order_id: string
 
@@ -73,6 +75,14 @@ export class OrderEdit extends BaseEntity {
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
   items: LineItem[]
+
+  @Index()
+  @Column({ nullable: true })
+  payment_collection_id: string
+
+  @OneToOne(() => PaymentCollection)
+  @JoinColumn({ name: "payment_collection_id" })
+  payment_collection: PaymentCollection
 
   // Computed
   shipping_total: number
