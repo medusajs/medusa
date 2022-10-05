@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.1.20-alp.0
+
+### Patch Changes
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32-alp.0
+  - medusa-interfaces@1.3.4-alp.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

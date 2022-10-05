@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.17-alp.0
+
+### Patch Changes
+
+- [#2254](https://github.com/medusajs/medusa/pull/2254) [`1024ac1a3`](https://github.com/medusajs/medusa/commit/1024ac1a3679180eb9097e33d13776dc6f4b4a75) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-payment-manual): Add missing update method
+
+- Updated dependencies []:
+  - medusa-interfaces@1.3.4-alp.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +16,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-payment-manual
 
-
-
-
-
 ## [1.0.15](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.14...medusa-payment-manual@1.0.15) (2021-12-29)
 
 **Note:** Version bump only for package medusa-payment-manual
 
-
-
-
-
 ## [1.0.14](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.13...medusa-payment-manual@1.0.14) (2021-12-17)
 
 **Note:** Version bump only for package medusa-payment-manual
-
-
-
-
 
 ## [1.0.13](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.12...medusa-payment-manual@1.0.13) (2021-12-08)
 

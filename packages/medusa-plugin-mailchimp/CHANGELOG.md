@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.43-alp.0
+
+### Patch Changes
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32-alp.0
+  - medusa-interfaces@1.3.4-alp.0
+  - medusa-test-utils@1.1.38-alp.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +16,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 
-
-
-
-
 ## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.39...medusa-plugin-mailchimp@1.1.41) (2022-06-19)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 
-
-
-
-
 ## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.39...medusa-plugin-mailchimp@1.1.40) (2022-05-31)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
-
-
-
-
 
 ## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.38...medusa-plugin-mailchimp@1.1.39) (2022-02-06)
 
