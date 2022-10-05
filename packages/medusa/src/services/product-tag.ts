@@ -109,7 +109,10 @@ class ProductTagService extends TransactionBaseService {
     if (query.where.discount_condition_id) {
       const discountConditionId = query.where.discount_condition_id as string
       delete query.where.discount_condition_id
-      return await tagRepo.findAndCountByConditionId(discountConditionId, query)
+      return await tagRepo.findAndCountByDiscountConditionId(
+        discountConditionId,
+        query
+      )
     }
 
     return await tagRepo.findAndCount(query)

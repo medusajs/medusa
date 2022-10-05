@@ -65,7 +65,7 @@ export class ProductTagRepository extends Repository<ProductTag> {
     return upsertedTags
   }
 
-  async findAndCountByConditionId(
+  async findAndCountByDiscountConditionId(
     conditionId: string,
     query: ExtendedFindConfig<ProductTag, Partial<ProductTag>>
   ) {
