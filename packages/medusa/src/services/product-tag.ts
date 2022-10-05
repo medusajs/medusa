@@ -4,7 +4,7 @@ import { ProductTag } from "../models"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isString } from "../utils"
 
 type ProductTagConstructorProps = {
   manager: EntityManager
@@ -95,7 +95,7 @@ class ProductTagService extends TransactionBaseService {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
 
     let q: string | undefined
-    if ("q" in selector && selector.q) {
+    if (isString(selector.q)) {
       q = selector.q
       delete selector.q
     }
