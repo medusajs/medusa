@@ -285,7 +285,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 ```bash
 # using cURL
 curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs' \
---header 'Authorization: Bearer {api_token}' \
+--header 'Authorization: Bearer <API_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "type": "publish-products",
@@ -322,7 +322,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
 ```bash
 # using cURL
 curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
@@ -368,7 +368,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 ```bash
 # using cURL
 curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 

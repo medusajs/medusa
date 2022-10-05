@@ -89,7 +89,7 @@ fetch(`<YOUR_SERVER>/admin/uploads`, {
 
 ```bash
 curl --location --request POST '<YOUR_SERVER>/admin/uploads' \
-  --header 'Authorization: Bearer {api_token}' \
+  --header 'Authorization: Bearer <API_TOKEN>' \
   --header 'Content-Type: text/csv' \
   --form 'files=@"<FILE_PATH_1>"'
 ```
@@ -149,7 +149,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 
 ```bash
 curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs' \
---header 'Authorization: Bearer {api_token}' \
+--header 'Authorization: Bearer <API_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "type": "product-import",
@@ -210,7 +210,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
 
 ```bash
 curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
@@ -271,7 +271,7 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 
 ```bash
 curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 

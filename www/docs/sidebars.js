@@ -224,6 +224,11 @@ module.exports = {
               type: "doc",
               id: "advanced/backend/price-lists/use-api"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Manage Sales Channels"
+            },
           ]
         },
         {
