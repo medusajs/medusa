@@ -203,17 +203,18 @@ describe("Claims", () => {
     expect(response.status).toEqual(200)
   })
 
-  test("tries to create a claim without reasons on claim items", async () => {
+  test(" should throw and not have dangling claim order upon a claim creation without reasons on claim items", async () => {
+    const api = useApi()
+
     await adminSeeder(dbConnection)
 
     const order = await createReturnableOrder(dbConnection)
     const option = await simpleShippingOptionFactory(dbConnection, {
       region_id: "test-region",
     })
-    const api = useApi()
 
-    try {
-      await api.post(
+    const err = await api
+      .post(
         `/admin/orders/${order.id}/claims`,
         {
           type: "replace",
@@ -237,15 +238,17 @@ describe("Claims", () => {
           },
         }
       )
-    } catch (error) {
-      const test = await dbConnection.manager.query(
-        `SELECT * FROM claim_order WHERE order_id = '${order.id}'`
-      )
+      .catch((e) => e)
 
-      console.log(test)
-    }
+    const claimOrders = await dbConnection.manager.query(
+      `SELECT *
+       FROM claim_order
+       WHERE order_id = '${order.id}'`
+    )
 
-    // expect(response.status).toEqual(200)
+    expect(err).toBeDefined()
+    expect(err.response.status).toBe(400)
+    expect(claimOrders).toEqual([])
   })
 })
 

@@ -77,11 +77,6 @@ export abstract class TransactionBaseService {
           return await work(m)
         } catch (error) {
           if (errorHandler) {
-            const queryRunner = this.transactionManager_.queryRunner
-            if (queryRunner && queryRunner.isTransactionActive) {
-              await queryRunner.rollbackTransaction()
-            }
-
             await errorHandler(error)
           }
           throw error

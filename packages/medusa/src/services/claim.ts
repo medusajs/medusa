@@ -8,7 +8,7 @@ import {
   ClaimType,
   FulfillmentItem,
   LineItem,
-  ReturnItem
+  ReturnItem,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { ClaimRepository } from "../repositories/claim"
@@ -379,8 +379,6 @@ export default class ClaimService extends TransactionBaseService {
         } as DeepPartial<ClaimOrder>)
 
         const result: ClaimOrder = await claimRepo.save(created)
-
-        console.warn("Claim service manager: ", transactionManager)
 
         if (result.additional_items && result.additional_items.length) {
           const calcContext = await this.totalsService_.getCalculationContext(
