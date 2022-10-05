@@ -22,7 +22,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 :::note
 
-If you get a permission error when using NPM, check out [NPM's documentation for a solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
 
 :::
 

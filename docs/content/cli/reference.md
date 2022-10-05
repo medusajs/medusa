@@ -16,6 +16,12 @@ To install the CLI tool, run the following command in your terminal:
 npm install @medusajs/medusa-cli -g
 ```
 
+:::note
+
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
+
+:::
+
 The CLI tool is then available under the `medusa` command. You can see all commands and options with the following command:
 
 ```bash
