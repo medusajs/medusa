@@ -12,6 +12,7 @@ import {
   buildQuery,
   formatException,
   isDefined,
+  isString,
   PostgresError,
   setMetadata,
 } from "../utils"
@@ -224,7 +225,7 @@ class CustomerGroupService extends TransactionBaseService {
     )
 
     let q
-    if (selector.q) {
+    if (isString(selector.q)) {
       q = selector.q
       delete selector.q
     }
