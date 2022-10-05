@@ -1,0 +1,463 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to Use CustomerGroup APIs
+
+In this document, you’ll learn how to use the customer groups admin APIs to manage customer groups and their associated customers and price lists.
+
+## Overview
+
+Using the Admin API you can manage customer groups by creating, retrieving, updating, and deleting them. You can also manage the customers in a customer group.
+
+Using the PriceList API you can specify among the conditions the customer groups that the prices will apply to.
+
+This guide covers how to use these APIs to perform these tasks.
+
+---
+
+## Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+
+---
+
+## Create Customer Groups
+
+You can create a customer group by sending a request to the Create Customer Group endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.create({
+  name: 'VIP'
+})
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'VIP'
+  })
+})
+.then((response) => response.json())
+.then(({ customer_group }) => {
+  console.log(customer_group.id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<SERVER_URL>/admin/customer-groups' \
+--header 'Authorization: Bearer <API_TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "VIP"
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request requires the `name` parameter and optionally accepts the `metadata` object parameter to be passed in the body. It returns the created customer group.
+
+---
+
+## List Customer Groups
+
+You can get a list of all customer groups by sending a request to the List Customer Groups endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.list()
+.then(({ customer_groups, limit, offset, count }) => {
+  console.log(customer_groups.length);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups`)
+.then((response) => response.json())
+.then(({ customer_groups, limit, offset, count }) => {
+  console.log(customer_groups.length)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request GET '<SERVER_URL>/admin/customer-groups' \
+--header 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns an array of customer groups, as well as pagination fields.
+
+You can also pass filters and other selection query parameters to the request. Check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Customer-Group/operation/GetCustomerGroups) for more details on available query parameters.
+
+---
+
+## Retrieve a Customer Group
+
+You can retrieve a single customer group by sending a request to the Get a Customer Group endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.retrieve(customerGroupId)
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`)
+.then((response) => response.json())
+.then(({ customer_group }) => {
+  console.log(customer_group.id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+--header 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the customer group to retrieve as a path parameter. It returns the customer group of that ID.
+
+---
+
+## Update a Customer Group
+
+You can update a customer group’s data by sending a request to the Update Customer Group endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.update(customerGroupId, {
+  metadata: {
+		is_seller: true
+	}
+})
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    metadata: {
+			is_seller: true
+		}
+  })
+})
+.then((response) => response.json())
+.then(({ customer_group }) => {
+  console.log(customer_group.id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+--header 'Authorization: Bearer <API_TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "metadata": {
+			"is_seller": true
+		}
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the customer group as a path parameter, and optionally accepts the `name` or `metadata` fields as body parameters. It returns the updated customer group.
+
+---
+
+## Delete Customer Group
+
+You can delete a customer group by sending a request to the Delete a Customer Group endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.delete(customerGroupId)
+.then(({ id, object, deleted }) => {
+  console.log(id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+	method: 'DELETE'
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+--header 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the customer group to delete as a path parameter. It returns the ID of the deleted entity.
+
+---
+
+## Manage Customers
+
+### Add Customer to Group
+
+You can add a customer to a group by sending a request to the Customer Group’s Add Customer endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.addCustomers(customerGroupId, {
+  customer_ids: [
+    {
+      id: customerId
+    }
+  ]
+})
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    customer_ids: [
+	    {
+	      id: customerId
+	    }
+	  ]
+  })
+})
+.then((response) => response.json())
+.then(({ customer_group }) => {
+  console.log(customer_group.id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+--header 'Authorization: Bearer <API_TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "customer_ids": [
+        {
+            "id": "<CUSTOMER_ID>"
+        }
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the customer group as a path parameter. In its body, it accepts a `customer_ids` array of objects. Each object in the array must have the `id` property with its value being the ID of the customer you want to add.
+
+### List Customers
+
+You can retrieve a list of all customers in a customer group using the List Customers endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.listCustomers(customerGroupId)
+.then(({ customers, count, offset, limit }) => {
+  console.log(customers.length);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`)
+.then((response) => response.json())
+.then(({ customers, count, offset, limit }) => {
+  console.log(customers.length)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
+--header 'Authorization: Bearer <API_TOKEN>'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts the ID of the customer group as a path parameter. It returns an array of customers along with pagination fields.
+
+### Remove Customers from a Group
+
+:::info
+
+Removing customers from a group does not remove them entirely. They’ll still be available in your store.
+
+:::
+
+You can remove customers from a customer group by sending a request to the Remove Customers endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.customerGroups.removeCustomers(customer_group_id, {
+  customer_ids: [
+    {
+      id: customer_id
+    }
+  ]
+})
+.then(({ customer_group }) => {
+  console.log(customer_group.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    customer_ids: [
+	    {
+	      id: customerId
+	    }
+	  ]
+  })
+})
+.then((response) => response.json())
+.then(({ customer_group }) => {
+  console.log(customer_group.id)
+});
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+--header 'Authorization: Bearer <API_TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "customer_ids": [
+        {
+            "id": "<CUSTOMER_ID>"
+        }
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request accepts as a path parameter the ID of the customer group to remove customers from. In its body, it accepts a `customer_ids` array of objects. Each object in the array must have the `id` property with the value being the ID of the customer to remove from the group.
+
+This request returns the customer group.
+
+---
+
+## Use Customer Groups as Conditions in a Price List
+
+When you create or update a price list, you can specify one or more customer groups as conditions for the price list. You can learn how to do that in the [PriceList API documentation](../backend/price-lists/use-api.mdx).
+
+---
+
+## What’s Next 🚀
+
+- Learn more about [Customer Groups](../backend/customer-groups/index.md).
+- Learn about [how to use Sales Channels](../backend/sales-channels/manage-admin.mdx).
