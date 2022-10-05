@@ -59,4 +59,4 @@ jobs:
           fail_on_error: true
           vale_flags: '--minAlertLevel=error'
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.REFERENCE_PAT }}
