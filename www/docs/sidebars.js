@@ -512,6 +512,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/cors-issues",
           label: "CORS issues",
         },

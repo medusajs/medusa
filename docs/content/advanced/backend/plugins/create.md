@@ -10,6 +10,12 @@ This guide uses the Medusa CLI throughout different steps. If you don’t have t
 npm install @medusajs/medusa-cli -g
 ```
 
+:::note
+
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../../troubleshooting/cli-installation-errors.mdx).
+
+:::
+
 ## Initialize Project
 
 The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa project:
