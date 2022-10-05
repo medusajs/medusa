@@ -224,7 +224,7 @@ class CustomerGroupService extends TransactionBaseService {
     )
 
     let q
-    if ("q" in selector && selector.q) {
+    if (selector.q) {
       q = selector.q
       delete selector.q
     }
