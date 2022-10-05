@@ -163,7 +163,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       // save only first occurrence
       if (!seenProducts[row["product.handle"] as string]) {
         row["product.profile_id"] = shippingProfile!.id
-        if (row["product.product.id"]) {
+        if (row["product.id"]) {
           productsUpdate.push(row)
         } else {
           productsCreate.push(row)
