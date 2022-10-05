@@ -27,7 +27,7 @@ export class ProductTypeRepository extends Repository<ProductType> {
     return await this.save(created)
   }
 
-  async findAndCountByConditionId(
+  async findAndCountByDiscountConditionId(
     conditionId: string,
     query: ExtendedFindConfig<ProductType, Partial<ProductType>>
   ): Promise<[ProductType[], number]> {

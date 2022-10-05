@@ -93,7 +93,7 @@ class ProductTypeService extends TransactionBaseService {
     if (query.where.discount_condition_id) {
       const discountConditionId = query.where.discount_condition_id as string
       delete query.where.discount_condition_id
-      return await typeRepo.findAndCountByConditionId(
+      return await typeRepo.findAndCountByDiscountConditionId(
         discountConditionId,
         query
       )
