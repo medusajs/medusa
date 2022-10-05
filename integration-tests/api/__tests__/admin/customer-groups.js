@@ -521,13 +521,17 @@ describe("/admin/customer-groups", () => {
         }
       }
 
-      const discountConditionId = IdMap.getId("discount-condition-tag-1")
+      const discountConditionId = IdMap.getId(
+        "discount-condition-customer-group-1"
+      )
       await simpleDiscountFactory(
         dbConnection,
         buildDiscountData("code-1", discountConditionId, [customerGroup1.id])
       )
 
-      const discountConditionId2 = IdMap.getId("discount-condition-tag-2")
+      const discountConditionId2 = IdMap.getId(
+        "discount-condition-customer-group-2"
+      )
       await simpleDiscountFactory(
         dbConnection,
         buildDiscountData("code-2", discountConditionId2, [customerGroup2.id])

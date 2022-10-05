@@ -2,6 +2,15 @@ import { flatten, groupBy, map, merge } from "lodash"
 import { Repository, SelectQueryBuilder } from "typeorm"
 import { FindWithoutRelationsOptions } from "../repositories/customer-group"
 
+/**
+ * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
+ * Allow to query the relations for the specified entity ids
+ * @param repository
+ * @param entityIds
+ * @param groupedRelations
+ * @param withDeleted
+ * @param select
+ */
 export async function queryEntityWithIds<T>(
   repository: Repository<T>,
   entityIds: string[],
@@ -55,6 +64,15 @@ export async function queryEntityWithIds<T>(
   ).then(flatten)
 }
 
+/**
+ * Custom query entity without relations, it is part of the creation of a custom findWithRelationsAndCount needs.
+ * Allow to query the entities without taking into account the relations. The relations will be queried separately
+ * using the queryEntityWithIds util
+ * @param repository
+ * @param optionsWithoutRelations
+ * @param shouldCount
+ * @param customJoinBuilders
+ */
 export async function queryEntityWithoutRelations<T>(
   repository: Repository<T>,
   optionsWithoutRelations: FindWithoutRelationsOptions,
@@ -112,6 +130,10 @@ export async function queryEntityWithoutRelations<T>(
   return [entities, count]
 }
 
+/**
+ * Grouped the relation to the top level entity
+ * @param relations
+ */
 export function getGroupedRelations(relations: string[]): {
   [toplevel: string]: string[]
 } {
@@ -128,6 +150,11 @@ export function getGroupedRelations(relations: string[]): {
   return groupedRelations
 }
 
+/**
+ * Merged the entities and relations that composed by the result of queryEntityWithIds and queryEntityWithoutRelations
+ * call
+ * @param entitiesAndRelations
+ */
 export function mergeEntitiesWithRelations<T>(
   entitiesAndRelations: Array<Partial<T>>
 ): T[] {
