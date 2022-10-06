@@ -13,6 +13,9 @@ describe("PaymentCollectionService", () => {
     region_id: IdMap.getId("region1"),
     amount: 100,
     created_at: new Date(),
+    metadata: {
+      pluginInfo: "xyz",
+    },
     status: PaymentCollectionStatus.NOT_PAID,
   }
 
@@ -70,27 +73,24 @@ describe("PaymentCollectionService", () => {
   })
 
   it("should create a payment collection", async () => {
-    const entity = await paymentCollectionService.create(
-      {
-        region_id: IdMap.getId("region2"),
-        type: PaymentCollectionType.ORDER_EDIT,
-        currency_code: "USD",
-        amount: 190,
-        description: "some description",
-        metadata: {
-          abc: 123,
-        },
+    const entity = await paymentCollectionService.create({
+      region_id: IdMap.getId("region2"),
+      type: PaymentCollectionType.ORDER_EDIT,
+      currency_code: "USD",
+      amount: 190,
+      created_by: IdMap.getId("user-id"),
+      description: "some description",
+      metadata: {
+        abc: 123,
       },
-      {
-        loggedInUserId: IdMap.getId("user-id"),
-      }
-    )
+    })
     expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
     expect(paymentCollectionRepository.save).toHaveBeenCalledWith(
       expect.objectContaining({
         id: IdMap.getId("payment-collection-id1"),
         region_id: IdMap.getId("region2"),
         amount: 190,
+        created_by: IdMap.getId("user-id"),
         status: PaymentCollectionStatus.NOT_PAID,
         description: "some description",
         metadata: {
@@ -107,7 +107,7 @@ describe("PaymentCollectionService", () => {
   })
 
   it("should update a payment collection with the right arguments", async () => {
-    const changes = {
+    const submittedChanges = {
       description: "updated description",
       status: PaymentCollectionStatus.CAPTURED,
       metadata: {
@@ -115,14 +115,23 @@ describe("PaymentCollectionService", () => {
         arr: ["a", "b", "c"],
       },
     }
+    const internalChanges = {
+      ...submittedChanges,
+    }
+    internalChanges.metadata = {
+      ...internalChanges.metadata,
+      ...{
+        pluginInfo: "xyz",
+      },
+    }
 
     const entity = await paymentCollectionService.update(
       IdMap.getId("payment-collection-id1"),
-      changes
+      submittedChanges
     )
     expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
     expect(paymentCollectionRepository.save).toHaveBeenCalledWith(
-      expect.objectContaining(changes)
+      expect.objectContaining(internalChanges)
     )
 
     expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)

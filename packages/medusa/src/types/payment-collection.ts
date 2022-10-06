@@ -5,6 +5,7 @@ export type CreatePaymentCollectionInput = {
   type: PaymentCollectionType
   currency_code: string
   amount: number
+  created_by: string
   metadata?: any
   description?: string
 }

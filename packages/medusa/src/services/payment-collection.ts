@@ -2,7 +2,7 @@ import { DeepPartial, EntityManager, IsNull } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
-import { buildQuery, isDefined } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import { PaymentCollection, PaymentCollectionStatus } from "../models"
 import { TransactionBaseService } from "../interfaces"
@@ -64,10 +64,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     return paymentCollection
   }
 
-  async create(
-    data: CreatePaymentCollectionInput,
-    context: { loggedInUserId: string }
-  ): Promise<PaymentCollection> {
+  async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (transactionManager) => {
       const paymentCollectionRepository =
         transactionManager.getCustomRepository(
@@ -81,7 +78,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         currency_code: data.currency_code,
         amount: data.amount,
         metadata: data.metadata,
-        created_by: context.loggedInUserId,
+        created_by: data.created_by,
         description: data.description,
       })
 
@@ -109,7 +106,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
       const paymentCollection = await this.retrieve(paymentCollectionId)
 
       for (const key of Object.keys(data)) {
-        if (isDefined(data[key])) {
+        if (key === "metadata" && data.metadata) {
+          paymentCollection[key] = setMetadata(paymentCollection, data.metadata)
+        } else if (isDefined(data[key])) {
           paymentCollection[key] = data[key]
         }
       }
