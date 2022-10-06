@@ -37,6 +37,8 @@ yarn build
 
 Medusa provides a CLI tool to be used for development. This tool facilitates testing your local installment and changes to Medusa’s core without having to publish the changes to NPM.
 
+Use `yarn dlx` or npm command instead of yarn global if you have [yarn 2 Migration](https://yarnpkg.com/getting-started/migration#use-yarn-dlx-instead-of-yarn-global).
+
 To install Medusa’s dev CLI tool:
 
 ```bash npm2yarn
