@@ -10,7 +10,6 @@ import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 
 const route = Router()
 

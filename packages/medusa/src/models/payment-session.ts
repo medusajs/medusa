@@ -10,8 +10,10 @@ import {
 
 import { BaseEntity } from "../interfaces"
 import { Cart } from "./cart"
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
@@ -48,6 +50,11 @@ export class PaymentSession extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    Column({ type: resolveDbType("timestamptz"), nullable: true }),
+  ])
+  payment_authorized_at: Date
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -14,7 +14,7 @@
 </h4>
 
 <p align="center">
-An open-source composable commerce engine built for developers.
+An open source composable commerce engine built for developers.
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -78,14 +78,14 @@ You can learn more about [Medusa’s architecture in our documentation](https://
 - **Products and Collections APIs:** Add products with extensive customization settings and sort them into collections.
 - **Region API:** Configure and manage multiple regions and currencies all from one platform.
 - **Plugin API:** Easily integrate fulfillment providers, payment providers, notification services, and many other custom tools and third-party services.
-- ****PriceList and Promotions APIs:**** Advanced pricing for products with conditions based on its amount in the cart or promotions and discounts.
-- **Tax API:** Advanced tax configurations specific to multiple regions, with capability of specifying taxes for specific products.
+- ****PriceList and Promotions APIs:**** Advanced pricing for products with conditions based on the amount in the cart or promotions and discounts.
+- **Tax API:** Advanced tax configurations specific to multiple regions, with the capability of specifying taxes for specific products.
 
 See more of the [ecommerce features on our documentation](https://docs.medusajs.com/#features).
 
 ## Roadmap
 
-Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) prior to starting the implementation process.
+Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
 
 ### **2022**
 
@@ -106,7 +106,7 @@ Write-ups for all features will be made available in [Github discussions](https
 
 ## Plugins
 
-As a headless and extendible solution, Medusa allows you to integrate third-party services or add custom features into Medusa by installing Plugins.
+As a headless and extendible solution, Medusa allows you to integrate third-party services or add custom features to Medusa by installing Plugins.
 
 Check out [our available plugins](https://github.com/medusajs/medusa/tree/master/packages) that you can install and use instantly on your Medusa server.
 
@@ -114,7 +114,7 @@ Check out [our available plugins](https://github.com/medusajs/medusa/tree/master
 
 Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market.
 
-Whether it is fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
+Whether it is fixing bugs, improving our documentation, or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
 
 ## Community & Support
 

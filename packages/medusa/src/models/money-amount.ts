@@ -16,6 +16,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
+  @Index()
   @Column()
   currency_code: string
 
