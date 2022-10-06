@@ -4,6 +4,7 @@ import {
   AdminGetOrdersParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
+import { FindParams } from "@medusajs/medusa/dist/types/common"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
@@ -11,7 +12,12 @@ import { queryKeysFactory } from "../../utils/index"
 
 const ADMIN_ORDERS_QUERY_KEY = `admin_orders` as const
 
-export const adminOrderKeys = queryKeysFactory(ADMIN_ORDERS_QUERY_KEY)
+export const adminOrderKeys = {
+  ...queryKeysFactory(ADMIN_ORDERS_QUERY_KEY),
+  detailOrder(id: string, query?: FindParams) {
+    return [...this.detail(id), { ...(query || {}) }]
+  }
+}
 
 type OrderQueryKeys = typeof adminOrderKeys
 
@@ -34,16 +40,17 @@ export const useAdminOrders = (
 
 export const useAdminOrder = (
   id: string,
+  query?: FindParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminOrdersRes>,
     Error,
-    ReturnType<OrderQueryKeys["detail"]>
+    ReturnType<OrderQueryKeys["detailOrder"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminOrderKeys.detail(id),
-    () => client.admin.orders.retrieve(id),
+    adminOrderKeys.detailOrder(id, query),
+    () => client.admin.orders.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const
