@@ -344,7 +344,7 @@ export const allowedAdminOrdersFields = [
 export const allowedAdminOrdersRelations = [
   "customer",
   "region",
-  "sales_channels",
+  "sales_channel",
   "billing_address",
   "shipping_address",
   "discounts",
