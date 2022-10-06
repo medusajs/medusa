@@ -15,7 +15,8 @@ describe("GET /store/carts", () => {
     })
 
     it("calls retrieve from CartService", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
+      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns cart", () => {
@@ -41,7 +42,7 @@ describe("GET /store/carts", () => {
     it("calls get product from productSerice", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith("none", {
-        relations: ["customer"],
+        select: ["id", "customer_id"],
       })
     })
 

@@ -42,6 +42,7 @@ type ShippingMethodTotals = {
 type GetShippingMethodTotalsOptions = {
   include_tax?: boolean
   use_tax_lines?: boolean
+  calculation_context?: TaxCalculationContext
 }
 
 type LineItemTotals = {
@@ -54,18 +55,17 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
-  gift_card_total: number
 }
 
 type LineItemTotalsOptions = {
   include_tax?: boolean
   use_tax_lines?: boolean
   exclude_gift_cards?: boolean
+  calculation_context?: TaxCalculationContext
 }
 
 type GetLineItemTotalOptions = {
   include_tax?: boolean
-  exclude_gift_cards?: boolean
   exclude_discounts?: boolean
 }
 
@@ -189,9 +189,11 @@ class TotalsService extends TransactionBaseService {
     cartOrOrder: Cart | Order,
     opts: GetShippingMethodTotalsOptions = {}
   ): Promise<ShippingMethodTotals> {
-    const calculationContext = await this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-    })
+    const calculationContext =
+      opts.calculation_context ||
+      (await this.getCalculationContext(cartOrOrder, {
+        exclude_shipping: true,
+      }))
     calculationContext.shipping_methods = [shippingMethod]
 
     const totals = {
@@ -453,42 +455,6 @@ class TotalsService extends TransactionBaseService {
             discount: {
               amount: ld.amount,
               unit_amount: Math.round(ld.amount / ld.item.quantity),
-            },
-          }
-        }
-      }
-    }
-
-    if (!options.exclude_gift_cards) {
-      let lineGiftCards: LineDiscountAmount[] = []
-      if (orderOrCart.gift_cards && orderOrCart.gift_cards.length) {
-        const subtotal = await this.getSubtotal(orderOrCart)
-        const giftCardTotal = await this.getGiftCardTotal(orderOrCart)
-
-        // If the fixed discount exceeds the subtotal we should
-        // calculate a 100% discount
-        const nominator = Math.min(giftCardTotal.total, subtotal)
-        const percentage = nominator / subtotal
-
-        lineGiftCards = orderOrCart.items.map((l) => {
-          return {
-            item: l,
-            amount: Math.round(l.unit_price * l.quantity * percentage),
-          }
-        })
-      }
-
-      for (const lgc of lineGiftCards) {
-        if (allocationMap[lgc.item.id]) {
-          allocationMap[lgc.item.id].gift_card = {
-            amount: lgc.amount,
-            unit_amount: Math.round(lgc.amount / lgc.item.quantity),
-          }
-        } else {
-          allocationMap[lgc.item.id] = {
-            gift_card: {
-              amount: lgc.amount,
-              unit_amount: Math.round(lgc.amount / lgc.item.quantity),
             },
           }
         }
@@ -784,10 +750,12 @@ class TotalsService extends TransactionBaseService {
     cartOrOrder: Cart | Order,
     options: LineItemTotalsOptions = {}
   ): Promise<LineItemTotals> {
-    const calculationContext = await this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-      exclude_gift_cards: options.exclude_gift_cards,
-    })
+    const calculationContext =
+      options.calculation_context ||
+      (await this.getCalculationContext(cartOrOrder, {
+        exclude_shipping: true,
+        exclude_gift_cards: options.exclude_gift_cards,
+      }))
     const lineItemAllocation =
       calculationContext.allocation_map[lineItem.id] || {}
 
@@ -802,7 +770,6 @@ class TotalsService extends TransactionBaseService {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
 
-    const gift_card_total = lineItemAllocation.gift_card?.amount || 0
     const discount_total =
       (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
 
@@ -810,7 +777,6 @@ class TotalsService extends TransactionBaseService {
       unit_price: lineItem.unit_price,
       quantity: lineItem.quantity,
       subtotal,
-      gift_card_total,
       discount_total,
       total: subtotal - discount_total,
       original_total: subtotal,
@@ -899,12 +865,16 @@ class TotalsService extends TransactionBaseService {
         lineItemTotals.tax_lines,
         calculationContext
       )
-      calculationContext.allocation_map = {} // Don't account for discounts
+      const noDiscountContext = {
+        ...calculationContext,
+        allocation_map: {}, // Don't account for discounts
+      }
+
       lineItemTotals.original_tax_total =
         await this.taxCalculationStrategy_.calculate(
           [lineItem],
           lineItemTotals.tax_lines,
-          calculationContext
+          noDiscountContext
         )
 
       if (
@@ -949,10 +919,6 @@ class TotalsService extends TransactionBaseService {
       toReturn += lineItemTotals.discount_total
     }
 
-    if (!options.exclude_gift_cards) {
-      toReturn += lineItemTotals.gift_card_total
-    }
-
     if (options.include_tax) {
       toReturn += lineItemTotals.tax_total
     }
@@ -983,13 +949,21 @@ class TotalsService extends TransactionBaseService {
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
    */
-  async getGiftCardTotal(cartOrOrder: Cart | Order): Promise<{
+  async getGiftCardTotal(
+    cartOrOrder: Cart | Order,
+    opts: { gift_cardable?: number } = {}
+  ): Promise<{
     total: number
     tax_total: number
   }> {
-    const subtotal = await this.getSubtotal(cartOrOrder)
-    const discountTotal = await this.getDiscountTotal(cartOrOrder)
-    const giftCardable = subtotal - discountTotal
+    let giftCardable: number
+    if (typeof opts.gift_cardable !== "undefined") {
+      giftCardable = opts.gift_cardable
+    } else {
+      const subtotal = await this.getSubtotal(cartOrOrder)
+      const discountTotal = await this.getDiscountTotal(cartOrOrder)
+      giftCardable = subtotal - discountTotal
+    }
 
     if ("gift_card_transactions" in cartOrOrder) {
       // gift_card_transactions only exist on orders so we can
@@ -1040,7 +1014,9 @@ class TotalsService extends TransactionBaseService {
     if (cartOrOrder.region?.gift_cards_taxable) {
       return {
         total: orderGiftCardAmount,
-        tax_total: (orderGiftCardAmount * cartOrOrder.region.tax_rate) / 100,
+        tax_total: Math.round(
+          (orderGiftCardAmount * cartOrOrder.region.tax_rate) / 100
+        ),
       }
     }
 

@@ -21,7 +21,6 @@ import { Cart } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { CartCreateProps } from "../../../../types/cart"
 import { isDefined } from "../../../../utils"
 
@@ -181,14 +180,12 @@ export default async (req, res) => {
     }
   })
 
-  cart = await cartService.retrieve(cart!.id, {
+  cart = await cartService.retrieveWithTotals(cart!.id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
-
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart })
 }
 
 export class Item {

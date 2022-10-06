@@ -35,7 +35,7 @@ describe("POST /store/carts", () => {
     })
 
     it("calls CartService retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {

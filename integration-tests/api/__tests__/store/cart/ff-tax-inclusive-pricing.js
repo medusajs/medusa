@@ -495,7 +495,6 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
 
         const expectedItemTotals = {
           subtotal: 200,
-          gift_card_total: 0,
           discount_total: 30,
           total: 204,
           original_total: 240,
