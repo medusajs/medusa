@@ -18,6 +18,13 @@ const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
+const customerData = {
+  email: "medusa@test.dk",
+  password: "medusatest",
+  first_name: "medusa",
+  last_name: "medusa",
+}
+
 describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
   let medusaProcess
   let dbConnection
@@ -79,18 +86,9 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
     it("should assign sales channel to order on cart completion", async () => {
       const api = useApi()
 
-      const customerRes = await api.post(
-        "/store/customers",
-        {
-          email: "medusa@test.dk",
-          password: "medusatest",
-          first_name: "medusa",
-          last_name: "medusa",
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
 
       const createCartRes = await api.post("/store/carts", {
         region_id: "test-region",
@@ -115,8 +113,6 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
         `/store/carts/${cart.id}/complete-cart`
       )
 
-      console.log(createdOrder.data)
-
       expect(createdOrder.data.type).toEqual("order")
       expect(createdOrder.status).toEqual(200)
       expect(createdOrder.data.data).toEqual(
@@ -129,18 +125,9 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
     it("should assign default sales channel to order on cart completion", async () => {
       const api = useApi()
 
-      const customerRes = await api.post(
-        "/store/customers",
-        {
-          email: "medusa@test.dk",
-          password: "medusatest",
-          first_name: "medusa",
-          last_name: "medusa",
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
 
       const createCartRes = await api.post("/store/carts", {
         region_id: "test-region",
@@ -163,8 +150,6 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
       const createdOrder = await api.post(
         `/store/carts/${cart.id}/complete-cart`
       )
-
-      console.log(createdOrder.data)
 
       expect(createdOrder.data.type).toEqual("order")
       expect(createdOrder.status).toEqual(200)
