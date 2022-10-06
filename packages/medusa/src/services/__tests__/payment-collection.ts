@@ -141,6 +141,25 @@ describe("PaymentCollectionService", () => {
     )
   })
 
+  it("should throw error to update a non-existing payment collection", async () => {
+    const submittedChanges = {
+      description: "updated description",
+      status: PaymentCollectionStatus.CAPTURED,
+      metadata: {
+        extra: 123,
+        arr: ["a", "b", "c"],
+      },
+    }
+
+    const payCol = paymentCollectionService.update(
+      IdMap.getId("payment-collection-non-existing"),
+      submittedChanges
+    )
+    expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(0)
+    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+    expect(payCol).rejects.toThrow(Error)
+  })
+
   it("should delete a payment collection", async () => {
     const entity = await paymentCollectionService.delete(
       IdMap.getId("payment-collection-id1")
@@ -159,6 +178,15 @@ describe("PaymentCollectionService", () => {
       PaymentCollectionService.Events.DELETED,
       entity
     )
+  })
+
+  it("should ignore to delete a non-existing payment collection", async () => {
+    const entity = await paymentCollectionService.delete(
+      IdMap.getId("payment-collection-non-existing")
+    )
+    expect(paymentCollectionRepository.remove).toHaveBeenCalledTimes(0)
+    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+    expect(entity).toBe(undefined)
   })
 
   it("should throw and error when trying to delete an initialized payment collection", async () => {

@@ -131,7 +131,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
         this.paymentCollectionRepository_
       )
 
-      const paymentCollection = await this.retrieve(paymentCollectionId)
+      const paymentCollection = await this.retrieve(paymentCollectionId).catch(
+        () => void 0
+      )
 
       if (!paymentCollection) {
         return
