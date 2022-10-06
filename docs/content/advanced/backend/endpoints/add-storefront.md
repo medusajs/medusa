@@ -53,7 +53,7 @@ import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 ```
 
-Then, create an object that will hold the CORS configurations:
+Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations:
 
 ```js
 const corsOptions = {
@@ -203,7 +203,7 @@ const customer = await customerService.retrieve(id)
 
 ### Route Parameters
 
-The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+The routes you create receive two parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
 
 ```js
 export default (rootDirectory, pluginOptions) => {

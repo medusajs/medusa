@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:16](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L16)
+[packages/medusa/src/services/product-type.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L16)
 
 ## Properties
 
@@ -36,7 +36,7 @@ BaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:14](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L14)
+[packages/medusa/src/services/product-type.ts:14](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L14)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:15](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L15)
+[packages/medusa/src/services/product-type.ts:15](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L15)
 
 ## Methods
 
@@ -71,7 +71,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:72](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L72)
+[packages/medusa/src/services/product-type.ts:72](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L72)
 
 ___
 
@@ -96,7 +96,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:88](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L88)
+[packages/medusa/src/services/product-type.ts:88](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L88)
 
 ___
 
@@ -122,7 +122,7 @@ the result of the find one operation.
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:47](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L47)
+[packages/medusa/src/services/product-type.ts:47](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L47)
 
 ___
 
@@ -142,4 +142,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:23](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/product-type.ts#L23)
+[packages/medusa/src/services/product-type.ts:23](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/product-type.ts#L23)

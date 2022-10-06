@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/money-amount.ts:27](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L27)
+[models/money-amount.ts:27](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L27)
 
 ___
 
@@ -42,7 +42,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:24](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L24)
+[models/money-amount.ts:24](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L24)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:20](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L20)
+[models/money-amount.ts:20](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L20)
 
 ___
 
@@ -76,7 +76,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -90,7 +90,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:33](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L33)
+[models/money-amount.ts:33](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L33)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:30](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L30)
+[models/money-amount.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L30)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:43](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L43)
+[models/money-amount.ts:43](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L43)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:36](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L36)
+[models/money-amount.ts:36](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L36)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:61](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L61)
+[models/money-amount.ts:61](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L61)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:57](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L57)
+[models/money-amount.ts:57](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L57)
 
 ___
 
@@ -164,7 +164,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:53](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L53)
+[models/money-amount.ts:53](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L53)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:47](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L47)
+[models/money-amount.ts:47](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L47)
 
 ## Methods
 
@@ -198,4 +198,4 @@ ___
 
 #### Defined in
 
-[models/money-amount.ts:63](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/money-amount.ts#L63)
+[models/money-amount.ts:63](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/money-amount.ts#L63)

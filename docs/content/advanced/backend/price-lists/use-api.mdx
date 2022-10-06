@@ -1,0 +1,472 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Use PriceList API
+
+In this document, you’ll learn how to use the PriceList Admin APIs to create, update, and manage prices in a price list.
+
+:::note
+
+This document doesn't cover what price lists are and their basics. If you’re interested to learn about that, check out [this documentation](./index.md) instead.
+
+:::
+
+## Prerequisites
+
+### Medusa Components
+
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+
+### JS Client
+
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and [have created an instance of the client](../../../js-client/overview.md#configuration).
+
+### Authenticated Admin User
+
+You must be an authenticated admin user before following along with the steps in the tutorial.
+
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+
+---
+
+## Create Price List
+
+When you create a price list, you can specify different conditions to control when the price list can be applied.
+
+In the body of your request, aside from the required fields, you can send the following fields to apply different conditions:
+
+```js
+{
+  prices: [
+    {
+      region_id,
+      currency_code,
+      min_quantity,
+      max_quantity
+    }
+  ],
+  customer_groups: [
+    {
+      id
+    }
+  ]
+}
+```
+
+:::info
+
+You can learn more about what the conditions you can apply on a price list and its prices in this documentation.
+
+:::
+
+For example, sending the following request creates a price list with two prices: one that is applied when the maximum quantity of the product variant in the cart is 3; another is applied when the minimum quantity of the same variant in the cart is 4:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+import { PriceListType } from "@medusajs/medusa"
+
+medusa.admin.priceLists.create({
+  name: 'New Price List',
+  description: 'A new price list',
+  type: PriceListType.SALE,
+  status: 'active',
+  prices: [
+    {
+      amount: 1000,
+      variant_id,
+      currency_code: 'eur',
+      max_quantity: 3
+    },
+    {
+      amount: 1500,
+      variant_id,
+      currency_code: 'eur',
+      min_quantity: 4
+    }
+  ]
+})
+.then(({ price_list }) => {
+  console.log(price_list.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'New Price List',
+    description: 'A new price list',
+    type: 'sale',
+		status: 'active',
+    prices: [
+      {
+        amount: 1000,
+        variant_id,
+        currency_code: 'eur',
+        max_quantity: 3
+      },
+      {
+        amount: 1500,
+        variant_id,
+        currency_code: 'eur',
+        min_quantity: 4
+      }
+    ]
+  })
+})
+.then((response) => response.json())
+.then(({ price_list }) => {
+  console.log(price_list.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<YOUR_SERVER_URL>/admin/price-lists' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "New Price List",
+    "description": "A new price list",
+    "type": "sale",
+		"status": "active",
+    "prices": [
+        {
+            "amount": 1500,
+            "variant_id": "<VARIANT_ID>",
+            "max_quantity": 3,
+            "currency_code": "eur"
+        },
+        {
+            "amount": 1000,
+            "variant_id": "<VARIANT_ID>",
+            "currency_code": "eur",
+            "min_quantity": 4
+        }
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the created price list.
+
+You can check the full list of request body parameters in the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceList).
+
+---
+
+## Get Price List’s Details
+
+You can retrieve all of a price list’s details using the Get a Price List endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.retrieve(priceListId)
+.then(({ price_list }) => {
+  console.log(price_list.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`)
+.then((response) => response.json())
+.then(({ price_list }) => {
+  console.log(price_list.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```jsx
+curl --location --request GET '<SERVER_URL>/admin/price-lists/{id}' \
+--header 'Authorization: Bearer {api_token}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Update a Price List
+
+After creating a price list, you can update all of its fields including its status, prices, and more using the [Update Price List](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList) endpoint.
+
+For example, by sending the following request the end date of the price list will be updated:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.update(priceListId, {
+  ends_at: '2022-10-11'
+})
+.then(({ price_list }) => {
+  console.log(price_list.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    ends_at: '2022-10-11'
+  })
+})
+.then((response) => response.json())
+.then(({ price_list }) => {
+  console.log(price_list.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "ends_at": "2022-10-11"
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the updated price list.
+
+For a full list of request body parameters, check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPriceList).
+
+---
+
+## Manage Prices
+
+### Add Prices
+
+You can add prices to your price list after creating it using the [Update Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch) endpoint.
+
+You can also set the `override` request body parameter to `true` to replace the existing prices in the price list.
+
+For example, sending the following request adds a new price to the price list:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.addPrices(priceListId, {
+  prices: [
+    {
+      amount: 1200,
+      variant_id,
+      currency_code: 'eur'
+    }
+  ]
+})
+.then(({ price_list }) => {
+  console.log(price_list.id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    prices: [
+	    {
+	      amount: 1200,
+	      variant_id,
+	      currency_code: 'eur'
+	    }
+	  ]
+  })
+})
+.then((response) => response.json())
+.then(({ price_list }) => {
+  console.log(price_list.id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "prices": [
+        {
+            "amount": 1200,
+            "variant_id": "<VARIANT_ID>",
+            "currency_code": "eur"
+        }
+    ]
+}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the price list with the updated prices.
+
+For a full list of request body parameters, check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceListPricesBatch).
+
+### Delete a Product’s Prices
+
+You can delete all the prices of a product’s variants using the [Delete Product Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListProductsProductPrices) endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
+.then(({ ids, object, deleted }) => {
+  console.log(ids.length);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`, {
+  method: 'DELETE'
+})
+.then((response) => response.json())
+.then(({ ids, object, deleted }) => {
+  console.log(ids.length)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
+--header 'Authorization: Bearer {api_token}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the IDs of the deleted prices.
+
+### Delete a Variant’s Prices
+
+You can delete all the prices of a variant using the [Delete Variant Prices](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListVariantsVariantPrices) endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
+.then(({ ids, object, deleted }) => {
+  console.log(ids);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`, {
+  method: 'DELETE'
+})
+.then((response) => response.json())
+.then(({ ids, object, deleted }) => {
+  console.log(ids.length)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```jsx
+curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
+--header 'Authorization: Bearer {api_token}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the IDs of the deleted prices.
+
+---
+
+## Delete Price List
+
+You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/DeletePriceListsPriceList) endpoint:
+
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
+```jsx
+medusa.admin.priceLists.delete(priceListId)
+.then(({ id, object, deleted }) => {
+  console.log(id);
+});
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```jsx
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+  method: 'DELETE'
+})
+.then((response) => response.json())
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```jsx
+curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+--header 'Authorization: Bearer {api_token}'
+```
+
+</TabItem>
+</Tabs>
+
+This request returns the ID of the deleted price list.
+
+---
+
+## What’s Next 🚀
+
+- Learn more about [price lists](./index.md).
+- Learn how the [price selection strategy works](../price-selection-strategy/index.md).

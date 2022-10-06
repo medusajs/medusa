@@ -1,16 +1,15 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import {
   DeleteResponse,
   FindParams,
   PaginatedResponse,
 } from "../../../../types/common"
+import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
-import { FlagRouter } from "../../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 
 const route = Router()
 
@@ -22,10 +21,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     relations.push("sales_channel")
   }
 
-  if (featureFlagRouter.isFeatureEnabled(OrderEditingFeatureFlag.key)) {
-    relations.push("edits")
-  }
-
   /**
    * List orders
    */
@@ -35,6 +30,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -49,6 +45,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -347,6 +344,7 @@ export const allowedAdminOrdersFields = [
 export const allowedAdminOrdersRelations = [
   "customer",
   "region",
+  "sales_channel",
   "billing_address",
   "shipping_address",
   "discounts",

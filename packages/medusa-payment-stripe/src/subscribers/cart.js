@@ -1,14 +1,14 @@
 class CartSubscriber {
   constructor({
+    manager,
     cartService,
-    customerService,
     paymentProviderService,
     eventBusService,
   }) {
     this.cartService_ = cartService
-    this.customerService_ = customerService
     this.paymentProviderService_ = paymentProviderService
     this.eventBus_ = eventBusService
+    this.manager_ = manager
 
     this.eventBus_.subscribe("cart.customer_updated", async (cart) => {
       await this.onCustomerUpdated(cart)
@@ -16,38 +16,44 @@ class CartSubscriber {
   }
 
   async onCustomerUpdated(cartId) {
-    const cart = await this.cartService_.retrieve(cartId, {
-      select: [
-        "subtotal",
-        "tax_total",
-        "shipping_total",
-        "discount_total",
-        "total",
-      ],
-      relations: [
-        "items",
-        "billing_address",
-        "shipping_address",
-        "region",
-        "region.payment_providers",
-        "items",
-        "items.adjustments",
-        "payment_sessions",
-        "customer",
-      ],
+    await this.manager_.transaction(async (transactionManager) => {
+      const cart = await this.cartService_
+        .withTransaction(transactionManager)
+        .retrieve(cartId, {
+          select: [
+            "subtotal",
+            "tax_total",
+            "shipping_total",
+            "discount_total",
+            "gift_card_total",
+            "total",
+          ],
+          relations: [
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.payment_providers",
+            "items",
+            "items.adjustments",
+            "payment_sessions",
+            "customer",
+          ],
+        })
+
+      if (!cart.payment_sessions?.length) {
+        return Promise.resolve()
+      }
+
+      const session = cart.payment_sessions.find(
+        (ps) => ps.provider_id === "stripe"
+      )
+
+      if (session) {
+        return await this.paymentProviderService_
+          .withTransaction(transactionManager)
+          .updateSession(session, cart)
+      }
     })
-
-    if (!cart.payment_sessions?.length) {
-      return Promise.resolve()
-    }
-
-    const session = cart.payment_sessions.find(
-      (ps) => ps.provider_id === "stripe"
-    )
-
-    if (session) {
-      return await this.paymentProviderService_.updateSession(session, cart)
-    }
   }
 }
 

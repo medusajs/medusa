@@ -82,6 +82,11 @@ export default (app) => {
     middlewares.wrap(require("./update-order-edit-line-item").default)
   )
 
+  route.delete(
+    "/:id/items/:item_id",
+    middlewares.wrap(require("./delete-line-item").default)
+  )
+
   return app
 }
 

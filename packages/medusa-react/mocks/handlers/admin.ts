@@ -1783,6 +1783,22 @@ export const adminHandlers = [
       })
     )
   }),
+  
+  rest.delete("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              type: 'item_remove'
+            },
+          ],
+        },
+      })
+    )
+  }),
 
   rest.get("/admin/auth", (req, res, ctx) => {
     return res(

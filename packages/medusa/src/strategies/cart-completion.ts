@@ -328,9 +328,15 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     if (err) {
       if (idempotencyKey.recovery_point !== "started") {
         await this.manager_.transaction(async (transactionManager) => {
-          await cartService
-            .withTransaction(transactionManager)
-            .deleteTaxLines(id)
+          try {
+            await orderService
+              .withTransaction(transactionManager)
+              .retrieveByCartId(id)
+          } catch (error) {
+            await cartService
+              .withTransaction(transactionManager)
+              .deleteTaxLines(id)
+          }
         })
       }
       throw err

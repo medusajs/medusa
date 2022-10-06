@@ -389,6 +389,63 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
+  async removeLineItem(orderEditId: string, lineItemId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const orderEdit = await this.retrieve(orderEditId, {
+        select: [
+          "id",
+          "created_at",
+          "requested_at",
+          "confirmed_at",
+          "declined_at",
+          "canceled_at",
+        ],
+      })
+
+      const isOrderEditActive = OrderEditService.isOrderEditActive(orderEdit)
+
+      if (!isOrderEditActive) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Can not update an item on the order edit ${orderEditId} with the status ${orderEdit.status}`
+        )
+      }
+
+      const lineItem = await this.lineItemService_
+        .withTransaction(manager)
+        .retrieve(lineItemId, {
+          select: ["id", "order_edit_id", "original_item_id"],
+        })
+        .catch(() => void 0)
+
+      if (!lineItem) {
+        return
+      }
+
+      if (
+        lineItem.order_edit_id !== orderEditId ||
+        !lineItem.original_item_id
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid line item id ${lineItemId} it does not belong to the same order edit ${orderEdit.order_id}.`
+        )
+      }
+
+      await this.lineItemService_
+        .withTransaction(manager)
+        .deleteWithTaxLines(lineItem.id)
+
+      await this.refreshAdjustments(orderEditId)
+
+      await this.orderEditItemChangeService_.withTransaction(manager).create({
+        original_line_item_id: lineItem.original_item_id,
+        type: OrderEditItemChangeType.ITEM_REMOVE,
+        order_edit_id: orderEdit.id,
+      })
+    })
+  }
+
   async refreshAdjustments(orderEditId: string) {
     const manager = this.transactionManager_ ?? this.manager_
 

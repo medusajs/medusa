@@ -69,11 +69,13 @@
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "generate:entities": "typedoc --options typedoc.entities.js",
-    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"
+    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
+    "generate:announcement": "node ./scripts/doc-change-release.js"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.5",
     "@changesets/cli": "^2.23.0",
+    "@octokit/core": "^4.0.5",
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^5.0.1",

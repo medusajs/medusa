@@ -2,8 +2,8 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
 
 import {
+  StoreOrderEditsRes,
   StorePostOrderEditsOrderEditDecline,
-  StoreOrderEditsRes
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -24,6 +24,23 @@ export const useDeclineOrderEdit = (
   return useMutation(
     (payload: StorePostOrderEditsOrderEditDecline) =>
       client.orderEdits.decline(id, payload),
+    buildOptions(
+      queryClient,
+      [orderEditQueryKeys.lists(), orderEditQueryKeys.detail(id)],
+      options
+    )
+  )
+}
+
+export const useCompleteOrderEdit = (
+  id: string,
+  options?: UseMutationOptions<Response<StoreOrderEditsRes>, Error>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.orderEdits.complete(id),
     buildOptions(
       queryClient,
       [orderEditQueryKeys.lists(), orderEditQueryKeys.detail(id)],

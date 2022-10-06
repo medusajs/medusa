@@ -1,4 +1,7 @@
-import { StoreOrderEditsRes, StorePostOrderEditsOrderEditDecline } from "@medusajs/medusa"
+import {
+  StoreOrderEditsRes,
+  StorePostOrderEditsOrderEditDecline,
+} from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -12,12 +15,17 @@ class OrderEditsResource extends BaseResource {
   }
 
   decline(
-    id: string, 
+    id: string,
     payload: StorePostOrderEditsOrderEditDecline,
     customHeaders: Record<string, any> = {}
   ) {
     const path = `/store/order-edits/${id}/decline`
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  complete(id: string, customHeaders: Record<string, any> = {}) {
+    const path = `/store/order-edits/${id}/complete`
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 }
 

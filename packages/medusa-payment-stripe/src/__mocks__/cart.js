@@ -185,6 +185,9 @@ export const carts = {
 }
 
 export const CartServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)

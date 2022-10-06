@@ -2,20 +2,6 @@
 
 In this document, you’ll learn how you can create an [Entity](overview.md).
 
-## Prerequisites
-
-It’s recommended to create a `tsconfig.json` file in the root of your Medusa server with the following content:
-
-```jsx
-{
-  "compilerOptions": {
-    "experimentalDecorators": true
-  }
-}
-```
-
-This will remove any errors that show up in your IDE related to experimental decorators.
-
 ## Create the Entity
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
@@ -121,7 +107,7 @@ In the constructor, you can use dependency injection to get access to instances 
 
 Then, in the method `list`, you can obtain an instance of the `PostRepository` using `this.manager_.getCustomRepository` passing it `this.postRepository` as a parameter. This lets you use [Custom Repositories with Typeorm](https://typeorm.io/custom-repository) to create custom methods in your repository that work with the data in your database.
 
-After getting an instance of the repository, you can then use [Typeorm’s Repository methods](https://typeorm.io/repository-api) to perform CRUD (Create, Read, Update, Delete) operations on your entity.
+After getting an instance of the repository, you can then use [Typeorm’s Repository methods](https://typeorm.io/repository-api) to perform Create, Read, Update, and Delete (CRUD) operations on your entity.
 
 If you need access to your entity in endpoints, you can then use the methods you define in the service.
 
