@@ -24,51 +24,6 @@ This change in how environment variables are loaded was introduced in version 1.
 
 :::
 
-### Load from .env
-
-A common way to use environment variables during development or in production is using `.env` files.
-
-To load environment variables from a `.env` file, add the following at the top of `medusa-config.js`:
-
-```jsx
-const dotenv = require('dotenv')
-
- let ENV_FILE_NAME = '';
- switch (process.env.NODE_ENV) {
-  case 'production':
-    ENV_FILE_NAME = '.env.production';
-    break;
-  case 'staging':
-    ENV_FILE_NAME = '.env.staging';
-    break;
-  case 'test':
-    ENV_FILE_NAME = '.env.test';
-    break;
-  case 'development':
-  default:
-    ENV_FILE_NAME = '.env';
-    break;
- }
-
- try {
-  dotenv.config({ path: process.cwd() + '/' + ENV_FILE_NAME });
- } catch (e) {
-  //handle error
- }
-```
-
-This code snippet uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables from a local file. The file chosen to be loaded will be loaded based on the current environment.
-
-:::note
-
-`dotenv` should be available to use in your Medusa server project without the need to install it. However, if it’s not available you can install it with the following command:
-
-```npm2yarn
-npm install dotenv --save
-```
-
-:::
-
 ## Database Configuration
 
 Medusa supports two database types: SQLite and PostgreSQL.

@@ -23,12 +23,16 @@ module.exports = {
         {
           type: "doc",
           id: "introduction",
-          label: "Introduction",
+          label: "Architecture Overview",
         },
         {
           type: "doc",
           id: "quickstart/quick-start",
           label: "Quickstart Guide",
+        },
+        {
+          type:"doc",
+          id: "quickstart/quick-start-docker",
         },
         {
           type: "doc",
@@ -187,6 +191,53 @@ module.exports = {
       label: "How-to Guides",
       items: [
         {
+          type: "category",
+          label: "Storefront",
+          items: [
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
+              label: "Implement Cart"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
+              label: "Implement Checkout"
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/price-lists/use-api",
+              label: "Use PriceList APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Use SalesChannel APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Use CustomerGroup APIs"
+            },
+          ]
+        },
+        {
           type: "doc",
           id: "advanced/backend/endpoints/add-storefront",
           label: "Create Endpoint for Storefront"
@@ -252,36 +303,13 @@ module.exports = {
           label: "Create Batch Job Strategy"
         },
         {
-          type: "category",
-          label: "Storefront",
-          items: [
-            {
-              type: "doc",
-              id: "guides/carts-in-medusa",
-              label: "Implement Cart"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
-              label: "Implement Checkout"
-            },
-          ]
+          type: "doc",
+          id: "advanced/backend/batch-jobs/customize-import",
         },
         {
-          type: "category",
-          label: "Admin",
-          items: [
-            {
-              type: "doc",
-              id: "advanced/admin/import-products",
-              label: "Import Products"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
-            },
-          ]
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/override",
+          label: "Override Price Selection"
         },
       ]
     },
@@ -338,6 +366,22 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-lists/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customer-groups/index"
         },
       ]
     },
@@ -472,6 +516,11 @@ module.exports = {
       type: "category",
       label: "Troubleshooting",
       items: [
+        {
+          type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
         {
           type: "doc",
           id: "troubleshooting/cors-issues",
