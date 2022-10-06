@@ -1431,6 +1431,22 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("throws on invalid relation", async () => {
+      const api = useApi()
+
+      try {
+        await api.get("/admin/orders?fields=id&expand=variants", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.data.message).toBe(
+          "Relations [variants] are not valid"
+        )
+      }
+    })
+
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 
@@ -2234,6 +2250,54 @@ describe("/admin/orders", () => {
       })
 
       await expectCancelToReturn({ code: 200 })
+    })
+  })
+
+  describe("GET /admin/orders/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("retrieves an order with fields and expand", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        "/admin/orders/test-order?fields=id&expand=region",
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+        })
+      )
+    })
+
+    it("throws on invalid relation", async () => {
+      const api = useApi()
+
+      try {
+        await api.get("/admin/orders/test-order?fields=id&expand=variants", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.data.message).toBe(
+          "Relations [variants] are not valid"
+        )
+      }
     })
   })
 })
