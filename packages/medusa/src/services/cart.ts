@@ -185,6 +185,7 @@ class CartService extends TransactionBaseService {
     relationSet.add("discounts")
     relationSet.add("discounts.rule")
     relationSet.add("shipping_methods")
+    relationSet.add("shipping_methods.tax_lines")
     relationSet.add("shipping_address")
     relationSet.add("region")
     relationSet.add("region.tax_rates")
