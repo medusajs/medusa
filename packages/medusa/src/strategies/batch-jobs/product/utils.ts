@@ -56,9 +56,7 @@ export function transformVariantData(
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("variant.")[1]
-
     set(ret, key, productData[k])
-    ret[key] = productData[k]
   })
 
   // include product handle to keep track of associated product
