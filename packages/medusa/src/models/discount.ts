@@ -6,7 +6,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne
+  ManyToOne,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -78,9 +78,11 @@ export class Discount extends SoftDeletableEntity {
   metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private upperCaseCode(): void {
-    this.code = this.code.toUpperCase()
-    if (this.id) return
+  private upperCaseCodeAndTrim(): void {
+    this.code = this.code.toUpperCase().trim()
+    if (this.id) {
+      return
+    }
 
     this.id = generateEntityId(this.id, "disc")
   }
