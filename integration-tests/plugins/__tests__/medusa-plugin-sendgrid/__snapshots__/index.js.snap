@@ -328,7 +328,6 @@ Object {
       "title": "Intelligent Plastic Chips",
       "totals": Object {
         "discount_total": 0,
-        "gift_card_total": 0,
         "original_tax_total": 200,
         "original_total": 1200,
         "quantity": 1,
@@ -1022,7 +1021,6 @@ Object {
       "title": "Intelligent Plastic Chips",
       "totals": Object {
         "discount_total": 0,
-        "gift_card_total": 0,
         "original_tax_total": 400,
         "original_total": 2400,
         "quantity": 2,
@@ -1477,7 +1475,6 @@ Object {
       "title": "Intelligent Plastic Chips",
       "totals": Object {
         "discount_total": 0,
-        "gift_card_total": 0,
         "original_tax_total": 200,
         "original_total": 1200,
         "quantity": 1,

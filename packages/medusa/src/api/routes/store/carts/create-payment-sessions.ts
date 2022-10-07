@@ -1,6 +1,5 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 
@@ -92,19 +91,14 @@ export default async (req, res) => {
 
                   const cart = await cartService
                     .withTransaction(stageManager)
-                    .retrieve(id, {
+                    .retrieveWithTotals(id, {
                       select: defaultStoreCartFields,
                       relations: defaultStoreCartRelations,
                     })
 
-                  const data = await decorateLineItemsWithTotals(cart, req, {
-                    force_taxes: false,
-                    transactionManager: stageManager,
-                  })
-
                   return {
                     response_code: 200,
-                    response_body: { cart: data },
+                    response_body: { cart },
                   }
                 }
               )

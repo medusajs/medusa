@@ -492,8 +492,7 @@ class OrderService extends TransactionBaseService {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartServiceTx.retrieve(cartId, {
-        select: ["subtotal", "total"],
+      const cart = await cartServiceTx.retrieveWithTotals(cartId, {
         relations: [
           "region",
           "payment",
