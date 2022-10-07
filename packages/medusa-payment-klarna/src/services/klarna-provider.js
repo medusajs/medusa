@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor({ shippingProfileService, totalsService }, options) {
+  constructor({ logger, shippingProfileService, totalsService }, options) {
     super()
 
     /**
@@ -23,6 +23,7 @@ class KlarnaProviderService extends PaymentService {
      *  }
      */
     this.options_ = options
+    this.logger_ = logger
 
     /** @private @const {Klarna} */
     this.klarna_ = axios.create({
@@ -113,13 +114,13 @@ class KlarnaProviderService extends PaymentService {
     if (gift_card_total) {
       const taxRate = cart.gift_card_tax_total / cart.gift_card_total
 
-      order_lines.push({
+      order.order_lines.push({
         name: "Gift Card",
         quantity: 1,
         type: "gift_card",
-        unit_price: -1 * cart.gift_card_total,
+        unit_price: -1 * (cart.gift_card_total + cart.gift_card_tax_total),
         tax_rate: Math.round(taxRate * 10000),
-        total_amount: -1 * cart.gift_card_total,
+        total_amount: -1 * (cart.gift_card_total + cart.gift_card_tax_total),
         total_tax_amount: -1 * cart.gift_card_tax_total,
       })
     }
@@ -146,7 +147,7 @@ class KlarnaProviderService extends PaymentService {
     }
 
     order.order_amount = total
-    order.order_tax_amount = tax_total
+    order.order_tax_amount = tax_total - cart.gift_card_tax_total
     order.purchase_currency = region.currency_code.toUpperCase()
 
     order.merchant_urls = {
@@ -176,7 +177,7 @@ class KlarnaProviderService extends PaymentService {
           id: method.shipping_option.id,
           name: method.shipping_option.name,
           price: method.total,
-          tax_amount: total.tax_total,
+          tax_amount: method.tax_total,
           tax_rate: taxRate * 10000,
         }
       }
@@ -265,6 +266,7 @@ class KlarnaProviderService extends PaymentService {
 
       return klarnaPayment
     } catch (error) {
+      this.logger_.error(error)
       throw error
     }
   }
