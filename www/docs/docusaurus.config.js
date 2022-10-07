@@ -180,6 +180,9 @@ const config = {
         theme: {
           customCss: require.resolve("./src/css/custom.css")
         },
+        gtag: {
+          trackingID: 'G-S7G7X3JYS3',
+        },
       },
     ],
     [
