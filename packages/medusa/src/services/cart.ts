@@ -26,7 +26,7 @@ import {
   LineItemUpdate,
 } from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
-import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -324,15 +324,11 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
-    const validatedId = validateId(cartId)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
 
-    const query = buildQuery(
-      { id: validatedId },
-      { ...options, select, relations }
-    )
+    const query = buildQuery({ id: cartId }, { ...options, select, relations })
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -363,9 +359,8 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.cartRepository_)
-    const validatedId = validateId(cartId)
 
-    const query = buildQuery({ id: validatedId }, options)
+    const query = buildQuery({ id: cartId }, options)
 
     if ((options.select || []).length <= 0) {
       query.select = undefined
@@ -2113,7 +2108,6 @@ class CartService extends TransactionBaseService {
           this.cartRepository_
         )
 
-        const validatedId = validateId(cartId)
         if (typeof key !== "string") {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -2121,7 +2115,7 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const cart = await cartRepo.findOne(validatedId)
+        const cart = await cartRepo.findOne(cartId)
         if (!cart) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
