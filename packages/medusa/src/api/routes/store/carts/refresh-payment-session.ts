@@ -1,5 +1,4 @@
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 
 /**
@@ -57,14 +56,7 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .refreshPaymentSession(id, provider_id)
   })
-  const cart = await cartService.retrieve(id, {
-    select: [
-      "subtotal",
-      "tax_total",
-      "shipping_total",
-      "discount_total",
-      "total",
-    ],
+  const data = await cartService.retrieveWithTotals(id, {
     relations: [
       "region",
       "region.countries",
@@ -75,6 +67,5 @@ export default async (req, res) => {
     ],
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }
