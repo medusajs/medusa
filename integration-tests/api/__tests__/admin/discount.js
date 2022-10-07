@@ -2480,5 +2480,71 @@ describe("/admin/discounts", () => {
         )
       }
     })
+
+    it("should trim and uppercase code on insert", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: " Testing ",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          code: "TESTING",
+        })
+      )
+    })
+
+    it("should trim and uppercase code on retrieve", async () => {
+      const api = useApi()
+
+      await simpleDiscountFactory(dbConnection, {
+        code: "Testing",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+
+      const response = await api
+        .get("/admin/discounts/code/ testing", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          code: "TESTING",
+        })
+      )
+    })
   })
 })
