@@ -76,7 +76,7 @@ class S3Service extends AbstractFileService {
     return {
       writeStream: pass,
       promise: s3.upload(params).promise(),
-      url: `${this.spacesUrl_}/${fileKey}`,
+      url: `${this.s3Url_}/${fileKey}`,
       fileKey,
     }
   }
