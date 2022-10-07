@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   ClaimOrder,
@@ -26,6 +27,7 @@ import {
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import CartService from "./cart"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
@@ -61,6 +63,7 @@ type InjectedDependencies = {
   draftOrderService: DraftOrderService
   inventoryService: InventoryService
   eventBusService: EventBusService
+  featureFlagRouter: FlagRouter
 }
 
 class OrderService extends TransactionBaseService {
@@ -103,6 +106,7 @@ class OrderService extends TransactionBaseService {
   protected readonly draftOrderService_: DraftOrderService
   protected readonly inventoryService_: InventoryService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -123,6 +127,7 @@ class OrderService extends TransactionBaseService {
     draftOrderService,
     inventoryService,
     eventBusService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -145,6 +150,7 @@ class OrderService extends TransactionBaseService {
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
     this.inventoryService_ = inventoryService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -573,6 +579,13 @@ class OrderService extends TransactionBaseService {
         currency_code: region.currency_code,
         metadata: cart.metadata || {},
       } as Partial<Order>
+
+      if (
+        cart.sales_channel_id &&
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        toCreate.sales_channel_id = cart.sales_channel_id
+      }
 
       if (cart.type === "draft_order") {
         const draft = await this.draftOrderService_
