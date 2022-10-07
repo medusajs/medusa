@@ -4,4 +4,4 @@
 "medusa-payment-stripe": patch
 ---
 
-Use rely on cart totals in payment providers
+Rely on cart totals in payment providers
