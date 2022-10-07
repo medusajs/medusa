@@ -1,8 +1,10 @@
 import fs from "fs"
 import aws from "aws-sdk"
 import { AbstractFileService } from "@medusajs/medusa"
+import stream from "stream"
 
 class S3Service extends AbstractFileService {
+  // eslint-disable-next-line no-empty-pattern
   constructor({}, options) {
     super({}, options)
 
@@ -15,16 +17,7 @@ class S3Service extends AbstractFileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    this.updateAwsConfig()
 
     const s3 = new aws.S3()
     const params = {
@@ -41,22 +34,13 @@ class S3Service extends AbstractFileService {
           return
         }
 
-        resolve({ url: data.Location })
+        resolve({ url: data.Location, key: data.Key })
       })
     })
   }
 
   async delete(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    this.updateAwsConfig()
 
     const s3 = new aws.S3()
     const params = {
