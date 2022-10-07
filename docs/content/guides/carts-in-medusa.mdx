@@ -20,53 +20,28 @@ This document does not cover implementing the checkout flow. You can refer to [t
 
 ## Prerequisites
 
-It is assumed you already have a Medusa server installed before following along with this tutorial. If not, you can get started in minutes by following the [quickstart guide](../quickstart/quick-start.md).
+### Medusa Components
+
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../quickstart/quick-start.md) to get started.
 
 It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
 
-## Install the JS Client
+### JS Client
 
-It is recommended to use Medusa’s JS Client in your storefront. You can install it using the following command:
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
 
-```bash npm2yarn
-npm install @medusajs/medusa-js
-```
-
-:::note
-
-This document alternatively shows code examples using [JavaScript’s Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). Make sure to replace `<SERVER_URL>` in those examples with your server URL.
-
-:::
-
-Then, initialize the Medusa JS Client in a single file that all of your components can access:
-
-```jsx
-import Medusa from '@medusajs/medusa-js';
-
-export const client = new Medusa({
-  baseUrl: '<SERVER_URL>',
-  maxRetries: 3
-});
-```
-
-Where `<SERVER_URL>` is the URL of your server. If you’re using a local server, it runs on `http://localhost:9000` by default.
-
-:::caution
-
-Make sure to include `http://` in the URL when sending requests to the local server. Otherwise, all requests will fail.
-
-:::
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../js-client/overview.md) and have [created an instance of the client](../js-client/overview.md#configuration).
 
 ## Create a Cart
 
 You can create a cart with the following code snippet:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.create()
-.then(({cart}) => {
+medusa.carts.create()
+.then(({ cart }) => {
   localStorage.setItem('cart_id', cart.id);
   //assuming you have a state variable to store the cart
   setCart(cart);
@@ -81,7 +56,7 @@ fetch(`<SERVER_URL>/store/carts`, {
   method: 'POST'
 })
 .then((response) => response.json())
-.then(({cart}) => {
+.then(({ cart }) => {
   localStorage.setItem('cart_id', cart.id);
 	//assuming you have a state variable to store the cart
   setCart(cart)
@@ -91,24 +66,20 @@ fetch(`<SERVER_URL>/store/carts`, {
 </TabItem>
 </Tabs>
 
-A cart will be created with a random region assigned to it.
+This request does not require any parameters. It returns the created cart in the response.
 
-:::note
-
-The region a cart is associated with determines the currency the cart uses, the tax, payment, and fulfillment providers, and other details and options. So, make sure you use the correct region for a cart.
-
-:::
+The cart by default will have a random region assigned to it. You can specify the cart's region by passing in the request's body a `region_id` parameter:
 
 Otherwise, you can assign it a specific region during creation:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.create({
+medusa.carts.create({
   region_id
 })
-.then(({cart}) => {
+.then(({ cart }) => {
   localStorage.setItem('cart_id', cart.id);
   //assuming you have a state variable to store the cart
   setCart(cart);
@@ -129,7 +100,7 @@ fetch(`<SERVER_URL>/store/carts`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => {
+.then(({ cart }) => {
   localStorage.setItem('cart_id', cart.id);
   //assuming you have a state variable to store the cart
   setCart(cart)
@@ -139,7 +110,13 @@ fetch(`<SERVER_URL>/store/carts`, {
 </TabItem>
 </Tabs>
 
-To learn about what parameters you can pass during the cart’s creation, check out the [JS Client Reference](../references/js-client/classes/CartsResource.md#create) or the [API Reference](/api/store#tag/Cart/operation/PostCart).
+Check out the [API Reference](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCart) for a full list of available request body parameters.
+
+:::note
+
+The region a cart is associated with determines the currency the cart uses, the tax, payment, and fulfillment providers, and other details and options. So, make sure you use the correct region for a cart.
+
+:::
 
 ## Retrieve a Cart
 
@@ -147,15 +124,15 @@ Notice that in the previous code snippets, you set the cart’s ID in the local 
 
 You can retrieve the cart at any given point using its ID with the following code snippet:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 const id = localStorage.getItem('cart_id');
 
 if (id) {
-  client.carts.retrieve(id)
-  .then(({cart}) => setCart(cart));
+  medusa.carts.retrieve(id)
+  .then(({ cart }) => setCart(cart));
 }
 ```
 
@@ -168,12 +145,14 @@ const id = localStorage.getItem('cart_id');
 if (id) {
   fetch(`<SERVER_URL>/store/carts/${id}`)
   .then((response) => response.json())
-  .then(({cart}) => setCart(cart));
+  .then(({ cart }) => setCart(cart));
 }
 ```
 
 </TabItem>
 </Tabs>
+
+This request accepts the ID of the cart as a path parameter and returns the cart of that ID.
 
 You can run this code snippet every time the storefront is opened. If a customer has a cart ID stored in their local storage, it’s loaded from the server.
 
@@ -190,14 +169,14 @@ A cart has different data associated with it including the region, email, addres
 You can use the following snippet to update any of the cart’s data:
 
 ```jsx
-client.carts.update(cart.id, {
+medusa.carts.update(cartId, {
   region_id
 })
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -207,34 +186,36 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
-This updates the region in the cart.
+This request accepts the ID of the cart as a path parameter. In its body, you can pass any data you want to update in the cart such as the region.
 
-To find out what data you can update in the cart, check out the [JS Client reference](../references/js-client/classes/CartsResource.md#update) or the [API reference](/api/store/#tag/Cart/operation/PostCartsCart).
+It returns the updated cart.
+
+Check out the full list of available request body parameters in the [API Reference](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCart).
 
 ### Associate a Logged-In Customer with the Cart
 
 A customer might add items to their cart, then creates an account or log in. In that case, you should ensure that the cart is associated with the logged-in customer moving forward.
 
-This can be done using the same update operation:
+You can do that using the same update operation:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.update(cart.id, {
+medusa.carts.update(cartId, {
   customer_id
 })
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -244,7 +225,7 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
@@ -254,25 +235,25 @@ This updates the `customer_id` associated with the cart to make sure it belongs 
 
 ### Associate Guest Customers with a Cart using Email
 
-In case the customer does not want to use their own account, you must at least associate an email address with the cart before completing the cart and placing the order.
+In case the customer doesn't want to use their own account, you must at least associate an email address with the cart before completing the cart and placing the order.
 
-This can be done using the same update operation:
+You can do that using the same update operation:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.update(cart.id, {
+medusa.carts.update(cartId, {
   email: 'user@example.com'
 })
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -282,7 +263,7 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
@@ -292,22 +273,22 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}`, {
 
 To create a line item of a product and add it to a cart, you can use the following code snippet:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.lineItems.create(cart.id, {
+medusa.carts.lineItems.create(cartId, {
   variant_id,
   quantity: 1
 })
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}/line-items`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}/line-items`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -318,13 +299,17 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}/line-items`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 </Tabs>
 
-Where `variant_id` is the variant of the product you want to add to the cart.
+This request accepts the ID of the cart as a path parameter. In the body, it's required to send the ID of the product variant you want to add to the cart and its quantity.
+
+It returns the updated cart.
+
+This adds a new line item to the cart. Line items can be accessed using `cart.items` which is an array that holds all line items in the cart. You can learn more about what properties line items have in the [API reference](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 :::note
 
@@ -332,27 +317,25 @@ If you’re using Sales Channels, make sure that the cart and the product belong
 
 :::
 
-This adds a new line item to the cart. Line items can be accessed using `cart.items` which is an array that holds all line items in the cart. You can learn more about what properties line items have in the [API reference](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
-
 ## Update Line Item in the Cart
 
-To update a line item in the cart, you can use the following code snippet:
+To update a line item's quantity in the cart, you can use the following code snippet:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.lineItems.update(cart.id, line_item_id, {
+medusa.carts.lineItems.update(cartId, lineItemId, {
   quantity: 3
 })
-.then(({cart}) => setCart(cart))
+.then(({ cart }) => setCart(cart))
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}/line-items/${line_item_id}`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -362,41 +345,45 @@ fetch(`<SERVER_URL>/store/carts/${cart.id}/line-items/${line_item_id}`, {
   })
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 </Tabs>
 
-This updates the quantity of the line item in the cart using the item’s ID.
+This request accepts the ID of the cart and the ID of the line item as path parameters. In the body, it accepts the quantity of the line item.
+
+It returns the updated cart.
 
 ## Delete a Line Item from the Cart
 
 To delete a line item from the cart, you can use the following code snippet:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-client.carts.lineItems.delete(cart.id, line_item_id)
-.then(({cart}) => setCart(cart))
+medusa.carts.lineItems.delete(cartId, lineItemId)
+.then(({ cart }) => setCart(cart))
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cart.id}/line-items/${line_item_id}`, {
+fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: 'DELETE'
 })
 .then((response) => response.json())
-.then(({cart}) => setCart(cart));
+.then(({ cart }) => setCart(cart));
 ```
 
 </TabItem>
 </Tabs>
 
-This deletes a line item from the cart using the item’s ID.
+This request accepts the ID of the cart and the ID of the line item as path parameters.
+
+It returns the updated cart.
 
 ## What’s Next 🚀
 
