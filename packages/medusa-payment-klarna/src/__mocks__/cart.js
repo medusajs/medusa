@@ -16,6 +16,7 @@ export const carts = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        tax_lines: [],
         content: [
           {
             unit_price: 8,
@@ -45,6 +46,7 @@ export const carts = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        tax_lines: [],
         content: {
           unit_price: 10,
           variant: {
@@ -62,6 +64,7 @@ export const carts = {
       {
         id: IdMap.getId("freeShipping"),
         name: "Free shipping",
+        tax_lines: [],
         data: {
           name: "test",
         },

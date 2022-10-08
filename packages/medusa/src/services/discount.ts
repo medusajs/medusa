@@ -212,8 +212,6 @@ class DiscountService extends TransactionBaseService {
         const discountRule = ruleRepo.create(validatedRule)
         const createdDiscountRule = await ruleRepo.save(discountRule)
 
-        discount.code = discount.code!.toUpperCase()
-
         const created: Discount = discountRepo.create(
           discount as DeepPartial<Discount>
         )
@@ -277,7 +275,7 @@ class DiscountService extends TransactionBaseService {
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    const normalizedCode = discountCode.toUpperCase()
+    const normalizedCode = discountCode.toUpperCase().trim()
 
     let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
     let discount = await discountRepo.findOne(query)

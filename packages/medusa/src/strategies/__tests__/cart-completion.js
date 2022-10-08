@@ -184,6 +184,7 @@ describe("CartCompletionStrategy", () => {
           deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),
+          retrieveWithTotals: jest.fn(() => Promise.resolve(cart)),
         }
         const orderServiceMock = {
           withTransaction: function () {
