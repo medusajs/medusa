@@ -96,16 +96,13 @@ export const useAdminOrderEditUpdateLineItem = (
 export const useAdminOrderEditDeleteLineItem = (
   orderEditId: string,
   itemId: string,
-  options?: UseMutationOptions<
-    Response<AdminOrderEditsRes>,
-    Error
-  >
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (() => client.admin.orderEdits.removeLineItem(orderEditId, itemId)),
+    () => client.admin.orderEdits.removeLineItem(orderEditId, itemId),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
