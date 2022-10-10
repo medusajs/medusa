@@ -455,7 +455,7 @@ To install any published plugin, you can run the following command on any Medusa
 npm install medusa-plugin-custom
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [available Services in Medusa](references/services/../../../../../references/services/classes/AuthService.md) that you can use in your plugin.
 - Check out [available events](../subscribers/events-list.md) that you can listen to in Subscribers.

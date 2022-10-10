@@ -376,7 +376,7 @@ The batch job will start processing afterward. Based on the batch job strategy i
 
 You can [retrieve the batch job](#optional-retrieve-batch-job) at any given point to check its status.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [batch jobs](./index.md).
 - Learn how to [import products using the Admin API](../../admin/import-products.mdx).

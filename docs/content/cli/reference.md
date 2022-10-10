@@ -206,7 +206,7 @@ medusa telemetry
 | `--enable` | Enable telemetry (default) |
 | `--disable` | Disable telemetry |
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [anonymous usage data collection](../usage.md).
 - Learn how to [configure your Medusa server](../usage/configurations.md).

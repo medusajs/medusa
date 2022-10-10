@@ -82,7 +82,7 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 :::
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn about [tax-inclusive pricing](inclusive-pricing.md).
 - Learn about available methods in [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md).

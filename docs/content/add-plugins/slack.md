@@ -95,7 +95,7 @@ const plugins = [
 
 That’s all you need to do to integrate Slack into Medusa!
 
-## What's Next :rocket:
+## What's Next
 
 - Install [Medusa's Admin](https://github.com/medusajs/admin) for the full order-management experience.
 - Add a Storefront to your Medusa server using [the Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [the Gatsby starter](https://docs.medusajs.com/starters/gatsby-medusa-starter).

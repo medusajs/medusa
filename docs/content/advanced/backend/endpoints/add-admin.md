@@ -214,7 +214,7 @@ export default (rootDirectory, pluginOptions) => {
 }
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - [Learn how to add an endpoint for the Storefront.](/advanced/backend/endpoints/add-storefront)
 - [Check out the API reference for all available endpoints.](https://docs.medusajs.com/api/admin)

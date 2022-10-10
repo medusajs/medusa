@@ -78,7 +78,7 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 - The customer returns the items triggering the `return.recieved` event.
 - The Notification Provider listens to the `return.received` event and sends an email to the customer with confirmation that their items have been received and that a refund has been issued.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [create your own Notification Provider](how-to-create-notification-provider.md).
 - Check out the [list of events](../subscribers/events-list.md) in Medusa.

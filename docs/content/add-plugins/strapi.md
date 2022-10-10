@@ -172,7 +172,7 @@ Try updating any products on Strapi by going to Content Manager → Products and
 
 If you try to update products on Medusa either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/PostProductsProduct) or using [the Medusa Admin](../user-guide/products/manage.mdx), you’ll see that the product is also updated on Strapi.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn [how to deploy the Medusa server](../deployments/server/index.mdx).
 - Learn [how to create your own plugin](../advanced/backend/plugins/create.md).

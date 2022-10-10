@@ -38,6 +38,6 @@ medusa migrations run
 
 If you check your database now you should see that the change defined by the migration has been applied successfully.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [setting up your development server](../../../tutorial/0-set-up-your-development-environment.mdx).
