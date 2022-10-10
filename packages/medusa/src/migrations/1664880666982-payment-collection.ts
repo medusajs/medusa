@@ -71,6 +71,8 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE "order_edit" ADD CONSTRAINT "FK_order_edit_payment_collection_id" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
         ALTER TABLE payment_session ADD COLUMN payment_authorized_at timestamp WITH time zone NULL;
+        ALTER TABLE payment_session ADD COLUMN amount integer NULL;
+        ALTER TABLE payment_session ALTER COLUMN cart_id DROP NOT NULL;
     `)
 
     // Add missing indexes
@@ -92,6 +94,8 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE payment_collection_payments DROP CONSTRAINT "FK_payment_collection_payments_payment_id";
         ALTER TABLE order_edit DROP COLUMN payment_collection_id;
         ALTER TABLE payment_session DROP COLUMN payment_authorized_at;
+        ALTER TABLE payment_session DROP COLUMN amount;
+        ALTER TABLE payment_session ALTER COLUMN cart_id SET NOT NULL;
 
         DROP TABLE payment_collection;
         DROP TABLE payment_collection_sessions;

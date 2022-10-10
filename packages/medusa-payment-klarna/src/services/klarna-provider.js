@@ -230,6 +230,49 @@ class KlarnaProviderService extends PaymentService {
     return order
   }
 
+  async paymentInputToKlarnaOrder(paymentInput) {
+    if (paymentInput.cart) {
+      return this.cartToKlarnaOrder(paymentInput.cart)
+    }
+
+    let order = {
+      // Custom id is stored, such that we can use it for hooks
+      merchant_data: paymentInput.custom_id,
+      locale: "en-US",
+    }
+
+    const { currency_code, amount } = paymentInput
+
+    order.order_lines = [
+      {
+        name: "Payment Collection",
+        quantity: 1,
+        unit_price: amount,
+        tax_rate: 0,
+        total_amount: amount,
+        total_tax_amount: 0,
+      },
+    ]
+
+    // Defaults to Sweden
+    order.purchase_country = "SE"
+
+    order.order_amount = amount
+    order.order_tax_amount = 0
+    order.purchase_currency = currency_code.toUpperCase()
+
+    order.merchant_urls = {
+      terms: this.options_.merchant_urls.terms,
+      checkout: this.options_.merchant_urls.checkout,
+      confirmation: this.options_.merchant_urls.confirmation,
+      push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
+      shipping_option_update: `${this.backendUrl_}/klarna/shipping`,
+      address_update: `${this.backendUrl_}/klarna/address`,
+    }
+
+    return order
+  }
+
   /**
    * Status for Klarna order.
    * @param {Object} paymentData - payment method data from cart
@@ -251,7 +294,7 @@ class KlarnaProviderService extends PaymentService {
   }
 
   /**
-   * Creates Stripe PaymentIntent.
+   * Creates Klarna PaymentIntent.
    * @param {string} cart - the cart to create a payment for
    * @param {number} amount - the amount to create a payment for
    * @returns {string} id of payment intent
@@ -259,6 +302,21 @@ class KlarnaProviderService extends PaymentService {
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
+
+      const klarnaPayment = await this.klarna_
+        .post(this.klarnaOrderUrl_, order)
+        .then(({ data }) => data)
+
+      return klarnaPayment
+    } catch (error) {
+      this.logger_.error(error)
+      throw error
+    }
+  }
+
+  async createPaymentNew(paymentInput) {
+    try {
+      const order = await this.paymentInputToKlarnaOrder(paymentInput)
 
       const klarnaPayment = await this.klarna_
         .post(this.klarnaOrderUrl_, order)
@@ -395,6 +453,22 @@ class KlarnaProviderService extends PaymentService {
   async updatePayment(paymentData, cart) {
     if (cart.total !== paymentData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
+      return this.klarna_
+        .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
+        .then(({ data }) => data)
+        .catch(async (_) => {
+          return this.klarna_
+            .post(this.klarnaOrderUrl_, order)
+            .then(({ data }) => data)
+        })
+    }
+
+    return paymentData
+  }
+
+  async updatePaymentNew(paymentData, paymentInput) {
+    if (paymentInput.amount !== paymentData.order_amount) {
+      const order = await this.paymentInputToKlarnaOrder(paymentInput)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)

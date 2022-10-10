@@ -16,6 +16,7 @@ import {
   PaymentSessionStatus,
   Refund,
 } from "../models"
+import { PaymentProviderDataInput } from "../types/payment-collection"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -179,6 +180,32 @@ export default class PaymentProviderService extends TransactionBaseService {
     })
   }
 
+  async createSessionNew(
+    sessionInput: PaymentProviderDataInput
+  ): Promise<PaymentSession> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const provider: AbstractPaymentService = this.retrieveProvider(
+        sessionInput.provider_id
+      )
+      const sessionData = await provider
+        .withTransaction(transactionManager)
+        .createPaymentNew(sessionInput)
+
+      const sessionRepo = transactionManager.getCustomRepository(
+        this.paymentSessionRepository_
+      )
+
+      const toCreate = {
+        provider_id: sessionInput.provider_id,
+        data: sessionData,
+        status: "pending",
+      }
+
+      const created = sessionRepo.create(toCreate)
+      return await sessionRepo.save(created)
+    })
+  }
+
   /**
    * Refreshes a payment session with the given provider.
    * This means, that we delete the current one and create a new.
@@ -219,6 +246,26 @@ export default class PaymentProviderService extends TransactionBaseService {
     })
   }
 
+  async refreshSessionNew(
+    paymentSession: PaymentSession,
+    sessionInput: PaymentProviderDataInput
+  ): Promise<PaymentSession> {
+    return this.atomicPhase_(async (transactionManager) => {
+      const session = await this.retrieveSession(paymentSession.id)
+      const provider = this.retrieveProvider(paymentSession.provider_id)
+
+      await provider.withTransaction(transactionManager).deletePayment(session)
+
+      const sessionRepo = transactionManager.getCustomRepository(
+        this.paymentSessionRepository_
+      )
+
+      await sessionRepo.remove(session)
+
+      return await this.createSessionNew(sessionInput)
+    })
+  }
+
   /**
    * Updates an existing payment session.
    * @param paymentSession - the payment session object to
@@ -236,6 +283,24 @@ export default class PaymentProviderService extends TransactionBaseService {
       session.data = await provider
         .withTransaction(transactionManager)
         .updatePayment(paymentSession.data, cart)
+
+      const sessionRepo = transactionManager.getCustomRepository(
+        this.paymentSessionRepository_
+      )
+      return sessionRepo.save(session)
+    })
+  }
+
+  async updateSessionNew(
+    paymentSession: PaymentSession,
+    sessionInput: PaymentProviderDataInput
+  ): Promise<PaymentSession> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const session = await this.retrieveSession(paymentSession.id)
+      const provider = this.retrieveProvider(paymentSession.provider_id)
+      session.data = await provider
+        .withTransaction(transactionManager)
+        .updatePaymentNew(paymentSession.data, sessionInput)
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -319,6 +384,33 @@ export default class PaymentProviderService extends TransactionBaseService {
         currency_code: region.currency_code,
         data: paymentData,
         cart_id: cart.id,
+      })
+
+      return paymentRepo.save(created)
+    })
+  }
+
+  async createPaymentNew(
+    paymentInput: PaymentProviderDataInput
+  ): Promise<Payment> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const { payment_session, currency_code, amount, provider_id } =
+        paymentInput
+
+      const provider = this.retrieveProvider(provider_id)
+      const paymentData = await provider
+        .withTransaction(transactionManager)
+        .getPaymentData(payment_session)
+
+      const paymentRepo = transactionManager.getCustomRepository(
+        this.paymentRepository_
+      )
+
+      const created = paymentRepo.create({
+        provider_id,
+        amount,
+        currency_code,
+        data: paymentData,
       })
 
       return paymentRepo.save(created)
