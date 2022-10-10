@@ -281,6 +281,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
             amount: session.amount,
             provider_id: session.provider_id,
             customer,
+            metadata: {
+              custom_id: payCol.id,
+            },
           }
 
           if (existingSession) {

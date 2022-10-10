@@ -151,7 +151,7 @@ class StripeBase extends AbstractPaymentService {
   }
 
   async createPaymentNew(paymentInput) {
-    const { customer, currency_code, amount } = paymentInput
+    const { customer, currency_code, amount, metadata } = paymentInput
     const { id: customer_id, email } = customer
 
     const intentRequest = {
@@ -161,7 +161,7 @@ class StripeBase extends AbstractPaymentService {
       currency: currency_code,
       payment_method_types: this.paymentMethodTypes,
       capture_method: "automatic",
-      metadata: { cart_id: `${cart.id}` },
+      metadata,
     }
 
     if (customer_id) {
