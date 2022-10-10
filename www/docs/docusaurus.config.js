@@ -46,6 +46,7 @@ const config = {
       placeholder: "Search docs...",
       appId: algoliaAppId,
       contextualSearch: false,
+      externalUrlRegex: "https://medusajs.com"
     },
     prism: {
       defaultLanguage: "js",
