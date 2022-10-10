@@ -177,7 +177,7 @@ This will result in a subscription form similar to the following:
 
 If you try entering an email and clicking Subscribe, the email will be subscribed to your Mailchimp newsletter successfully.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [SendGrid plugin](../add-plugins/sendgrid.mdx) for more Email functionalities.
 - [Learn more about plugins.](../advanced/backend/plugins/overview.md)

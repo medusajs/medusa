@@ -20,7 +20,7 @@ Custom subscribers reside in your project's `src/subscribers` directory. Files h
 
 Whenever an event is emitted, the subscriber’s registered handler method is executed. The handler method receives as a parameter an object that holds data related to the event. For example, if an order is placed the `order.placed` event will be emitted and all the handlers will receive the order id in the parameter object.
 
-## What's Next :rocket:
+## What's Next
 
 - Learn [how to create a Subscriber](create-subscriber.md).
 - [View the list of all events](events-list.md).

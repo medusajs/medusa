@@ -79,7 +79,7 @@ To upload product images to your Medusa server, you must install and configure o
 - [S3](../add-plugins/s3.md)
 - [DigitalOcean Spaces](../add-plugins/spaces.md)
 
-## What's next :rocket:
+## What's Next
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.

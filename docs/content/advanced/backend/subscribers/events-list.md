@@ -2153,7 +2153,7 @@ Object of the following format:
 </tbody>
 </table>
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how you can [use services in subscribers](create-subscriber.md#using-services-in-subscribers).
 - Learn how to [create notifications](../notification/overview.md) in Medusa.

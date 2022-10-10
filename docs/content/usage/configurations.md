@@ -306,7 +306,7 @@ It is recommended to use environment variables to store values of options instea
 
 :::
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
 - Install the [Medusa admin](../admin/quickstart.md).

@@ -106,6 +106,6 @@ Then, try out your strategy using any of the [Products](https://docs.medusajs.co
 
 ---
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [price list selection strategy](./index.md).

@@ -98,7 +98,7 @@ It's important to configure your Medusa server properly and learn how environmen
 
 You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
 
-## What's next :rocket:
+## What's Next
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront quickly.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.

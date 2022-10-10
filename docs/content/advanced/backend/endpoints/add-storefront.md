@@ -213,7 +213,7 @@ export default (rootDirectory, pluginOptions) => {
 }
 ```
 
-## What’s Next :rocket:
+## What’s Next
 
 - [Learn how to add an endpoint for the Admin.](/advanced/backend/endpoints/add-admin)
 - [Check out the API reference for all available endpoints.](https://docs.medusajs.com/api/store)

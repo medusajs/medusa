@@ -356,6 +356,6 @@ Clicking this button allows you to capture the payment for an order. You can als
 
 Refunding or Capturing payments is reflected in your Stripe’s dashboard as well. This gives you access to all of Stripe’s analytical capabilities.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

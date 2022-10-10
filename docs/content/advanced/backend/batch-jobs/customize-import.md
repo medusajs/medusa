@@ -109,7 +109,7 @@ If you don’t want to overwrite Medusa’s batch job strategy, you can create a
 
 For more details on creating custom batch job strategies, please check out the [Create Batch Job Strategy documentation](create.md).
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [batch jobs](./index.md).
 - Learn [how to use the Import Product APIs](../../admin/import-products.mdx).

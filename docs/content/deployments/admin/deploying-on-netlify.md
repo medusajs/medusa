@@ -269,7 +269,7 @@ Where `<ADMIN_URL>` is the URL of your Medusa Admin that you just deployed.
 
 Then, restart your Medusa server. Once the server is running again, you can log in to the Medusa Admin and use it.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [deploy your storefront](../storefront/index.mdx).
 - Learn more about [how you can configure Medusa](../../usage/configurations.md).
