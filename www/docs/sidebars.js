@@ -239,13 +239,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "advanced/backend/endpoints/add-storefront",
-          label: "Create Endpoint for Storefront"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/endpoints/add-admin",
-          label: "Create Endpoint for Admin"
+          id: "advanced/backend/endpoints/add",
+          label: "Create an Endpoint"
         },
         {
           type: "doc",
