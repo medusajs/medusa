@@ -22,7 +22,9 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   option_id: string
 
-  @ManyToOne(() => ProductOption, (option) => option.values)
+  @ManyToOne(() => ProductOption, (option) => option.values, {
+    cascade: ["soft-remove"],
+  })
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
