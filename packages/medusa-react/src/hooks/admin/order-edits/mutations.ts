@@ -13,8 +13,8 @@ import {
 
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
-import { adminOrderEditsKeys } from "."
 import { adminOrderKeys } from "../orders"
+import { adminOrderEditsKeys } from "."
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -47,7 +47,11 @@ export const useAdminDeleteOrderEdit = (
     () => client.admin.orderEdits.delete(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.detail(id), adminOrderEditsKeys.lists()],
+      [
+        adminOrderEditsKeys.detail(id),
+        adminOrderEditsKeys.lists(),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -132,7 +136,11 @@ export const useAdminUpdateOrderEdit = (
       client.admin.orderEdits.update(id, payload),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -170,7 +178,11 @@ export const useAdminRequestOrderEditConfirmation = (
     () => client.admin.orderEdits.requestConfirmation(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -187,7 +199,11 @@ export const useAdminCancelOrderEdit = (
     () => client.admin.orderEdits.cancel(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -204,7 +220,11 @@ export const useAdminConfirmOrderEdit = (
     () => client.admin.orderEdits.confirm(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
