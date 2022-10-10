@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5.0-alpha.1
+
+### Patch Changes
+
+- [#2351](https://github.com/medusajs/medusa/pull/2351) [`d8a5942d3`](https://github.com/medusajs/medusa/commit/d8a5942d3d85671e2923668bdbf2867957f5554b) Thanks [@ayushthe1](https://github.com/ayushthe1)! - Fix wrongly referenced product id in ProductImportStrategy
+  Fix assigning nested objects properly
+
 ## 1.5.0-alpha.0
 
 ### Minor Changes

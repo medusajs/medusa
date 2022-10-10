@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.44-alpha.1
+
+### Patch Changes
+
+- [#2381](https://github.com/medusajs/medusa/pull/2381) [`a908a7716`](https://github.com/medusajs/medusa/commit/a908a7716c94222f340531a5b13db0867b511519) Thanks [@srindom](https://github.com/srindom)! - Rely on cart totals in payment providers
+
 ## 1.1.44-alpha.0
 
 ### Patch Changes

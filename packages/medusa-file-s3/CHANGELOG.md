@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.6-alpha.1
+
+### Patch Changes
+
+- [`2e80d270a`](https://github.com/medusajs/medusa/commit/2e80d270ad3ee606dacde93397918268b8b12c93) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Add AWS S3 export support
+
 ## 1.1.6-alpha.0
 
 ### Patch Changes
