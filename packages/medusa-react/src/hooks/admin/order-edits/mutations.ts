@@ -133,7 +133,7 @@ export const useAdminUpdateOrderEdit = (
   )
 }
 
-export const useAdminOrderEditLineItem = (
+export const useAdminOrderEditAddLineItem = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminOrderEditsRes>,
