@@ -308,7 +308,7 @@ Restart the Gatsby storefront then open a product that you added Rich Text conte
 
 ![Rich Text content you added to the product should be visible at the end of the page](https://i.imgur.com/LGiVMxx.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
 - Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

@@ -394,6 +394,6 @@ Clicking this button lets you capture the payment for an order. You can also ref
 
 Refunding or Capturing payments is reflected in your PayPal dashboard as well.
 
-## What's Next 🚀
+## What's Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
