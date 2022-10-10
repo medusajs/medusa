@@ -1,12 +1,8 @@
 # Class: CustomerGroupService
 
-Provides layer to manipulate discounts.
-
-**`Implements`**
-
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`CustomerGroupService`**
 
@@ -24,41 +20,87 @@ Provides layer to manipulate discounts.
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:32](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L32)
+[packages/medusa/src/services/customer-group.ts:33](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L33)
 
 ## Properties
 
-### customerGroupRepository\_
+### \_\_configModule\_\_
 
-• `Private` **customerGroupRepository\_**: typeof `CustomerGroupRepository`
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:28](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L28)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### customerGroupRepository\_
+
+• `Protected` `Readonly` **customerGroupRepository\_**: typeof `CustomerGroupRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/customer-group.ts:30](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L30)
 
 ___
 
 ### customerService\_
 
-• `Private` **customerService\_**: [`CustomerService`](CustomerService.md)
+• `Protected` `Readonly` **customerService\_**: [`CustomerService`](CustomerService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L30)
+[packages/medusa/src/services/customer-group.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L31)
 
 ___
 
 ### manager\_
 
-• `Private` **manager\_**: `EntityManager`
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:26](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L26)
+[packages/medusa/src/services/customer-group.ts:27](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L27)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/customer-group.ts:28](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L28)
 
 ## Methods
 
@@ -83,7 +125,46 @@ the customer group after insertion
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:114](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L114)
+[packages/medusa/src/services/customer-group.ts:92](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L92)
+
+___
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -115,7 +196,7 @@ the result of the create operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:87](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L87)
+[packages/medusa/src/services/customer-group.ts:68](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L68)
 
 ___
 
@@ -139,7 +220,7 @@ a promise
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:195](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L195)
+[packages/medusa/src/services/customer-group.ts:174](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L174)
 
 ___
 
@@ -164,7 +245,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:218](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L218)
+[packages/medusa/src/services/customer-group.ts:197](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L197)
 
 ___
 
@@ -189,7 +270,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:237](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L237)
+[packages/medusa/src/services/customer-group.ts:216](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L216)
 
 ___
 
@@ -214,7 +295,7 @@ the customergroup with the provided id
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:272](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L272)
+[packages/medusa/src/services/customer-group.ts:252](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L252)
 
 ___
 
@@ -235,13 +316,37 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:63](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L63)
+[packages/medusa/src/services/customer-group.ts:45](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L45)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
 ### update
 
-▸ **update**(`customerGroupId`, `update`): `Promise`<`CustomerGroup`[]\>
+▸ **update**(`customerGroupId`, `update`): `Promise`<`CustomerGroup`\>
 
 Update a customer group.
 
@@ -254,30 +359,34 @@ Update a customer group.
 
 #### Returns
 
-`Promise`<`CustomerGroup`[]\>
+`Promise`<`CustomerGroup`\>
 
 resulting customer group
 
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:163](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L163)
+[packages/medusa/src/services/customer-group.ts:141](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/customer-group.ts#L141)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`CustomerGroupService`](CustomerGroupService.md)
+▸ **withTransaction**(`transactionManager?`): [`CustomerGroupService`](CustomerGroupService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `EntityManager` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`CustomerGroupService`](CustomerGroupService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[packages/medusa/src/services/customer-group.ts:47](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/customer-group.ts#L47)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
