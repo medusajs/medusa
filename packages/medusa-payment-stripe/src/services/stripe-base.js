@@ -159,7 +159,7 @@ class StripeBase extends AbstractPaymentService {
       description:
         cart?.context?.payment_description ?? this.options?.payment_description,
       currency: currency_code,
-      payment_method_types: ["bancontact"],
+      payment_method_types: this.paymentMethodTypes,
       capture_method: "automatic",
       metadata: { cart_id: `${cart.id}` },
     }
