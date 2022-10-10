@@ -4,7 +4,7 @@ In this document, you’ll learn how to integrate Strapi with Medusa to add rich
 
 :::info
 
-This plugin is a [community plugin](https://github.com/Deathwish98/medusa-plugin-strapi) and is not managed by the official Medusa team.
+This plugin is a [community plugin](https://github.com/Deathwish98/medusa-plugin-strapi) and is not managed by the official Medusa team. At the moment, it supports v4 of Strapi.
 
 :::
 
