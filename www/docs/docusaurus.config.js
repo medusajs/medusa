@@ -32,7 +32,8 @@ const config = {
       {
         apiKey: process.env.SEGMENT_API_KEY || "temp"
       }
-    ]
+    ],
+    require.resolve("docusaurus-plugin-image-zoom")
   ],
   themeConfig: {
     colorMode: {
@@ -53,6 +54,19 @@ const config = {
       plugins: ["line-numbers", "show-language"],
       theme: require("prism-react-renderer/themes/vsDark"),
       darkTheme: require("prism-react-renderer/themes/vsDark"),
+    },
+    zoom: {
+      selector: '.markdown img',
+      background: {
+        light: 'rgb(255, 255, 255)',
+        dark: 'rgb(50, 50, 50)'
+      },
+      config: {
+        container: {
+          left: 250,
+          right: 40
+        }
+      }
     },
     navbar: {
       hideOnScroll: true,
