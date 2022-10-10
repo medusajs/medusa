@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.6
+
+### Patch Changes
+
+- [`8f4135fd5`](https://github.com/medusajs/medusa/commit/8f4135fd5ff6d6d24f395d705fe4e45ca9769415) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Add AWS S3 export support
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
 ## 1.1.5
 
 ### Patch Changes
