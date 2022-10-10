@@ -12,7 +12,7 @@ function roundToTwo(num, currency) {
 class PayPalProviderService extends PaymentService {
   static identifier = "paypal"
 
-  constructor({ totalsService, regionService }, options) {
+  constructor({ regionService }, options) {
     super()
 
     /**
@@ -44,9 +44,6 @@ class PayPalProviderService extends PaymentService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   /**
@@ -94,7 +91,7 @@ class PayPalProviderService extends PaymentService {
     const { region_id } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
-    const amount = await this.totalsService_.getTotal(cart)
+    const amount = cart.total
 
     const request = new PayPal.orders.OrdersCreateRequest()
     request.requestBody({
@@ -289,7 +286,8 @@ class PayPalProviderService extends PaymentService {
   async cancelPayment(payment) {
     const order = await this.retrievePayment(payment.data)
     const isAlreadyCanceled = order.status === "VOIDED"
-    const isCanceledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
+    const isCanceledAndFullyRefund =
+      order.status === "COMPLETED" && !!order.invoice_id
     if (isAlreadyCanceled || isCanceledAndFullyRefund) {
       return order
     }

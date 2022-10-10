@@ -26,7 +26,7 @@ import {
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
-import { BatchJob, SalesChannel } from "../../../models"
+import { BatchJob, Product, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -163,7 +163,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       // save only first occurrence
       if (!seenProducts[row["product.handle"] as string]) {
         row["product.profile_id"] = shippingProfile!.id
-        if (row["product.product.id"]) {
+        if (row["product.id"]) {
           productsUpdate.push(row)
         } else {
           productsCreate.push(row)
@@ -306,7 +306,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       await this.updateProducts(batchJob)
       await this.createVariants(batchJob)
       await this.updateVariants(batchJob)
-
       await this.finalize(batchJob)
     })
   }
@@ -443,6 +442,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           )
         }
 
+        delete productData.options // for now not supported in the update method
+
         await productServiceTx.update(
           productOp["product.id"] as string,
           productData
@@ -489,7 +490,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
               product!.options.find(
                 (createdProductOption) =>
                   createdProductOption.title === variantOption.title
-              )!.id
+              )?.id
           ) || []
 
         variant.options =
@@ -497,6 +498,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             ...o,
             option_id: optionIds[index],
           })) || []
+
+        delete variant.id
+        delete variant.product
 
         await this.productVariantService_
           .withTransaction(transactionManager)
@@ -700,7 +704,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   private async updateProgress(batchJobId: string): Promise<void> {
     const newCount = (this.processedCounter[batchJobId] || 0) + 1
     this.processedCounter[batchJobId] = newCount
-
     if (newCount % BATCH_SIZE !== 0) {
       return
     }
@@ -769,9 +772,7 @@ const CSVSchema: ProductImportCsvSchema = {
     //
     { name: "Product Discountable", mapTo: "product.discountable" },
     { name: "Product External ID", mapTo: "product.external_id" },
-    // PRODUCT-SHIPPING_PROFILE
-    { name: "Product Profile Name", mapTo: "product.profile.name" },
-    { name: "Product Profile Type", mapTo: "product.profile.type" },
+
     // VARIANTS
     {
       name: "Variant id",
