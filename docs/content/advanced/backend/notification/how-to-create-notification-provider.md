@@ -264,7 +264,7 @@ Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/
 
 This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [list of events](../subscribers/events-list.md) you can listen to.
 - Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin for easy integration of email notifications.

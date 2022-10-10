@@ -123,6 +123,6 @@ To test the previous example out instantly, you can change the cron job expressi
 
 :::
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [services and how you can use them](../services/overview.md).

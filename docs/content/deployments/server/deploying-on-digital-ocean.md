@@ -275,7 +275,7 @@ Then, scroll down and find Environment Variables. You can expand the environment
 
 Once you click Save, the environment variables will be saved and a redeployment will be triggered.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn [how to deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
 - Learn [how to deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).
