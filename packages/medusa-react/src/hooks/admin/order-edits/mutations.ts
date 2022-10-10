@@ -14,6 +14,7 @@ import {
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
 import { adminOrderEditsKeys } from "."
+import { adminOrderKeys } from "../orders"
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -27,7 +28,11 @@ export const useAdminCreateOrderEdit = (
   return useMutation(
     (payload: AdminPostOrderEditsReq) =>
       client.admin.orderEdits.create(payload),
-    buildOptions(queryClient, adminOrderEditsKeys.lists(), options)
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
+      options
+    )
   )
 }
 
