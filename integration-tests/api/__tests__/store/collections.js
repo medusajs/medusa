@@ -66,7 +66,7 @@ describe("/store/collections", () => {
       expect(response.data).toMatchSnapshot({
         collections: [
           {
-            id: "test-collection",
+            id: "test-collection2",
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
@@ -76,7 +76,7 @@ describe("/store/collections", () => {
             updated_at: expect.any(String),
           },
           {
-            id: "test-collection2",
+            id: "test-collection",
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
