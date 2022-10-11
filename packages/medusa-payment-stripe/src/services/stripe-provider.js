@@ -135,9 +135,7 @@ class StripeProviderService extends AbstractPaymentService {
       .withTransaction(this.manager_)
       .retrieve(region_id)
 
-    const amount = await this.totalsService_
-      .withTransaction(this.manager_)
-      .getTotal(cart)
+    const amount = cart.total
 
     const intentRequest = {
       description:

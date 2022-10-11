@@ -1,3 +1,5 @@
+import set from "lodash/set"
+
 import { TParsedProductImportRowData } from "./types"
 import { csvRevertCellContentFormatter } from "../../../utils"
 
@@ -37,7 +39,7 @@ export function transformProductData(
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("product.")[1]
-    ret[key] = productData[k]
+    set(ret, key, productData[k])
   })
 
   return ret
@@ -54,12 +56,12 @@ export function transformVariantData(
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("variant.")[1]
-    ret[key] = productData[k]
+    set(ret, key, productData[k])
   })
 
   // include product handle to keep track of associated product
   ret["product.handle"] = data["product.handle"]
-  ret["product.options"] = data["product.options"]
+  set(ret, "product.options", data["product.options"])
 
   return ret
 }

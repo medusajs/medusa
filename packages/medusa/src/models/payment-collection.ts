@@ -36,10 +36,10 @@ export enum PaymentCollectionType {
 @FeatureFlagEntity(OrderEditingFeatureFlag.key)
 export class PaymentCollection extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: PaymentCollectionType })
-  type: string
+  type: PaymentCollectionType
 
   @DbAwareColumn({ type: "enum", enum: PaymentCollectionStatus })
-  status: string
+  status: PaymentCollectionStatus
 
   @Column({ nullable: true })
   description: string

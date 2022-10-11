@@ -286,7 +286,7 @@ If you run your Gatsby storefront while the Medusa server and the MeiliSearch in
 
 ![Search box in the header of the storefront](https://i.imgur.com/ZkRgF2h.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
 - Learn how to [deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).
