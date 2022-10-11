@@ -1435,38 +1435,39 @@ describe("/admin/products", () => {
   })
 
   describe("DELETE /admin/products/:id/options/:option_id", () => {
+    const adminHeaders = {
+      headers: {
+        Authorization: "Bearer test_token",
+      },
+    }
+
     beforeEach(async () => {
-      try {
-        await simpleProductFactory(dbConnection, {
-          id: "test-product-without-variants",
-          variants: [],
-          options: [
-            {
-              id: "test-product-option",
-              title: "Test option",
-            },
-          ],
-        })
-        await simpleProductFactory(dbConnection, {
-          id: "test-product-with-variant",
-          variants: [
-            {
-              product_id: "test-product-with-variant",
-              options: [{ option_id: "test-product-option-1", value: "test" }],
-            },
-          ],
-          options: [
-            {
-              id: "test-product-option-1",
-              title: "Test option 1",
-            },
-          ],
-        })
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-without-variants",
+        variants: [],
+        options: [
+          {
+            id: "test-product-option",
+            title: "Test option",
+          },
+        ],
+      })
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-with-variant",
+        variants: [
+          {
+            product_id: "test-product-with-variant",
+            options: [{ option_id: "test-product-option-1", value: "test" }],
+          },
+        ],
+        options: [
+          {
+            id: "test-product-option-1",
+            title: "Test option 1",
+          },
+        ],
+      })
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1480,11 +1481,7 @@ describe("/admin/products", () => {
       const response = await api
         .delete(
           "/admin/products/test-product-without-variants/options/test-product-option",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
         .catch((err) => {
           console.log(err)
@@ -1503,21 +1500,9 @@ describe("/admin/products", () => {
     it("deletes a values associated with deleted option", async () => {
       const api = useApi()
 
-      const response1 = await api.get(
-        "/admin/products/test-product-with-variant",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
       const response = await api.delete(
         "/admin/products/test-product-with-variant/options/test-product-option-1",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       const values = await dbConnection.manager.find(ProductOptionValue, {
