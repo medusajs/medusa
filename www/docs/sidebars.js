@@ -204,6 +204,11 @@ module.exports = {
               id: "advanced/storefront/how-to-implement-checkout-flow",
               label: "Implement Checkout"
             },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-sales-channels",
+              label: "Use SalesChannels APIs"
+            },
           ]
         },
         {
