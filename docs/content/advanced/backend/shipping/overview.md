@@ -135,7 +135,7 @@ The `ShippingMethod` also belongs to the `Order` entity. This association is
 
 The `ShippingMethod` instance holds a `price` attribute, which will either be the flat rate price or the calculated price.
 
-## What’s Next :rocket:
+## What’s Next
 
 - [Learn how to Create a Fulfillment Provider.](./add-fulfillment-provider.md)
 - Check out [available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages).

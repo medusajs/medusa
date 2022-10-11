@@ -90,7 +90,7 @@ constructor({ helloService, eventBusService }) {
 }
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [Services Reference](/references/services/classes/AuthService) to see a list of all services in Medusa.
-- [Learn How to Create an Endpoint.](/advanced/backend/endpoints/add-storefront)
+- [Learn How to Create an Endpoint.](../endpoints/add.md)

@@ -5,7 +5,7 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { Product, ProductOptionValue, ProductStatus } from "../models"
@@ -15,7 +15,7 @@ import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
   FindConfig,
-  StringComparisonOperator
+  StringComparisonOperator,
 } from "./common"
 import { PriceListLoadConfig } from "./price-list"
 
@@ -68,10 +68,7 @@ export class FilterableProductProps {
   @IsOptional()
   type?: string
 
-  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
-    IsOptional(),
-    IsArray(),
-  ])
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
   @IsOptional()
@@ -91,28 +88,6 @@ export class FilterableProductProps {
 }
 
 export class FilterableProductTagProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
-
-export class FilterableProductTypeProps {
   @IsOptional()
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator

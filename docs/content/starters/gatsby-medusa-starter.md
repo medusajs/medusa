@@ -1,4 +1,4 @@
-# Quickstart: Gatsby Storefront
+# Gatsby Storefront Quickstart
 
 This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
 
@@ -107,7 +107,7 @@ The Gatsby storefront comes with a lot of features out of the box including:
 
     ![Request Return for Order](https://i.imgur.com/mAChp3f.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
 - Learn how to [deploy the Gatsby storefront on Netlify](../deployments/storefront/deploying-gatsby-on-netlify.md).

@@ -48,7 +48,7 @@ If you’re installing an official plugin from the Medusa repository, you can fi
 
 For community plugins, please refer to the installation instructions of that plugin to learn about any required configurations.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [create your own plugin](create.md).
 - Learn how to [create a fulfillment provider](../shipping/add-fulfillment-provider.md) or a [payment provider](../payment/how-to-create-payment-provider.md).

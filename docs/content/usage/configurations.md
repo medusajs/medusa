@@ -154,10 +154,10 @@ Where `jwt_secret` is the secret used to create the tokens. The more secure it i
 It is recommended to set the JWT Secret as an environment variable:
 
 ```bash
-JWT_SECRET=<YOUR_JWT_SECRETL>
+JWT_SECRET=<YOUR_JWT_SECRET>
 ```
 
-Where `<YOUR_JWT_SECRETL>` is the JWT secret you want to use.
+Where `<YOUR_JWT_SECRET>` is the JWT secret you want to use.
 
 :::caution
 
@@ -183,10 +183,10 @@ Where `cookie_secret` is the secret used to create the tokens. The more secure i
 It is recommended to set the Cookie secret as an environment variable:
 
 ```bash
-COOKIE_SECRET=<YOUR_COOKIE_SECRETL>
+COOKIE_SECRET=<YOUR_COOKIE_SECRET>
 ```
 
-Where `<YOUR_COOKIE_SECRETL>` is the Cookie secret you want to use.
+Where `<YOUR_COOKIE_SECRET>` is the Cookie secret you want to use.
 
 :::caution
 
@@ -306,7 +306,7 @@ It is recommended to use environment variables to store values of options instea
 
 :::
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
 - Install the [Medusa admin](../admin/quickstart.md).

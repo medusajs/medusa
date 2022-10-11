@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import DiscountService from "../discount"
 import { FlagRouter } from "../../utils/flag-router"
+import DiscountService from "../discount"
 
 const featureFlagRouter = new FlagRouter({})
 
@@ -74,7 +74,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
       })
@@ -106,7 +106,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
         starts_at: new Date("03/14/2021"),
@@ -140,7 +140,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
         starts_at: new Date("03/14/2021"),
@@ -217,6 +217,17 @@ describe("DiscountService", () => {
 
     it("successfully finds discount by code", async () => {
       await discountService.retrieveByCode("10%OFF")
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "10%OFF",
+          is_dynamic: false,
+        },
+      })
+    })
+
+    it("successfully trims, uppdercases, and finds discount by code", async () => {
+      await discountService.retrieveByCode(" 10%Off ")
       expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
       expect(discountRepository.findOne).toHaveBeenCalledWith({
         where: {
