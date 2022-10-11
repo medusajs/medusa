@@ -1,21 +1,38 @@
 import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
+import { ExtendedFindConfig } from "../types/common"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
 })[]
+
+type ProductTagSelector = Partial<ProductTag> & {
+  q?: string
+  discount_condition_id?: string
+}
+
+export type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<ProductTag, ProductTagSelector>,
+  "relations"
+>
+
+export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  where: DefaultWithoutRelations["where"] & {
+    discount_condition_id?: string
+  }
+}
 
 @EntityRepository(ProductTag)
 export class ProductTagRepository extends Repository<ProductTag> {
   public async listTagsByUsage(count = 10): Promise<ProductTag[]> {
     return await this.query(
       `
-        SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
-        FROM product_tag pt
-        LEFT JOIN product_tags pts ON pt.id = pts.product_tag_id
-        GROUP BY id
-        ORDER BY usage_count DESC
-        LIMIT $1
+          SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
+          FROM product_tag pt
+                   LEFT JOIN product_tags pts ON pt.id = pts.product_tag_id
+          GROUP BY id
+          ORDER BY usage_count DESC
+              LIMIT $1
       `,
       [count]
     )
@@ -46,5 +63,34 @@ export class ProductTagRepository extends Repository<ProductTag> {
     }
 
     return upsertedTags
+  }
+
+  async findAndCountByDiscountConditionId(
+    conditionId: string,
+    query: ExtendedFindConfig<ProductTag, Partial<ProductTag>>
+  ) {
+    const qb = this.createQueryBuilder("pt")
+
+    if (query?.select) {
+      qb.select(query.select.map((select) => `pt.${select}`))
+    }
+
+    if (query.skip) {
+      qb.skip(query.skip)
+    }
+
+    if (query.take) {
+      qb.take(query.take)
+    }
+
+    return await qb
+      .where(query.where)
+      .innerJoin(
+        "discount_condition_product_tag",
+        "dc_pt",
+        `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
+        { dcId: conditionId }
+      )
+      .getManyAndCount()
   }
 }
