@@ -7,7 +7,7 @@ import {
   useAdminDeleteOrderEditItemChange,
   useAdminOrderEditUpdateLineItem,
   useAdminRequestOrderEditConfirmation,
-  useAdminOrderEditLineItem,
+  useAdminOrderEditAddLineItem,
   useAdminCancelOrderEdit,
   useAdminUpdateOrderEdit,
   useAdminOrderEditDeleteLineItem,
@@ -167,10 +167,10 @@ describe("useAdminRequestOrderEditConfirmation hook", () => {
   })
 })
 
-describe("useAdminOrderEditLineItem hook", () => {
+describe("useAdminOrderEditAddLineItem hook", () => {
   test("Created an order edit line item", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminOrderEditLineItem(fixtures.get("order_edit").id),
+      () => useAdminOrderEditAddLineItem(fixtures.get("order_edit").id),
       {
         wrapper: createWrapper(),
       }
@@ -249,7 +249,6 @@ describe("useAdminConfirmOrderEdit hook", () => {
   })
 })
 
-
 describe("useAdminOrderEditDeleteLineItem hook", () => {
   test("Remove line item of an order edit and create an item change", async () => {
     const id = "oe_1"
@@ -270,7 +269,7 @@ describe("useAdminOrderEditDeleteLineItem hook", () => {
         ...fixtures.get("order_edit"),
         changes: expect.arrayContaining([
           expect.objectContaining({
-            type: 'item_remove'
+            type: "item_remove",
           }),
         ]),
       })
