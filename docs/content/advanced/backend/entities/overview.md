@@ -16,7 +16,7 @@ All entities must extend either the `BaseEntity` or `SoftDeletableEntity` classe
 
 The `SoftDeletableEntity` class extends the `BaseEntity` class and adds another column `deleted_at`. If an entity can be soft deleted, meaning that a row in it can appear to the user as deleted but still be available in the database, it should extend `SoftDeletableEntity`.
 
-## What's Next :rocket:
+## What's Next
 
 - Learn [how to create an entity](./index.md).
 - Check out Medusa's entities in the [Entities' reference](../../../references/entities/classes/Address.md).

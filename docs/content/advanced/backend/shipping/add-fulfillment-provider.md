@@ -266,7 +266,7 @@ cancelFulfillment(fulfillment) {
 }
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) for an example of a fulfillment provider that interacts with a third-party providers.
 - Check out the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-payment-manual) for a basic implementation of a fulfillment provider.

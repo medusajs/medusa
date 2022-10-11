@@ -305,7 +305,7 @@ Where `<STOREFRONT_URL>` is the URL of your Gatsby storefront that you just depl
 
 Then, restart your Medusa server. Once the server is running again, you can use your Gatsby storefront.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [deploy the Medusa Admin](../admin/index.mdx).
 - Learn more about [Medusa’s configurations](../../usage/configurations.md).
