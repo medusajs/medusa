@@ -155,7 +155,17 @@ get:
               products:
                 type: array
                 items:
-                  $ref: ../components/schemas/product.yaml
+                  allOf:
+                    - $ref: ../components/schemas/product.yaml
+                    - type: object
+                      properties:
+                        variants:
+                          type: array
+                          items:
+                            allOf:
+                              - $ref: ../components/schemas/product_variant.yaml
+                              - $ref: >-
+                                  ../components/schemas/product_variant_prices_fields.yaml
               count:
                 type: integer
                 description: The total number of items available
