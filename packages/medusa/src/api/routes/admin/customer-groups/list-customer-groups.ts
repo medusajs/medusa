@@ -108,7 +108,7 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
- *         console.log(customer_groups.id);
+ *         console.log(customer_groups.length);
  *       });
  *   - lang: Shell
  *     label: cURL

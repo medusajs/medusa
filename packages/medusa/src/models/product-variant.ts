@@ -216,3 +216,44 @@ export class ProductVariant extends SoftDeletableEntity {
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
  */
+
+/**
+ * @schema product_variant_prices_fields
+ * title: "Product Variant Prices Fields"
+ * description: "Product Variants Prices Fields that are only available in some requests."
+ * x-resourceId: product_variant_prices_fields
+ * properties:
+ *   original_price:
+ *     type: number
+ *     description: The original price of the variant without any discounted prices applied.
+ *   calculated_price:
+ *     type: number
+ *     description: The calculated price of the variant. Can be a discounted price.
+ *   original_price_incl_tax: 
+ *     type: number
+ *     description: The original price of the variant including taxes.
+ *   calculated_price_incl_tax:
+ *     type: number
+ *     description: The calculated price of the variant including taxes.
+ *   original_tax:
+ *     type: number
+ *     description: The taxes applied on the original price.
+ *   calculated_tax:
+ *     type: number
+ *     description: The taxes applied on the calculated price.
+ *   tax_rates:
+ *     type: array
+ *     description: An array of applied tax rates
+ *     items:
+ *       type: object
+ *       properties:
+ *         rate:
+ *           type: number
+ *           description: The tax rate value
+ *         name:
+ *           type: string
+ *           description: The name of the tax rate
+ *         code:
+ *           type: string
+ *           description: The code of the tax rate
+ */
