@@ -792,12 +792,8 @@ export default class OrderEditService extends TransactionBaseService {
       relations: ["changes"],
     })
 
-    await Promise.all(
-      orderEdit.changes.map(
-        async (ch) => await this.deleteItemChange(orderEditId, ch.id)
-      )
-    )
-
+    await this.orderEditItemChangeService_.delete(orderEdit.changes.map(change => change.id))
+    
     await Promise.all(
       [
         taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
