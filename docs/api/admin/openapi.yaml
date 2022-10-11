@@ -222,10 +222,10 @@ paths:
     $ref: paths/collections.yaml
   /collections/{id}:
     $ref: paths/collections_{id}.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
+  /currencies:
+    $ref: paths/currencies.yaml
+  /currencies/{code}:
+    $ref: paths/currencies_{code}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -234,10 +234,10 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
-  /currencies:
-    $ref: paths/currencies.yaml
-  /currencies/{code}:
-    $ref: paths/currencies_{code}.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/{id}:
+    $ref: paths/customers_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions:
