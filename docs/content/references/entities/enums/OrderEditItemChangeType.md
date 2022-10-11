@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/order-item-change.ts:19](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/order-item-change.ts#L19)
+[models/order-item-change.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-item-change.ts#L19)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:20](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/order-item-change.ts#L20)
+[models/order-item-change.ts:20](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-item-change.ts#L20)
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:21](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/order-item-change.ts#L21)
+[models/order-item-change.ts:21](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-item-change.ts#L21)

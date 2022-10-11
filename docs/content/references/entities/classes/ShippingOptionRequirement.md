@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:38](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L38)
+[models/shipping-option-requirement.ts:38](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L38)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:41](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L41)
+[models/shipping-option-requirement.ts:41](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L41)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:24](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L24)
+[models/shipping-option-requirement.ts:24](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L24)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:32](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L32)
+[models/shipping-option-requirement.ts:32](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L32)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:28](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L28)
+[models/shipping-option-requirement.ts:28](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L28)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:35](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L35)
+[models/shipping-option-requirement.ts:35](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L35)
 
 ## Methods
 
@@ -82,4 +82,4 @@ ___
 
 #### Defined in
 
-[models/shipping-option-requirement.ts:43](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/shipping-option-requirement.ts#L43)
+[models/shipping-option-requirement.ts:43](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/shipping-option-requirement.ts#L43)
