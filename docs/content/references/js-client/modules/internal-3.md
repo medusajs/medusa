@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:64
+medusa/dist/types/common.d.ts:65

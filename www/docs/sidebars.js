@@ -639,8 +639,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCollectionsResource",
               label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
             },
             {
               type: "doc",
@@ -689,6 +699,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminPriceListResource",
               label: "priceLists",
             },
@@ -721,6 +736,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminReturnsResource",
               label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
             },
             {
               type: "doc",
@@ -823,6 +843,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
         },
@@ -850,7 +875,7 @@ module.exports = {
         {
           type: "doc",
           id: "references/js-client/classes/ReturnReasonsResource",
-          label: "returnReason",
+          label: "returnReasons",
         },
         {
           type: "doc",
