@@ -787,6 +787,17 @@ export default class OrderEditService extends TransactionBaseService {
     )
     const clonedItemIds = clonedLineItems.map((item) => item.id)
 
+    const orderEdit = await this.retrieve(orderEditId, {
+      select: ["id", "changes"],
+      relations: ["changes"],
+    })
+
+    await Promise.all(
+      orderEdit.changes.map(
+        async (ch) => await this.deleteItemChange(orderEditId, ch.id)
+      )
+    )
+
     await Promise.all(
       [
         taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
