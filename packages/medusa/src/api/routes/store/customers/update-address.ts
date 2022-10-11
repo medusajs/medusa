@@ -95,4 +95,5 @@ export default async (req, res) => {
   res.json({ customer })
 }
 
+// eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

@@ -1,6 +1,6 @@
 import {
-  BaseNotificationService,
   BaseFulfillmentService,
+  BaseNotificationService,
   BasePaymentService,
 } from "medusa-interfaces"
 import { currencies } from "../utils/currencies"
@@ -19,8 +19,8 @@ import {
   TaxProviderService,
 } from "../services"
 import { CurrencyRepository } from "../repositories/currency"
-import { FlagRouter } from "../utils/flag-router";
-import SalesChannelFeatureFlag from "./feature-flags/sales-channels";
+import { FlagRouter } from "../utils/flag-router"
+import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
 import { AbstractPaymentService, AbstractTaxService } from "../interfaces"
 
 const silentResolution = <T>(
@@ -69,7 +69,9 @@ export default async ({
   const profileService = container.resolve<ShippingProfileService>(
     "shippingProfileService"
   )
-  const salesChannelService = container.resolve<SalesChannelService>("salesChannelService")
+  const salesChannelService = container.resolve<SalesChannelService>(
+    "salesChannelService"
+  )
   const logger = container.resolve<Logger>("logger")
   const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
 
@@ -80,7 +82,8 @@ export default async ({
     const hasCountries = await countryRepo.findOne()
     if (!hasCountries) {
       for (const c of countries) {
-        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name") VALUES ($1, $2, $3, $4, $5)`
+        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name")
+                       VALUES ($1, $2, $3, $4, $5)`
 
         const iso2 = c.alpha2.toLowerCase()
         const iso3 = c.alpha3.toLowerCase()
@@ -104,7 +107,8 @@ export default async ({
     const hasCurrencies = await currencyRepo.findOne()
     if (!hasCurrencies) {
       for (const [, c] of Object.entries(currencies)) {
-        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name") VALUES ($1, $2, $3, $4)`
+        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name")
+                       VALUES ($1, $2, $3, $4)`
 
         const code = c.code.toLowerCase()
         const sym = c.symbol
@@ -120,7 +124,7 @@ export default async ({
     await storeService.withTransaction(manager).create()
 
     const payProviders =
-      silentResolution<(typeof BasePaymentService | AbstractPaymentService<never>)[]>(
+      silentResolution<(typeof BasePaymentService | AbstractPaymentService)[]>(
         container,
         "paymentProviders",
         logger
@@ -173,7 +177,9 @@ export default async ({
     await profileService.withTransaction(manager).createDefault()
     await profileService.withTransaction(manager).createGiftCardDefault()
 
-    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+      SalesChannelFeatureFlag.key
+    )
     if (isSalesChannelEnabled) {
       await salesChannelService.withTransaction(manager).createDefault()
     }

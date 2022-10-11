@@ -25,7 +25,7 @@ AbstractSearchService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:18](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L18)
+[packages/medusa/src/services/search.ts:18](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L18)
 
 ## Properties
 
@@ -39,7 +39,7 @@ AbstractSearchService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -53,7 +53,7 @@ AbstractSearchService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -67,7 +67,7 @@ AbstractSearchService.isDefault
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L11)
+[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L11)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:15](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L15)
+[packages/medusa/src/services/search.ts:15](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L15)
 
 ___
 
@@ -91,7 +91,7 @@ AbstractSearchService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L13)
+[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L13)
 
 ___
 
@@ -105,7 +105,7 @@ AbstractSearchService.options\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L16)
+[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L16)
 
 ___
 
@@ -119,7 +119,7 @@ AbstractSearchService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L14)
+[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L14)
 
 ## Accessors
 
@@ -137,13 +137,13 @@ AbstractSearchService.options
 
 #### Defined in
 
-[packages/medusa/src/interfaces/search-service.ts:82](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/search-service.ts#L82)
+[packages/medusa/src/interfaces/search-service.ts:82](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/search-service.ts#L82)
 
 ## Methods
 
 ### addDocuments
 
-▸ **addDocuments**(`indexName`, `documents`, `type`): `void`
+▸ **addDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -155,7 +155,7 @@ AbstractSearchService.options
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -163,7 +163,7 @@ AbstractSearchService.addDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:43](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L43)
+[packages/medusa/src/services/search.ts:43](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L43)
 
 ___
 
@@ -202,13 +202,13 @@ AbstractSearchService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
 ### createIndex
 
-▸ **createIndex**(`indexName`, `options`): `void`
+▸ **createIndex**(`indexName`, `options`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -219,7 +219,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -227,13 +227,13 @@ AbstractSearchService.createIndex
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L31)
+[packages/medusa/src/services/search.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L31)
 
 ___
 
 ### deleteAllDocuments
 
-▸ **deleteAllDocuments**(`indexName`): `void`
+▸ **deleteAllDocuments**(`indexName`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -243,7 +243,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -251,13 +251,13 @@ AbstractSearchService.deleteAllDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:61](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L61)
+[packages/medusa/src/services/search.ts:72](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L72)
 
 ___
 
 ### deleteDocument
 
-▸ **deleteDocument**(`indexName`, `document_id`): `void`
+▸ **deleteDocument**(`indexName`, `document_id`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -268,7 +268,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -276,13 +276,13 @@ AbstractSearchService.deleteDocument
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:55](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L55)
+[packages/medusa/src/services/search.ts:63](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L63)
 
 ___
 
 ### getIndex
 
-▸ **getIndex**(`indexName`): `void`
+▸ **getIndex**(`indexName`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -292,7 +292,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -300,13 +300,13 @@ AbstractSearchService.getIndex
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:37](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L37)
+[packages/medusa/src/services/search.ts:37](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L37)
 
 ___
 
 ### replaceDocuments
 
-▸ **replaceDocuments**(`indexName`, `documents`, `type`): `void`
+▸ **replaceDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -318,7 +318,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -326,13 +326,13 @@ AbstractSearchService.replaceDocuments
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:49](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L49)
+[packages/medusa/src/services/search.ts:53](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L53)
 
 ___
 
 ### search
 
-▸ **search**(`indexName`, `query`, `options`): `Object`
+▸ **search**(`indexName`, `query`, `options`): `Promise`<{ `hits`: `unknown`[]  }\>
 
 #### Parameters
 
@@ -344,11 +344,7 @@ ___
 
 #### Returns
 
-`Object`
-
-| Name | Type |
-| :------ | :------ |
-| `hits` | `unknown`[] |
+`Promise`<{ `hits`: `unknown`[]  }\>
 
 #### Overrides
 
@@ -356,7 +352,7 @@ AbstractSearchService.search
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:67](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L67)
+[packages/medusa/src/services/search.ts:78](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L78)
 
 ___
 
@@ -380,13 +376,13 @@ AbstractSearchService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
 ### updateSettings
 
-▸ **updateSettings**(`indexName`, `settings`): `void`
+▸ **updateSettings**(`indexName`, `settings`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -397,7 +393,7 @@ ___
 
 #### Returns
 
-`void`
+`Promise`<`void`\>
 
 #### Overrides
 
@@ -405,7 +401,7 @@ AbstractSearchService.updateSettings
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:78](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/search.ts#L78)
+[packages/medusa/src/services/search.ts:89](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/search.ts#L89)
 
 ___
 
@@ -429,4 +425,4 @@ AbstractSearchService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

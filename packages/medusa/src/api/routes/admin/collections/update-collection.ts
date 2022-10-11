@@ -1,6 +1,6 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**

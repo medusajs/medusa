@@ -2,13 +2,13 @@ import {
   AllocationType,
   Discount,
   DiscountRule,
-  DiscountRuleType,
+  DiscountRuleType
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
 import {
   DiscountConditionFactoryData,
-  simpleDiscountConditionFactory,
+  simpleDiscountConditionFactory
 } from "./simple-discount-condition-factory"
 
 export type DiscountRuleFactoryData = {

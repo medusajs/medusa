@@ -27,6 +27,7 @@ type InjectedDependencies = {
   shippingProfileRepository: typeof ShippingProfileRepository
   productRepository: typeof ProductRepository
 }
+
 /**
  * Provides layer to manipulate profiles.
  * @constructor
@@ -36,6 +37,7 @@ class ShippingProfileService extends TransactionBaseService {
   protected readonly productService_: ProductService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly customShippingOptionService_: CustomShippingOptionService
+  // eslint-disable-next-line max-len
   protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productRepository_: typeof ProductRepository
 
@@ -50,14 +52,7 @@ class ShippingProfileService extends TransactionBaseService {
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      shippingProfileRepository,
-      productService,
-      productRepository,
-      shippingOptionService,
-      customShippingOptionService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
@@ -188,7 +183,7 @@ class ShippingProfileService extends TransactionBaseService {
           name: "Default Shipping Profile",
         }
 
-        const created = await profileRepository.create(toCreate)
+        const created = profileRepository.create(toCreate)
 
         profile = await profileRepository.save(created)
       }
@@ -227,7 +222,7 @@ class ShippingProfileService extends TransactionBaseService {
           this.shippingProfileRepository_
         )
 
-        const created = await profileRepository.create({
+        const created = profileRepository.create({
           type: ShippingProfileType.GIFT_CARD,
           name: "Gift Card Profile",
         })

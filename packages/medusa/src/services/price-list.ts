@@ -41,7 +41,6 @@ type PriceListConstructorProps = {
 
 /**
  * Provides layer to manipulate product tags.
- * @extends BaseService
  */
 class PriceListService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -140,7 +139,8 @@ class PriceListService extends TransactionBaseService {
         const priceList = await priceListRepo.save(entity)
 
         if (prices) {
-          await moneyAmountRepo.addPriceListPrices(priceList.id, prices)
+          const prices_ = await this.addCurrencyFromRegion(prices)
+          await moneyAmountRepo.addPriceListPrices(priceList.id, prices_)
         }
 
         if (customer_groups) {
@@ -245,6 +245,19 @@ class PriceListService extends TransactionBaseService {
       const priceList = await this.retrieve(id, { select: ["id"] })
 
       await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
+    })
+  }
+
+  /**
+   * Removes all prices from a price list and deletes the removed prices in bulk
+   * @param id - id of the price list
+   * @returns {Promise<void>} updated Price List
+   */
+  async clearPrices(id: string): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const priceList = await this.retrieve(id, { select: ["id"] })
+      await moneyAmountRepo.delete({ price_list_id: priceList.id })
     })
   }
 
@@ -507,7 +520,9 @@ class PriceListService extends TransactionBaseService {
     const prices_: typeof prices = []
 
     const regionServiceTx = this.regionService_.withTransaction(this.manager_)
-    for (const p of prices) {
+    for (const price of prices) {
+      const p = { ...price }
+
       if (p.region_id) {
         const region = await regionServiceTx.retrieve(p.region_id)
 

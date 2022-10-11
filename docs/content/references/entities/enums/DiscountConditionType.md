@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/discount-condition.ts:28](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L28)
+[models/discount-condition.ts:28](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/discount-condition.ts#L28)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:24](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L24)
+[models/discount-condition.ts:24](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/discount-condition.ts#L24)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:26](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L26)
+[models/discount-condition.ts:26](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/discount-condition.ts#L26)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:27](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L27)
+[models/discount-condition.ts:27](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/discount-condition.ts#L27)
 
 ___
 
@@ -52,4 +52,4 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:25](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L25)
+[models/discount-condition.ts:25](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/discount-condition.ts#L25)

@@ -5,7 +5,7 @@ import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
 
-export default async function({ port, directory }) {
+export default async function ({ port, directory }) {
   const args = process.argv
   args.shift()
   args.shift()
@@ -35,7 +35,7 @@ export default async function({ port, directory }) {
 
     child.kill("SIGINT")
 
-    execSync(`${babelPath} src -d dist --extensions \".ts,.js\"`, {
+    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })

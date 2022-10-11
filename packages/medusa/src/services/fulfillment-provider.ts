@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import BaseFulfillmentService from "medusa-interfaces/dist/fulfillment-service"
+import BaseFulfillmentService from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -26,7 +26,7 @@ type FulfillmentProviderContainer = MedusaContainer & {
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
   manager: EntityManager
 } & {
-  [key in `${FulfillmentProviderKey}`]: BaseFulfillmentService
+  [key in `${FulfillmentProviderKey}`]: typeof BaseFulfillmentService
 }
 
 /**
@@ -37,7 +37,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly container_: FulfillmentProviderContainer
-
+  // eslint-disable-next-line max-len
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
 
   constructor(container: FulfillmentProviderContainer) {
@@ -77,14 +77,13 @@ class FulfillmentProviderService extends TransactionBaseService {
   ): Promise<FulfillmentOptions[]> {
     return await Promise.all(
       providerIds.map(async (p) => {
-        const provider = await this.retrieveProvider(p)
+        const provider = this.retrieveProvider(p)
         return {
           provider_id: p,
-          options:
-            (await provider.getFulfillmentOptions()) as unknown as Record<
-              string,
-              unknown
-            >[],
+          options: (await provider.getFulfillmentOptions()) as Record<
+            string,
+            unknown
+          >[],
         }
       })
     )
@@ -94,7 +93,7 @@ class FulfillmentProviderService extends TransactionBaseService {
    * @param providerId - the provider id
    * @return the payment fulfillment provider
    */
-  retrieveProvider(providerId: string): BaseFulfillmentService {
+  retrieveProvider(providerId: string): typeof BaseFulfillmentService {
     try {
       return this.container_[`fp_${providerId}`]
     } catch (err) {

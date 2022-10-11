@@ -10,7 +10,7 @@ import passportLoader from "../loaders/passport"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import logger from "../loaders/logger";
+import logger from "../loaders/logger"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -112,7 +112,9 @@ export async function request(method, url, opts = {}) {
   }
 
   for (const name in headers) {
-    req.set(name, headers[name])
+    if ({}.hasOwnProperty.call(headers, name)) {
+      req.set(name, headers[name])
+    }
   }
 
   if (payload && !req.get("content-type")) {

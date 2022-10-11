@@ -22,7 +22,7 @@ export class OrderRepository extends Repository<Order> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
+      Object.entries(groupedRelations).map(async ([_, rels]) => {
         return this.findByIds(entitiesIds, {
           select: ["id"],
           relations: rels as string[],

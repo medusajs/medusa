@@ -1,12 +1,10 @@
-import { Readable, PassThrough } from "stream"
+import { PassThrough, Readable } from "stream"
 import { EntityManager } from "typeorm"
 
 import { FileService } from "medusa-interfaces"
 import { IdMap, MockManager } from "medusa-test-utils"
 
 import { User } from "../../../../models"
-import { BatchJobStatus } from "../../../../types/batch-job"
-import ProductImportStrategy from "../../../batch-jobs/product/import"
 import {
   BatchJobService,
   ProductService,
@@ -14,8 +12,10 @@ import {
   RegionService,
   ShippingProfileService,
 } from "../../../../services"
-import { InjectedProps } from "../../../batch-jobs/product/types"
+import { BatchJobStatus } from "../../../../types/batch-job"
 import { FlagRouter } from "../../../../utils/flag-router"
+import ProductImportStrategy from "../../../batch-jobs/product/import"
+import { InjectedProps } from "../../../batch-jobs/product/types"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -32,10 +32,10 @@ let fakeJob = {
 }
 
 async function* generateCSVDataForStream() {
-  yield "Product id,Product Handle,Product Title,Product Subtitle,Product Description,Product Status,Product Thumbnail,Product Weight,Product Length,Product Width,Product Height,Product HS Code,Product Origin Country,Product MID Code,Product Material,Product Collection Title,Product Collection Handle,Product Type,Product Tags,Product Discountable,Product External ID,Product Profile Name,Product Profile Type,Variant id,Variant Title,Variant SKU,Variant Barcode,Variant Inventory Quantity,Variant Allow backorder,Variant Manage inventory,Variant Weight,Variant Length,Variant Width,Variant Height,Variant HS Code,Variant Origin Country,Variant MID Code,Variant Material,Price france [USD],Price USD,Price denmark [DKK],Price Denmark [DKK],Option 1 Name,Option 1 Value,Option 2 Name,Option 2 Value,Image 1 Url\n"
-  yield "O6S1YQ6mKm,test-product-product-1,Test product,,test-product-description-1,draft,,,,,,,,,,Test collection 1,test-collection1,test-type-1,123_1,TRUE,,profile_1,profile_type_1,SebniWTDeC,Test variant,test-sku-1,test-barcode-1,10,FALSE,TRUE,,,,,,,,,100,110,130,,test-option-1,option 1 value red,test-option-2,option 2 value 1,test-image.png\n"
-  yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,profile_2,profile_type_2,CaBp7amx3r,Test variant,test-sku-2,test-barcode-2,10,FALSE,TRUE,,,,,,,,,,,,110,test-option,Option 1 value 1,,,test-image.png\n"
-  yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,profile_2,profile_type_2,3SS1MHGDEJ,Test variant,test-sku-3,test-barcode-3,10,FALSE,TRUE,,,,,,,,,,120,,,test-option,Option 1 Value blue,,,test-image.png\n"
+  yield "Product id,Product Handle,Product Title,Product Subtitle,Product Description,Product Status,Product Thumbnail,Product Weight,Product Length,Product Width,Product Height,Product HS Code,Product Origin Country,Product MID Code,Product Material,Product Collection Title,Product Collection Handle,Product Type,Product Tags,Product Discountable,Product External ID,Variant id,Variant Title,Variant SKU,Variant Barcode,Variant Inventory Quantity,Variant Allow backorder,Variant Manage inventory,Variant Weight,Variant Length,Variant Width,Variant Height,Variant HS Code,Variant Origin Country,Variant MID Code,Variant Material,Price france [USD],Price USD,Price denmark [DKK],Price Denmark [DKK],Option 1 Name,Option 1 Value,Option 2 Name,Option 2 Value,Image 1 Url\n"
+  yield ",test-product-product-1,Test product,,test-product-description-1,draft,,,,,,,,,,Test collection 1,test-collection1,test-type-1,123_1,TRUE,,SebniWTDeC,Test variant,test-sku-1,test-barcode-1,10,FALSE,TRUE,,,,,,,,,100,110,130,,test-option-1,option 1 value red,test-option-2,option 2 value 1,test-image.png\n"
+  yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,,Test variant,test-sku-2,test-barcode-2,10,FALSE,TRUE,,,,,,,,,,,,110,test-option,Option 1 value 1,,,test-image.png\n"
+  yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,3SS1MHGDEJ,Test variant,test-sku-3,test-barcode-3,10,FALSE,TRUE,,,,,,,,,,120,,,test-option,Option 1 Value blue,,,test-image.png\n"
 }
 
 /* ******************** SERVICES MOCK ******************** */
@@ -159,7 +159,7 @@ describe("Product import strategy", () => {
 
     expect(getImportInstructionsSpy).toBeCalledTimes(1)
 
-    expect(fileServiceMock.getUploadStreamDescriptor).toBeCalledTimes(2)
+    expect(fileServiceMock.getUploadStreamDescriptor).toBeCalledTimes(4)
 
     expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
       1,
@@ -170,6 +170,20 @@ describe("Product import strategy", () => {
     )
     expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
       2,
+      {
+        ext: "json",
+        name: `imports/products/ops/${fakeJob.id}-VARIANT_CREATE`,
+      }
+    )
+    expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
+      3,
+      {
+        ext: "json",
+        name: `imports/products/ops/${fakeJob.id}-PRODUCT_UPDATE`,
+      }
+    )
+    expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
+      4,
       {
         ext: "json",
         name: `imports/products/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id

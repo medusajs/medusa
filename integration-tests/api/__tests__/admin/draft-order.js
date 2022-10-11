@@ -420,7 +420,7 @@ describe("/admin/draft-orders", () => {
             code: "TEST",
           }),
           expect.objectContaining({
-            code: "free-shipping",
+            code: "FREE-SHIPPING",
           }),
         ])
       )

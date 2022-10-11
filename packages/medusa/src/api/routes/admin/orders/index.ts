@@ -1,14 +1,15 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import {
   DeleteResponse,
-  EmptyQueryParams,
+  FindParams,
   PaginatedResponse,
 } from "../../../../types/common"
+import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
@@ -16,7 +17,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
 
   const relations = [...defaultAdminOrdersRelations]
-  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
     relations.push("sales_channel")
   }
 
@@ -29,6 +30,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -39,10 +41,11 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -254,6 +257,7 @@ export const defaultAdminOrdersRelations = [
   "claims",
   "claims.return_order",
   "claims.return_order.shipping_method",
+  "claims.return_order.shipping_method.tax_lines",
   "claims.shipping_methods",
   "claims.shipping_address",
   "claims.additional_items",
@@ -265,8 +269,11 @@ export const defaultAdminOrdersRelations = [
   // "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
+  "swaps.return_order.shipping_method",
+  "swaps.return_order.shipping_method.tax_lines",
   "swaps.payment",
   "swaps.shipping_methods",
+  "swaps.shipping_methods.tax_lines",
   "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
@@ -337,6 +344,8 @@ export const allowedAdminOrdersFields = [
 export const allowedAdminOrdersRelations = [
   "customer",
   "region",
+  "edits",
+  "sales_channel",
   "billing_address",
   "shipping_address",
   "discounts",

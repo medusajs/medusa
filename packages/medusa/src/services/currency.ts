@@ -35,7 +35,7 @@ export default class CurrencyService extends TransactionBaseService {
     eventBusService,
     featureFlagRouter,
   }: InjectedDependencies) {
-    super({ manager })
+    super(arguments[0])
     this.manager_ = manager
     this.currencyRepository_ = currencyRepository
     this.eventBusService_ = eventBusService

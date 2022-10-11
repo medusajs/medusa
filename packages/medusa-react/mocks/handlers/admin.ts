@@ -1664,6 +1664,18 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/order-edits/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
   rest.get("/store/order-edits/:id", (req, res, ctx) => {
     const { id } = req.params
     return res(
@@ -1671,6 +1683,119 @@ export const adminHandlers = [
       ctx.json({
         order_edit: fixtures.get("store_order_edit"),
         id,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/cancel", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          canceled_at: new Date(),
+          status: "canceled",
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/confirm", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          confirmed_at: new Date(),
+          status: "confirmed",
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/items", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          requested_at: new Date(),
+          status: "requested",
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/order-edits/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id,
+        object: "order_edit",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/order-edits/:id/changes/:change_id", (req, res, ctx) => {
+    const { change_id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: change_id,
+        object: "item_change",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              quantity: (req.body as any).quantity,
+            },
+          ],
+        },
+      })
+    )
+  }),
+  
+  rest.delete("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        order_edit: {
+          ...fixtures.get("order_edit"),
+          changes: [
+            {
+              type: 'item_remove'
+            },
+          ],
+        },
       })
     )
   }),

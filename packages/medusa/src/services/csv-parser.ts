@@ -150,13 +150,13 @@ class CsvParser<
       return columnMap[tupleKey]
     }
 
-    const matchedColumn = this.$$schema.columns.find((column) =>
-      "match" in column &&
-      typeof column.match === "object" &&
-      column.match instanceof RegExp
+    const matchedColumn = this.$$schema.columns.find((column) => {
+      return "match" in column &&
+        typeof column.match === "object" &&
+        column.match instanceof RegExp
         ? column.match.test(tupleKey)
         : false
-    )
+    })
 
     return matchedColumn
   }

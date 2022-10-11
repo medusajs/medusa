@@ -29,6 +29,7 @@ type InjectedDependencies = {
   manager: EntityManager
   fulfillmentProviderService: FulfillmentProviderService
   regionService: RegionService
+  // eslint-disable-next-line max-len
   shippingOptionRequirementRepository: typeof ShippingOptionRequirementRepository
   shippingOptionRepository: typeof ShippingOptionRepository
   shippingMethodRepository: typeof ShippingMethodRepository
@@ -41,6 +42,7 @@ type InjectedDependencies = {
 class ShippingOptionService extends TransactionBaseService {
   protected readonly providerService_: FulfillmentProviderService
   protected readonly regionService_: RegionService
+  // eslint-disable-next-line max-len
   protected readonly requirementRepository_: typeof ShippingOptionRequirementRepository
   protected readonly optionRepository_: typeof ShippingOptionRepository
   protected readonly methodRepository_: typeof ShippingMethodRepository
@@ -334,7 +336,7 @@ class ShippingOptionService extends TransactionBaseService {
         toCreate.claim_order_id = config.claim_order_id
       }
 
-      const method = await methodRepo.create(toCreate)
+      const method = methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
 
@@ -405,9 +407,7 @@ class ShippingOptionService extends TransactionBaseService {
   async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const option = await optionRepo.create(
-        data as DeepPartial<ShippingOption>
-      )
+      const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
       const region = await this.regionService_
         .withTransaction(manager)
@@ -536,7 +536,7 @@ class ShippingOptionService extends TransactionBaseService {
       })
 
       if (isDefined(update.metadata)) {
-        option.metadata = await setMetadata(option, update.metadata)
+        option.metadata = setMetadata(option, update.metadata)
       }
 
       if (update.region_id || update.provider_id || update.data) {

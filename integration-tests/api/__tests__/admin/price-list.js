@@ -1,13 +1,16 @@
 const path = require("path")
+const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
-const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductFactory,
   simplePriceListFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
@@ -53,6 +56,11 @@ describe("/admin/price-lists", () => {
     it("creates a price list", async () => {
       const api = useApi()
 
+      const region = await simpleRegionFactory(dbConnection, {
+        id: "region-pl-infer-currency",
+        currency_code: "hrk",
+      })
+
       const payload = {
         name: "VIP Summer sale",
         description: "Summer sale for VIP customers. 25% off selected items.",
@@ -69,6 +77,11 @@ describe("/admin/price-lists", () => {
           {
             amount: 85,
             currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          {
+            amount: 105,
+            region_id: region.id,
             variant_id: "test-variant",
           },
         ],
@@ -104,6 +117,12 @@ describe("/admin/price-lists", () => {
               id: expect.any(String),
               amount: 85,
               currency_code: "usd",
+              variant_id: "test-variant",
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              amount: 105,
+              currency_code: region.currency_code,
               variant_id: "test-variant",
             }),
           ],
@@ -1157,7 +1176,7 @@ describe("/admin/price-lists", () => {
                   amount: 150,
                   price_list_id: "test-list",
                 }),
-              ],)
+              ]),
             }),
             expect.objectContaining({
               id: "test-variant-2",
@@ -1209,9 +1228,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.count).toEqual(1)
       expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: "test-prod-2" }),
-        ])
+        expect.arrayContaining([expect.objectContaining({ id: "test-prod-2" })])
       )
     })
 
@@ -1487,9 +1504,10 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/price-lists", () => {
       response = await api
         .post(
           `/admin/price-lists/${priceListIncludesTaxId}`,
-          { includes_tax: true, },
+          { includes_tax: true },
           adminReqConfig
-        ).catch((err) => {
+        )
+        .catch((err) => {
           console.log(err)
         })
 

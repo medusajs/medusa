@@ -122,7 +122,7 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ![Twilio Dashboard](https://i.imgur.com/MXtQMiL.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](../admin/quickstart.md) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

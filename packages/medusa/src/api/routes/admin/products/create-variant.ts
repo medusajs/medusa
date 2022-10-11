@@ -300,7 +300,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @ValidateNested({ each: true })

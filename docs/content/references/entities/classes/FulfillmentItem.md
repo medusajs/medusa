@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/fulfillment-item.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/fulfillment-item.ts#L16)
+[models/fulfillment-item.ts:16](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/fulfillment-item.ts#L16)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment-item.ts:9](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/fulfillment-item.ts#L9)
+[models/fulfillment-item.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/fulfillment-item.ts#L9)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment-item.ts:20](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/fulfillment-item.ts#L20)
+[models/fulfillment-item.ts:20](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/fulfillment-item.ts#L20)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment-item.ts:12](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/fulfillment-item.ts#L12)
+[models/fulfillment-item.ts:12](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/fulfillment-item.ts#L12)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[models/fulfillment-item.ts:23](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/fulfillment-item.ts#L23)
+[models/fulfillment-item.ts:23](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/models/fulfillment-item.ts#L23)

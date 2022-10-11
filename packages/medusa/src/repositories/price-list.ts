@@ -76,7 +76,7 @@ export class PriceListRepository extends Repository<PriceList> {
     }
     const entitiesIds = entities.map(({ id }) => id)
     const entitiesIdsWithRelations = await Promise.all(
-      Object.values(groupedRelations).map((relations: string[]) => {
+      Object.values(groupedRelations).map(async (relations: string[]) => {
         return this.findByIds(entitiesIds, {
           select: ["id"],
           relations: relations as string[],

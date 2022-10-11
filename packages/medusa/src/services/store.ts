@@ -19,7 +19,6 @@ type InjectedDependencies = {
 
 /**
  * Provides layer to manipulate store settings.
- * @extends BaseService
  */
 class StoreService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -67,7 +66,7 @@ class StoreService extends TransactionBaseService {
           return store
         }
 
-        const newStore = await storeRepository.create()
+        const newStore = storeRepository.create()
         // Add default currency (USD) to store currencies
         const usd = await currencyRepository.findOne({
           code: "usd",

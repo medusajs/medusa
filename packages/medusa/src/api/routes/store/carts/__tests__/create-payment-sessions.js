@@ -22,7 +22,7 @@ describe("POST /store/carts/:id/payment-sessions", () => {
     })
 
     it("calls Cart service retrieve", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {

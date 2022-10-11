@@ -125,7 +125,7 @@ To delete soft-deletable entities that extend the `SoftDeletableEntity` class, y
 await postRepository.softDelete(post.id);
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out Medusa's entities in the [Entities' reference](../../../references/entities/classes/Address.md).
 - Learn about [migrations](../migrations/overview.md).

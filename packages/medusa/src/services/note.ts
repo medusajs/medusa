@@ -31,7 +31,7 @@ class NoteService extends TransactionBaseService {
     noteRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({ manager, noteRepository, eventBusService })
+    super(arguments[0])
 
     this.manager_ = manager
     this.noteRepository_ = noteRepository
@@ -112,7 +112,7 @@ class NoteService extends TransactionBaseService {
         metadata,
       }
 
-      const note = await noteRepo.create(toCreate)
+      const note = noteRepo.create(toCreate)
       const result = await noteRepo.save(note)
 
       await this.eventBus_

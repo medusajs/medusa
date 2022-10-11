@@ -157,7 +157,7 @@ module.exports = withStoreConfig({
 
 Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retrieved from the Space URL. For example, `medusa-server.fra1.digitaloceanspaces.com`.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
 - Learn how to [deploy the Medusa server on DigitalOcean](../deployments/server/deploying-on-digital-ocean.md).

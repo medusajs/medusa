@@ -192,17 +192,10 @@ describe("LineItemAdjustmentService", () => {
       it("calls lineItemAdjustment delete method with the right params", async () => {
         await lineItemAdjustmentService.delete("lia-1")
 
-        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledTimes(1)
-        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledWith({
-          where: {
-            id: "lia-1",
-          },
+        expect(lineItemAdjustmentRepo.delete).toHaveBeenCalledTimes(1)
+        expect(lineItemAdjustmentRepo.delete).toHaveBeenCalledWith({
+          id: In(["lia-1"]),
         })
-
-        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledTimes(1)
-        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledWith(
-          lineItemAdjustment
-        )
       })
     })
 

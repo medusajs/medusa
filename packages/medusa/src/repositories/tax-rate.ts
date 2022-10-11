@@ -27,12 +27,12 @@ const resolveableFields = [
 @EntityRepository(TaxRate)
 export class TaxRateRepository extends Repository<TaxRate> {
   getFindQueryBuilder(findOptions: FindManyOptions<TaxRate>) {
-    let qb = this.createQueryBuilder("tr")
+    const qb = this.createQueryBuilder("tr")
     const cleanOptions = findOptions
 
     const resolverFields: string[] = []
     if (isDefined(findOptions.select)) {
-      let selectableCols: (keyof TaxRate)[] = []
+      const selectableCols: (keyof TaxRate)[] = []
       for (const k of findOptions.select) {
         if (!resolveableFields.includes(k)) {
           selectableCols.push(k)
@@ -116,7 +116,7 @@ export class TaxRateRepository extends Repository<TaxRate> {
   async addToProduct(
     id: string,
     productIds: string[],
-    overrideExisting: boolean = false
+    overrideExisting = false
   ): Promise<ProductTaxRate[]> {
     const toInsert = productIds.map((pId) => ({ rate_id: id, product_id: pId }))
     const insertResult = await this.createQueryBuilder()
@@ -155,7 +155,7 @@ export class TaxRateRepository extends Repository<TaxRate> {
   async addToProductType(
     id: string,
     productTypeIds: string[],
-    overrideExisting: boolean = false
+    overrideExisting = false
   ): Promise<ProductTypeTaxRate[]> {
     const toInsert = productTypeIds.map((pId) => ({
       rate_id: id,
@@ -197,7 +197,7 @@ export class TaxRateRepository extends Repository<TaxRate> {
   async addToShippingOption(
     id: string,
     optionIds: string[],
-    overrideExisting: boolean = false
+    overrideExisting = false
   ): Promise<ShippingTaxRate[]> {
     const toInsert = optionIds.map((pId) => ({
       rate_id: id,
@@ -226,12 +226,12 @@ export class TaxRateRepository extends Repository<TaxRate> {
   }
 
   async listByProduct(productId: string, config: TaxRateListByConfig) {
-    let productRates = this.createQueryBuilder("txr")
+    const productRates = this.createQueryBuilder("txr")
       .leftJoin(ProductTaxRate, "ptr", "ptr.rate_id = txr.id")
       .leftJoin(Product, "prod", "prod.id = ptr.product_id")
       .where("prod.id = :productId", { productId })
 
-    let typeRates = this.createQueryBuilder("txr")
+    const typeRates = this.createQueryBuilder("txr")
       .leftJoin(ProductTypeTaxRate, "pttr", "pttr.rate_id = txr.id")
       .leftJoin(Product, "prod", "prod.type_id = pttr.product_type_id")
       .where("prod.id = :productId", { productId })
@@ -256,7 +256,7 @@ export class TaxRateRepository extends Repository<TaxRate> {
   }
 
   async listByShippingOption(optionId: string) {
-    let rates = this.createQueryBuilder("txr")
+    const rates = this.createQueryBuilder("txr")
       .leftJoin(ShippingTaxRate, "ptr", "ptr.rate_id = txr.id")
       .where("ptr.shipping_option_id = :optionId", { optionId })
 

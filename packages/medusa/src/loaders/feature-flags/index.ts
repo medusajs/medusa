@@ -30,7 +30,6 @@ export default (
 
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const flagSettings: FlagSettings = require(flag).default
     if (!flagSettings) {
       continue
