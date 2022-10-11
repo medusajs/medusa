@@ -22,9 +22,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   option_id: string
 
-  @ManyToOne(() => ProductOption, (option) => option.values, {
-    cascade: ["soft-remove"],
-  })
+  @ManyToOne(() => ProductOption, (option) => option.values)
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
@@ -32,7 +30,9 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   variant_id: string
 
-  @ManyToOne(() => ProductVariant, (variant) => variant.options)
+  @ManyToOne(() => ProductVariant, (variant) => variant.options, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
