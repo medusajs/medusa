@@ -13,6 +13,7 @@ const {
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const { simpleProductFactory } = require("../../factories")
+const { Any } = require("typeorm")
 
 jest.setTimeout(50000)
 
@@ -1447,6 +1448,21 @@ describe("/admin/products", () => {
             },
           ],
         })
+        await simpleProductFactory(dbConnection, {
+          id: "test-product-with-variant",
+          variants: [
+            {
+              product_id: "test-product-with-variant",
+              options: [{ option_id: "test-product-option-1", value: "test" }],
+            },
+          ],
+          options: [
+            {
+              id: "test-product-option-1",
+              title: "Test option 1",
+            },
+          ],
+        })
         await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
@@ -1483,6 +1499,37 @@ describe("/admin/products", () => {
           variants: [],
         })
       )
+    })
+
+    it("deletes a values associated with deleted option", async () => {
+      const api = useApi()
+
+      const response1 = await api.get(
+        "/admin/products/test-product-with-variant",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+      const response = await api.delete(
+        "/admin/products/test-product-with-variant/options/test-product-option-1",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      const values = await dbConnection.manager.find(ProductOptionValue, {
+        where: { option_id: "test-product-option-1" },
+        withDeleted: true,
+      })
+
+      console.log(values)
+      expect(values).toEqual([
+        expect.objectContaining({ deleted_at: expect.any(Date) }),
+      ])
     })
   })
 
