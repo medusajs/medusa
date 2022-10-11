@@ -12,8 +12,7 @@ export default (app) => {
   route.get(
     "/",
     transformQuery(StoreGetCollectionsParams, {
-      defaultRelations: defaultStoreCollectionRelations,
-      defaultFields: defaultStoreCollectionFields,
+      allowedFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-collections").default)
@@ -23,8 +22,17 @@ export default (app) => {
   return app
 }
 
-export const defaultStoreCollectionFields = ["id", "title", "handle"]
 export const defaultStoreCollectionRelations = ["products"]
+export const allowedFields = [
+  "id",
+  "title",
+  "handle",
+  "metadata",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  ...defaultStoreCollectionRelations,
+]
 
 export type StoreCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
