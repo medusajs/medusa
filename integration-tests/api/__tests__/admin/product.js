@@ -13,7 +13,6 @@ const {
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const { simpleProductFactory } = require("../../factories")
-const { Any } = require("typeorm")
 
 jest.setTimeout(50000)
 
@@ -1526,7 +1525,6 @@ describe("/admin/products", () => {
         withDeleted: true,
       })
 
-      console.log(values)
       expect(values).toEqual([
         expect.objectContaining({ deleted_at: expect.any(Date) }),
       ])
