@@ -502,7 +502,7 @@ To add environment variables, in your [Qovery Console](https://console.qovery.co
 
 ![Environment Variables in the sidebar](https://i.imgur.com/aQl7zdz.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
 - Learn how to [deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).

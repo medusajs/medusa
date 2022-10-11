@@ -85,7 +85,7 @@ If you had the feature flag previously enabled, and you want to disable this fea
 
 You can follow [this documentation to learn how to revert the last migration you ran](https://docs.medusajs.com/cli/reference#migrations).
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [Migrations](../migrations/overview.md).
 - Learn how to [configure your Medusa server](../../../usage/configurations.md).

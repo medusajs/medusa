@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.3.1
+
+### Patch Changes
+
+- [#2207](https://github.com/medusajs/medusa/pull/2207) [`6132711ee`](https://github.com/medusajs/medusa/commit/6132711eef797219f1b93e4bc4bdb1dd47655308) Thanks [@sabakhilji](https://github.com/sabakhilji)! - Use correct payload type for resetting password in `medusa-js`
+
+* [#2353](https://github.com/medusajs/medusa/pull/2353) [`642902aae`](https://github.com/medusajs/medusa/commit/642902aaeb25144e59177c178f09fb8398951357) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-js, medusa-react): add expand fields to get order
+
+* Updated dependencies [[`d2b272fab`](https://github.com/medusajs/medusa/commit/d2b272fab649bb272b8af4f2f00aafe89965995e), [`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81), [`3d255302b`](https://github.com/medusajs/medusa/commit/3d255302b022a06b492807774412b1db05fa8d06), [`678a06752`](https://github.com/medusajs/medusa/commit/678a06752a03f71d77265a874fd7d07361337862), [`d8a5942d3`](https://github.com/medusajs/medusa/commit/d8a5942d3d85671e2923668bdbf2867957f5554b), [`edd35631f`](https://github.com/medusajs/medusa/commit/edd35631f722009bdcb2439ff8c2326025425d33), [`df62e618b`](https://github.com/medusajs/medusa/commit/df62e618bcc365ef376b96705d63b465b48b0191), [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4)]:
+  - @medusajs/medusa@1.5.0
+
 ## 1.3.0
 
 ### Minor Changes

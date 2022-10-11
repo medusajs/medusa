@@ -199,6 +199,6 @@ module.exports = {
 
 Where `127.0.0.1` is the domain of your local MinIO server.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

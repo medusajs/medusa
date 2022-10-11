@@ -22,7 +22,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 :::note
 
-If you get a permission error when using NPM, check out [NPM's documentation for a solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
 
 :::
 
@@ -79,7 +79,7 @@ To upload product images to your Medusa server, you must install and configure o
 - [S3](../add-plugins/s3.md)
 - [DigitalOcean Spaces](../add-plugins/spaces.md)
 
-## What's next :rocket:
+## What's Next
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.

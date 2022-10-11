@@ -1,11 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { EntityManager, ILike } from "typeorm"
 import { ProductTag } from "../models"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { FindConfig } from "../types/common"
-import { FilterableProductTagProps } from "../types/product"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isString } from "../utils"
 
 type ProductTagConstructorProps = {
   manager: EntityManager
@@ -70,13 +69,14 @@ class ProductTagService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductTagProps = {},
+    selector: Partial<ProductTag> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<ProductTag[]> {
-    const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
-
-    const query = buildQuery(selector, config)
-    return await tagRepo.find(query)
+    const [tags] = await this.listAndCount(selector, config)
+    return tags
   }
 
   /**
@@ -86,13 +86,16 @@ class ProductTagService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: FilterableProductTagProps = {},
+    selector: Partial<ProductTag> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<[ProductTag[], number]> {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
 
-    let q: string | undefined = undefined
-    if ("q" in selector) {
+    let q: string | undefined
+    if (isString(selector.q)) {
       q = selector.q
       delete selector.q
     }
@@ -100,13 +103,16 @@ class ProductTagService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     if (q) {
-      const where = query.where
+      query.where.value = ILike(`%${q}%`)
+    }
 
-      delete where.value
-
-      query.where = (qb: SelectQueryBuilder<ProductTag>): void => {
-        qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
-      }
+    if (query.where.discount_condition_id) {
+      const discountConditionId = query.where.discount_condition_id as string
+      delete query.where.discount_condition_id
+      return await tagRepo.findAndCountByDiscountConditionId(
+        discountConditionId,
+        query
+      )
     }
 
     return await tagRepo.findAndCount(query)
