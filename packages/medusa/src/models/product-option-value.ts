@@ -32,9 +32,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   variant_id: string
 
-  @ManyToOne(() => ProductVariant, (variant) => variant.options, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(() => ProductVariant, (variant) => variant.options)
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
