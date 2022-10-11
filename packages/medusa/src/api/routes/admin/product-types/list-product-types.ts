@@ -3,7 +3,6 @@ import {
   StringComparisonOperator,
 } from "../../../../types/common"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { identity, pickBy } from "lodash"
 
 import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
@@ -143,7 +142,7 @@ export default async (req, res) => {
   const { skip, take } = req.listConfig
 
   const [types, count] = await typeService.listAndCount(
-    pickBy(filterableFields, identity),
+    filterableFields,
     listConfig
   )
 

@@ -5,8 +5,23 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const productSeeder = require("../../helpers/product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  DiscountRuleType,
+  AllocationType,
+  DiscountConditionType,
+  DiscountConditionOperator,
+} = require("@medusajs/medusa")
+const { IdMap } = require("medusa-test-utils")
+const { simpleDiscountFactory } = require("../../factories")
 
 jest.setTimeout(30000)
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 describe("/admin/collections", () => {
   let medusaProcess
   let dbConnection
@@ -333,6 +348,83 @@ describe("/admin/collections", () => {
         limit: 10,
         offset: 0,
       })
+    })
+
+    it("returns a list of collections filtered by discount condition id", async () => {
+      const api = useApi()
+
+      const resCollections = await api.get("/admin/collections", adminReqConfig)
+
+      const collection1 = resCollections.data.collections[0]
+      const collection2 = resCollections.data.collections[1]
+
+      const buildDiscountData = (code, conditionId, collections) => {
+        return {
+          code,
+          rule: {
+            type: DiscountRuleType.PERCENTAGE,
+            value: 10,
+            allocation: AllocationType.TOTAL,
+            conditions: [
+              {
+                id: conditionId,
+                type: DiscountConditionType.PRODUCT_COLLECTIONS,
+                operator: DiscountConditionOperator.IN,
+                product_collections: collections,
+              },
+            ],
+          },
+        }
+      }
+
+      const discountConditionId = IdMap.getId("discount-condition-type-1")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-1", discountConditionId, [collection1.id])
+      )
+
+      const discountConditionId2 = IdMap.getId("discount-condition-type-2")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-2", discountConditionId2, [collection2.id])
+      )
+
+      let res = await api.get(
+        `/admin/collections?discount_condition_id=${discountConditionId}`,
+        adminReqConfig
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.collections).toHaveLength(1)
+      expect(res.data.collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: collection1.id }),
+        ])
+      )
+
+      res = await api.get(
+        `/admin/collections?discount_condition_id=${discountConditionId2}`,
+        adminReqConfig
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.collections).toHaveLength(1)
+      expect(res.data.collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: collection2.id }),
+        ])
+      )
+
+      res = await api.get(`/admin/collections`, adminReqConfig)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.collections).toHaveLength(3)
+      expect(res.data.collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: collection1.id }),
+          expect.objectContaining({ id: collection2.id }),
+        ])
+      )
     })
   })
 })
