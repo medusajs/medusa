@@ -10,72 +10,72 @@
 
 ### addOption
 
-▸ **addOption**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **addOption**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostProductsProductOptionsReq`](internal-16.AdminPostProductsProductOptionsReq.md) |
+| `payload` | [`AdminPostProductsProductOptionsReq`](internal-18.AdminPostProductsProductOptionsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:121](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L121)
+[medusa-js/src/resources/admin/products.ts:121](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L121)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostProductsReq`](internal-16.AdminPostProductsReq.md) |
+| `payload` | [`AdminPostProductsReq`](internal-18.AdminPostProductsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:23](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L23)
+[medusa-js/src/resources/admin/products.ts:23](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L23)
 
 ___
 
 ### createVariant
 
-▸ **createVariant**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **createVariant**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostProductsProductVariantsReq`](internal-16.AdminPostProductsProductVariantsReq.md) |
+| `payload` | [`AdminPostProductsProductVariantsReq`](internal-18.AdminPostProductsProductVariantsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:93](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L93)
+[medusa-js/src/resources/admin/products.ts:93](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L93)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteRes`](../modules/internal-16.md#adminproductsdeleteres)\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteRes`](../modules/internal-18.md#adminproductsdeleteres)\>
 
 #### Parameters
 
@@ -86,17 +86,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteRes`](../modules/internal-16.md#adminproductsdeleteres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteRes`](../modules/internal-18.md#adminproductsdeleteres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:48](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L48)
+[medusa-js/src/resources/admin/products.ts:48](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L48)
 
 ___
 
 ### deleteOption
 
-▸ **deleteOption**(`id`, `optionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteOptionRes`](../modules/internal-16.md#adminproductsdeleteoptionres)\>
+▸ **deleteOption**(`id`, `optionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteOptionRes`](../modules/internal-18.md#adminproductsdeleteoptionres)\>
 
 #### Parameters
 
@@ -108,17 +108,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteOptionRes`](../modules/internal-16.md#adminproductsdeleteoptionres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteOptionRes`](../modules/internal-18.md#adminproductsdeleteoptionres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:140](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L140)
+[medusa-js/src/resources/admin/products.ts:140](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L140)
 
 ___
 
 ### deleteVariant
 
-▸ **deleteVariant**(`id`, `variantId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteVariantRes`](../modules/internal-16.md#adminproductsdeletevariantres)\>
+▸ **deleteVariant**(`id`, `variantId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteVariantRes`](../modules/internal-18.md#adminproductsdeletevariantres)\>
 
 #### Parameters
 
@@ -130,38 +130,38 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteVariantRes`](../modules/internal-16.md#adminproductsdeletevariantres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsDeleteVariantRes`](../modules/internal-18.md#adminproductsdeletevariantres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:112](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L112)
+[medusa-js/src/resources/admin/products.ts:112](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L112)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListRes`](../modules/internal-16.md#adminproductslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListRes`](../modules/internal-18.md#adminproductslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetProductsParams`](internal-16.AdminGetProductsParams.md) |
+| `query?` | [`AdminGetProductsParams`](internal-18.AdminGetProductsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListRes`](../modules/internal-16.md#adminproductslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListRes`](../modules/internal-18.md#adminproductslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:56](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L56)
+[medusa-js/src/resources/admin/products.ts:56](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L56)
 
 ___
 
 ### listTags
 
-▸ **listTags**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTagsRes`](../modules/internal-16.md#adminproductslisttagsres)\>
+▸ **listTags**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTagsRes`](../modules/internal-18.md#adminproductslisttagsres)\>
 
 #### Parameters
 
@@ -171,17 +171,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTagsRes`](../modules/internal-16.md#adminproductslisttagsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTagsRes`](../modules/internal-18.md#adminproductslisttagsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:77](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L77)
+[medusa-js/src/resources/admin/products.ts:77](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L77)
 
 ___
 
 ### listTypes
 
-▸ **listTypes**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTypesRes`](../modules/internal-16.md#adminproductslisttypesres)\>
+▸ **listTypes**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTypesRes`](../modules/internal-18.md#adminproductslisttypesres)\>
 
 #### Parameters
 
@@ -191,17 +191,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTypesRes`](../modules/internal-16.md#adminproductslisttypesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsListTypesRes`](../modules/internal-18.md#adminproductslisttypesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:70](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L70)
+[medusa-js/src/resources/admin/products.ts:70](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L70)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
@@ -212,61 +212,61 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L31)
+[medusa-js/src/resources/admin/products.ts:31](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L31)
 
 ___
 
 ### setMetadata
 
-▸ **setMetadata**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **setMetadata**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostProductsProductMetadataReq`](internal-16.AdminPostProductsProductMetadataReq.md) |
+| `payload` | [`AdminPostProductsProductMetadataReq`](internal-18.AdminPostProductsProductMetadataReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:84](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L84)
+[medusa-js/src/resources/admin/products.ts:84](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L84)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostProductsProductReq`](internal-16.AdminPostProductsProductReq.md) |
+| `payload` | [`AdminPostProductsProductReq`](internal-18.AdminPostProductsProductReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:39](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L39)
+[medusa-js/src/resources/admin/products.ts:39](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L39)
 
 ___
 
 ### updateOption
 
-▸ **updateOption**(`id`, `optionId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **updateOption**(`id`, `optionId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
@@ -274,22 +274,22 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `optionId` | `string` |
-| `payload` | [`AdminPostProductsProductOptionsOption`](internal-16.AdminPostProductsProductOptionsOption.md) |
+| `payload` | [`AdminPostProductsProductOptionsOption`](internal-18.AdminPostProductsProductOptionsOption.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:130](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L130)
+[medusa-js/src/resources/admin/products.ts:130](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L130)
 
 ___
 
 ### updateVariant
 
-▸ **updateVariant**(`id`, `variantId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+▸ **updateVariant**(`id`, `variantId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Parameters
 
@@ -297,13 +297,13 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `variantId` | `string` |
-| `payload` | [`AdminPostProductsProductVariantsVariantReq`](internal-16.AdminPostProductsProductVariantsVariantReq.md) |
+| `payload` | [`AdminPostProductsProductVariantsVariantReq`](internal-18.AdminPostProductsProductVariantsVariantReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-16.md#adminproductsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductsRes`](../modules/internal-18.md#adminproductsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/products.ts:102](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/products.ts#L102)
+[medusa-js/src/resources/admin/products.ts:102](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/products.ts#L102)

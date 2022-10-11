@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:59
+medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:98
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:60
+medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:99
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:58
+medusa/dist/api/routes/admin/batch/create-batch-job.d.ts:97

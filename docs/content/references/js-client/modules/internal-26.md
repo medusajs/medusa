@@ -2,38 +2,30 @@
 
 ## Classes
 
-- [AdminDeleteUploadsReq](../classes/internal-26.AdminDeleteUploadsReq.md)
-- [AdminPostUploadsDownloadUrlReq](../classes/internal-26.AdminPostUploadsDownloadUrlReq.md)
-- [IAdminPostUploadsFileReq](../classes/internal-26.IAdminPostUploadsFileReq.md)
+- [AdminGetSwapsParams](../classes/internal-26.AdminGetSwapsParams.md)
 
 ## Type Aliases
 
-### AdminUploadsDownloadUrlRes
+### AdminSwapsListRes
 
-Ƭ **AdminUploadsDownloadUrlRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `download_url` | `string` |
+Ƭ **AdminSwapsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `swaps`: [`Swap`](../classes/internal.Swap.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/uploads/index.d.ts:10
+medusa/dist/api/routes/admin/swaps/index.d.ts:7
 
 ___
 
-### AdminUploadsRes
+### AdminSwapsRes
 
-Ƭ **AdminUploadsRes**: `Object`
+Ƭ **AdminSwapsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `uploads` | { `url`: `string`  }[] |
+| `swap` | [`Swap`](../classes/internal.Swap.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/uploads/index.d.ts:4
+medusa/dist/api/routes/admin/swaps/index.d.ts:10
