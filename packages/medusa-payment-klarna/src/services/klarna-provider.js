@@ -230,10 +230,39 @@ class KlarnaProviderService extends PaymentService {
     return order
   }
 
+  validatePaymentCollectionUrls(options) {
+    const required = ["terms", "checkout", "confirmation"]
+
+    const isMissing = required.some(
+      (prop) => !this.options_.payment_collection_urls?.[prop]
+    )
+
+    if (isMissing) {
+      throw new Error(
+        "options.payment_collection_urls is required to create a Payment Collection Order.\n" +
+          `medusa-config.js file has to contain payment_collection_urls { ${required.join(
+            ", "
+          )}}`
+      )
+    }
+  }
+
+  replaceStringwithProperty(string, obj) {
+    const keys = Object.keys(obj)
+    for (const key of keys) {
+      if (string.includes(`{${key}}`)) {
+        string = string.replace(`{${key}}`, obj[key])
+      }
+    }
+    return string
+  }
+
   async paymentInputToKlarnaOrder(paymentInput) {
     if (paymentInput.cart) {
       return this.cartToKlarnaOrder(paymentInput.cart)
     }
+
+    this.validatePaymentCollectionUrls()
 
     let order = {
       // Custom id is stored, such that we can use it for hooks
@@ -262,9 +291,18 @@ class KlarnaProviderService extends PaymentService {
     order.purchase_currency = currency_code.toUpperCase()
 
     order.merchant_urls = {
-      terms: this.options_.merchant_urls.terms,
-      checkout: this.options_.merchant_urls.checkout,
-      confirmation: this.options_.merchant_urls.confirmation,
+      terms: replaceStringwithProperty(
+        this.options_.payment_collection_urls.terms,
+        paymentInput
+      ),
+      checkout: replaceStringwithProperty(
+        this.options_.payment_collection_urls.checkout,
+        paymentInput
+      ),
+      confirmation: replaceStringwithProperty(
+        this.options_.payment_collection_urls.confirmation,
+        paymentInput
+      ),
       push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
     }
 
