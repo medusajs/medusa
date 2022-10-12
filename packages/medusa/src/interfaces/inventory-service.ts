@@ -24,6 +24,11 @@ export interface IInventoryService {
     config?: FindConfig<InventoryItemDTO>
   ): Promise<[InventoryItemDTO[], number]>
 
+  listInventoryLevels(
+    selector: FilterableInventoryLevelProps,
+    config?: FindConfig<InventoryLevelDTO>
+  ): Promise<[InventoryLevelDTO[], number]>
+
   retrieveLocation(id: string): Promise<StockLocationDTO>
 
   retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO>
