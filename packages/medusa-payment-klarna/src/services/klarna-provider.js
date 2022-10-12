@@ -247,7 +247,7 @@ class KlarnaProviderService extends PaymentService {
     }
   }
 
-  replaceStringwithProperty(string, obj) {
+  replaceStringWithPropertyValue(string, obj) {
     const keys = Object.keys(obj)
     for (const key of keys) {
       if (string.includes(`{${key}}`)) {
@@ -291,15 +291,15 @@ class KlarnaProviderService extends PaymentService {
     order.purchase_currency = currency_code.toUpperCase()
 
     order.merchant_urls = {
-      terms: replaceStringwithProperty(
+      terms: this.replaceStringWithPropertyValue(
         this.options_.payment_collection_urls.terms,
         paymentInput
       ),
-      checkout: replaceStringwithProperty(
+      checkout: this.replaceStringWithPropertyValue(
         this.options_.payment_collection_urls.checkout,
         paymentInput
       ),
-      confirmation: replaceStringwithProperty(
+      confirmation: this.replaceStringWithPropertyValue(
         this.options_.payment_collection_urls.confirmation,
         paymentInput
       ),
