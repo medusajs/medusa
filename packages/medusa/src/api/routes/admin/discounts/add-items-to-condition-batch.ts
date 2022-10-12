@@ -1,26 +1,36 @@
-import { Request, Response } from "express"
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import DiscountConditionService from "../../../../services/discount-condition"
-import { DiscountService } from "../../../../services"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { DiscountService } from "../../../../services"
+import {
+  DiscountConditionMapTypeToProperty,
+  UpsertDiscountConditionInput,
+} from "../../../../types/discount"
+import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
- * operationId: "PostDiscountsDiscountConditionsCondition"
- * summary: "Update a Condition"
- * description: "Updates a DiscountCondition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided."
+ * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * operationId: "PostDiscountsDiscountConditionsConditionBatch"
+ * summary: "Add item to a discount condition"
+ * description: "Add item to a discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
- *   - (path) condition_id=* {string} The ID of the DiscountCondition.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each item of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each item of the result.
+ *   - (path) condition_id=* {string} The ID of the condition on which to add the item.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each discount of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each discount of the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - operator
  *         properties:
+ *           operator:
+ *              description: Operator of the condition
+ *              type: string
+ *              enum: [in, not_in]
  *           products:
  *              type: array
  *              description: list of product IDs if the condition is applied on products.
@@ -51,12 +61,11 @@ import { FindParams } from "../../../../types/common"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
+ *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.updateCondition(discount_id, condition_id, {
- *         products: [
- *           product_id
- *         ]
+ *       medusa.admin.discounts.addItemToCondition(discount_id, condition_id, {
+ *         items: [{ id: item_id }]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
@@ -64,19 +73,17 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition}' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "products": [
- *              "prod_01G1G5V2MBA328390B5AXJ610F"
- *           ]
+ *           "items": [{ "id": "item_id" }]
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount
+ *   - Discount Condition
  * responses:
  *   200:
  *     description: OK
@@ -99,39 +106,44 @@ import { FindParams } from "../../../../types/common"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-
 export default async (req: Request, res: Response) => {
   const { discount_id, condition_id } = req.params
+  const validatedBody =
+    req.validatedBody as AdminPostDiscountsDiscountConditionsConditionBatch
 
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
   )
-
-  const condition = await conditionService.retrieve(condition_id)
-
-  const discountService: DiscountService = req.scope.resolve("discountService")
-
-  let discount = await discountService.retrieve(discount_id)
-
-  const updateObj = {
-    ...(req.validatedBody as AdminPostDiscountsDiscountConditionsCondition),
-    rule_id: discount.rule_id,
-    id: condition.id,
-  }
-
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await conditionService
-      .withTransaction(transactionManager)
-      .upsertCondition(updateObj)
+
+  const condition = await conditionService.retrieve(condition_id, {
+    select: ["id", "type", "discount_rule_id"],
   })
 
-  discount = await discountService.retrieve(discount.id, req.retrieveConfig)
+  const updateObj: UpsertDiscountConditionInput = {
+    id: condition_id,
+    rule_id: condition.discount_rule_id,
+    [DiscountConditionMapTypeToProperty[condition.type]]: validatedBody.items,
+  }
+
+  await manager.transaction(async (transactionManager) => {
+    await conditionService
+      .withTransaction(transactionManager)
+      .upsertCondition(updateObj, false)
+  })
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discount = await discountService.retrieve(
+    discount_id,
+    req.retrieveConfig
+  )
 
   res.status(200).json({ discount })
 }
 
-// eslint-disable-next-line max-len
-export class AdminPostDiscountsDiscountConditionsCondition extends AdminUpsertConditionsReq {}
+export class AdminPostDiscountsDiscountConditionsConditionBatch {
+  @IsArray()
+  items: { id: string }[]
+}
 
-export class AdminPostDiscountsDiscountConditionsConditionParams extends FindParams {}
+export class AdminPostDiscountsDiscountConditionsConditionBatchParams extends FindParams {}

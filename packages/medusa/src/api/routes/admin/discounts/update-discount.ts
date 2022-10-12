@@ -1,4 +1,5 @@
-import { Discount, DiscountConditionOperator } from "../../../../models"
+import { Request, Response } from "express"
+import { AllocationType, DiscountConditionOperator } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -12,17 +13,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import { AllocationType } from "../../../../models"
 import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 import { Type } from "class-transformer"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /discounts/{id}
@@ -176,15 +174,8 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { discount_id } = req.params
-
-  const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
-
-  const validatedParams = await validator(
-    AdminPostDiscountsDiscountParams,
-    req.query
-  )
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
@@ -192,17 +183,13 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     return await discountService
       .withTransaction(transactionManager)
-      .update(discount_id, validated)
+      .update(discount_id, req.validatedBody as AdminPostDiscountsDiscountReq)
   })
 
-  const config = getRetrieveConfig<Discount>(
-    defaultAdminDiscountsFields,
-    defaultAdminDiscountsRelations,
-    validatedParams?.fields?.split(",") as (keyof Discount)[],
-    validatedParams?.expand?.split(",")
+  const discount = await discountService.retrieve(
+    discount_id,
+    req.retrieveConfig
   )
-
-  const discount = await discountService.retrieve(discount_id, config)
 
   res.status(200).json({ discount })
 }
@@ -287,12 +274,4 @@ export class AdminUpsertCondition extends AdminUpsertConditionsReq {
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsDiscountParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
+export class AdminPostDiscountsDiscountParams extends FindParams {}

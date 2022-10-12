@@ -16,7 +16,13 @@ const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
 
-jest.setTimeout(30000)
+jest.setTimeout(300000)
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 describe("/admin/discounts", () => {
   let medusaProcess
@@ -111,11 +117,7 @@ describe("/admin/discounts", () => {
       const response = await api
         .get(
           "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.customer_groups",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -174,11 +176,7 @@ describe("/admin/discounts", () => {
       const response = await api
         .get(
           "/admin/discounts/test-discount?fields=id&expand=parent_discount",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -198,11 +196,7 @@ describe("/admin/discounts", () => {
       const response = await api
         .get(
           "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.products,rule.conditions.product_types",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -297,11 +291,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts?q=barca", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?q=barca", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -321,11 +311,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts?rule[type]=fixed", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?rule[type]=fixed", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -347,11 +333,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       await api
-        .get("/admin/discounts?rule[type]=blah", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?rule[type]=blah", adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
@@ -369,11 +351,7 @@ describe("/admin/discounts", () => {
       })
 
       const response = await api
-        .get("/admin/discounts?rule[type]=percentage", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?rule[type]=percentage", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -387,11 +365,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts?is_dynamic=true", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?is_dynamic=true", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -412,11 +386,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts?is_disabled=true", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts?is_disabled=true", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -461,11 +431,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -532,11 +498,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -607,11 +569,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -652,11 +610,7 @@ describe("/admin/discounts", () => {
               ],
             },
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -715,11 +669,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -782,11 +732,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.response.data.type).toEqual("invalid_data")
@@ -826,11 +772,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -884,11 +826,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -908,11 +846,7 @@ describe("/admin/discounts", () => {
           {
             usage_limit: 20,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -943,11 +877,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -971,11 +901,7 @@ describe("/admin/discounts", () => {
               type: "free_shipping",
             },
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -1002,11 +928,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1028,11 +950,7 @@ describe("/admin/discounts", () => {
             usage_limit: 20,
             is_dynamic: false,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -1058,11 +976,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1083,11 +997,7 @@ describe("/admin/discounts", () => {
             code: "HELLOWORLD_test",
             usage_limit: 20,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1119,11 +1029,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1144,11 +1050,7 @@ describe("/admin/discounts", () => {
           {
             usage_limit: 20,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1183,11 +1085,7 @@ describe("/admin/discounts", () => {
             usage_limit: 10,
             regions: ["test-region", "test-region-2"],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -1214,11 +1112,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1230,11 +1124,7 @@ describe("/admin/discounts", () => {
           {
             regions: ["test-region", "test-region-2"],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
 
         .catch((err) => {
@@ -1263,11 +1153,7 @@ describe("/admin/discounts", () => {
             usage_limit: 10,
             regions: ["test-region"],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1277,11 +1163,7 @@ describe("/admin/discounts", () => {
         .post(
           `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
           {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
 
         .catch((err) => {
@@ -1310,11 +1192,7 @@ describe("/admin/discounts", () => {
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/15/2021 17:50"),
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1346,11 +1224,7 @@ describe("/admin/discounts", () => {
             starts_at: new Date("09/14/2021 11:50"),
             ends_at: new Date("09/17/2021 17:50"),
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1395,11 +1269,7 @@ describe("/admin/discounts", () => {
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/15/2021 17:50"),
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1430,11 +1300,7 @@ describe("/admin/discounts", () => {
             usage_limit: 20,
             ends_at: new Date("09/11/2021 17:50"),
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -1463,11 +1329,7 @@ describe("/admin/discounts", () => {
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/14/2021 17:50"),
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -1518,11 +1380,7 @@ describe("/admin/discounts", () => {
             valid_duration: null,
             usage_limit: null,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1575,11 +1433,7 @@ describe("/admin/discounts", () => {
 
       // First we soft-delete the discount
       await api
-        .delete("/admin/discounts/test-discount", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/discounts/test-discount", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -1598,11 +1452,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1634,11 +1484,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.response.data.message).toEqual(
@@ -1698,11 +1544,7 @@ describe("/admin/discounts", () => {
           {
             code: "HELLOWORLD",
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1726,11 +1568,7 @@ describe("/admin/discounts", () => {
           {
             code: "HELLOWORLD",
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1817,11 +1655,10 @@ describe("/admin/discounts", () => {
       })
 
       const response = await api
-        .delete("/admin/discounts/test-discount/conditions/test-condition", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete(
+          "/admin/discounts/test-discount/conditions/test-condition",
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1842,11 +1679,10 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .delete("/admin/discounts/test-discount/conditions/test-condition", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete(
+          "/admin/discounts/test-discount/conditions/test-condition",
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1869,11 +1705,7 @@ describe("/admin/discounts", () => {
       try {
         await api.delete(
           "/admin/discounts/not-exist/conditions/test-condition",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -1924,11 +1756,7 @@ describe("/admin/discounts", () => {
             operator: "in",
             products: [prod.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1984,11 +1812,7 @@ describe("/admin/discounts", () => {
             products: [prod.id],
             customer_groups: ["customer-group-1"],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2010,11 +1834,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2082,11 +1902,7 @@ describe("/admin/discounts", () => {
       })
 
       const discount = await api
-        .get("/admin/discounts/test-discount", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts/test-discount", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -2099,11 +1915,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -2155,11 +1967,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2181,11 +1989,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2205,11 +2009,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2256,11 +2056,10 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const discountCondition = await api
-        .get("/admin/discounts/test-discount/conditions/test-condition", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(
+          "/admin/discounts/test-discount/conditions/test-condition",
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -2289,11 +2088,7 @@ describe("/admin/discounts", () => {
       const discountCondition = await api
         .get(
           "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -2328,11 +2123,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2352,11 +2143,7 @@ describe("/admin/discounts", () => {
           {
             products: [prod2.id],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
@@ -2399,11 +2186,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts/code/TEST", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts/code/TEST", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -2422,11 +2205,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts/code/test", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts/code/test", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -2445,11 +2224,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/discounts/code/TesT", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts/code/TesT", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -2468,11 +2243,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       try {
-        await api.get("/admin/discounts/code/non-existing", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        await api.get("/admin/discounts/code/non-existing", adminReqConfig)
       } catch (error) {
         expect(error.response.status).toEqual(404)
         expect(error.response.data.message).toBe(
@@ -2497,11 +2268,7 @@ describe("/admin/discounts", () => {
             },
             usage_limit: 10,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -2529,11 +2296,7 @@ describe("/admin/discounts", () => {
       })
 
       const response = await api
-        .get("/admin/discounts/code/ testing", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/discounts/code/ testing", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -2544,6 +2307,144 @@ describe("/admin/discounts", () => {
         expect.objectContaining({
           code: "TESTING",
         })
+      )
+    })
+  })
+
+  describe("POST /admin/discounts/:id/conditions/:condition_id/batch", () => {
+    let prod1
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      prod1 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "products",
+              operator: "in",
+              products: [prod1.id],
+            },
+          ],
+        },
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount-2",
+        code: "TEST2",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition-2",
+              type: "products",
+              operator: "in",
+              products: [],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should update a condition with batch items", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, {
+        id: "test-product-2",
+        type: "pants 2",
+      })
+      const prod3 = await simpleProductFactory(dbConnection, {
+        id: "test-product-3",
+        type: "pants 3",
+      })
+
+      const discount = await api.get(
+        "/admin/discounts/test-discount",
+        adminReqConfig
+      )
+
+      const cond = discount.data.discount.rule.conditions[0]
+
+      const response = await api.post(
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        {
+          items: [{ id: prod2.id }, { id: prod3.id }],
+        },
+        adminReqConfig
+      )
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc.rule.conditions).toHaveLength(1)
+      expect(disc.rule.conditions[0].products).toHaveLength(3)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+          rule: expect.objectContaining({
+            conditions: expect.arrayContaining([
+              expect.objectContaining({
+                products: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: prod1.id,
+                  }),
+                  expect.objectContaining({
+                    id: prod2.id,
+                  }),
+                  expect.objectContaining({
+                    id: prod3.id,
+                  }),
+                ]),
+              }),
+            ]),
+          }),
+        })
+      )
+    })
+
+    it("should fail if condition does not belong to discount", async () => {
+      const api = useApi()
+
+      const err = await api
+        .post(
+          "/admin/discounts/test-discount/conditions/test-condition-2/batch",
+          adminReqConfig
+        )
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id test-discount does not belong to Condition with id test-condition-2"
+      )
+    })
+
+    it("should fail if discount does not exist", async () => {
+      const api = useApi()
+
+      const err = await api
+        .post(
+          "/admin/discounts/not-exist/conditions/test-condition/batch",
+          adminReqConfig
+        )
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id not-exist was not found"
       )
     })
   })
