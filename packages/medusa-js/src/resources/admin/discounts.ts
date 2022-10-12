@@ -221,7 +221,7 @@ class AdminDiscountsResource extends BaseResource {
     query?: AdminPostDiscountsDiscountConditionsConditionBatchParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${conditionId}/conditions/${conditionId}/batch`
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}/batch`
 
     if (query) {
       const queryString = qs.stringify(query)
