@@ -46,16 +46,16 @@ export default async (req, res) => {
         res.sendStatus(204)
         return
     }
+  }
 
-    const paymentIntent = event.data.object
-    const cartId = paymentIntent.metadata.cart_id
-    const resourceId = paymentIntent.metadata.resource_id
+  const paymentIntent = event.data.object
+  const cartId = paymentIntent.metadata.cart_id
+  const resourceId = paymentIntent.metadata.resource_id
 
-    if (isPaymentCollection(resourceId)) {
-      // TODO: handle payment collection
-    } else {
-      await handleCartPayments(event, req, res, resourceId ?? cartId)
-    }
+  if (isPaymentCollection(resourceId)) {
+    // TODO: handle payment collection
+  } else {
+    await handleCartPayments(event, req, res, resourceId ?? cartId)
   }
 
   res.sendStatus(200)
