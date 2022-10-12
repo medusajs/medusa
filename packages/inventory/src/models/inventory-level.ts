@@ -22,6 +22,9 @@ export class InventoryLevel extends SoftDeletableEntity {
   @Column()
   incoming_quantity: number
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ilev")

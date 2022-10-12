@@ -1,3 +1,4 @@
+export * from "./event-bus"
 export * from "./inventory-service"
 export * from "./tax-calculation-strategy"
 export * from "./cart-completion-strategy"

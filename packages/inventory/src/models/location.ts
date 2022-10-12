@@ -13,6 +13,9 @@ export class Location extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   address_id: string
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "loc")

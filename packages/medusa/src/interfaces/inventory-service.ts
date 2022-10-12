@@ -1,4 +1,4 @@
-import { FindConfig } from "@medusajs/medusa"
+import { FindConfig } from "../types/common"
 
 import {
   InventoryItemDTO,
@@ -28,11 +28,20 @@ export interface IInventoryService {
 
   retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO>
 
+  retrieveInventoryLevel(
+    itemId: string,
+    locationId: string
+  ): Promise<InventoryLevelDTO>
+
   createInventoryItem(
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO>
 
   createLocation(input: CreateLocationInput): Promise<StockLocationDTO>
+
+  createInventoryLevel(
+    data: CreateInventoryLevelInput
+  ): Promise<InventoryLevelDTO>
 
   updateLocation(
     id: string,
@@ -45,11 +54,6 @@ export interface IInventoryService {
   ): Promise<InventoryItemDTO>
 
   deleteInventoryItem(itemId: string): Promise<void>
-
-  retrieveInventoryLevel(
-    itemId: string,
-    locationId: string
-  ): Promise<InventoryLevelDTO>
 
   adjustInventory(
     itemId: string,
