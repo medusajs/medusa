@@ -143,7 +143,7 @@ class CartsResource extends BaseResource {
   }
 
   /**
-   * Refreshes a payment session.
+   * Selects a Payment Session as the session intended to be used towards the completion of the Cart.
    * @param {string} cart_id is required
    * @param {StorePostCartsCartPaymentSessionReq} payload the provider id of the session e.g. "stripe"
    * @param customHeaders
