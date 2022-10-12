@@ -10,92 +10,92 @@
 
 ### addProductTypes
 
-▸ **addProductTypes**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **addProductTypes**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostTaxRatesTaxRateProductTypesReq`](internal-25.AdminPostTaxRatesTaxRateProductTypesReq.md) |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `payload` | [`AdminPostTaxRatesTaxRateProductTypesReq`](internal-27.AdminPostTaxRatesTaxRateProductTypesReq.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:100](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L100)
+[medusa-js/src/resources/admin/tax-rates.ts:100](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L100)
 
 ___
 
 ### addProducts
 
-▸ **addProducts**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **addProducts**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostTaxRatesTaxRateProductsReq`](internal-25.AdminPostTaxRatesTaxRateProductsReq.md) |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `payload` | [`AdminPostTaxRatesTaxRateProductsReq`](internal-27.AdminPostTaxRatesTaxRateProductsReq.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:84](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L84)
+[medusa-js/src/resources/admin/tax-rates.ts:84](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L84)
 
 ___
 
 ### addShippingOptions
 
-▸ **addShippingOptions**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **addShippingOptions**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostTaxRatesTaxRateShippingOptionsReq`](internal-25.AdminPostTaxRatesTaxRateShippingOptionsReq.md) |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `payload` | [`AdminPostTaxRatesTaxRateShippingOptionsReq`](internal-27.AdminPostTaxRatesTaxRateShippingOptionsReq.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:116](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L116)
+[medusa-js/src/resources/admin/tax-rates.ts:116](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L116)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **create**(`payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostTaxRatesReq`](internal-25.AdminPostTaxRatesReq.md) |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `payload` | [`AdminPostTaxRatesReq`](internal-27.AdminPostTaxRatesReq.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:53](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L53)
+[medusa-js/src/resources/admin/tax-rates.ts:53](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L53)
 
 ___
 
@@ -116,139 +116,139 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:180](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L180)
+[medusa-js/src/resources/admin/tax-rates.ts:180](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L180)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesListRes`](../modules/internal-25.md#admintaxrateslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesListRes`](../modules/internal-27.md#admintaxrateslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetTaxRatesParams`](internal-25.AdminGetTaxRatesParams.md) |
+| `query?` | [`AdminGetTaxRatesParams`](internal-27.AdminGetTaxRatesParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesListRes`](../modules/internal-25.md#admintaxrateslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesListRes`](../modules/internal-27.md#admintaxrateslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:39](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L39)
+[medusa-js/src/resources/admin/tax-rates.ts:39](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L39)
 
 ___
 
 ### removeProductTypes
 
-▸ **removeProductTypes**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **removeProductTypes**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminDeleteTaxRatesTaxRateProductTypesReq`](internal-25.AdminDeleteTaxRatesTaxRateProductTypesReq.md) |
-| `query?` | [`AdminDeleteTaxRatesTaxRateProductTypesParams`](internal-25.AdminDeleteTaxRatesTaxRateProductTypesParams.md) |
+| `payload` | [`AdminDeleteTaxRatesTaxRateProductTypesReq`](internal-27.AdminDeleteTaxRatesTaxRateProductTypesReq.md) |
+| `query?` | [`AdminDeleteTaxRatesTaxRateProductTypesParams`](internal-27.AdminDeleteTaxRatesTaxRateProductTypesParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:148](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L148)
+[medusa-js/src/resources/admin/tax-rates.ts:148](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L148)
 
 ___
 
 ### removeProducts
 
-▸ **removeProducts**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **removeProducts**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminDeleteTaxRatesTaxRateProductsReq`](internal-25.AdminDeleteTaxRatesTaxRateProductsReq.md) |
-| `query?` | [`AdminDeleteTaxRatesTaxRateProductsParams`](internal-25.AdminDeleteTaxRatesTaxRateProductsParams.md) |
+| `payload` | [`AdminDeleteTaxRatesTaxRateProductsReq`](internal-27.AdminDeleteTaxRatesTaxRateProductsReq.md) |
+| `query?` | [`AdminDeleteTaxRatesTaxRateProductsParams`](internal-27.AdminDeleteTaxRatesTaxRateProductsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:132](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L132)
+[medusa-js/src/resources/admin/tax-rates.ts:132](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L132)
 
 ___
 
 ### removeShippingOptions
 
-▸ **removeShippingOptions**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **removeShippingOptions**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminDeleteTaxRatesTaxRateShippingOptionsReq`](internal-25.AdminDeleteTaxRatesTaxRateShippingOptionsReq.md) |
-| `query?` | [`AdminDeleteTaxRatesTaxRateShippingOptionsParams`](internal-25.AdminDeleteTaxRatesTaxRateShippingOptionsParams.md) |
+| `payload` | [`AdminDeleteTaxRatesTaxRateShippingOptionsReq`](internal-27.AdminDeleteTaxRatesTaxRateShippingOptionsReq.md) |
+| `query?` | [`AdminDeleteTaxRatesTaxRateShippingOptionsParams`](internal-27.AdminDeleteTaxRatesTaxRateShippingOptionsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:164](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L164)
+[medusa-js/src/resources/admin/tax-rates.ts:164](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L164)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:24](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L24)
+[medusa-js/src/resources/admin/tax-rates.ts:24](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L24)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+▸ **update**(`id`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostTaxRatesTaxRateReq`](internal-25.AdminPostTaxRatesTaxRateReq.md) |
-| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-25.AdminGetTaxRatesTaxRateParams.md) |
+| `payload` | [`AdminPostTaxRatesTaxRateReq`](internal-27.AdminPostTaxRatesTaxRateReq.md) |
+| `query?` | [`AdminGetTaxRatesTaxRateParams`](internal-27.AdminGetTaxRatesTaxRateParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-25.md#admintaxratesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminTaxRatesRes`](../modules/internal-27.md#admintaxratesres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/tax-rates.ts:68](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/tax-rates.ts#L68)
+[medusa-js/src/resources/admin/tax-rates.ts:68](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/tax-rates.ts#L68)

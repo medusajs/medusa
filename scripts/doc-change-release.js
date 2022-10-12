@@ -22,7 +22,7 @@ async function main () {
         per_page: 1
       })
       
-      if (commitResponse.data.length && dateDiffInDays(commitResponse.data[0].commit.committer.date, new Date()) < 6) {
+      if (commitResponse.data.length && dateDiffInDays(new Date(commitResponse.data[0].commit.committer.date), new Date()) < 6) {
         console.log("File was edited less than 6 days ago. Expiry canceled.");
         return;
       }

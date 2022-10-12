@@ -10,29 +10,29 @@
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **addShippingMethod**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderShippingMethodsReq`](internal-12.AdminPostOrdersOrderShippingMethodsReq.md) |
+| `payload` | [`AdminPostOrdersOrderShippingMethodsReq`](internal-14.AdminPostOrdersOrderShippingMethodsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:144](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L144)
+[medusa-js/src/resources/admin/orders.ts:152](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L152)
 
 ___
 
 ### archive
 
-▸ **archive**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **archive**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -43,17 +43,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:153](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L153)
+[medusa-js/src/resources/admin/orders.ts:161](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L161)
 
 ___
 
 ### cancel
 
-▸ **cancel**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancel**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -64,17 +64,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:136](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L136)
+[medusa-js/src/resources/admin/orders.ts:144](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L144)
 
 ___
 
 ### cancelClaim
 
-▸ **cancelClaim**(`id`, `claimId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancelClaim**(`id`, `claimId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -86,17 +86,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:217](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L217)
+[medusa-js/src/resources/admin/orders.ts:225](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L225)
 
 ___
 
 ### cancelClaimFulfillment
 
-▸ **cancelClaimFulfillment**(`id`, `claimId`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancelClaimFulfillment**(`id`, `claimId`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -109,17 +109,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:108](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L108)
+[medusa-js/src/resources/admin/orders.ts:116](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L116)
 
 ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`id`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancelFulfillment**(`id`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -131,17 +131,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:89](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L89)
+[medusa-js/src/resources/admin/orders.ts:97](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L97)
 
 ___
 
 ### cancelSwap
 
-▸ **cancelSwap**(`id`, `swapId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancelSwap**(`id`, `swapId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -153,17 +153,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:170](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L170)
+[medusa-js/src/resources/admin/orders.ts:178](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L178)
 
 ___
 
 ### cancelSwapFulfillment
 
-▸ **cancelSwapFulfillment**(`id`, `swapId`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **cancelSwapFulfillment**(`id`, `swapId`, `fulfillmentId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -176,17 +176,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:98](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L98)
+[medusa-js/src/resources/admin/orders.ts:106](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L106)
 
 ___
 
 ### capturePayment
 
-▸ **capturePayment**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **capturePayment**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -197,17 +197,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:63](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L63)
+[medusa-js/src/resources/admin/orders.ts:71](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L71)
 
 ___
 
 ### complete
 
-▸ **complete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **complete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -218,39 +218,39 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:55](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L55)
+[medusa-js/src/resources/admin/orders.ts:63](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L63)
 
 ___
 
 ### createClaim
 
-▸ **createClaim**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createClaim**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderClaimsReq`](internal-12.AdminPostOrdersOrderClaimsReq.md) |
+| `payload` | [`AdminPostOrdersOrderClaimsReq`](internal-14.AdminPostOrdersOrderClaimsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:208](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L208)
+[medusa-js/src/resources/admin/orders.ts:216](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L216)
 
 ___
 
 ### createClaimShipment
 
-▸ **createClaimShipment**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createClaimShipment**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -258,88 +258,88 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `claimId` | `string` |
-| `payload` | [`AdminPostOrdersOrderClaimsClaimShipmentsReq`](internal-12.AdminPostOrdersOrderClaimsClaimShipmentsReq.md) |
+| `payload` | [`AdminPostOrdersOrderClaimsClaimShipmentsReq`](internal-14.AdminPostOrdersOrderClaimsClaimShipmentsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:246](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L246)
+[medusa-js/src/resources/admin/orders.ts:254](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L254)
 
 ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createFulfillment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderFulfillmentsReq`](internal-12.AdminPostOrdersOrderFulfillmentsReq.md) |
+| `payload` | [`AdminPostOrdersOrderFulfillmentsReq`](internal-14.AdminPostOrdersOrderFulfillmentsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:80](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L80)
+[medusa-js/src/resources/admin/orders.ts:88](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L88)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createShipment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderShipmentReq`](internal-12.AdminPostOrdersOrderShipmentReq.md) |
+| `payload` | [`AdminPostOrdersOrderShipmentReq`](internal-14.AdminPostOrdersOrderShipmentReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:118](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L118)
+[medusa-js/src/resources/admin/orders.ts:126](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L126)
 
 ___
 
 ### createSwap
 
-▸ **createSwap**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createSwap**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderSwapsReq`](internal-12.AdminPostOrdersOrderSwapsReq.md) |
+| `payload` | [`AdminPostOrdersOrderSwapsReq`](internal-14.AdminPostOrdersOrderSwapsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:161](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L161)
+[medusa-js/src/resources/admin/orders.ts:169](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L169)
 
 ___
 
 ### createSwapShipment
 
-▸ **createSwapShipment**(`id`, `swapId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **createSwapShipment**(`id`, `swapId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -347,22 +347,22 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `swapId` | `string` |
-| `payload` | [`AdminPostOrdersOrderSwapsSwapShipmentsReq`](internal-12.AdminPostOrdersOrderSwapsSwapShipmentsReq.md) |
+| `payload` | [`AdminPostOrdersOrderSwapsSwapShipmentsReq`](internal-14.AdminPostOrdersOrderSwapsSwapShipmentsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:189](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L189)
+[medusa-js/src/resources/admin/orders.ts:197](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L197)
 
 ___
 
 ### fulfillClaim
 
-▸ **fulfillClaim**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **fulfillClaim**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -370,22 +370,22 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `claimId` | `string` |
-| `payload` | [`AdminPostOrdersOrderClaimsClaimFulfillmentsReq`](internal-12.AdminPostOrdersOrderClaimsClaimFulfillmentsReq.md) |
+| `payload` | [`AdminPostOrdersOrderClaimsClaimFulfillmentsReq`](internal-14.AdminPostOrdersOrderClaimsClaimFulfillmentsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:236](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L236)
+[medusa-js/src/resources/admin/orders.ts:244](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L244)
 
 ___
 
 ### fulfillSwap
 
-▸ **fulfillSwap**(`id`, `swapId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **fulfillSwap**(`id`, `swapId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -393,43 +393,43 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `swapId` | `string` |
-| `payload` | [`AdminPostOrdersOrderSwapsSwapFulfillmentsReq`](internal-12.AdminPostOrdersOrderSwapsSwapFulfillmentsReq.md) |
+| `payload` | [`AdminPostOrdersOrderSwapsSwapFulfillmentsReq`](internal-14.AdminPostOrdersOrderSwapsSwapFulfillmentsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:179](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L179)
+[medusa-js/src/resources/admin/orders.ts:187](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L187)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersListRes`](../modules/internal-12.md#adminorderslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersListRes`](../modules/internal-14.md#adminorderslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetOrdersParams`](internal-12.AdminGetOrdersParams.md) |
+| `query?` | [`AdminGetOrdersParams`](internal-14.AdminGetOrdersParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersListRes`](../modules/internal-12.md#adminorderslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersListRes`](../modules/internal-14.md#adminorderslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:41](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L41)
+[medusa-js/src/resources/admin/orders.ts:49](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L49)
 
 ___
 
 ### processSwapPayment
 
-▸ **processSwapPayment**(`id`, `swapId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **processSwapPayment**(`id`, `swapId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -441,104 +441,105 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:199](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L199)
+[medusa-js/src/resources/admin/orders.ts:207](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L207)
 
 ___
 
 ### refundPayment
 
-▸ **refundPayment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **refundPayment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderRefundsReq`](internal-12.AdminPostOrdersOrderRefundsReq.md) |
+| `payload` | [`AdminPostOrdersOrderRefundsReq`](internal-14.AdminPostOrdersOrderRefundsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:71](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L71)
+[medusa-js/src/resources/admin/orders.ts:79](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L79)
 
 ___
 
 ### requestReturn
 
-▸ **requestReturn**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **requestReturn**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderReturnsReq`](internal-12.AdminPostOrdersOrderReturnsReq.md) |
+| `payload` | [`AdminPostOrdersOrderReturnsReq`](internal-14.AdminPostOrdersOrderReturnsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:127](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L127)
+[medusa-js/src/resources/admin/orders.ts:135](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L135)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
+| `query?` | [`FindParams`](internal-5.FindParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:33](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L33)
+[medusa-js/src/resources/admin/orders.ts:34](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L34)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostOrdersOrderReq`](internal-12.AdminPostOrdersOrderReq.md) |
+| `payload` | [`AdminPostOrdersOrderReq`](internal-14.AdminPostOrdersOrderReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:24](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L24)
+[medusa-js/src/resources/admin/orders.ts:25](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L25)
 
 ___
 
 ### updateClaim
 
-▸ **updateClaim**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+▸ **updateClaim**(`id`, `claimId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Parameters
 
@@ -546,13 +547,13 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `claimId` | `string` |
-| `payload` | [`AdminPostOrdersOrderClaimsClaimReq`](internal-12.AdminPostOrdersOrderClaimsClaimReq.md) |
+| `payload` | [`AdminPostOrdersOrderClaimsClaimReq`](internal-14.AdminPostOrdersOrderClaimsClaimReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-12.md#adminordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminOrdersRes`](../modules/internal-14.md#adminordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:226](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/orders.ts#L226)
+[medusa-js/src/resources/admin/orders.ts:234](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/orders.ts#L234)

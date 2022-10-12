@@ -204,6 +204,11 @@ module.exports = {
               id: "advanced/storefront/how-to-implement-checkout-flow",
               label: "Implement Checkout"
             },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-sales-channels",
+              label: "Use SalesChannels APIs"
+            },
           ]
         },
         {
@@ -214,6 +219,11 @@ module.exports = {
               type: "doc",
               id: "advanced/admin/import-products",
               label: "Import Products"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/import-prices",
+              label: "Import Prices"
             },
             {
               type: "doc",
@@ -629,8 +639,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCollectionsResource",
               label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
             },
             {
               type: "doc",
@@ -679,6 +699,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminPriceListResource",
               label: "priceLists",
             },
@@ -711,6 +736,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminReturnsResource",
               label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
             },
             {
               type: "doc",
@@ -813,6 +843,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
         },
@@ -840,7 +875,7 @@ module.exports = {
         {
           type: "doc",
           id: "references/js-client/classes/ReturnReasonsResource",
-          label: "returnReason",
+          label: "returnReasons",
         },
         {
           type: "doc",
