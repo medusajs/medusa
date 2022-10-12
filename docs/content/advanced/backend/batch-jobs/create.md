@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 # Create a Batch Job Strategy
 
 In this document, you’ll learn how to create a batch job strategy on your Medusa server.
