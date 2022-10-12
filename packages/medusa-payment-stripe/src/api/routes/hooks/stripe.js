@@ -46,6 +46,8 @@ export default async (req, res) => {
         res.sendStatus(204)
         return
     }
+
+    res.sendStatus(200)
   }
 
   const paymentIntent = event.data.object
@@ -57,6 +59,4 @@ export default async (req, res) => {
   } else {
     await handleCartPayments(event, req, res, resourceId ?? cartId)
   }
-
-  res.sendStatus(200)
 }
