@@ -133,7 +133,6 @@ describe("Product import batch job", () => {
     expect(batchJob.status).toBe("completed")
 
     const productsResponse = await api.get("/admin/products", adminReqConfig)
-
     expect(productsResponse.data.count).toBe(2)
     expect(productsResponse.data.products).toEqual(
       expect.arrayContaining([
@@ -181,6 +180,7 @@ describe("Product import batch job", () => {
               ]),
             }),
           ],
+          type: null,
           images: [
             expect.objectContaining({
               url: "test-image.png",
@@ -287,6 +287,7 @@ describe("Product import batch job", () => {
               title: "Size",
             }),
           ],
+          type: expect.objectContaining({ value: "test-type" }),
           tags: [
             expect.objectContaining({
               value: "123",
