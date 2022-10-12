@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.33
+
+### Patch Changes
+
+- [`5cb7618a2`](https://github.com/medusajs/medusa/commit/5cb7618a220c420ec2917875f91b8c1f814298f2) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Force bump medusa-core-utils
+
 ## 1.1.32
 
 ### Patch Changes
