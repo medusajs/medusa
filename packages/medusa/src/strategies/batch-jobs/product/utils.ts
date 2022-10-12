@@ -38,6 +38,10 @@ export function transformProductData(
   const productData = pickObjectPropsByRegex(data, /product\./)
 
   Object.keys(productData).forEach((k) => {
+    if (!productData[k]) {
+      return
+    }
+
     const key = k.split("product.")[1]
     set(ret, key, productData[k])
   })
@@ -55,6 +59,10 @@ export function transformVariantData(
   const productData = pickObjectPropsByRegex(data, /variant\./)
 
   Object.keys(productData).forEach((k) => {
+    if (!productData[k]) {
+      return
+    }
+
     const key = k.split("variant.")[1]
     set(ret, key, productData[k])
   })
