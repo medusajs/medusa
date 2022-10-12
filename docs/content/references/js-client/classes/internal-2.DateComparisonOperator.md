@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:73
+medusa/dist/types/common.d.ts:74
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:74
+medusa/dist/types/common.d.ts:75
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:72
+medusa/dist/types/common.d.ts:73
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:75
+medusa/dist/types/common.d.ts:76

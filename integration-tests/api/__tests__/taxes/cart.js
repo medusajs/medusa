@@ -74,7 +74,6 @@ describe("Cart Totals Calculations", () => {
     expect(res.data.cart.items[0].original_total).toEqual(110)
     expect(res.data.cart.items[0].original_tax_total).toEqual(10)
     expect(res.data.cart.items[0].discount_total).toEqual(0)
-    expect(res.data.cart.items[0].gift_card_total).toEqual(0)
   })
 
   it("sets correct line item totals for a cart with item of price 100; tax rate 10; discount 10", async () => {
@@ -123,7 +122,6 @@ describe("Cart Totals Calculations", () => {
     expect(res.data.cart.items[0].original_total).toEqual(110)
     expect(res.data.cart.items[0].original_tax_total).toEqual(10)
     expect(res.data.cart.items[0].discount_total).toEqual(10)
-    expect(res.data.cart.items[0].gift_card_total).toEqual(0)
   })
 
   it("doesn't include taxes in !automatic_taxes regions", async () => {
@@ -174,7 +172,6 @@ describe("Cart Totals Calculations", () => {
     expect(res.data.cart.items[0].original_total).toEqual(100)
     expect(res.data.cart.items[0].original_tax_total).toEqual(0)
     expect(res.data.cart.items[0].discount_total).toEqual(10)
-    expect(res.data.cart.items[0].gift_card_total).toEqual(0)
   })
 
   it("includes taxes in !automatic_taxes regions when forced", async () => {
@@ -227,6 +224,5 @@ describe("Cart Totals Calculations", () => {
     expect(res.data.cart.items[0].original_total).toEqual(110)
     expect(res.data.cart.items[0].original_tax_total).toEqual(10)
     expect(res.data.cart.items[0].discount_total).toEqual(10)
-    expect(res.data.cart.items[0].gift_card_total).toEqual(0)
   })
 })

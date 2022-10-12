@@ -4,7 +4,7 @@ In this document, you’ll learn how to integrate Strapi with Medusa to add rich
 
 :::info
 
-This plugin is a [community plugin](https://github.com/Deathwish98/medusa-plugin-strapi) and is not managed by the official Medusa team.
+This plugin is a [community plugin](https://github.com/Deathwish98/medusa-plugin-strapi) and is not managed by the official Medusa team. At the moment, it supports v4 of Strapi.
 
 :::
 
@@ -172,7 +172,7 @@ Try updating any products on Strapi by going to Content Manager → Products and
 
 If you try to update products on Medusa either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/PostProductsProduct) or using [the Medusa Admin](../user-guide/products/manage.mdx), you’ll see that the product is also updated on Strapi.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn [how to deploy the Medusa server](../deployments/server/index.mdx).
 - Learn [how to create your own plugin](../advanced/backend/plugins/create.md).

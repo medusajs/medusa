@@ -327,7 +327,7 @@ If you run your Gatsby storefront while the Medusa server is running, you should
 
 ![Search bar in the Gatsby storefront](https://i.imgur.com/INtlcIo.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
 - Learn how to [deploy your Gatsby storefront](../deployments/storefront/deploying-gatsby-on-netlify.md).

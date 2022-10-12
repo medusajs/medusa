@@ -2,18 +2,37 @@
 
 ## Classes
 
-- [StoreGetCustomersCustomerOrdersPaginationParams](../classes/internal-32.StoreGetCustomersCustomerOrdersPaginationParams.md)
-- [StoreGetCustomersCustomerOrdersParams](../classes/internal-32.StoreGetCustomersCustomerOrdersParams.md)
-- [StorePostCustomersCustomerPasswordTokenReq](../classes/internal-32.StorePostCustomersCustomerPasswordTokenReq.md)
-- [StorePostCustomersCustomerReq](../classes/internal-32.StorePostCustomersCustomerReq.md)
-- [StorePostCustomersReq](../classes/internal-32.StorePostCustomersReq.md)
+- [Discount](../classes/internal-32.Discount.md)
+- [GiftCard](../classes/internal-32.GiftCard.md)
+- [Item](../classes/internal-32.Item.md)
+- [StorePostCartReq](../classes/internal-32.StorePostCartReq.md)
+- [StorePostCartsCartPaymentSessionReq](../classes/internal-32.StorePostCartsCartPaymentSessionReq.md)
+- [StorePostCartsCartPaymentSessionUpdateReq](../classes/internal-32.StorePostCartsCartPaymentSessionUpdateReq.md)
+- [StorePostCartsCartReq](../classes/internal-32.StorePostCartsCartReq.md)
+- [StorePostCartsCartShippingMethodReq](../classes/internal-32.StorePostCartsCartShippingMethodReq.md)
 
 ## Type Aliases
 
-### StoreCustomersListOrdersRes
+### StoreCartsRes
 
-Ƭ **StoreCustomersListOrdersRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `orders`: [`Order`](../classes/internal.Order.md)[]  }
+Ƭ **StoreCartsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `cart` | `Omit`<[`Cart`](../classes/internal.Cart.md), ``"refundable_amount"`` \| ``"refunded_total"``\> |
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/index.d.ts:12
+medusa/dist/api/routes/store/carts/index.d.ts:8
+
+___
+
+### StoreCompleteCartRes
+
+Ƭ **StoreCompleteCartRes**: { `data`: [`Cart`](../classes/internal.Cart.md) ; `type`: ``"cart"``  } \| { `data`: [`Order`](../classes/internal.Order.md) ; `type`: ``"order"``  } \| { `data`: [`Swap`](../classes/internal.Swap.md) ; `type`: ``"swap"``  }
+
+#### Defined in
+
+medusa/dist/api/routes/store/carts/index.d.ts:11

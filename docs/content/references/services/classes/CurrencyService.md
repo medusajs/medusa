@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:32](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L32)
+[packages/medusa/src/services/currency.ts:32](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L32)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:28](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L28)
+[packages/medusa/src/services/currency.ts:28](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L28)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:29](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L29)
+[packages/medusa/src/services/currency.ts:29](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L29)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L30)
+[packages/medusa/src/services/currency.ts:30](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L30)
 
 ___
 
@@ -96,7 +96,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:25](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L25)
+[packages/medusa/src/services/currency.ts:25](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L25)
 
 ___
 
@@ -110,7 +110,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:26](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L26)
+[packages/medusa/src/services/currency.ts:26](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L26)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:21](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L21)
+[packages/medusa/src/services/currency.ts:21](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L21)
 
 ## Methods
 
@@ -165,7 +165,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -193,7 +193,7 @@ an array containing the currencies as
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:81](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L81)
+[packages/medusa/src/services/currency.ts:81](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L81)
 
 ___
 
@@ -217,7 +217,7 @@ The currency
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L50)
+[packages/medusa/src/services/currency.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L50)
 
 ___
 
@@ -241,7 +241,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -266,7 +266,7 @@ The updated currency
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:103](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/currency.ts#L103)
+[packages/medusa/src/services/currency.ts:103](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/currency.ts#L103)
 
 ___
 
@@ -290,4 +290,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

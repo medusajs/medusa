@@ -15,6 +15,7 @@ import { Type } from "class-transformer"
  *   - (query) q {string} Query used for searching customer group names.
  *   - (query) offset=0 {integer} How many groups to skip in the result.
  *   - (query) order {string} the field used to order the customer groups.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the customer groups.
  *   - in: query
  *     name: id
  *     style: form
@@ -108,7 +109,7 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
- *         console.log(customer_groups.id);
+ *         console.log(customer_groups.length);
  *       });
  *   - lang: Shell
  *     label: cURL

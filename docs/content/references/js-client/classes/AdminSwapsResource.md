@@ -10,28 +10,28 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-24.md#adminswapslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-26.md#adminswapslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetSwapsParams`](internal-24.AdminGetSwapsParams.md) |
+| `query?` | [`AdminGetSwapsParams`](internal-26.AdminGetSwapsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-24.md#adminswapslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-26.md#adminswapslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/swaps.ts#L19)
+[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/swaps.ts#L19)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-24.md#adminswapsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-26.md#adminswapsres)\>
 
 #### Parameters
 
@@ -42,8 +42,8 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-24.md#adminswapsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-26.md#adminswapsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/swaps.ts#L11)
+[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/swaps.ts#L11)

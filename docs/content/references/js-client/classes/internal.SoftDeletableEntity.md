@@ -44,6 +44,8 @@ Base abstract entity for all entities
 
   ↳↳ [`ClaimItem`](internal.ClaimItem.md)
 
+  ↳↳ [`OrderItemChange`](internal.OrderItemChange.md)
+
   ↳↳ [`ProductVariant`](internal.ProductVariant.md)
 
   ↳↳ [`MoneyAmount`](internal.MoneyAmount.md)
@@ -76,9 +78,9 @@ Base abstract entity for all entities
 
   ↳↳ [`BatchJob`](internal-2.BatchJob.md)
 
-  ↳↳ [`Invite`](internal-9.Invite.md)
+  ↳↳ [`Invite`](internal-10.Invite.md)
 
-  ↳↳ [`Note`](internal-10.Note.md)
+  ↳↳ [`Note`](internal-11.Note.md)
 
 ## Properties
 

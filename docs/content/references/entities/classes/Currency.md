@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/currency.ts:8](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/currency.ts#L8)
+[models/currency.ts:8](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/currency.ts#L8)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/currency.ts:20](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/currency.ts#L20)
+[models/currency.ts:20](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/currency.ts#L20)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/currency.ts:17](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/currency.ts#L17)
+[models/currency.ts:17](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/currency.ts#L17)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/currency.ts:11](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/currency.ts#L11)
+[models/currency.ts:11](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/currency.ts#L11)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[models/currency.ts:14](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/currency.ts#L14)
+[models/currency.ts:14](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/currency.ts#L14)

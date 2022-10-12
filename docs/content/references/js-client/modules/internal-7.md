@@ -2,50 +2,60 @@
 
 ## Classes
 
-- [AdminGetDraftOrdersParams](../classes/internal-7.AdminGetDraftOrdersParams.md)
-- [AdminPostDraftOrdersDraftOrderLineItemsItemReq](../classes/internal-7.AdminPostDraftOrdersDraftOrderLineItemsItemReq.md)
-- [AdminPostDraftOrdersDraftOrderLineItemsReq](../classes/internal-7.AdminPostDraftOrdersDraftOrderLineItemsReq.md)
-- [AdminPostDraftOrdersDraftOrderReq](../classes/internal-7.AdminPostDraftOrdersDraftOrderReq.md)
-- [Discount](../classes/internal-7.Discount.md)
+- [AdminCreateCondition](../classes/internal-7.AdminCreateCondition.md)
+- [AdminGetDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminGetDiscountsDiscountConditionsConditionParams.md)
+- [AdminGetDiscountsDiscountRuleParams](../classes/internal-7.AdminGetDiscountsDiscountRuleParams.md)
+- [AdminGetDiscountsParams](../classes/internal-7.AdminGetDiscountsParams.md)
+- [AdminPostDiscountsDiscountConditions](../classes/internal-7.AdminPostDiscountsDiscountConditions.md)
+- [AdminPostDiscountsDiscountConditionsCondition](../classes/internal-7.AdminPostDiscountsDiscountConditionsCondition.md)
+- [AdminPostDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionParams.md)
+- [AdminPostDiscountsDiscountConditionsParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsParams.md)
+- [AdminPostDiscountsDiscountDynamicCodesReq](../classes/internal-7.AdminPostDiscountsDiscountDynamicCodesReq.md)
+- [AdminPostDiscountsDiscountReq](../classes/internal-7.AdminPostDiscountsDiscountReq.md)
+- [AdminPostDiscountsDiscountRule](../classes/internal-7.AdminPostDiscountsDiscountRule.md)
+- [AdminPostDiscountsReq](../classes/internal-7.AdminPostDiscountsReq.md)
+- [AdminUpdateDiscountRule](../classes/internal-7.AdminUpdateDiscountRule.md)
+- [AdminUpsertCondition](../classes/internal-7.AdminUpsertCondition.md)
+- [AdminUpsertConditionsReq](../classes/internal-7.AdminUpsertConditionsReq.md)
 
 ## Type Aliases
 
-### AdminDraftOrdersListRes
+### AdminDiscountConditionsRes
 
-Ƭ **AdminDraftOrdersListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `draft_orders`: [`DraftOrder`](../classes/internal.DraftOrder.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/draft-orders/index.d.ts:18
-
-___
-
-### AdminDraftOrdersRes
-
-Ƭ **AdminDraftOrdersRes**: `Object`
+Ƭ **AdminDiscountConditionsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `draft_order` | [`DraftOrder`](../classes/internal.DraftOrder.md) |
+| `discount_condition` | [`DiscountCondition`](../classes/internal.DiscountCondition.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/index.d.ts:14
+medusa/dist/api/routes/admin/discounts/index.d.ts:14
 
 ___
 
-### AdminPostDraftOrdersDraftOrderRegisterPaymentRes
+### AdminDiscountsListRes
 
-Ƭ **AdminPostDraftOrdersDraftOrderRegisterPaymentRes**: `Object`
+Ƭ **AdminDiscountsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `discounts`: [`Discount`](../classes/internal.Discount.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/admin/discounts/index.d.ts:18
+
+___
+
+### AdminDiscountsRes
+
+Ƭ **AdminDiscountsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `order` | [`Order`](../classes/internal.Order.md) |
+| `discount` | [`Discount`](../classes/internal.Discount.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/index.d.ts:11
+medusa/dist/api/routes/admin/discounts/index.d.ts:11

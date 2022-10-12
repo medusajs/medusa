@@ -118,7 +118,7 @@ If then the request is interrupted for any reason or the payment fails, the clie
 
 This prevents any payment issues from occurring with the customers and allows for secure retries of failed payments or interrupted connections.
 
-## What’s Next 🚀
+## What’s Next
 
 - [Check out how the checkout flow is implemented on the frontend.](./../../storefront/how-to-implement-checkout-flow.mdx)
 - Check out payment plugins like [Stripe](../../../add-plugins/stripe.md), [Paypal](/add-plugins/paypal), and [Klarna](../../../add-plugins/klarna.md).

@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:25](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L25)
+[models/return-reason.ts:25](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L25)
 
 ___
 
@@ -70,7 +70,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:22](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L22)
+[models/return-reason.ts:22](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L22)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:42](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L42)
+[models/return-reason.ts:42](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L42)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:32](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L32)
+[models/return-reason.ts:32](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L32)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:28](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L28)
+[models/return-reason.ts:28](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L28)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:39](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L39)
+[models/return-reason.ts:39](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L39)
 
 ___
 
@@ -134,7 +134,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L19)
+[models/return-reason.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L19)
 
 ## Methods
 
@@ -158,4 +158,4 @@ ___
 
 #### Defined in
 
-[models/return-reason.ts:44](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/return-reason.ts#L44)
+[models/return-reason.ts:44](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/return-reason.ts#L44)

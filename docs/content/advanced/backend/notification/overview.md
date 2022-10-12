@@ -24,7 +24,7 @@ When you run your Medusa server, the Notification Provider is registered on your
 
 ### NotificationProvider Entity Overview
 
-The [`NotificationProvider`](../../../references/js-client/classes/internal-11.NotificationProvider.md) entity only has 2 attributes: `id` and `is_installed`.
+The `NotificationProvider` entity only has 2 attributes: `id` and `is_installed`.
 
 `id` is the value of the static property `identifier` defined inside the notification Service class.
 
@@ -39,7 +39,7 @@ Notifications can take on other forms such as an SMS or a Slack message.
 
 ### How Notification is Created
 
-Notifications are created in the `NotificationService` class in Medusa’s core after the Notification has been handled by the Notification Provider. 
+Notifications are created in the `NotificationService` class in Medusa’s core after the Notification has been handled by the Notification Provider.
 
 The data and additional details that the Notification Provider returns to the `NotificationService` is used to fill some of the attributes of the Notification in the database.
 
@@ -47,7 +47,7 @@ A Notification also represents a resent notification. So, when a notification is
 
 ### Notification Entity Overview
 
-The two most important properties in the [`Notification`](../../../references/js-client/classes/internal-11.Notification.md) entity are the `to` and `data` properties. 
+The two most important properties in the [`Notification`](../../../references/entities/classes/Notification.md) entity are the `to` and `data` properties.
 
 The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to.
 
@@ -78,7 +78,7 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 - The customer returns the items triggering the `return.recieved` event.
 - The Notification Provider listens to the `return.received` event and sends an email to the customer with confirmation that their items have been received and that a refund has been issued.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [create your own Notification Provider](how-to-create-notification-provider.md).
 - Check out the [list of events](../subscribers/events-list.md) in Medusa.

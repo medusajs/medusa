@@ -160,14 +160,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 async (manager: EntityManager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieve(id, {
-                      select: ["total"],
-                      relations: [
-                        "items",
-                        "items.adjustments",
-                        "payment",
-                        "payment_sessions",
-                      ],
+                    .retrieveWithTotals(id, {
+                      relations: ["payment", "payment_sessions"],
                     })
 
                   // If cart is part of swap, we register swap as complete

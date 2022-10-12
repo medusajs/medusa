@@ -30,6 +30,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -44,6 +45,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -342,6 +344,8 @@ export const allowedAdminOrdersFields = [
 export const allowedAdminOrdersRelations = [
   "customer",
   "region",
+  "edits",
+  "sales_channel",
   "billing_address",
   "shipping_address",
   "discounts",

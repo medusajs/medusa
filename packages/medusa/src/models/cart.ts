@@ -333,6 +333,8 @@ export class Cart extends SoftDeletableEntity {
 
   shipping_total?: number
   discount_total?: number
+  item_tax_total?: number | null
+  shipping_tax_total?: number | null
   tax_total?: number | null
   refunded_total?: number
   total?: number

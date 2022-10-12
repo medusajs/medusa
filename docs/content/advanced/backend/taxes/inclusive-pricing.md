@@ -187,7 +187,7 @@ The relevant fields are:
 
 During the calculation of the totals of different components of the cart or order, such as shipping or line items, if tax inclusivity is enabled on that component, a process similar to those explained above will be applied to retrieve the total.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [calculate taxes manually](manual-calculation.md).
 - [Check out the API reference](https://docs.medusajs.com/api/store/).
