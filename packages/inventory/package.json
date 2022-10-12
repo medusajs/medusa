@@ -30,6 +30,5 @@
     "@medusajs/medusa": "1.x.x",
     "medusa-interfaces": "1.x.x",
     "typeorm": "0.2.x"
-  },
-  "dependencies": {}
+  }
 }

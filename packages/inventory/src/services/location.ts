@@ -76,7 +76,7 @@ export default class LocationService {
       )
     }
 
-    return loc
+    return loc.toObject()
   }
 
   async create(data: CreateLocationInput): Promise<Location> {

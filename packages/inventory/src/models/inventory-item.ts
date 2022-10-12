@@ -21,7 +21,7 @@ export class InventoryItem extends SoftDeletableEntity {
   requires_shipping: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

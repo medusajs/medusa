@@ -6,7 +6,7 @@ export type InventoryItemDTO = {
   origin_country: string
   hs_code: string
   requires_shipping: boolean
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date
@@ -18,7 +18,7 @@ export type InventoryLevelDTO = {
   location_id: string
   stocked_quantity: number
   incoming_quantity: number
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date
@@ -38,7 +38,7 @@ export type StockLocationAddressDTO = {
 export type StockLocationDTO = {
   id: string
   name: string
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
   address_id: string
   created_at: string | Date
   updated_at: string | Date
@@ -48,7 +48,6 @@ export type StockLocationDTO = {
 export type FilterableInventoryItemProps = {
   sku?: string | string[] | StringComparisonOperator
   origin_country?: string | string[]
-  metadata?: Record<string, unknown>
   hs_code?: number | number[] | NumericalComparisonOperator
   requires_shipping?: boolean
 }
@@ -56,7 +55,7 @@ export type FilterableInventoryItemProps = {
 export type CreateInventoryItemInput = {
   sku?: string
   origin_country?: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   hs_code?: number
   requires_shipping?: boolean
 }

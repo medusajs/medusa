@@ -28,6 +28,9 @@ export class LocationAddress extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text", nullable: true })
   postal_code: string
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "laddr")

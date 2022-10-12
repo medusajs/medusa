@@ -1,9 +1,7 @@
-import { getConnection, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { FindConfig, IInventoryService, buildQuery } from "@medusajs/medusa"
-
-import { InventoryItem, InventoryLevel, Location } from "../models"
 import {
+  FindConfig,
+  IInventoryService,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
   FilterableLocationProps,
@@ -12,7 +10,12 @@ import {
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
   IEventBusService,
-} from "../types"
+  InventoryItemDTO,
+  InventoryLevelDTO,
+  StockLocationDTO,
+} from "@medusajs/medusa"
+
+import { InventoryItem, InventoryLevel, Location } from "../models"
 
 import {
   InventoryItemService,
@@ -24,7 +27,7 @@ type InjectedDependencies = {
   eventBusService: IEventBusService
 }
 
-export default class InventoryService {
+export default class InventoryService implements IInventoryService {
   protected readonly eventBusService: IEventBusService
   protected readonly inventoryItemService: InventoryItemService
   protected readonly inventoryLevelService: InventoryLevelService
@@ -39,58 +42,38 @@ export default class InventoryService {
 
   async listLocations(
     selector: FilterableLocationProps,
-    config?: FindConfig<Location>
-  ): Promise<[Location[], number]> {
+    config?: FindConfig<StockLocationDTO>
+  ): Promise<[StockLocationDTO[], number]> {
     return this.locationService.listAndCount(selector, config)
   }
 
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[InventoryItem[], number]> {
+    config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[InventoryItemDTO[], number]> {
     return await this.inventoryItemService.listAndCount(selector, config)
   }
 
-  async retrieveLocation(id: string): Promise<Location> {
-    return await this.locationService.retrieve(id)
+  async listInventoryLevels(
+    selector: FilterableInventoryLevelProps,
+    config: FindConfig<InventoryLevelDTO> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[InventoryLevelDTO[], number]> {
+    return await this.inventoryLevelService.listAndCount(selector, config)
   }
 
-  async retrieveInventoryItem(itemId: string): Promise<InventoryItem> {
+  async retrieveLocation(id: string): Promise<StockLocationDTO> {
+    const locationResult = await this.locationService.retrieve(id)
+    return { ...locationResult }
+  }
+
+  async retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO> {
     return await this.inventoryItemService.retrieve(itemId)
-  }
-
-  async createInventoryItem(
-    input: CreateInventoryItemInput
-  ): Promise<InventoryItem> {
-    return await this.inventoryItemService.create(input)
-  }
-
-  async createLocation(input: CreateLocationInput): Promise<Location> {
-    return await this.locationService.create(input)
-  }
-
-  async updateLocation(
-    id: string,
-    input: UpdateLocationInput
-  ): Promise<Location> {
-    return await this.locationService.update(id, input)
-  }
-
-  async updateInventoryItem(
-    itemId: string,
-    input: CreateInventoryItemInput
-  ): Promise<InventoryItem> {
-    return await this.inventoryItemService.update(itemId, input)
-  }
-
-  async deleteInventoryItem(itemId: string): Promise<void> {
-    return await this.inventoryItemService.delete(itemId)
   }
 
   async retrieveInventoryLevel(
     itemId: string,
     locationId: string
-  ): Promise<InventoryLevel> {
+  ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService.list(
       { item_id: itemId, location_id: locationId },
       { take: 1 }
@@ -104,11 +87,45 @@ export default class InventoryService {
     return inventoryLevel
   }
 
+  async createInventoryItem(
+    input: CreateInventoryItemInput
+  ): Promise<InventoryItemDTO> {
+    return await this.inventoryItemService.create(input)
+  }
+
+  async createLocation(input: CreateLocationInput): Promise<StockLocationDTO> {
+    return await this.locationService.create(input)
+  }
+
+  async createInventoryLevel(
+    input: CreateInventoryLevelInput
+  ): Promise<InventoryLevelDTO> {
+    return await this.inventoryLevelService.create(input)
+  }
+
+  async updateLocation(
+    id: string,
+    input: UpdateLocationInput
+  ): Promise<StockLocationDTO> {
+    return await this.locationService.update(id, input)
+  }
+
+  async updateInventoryItem(
+    itemId: string,
+    input: CreateInventoryItemInput
+  ): Promise<InventoryItemDTO> {
+    return await this.inventoryItemService.update(itemId, input)
+  }
+
+  async deleteInventoryItem(itemId: string): Promise<void> {
+    return await this.inventoryItemService.delete(itemId)
+  }
+
   async adjustInventory(
     itemId: string,
     locationId: string,
     adjustment: number
-  ): Promise<InventoryLevel> {
+  ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService.list(
       { item_id: itemId, location_id: locationId },
       { take: 1 }
