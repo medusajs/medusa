@@ -266,8 +266,6 @@ class KlarnaProviderService extends PaymentService {
       checkout: this.options_.merchant_urls.checkout,
       confirmation: this.options_.merchant_urls.confirmation,
       push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
-      shipping_option_update: `${this.backendUrl_}/klarna/shipping`,
-      address_update: `${this.backendUrl_}/klarna/address`,
     }
 
     return order
@@ -396,18 +394,20 @@ class KlarnaProviderService extends PaymentService {
    * @param {string} klarnaOrderId - id of the order to acknowledge
    * @returns {string} id of acknowledged order
    */
-  async acknowledgeOrder(klarnaOrderId, orderId) {
+  async acknowledgeOrder(klarnaOrderId, orderId = null) {
     try {
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/acknowledge`
       )
 
-      await this.klarna_.patch(
-        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
-        {
-          merchant_reference1: orderId,
-        }
-      )
+      if (orderId !== null) {
+        await this.klarna_.patch(
+          `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
+          {
+            merchant_reference1: orderId,
+          }
+        )
+      }
 
       return klarnaOrderId
     } catch (error) {
