@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/discount-rule.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-rule.ts#L16)
+[models/discount-rule.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-rule.ts#L16)
 
 ___
 
@@ -22,4 +22,4 @@ ___
 
 #### Defined in
 
-[models/discount-rule.ts:15](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-rule.ts#L15)
+[models/discount-rule.ts:15](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-rule.ts#L15)

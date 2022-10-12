@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/claim-order.ts:69](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L69)
+[models/claim-order.ts:69](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L69)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:107](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L107)
+[models/claim-order.ts:107](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L107)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:66](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L66)
+[models/claim-order.ts:66](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L66)
 
 ___
 
@@ -62,7 +62,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[models/claim-order.ts:110](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L110)
+[models/claim-order.ts:110](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L110)
 
 ___
 
@@ -76,7 +76,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[models/claim-order.ts:116](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L116)
+[models/claim-order.ts:116](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L116)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:63](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L63)
+[models/claim-order.ts:63](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L63)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:101](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L101)
+[models/claim-order.ts:101](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L101)
 
 ___
 
@@ -110,7 +110,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:125](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L125)
+[models/claim-order.ts:125](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L125)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:122](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L122)
+[models/claim-order.ts:122](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L122)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:119](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L119)
+[models/claim-order.ts:119](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L119)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:80](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L80)
+[models/claim-order.ts:80](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L80)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:76](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L76)
+[models/claim-order.ts:76](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L76)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:56](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L56)
+[models/claim-order.ts:56](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L56)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:104](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L104)
+[models/claim-order.ts:104](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L104)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:83](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L83)
+[models/claim-order.ts:83](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L83)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:91](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L91)
+[models/claim-order.ts:91](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L91)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:87](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L87)
+[models/claim-order.ts:87](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L87)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:96](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L96)
+[models/claim-order.ts:96](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L96)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[models/claim-order.ts:72](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L72)
+[models/claim-order.ts:72](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L72)
 
 ___
 
@@ -244,7 +244,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/claim-order.ts:113](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L113)
+[models/claim-order.ts:113](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L113)
 
 ## Methods
 
@@ -258,4 +258,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/claim-order.ts:127](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/claim-order.ts#L127)
+[models/claim-order.ts:127](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/claim-order.ts#L127)

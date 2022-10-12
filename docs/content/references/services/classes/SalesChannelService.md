@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:37](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L37)
+[packages/medusa/src/services/sales-channel.ts:37](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L37)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:34](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L34)
+[packages/medusa/src/services/sales-channel.ts:34](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L34)
 
 ___
 
@@ -76,7 +76,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L30)
+[packages/medusa/src/services/sales-channel.ts:30](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L30)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:33](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L33)
+[packages/medusa/src/services/sales-channel.ts:33](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L33)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:35](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L35)
+[packages/medusa/src/services/sales-channel.ts:35](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L35)
 
 ___
 
@@ -110,7 +110,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L31)
+[packages/medusa/src/services/sales-channel.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L31)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:24](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L24)
+[packages/medusa/src/services/sales-channel.ts:24](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L24)
 
 ## Methods
 
@@ -153,7 +153,7 @@ the sales channel on which the products have been added
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:310](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L310)
+[packages/medusa/src/services/sales-channel.ts:305](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L305)
 
 ___
 
@@ -192,7 +192,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -219,7 +219,7 @@ the created channel
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:167](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L167)
+[packages/medusa/src/services/sales-channel.ts:162](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L162)
 
 ___
 
@@ -237,7 +237,7 @@ the sales channel
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:257](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L257)
+[packages/medusa/src/services/sales-channel.ts:252](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L252)
 
 ___
 
@@ -261,7 +261,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:218](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L218)
+[packages/medusa/src/services/sales-channel.ts:213](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L213)
 
 ___
 
@@ -289,7 +289,7 @@ an array containing the sales channels as
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:132](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L132)
+[packages/medusa/src/services/sales-channel.ts:127](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L127)
 
 ___
 
@@ -314,7 +314,7 @@ the sales channel on which the products have been removed
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:289](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L289)
+[packages/medusa/src/services/sales-channel.ts:284](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L284)
 
 ___
 
@@ -339,7 +339,7 @@ a sales channel
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:104](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L104)
+[packages/medusa/src/services/sales-channel.ts:99](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L99)
 
 ___
 
@@ -364,7 +364,7 @@ a sales channel with matching name
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:118](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L118)
+[packages/medusa/src/services/sales-channel.ts:113](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L113)
 
 ___
 
@@ -389,7 +389,7 @@ a single SC matching the query or throws
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:64](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L64)
+[packages/medusa/src/services/sales-channel.ts:59](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L59)
 
 ___
 
@@ -413,7 +413,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -434,7 +434,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel.ts:184](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/services/sales-channel.ts#L184)
+[packages/medusa/src/services/sales-channel.ts:179](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/sales-channel.ts#L179)
 
 ___
 
@@ -458,4 +458,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

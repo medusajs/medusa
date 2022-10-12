@@ -1,23 +1,33 @@
 # Namespace: internal
 
-## Classes
-
-- [AdditionalItem](../classes/internal-43.AdditionalItem.md)
-- [Item](../classes/internal-43.Item.md)
-- [StorePostSwapsReq](../classes/internal-43.StorePostSwapsReq.md)
-
 ## Type Aliases
 
-### StoreSwapsRes
+### StoreReturnReasonsListRes
 
-Ƭ **StoreSwapsRes**: `Object`
+Ƭ **StoreReturnReasonsListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/swaps/index.d.ts:6
+medusa/dist/api/routes/store/return-reasons/index.d.ts:6
+
+___
+
+### StoreReturnReasonsRes
+
+Ƭ **StoreReturnReasonsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/store/return-reasons/index.d.ts:9

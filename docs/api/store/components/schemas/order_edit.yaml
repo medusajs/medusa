@@ -60,11 +60,23 @@ properties:
     type: string
   subtotal:
     type: integer
-    description: The subtotal for line items computed from changes.
+    description: The total of subtotal
     example: 8000
   discount_total:
     type: integer
     description: The total of discount
+    example: 800
+  shipping_total:
+    type: integer
+    description: The total of the shipping amount
+    example: 800
+  gift_card_total:
+    type: integer
+    description: The total of the gift card amount
+    example: 800
+  gift_card_tax_total:
+    type: integer
+    description: The total of the gift card tax amount
     example: 800
   tax_total:
     type: integer

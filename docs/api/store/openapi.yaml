@@ -15,6 +15,89 @@ info:
 
 
     <!-- ReDoc-Inject: <SecurityDefinitions> -->
+
+
+    ## Expanding Fields
+
+
+    In many endpoints you'll find an `expand` query parameter that can be passed
+    to the endpoint. You can use the `expand` query parameter to unpack an
+    entity's relations and return them in the response.
+
+
+    For example, when you list customers you can also retrieve their groups by
+    passing to the `expand` query parameter the value `groups`.
+
+
+    You can expand more than one relation by separating the relations in the
+    `expand` query parameter with a comma. For example, to retrieve both the
+    orders and the groups of a customer, pass to the `expand` query parameter
+    the value `groups,orders`.
+
+
+    Please note that the parameters you pass to `expand` replace any relations
+    that are expanded by default.
+
+
+    ## Selecting Fields
+
+
+    In many endpoints you'll find a `fields` query parameter that can be passed
+    to the endpoint. You can use the `fields` query parameter to specify which
+    fields in the entity should be returned in the response.
+
+
+    You can pass more than one field by seperating the field names in the
+    `fields` query parameter with a comma.
+
+
+    Only the fields you pass to `field` will be retrieved and returned in the
+    response. Any fields that are returned by default will not be returned in
+    this case. This does not affect relations.
+
+
+    For example, to only select the `title` and `description` fields of a
+    product, pass to the `fields` query parameter the value `title,description`.
+
+
+    ## Pagination
+
+
+    ### Query Parameters
+
+
+    In listing endpoints, such as list customers or list products, you can
+    control the pagination using the query parameters `limit` and `offset`.
+
+
+    `limit` is used to specify the maximum number of items that can be return in
+    the response. `offset` is used to specify how many items to skip before
+    returning the resulting entities.
+
+
+    You can use the `offset` query parameter to change between pages. For
+    example, if the limit is 50, at page 1 the offset should be 0; at page 2 the
+    offset should be 50, and so on.
+
+
+    ### Response Fields
+
+
+    In listing fields, aside from the entities retrieved, there are three
+    pagination-related fields returned: `count`, `limit`, and `offset`.
+
+
+    Similarly to the query parameters, `limit` is the maximum number of items
+    that can be returned in the response, and `field` is the number of items
+    that were skipped before the entities in the result.
+
+
+    `count` is the total number of available items of this entity. It can be
+    used to determine how many pages are there.
+
+
+    For example, if the `count` is 100 and the `limit` is 50, you can divide the
+    `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
@@ -112,6 +195,12 @@ paths:
     $ref: paths/customers_password-reset.yaml
   /gift-cards/{code}:
     $ref: paths/gift-cards_{code}.yaml
+  /order-edits/{id}/complete:
+    $ref: paths/order-edits_{id}_complete.yaml
+  /order-edits/{id}/decline:
+    $ref: paths/order-edits_{id}_decline.yaml
+  /order-edits/{id}:
+    $ref: paths/order-edits_{id}.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:

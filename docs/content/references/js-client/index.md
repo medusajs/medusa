@@ -46,6 +46,9 @@
 - [internal](modules/internal-41.md)
 - [internal](modules/internal-42.md)
 - [internal](modules/internal-43.md)
+- [internal](modules/internal-44.md)
+- [internal](modules/internal-45.md)
+- [internal](modules/internal-46.md)
 
 ## Classes
 
@@ -54,6 +57,7 @@
 - [AdminAuthResource](classes/AdminAuthResource.md)
 - [AdminBatchJobsResource](classes/AdminBatchJobsResource.md)
 - [AdminCollectionsResource](classes/AdminCollectionsResource.md)
+- [AdminCurrenciesResource](classes/AdminCurrenciesResource.md)
 - [AdminCustomerGroupsResource](classes/AdminCustomerGroupsResource.md)
 - [AdminCustomersResource](classes/AdminCustomersResource.md)
 - [AdminDiscountsResource](classes/AdminDiscountsResource.md)
@@ -62,6 +66,7 @@
 - [AdminInvitesResource](classes/AdminInvitesResource.md)
 - [AdminNotesResource](classes/AdminNotesResource.md)
 - [AdminNotificationsResource](classes/AdminNotificationsResource.md)
+- [AdminOrderEditsResource](classes/AdminOrderEditsResource.md)
 - [AdminOrdersResource](classes/AdminOrdersResource.md)
 - [AdminPriceListResource](classes/AdminPriceListResource.md)
 - [AdminProductTagsResource](classes/AdminProductTagsResource.md)
@@ -85,6 +90,7 @@
 - [CustomerResource](classes/CustomerResource.md)
 - [GiftCardsResource](classes/GiftCardsResource.md)
 - [LineItemsResource](classes/LineItemsResource.md)
+- [OrderEditsResource](classes/OrderEditsResource.md)
 - [OrdersResource](classes/OrdersResource.md)
 - [PaymentMethodsResource](classes/PaymentMethodsResource.md)
 - [ProductVariantsResource](classes/ProductVariantsResource.md)

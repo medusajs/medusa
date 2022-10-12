@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:97
+medusa/dist/models/order.d.ts:99
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:59
+medusa/dist/models/order.d.ts:60
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:58
+medusa/dist/models/order.d.ts:59
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:80
+medusa/dist/models/order.d.ts:82
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:54
+medusa/dist/models/order.d.ts:55
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:53
+medusa/dist/models/order.d.ts:54
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:73
+medusa/dist/models/order.d.ts:74
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:65
+medusa/dist/models/order.d.ts:66
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:64
+medusa/dist/models/order.d.ts:65
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:56
+medusa/dist/models/order.d.ts:57
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:55
+medusa/dist/models/order.d.ts:56
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:88
+medusa/dist/models/order.d.ts:90
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:67
+medusa/dist/models/order.d.ts:68
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:52
+medusa/dist/models/order.d.ts:53
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:77
+medusa/dist/models/order.d.ts:78
 
 ___
 
@@ -186,7 +186,17 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:76
+medusa/dist/models/order.d.ts:77
+
+___
+
+### edits
+
+• **edits**: [`OrderEdit`](internal.OrderEdit.md)[]
+
+#### Defined in
+
+medusa/dist/models/order.d.ts:79
 
 ___
 
@@ -196,7 +206,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:57
+medusa/dist/models/order.d.ts:58
 
 ___
 
@@ -206,7 +216,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:84
+medusa/dist/models/order.d.ts:86
 
 ___
 
@@ -216,7 +226,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:50
+medusa/dist/models/order.d.ts:51
 
 ___
 
@@ -226,7 +236,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:71
+medusa/dist/models/order.d.ts:72
 
 ___
 
@@ -236,7 +246,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:96
+medusa/dist/models/order.d.ts:98
 
 ___
 
@@ -246,7 +256,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:95
+medusa/dist/models/order.d.ts:97
 
 ___
 
@@ -256,7 +266,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:79
+medusa/dist/models/order.d.ts:81
 
 ___
 
@@ -266,7 +276,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:68
+medusa/dist/models/order.d.ts:69
 
 ___
 
@@ -290,7 +300,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:83
+medusa/dist/models/order.d.ts:85
 
 ___
 
@@ -300,7 +310,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:78
+medusa/dist/models/order.d.ts:80
 
 ___
 
@@ -310,7 +320,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:81
+medusa/dist/models/order.d.ts:83
 
 ___
 
@@ -320,7 +330,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:82
+medusa/dist/models/order.d.ts:84
 
 ___
 
@@ -330,7 +340,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:48
+medusa/dist/models/order.d.ts:49
 
 ___
 
@@ -340,7 +350,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:93
+medusa/dist/models/order.d.ts:95
 
 ___
 
@@ -350,7 +360,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:51
+medusa/dist/models/order.d.ts:52
 
 ___
 
@@ -360,7 +370,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:70
+medusa/dist/models/order.d.ts:71
 
 ___
 
@@ -370,7 +380,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:94
+medusa/dist/models/order.d.ts:96
 
 ___
 
@@ -380,7 +390,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:90
+medusa/dist/models/order.d.ts:92
 
 ___
 
@@ -390,7 +400,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:74
+medusa/dist/models/order.d.ts:75
 
 ___
 
@@ -400,7 +410,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:63
+medusa/dist/models/order.d.ts:64
 
 ___
 
@@ -410,7 +420,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:62
+medusa/dist/models/order.d.ts:63
 
 ___
 
@@ -420,7 +430,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:72
+medusa/dist/models/order.d.ts:73
 
 ___
 
@@ -430,7 +440,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:86
+medusa/dist/models/order.d.ts:88
 
 ___
 
@@ -440,7 +450,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:85
+medusa/dist/models/order.d.ts:87
 
 ___
 
@@ -450,7 +460,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:61
+medusa/dist/models/order.d.ts:62
 
 ___
 
@@ -460,7 +470,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:60
+medusa/dist/models/order.d.ts:61
 
 ___
 
@@ -470,7 +480,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:69
+medusa/dist/models/order.d.ts:70
 
 ___
 
@@ -480,7 +490,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:87
+medusa/dist/models/order.d.ts:89
 
 ___
 
@@ -490,7 +500,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:49
+medusa/dist/models/order.d.ts:50
 
 ___
 
@@ -500,7 +510,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:92
+medusa/dist/models/order.d.ts:94
 
 ___
 
@@ -510,7 +520,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:75
+medusa/dist/models/order.d.ts:76
 
 ___
 
@@ -520,7 +530,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:66
+medusa/dist/models/order.d.ts:67
 
 ___
 
@@ -530,7 +540,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:89
+medusa/dist/models/order.d.ts:91
 
 ___
 
@@ -540,7 +550,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:91
+medusa/dist/models/order.d.ts:93
 
 ___
 

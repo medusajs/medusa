@@ -2,115 +2,43 @@
 
 ## Classes
 
-- [AdminCreateUserRequest](../classes/internal-27.AdminCreateUserRequest.md)
-- [AdminResetPasswordRequest](../classes/internal-27.AdminResetPasswordRequest.md)
-- [AdminResetPasswordTokenRequest](../classes/internal-27.AdminResetPasswordTokenRequest.md)
-- [AdminUpdateUserRequest](../classes/internal-27.AdminUpdateUserRequest.md)
+- [AdminDeleteTaxRatesTaxRateProductTypesParams](../classes/internal-27.AdminDeleteTaxRatesTaxRateProductTypesParams.md)
+- [AdminDeleteTaxRatesTaxRateProductTypesReq](../classes/internal-27.AdminDeleteTaxRatesTaxRateProductTypesReq.md)
+- [AdminDeleteTaxRatesTaxRateProductsParams](../classes/internal-27.AdminDeleteTaxRatesTaxRateProductsParams.md)
+- [AdminDeleteTaxRatesTaxRateProductsReq](../classes/internal-27.AdminDeleteTaxRatesTaxRateProductsReq.md)
+- [AdminDeleteTaxRatesTaxRateShippingOptionsParams](../classes/internal-27.AdminDeleteTaxRatesTaxRateShippingOptionsParams.md)
+- [AdminDeleteTaxRatesTaxRateShippingOptionsReq](../classes/internal-27.AdminDeleteTaxRatesTaxRateShippingOptionsReq.md)
+- [AdminGetTaxRatesParams](../classes/internal-27.AdminGetTaxRatesParams.md)
+- [AdminGetTaxRatesTaxRateParams](../classes/internal-27.AdminGetTaxRatesTaxRateParams.md)
+- [AdminPostTaxRatesReq](../classes/internal-27.AdminPostTaxRatesReq.md)
+- [AdminPostTaxRatesTaxRateProductTypesReq](../classes/internal-27.AdminPostTaxRatesTaxRateProductTypesReq.md)
+- [AdminPostTaxRatesTaxRateProductsReq](../classes/internal-27.AdminPostTaxRatesTaxRateProductsReq.md)
+- [AdminPostTaxRatesTaxRateReq](../classes/internal-27.AdminPostTaxRatesTaxRateReq.md)
+- [AdminPostTaxRatesTaxRateShippingOptionsReq](../classes/internal-27.AdminPostTaxRatesTaxRateShippingOptionsReq.md)
+- [NumericalComparisonOperator](../classes/internal-27.NumericalComparisonOperator.md)
 
 ## Type Aliases
 
-### AdminCreateUserPayload
+### AdminTaxRatesListRes
 
-Ƭ **AdminCreateUserPayload**: `Omit`<[`AdminCreateUserRequest`](../classes/internal-27.AdminCreateUserRequest.md), ``"role"``\> \| { `role?`: [`CreateUserRoles`](internal-27.md#createuserroles)  }
-
-#### Defined in
-
-[medusa-js/src/typings.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L31)
-
-___
-
-### AdminUpdateUserPayload
-
-Ƭ **AdminUpdateUserPayload**: `Omit`<[`AdminUpdateUserRequest`](../classes/internal-27.AdminUpdateUserRequest.md), ``"role"``\> & { `role?`: [`UpdateUserRoles`](internal-27.md#updateuserroles)  }
+Ƭ **AdminTaxRatesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `tax_rates`: [`TaxRate`](../classes/internal.TaxRate.md)[]  }
 
 #### Defined in
 
-[medusa-js/src/typings.ts:41](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L41)
+medusa/dist/api/routes/admin/tax-rates/index.d.ts:8
 
 ___
 
-### AdminUserRes
+### AdminTaxRatesRes
 
-Ƭ **AdminUserRes**: `Object`
+Ƭ **AdminTaxRatesRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `user` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\> |
+| `tax_rate` | [`TaxRate`](../classes/internal.TaxRate.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/index.d.ts:6
-
-___
-
-### AdminUsersListRes
-
-Ƭ **AdminUsersListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `users` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\>[] |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/users/index.d.ts:9
-
-___
-
-### CreateUserRoles
-
-Ƭ **CreateUserRoles**: \`${CreateUserRolesEnum}\`
-
-#### Defined in
-
-[medusa-js/src/typings.ts:28](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L28)
-
-___
-
-### CreateUserRolesEnum
-
-Ƭ **CreateUserRolesEnum**: [`NoUndefined`](internal-27.md#noundefined)<[`AdminCreateUserRequest`](../classes/internal-27.AdminCreateUserRequest.md)[``"role"``]\>
-
-#### Defined in
-
-[medusa-js/src/typings.ts:25](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L25)
-
-___
-
-### NoUndefined
-
-Ƭ **NoUndefined**<`T`\>: `T` extends `undefined` ? `never` : `T`
-
-#### Type parameters
-
-| Name |
-| :------ |
-| `T` |
-
-#### Defined in
-
-[medusa-js/src/typings.ts:23](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L23)
-
-___
-
-### UpdateUserRoles
-
-Ƭ **UpdateUserRoles**: \`${UpdateUserRolesEnum}\`
-
-#### Defined in
-
-[medusa-js/src/typings.ts:39](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L39)
-
-___
-
-### UpdateUserRolesEnum
-
-Ƭ **UpdateUserRolesEnum**: [`NoUndefined`](internal-27.md#noundefined)<[`AdminUpdateUserRequest`](../classes/internal-27.AdminUpdateUserRequest.md)[``"role"``]\>
-
-#### Defined in
-
-[medusa-js/src/typings.ts:37](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L37)
+medusa/dist/api/routes/admin/tax-rates/index.d.ts:11

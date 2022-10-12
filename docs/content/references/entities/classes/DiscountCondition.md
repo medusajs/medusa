@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:127](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L127)
+[models/discount-condition.ts:127](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L127)
 
 ___
 
@@ -56,7 +56,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:57](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L57)
+[models/discount-condition.ts:57](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L57)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:53](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L53)
+[models/discount-condition.ts:53](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L53)
 
 ___
 
@@ -90,7 +90,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:130](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L130)
+[models/discount-condition.ts:130](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L130)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:49](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L49)
+[models/discount-condition.ts:49](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L49)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:113](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L113)
+[models/discount-condition.ts:113](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L113)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:99](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L99)
+[models/discount-condition.ts:99](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L99)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:85](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L85)
+[models/discount-condition.ts:85](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L85)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:71](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L71)
+[models/discount-condition.ts:71](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L71)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/discount-condition.ts:43](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L43)
+[models/discount-condition.ts:43](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L43)
 
 ___
 
@@ -174,7 +174,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -188,4 +188,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/discount-condition.ts:132](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/discount-condition.ts#L132)
+[models/discount-condition.ts:132](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/discount-condition.ts#L132)

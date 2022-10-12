@@ -10,18 +10,18 @@
 
 ### list
 
-▸ **list**(`query?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-15.md#adminproducttypeslistres)\>
+▸ **list**(`query?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-17.md#adminproducttypeslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetProductTypesParams`](internal-15.AdminGetProductTypesParams.md) |
+| `query?` | [`AdminGetProductTypesParams`](internal-17.AdminGetProductTypesParams.md) |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-15.md#adminproducttypeslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-17.md#adminproducttypeslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/product-types.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/product-types.ts#L10)
+[medusa-js/src/resources/admin/product-types.ts:10](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/product-types.ts#L10)
