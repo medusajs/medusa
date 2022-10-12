@@ -2,34 +2,48 @@
 
 ## Classes
 
-- [AdminGetShippingOptionsParams](../classes/internal-21.AdminGetShippingOptionsParams.md)
-- [AdminPostShippingOptionsOptionReq](../classes/internal-21.AdminPostShippingOptionsOptionReq.md)
-- [AdminPostShippingOptionsReq](../classes/internal-21.AdminPostShippingOptionsReq.md)
-- [OptionRequirement](../classes/internal-21.OptionRequirement.md)
-- [OptionRequirement](../classes/internal-21.OptionRequirement-1.md)
+- [AdminGetReturnsParams](../classes/internal-21.AdminGetReturnsParams.md)
+- [AdminPostReturnsReturnReceiveReq](../classes/internal-21.AdminPostReturnsReturnReceiveReq.md)
+- [Item](../classes/internal-21.Item.md)
 
 ## Type Aliases
 
-### AdminShippingOptionsListRes
+### AdminReturnsCancelRes
 
-Ƭ **AdminShippingOptionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `shipping_options`: [`ShippingOption`](../classes/internal.ShippingOption.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/shipping-options/index.d.ts:7
-
-___
-
-### AdminShippingOptionsRes
-
-Ƭ **AdminShippingOptionsRes**: `Object`
+Ƭ **AdminReturnsCancelRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `shipping_option` | [`ShippingOption`](../classes/internal.ShippingOption.md) |
+| `order` | [`Order`](../classes/internal.Order.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-options/index.d.ts:10
+medusa/dist/api/routes/admin/returns/index.d.ts:6
+
+___
+
+### AdminReturnsListRes
+
+Ƭ **AdminReturnsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `returns`: [`Return`](../classes/internal.Return.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/admin/returns/index.d.ts:9
+
+___
+
+### AdminReturnsRes
+
+Ƭ **AdminReturnsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `return` | [`Return`](../classes/internal.Return.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/returns/index.d.ts:12

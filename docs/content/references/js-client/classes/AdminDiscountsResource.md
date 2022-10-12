@@ -10,7 +10,7 @@
 
 ### addRegion
 
-▸ **addRegion**(`id`, `regionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **addRegion**(`id`, `regionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -26,17 +26,17 @@ Adds region to discount
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:24](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L24)
+[medusa-js/src/resources/admin/discounts.ts:24](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L24)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -46,22 +46,22 @@ Creates discounts
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostDiscountsReq`](internal-6.AdminPostDiscountsReq.md) |
+| `payload` | [`AdminPostDiscountsReq`](internal-7.AdminPostDiscountsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:36](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L36)
+[medusa-js/src/resources/admin/discounts.ts:36](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L36)
 
 ___
 
 ### createCondition
 
-▸ **createCondition**(`discountId`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **createCondition**(`discountId`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -72,23 +72,23 @@ creates a discount condition
 | Name | Type |
 | :------ | :------ |
 | `discountId` | `string` |
-| `payload` | [`AdminPostDiscountsDiscountConditions`](internal-6.AdminPostDiscountsDiscountConditions.md) |
-| `query` | [`AdminPostDiscountsDiscountConditionsParams`](internal-6.AdminPostDiscountsDiscountConditionsParams.md) |
+| `payload` | [`AdminPostDiscountsDiscountConditions`](internal-7.AdminPostDiscountsDiscountConditions.md) |
+| `query` | [`AdminPostDiscountsDiscountConditionsParams`](internal-7.AdminPostDiscountsDiscountConditionsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:145](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L145)
+[medusa-js/src/resources/admin/discounts.ts:145](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L145)
 
 ___
 
 ### createDynamicCode
 
-▸ **createDynamicCode**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **createDynamicCode**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -99,16 +99,16 @@ Creates a dynamic discount code
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostDiscountsDiscountDynamicCodesReq`](internal-6.AdminPostDiscountsDiscountDynamicCodesReq.md) |
+| `payload` | [`AdminPostDiscountsDiscountDynamicCodesReq`](internal-7.AdminPostDiscountsDiscountDynamicCodesReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:59](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L59)
+[medusa-js/src/resources/admin/discounts.ts:59](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L59)
 
 ___
 
@@ -133,7 +133,7 @@ Deletes a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:71](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L71)
+[medusa-js/src/resources/admin/discounts.ts:71](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L71)
 
 ___
 
@@ -159,13 +159,13 @@ Removes a condition from a discount
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:184](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L184)
+[medusa-js/src/resources/admin/discounts.ts:184](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L184)
 
 ___
 
 ### deleteDynamicCode
 
-▸ **deleteDynamicCode**(`id`, `code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **deleteDynamicCode**(`id`, `code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -181,17 +181,17 @@ Deletes a dynamic discount
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:82](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L82)
+[medusa-js/src/resources/admin/discounts.ts:82](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L82)
 
 ___
 
 ### getCondition
 
-▸ **getCondition**(`discountId`, `conditionId`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountConditionsRes`](../modules/internal-6.md#admindiscountconditionsres)\>
+▸ **getCondition**(`discountId`, `conditionId`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountConditionsRes`](../modules/internal-7.md#admindiscountconditionsres)\>
 
 **`Description`**
 
@@ -203,22 +203,22 @@ Gets a condition from a discount
 | :------ | :------ |
 | `discountId` | `string` |
 | `conditionId` | `string` |
-| `query?` | [`AdminGetDiscountsDiscountConditionsConditionParams`](internal-6.AdminGetDiscountsDiscountConditionsConditionParams.md) |
+| `query?` | [`AdminGetDiscountsDiscountConditionsConditionParams`](internal-7.AdminGetDiscountsDiscountConditionsConditionParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountConditionsRes`](../modules/internal-6.md#admindiscountconditionsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountConditionsRes`](../modules/internal-7.md#admindiscountconditionsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:196](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L196)
+[medusa-js/src/resources/admin/discounts.ts:196](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L196)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsListRes`](../modules/internal-6.md#admindiscountslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsListRes`](../modules/internal-7.md#admindiscountslistres)\>
 
 **`Description`**
 
@@ -228,22 +228,22 @@ Lists discounts
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetDiscountsParams`](internal-6.AdminGetDiscountsParams.md) |
+| `query?` | [`AdminGetDiscountsParams`](internal-7.AdminGetDiscountsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsListRes`](../modules/internal-6.md#admindiscountslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsListRes`](../modules/internal-7.md#admindiscountslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:116](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L116)
+[medusa-js/src/resources/admin/discounts.ts:116](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L116)
 
 ___
 
 ### removeRegion
 
-▸ **removeRegion**(`id`, `regionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **removeRegion**(`id`, `regionId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -259,17 +259,17 @@ Removes a region from a discount
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:133](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L133)
+[medusa-js/src/resources/admin/discounts.ts:133](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L133)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -284,17 +284,17 @@ Retrieves a discount
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:94](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L94)
+[medusa-js/src/resources/admin/discounts.ts:94](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L94)
 
 ___
 
 ### retrieveByCode
 
-▸ **retrieveByCode**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **retrieveByCode**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -309,17 +309,17 @@ Retrieves a discount by code
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:105](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L105)
+[medusa-js/src/resources/admin/discounts.ts:105](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L105)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -330,22 +330,22 @@ Updates discount
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostDiscountsDiscountReq`](internal-6.AdminPostDiscountsDiscountReq.md) |
+| `payload` | [`AdminPostDiscountsDiscountReq`](internal-7.AdminPostDiscountsDiscountReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:47](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L47)
+[medusa-js/src/resources/admin/discounts.ts:47](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L47)
 
 ___
 
 ### updateCondition
 
-▸ **updateCondition**(`discountId`, `conditionId`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+▸ **updateCondition**(`discountId`, `conditionId`, `payload`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 **`Description`**
 
@@ -357,14 +357,14 @@ Updates a discount condition
 | :------ | :------ |
 | `discountId` | `string` |
 | `conditionId` | `string` |
-| `payload` | [`AdminPostDiscountsDiscountConditionsCondition`](internal-6.AdminPostDiscountsDiscountConditionsCondition.md) |
-| `query` | [`AdminPostDiscountsDiscountConditionsConditionParams`](internal-6.AdminPostDiscountsDiscountConditionsConditionParams.md) |
+| `payload` | [`AdminPostDiscountsDiscountConditionsCondition`](internal-7.AdminPostDiscountsDiscountConditionsCondition.md) |
+| `query` | [`AdminPostDiscountsDiscountConditionsConditionParams`](internal-7.AdminPostDiscountsDiscountConditionsConditionParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-6.md#admindiscountsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminDiscountsRes`](../modules/internal-7.md#admindiscountsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/discounts.ts:164](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/discounts.ts#L164)
+[medusa-js/src/resources/admin/discounts.ts:164](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/discounts.ts#L164)

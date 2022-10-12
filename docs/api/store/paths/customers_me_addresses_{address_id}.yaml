@@ -63,7 +63,7 @@ post:
       application/json:
         schema:
           anyOf:
-            - $ref: ../components/schemas/address.yaml
+            - $ref: ../components/schemas/address_fields.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/models/shipping-method.d.ts:25
+medusa/dist/models/shipping-method.d.ts:26
 
 ___
 
@@ -75,6 +75,16 @@ ___
 #### Defined in
 
 medusa/dist/models/shipping-method.d.ts:9
+
+___
+
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/shipping-method.d.ts:25
 
 ___
 
