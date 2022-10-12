@@ -15,8 +15,6 @@ import {
   StockLocationDTO,
 } from "@medusajs/medusa"
 
-import { InventoryItem, InventoryLevel, StockLocation } from "../models"
-
 import {
   InventoryItemService,
   InventoryLevelService,
