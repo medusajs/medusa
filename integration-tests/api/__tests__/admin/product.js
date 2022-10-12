@@ -168,6 +168,30 @@ describe("/admin/products", () => {
       }
     })
 
+    it("returns a list of products where type_id is test-type", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?type_id[]=test-type", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type_id: "test-type",
+          }),
+        ])
+      )
+    })
+
     it("doesn't expand collection and types", async () => {
       const api = useApi()
 
