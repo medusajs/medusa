@@ -8,7 +8,10 @@ import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminPostDiscountsDiscountConditionsConditionBatch } from "./add-items-to-condition-batch"
+import {
+  AdminPostDiscountsDiscountConditionsConditionBatchParams,
+  AdminPostDiscountsDiscountConditionsConditionBatchReq,
+} from "./add-items-to-condition-batch"
 import {
   AdminPostDiscountsDiscountConditionsCondition,
   AdminPostDiscountsDiscountConditionsConditionParams,
@@ -161,12 +164,12 @@ export default (app) => {
   )
   conditionRouter.post(
     "/batch",
-    transformQuery(AdminPostDiscountsDiscountConditionsConditionParams, {
+    transformQuery(AdminPostDiscountsDiscountConditionsConditionBatchParams, {
       defaultFields: defaultAdminDiscountsFields,
       defaultRelations: defaultAdminDiscountsRelations,
       isList: false,
     }),
-    transformBody(AdminPostDiscountsDiscountConditionsConditionBatch),
+    transformBody(AdminPostDiscountsDiscountConditionsConditionBatchReq),
     middlewares.wrap(require("./add-items-to-condition-batch").default)
   )
 
@@ -231,3 +234,4 @@ export * from "./list-discounts"
 export * from "./remove-region"
 export * from "./update-condition"
 export * from "./update-discount"
+export * from "./add-items-to-condition-batch"

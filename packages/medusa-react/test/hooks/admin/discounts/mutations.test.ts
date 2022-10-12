@@ -2,6 +2,7 @@ import { DiscountConditionOperator } from "@medusajs/medusa"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import {
+  useAdminAddDiscountConditionItemBatch,
   useAdminCreateDiscount,
   useAdminCreateDynamicDiscountCode,
   useAdminDeleteDiscount,
@@ -14,6 +15,49 @@ import {
   useAdminUpdateDiscount,
 } from "../../../../src/"
 import { createWrapper } from "../../../utils"
+
+describe("useAdminAddDiscountConditionItemBatch hook", () => {
+  test("add items to a discount condition and return the discount", async () => {
+    const items = [
+      {
+        id: fixtures.get("product").id,
+      },
+    ]
+    const discountId = fixtures.get("discount").id
+    const conditionId = fixtures.get("discount").rule.conditions[0].id
+
+    const { result, waitFor } = renderHook(
+      () => useAdminAddDiscountConditionItemBatch(discountId, conditionId),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({ items })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.discount).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("discount"),
+        rule: {
+          ...fixtures.get("discount").rule,
+          conditions: [
+            {
+              ...fixtures.get("discount").rule.conditions[0],
+              products: [
+                ...(fixtures.get("discount").rule.conditions[0]?.products ??
+                  []),
+                { id: fixtures.get("product").id },
+              ],
+            },
+          ],
+        },
+      })
+    )
+  })
+})
 
 describe("useAdminCreateDiscount hook", () => {
   test("creates a discount and returns it", async () => {

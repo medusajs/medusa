@@ -109,7 +109,7 @@ import { FindParams } from "../../../../types/common"
 export default async (req: Request, res: Response) => {
   const { discount_id, condition_id } = req.params
   const validatedBody =
-    req.validatedBody as AdminPostDiscountsDiscountConditionsConditionBatch
+    req.validatedBody as AdminPostDiscountsDiscountConditionsConditionBatchReq
 
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
@@ -141,7 +141,7 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsDiscountConditionsConditionBatch {
+export class AdminPostDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   items: { id: string }[]
 }
