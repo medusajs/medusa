@@ -12,8 +12,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add item to a discount condition"
- * description: "Add item to a discount condition."
+ * summary: "Add a batch of items to a discount condition"
+ * description: "Add a batch of items to a discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
@@ -25,37 +25,11 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         required:
- *           - operator
+ *           - items
  *         properties:
- *           operator:
- *              description: Operator of the condition
- *              type: string
- *              enum: [in, not_in]
- *           products:
- *              type: array
- *              description: list of product IDs if the condition is applied on products.
- *              items:
- *                type: string
- *           product_types:
- *              type: array
- *              description: list of product type IDs if the condition is applied on product types.
- *              items:
- *                type: string
- *           product_collections:
- *              type: array
- *              description: list of product collection IDs if the condition is applied on product collections.
- *              items:
- *                type: string
- *           product_tags:
- *              type: array
- *              description: list of product tag IDs if the condition is applied on product tags.
- *              items:
- *                type: string
- *           customer_groups:
- *              type: array
- *              description: list of customer group IDs if the condition is applied on customer groups.
- *              items:
- *                type: string
+ *           items:
+ *              description: The items to be added to the discount condition
+ *              type: Array
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,7 +38,7 @@ import { FindParams } from "../../../../types/common"
  *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.addItemToCondition(discount_id, condition_id, {
+ *       medusa.admin.discounts.addConditionItemBatch(discount_id, condition_id, {
  *         items: [{ id: item_id }]
  *       })
  *       .then(({ discount }) => {

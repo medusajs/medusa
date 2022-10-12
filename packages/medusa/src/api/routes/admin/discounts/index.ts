@@ -4,7 +4,7 @@ import { Discount } from "../../../.."
 import { DiscountCondition } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
-  doesDiscountConditionBelongsToDiscount,
+  doesConditionBelongToDiscount,
   transformBody,
   transformQuery,
 } from "../../../middlewares"
@@ -139,7 +139,7 @@ export default (app) => {
   const conditionRouter = Router({ mergeParams: true })
   route.use(
     "/:discount_id/conditions/:condition_id",
-    doesDiscountConditionBelongsToDiscount,
+    doesConditionBelongToDiscount,
     conditionRouter
   )
 

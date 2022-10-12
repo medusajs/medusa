@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { DiscountConditionService, DiscountService } from "../../../services"
 
-export async function doesDiscountConditionBelongsToDiscount(req, res, next) {
+export async function doesConditionBelongToDiscount(req, res, next) {
   try {
     const { discount_id, condition_id } = req.params
     const conditionService: DiscountConditionService = req.scope.resolve(

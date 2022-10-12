@@ -212,7 +212,7 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * @description Add item to a discount condition
+   * @description Add a batch of items to a discount condition
    */
   addConditionItemBatch(
     discountId: string,

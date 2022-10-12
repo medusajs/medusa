@@ -16,7 +16,7 @@ const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
 
-jest.setTimeout(300000)
+jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {

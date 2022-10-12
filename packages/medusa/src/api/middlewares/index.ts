@@ -5,7 +5,7 @@ import { default as wrap } from "./await-middleware"
 
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
-export { doesDiscountConditionBelongsToDiscount } from "./discount/does-discount-condition-belongs-to-discount"
+export { doesConditionBelongToDiscount } from "./discount/does-condition-belong-to-discount"
 export { transformQuery } from "./transform-query"
 export { transformBody } from "./transform-body"
 
