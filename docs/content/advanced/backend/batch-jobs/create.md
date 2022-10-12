@@ -1,3 +1,5 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 # Create a Batch Job Strategy
 
 In this document, you’ll learn how to create a batch job strategy on your Medusa server.
@@ -302,6 +304,9 @@ Make sure to replace `<YOUR_SERVER>` with the server URL where applicable.
 
 You can retrieve the batch job afterward to get its status and view details about the process in the `result` property:
 
+<Tabs groupId="request-types">
+<TabItem value="client" label="Medusa JS Client" default>
+
 ```jsx
 // using JS Client
 medusa.admin.batchJobs.retrieve(batchJobId)
@@ -309,6 +314,8 @@ medusa.admin.batchJobs.retrieve(batchJobId)
   console.log(batch_job.status, batch_job.result);
 });
 ```
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
 
 ```jsx
 // using Fetch API
@@ -318,6 +325,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
   console.log(batch_job.status, batch_job.result);
 });
 ```
+</TabItem>
+<TabItem value="curl" label="cURL">
 
 ```bash
 # using cURL
@@ -325,6 +334,9 @@ curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
 --header 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
+
+</TabItem>
+</Tabs>
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
 
