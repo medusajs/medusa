@@ -54,7 +54,7 @@ export default async (req, res) => {
     if (isPaymentCollection(resourceId)) {
       // TODO: handle payment collection
     } else {
-      await handleCartPayments(event, req, res, cartId && resourceId)
+      await handleCartPayments(event, req, res, resourceId ?? cartId)
     }
   }
 
