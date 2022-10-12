@@ -28,8 +28,15 @@ import { FindParams } from "../../../../types/common"
  *           - items
  *         properties:
  *           items:
- *              description: The items to be added to the discount condition
- *              type: Array
+ *             description: The items to be added to the discount condition
+ *             type: array
+ *             items:
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   description: The id of the item
+ *                   type: string
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -1578,16 +1578,16 @@ describe("/admin/discounts", () => {
     it("should fail if discount does not exist", async () => {
       const api = useApi()
 
-      try {
-        await api.delete(
+      const err = await api
+        .delete(
           "/admin/discounts/not-exist/conditions/test-condition",
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "Discount with id not-exist was not found"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id not-exist was not found"
+      )
     })
   })
 
@@ -1676,8 +1676,8 @@ describe("/admin/discounts", () => {
         groups: [group],
       })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/test-discount/conditions",
           {
             operator: "in",
@@ -1686,11 +1686,11 @@ describe("/admin/discounts", () => {
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
+      )
     })
 
     it("throws if discount does not exist", async () => {
@@ -1700,19 +1700,19 @@ describe("/admin/discounts", () => {
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/does-not-exist/conditions/test-condition",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "Discount with id does-not-exist was not found"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id does-not-exist was not found"
+      )
     })
   })
 
@@ -1828,19 +1828,19 @@ describe("/admin/discounts", () => {
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/test-discount/conditions/does-not-exist",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "DiscountCondition with id does-not-exist was not found for Discount test-discount"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "DiscountCondition with id does-not-exist was not found"
+      )
     })
 
     it("throws if discount does not exist", async () => {
@@ -1850,19 +1850,19 @@ describe("/admin/discounts", () => {
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/does-not-exist/conditions/test-condition",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "Discount with id does-not-exist was not found"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id does-not-exist was not found"
+      )
     })
 
     it("throws if condition does not belong to discount", async () => {
@@ -1870,19 +1870,19 @@ describe("/admin/discounts", () => {
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/test-discount-2/conditions/test-condition",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "DiscountCondition with id test-condition was not found for Discount test-discount-2"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Condition with id test-condition does not belong to Discount with id test-discount-2"
+      )
     })
   })
 
@@ -1976,39 +1976,57 @@ describe("/admin/discounts", () => {
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
+      const err = await api
+        .post(
           "/admin/discounts/test-discount/conditions/does-not-exist",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "DiscountCondition with id test-condition was not found"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "DiscountCondition with id does-not-exist was not found"
+      )
     })
 
     it("throws if condition does not belong to discount", async () => {
       const api = useApi()
 
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount-2",
+        code: "TEST2",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition-2",
+              type: "products",
+              operator: "in",
+              products: [],
+            },
+          ],
+        },
+      })
+
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      try {
-        await api.post(
-          "/admin/discounts/test-discount-2/conditions/test-condition",
+      const err = await api
+        .post(
+          "/admin/discounts/test-discount/conditions/test-condition-2",
           {
             products: [prod2.id],
           },
           adminReqConfig
         )
-      } catch (error) {
-        expect(error.message).toMatchSnapshot(
-          "DiscountCondition with id test-condition was not found for Discount test-discount-2"
-        )
-      }
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Condition with id test-condition-2 does not belong to Discount with id test-discount"
+      )
     })
   })
 
@@ -2275,12 +2293,13 @@ describe("/admin/discounts", () => {
       const err = await api
         .post(
           "/admin/discounts/test-discount/conditions/test-condition-2/batch",
+          {},
           adminReqConfig
         )
         .catch((e) => e)
 
       expect(err.response.data.message).toBe(
-        "Discount with id test-discount does not belong to Condition with id test-condition-2"
+        "Condition with id test-condition-2 does not belong to Discount with id test-discount"
       )
     })
 
@@ -2290,6 +2309,7 @@ describe("/admin/discounts", () => {
       const err = await api
         .post(
           "/admin/discounts/not-exist/conditions/test-condition/batch",
+          {},
           adminReqConfig
         )
         .catch((e) => e)
