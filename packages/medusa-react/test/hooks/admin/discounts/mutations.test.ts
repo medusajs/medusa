@@ -18,7 +18,7 @@ import { createWrapper } from "../../../utils"
 
 describe("useAdminAddDiscountConditionItemBatch hook", () => {
   test("add items to a discount condition and return the discount", async () => {
-    const items = [
+    const resources = [
       {
         id: fixtures.get("product").id,
       },
@@ -33,7 +33,7 @@ describe("useAdminAddDiscountConditionItemBatch hook", () => {
       }
     )
 
-    result.current.mutate({ items })
+    result.current.mutate({ resources })
 
     await waitFor(() => result.current.isSuccess)
 

@@ -11,7 +11,7 @@ import middlewares, {
 import {
   AdminPostDiscountsDiscountConditionsConditionBatchParams,
   AdminPostDiscountsDiscountConditionsConditionBatchReq,
-} from "./add-items-to-condition-batch"
+} from "./add-resources-to-condition-batch"
 import {
   AdminPostDiscountsDiscountConditionsCondition,
   AdminPostDiscountsDiscountConditionsConditionParams,
@@ -170,7 +170,7 @@ export default (app) => {
       isList: false,
     }),
     transformBody(AdminPostDiscountsDiscountConditionsConditionBatchReq),
-    middlewares.wrap(require("./add-items-to-condition-batch").default)
+    middlewares.wrap(require("./add-resources-to-condition-batch").default)
   )
 
   return app
@@ -234,4 +234,4 @@ export * from "./list-discounts"
 export * from "./remove-region"
 export * from "./update-condition"
 export * from "./update-discount"
-export * from "./add-items-to-condition-batch"
+export * from "./add-resources-to-condition-batch"

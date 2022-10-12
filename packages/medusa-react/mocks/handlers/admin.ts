@@ -928,7 +928,7 @@ export const adminHandlers = [
                   products: [
                     ...(fixtures.get("discount").rule.conditions[0]?.products ??
                       []),
-                    ...(req.body as any).items,
+                    ...(req.body as any).resources,
                   ],
                 },
               ],

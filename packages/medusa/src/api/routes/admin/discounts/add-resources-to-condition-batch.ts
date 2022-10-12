@@ -12,8 +12,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of items to a discount condition"
- * description: "Add a batch of items to a discount condition."
+ * summary: "Add a batch of resources to a discount condition"
+ * description: "Add a batch of resources to a discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
@@ -25,10 +25,10 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         required:
- *           - items
+ *           - resources
  *         properties:
- *           items:
- *             description: The items to be added to the discount condition
+ *           resources:
+ *             description: The resources to be added to the discount condition
  *             type: array
  *             items:
  *               required:
@@ -46,7 +46,7 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.addConditionItemBatch(discount_id, condition_id, {
- *         items: [{ id: item_id }]
+ *         resources: [{ id: item_id }]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
@@ -58,7 +58,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "items": [{ "id": "item_id" }]
+ *           "resources": [{ "id": "item_id" }]
  *       }'
  * security:
  *   - api_token: []
@@ -104,7 +104,8 @@ export default async (req: Request, res: Response) => {
   const updateObj: UpsertDiscountConditionInput = {
     id: condition_id,
     rule_id: condition.discount_rule_id,
-    [DiscountConditionMapTypeToProperty[condition.type]]: validatedBody.items,
+    [DiscountConditionMapTypeToProperty[condition.type]]:
+      validatedBody.resources,
   }
 
   await manager.transaction(async (transactionManager) => {
@@ -124,7 +125,7 @@ export default async (req: Request, res: Response) => {
 
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
-  items: { id: string }[]
+  resources: { id: string }[]
 }
 
 export class AdminPostDiscountsDiscountConditionsConditionBatchParams extends FindParams {}

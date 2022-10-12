@@ -2252,7 +2252,7 @@ describe("/admin/discounts", () => {
       const response = await api.post(
         `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
         {
-          items: [{ id: prod2.id }, { id: prod3.id }],
+          resources: [{ id: prod2.id }, { id: prod3.id }],
         },
         adminReqConfig
       )
