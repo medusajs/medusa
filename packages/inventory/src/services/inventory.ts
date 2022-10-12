@@ -4,9 +4,9 @@ import {
   IInventoryService,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
-  FilterableLocationProps,
-  CreateLocationInput,
-  UpdateLocationInput,
+  FilterableStockLocationProps,
+  CreateStockLocationInput,
+  UpdateStockLocationInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
   IEventBusService,
@@ -15,12 +15,12 @@ import {
   StockLocationDTO,
 } from "@medusajs/medusa"
 
-import { InventoryItem, InventoryLevel, Location } from "../models"
+import { InventoryItem, InventoryLevel, StockLocation } from "../models"
 
 import {
   InventoryItemService,
   InventoryLevelService,
-  LocationService,
+  StockLocationService,
 } from "./"
 
 type InjectedDependencies = {
@@ -31,20 +31,20 @@ export default class InventoryService implements IInventoryService {
   protected readonly eventBusService: IEventBusService
   protected readonly inventoryItemService: InventoryItemService
   protected readonly inventoryLevelService: InventoryLevelService
-  protected readonly locationService: LocationService
+  protected readonly stockLocationService: StockLocationService
 
   constructor({ eventBusService }: InjectedDependencies) {
     this.eventBusService = eventBusService
     this.inventoryItemService = new InventoryItemService({ eventBusService })
     this.inventoryLevelService = new InventoryLevelService({ eventBusService })
-    this.locationService = new LocationService({ eventBusService })
+    this.stockLocationService = new StockLocationService({ eventBusService })
   }
 
   async listLocations(
-    selector: FilterableLocationProps,
+    selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>
   ): Promise<[StockLocationDTO[], number]> {
-    return this.locationService.listAndCount(selector, config)
+    return this.stockLocationService.listAndCount(selector, config)
   }
 
   async listInventoryItems(
@@ -62,12 +62,13 @@ export default class InventoryService implements IInventoryService {
   }
 
   async retrieveLocation(id: string): Promise<StockLocationDTO> {
-    const locationResult = await this.locationService.retrieve(id)
+    const locationResult = await this.stockLocationService.retrieve(id)
     return { ...locationResult }
   }
 
   async retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO> {
-    return await this.inventoryItemService.retrieve(itemId)
+    const inventoryItem = await this.inventoryItemService.retrieve(itemId)
+    return { ...inventoryItem }
   }
 
   async retrieveInventoryLevel(
@@ -90,11 +91,14 @@ export default class InventoryService implements IInventoryService {
   async createInventoryItem(
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO> {
-    return await this.inventoryItemService.create(input)
+    const inventoryItem = await this.inventoryItemService.create(input)
+    return { ...inventoryItem }
   }
 
-  async createLocation(input: CreateLocationInput): Promise<StockLocationDTO> {
-    return await this.locationService.create(input)
+  async createLocation(
+    input: CreateStockLocationInput
+  ): Promise<StockLocationDTO> {
+    return await this.stockLocationService.create(input)
   }
 
   async createInventoryLevel(
@@ -105,16 +109,17 @@ export default class InventoryService implements IInventoryService {
 
   async updateLocation(
     id: string,
-    input: UpdateLocationInput
+    input: UpdateStockLocationInput
   ): Promise<StockLocationDTO> {
-    return await this.locationService.update(id, input)
+    return await this.stockLocationService.update(id, input)
   }
 
   async updateInventoryItem(
     itemId: string,
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO> {
-    return await this.inventoryItemService.update(itemId, input)
+    const inventoryItem = await this.inventoryItemService.update(itemId, input)
+    return { ...inventoryItem }
   }
 
   async deleteInventoryItem(itemId: string): Promise<void> {
@@ -139,9 +144,14 @@ export default class InventoryService implements IInventoryService {
 
     // TODO: Record adjustment
 
-    return await this.inventoryLevelService.update(inventoryLevel.id, {
-      stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
-    })
+    const updatedInventoryLevel = await this.inventoryLevelService.update(
+      inventoryLevel.id,
+      {
+        stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
+      }
+    )
+
+    return { ...updatedInventoryLevel }
   }
 
   async confirmInventory(
@@ -154,7 +164,7 @@ export default class InventoryService implements IInventoryService {
       select: ["id"],
     })
 
-    const locations = await this.locationService.list(
+    const locations = await this.stockLocationService.list(
       { id: locationIds },
       { select: ["id"] }
     )

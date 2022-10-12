@@ -1,4 +1,4 @@
 export * from "./inventory-item"
 export * from "./inventory-level"
-export * from "./location"
-export * from "./location-address"
+export * from "./stock-location"
+export * from "./stock-location-address"
