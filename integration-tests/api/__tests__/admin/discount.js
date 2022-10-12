@@ -114,14 +114,10 @@ describe("/admin/discounts", () => {
         },
       })
 
-      const response = await api
-        .get(
-          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.customer_groups",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.customer_groups",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -173,14 +169,10 @@ describe("/admin/discounts", () => {
         },
       })
 
-      const response = await api
-        .get(
-          "/admin/discounts/test-discount?fields=id&expand=parent_discount",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/test-discount?fields=id&expand=parent_discount",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -193,14 +185,10 @@ describe("/admin/discounts", () => {
     it("should retrieve discount with product conditions created with factory", async () => {
       const api = useApi()
 
-      const response = await api
-        .get(
-          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.products,rule.conditions.product_types",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.products,rule.conditions.product_types",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -290,11 +278,7 @@ describe("/admin/discounts", () => {
     it("should list discounts that match a specific query in a case insensitive manner", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts?q=barca", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get("/admin/discounts?q=barca", adminReqConfig)
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toEqual(
@@ -310,11 +294,10 @@ describe("/admin/discounts", () => {
     it("lists fixed discounts", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts?rule[type]=fixed", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts?rule[type]=fixed",
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toHaveLength(1)
@@ -350,11 +333,10 @@ describe("/admin/discounts", () => {
         rule: expect.objectContaining({ type: "fixed" }),
       })
 
-      const response = await api
-        .get("/admin/discounts?rule[type]=percentage", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts?rule[type]=percentage",
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
       expect(response.data.discounts).toEqual(
         expect.not.arrayContaining([notExpected])
@@ -364,11 +346,10 @@ describe("/admin/discounts", () => {
     it("lists dynamic discounts ", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts?is_dynamic=true", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts?is_dynamic=true",
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toHaveLength(1)
@@ -385,11 +366,10 @@ describe("/admin/discounts", () => {
     it("lists disabled discounts ", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts?is_disabled=true", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts?is_disabled=true",
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.discounts).toHaveLength(1)
@@ -418,24 +398,20 @@ describe("/admin/discounts", () => {
     it("creates a discount with a rule", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -459,50 +435,46 @@ describe("/admin/discounts", () => {
         tags: ["ss23"],
       })
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-              conditions: [
-                {
-                  products: [product.id],
-                  operator: "in",
-                },
-                {
-                  products: [anotherProduct.id],
-                  operator: "not_in",
-                },
-                {
-                  product_types: [product.type_id],
-                  operator: "not_in",
-                },
-                {
-                  product_types: [anotherProduct.type_id],
-                  operator: "in",
-                },
-                {
-                  product_tags: [product.tags[0].id],
-                  operator: "not_in",
-                },
-                {
-                  product_tags: [anotherProduct.tags[0].id],
-                  operator: "in",
-                },
-              ],
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+            conditions: [
+              {
+                products: [product.id],
+                operator: "in",
+              },
+              {
+                products: [anotherProduct.id],
+                operator: "not_in",
+              },
+              {
+                product_types: [product.type_id],
+                operator: "not_in",
+              },
+              {
+                product_types: [anotherProduct.type_id],
+                operator: "in",
+              },
+              {
+                product_tags: [product.tags[0].id],
+                operator: "not_in",
+              },
+              {
+                product_tags: [anotherProduct.tags[0].id],
+                operator: "in",
+              },
+            ],
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount.rule.conditions).toEqual(
@@ -546,34 +518,30 @@ describe("/admin/discounts", () => {
         type: "pants",
       })
 
-      const response = await api
-        .post(
-          "/admin/discounts?expand=rule,rule.conditions",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-              conditions: [
-                {
-                  products: [product.id],
-                  operator: "in",
-                },
-                {
-                  product_types: [product.type_id],
-                  operator: "not_in",
-                },
-              ],
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts?expand=rule,rule.conditions",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+            conditions: [
+              {
+                products: [product.id],
+                operator: "in",
+              },
+              {
+                product_types: [product.type_id],
+                operator: "not_in",
+              },
+            ],
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount.rule.conditions).toHaveLength(2)
@@ -593,28 +561,24 @@ describe("/admin/discounts", () => {
       const createdRule = response.data.discount.rule
       const condsToUpdate = createdRule.conditions[0]
 
-      const updated = await api
-        .post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  id: condsToUpdate.id,
-                  operator: "not_in",
-                  products: [product.id, anotherProduct.id],
-                },
-              ],
-            },
+      const updated = await api.post(
+        `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+        {
+          rule: {
+            id: createdRule.id,
+            value: createdRule.value,
+            allocation: createdRule.allocation,
+            conditions: [
+              {
+                id: condsToUpdate.id,
+                operator: "not_in",
+                products: [product.id, anotherProduct.id],
+              },
+            ],
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+        },
+        adminReqConfig
+      )
 
       expect(updated.status).toEqual(200)
       expect(updated.data.discount.rule.conditions).toEqual(
@@ -650,30 +614,26 @@ describe("/admin/discounts", () => {
         type: "pants",
       })
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-              conditions: [
-                {
-                  products: [product.id],
-                  operator: "in",
-                },
-              ],
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+            conditions: [
+              {
+                products: [product.id],
+                operator: "in",
+              },
+            ],
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
 
@@ -753,30 +713,26 @@ describe("/admin/discounts", () => {
         type: "pants",
       })
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-              conditions: [
-                {
-                  products: [product.id],
-                  operator: "in",
-                },
-              ],
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+            conditions: [
+              {
+                products: [product.id],
+                operator: "in",
+              },
+            ],
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
 
@@ -813,24 +769,20 @@ describe("/admin/discounts", () => {
     it("creates a discount and updates it", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -840,17 +792,13 @@ describe("/admin/discounts", () => {
         })
       )
 
-      const updated = await api
-        .post(
-          `/admin/discounts/${response.data.discount.id}`,
-          {
-            usage_limit: 20,
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const updated = await api.post(
+        `/admin/discounts/${response.data.discount.id}`,
+        {
+          usage_limit: 20,
+        },
+        adminReqConfig
+      )
 
       expect(updated.status).toEqual(200)
       expect(updated.data.discount).toEqual(
@@ -864,24 +812,20 @@ describe("/admin/discounts", () => {
     it("creates a discount and fails to update it because attempting type update", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -914,25 +858,21 @@ describe("/admin/discounts", () => {
     it("creates a discount and fails to update it because attempting is_dynamic update", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            is_dynamic: true,
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          is_dynamic: true,
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -963,24 +903,20 @@ describe("/admin/discounts", () => {
     it("automatically sets the code to an uppercase string on update", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOworld",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOworld",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -990,18 +926,14 @@ describe("/admin/discounts", () => {
         })
       )
 
-      const updated = await api
-        .post(
-          `/admin/discounts/${response.data.discount.id}`,
-          {
-            code: "HELLOWORLD_test",
-            usage_limit: 20,
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const updated = await api.post(
+        `/admin/discounts/${response.data.discount.id}`,
+        {
+          code: "HELLOWORLD_test",
+          usage_limit: 20,
+        },
+        adminReqConfig
+      )
 
       expect(updated.status).toEqual(200)
       expect(updated.data.discount).toEqual(
@@ -1015,25 +947,21 @@ describe("/admin/discounts", () => {
     it("creates a dynamic discount and updates it", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD_DYNAMIC",
-            is_dynamic: true,
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD_DYNAMIC",
+          is_dynamic: true,
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1044,17 +972,13 @@ describe("/admin/discounts", () => {
         })
       )
 
-      const updated = await api
-        .post(
-          `/admin/discounts/${response.data.discount.id}`,
-          {
-            usage_limit: 20,
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const updated = await api.post(
+        `/admin/discounts/${response.data.discount.id}`,
+        {
+          usage_limit: 20,
+        },
+        adminReqConfig
+      )
 
       expect(updated.status).toEqual(200)
       expect(updated.data.discount).toEqual(
@@ -1099,24 +1023,20 @@ describe("/admin/discounts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "fixed",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "fixed",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       await api
         .post(
@@ -1139,25 +1059,21 @@ describe("/admin/discounts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "fixed",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
-            regions: ["test-region"],
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "fixed",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+          regions: ["test-region"],
+        },
+        adminReqConfig
+      )
 
       await api
         .post(
@@ -1177,26 +1093,22 @@ describe("/admin/discounts", () => {
     it("creates a discount with start and end dates", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
-            starts_at: new Date("09/15/2021 11:50"),
-            ends_at: new Date("09/15/2021 17:50"),
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+          starts_at: new Date("09/15/2021 11:50"),
+          ends_at: new Date("09/15/2021 17:50"),
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1216,19 +1128,15 @@ describe("/admin/discounts", () => {
         new Date("09/15/2021 17:50")
       )
 
-      const updated = await api
-        .post(
-          `/admin/discounts/${response.data.discount.id}`,
-          {
-            usage_limit: 20,
-            starts_at: new Date("09/14/2021 11:50"),
-            ends_at: new Date("09/17/2021 17:50"),
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const updated = await api.post(
+        `/admin/discounts/${response.data.discount.id}`,
+        {
+          usage_limit: 20,
+          starts_at: new Date("09/14/2021 11:50"),
+          ends_at: new Date("09/17/2021 17:50"),
+        },
+        adminReqConfig
+      )
 
       expect(updated.status).toEqual(200)
       expect(updated.data.discount).toEqual(
@@ -1254,26 +1162,22 @@ describe("/admin/discounts", () => {
 
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "HELLOWORLD",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
-            starts_at: new Date("09/15/2021 11:50"),
-            ends_at: new Date("09/15/2021 17:50"),
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+          starts_at: new Date("09/15/2021 11:50"),
+          ends_at: new Date("09/15/2021 17:50"),
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1372,19 +1276,15 @@ describe("/admin/discounts", () => {
     it("Removes ends_at, valid_duration and usage_limit when fields are updated with null", async () => {
       const api = useApi()
 
-      await api
-        .post(
-          "/admin/discounts/test-discount",
-          {
-            ends_at: null,
-            valid_duration: null,
-            usage_limit: null,
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      await api.post(
+        "/admin/discounts/test-discount",
+        {
+          ends_at: null,
+          valid_duration: null,
+          usage_limit: null,
+        },
+        adminReqConfig
+      )
 
       const resultingDiscount = await api.get(
         "/admin/discounts/test-discount",
@@ -1432,31 +1332,23 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       // First we soft-delete the discount
-      await api
-        .delete("/admin/discounts/test-discount", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      await api.delete("/admin/discounts/test-discount", adminReqConfig)
 
       // Lets try to create a discount with same code as deleted one
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: "TESTING",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "TESTING",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1538,17 +1430,13 @@ describe("/admin/discounts", () => {
     it("creates a dynamic discount with ends_at", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts/test-discount/dynamic-codes",
-          {
-            code: "HELLOWORLD",
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.post(
+        "/admin/discounts/test-discount/dynamic-codes",
+        {
+          code: "HELLOWORLD",
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1562,17 +1450,13 @@ describe("/admin/discounts", () => {
     it("creates a dynamic discount without ends_at", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts/test-discount1/dynamic-codes",
-          {
-            code: "HELLOWORLD",
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.post(
+        "/admin/discounts/test-discount1/dynamic-codes",
+        {
+          code: "HELLOWORLD",
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.discount).toEqual(
@@ -1654,14 +1538,10 @@ describe("/admin/discounts", () => {
         },
       })
 
-      const response = await api
-        .delete(
-          "/admin/discounts/test-discount/conditions/test-condition",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.delete(
+        "/admin/discounts/test-discount/conditions/test-condition",
+        adminReqConfig
+      )
 
       const disc = response.data
 
@@ -1678,14 +1558,10 @@ describe("/admin/discounts", () => {
     it("should not fail if condition does not exist", async () => {
       const api = useApi()
 
-      const response = await api
-        .delete(
-          "/admin/discounts/test-discount/conditions/test-condition",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.delete(
+        "/admin/discounts/test-discount/conditions/test-condition",
+        adminReqConfig
+      )
 
       const disc = response.data
 
@@ -1749,18 +1625,14 @@ describe("/admin/discounts", () => {
 
       const prod = await simpleProductFactory(dbConnection, { type: "pants" })
 
-      const response = await api
-        .post(
-          "/admin/discounts/test-discount/conditions",
-          {
-            operator: "in",
-            products: [prod.id],
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.post(
+        "/admin/discounts/test-discount/conditions",
+        {
+          operator: "in",
+          products: [prod.id],
+        },
+        adminReqConfig
+      )
 
       const disc = response.data.discount
 
@@ -1901,25 +1773,20 @@ describe("/admin/discounts", () => {
         type: "pants",
       })
 
-      const discount = await api
-        .get("/admin/discounts/test-discount", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const discount = await api.get(
+        "/admin/discounts/test-discount",
+        adminReqConfig
+      )
 
       const cond = discount.data.discount.rule.conditions[0]
 
-      const response = await api
-        .post(
-          `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            products: [prod2.id],
-          },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.post(
+        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
+        {
+          products: [prod2.id],
+        },
+        adminReqConfig
+      )
 
       const disc = response.data.discount
 
@@ -2055,14 +1922,10 @@ describe("/admin/discounts", () => {
     it("should get condition", async () => {
       const api = useApi()
 
-      const discountCondition = await api
-        .get(
-          "/admin/discounts/test-discount/conditions/test-condition",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const discountCondition = await api.get(
+        "/admin/discounts/test-discount/conditions/test-condition",
+        adminReqConfig
+      )
 
       const cond = discountCondition.data.discount_condition
 
@@ -2085,14 +1948,10 @@ describe("/admin/discounts", () => {
     it("should get condition with expand + fields", async () => {
       const api = useApi()
 
-      const discountCondition = await api
-        .get(
-          "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+      const discountCondition = await api.get(
+        "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
+        adminReqConfig
+      )
 
       const cond = discountCondition.data.discount_condition
 
@@ -2185,11 +2044,10 @@ describe("/admin/discounts", () => {
     it("should retrieve discount using uppercase code", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts/code/TEST", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/code/TEST",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -2204,11 +2062,10 @@ describe("/admin/discounts", () => {
     it("should retrieve discount using lowercase code", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts/code/test", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/code/test",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -2223,11 +2080,10 @@ describe("/admin/discounts", () => {
     it("should retrieve discount using mixed casing code", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/admin/discounts/code/TesT", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/code/TesT",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -2255,24 +2111,20 @@ describe("/admin/discounts", () => {
     it("should trim and uppercase code on insert", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/discounts",
-          {
-            code: " Testing ",
-            rule: {
-              description: "test",
-              type: "percentage",
-              value: 10,
-              allocation: "total",
-            },
-            usage_limit: 10,
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: " Testing ",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
           },
-          adminReqConfig
-        )
-        .catch((err) => {
-          console.log(err)
-        })
+          usage_limit: 10,
+        },
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
@@ -2295,11 +2147,10 @@ describe("/admin/discounts", () => {
         },
       })
 
-      const response = await api
-        .get("/admin/discounts/code/ testing", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.get(
+        "/admin/discounts/code/ testing",
+        adminReqConfig
+      )
 
       const disc = response.data.discount
       expect(response.status).toEqual(200)
