@@ -6,7 +6,7 @@ import {
 } from "@medusajs/medusa"
 
 @Entity()
-export class Location extends SoftDeletableEntity {
+export class StockLocation extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   name: string
 
@@ -18,6 +18,6 @@ export class Location extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "loc")
+    this.id = generateEntityId(this.id, "sloc")
   }
 }

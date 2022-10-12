@@ -4,12 +4,12 @@ export type InventoryItemDTO = {
   id: string
   sku: string
   origin_country: string
-  hs_code: string
+  hs_code: number
   requires_shipping: boolean
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
-  deleted_at: string | Date
+  deleted_at: string | Date | null
 }
 
 export type InventoryLevelDTO = {
@@ -21,7 +21,7 @@ export type InventoryLevelDTO = {
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
-  deleted_at: string | Date
+  deleted_at: string | Date | null
 }
 
 export type StockLocationAddressDTO = {
@@ -42,7 +42,7 @@ export type StockLocationDTO = {
   address_id: string
   created_at: string | Date
   updated_at: string | Date
-  deleted_at: string | Date
+  deleted_at: string | Date | null
 }
 
 export type FilterableInventoryItemProps = {
@@ -74,12 +74,12 @@ export type CreateInventoryLevelInput = {
   incoming_quantity: number
 }
 
-export type FilterableLocationProps = {
+export type FilterableStockLocationProps = {
   id?: string | string[]
   name?: string | string[] | StringComparisonOperator
 }
 
-export type LocationAddressInput = {
+export type StockLocationAddressInput = {
   address_1: string
   address_2?: string
   city: string
@@ -89,12 +89,13 @@ export type LocationAddressInput = {
   postal_code: string
 }
 
-export type CreateLocationInput = {
+export type CreateStockLocationInput = {
   name: string
-  address: string | LocationAddressInput
+  address: string | StockLocationAddressInput
 }
 
-export type UpdateLocationInput = {
+export type UpdateStockLocationInput = {
   name?: string
-  address?: string | LocationAddressInput
+  address_id?: string
+  address?: StockLocationAddressInput
 }

@@ -1,15 +1,15 @@
 import { getConnection, DeepPartial, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { FindConfig, buildQuery } from "@medusajs/medusa"
-
-import { InventoryLevel } from "../models"
-import { CONNECTION_NAME } from "../config"
-
 import {
+  FindConfig,
+  buildQuery,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
   IEventBusService,
-} from "../types"
+} from "@medusajs/medusa"
+
+import { InventoryLevel } from "../models"
+import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService

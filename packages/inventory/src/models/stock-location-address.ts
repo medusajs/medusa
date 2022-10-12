@@ -6,7 +6,7 @@ import {
 } from "@medusajs/medusa"
 
 @Entity()
-export class LocationAddress extends SoftDeletableEntity {
+export class StockLocationAddress extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   address_1: string
 

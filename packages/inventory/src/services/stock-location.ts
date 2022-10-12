@@ -1,23 +1,23 @@
 import { getConnection, DeepPartial, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { FindConfig, buildQuery } from "@medusajs/medusa"
-
-import { Location, LocationAddress } from "../models"
-import { CONNECTION_NAME } from "../config"
-
 import {
-  FilterableLocationProps,
-  CreateLocationInput,
-  UpdateLocationInput,
-  LocationAddressInput,
+  FindConfig,
+  buildQuery,
+  FilterableStockLocationProps,
+  CreateStockLocationInput,
+  UpdateStockLocationInput,
+  StockLocationAddressInput,
   IEventBusService,
-} from "../types"
+} from "@medusajs/medusa"
+
+import { StockLocation, StockLocationAddress } from "../models"
+import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
 }
 
-export default class LocationService {
+export default class StockLocationService {
   static Events = {
     CREATED: "inventory-level.created",
     UPDATED: "inventory-level.updated",
@@ -38,22 +38,22 @@ export default class LocationService {
   }
 
   async list(
-    selector: FilterableLocationProps = {},
-    config: FindConfig<Location> = { relations: [], skip: 0, take: 10 }
-  ): Promise<Location[]> {
+    selector: FilterableStockLocationProps = {},
+    config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
+  ): Promise<StockLocation[]> {
     const manager = this.getManager()
-    const locationRepo = manager.getRepository(Location)
+    const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
     return await locationRepo.find(query)
   }
 
   async listAndCount(
-    selector: FilterableLocationProps = {},
-    config: FindConfig<Location> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[Location[], number]> {
+    selector: FilterableStockLocationProps = {},
+    config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[StockLocation[], number]> {
     const manager = this.getManager()
-    const locationRepo = manager.getRepository(Location)
+    const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
     return await locationRepo.findAndCount(query)
@@ -61,10 +61,10 @@ export default class LocationService {
 
   async retrieve(
     itemId: string,
-    config: FindConfig<Location> = {}
-  ): Promise<Location> {
+    config: FindConfig<StockLocation> = {}
+  ): Promise<StockLocation> {
     const manager = this.getManager()
-    const locationRepo = manager.getRepository(Location)
+    const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery({ id: itemId }, config)
     const loc = await locationRepo.findOne(query)
@@ -72,17 +72,17 @@ export default class LocationService {
     if (!loc) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Location with id ${itemId} was not found`
+        `StockLocation with id ${itemId} was not found`
       )
     }
 
-    return loc.toObject()
+    return loc
   }
 
-  async create(data: CreateLocationInput): Promise<Location> {
+  async create(data: CreateStockLocationInput): Promise<StockLocation> {
     const defaultManager = this.getManager()
     return await defaultManager.transaction(async (manager) => {
-      const locationRepo = manager.getRepository(Location)
+      const locationRepo = manager.getRepository(StockLocation)
 
       const loc = locationRepo.create({
         name: data.name,
@@ -91,15 +91,15 @@ export default class LocationService {
       if (typeof data.address === "string") {
         loc.address_id = data.address
       } else {
-        const locAddressRepo = manager.getRepository(LocationAddress)
+        const locAddressRepo = manager.getRepository(StockLocationAddress)
         const locAddress = locAddressRepo.create(data.address)
-        await locAddressRepo.save(locAddress)
-        loc.address_id = locAddress.id
+        const addressResult = await locAddressRepo.save(locAddress)
+        loc.address_id = addressResult.id
       }
 
       const result = await locationRepo.save(loc)
 
-      await this.eventBusService_.emit(LocationService.Events.CREATED, {
+      await this.eventBusService_.emit(StockLocationService.Events.CREATED, {
         id: result.id,
       })
 
@@ -109,11 +109,11 @@ export default class LocationService {
 
   async update(
     itemId: string,
-    updateData: UpdateLocationInput
-  ): Promise<Location> {
+    updateData: UpdateStockLocationInput
+  ): Promise<StockLocation> {
     const defaultManager = this.getManager()
     return await defaultManager.transaction(async (manager) => {
-      const locationRepo = manager.getRepository(Location)
+      const locationRepo = manager.getRepository(StockLocation)
 
       const item = await this.retrieve(itemId)
 
@@ -136,7 +136,7 @@ export default class LocationService {
       }
 
       if (hasUpdated) {
-        await this.eventBusService_.emit(LocationService.Events.UPDATED, {
+        await this.eventBusService_.emit(StockLocationService.Events.UPDATED, {
           id: itemId,
         })
       }
@@ -147,17 +147,17 @@ export default class LocationService {
 
   protected async updateAddress(
     addressId: string,
-    address: LocationAddressInput,
+    address: StockLocationAddressInput,
     options: { manager?: EntityManager } = {}
-  ): Promise<LocationAddress> {
+  ): Promise<StockLocationAddress> {
     const manager = options.manager || this.getManager()
-    const locationAddressRepo = manager.getRepository(LocationAddress)
+    const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
     const existingAddress = await locationAddressRepo.findOne(addressId)
     if (!existingAddress) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Location address with id ${addressId} was not found`
+        `StockLocation address with id ${addressId} was not found`
       )
     }
 
@@ -167,11 +167,11 @@ export default class LocationService {
 
   async delete(id: string): Promise<void> {
     const manager = this.getManager()
-    const locationRepo = manager.getRepository(Location)
+    const locationRepo = manager.getRepository(StockLocation)
 
     await locationRepo.softRemove({ id })
 
-    await this.eventBusService_.emit(LocationService.Events.DELETED, {
+    await this.eventBusService_.emit(StockLocationService.Events.DELETED, {
       id,
     })
   }

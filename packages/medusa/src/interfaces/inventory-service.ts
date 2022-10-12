@@ -6,16 +6,16 @@ import {
   StockLocationDTO,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
-  FilterableLocationProps,
-  CreateLocationInput,
-  UpdateLocationInput,
+  FilterableStockLocationProps,
+  CreateStockLocationInput,
+  UpdateStockLocationInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
 } from "../types/inventory"
 
 export interface IInventoryService {
   listLocations(
-    selector: FilterableLocationProps,
+    selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>
   ): Promise<[StockLocationDTO[], number]>
 
@@ -37,7 +37,7 @@ export interface IInventoryService {
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO>
 
-  createLocation(input: CreateLocationInput): Promise<StockLocationDTO>
+  createLocation(input: CreateStockLocationInput): Promise<StockLocationDTO>
 
   createInventoryLevel(
     data: CreateInventoryLevelInput
@@ -45,7 +45,7 @@ export interface IInventoryService {
 
   updateLocation(
     id: string,
-    input: UpdateLocationInput
+    input: UpdateStockLocationInput
   ): Promise<StockLocationDTO>
 
   updateInventoryItem(
