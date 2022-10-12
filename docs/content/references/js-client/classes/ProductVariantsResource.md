@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-37.md#storevariantslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-40.md#storevariantslistres)\>
 
 **`Description`**
 
@@ -20,22 +20,22 @@ Retrieves a list of of Product Variants
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`StoreGetVariantsParams`](internal-37.StoreGetVariantsParams.md) |
+| `query?` | [`StoreGetVariantsParams`](internal-40.StoreGetVariantsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-37.md#storevariantslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-40.md#storevariantslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/product-variants.ts:28](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/product-variants.ts#L28)
+[medusa-js/src/resources/product-variants.ts:28](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/product-variants.ts#L28)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-37.md#storevariantsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-40.md#storevariantsres)\>
 
 **`Description`**
 
@@ -50,8 +50,8 @@ Retrieves a single product variant
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-37.md#storevariantsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-40.md#storevariantsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/product-variants.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/product-variants.ts#L17)
+[medusa-js/src/resources/product-variants.ts:17](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/product-variants.ts#L17)

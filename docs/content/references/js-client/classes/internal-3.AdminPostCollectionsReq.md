@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/create-collection.d.ts:40
+medusa/dist/api/routes/admin/collections/create-collection.d.ts:77
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/create-collection.d.ts:41
+medusa/dist/api/routes/admin/collections/create-collection.d.ts:78
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/create-collection.d.ts:39
+medusa/dist/api/routes/admin/collections/create-collection.d.ts:76

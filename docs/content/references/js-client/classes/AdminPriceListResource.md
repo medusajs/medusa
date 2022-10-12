@@ -10,44 +10,44 @@
 
 ### addPrices
 
-▸ **addPrices**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+▸ **addPrices**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostPriceListPricesPricesReq`](internal-13.AdminPostPriceListPricesPricesReq.md) |
+| `payload` | [`AdminPostPriceListPricesPricesReq`](internal-15.AdminPostPriceListPricesPricesReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:80](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L80)
+[medusa-js/src/resources/admin/price-lists.ts:80](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L80)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostPriceListsPriceListReq`](internal-13.AdminPostPriceListsPriceListReq.md) |
+| `payload` | [`AdminPostPriceListsPriceListReq`](internal-15.AdminPostPriceListsPriceListReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:18](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L18)
+[medusa-js/src/resources/admin/price-lists.ts:18](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L18)
 
 ___
 
@@ -68,35 +68,35 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:35](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L35)
+[medusa-js/src/resources/admin/price-lists.ts:35](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L35)
 
 ___
 
 ### deletePrices
 
-▸ **deletePrices**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+▸ **deletePrices**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminDeletePriceListPricesPricesReq`](internal-13.AdminDeletePriceListPricesPricesReq.md) |
+| `payload` | [`AdminDeletePriceListPricesPricesReq`](internal-15.AdminDeletePriceListPricesPricesReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:89](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L89)
+[medusa-js/src/resources/admin/price-lists.ts:89](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L89)
 
 ___
 
 ### deleteProductPrices
 
-▸ **deleteProductPrices**(`priceListId`, `productId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+▸ **deleteProductPrices**(`priceListId`, `productId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Parameters
 
@@ -108,17 +108,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:98](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L98)
+[medusa-js/src/resources/admin/price-lists.ts:98](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L98)
 
 ___
 
 ### deleteVariantPrices
 
-▸ **deleteVariantPrices**(`priceListId`, `variantId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+▸ **deleteVariantPrices**(`priceListId`, `variantId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Parameters
 
@@ -130,32 +130,32 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-13.md#adminpricelistdeletebatchres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListDeleteBatchRes`](../modules/internal-15.md#adminpricelistdeletebatchres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:107](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L107)
+[medusa-js/src/resources/admin/price-lists.ts:107](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L107)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListsListRes`](../modules/internal-13.md#adminpricelistslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListsListRes`](../modules/internal-15.md#adminpricelistslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetPriceListPaginationParams`](internal-13.AdminGetPriceListPaginationParams.md) |
+| `query?` | [`AdminGetPriceListPaginationParams`](internal-15.AdminGetPriceListPaginationParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListsListRes`](../modules/internal-13.md#adminpricelistslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListsListRes`](../modules/internal-15.md#adminpricelistslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:51](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L51)
+[medusa-js/src/resources/admin/price-lists.ts:51](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L51)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `query?` | [`AdminGetPriceListsPriceListProductsParams`](internal-13.AdminGetPriceListsPriceListProductsParams.md) |
+| `query?` | [`AdminGetPriceListsPriceListProductsParams`](internal-15.AdminGetPriceListsPriceListProductsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
@@ -177,13 +177,13 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:65](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L65)
+[medusa-js/src/resources/admin/price-lists.ts:65](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L65)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Parameters
 
@@ -194,30 +194,30 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:43](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L43)
+[medusa-js/src/resources/admin/price-lists.ts:43](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L43)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostPriceListsPriceListPriceListReq`](internal-13.AdminPostPriceListsPriceListPriceListReq.md) |
+| `payload` | [`AdminPostPriceListsPriceListPriceListReq`](internal-15.AdminPostPriceListsPriceListPriceListReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-13.md#adminpricelistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPriceListRes`](../modules/internal-15.md#adminpricelistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/price-lists.ts:26](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/price-lists.ts#L26)
+[medusa-js/src/resources/admin/price-lists.ts:26](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/price-lists.ts#L26)

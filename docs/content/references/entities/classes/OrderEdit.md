@@ -6,7 +6,7 @@ displayed_sidebar: entitiesSidebar
 
 ## Hierarchy
 
-- `SoftDeletableEntity`
+- `BaseEntity`
 
   ↳ **`OrderEdit`**
 
@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Inherited from
 
-SoftDeletableEntity.constructor
+BaseEntity.constructor
 
 ## Properties
 
@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/order-edit.ts:57](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L57)
+[models/order-edit.ts:74](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L74)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:54](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L54)
+[models/order-edit.ts:71](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L71)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:24](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L24)
+[models/order-edit.ts:41](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L41)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:42](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L42)
+[models/order-edit.ts:59](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L59)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:39](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L39)
+[models/order-edit.ts:56](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L56)
 
 ___
 
@@ -78,11 +78,11 @@ ___
 
 #### Inherited from
 
-SoftDeletableEntity.created\_at
+BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:30](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L30)
+[models/order-edit.ts:47](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L47)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:51](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L51)
+[models/order-edit.ts:68](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L68)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:45](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L45)
+[models/order-edit.ts:62](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L62)
 
 ___
 
@@ -122,21 +122,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:48](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L48)
-
-___
-
-### deleted\_at
-
-• **deleted\_at**: ``null`` \| `Date`
-
-#### Inherited from
-
-SoftDeletableEntity.deleted\_at
-
-#### Defined in
-
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[models/order-edit.ts:65](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L65)
 
 ___
 
@@ -146,17 +132,37 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:64](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L64)
+[models/order-edit.ts:96](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L96)
 
 ___
 
 ### discount\_total
 
-• `Optional` **discount\_total**: `number`
+• **discount\_total**: `number`
 
 #### Defined in
 
-[models/order-edit.ts:61](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L61)
+[models/order-edit.ts:89](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L89)
+
+___
+
+### gift\_card\_tax\_total
+
+• **gift\_card\_tax\_total**: `number`
+
+#### Defined in
+
+[models/order-edit.ts:94](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L94)
+
+___
+
+### gift\_card\_total
+
+• **gift\_card\_total**: `number`
+
+#### Defined in
+
+[models/order-edit.ts:93](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L93)
 
 ___
 
@@ -166,11 +172,11 @@ ___
 
 #### Inherited from
 
-SoftDeletableEntity.id
+BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -180,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:27](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L27)
+[models/order-edit.ts:44](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L44)
 
 ___
 
@@ -190,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:66](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L66)
+[models/order-edit.ts:77](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L77)
 
 ___
 
@@ -200,7 +206,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L19)
+[models/order-edit.ts:36](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L36)
 
 ___
 
@@ -210,17 +216,27 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:15](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L15)
+[models/order-edit.ts:32](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L32)
 
 ___
 
-### removed\_items
+### payment\_collection
 
-• **removed\_items**: [`LineItem`](LineItem.md)[]
+• **payment\_collection**: [`PaymentCollection`](PaymentCollection.md)
 
 #### Defined in
 
-[models/order-edit.ts:67](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L67)
+[models/order-edit.ts:85](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L85)
+
+___
+
+### payment\_collection\_id
+
+• **payment\_collection\_id**: `string`
+
+#### Defined in
+
+[models/order-edit.ts:81](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L81)
 
 ___
 
@@ -230,7 +246,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:36](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L36)
+[models/order-edit.ts:53](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L53)
 
 ___
 
@@ -240,7 +256,27 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:33](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L33)
+[models/order-edit.ts:50](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L50)
+
+___
+
+### shipping\_total
+
+• **shipping\_total**: `number`
+
+#### Defined in
+
+[models/order-edit.ts:88](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L88)
+
+___
+
+### status
+
+• **status**: [`OrderEditStatus`](../enums/OrderEditStatus.md)
+
+#### Defined in
+
+[models/order-edit.ts:98](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L98)
 
 ___
 
@@ -250,17 +286,17 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:60](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L60)
+[models/order-edit.ts:92](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L92)
 
 ___
 
 ### tax\_total
 
-• **tax\_total**: `number`
+• **tax\_total**: ``null`` \| `number`
 
 #### Defined in
 
-[models/order-edit.ts:62](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L62)
+[models/order-edit.ts:90](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L90)
 
 ___
 
@@ -270,7 +306,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:63](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L63)
+[models/order-edit.ts:91](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L91)
 
 ___
 
@@ -280,11 +316,11 @@ ___
 
 #### Inherited from
 
-SoftDeletableEntity.updated\_at
+BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -298,4 +334,18 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/order-edit.ts:69](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/order-edit.ts#L69)
+[models/order-edit.ts:100](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L100)
+
+___
+
+### loadStatus
+
+▸ **loadStatus**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[models/order-edit.ts:105](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/order-edit.ts#L105)

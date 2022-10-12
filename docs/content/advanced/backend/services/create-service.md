@@ -4,14 +4,16 @@ In this document, you’ll learn how you can create a [Service](./overview.md) a
 
 ## Implementation
 
-To create a service, you should create a JavaScript file in `src/services` to hold the service. The name of the file should be the registration name of the service without `Service` as it will be appended to it by default.
+To create a service, create a TypeScript or JavaScript file in `src/services` to hold the service. The name of the file should be the registration name of the service without `Service` as it will be appended to it by default.
 
-For example, if you want to create a service `helloService`, create the file `hello.js` in `src/services` with the following content:
+For example, if you want to create a service `helloService`, create the file `hello.ts` in `src/services` with the following content:
 
-```js
+```ts
 import { TransactionBaseService } from '@medusajs/medusa';
 
 class HelloService extends TransactionBaseService {
+  protected manager_: EntityManager;
+  protected transactionManager_: EntityManager;
   getMessage() {
     return `Welcome to My Store!`
   }
@@ -26,18 +28,18 @@ As the service extends the `TransactionBaseService` class, all services in Medus
 
 So, if you want your service to use another service, simply add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
-```js
-productService;
+```ts
+private productService: ProductService;
 
-constructor({ productService }) {
-  super();
-  this.productService = productService;
+constructor(container) {
+  super(container);
+  this.productService = container.productService;
 }
 ```
 
 Then, you can use that service anywhere in your custom service:
 
-```js
+```ts
 async getProductCount() {
   return await this.productService.count();
 }
@@ -61,10 +63,10 @@ npm run build
 
 To use your custom service in another custom service, you can have easy access to it in the dependencies injected to the constructor of your service:
 
-```js
-constructor({ helloService }) {
-  super();
-  this.helloService = helloService;
+```ts
+constructor(container) {
+  super(container);
+  this.helloService = container.helloService;
 }
 ```
 
@@ -72,7 +74,7 @@ constructor({ helloService }) {
 
 To use your custom service in an endpoint, you can use `req.scope.resolve` passing it the service’s registration name:
 
-```js
+```ts
 const helloService = req.scope.resolve("helloService")
 
 res.json({
@@ -84,7 +86,7 @@ res.json({
 
 To use your custom service in a subscriber, you can have easy access to it in the subscriber’s dependencies injected to the constructor of your subscriber:
 
-```js
+```ts
 constructor({ helloService, eventBusService }) {
   this.helloService = helloService;
 }

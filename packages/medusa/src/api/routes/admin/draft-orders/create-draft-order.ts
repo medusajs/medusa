@@ -49,10 +49,10 @@ import { validator } from "../../../../utils/validator"
  *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address_fields"
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             $ref: "#/components/schemas/address"
+ *             $ref: "#/components/schemas/address_fields"
  *           items:
  *             description: The Line Items that have been received.
  *             type: array

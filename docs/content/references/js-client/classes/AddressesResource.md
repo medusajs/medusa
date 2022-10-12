@@ -27,7 +27,7 @@ Adds an address to a customers saved addresses
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:16](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/addresses.ts#L16)
+[medusa-js/src/resources/addresses.ts:16](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/addresses.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ Deletes an address of a customer
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:30](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/addresses.ts#L30)
+[medusa-js/src/resources/addresses.ts:30](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/addresses.ts#L30)
 
 ___
 
@@ -74,4 +74,4 @@ Update an address of a customer
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:45](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/addresses.ts#L45)
+[medusa-js/src/resources/addresses.ts:45](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/addresses.ts#L45)

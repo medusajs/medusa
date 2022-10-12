@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -60,7 +60,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:40](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L40)
+[models/product-option-value.ts:40](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L40)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:27](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L27)
+[models/product-option-value.ts:27](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L27)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:23](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L23)
+[models/product-option-value.ts:23](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L23)
 
 ___
 
@@ -104,7 +104,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:19](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L19)
+[models/product-option-value.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L19)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:37](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L37)
+[models/product-option-value.ts:37](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L37)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:31](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L31)
+[models/product-option-value.ts:31](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L31)
 
 ## Methods
 
@@ -148,4 +148,4 @@ ___
 
 #### Defined in
 
-[models/product-option-value.ts:42](https://github.com/medusajs/medusa/blob/6225aa57b/packages/medusa/src/models/product-option-value.ts#L42)
+[models/product-option-value.ts:42](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/product-option-value.ts#L42)
