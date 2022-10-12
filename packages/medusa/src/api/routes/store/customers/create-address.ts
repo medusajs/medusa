@@ -21,8 +21,16 @@ import { EntityManager } from "typeorm"
  *         properties:
  *           address:
  *             description: "The Address to add to the Customer."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *             allOf:
+ *               - $ref: "#/components/schemas/address_fields"
+ *               - type: object
+ *                 required:
+ *                   - first_name
+ *                   - last_name
+ *                   - address_1
+ *                   - city
+ *                   - country_code
+ *                   - postal_code
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

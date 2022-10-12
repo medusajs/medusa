@@ -16,9 +16,15 @@ The migration file must be inside the `src/migrations` directory. When you run t
 
 :::tip
 
-You can learn more about writing migrations in [Typeorm’s Documentation](https://typeorm.io/migrations).
+You can alternatively use Typeorm's `generate` command to generate a Migration file from existing database tables, which requires setting up a data source in Typeorm. Check out Typeorm's documentation to learn [how to create a data source](https://typeorm.io/data-source#creating-a-new-datasource), then use the [generate command](https://typeorm.io/using-cli#generate-a-migration-from-existing-table-schema).
 
 :::
+
+## Write Migration File
+
+The migration file contains the necessary commands to create the database columns, foreign keys, and more.
+
+You can learn more about writing the migration file in You can learn more about writing migrations in [Typeorm’s Documentation](https://typeorm.io/migrations).
 
 ## Build Files
 

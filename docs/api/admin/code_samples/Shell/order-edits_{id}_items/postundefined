@@ -1,0 +1,3 @@
+curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items' \
+--header 'Authorization: Bearer {api_token}'
+-d '{ "variant_id": "some_variant_id", "quantity": 3 }'

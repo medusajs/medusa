@@ -2,30 +2,37 @@
 
 ## Classes
 
-- [AdminGetSwapsParams](../classes/internal-24.AdminGetSwapsParams.md)
+- [AdminPostShippingProfilesProfileReq](../classes/internal-24.AdminPostShippingProfilesProfileReq.md)
+- [AdminPostShippingProfilesReq](../classes/internal-24.AdminPostShippingProfilesReq.md)
 
 ## Type Aliases
 
-### AdminSwapsListRes
+### AdminShippingProfilesListRes
 
-Ƭ **AdminSwapsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `swaps`: [`Swap`](../classes/internal.Swap.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/swaps/index.d.ts:7
-
-___
-
-### AdminSwapsRes
-
-Ƭ **AdminSwapsRes**: `Object`
+Ƭ **AdminShippingProfilesListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `shipping_profiles` | [`ShippingProfile`](../classes/internal.ShippingProfile.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/swaps/index.d.ts:10
+medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:12
+
+___
+
+### AdminShippingProfilesRes
+
+Ƭ **AdminShippingProfilesRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `shipping_profile` | [`ShippingProfile`](../classes/internal.ShippingProfile.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:9

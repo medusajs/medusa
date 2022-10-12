@@ -160,6 +160,15 @@ properties:
   includes_tax:
     description: '[EXPERIMENTAL] Indicates if the line item unit_price include tax'
     type: boolean
+  original_item_id:
+    description: '[EXPERIMENTAL] The id of the original line item'
+    type: string
+  order_edit_id:
+    description: '[EXPERIMENTAL] The ID of the order edit to which a cloned item belongs'
+    type: string
+  order_edit:
+    description: '[EXPERIMENTAL] The order edit joined'
+    type: object
   created_at:
     type: string
     description: The date with timezone at which the resource was created.

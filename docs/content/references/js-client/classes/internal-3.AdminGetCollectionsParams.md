@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:113
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:144
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:115
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:146
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:112
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:143
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:107
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:138
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:108
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:139
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:116
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:147
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:111
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:142
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:114
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:145

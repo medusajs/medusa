@@ -17,6 +17,8 @@ displayed_sidebar: jsClientSidebar
 - [DiscountRuleType](../enums/internal.DiscountRuleType.md)
 - [DraftOrderStatus](../enums/internal.DraftOrderStatus.md)
 - [FulfillmentStatus](../enums/internal.FulfillmentStatus.md)
+- [OrderEditItemChangeType](../enums/internal.OrderEditItemChangeType.md)
+- [OrderEditStatus](../enums/internal.OrderEditStatus.md)
 - [OrderStatus](../enums/internal.OrderStatus.md)
 - [PaymentStatus](../enums/internal.PaymentStatus.md)
 - [PriceListStatus](../enums/internal.PriceListStatus.md)
@@ -61,6 +63,8 @@ displayed_sidebar: jsClientSidebar
 - [LineItemTaxLine](../classes/internal.LineItemTaxLine.md)
 - [MoneyAmount](../classes/internal.MoneyAmount.md)
 - [Order](../classes/internal.Order.md)
+- [OrderEdit](../classes/internal.OrderEdit.md)
+- [OrderItemChange](../classes/internal.OrderItemChange.md)
 - [Payment](../classes/internal.Payment.md)
 - [PaymentProvider](../classes/internal.PaymentProvider.md)
 - [PaymentSession](../classes/internal.PaymentSession.md)
@@ -153,7 +157,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/request.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/request.ts#L21)
+[medusa-js/src/request.ts:21](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/request.ts#L21)
 
 ___
 
@@ -169,7 +173,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L17)
+[medusa-js/src/typings.ts:17](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/typings.ts#L17)
 
 ___
 
@@ -185,7 +189,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/typings.ts#L21)
+[medusa-js/src/typings.ts:21](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/typings.ts#L21)
 
 ___
 
