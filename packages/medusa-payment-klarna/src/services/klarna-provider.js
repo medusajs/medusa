@@ -237,7 +237,7 @@ class KlarnaProviderService extends PaymentService {
 
     let order = {
       // Custom id is stored, such that we can use it for hooks
-      merchant_data: paymentInput.custom_id,
+      merchant_data: paymentInput.resource_id,
       locale: "en-US",
     }
 

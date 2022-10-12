@@ -278,13 +278,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
           )
 
           const inputData: PaymentProviderDataInput = {
-            custom_id: payCol.id,
+            resource_id: payCol.id,
             currency_code: payCol.currency_code,
             amount: session.amount,
             provider_id: session.provider_id,
             customer,
             metadata: {
-              custom_id: payCol.id,
+              resource_id: payCol.id,
             },
           }
 
@@ -353,7 +353,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
 
         const inputData: PaymentProviderDataInput = {
-          custom_id: payCol.id,
+          resource_id: payCol.id,
           currency_code: payCol.currency_code,
           amount: session.amount,
           provider_id: session.provider_id,

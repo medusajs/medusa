@@ -24,7 +24,7 @@ export type PaymentCollectionSessionInput = {
 }
 
 export type PaymentProviderDataInput = {
-  custom_id: string
+  resource_id: string
   customer: Partial<Customer>
   currency_code: string
   provider_id: string

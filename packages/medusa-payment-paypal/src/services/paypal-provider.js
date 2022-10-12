@@ -119,7 +119,7 @@ class PayPalProviderService extends PaymentService {
   }
 
   async createPaymentNew(paymentInput) {
-    const { custom_id, currency_code, amount } = paymentInput
+    const { resource_id, currency_code, amount } = paymentInput
 
     const request = new PayPal.orders.OrdersCreateRequest()
     request.requestBody({
@@ -129,7 +129,7 @@ class PayPalProviderService extends PaymentService {
       },
       purchase_units: [
         {
-          custom_id: custom_id,
+          custom_id: resource_id,
           amount: {
             currency_code: currency_code.toUpperCase(),
             value: roundToTwo(
