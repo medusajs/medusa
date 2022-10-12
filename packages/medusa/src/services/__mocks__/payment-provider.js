@@ -1,5 +1,5 @@
 export const DefaultProviderMock = {
-  getStatus: jest.fn().mockImplementation(data => {
+  getStatus: jest.fn().mockImplementation((data) => {
     if (data.money_id === "success") {
       return Promise.resolve("authorized")
     }
@@ -10,7 +10,7 @@ export const DefaultProviderMock = {
 
     return Promise.resolve("initial")
   }),
-  retrievePayment: jest.fn().mockImplementation(data => {
+  retrievePayment: jest.fn().mockImplementation((data) => {
     return Promise.resolve(data)
   }),
   list: jest.fn().mockImplementation(() => {
@@ -22,10 +22,19 @@ export const DefaultProviderMock = {
 }
 
 export const PaymentProviderServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   updateSession: jest.fn().mockImplementation((session, cart) => {
     return Promise.resolve({
       ...session.data,
       id: `${session.data.id}_updated`,
+    })
+  }),
+  updateSessionNew: jest.fn().mockImplementation((session, sessionInput) => {
+    return Promise.resolve({
+      ...session,
+      id: `${session.id}_updated`,
     })
   }),
   list: jest.fn().mockImplementation(() => {
@@ -40,7 +49,12 @@ export const PaymentProviderServiceMock = {
       cartId: cart._id,
     })
   }),
-  retrieveProvider: jest.fn().mockImplementation(providerId => {
+  createSessionNew: jest.fn().mockImplementation((sessionInput) => {
+    return Promise.resolve({
+      id: `${sessionInput.providerId}_session`,
+    })
+  }),
+  retrieveProvider: jest.fn().mockImplementation((providerId) => {
     if (providerId === "default_provider") {
       return DefaultProviderMock
     }

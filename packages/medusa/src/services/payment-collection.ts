@@ -4,8 +4,12 @@ import { MedusaError } from "medusa-core-utils"
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { Customer, PaymentCollection, PaymentCollectionStatus } from "../models"
+import {
+  Customer,
+  PaymentCollection,
+  PaymentCollectionStatus,
+  PaymentSession,
+} from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
   CustomerService,
@@ -23,7 +27,6 @@ type InjectedDependencies = {
   manager: EntityManager
   paymentCollectionRepository: typeof PaymentCollectionRepository
   paymentProviderService: PaymentProviderService
-  paymentSessionRepository: typeof PaymentSessionRepository
   eventBusService: EventBusService
   customerService: CustomerService
 }
@@ -39,7 +42,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
-  protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly customerService_: CustomerService
   // eslint-disable-next-line max-len
   protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
@@ -48,7 +50,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     manager,
     paymentCollectionRepository,
     paymentProviderService,
-    paymentSessionRepository,
     customerService,
     eventBusService,
   }: InjectedDependencies) {
@@ -58,7 +59,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     this.manager_ = manager
     this.paymentCollectionRepository_ = paymentCollectionRepository
     this.paymentProviderService_ = paymentProviderService
-    this.paymentSessionRepository_ = paymentSessionRepository
     this.eventBusService_ = eventBusService
     this.customerService_ = customerService
   }
@@ -217,13 +217,16 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async setPaymentSessions(
     paymentCollectionId: string,
-    sessionsInput: PaymentCollectionSessionInput[]
-  ): Promise<void> {
+    sessions: PaymentCollectionSessionInput[] | PaymentCollectionSessionInput
+  ): Promise<PaymentCollection> {
+    let sessionsInput = Array.isArray(sessions) ? sessions : [sessions]
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const paymentCollectionRepo = transactionManager.getCustomRepository(
-          this.paymentCollectionRepository_
-        )
+        const paymentCollectionRepository =
+          transactionManager.getCustomRepository(
+            this.paymentCollectionRepository_
+          )
 
         const payCol = await this.retrieve(paymentCollectionId, {
           relations: ["region", "region.payment_providers", "payment_sessions"],
@@ -236,26 +239,25 @@ export default class PaymentCollectionService extends TransactionBaseService {
           )
         }
 
+        sessionsInput = sessionsInput.filter((session) => {
+          return !!payCol.region.payment_providers.find(
+            ({ id }) => id === session.provider_id
+          )
+        })
+
         if (!this.isValidTotalAmount(payCol.amount, sessionsInput)) {
           throw new MedusaError(
             MedusaError.Types.UNEXPECTED_STATE,
-            `The total sum amount must be equal to ${payCol.amount}`
+            `The total amount must be equal to ${payCol.amount}`
           )
         }
 
         let customer: Customer | undefined = undefined
 
         const selectedSessionIds: string[] = []
-        for (const session of sessionsInput) {
-          // Skip providers not set for the region
-          if (
-            !payCol.region.payment_providers.find(
-              ({ id }) => id === session.provider_id
-            )
-          ) {
-            continue
-          }
+        const paymentSessions: PaymentSession[] = []
 
+        for (const session of sessionsInput) {
           if (!customer) {
             customer = await this.customerService_.retrieve(
               session.customer_id,
@@ -287,20 +289,19 @@ export default class PaymentCollectionService extends TransactionBaseService {
           }
 
           if (existingSession) {
-            await this.paymentProviderService_
+            const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
               .updateSessionNew(existingSession, inputData)
 
             selectedSessionIds.push(existingSession.id)
+            paymentSessions.push(paymentSession)
           } else {
             const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
               .createSessionNew(inputData)
 
             selectedSessionIds.push(paymentSession.id)
-            payCol.payment_sessions.push(paymentSession)
-
-            await paymentCollectionRepo.save(payCol)
+            paymentSessions.push(paymentSession)
           }
         }
 
@@ -310,7 +311,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             .filter((id) => !selectedSessionIds.includes(id))
 
           if (removeIds.length) {
-            await paymentCollectionRepo
+            await paymentCollectionRepository
               .createQueryBuilder()
               .delete()
               .from(PaymentCollection)
@@ -318,6 +319,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
               .execute()
           }
         }
+
+        payCol.payment_sessions = paymentSessions
+        await paymentCollectionRepository.save(payCol)
+
+        return payCol
       }
     )
   }
