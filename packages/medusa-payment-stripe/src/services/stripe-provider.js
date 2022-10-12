@@ -129,7 +129,7 @@ class StripeProviderService extends AbstractPaymentService {
    * @param {Cart} cart - cart to create a payment for
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async createPayment(cart) {
+  async createPayment(cart, intentRequestData = null) {
     const { customer_id, region_id, email } = cart
     const { currency_code } = await this.regionService_
       .withTransaction(this.manager_)
@@ -137,15 +137,26 @@ class StripeProviderService extends AbstractPaymentService {
 
     const amount = cart.total
 
-    const intentRequest = {
+    let intentRequest = {
       description:
         cart?.context?.payment_description ??
         this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
-      setup_future_usage: "on_session",
-      capture_method: this.options_.capture ? "automatic" : "manual",
       metadata: { cart_id: `${cart.id}` },
+    }
+
+    if (intentRequestData === null) {
+      intentRequest = {
+        ...intentRequest,
+        capture_method: this.options_.capture ? "automatic" : "manual",
+        setup_future_usage: "on_session",
+      }
+    } else {
+      intentRequest = {
+        ...intentRequest,
+        ...intentRequestData,
+      }
     }
 
     if (customer_id) {
@@ -153,6 +164,54 @@ class StripeProviderService extends AbstractPaymentService {
         .withTransaction(this.manager_)
         .retrieve(customer_id)
 
+      if (customer.metadata?.stripe_id) {
+        intentRequest.customer = customer.metadata.stripe_id
+      } else {
+        const stripeCustomer = await this.createCustomer({
+          email,
+          id: customer_id,
+        })
+
+        intentRequest.customer = stripeCustomer.id
+      }
+    } else {
+      const stripeCustomer = await this.createCustomer({
+        email,
+      })
+
+      intentRequest.customer = stripeCustomer.id
+    }
+
+    return await this.stripe_.paymentIntents.create(intentRequest)
+  }
+
+  async createPaymentNew(paymentInput, intentRequestData = null) {
+    const { customer, currency_code, amount, resource_id, cart } = paymentInput
+    const { id: customer_id, email } = customer
+
+    let intentRequest = {
+      description:
+        cart?.context?.payment_description ??
+        this.options_?.payment_description,
+      amount: Math.round(amount),
+      currency: currency_code,
+      metadata: { resource_id },
+    }
+
+    if (intentRequestData === null) {
+      intentRequest = {
+        ...intentRequest,
+        capture_method: this.options_.capture ? "automatic" : "manual",
+        setup_future_usage: "on_session",
+      }
+    } else {
+      intentRequest = {
+        ...intentRequest,
+        ...intentRequestData,
+      }
+    }
+
+    if (customer_id) {
       if (customer.metadata?.stripe_id) {
         intentRequest.customer = customer.metadata.stripe_id
       } else {
