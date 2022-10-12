@@ -265,6 +265,70 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       })
     })
 
+    it("deletes order edit which has quantity changes", async () => {
+      const api = useApi()
+
+      const initialProduct = await simpleProductFactory(dbConnection, {
+        variants: [{ id: "initial-variant" }],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        email: "tst@test.com",
+        line_items: [
+          {
+            id: "line-item-id",
+            variant_id: initialProduct.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      const order = completeRes.data.data
+
+      let response = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: order.id,
+        },
+        adminHeaders
+      )
+
+      const orderEditId = response.data.order_edit.id
+
+      const itemToUpdate = response.data.order_edit.items.find(
+        (item) => item.original_item_id === "line-item-id"
+      )
+
+      await api.post(
+        `/admin/order-edits/${orderEditId}/items/${itemToUpdate.id}`,
+        { quantity: 10 },
+        adminHeaders
+      )
+
+      response = await api.delete(
+        `/admin/order-edits/${orderEditId}`,
+        adminHeaders
+      )
+
+      const orderEdit = await dbConnection.manager.findOne(OrderEdit, {
+        where: { id: orderEditId },
+        withDeleted: true,
+      })
+
+      expect(orderEdit).toBeUndefined()
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({
+        id: orderEditId,
+        object: "order_edit",
+        deleted: true,
+      })
+    })
+
     it("deletes already removed order edit", async () => {
       const { id } = await simpleOrderEditFactory(dbConnection, {
         created_by: adminUserId,
