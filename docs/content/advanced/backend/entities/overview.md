@@ -6,7 +6,7 @@ In this document, you'll learn what Entities are in Medusa.
 
 Entities in medusa represent tables in the database as classes. An example of this would be the `Order` entity which represents the `order` table in the database. Entities provide a uniform way of defining and interacting with data retrieved from the database.
 
-Aside from Medusa’s core entities, you can also create your own entities to use in your Medusa server. Custom entities must reside in the `src/models` directory of your Medusa server.
+Aside from Medusa’s core entities, you can also create your own entities to use in your Medusa server. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa server.
 
 Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
 
