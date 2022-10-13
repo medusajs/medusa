@@ -83,16 +83,11 @@ export default async (req, res) => {
     .catch(() => void 0)
 
   if (!condition) {
-    const discount = await discountService.retrieve(
-      discount_id,
-      req.retrieveConfig
-    )
     // resolves idempotently in case of non-existing condition
     return res.json({
       id: condition_id,
       object: "discount-condition",
       deleted: true,
-      discount,
     })
   }
 

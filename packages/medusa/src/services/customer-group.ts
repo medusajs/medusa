@@ -6,7 +6,7 @@ import {
   CustomerGroupRepository,
   FindWithoutRelationsOptions,
 } from "../repositories/customer-group"
-import { FindConfig } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import { CustomerGroupUpdate } from "../types/customer-groups"
 import {
   buildQuery,
@@ -196,7 +196,7 @@ class CustomerGroupService extends TransactionBaseService {
    * @return  the result of the find operation
    */
   async list(
-    selector: Partial<CustomerGroup> & {
+    selector: Selector<CustomerGroup> & {
       q?: string
       discount_condition_id?: string
     } = {},
@@ -214,7 +214,7 @@ class CustomerGroupService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: Partial<CustomerGroup> & {
+    selector: Selector<CustomerGroup> & {
       q?: string
       discount_condition_id?: string
     } = {},

@@ -15,7 +15,7 @@ import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminDiscountKeys } from "./queries"
 
-export const useAdminAddDiscountConditionItemBatch = (
+export const useAdminAddDiscountConditionResourceBatch = (
   discountId: string,
   conditionId: string,
   query?: AdminPostDiscountsDiscountConditionsConditionBatchParams,
@@ -29,7 +29,7 @@ export const useAdminAddDiscountConditionItemBatch = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostDiscountsDiscountConditionsConditionBatchReq) =>
-      client.admin.discounts.addConditionItemBatch(
+      client.admin.discounts.addConditionResourceBatch(
         discountId,
         conditionId,
         payload,

@@ -45,7 +45,7 @@ import { FindParams } from "../../../../types/common"
  *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.addConditionItemBatch(discount_id, condition_id, {
+ *       medusa.admin.discounts.addConditionResourceBatch(discount_id, condition_id, {
  *         resources: [{ id: item_id }]
  *       })
  *       .then(({ discount }) => {

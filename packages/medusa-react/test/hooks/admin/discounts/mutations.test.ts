@@ -2,7 +2,7 @@ import { DiscountConditionOperator } from "@medusajs/medusa"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import {
-  useAdminAddDiscountConditionItemBatch,
+  useAdminAddDiscountConditionResourceBatch,
   useAdminCreateDiscount,
   useAdminCreateDynamicDiscountCode,
   useAdminDeleteDiscount,
@@ -16,7 +16,7 @@ import {
 } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
-describe("useAdminAddDiscountConditionItemBatch hook", () => {
+describe("useAdminAddDiscountConditionResourceBatch hook", () => {
   test("add items to a discount condition and return the discount", async () => {
     const resources = [
       {
@@ -27,7 +27,7 @@ describe("useAdminAddDiscountConditionItemBatch hook", () => {
     const conditionId = fixtures.get("discount").rule.conditions[0].id
 
     const { result, waitFor } = renderHook(
-      () => useAdminAddDiscountConditionItemBatch(discountId, conditionId),
+      () => useAdminAddDiscountConditionResourceBatch(discountId, conditionId),
       {
         wrapper: createWrapper(),
       }

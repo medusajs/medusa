@@ -214,7 +214,7 @@ class AdminDiscountsResource extends BaseResource {
   /**
    * @description Add a batch of items to a discount condition
    */
-  addConditionItemBatch(
+  addConditionResourceBatch(
     discountId: string,
     conditionId: string,
     payload: AdminPostDiscountsDiscountConditionsConditionBatchReq,
