@@ -26,40 +26,24 @@ class MinioService extends AbstractFileService {
   upload(file) {
     this.updateAwsConfig_()
 
-    const parsedFilename = parse(file.originalname)
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
-
-    const s3 = new aws.S3()
-    const params = {
-      ACL: "public-read",
-      Bucket: this.bucket_,
-      Body: fs.createReadStream(file.path),
-      Key: fileKey,
-    }
-
-    return new Promise((resolve, reject) => {
-      s3.upload(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-
-        resolve({ url: data.Location, key: data.Key })
-      })
-    })
+    return this.uploadFile(file, false)
   }
 
   uploadProtected(file) {
     this.validatePrivateBucketConfiguration_(true)
     this.updateAwsConfig_(true)
 
+    return this.uploadFile(file, true)
+  }
+
+  uploadFile(file, usePrivateBucket) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
-      Bucket: this.private_bucket_,
+      ACL: usePrivateBucket ? "private" : "public-read",
+      Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
     }
