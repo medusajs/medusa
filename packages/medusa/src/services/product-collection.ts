@@ -4,7 +4,7 @@ import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
-import { FindConfig } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateProductCollection,
   UpdateProductCollection,
@@ -219,7 +219,7 @@ class ProductCollectionService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: Partial<ProductCollection> & {
+    selector: Selector<ProductCollection> & {
       q?: string
       discount_condition_id?: string
     } = {},
@@ -236,7 +236,7 @@ class ProductCollectionService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: Partial<ProductCollection> & {
+    selector: Selector<ProductCollection> & {
       q?: string
       discount_condition_id?: string
     } = {},

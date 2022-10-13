@@ -1,13 +1,13 @@
 import { EntityRepository, Repository } from "typeorm"
 import { ProductCollection } from "../models"
-import { ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig, Selector } from "../types/common"
 
 @EntityRepository(ProductCollection)
 // eslint-disable-next-line max-len
 export class ProductCollectionRepository extends Repository<ProductCollection> {
   async findAndCountByDiscountConditionId(
     conditionId: string,
-    query: ExtendedFindConfig<ProductCollection, Partial<ProductCollection>>
+    query: ExtendedFindConfig<ProductCollection, Selector<ProductCollection>>
   ): Promise<[ProductCollection[], number]> {
     const qb = this.createQueryBuilder("pc")
 
