@@ -55,7 +55,10 @@ export default class EventBusService {
             return redisSubscriber
           default:
             if (config.projectConfig.redis_url) {
-              return new Redis(config.projectConfig.redis_url)
+              return new Redis(
+                config.projectConfig.redis_url,
+                config.projectConfig.redis_options
+              )
             }
             return redisClient
         }
