@@ -49,6 +49,32 @@ class MinioService extends AbstractFileService {
     })
   }
 
+  uploadProtected(file) {
+    this.updateAwsConfig_(true)
+
+    const parsedFilename = parse(file.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
+    const s3 = new aws.S3()
+    const params = {
+      ACL: "public-read",
+      Bucket: this.private_bucket_,
+      Body: fs.createReadStream(file.path),
+      Key: fileKey,
+    }
+
+    return new Promise((resolve, reject) => {
+      s3.upload(params, (err, data) => {
+        if (err) {
+          reject(err)
+          return
+        }
+
+        resolve({ url: data.Location, key: data.Key })
+      })
+    })
+  }
+
   async delete(file) {
     this.updateAwsConfig_()
 
@@ -146,6 +172,16 @@ class MinioService extends AbstractFileService {
   }
 
   updateAwsConfig_(usePrivateBucket = false, additionalConfiguration = {}) {
+    if (
+      usePrivateBucket &&
+      (!this.private_access_key_id_ || !this.private_bucket_)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Please configure private bucket before trying to upload protected files"
+      )
+    }
+
     aws.config.setPromisesDependency(null)
     aws.config.update(
       {

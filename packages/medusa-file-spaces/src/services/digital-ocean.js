@@ -17,15 +17,55 @@ class DigitalOceanService extends AbstractFileService {
     this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
+  // upload(file) {
+  //   this.updateAwsConfig()
+
+  //   const parsedFilename = parse(file.originalname)
+  //   const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
+  //   const s3 = new aws.S3()
+  //   const params = {
+  //     ACL: "public-read",
+  //     Bucket: this.bucket_,
+  //     Body: fs.createReadStream(file.path),
+  //     Key: fileKey,
+  //   }
+
+  //   return new Promise((resolve, reject) => {
+  //     s3.upload(params, (err, data) => {
+  //       if (err) {
+  //         reject(err)
+  //         return
+  //       }
+
+  //       if (this.spacesUrl_) {
+  //         resolve({ url: `${this.spacesUrl_}/${data.Key}`, key: data.Key })
+  //       }
+
+  //       resolve({ url: data.Location, key: data.Key })
+  //     })
+  //   })
+  // }
+
   upload(file) {
     this.updateAwsConfig()
 
+    return this.uploadFile(file, "public-read")
+  }
+
+  uploadProtected(file) {
+    this.updateAwsConfig()
+
+    return this.uploadFile(file, "private")
+  }
+
+  uploadFile(file, acl) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
+      ACL: acl,
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,

@@ -19,9 +19,19 @@ class S3Service extends AbstractFileService {
   upload(file) {
     this.updateAwsConfig()
 
+    return this.uploadFile(file, "public-read")
+  }
+
+  uploadProtected(file) {
+    this.updateAwsConfig()
+
+    return this.uploadFile(file, "private")
+  }
+
+  uploadFile(file, acl) {
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
+      ACL: acl,
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: `${file.originalname}`,
