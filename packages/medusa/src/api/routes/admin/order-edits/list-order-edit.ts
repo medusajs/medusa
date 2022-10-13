@@ -1,15 +1,18 @@
 import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
-import { FindParams } from "../../../../types/common"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { IsOptional, IsString } from "class-validator"
 
 /**
- * @oas [get] /order-edits/{id}
- * operationId: "GetOrderEditsOrderEdit"
- * summary: "Retrieve an OrderEdit"
- * description: "Retrieves a OrderEdit."
+ * @oas [get] /order-edits
+ * operationId: "GetOrderEdits"
+ * summary: "List an OrderEdit"
+ * description: "List a OrderEdit."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the OrderEdit.
+ *   - (query) q {string} Query used for searching order edit internal note.
+ *   - (query) limit=20 {number} The number of items in the response
+ *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:
@@ -19,14 +22,14 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.retrieve(orderEditId)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
+ *       medusa.admin.orderEdit.list()
+ *         .then(({ order_edits }) => {
+ *           console.log(order_edits)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/order-edits/{id}' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/order-edits' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -40,7 +43,8 @@ import { FindParams } from "../../../../types/common"
  *       application/json:
  *         schema:
  *           properties:
- *             order_edit:
+ *             order_edits:
+ *               type: array
  *               $ref: "#/components/schemas/order_edit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
@@ -59,13 +63,31 @@ export default async (req: Request, res: Response) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
-  const { id } = req.params
-  const retrieveConfig = req.retrieveConfig
+  const { filterableFields, listConfig } = req
+  const { skip, take } = listConfig
 
-  let orderEdit = await orderEditService.retrieve(id, retrieveConfig)
-  orderEdit = await orderEditService.decorateTotals(orderEdit)
+  const [orderEdits, orderEditCount] = await orderEditService.listAndCount(
+    filterableFields,
+    listConfig
+  )
 
-  return res.json({ order_edit: orderEdit })
+  for (let orderEdit of orderEdits) {
+    orderEdit = await orderEditService.decorateTotals(orderEdit)
+  }
+
+  return res.json({
+    order_edits: orderEdits,
+    count: orderEditCount,
+    limit: take,
+    offset: skip,
+  })
 }
 
-export class GetOrderEditsOrderEditParams extends FindParams {}
+export class GetOrderEditsParams extends extendedFindParamsMixin({
+  limit: 20,
+  offset: 0,
+}) {
+  @IsString()
+  @IsOptional()
+  q?: string
+}
