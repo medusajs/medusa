@@ -4,30 +4,36 @@ import {
   IInventoryService,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  CreateReservationItemInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
   IEventBusService,
-  IStockLocationService,
   InventoryItemDTO,
+  ReservationItemDTO,
   InventoryLevelDTO,
 } from "@medusajs/medusa"
 
-import { InventoryItemService, InventoryLevelService } from "./"
+import {
+  InventoryItemService,
+  ReservationItemService,
+  InventoryLevelService,
+} from "./"
 
 type InjectedDependencies = {
-  stockLocationService: IStockLocationService
   eventBusService: IEventBusService
 }
 
 export default class InventoryService implements IInventoryService {
   protected readonly eventBusService: IEventBusService
   protected readonly inventoryItemService: InventoryItemService
+  protected readonly reservationItemService: ReservationItemService
   protected readonly inventoryLevelService: InventoryLevelService
-  protected readonly stockLocationService: IStockLocationService
 
-  constructor({ eventBusService, stockLocationService }: InjectedDependencies) {
+  constructor({ eventBusService }: InjectedDependencies) {
     this.eventBusService = eventBusService
-    this.stockLocationService = stockLocationService
+    this.reservationItemService = new ReservationItemService({
+      eventBusService,
+    })
     this.inventoryItemService = new InventoryItemService({ eventBusService })
     this.inventoryLevelService = new InventoryLevelService({ eventBusService })
   }
@@ -46,8 +52,14 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryLevelService.listAndCount(selector, config)
   }
 
-  async retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.inventoryItemService.retrieve(itemId)
+  async retrieveInventoryItem(
+    itemId: string,
+    config?: FindConfig<InventoryItemDTO>
+  ): Promise<InventoryItemDTO> {
+    const inventoryItem = await this.inventoryItemService.retrieve(
+      itemId,
+      config
+    )
     return { ...inventoryItem }
   }
 
@@ -66,6 +78,27 @@ export default class InventoryService implements IInventoryService {
       )
     }
     return inventoryLevel
+  }
+
+  async createReservationItem(
+    input: CreateReservationItemInput
+  ): Promise<ReservationItemDTO> {
+    // Verify that the item is stocked at the location
+    const [inventoryLevel] = await this.inventoryLevelService.list(
+      { item_id: input.item_id, location_id: input.location_id },
+      { take: 1 }
+    )
+
+    if (!inventoryLevel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Item ${input.item_id} is not stocked at location ${input.location_id}`
+      )
+    }
+
+    const reservationItem = await this.reservationItemService.create(input)
+
+    return { ...reservationItem }
   }
 
   async createInventoryItem(
@@ -121,7 +154,27 @@ export default class InventoryService implements IInventoryService {
     return { ...updatedInventoryLevel }
   }
 
-  async retrieveQuantity(
+  async retrieveAvailableQuantity(
+    itemId: string,
+    locationIds: string[]
+  ): Promise<number> {
+    // Throws if item does not exist
+    await this.inventoryItemService.retrieve(itemId, {
+      select: ["id"],
+    })
+
+    const stockedQuantity = await this.inventoryLevelService.getStockedQuantity(
+      itemId,
+      locationIds
+    )
+
+    const reservedQuantity =
+      await this.reservationItemService.getReservedQuantity(itemId, locationIds)
+
+    return stockedQuantity - reservedQuantity
+  }
+
+  async retrieveStockedQuantity(
     itemId: string,
     locationIds: string[]
   ): Promise<number> {
@@ -143,7 +196,10 @@ export default class InventoryService implements IInventoryService {
     locationIds: string[],
     quantity: number
   ): Promise<boolean> {
-    const stockedQuantity = await this.retrieveQuantity(itemId, locationIds)
+    const stockedQuantity = await this.retrieveAvailableQuantity(
+      itemId,
+      locationIds
+    )
     return stockedQuantity >= quantity
   }
 }

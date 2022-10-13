@@ -58,19 +58,19 @@ export default class InventoryLevelService {
   }
 
   async retrieve(
-    itemId: string,
+    levelId: string,
     config: FindConfig<InventoryLevel> = {}
   ): Promise<InventoryLevel> {
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const query = buildQuery({ id: itemId }, config)
+    const query = buildQuery({ id: levelId }, config)
     const inventoryLevel = await levelRepository.findOne(query)
 
     if (!inventoryLevel) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `InventoryLevel with id ${itemId} was not found`
+        `InventoryLevel with id ${levelId} was not found`
       )
     }
 

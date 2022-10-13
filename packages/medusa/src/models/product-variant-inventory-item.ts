@@ -1,20 +1,19 @@
-import { Index, BeforeInsert, Column, Entity } from "typeorm"
-import {
-  SoftDeletableEntity,
-  DbAwareColumn,
-  generateEntityId,
-} from "@medusajs/medusa"
+import { Index, Unique, BeforeInsert, Column, Entity } from "typeorm"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { DbAwareColumn, generateEntityId } from "../utils"
 
 @Entity()
-export class ProductVariantInventoryItem extends SoftDeletableEntity {
-  @Index({ unique: true })
+@Unique(["variant_id", "inventory_item_id"])
+export class ProductVariantInventoryItem extends BaseEntity {
+  @Index()
   @DbAwareColumn({ type: "text" })
   inventory_item_id: string
 
+  @Index()
   @DbAwareColumn({ type: "text" })
   variant_id: string
 
-  @Column({ type: "int" })
+  @Column({ type: "int", default: 1 })
   quantity: number
 
   @BeforeInsert()

@@ -12,6 +12,16 @@ export type InventoryItemDTO = {
   deleted_at: string | Date | null
 }
 
+export type ReservationItemDTO = {
+  id: string
+  location_id: string
+  item_id: string
+  metadata: Record<string, unknown> | null
+  created_at: string | Date
+  updated_at: string | Date
+  deleted_at: string | Date | null
+}
+
 export type InventoryLevelDTO = {
   id: string
   item_id: string
@@ -24,7 +34,17 @@ export type InventoryLevelDTO = {
   deleted_at: string | Date | null
 }
 
+export type FilterableReservationItemProps = {
+  id?: string | string[]
+  type?: string | string[]
+  line_item_id?: string | string[]
+  item_id?: string | string[]
+  location_id?: string | string[]
+  quantity?: number | NumericalComparisonOperator
+}
+
 export type FilterableInventoryItemProps = {
+  id?: string | string[]
   sku?: string | string[] | StringComparisonOperator
   origin_country?: string | string[]
   hs_code?: number | number[] | NumericalComparisonOperator
@@ -37,6 +57,15 @@ export type CreateInventoryItemInput = {
   metadata?: Record<string, unknown> | null
   hs_code?: number
   requires_shipping?: boolean
+}
+
+export type CreateReservationItemInput = {
+  type?: string
+  line_item_id: string
+  item_id: string
+  location_id: string
+  quantity: number
+  metadata?: Record<string, unknown> | null
 }
 
 export type FilterableInventoryLevelProps = {
