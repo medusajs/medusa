@@ -42,7 +42,7 @@ export type InjectedProps = {
  */
 export type TParsedProductImportRowData = Record<
   string,
-  string | number | object | (string | number | object)[]
+  string | number | object | undefined | (string | number | object)[]
 >
 
 /**

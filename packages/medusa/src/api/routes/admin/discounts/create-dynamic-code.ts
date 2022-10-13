@@ -1,3 +1,4 @@
+import { Request, Response } from "express"
 import {
   IsNotEmpty,
   IsNumber,
@@ -9,7 +10,6 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 
 import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /discounts/{id}/dynamic-codes
@@ -72,20 +72,18 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { discount_id } = req.params
-
-  const validated = await validator(
-    AdminPostDiscountsDiscountDynamicCodesReq,
-    req.body
-  )
 
   const discountService: DiscountService = req.scope.resolve("discountService")
   const manager: EntityManager = req.scope.resolve("manager")
   const created = await manager.transaction(async (transactionManager) => {
     return await discountService
       .withTransaction(transactionManager)
-      .createDynamicCode(discount_id, validated)
+      .createDynamicCode(
+        discount_id,
+        req.validatedBody as AdminPostDiscountsDiscountDynamicCodesReq
+      )
   })
 
   const discount = await discountService.retrieve(created.id, {

@@ -7,7 +7,7 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import { CustomerGroup } from "../models"
-import { ExtendedFindConfig, Writable } from "../types/common"
+import { ExtendedFindConfig, Selector } from "../types/common"
 import {
   getGroupedRelations,
   mergeEntitiesWithRelations,
@@ -16,7 +16,7 @@ import {
 } from "../utils/repository"
 
 export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<CustomerGroup, Partial<Writable<CustomerGroup>>>,
+  ExtendedFindConfig<CustomerGroup, Selector<CustomerGroup>>,
   "relations"
 >
 

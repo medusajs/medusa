@@ -912,6 +912,33 @@ export const adminHandlers = [
     }
   ),
 
+  rest.post(
+    "/admin/discounts/:id/conditions/:conditionId/batch",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          discount: {
+            ...fixtures.get("discount"),
+            rule: {
+              ...fixtures.get("discount").rule,
+              conditions: [
+                {
+                  ...fixtures.get("discount").rule.conditions[0],
+                  products: [
+                    ...(fixtures.get("discount").rule.conditions[0]?.products ??
+                      []),
+                    ...(req.body as any).resources,
+                  ],
+                },
+              ],
+            },
+          },
+        })
+      )
+    }
+  ),
+
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -1664,6 +1691,18 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/order-edits/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        count: 1,
+        limit: 20,
+        offset: 0,
+        order_edits: [fixtures.get("order_edit")],
+      })
+    )
+  }),
+
   rest.post("/admin/order-edits/", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -1783,7 +1822,7 @@ export const adminHandlers = [
       })
     )
   }),
-  
+
   rest.delete("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -1792,7 +1831,7 @@ export const adminHandlers = [
           ...fixtures.get("order_edit"),
           changes: [
             {
-              type: 'item_remove'
+              type: "item_remove",
             },
           ],
         },

@@ -5,13 +5,13 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator"
 import { omit, pickBy } from "lodash"
 import {
   CartService,
   ProductService,
-  RegionService
+  RegionService,
 } from "../../../../services"
 
 import { defaultStoreProductsRelations } from "."
@@ -54,6 +54,15 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       items:
  *         type: string
  *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
  *     name: tags
  *     style: form
  *     explode: false
@@ -66,7 +75,6 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
  *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} type to search for.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting products were created.
@@ -301,14 +309,11 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  type?: string
+  type_id?: string[]
 
-  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
-    IsOptional(),
-    IsArray(),
-  ])
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
   @IsOptional()
