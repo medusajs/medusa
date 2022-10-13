@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /order-edits/{id}
@@ -64,3 +65,5 @@ export default async (req: Request, res: Response) => {
 
   return res.json({ order_edit: orderEdit })
 }
+
+export class GetOrderEditsOrderEditParams extends FindParams {}
