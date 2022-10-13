@@ -22,8 +22,6 @@ export default class InventoryItemService {
     DELETED: "inventory-item.deleted",
   }
 
-  protected readonly manager_: EntityManager
-
   protected readonly eventBusService_: IEventBusService
 
   constructor({ eventBusService }: InjectedDependencies) {
@@ -77,7 +75,10 @@ export default class InventoryItemService {
     return inventoryItem
   }
 
-  async create(data: CreateInventoryItemInput): Promise<InventoryItem> {
+  async create(
+    data: CreateInventoryItemInput,
+    context: { stageEventBusQueue }
+  ): Promise<InventoryItem> {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(InventoryItem)
 
@@ -91,7 +92,7 @@ export default class InventoryItemService {
 
     const result = await itemRepository.save(inventoryItem)
 
-    await this.eventBusService_.emit(InventoryItemService.Events.CREATED, {
+    await context.stageEventBusQueue.emit(InventoryItemService.Events.CREATED, {
       id: result.id,
     })
 

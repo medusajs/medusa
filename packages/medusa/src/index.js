@@ -1,6 +1,7 @@
 export * from "./api"
 export * from "./interfaces"
 export * from "./types/inventory"
+export * from "./types/stock-location"
 export * from "./types/common"
 export * from "./types/price-list"
 export * from "./types/batch-job"
