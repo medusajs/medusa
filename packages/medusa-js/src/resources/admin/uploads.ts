@@ -25,7 +25,7 @@ class AdminUploadsResource extends BaseResource {
   }
  
   createProtected(file: IAdminPostUploadsFileReq): ResponsePromise<AdminUploadsRes> {
-    const path = `/admin/uploads`
+    const path = `/admin/uploads/protected`
 
     const payload = new FormData()
     payload.append("files", file)

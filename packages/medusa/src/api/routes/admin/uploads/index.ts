@@ -21,7 +21,7 @@ export default (app) => {
   route.post(
     "/protected",
     upload.array("files"),
-    middlewares.wrap(require("./create-upload").default)
+    middlewares.wrap(require("./create-protected-upload").default)
   )
 
   route.delete(
