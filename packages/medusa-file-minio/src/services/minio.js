@@ -50,6 +50,7 @@ class MinioService extends AbstractFileService {
   }
 
   uploadProtected(file) {
+    this.validatePrivateBucketConfiguration_(true)
     this.updateAwsConfig_(true)
 
     const parsedFilename = parse(file.originalname)
@@ -163,7 +164,10 @@ class MinioService extends AbstractFileService {
   }
 
   validatePrivateBucketConfiguration_(usePrivateBucket) {
-    if (usePrivateBucket && !this.private_bucket_) {
+    if (
+      usePrivateBucket &&
+      (!this.private_access_key_id_ || !this.private_bucket_)
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_CONFIGURATION,
         "Private bucket is not configured"
@@ -172,16 +176,6 @@ class MinioService extends AbstractFileService {
   }
 
   updateAwsConfig_(usePrivateBucket = false, additionalConfiguration = {}) {
-    if (
-      usePrivateBucket &&
-      (!this.private_access_key_id_ || !this.private_bucket_)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Please configure private bucket before trying to upload protected files"
-      )
-    }
-
     aws.config.setPromisesDependency(null)
     aws.config.update(
       {
