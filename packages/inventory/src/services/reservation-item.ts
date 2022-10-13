@@ -4,22 +4,22 @@ import {
   FindConfig,
   buildQuery,
   IEventBusService,
-  FilterableInventoryItemProps,
-  CreateInventoryItemInput,
+  FilterableReservationItemProps,
+  CreateReservationItemInput,
 } from "@medusajs/medusa"
 
-import { InventoryItem } from "../models"
+import { ReservationItem } from "../models"
 import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
 }
 
-export default class InventoryItemService {
+export default class ReservationItemService {
   static Events = {
-    CREATED: "inventory-item.created",
-    UPDATED: "inventory-item.updated",
-    DELETED: "inventory-item.deleted",
+    CREATED: "reservation-item.created",
+    UPDATED: "reservation-item.updated",
+    DELETED: "reservation-item.deleted",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -34,22 +34,22 @@ export default class InventoryItemService {
   }
 
   async list(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<InventoryItem[]> {
+    selector: FilterableReservationItemProps = {},
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
+  ): Promise<ReservationItem[]> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config)
     return await itemRepository.find(query)
   }
 
   async listAndCount(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[InventoryItem[], number]> {
+    selector: FilterableReservationItemProps = {},
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[ReservationItem[], number]> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config)
     return await itemRepository.findAndCount(query)
@@ -57,10 +57,10 @@ export default class InventoryItemService {
 
   async retrieve(
     itemId: string,
-    config: FindConfig<InventoryItem> = {}
-  ): Promise<InventoryItem> {
+    config: FindConfig<ReservationItem> = {}
+  ): Promise<ReservationItem> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery({ id: itemId }, config)
     const inventoryItem = await itemRepository.findOne(query)
@@ -68,28 +68,27 @@ export default class InventoryItemService {
     if (!inventoryItem) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `InventoryItem with id ${itemId} was not found`
+        `ReservationItem with id ${itemId} was not found`
       )
     }
 
     return inventoryItem
   }
 
-  async create(data: CreateInventoryItemInput): Promise<InventoryItem> {
+  async create(data: CreateReservationItemInput): Promise<ReservationItem> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     const inventoryItem = itemRepository.create({
-      sku: data.sku,
-      origin_country: data.origin_country,
+      item_id: data.item_id,
+      location_id: data.location_id,
+      quantity: data.quantity,
       metadata: data.metadata,
-      hs_code: data.hs_code,
-      requires_shipping: data.requires_shipping || false,
     })
 
     const result = await itemRepository.save(inventoryItem)
 
-    await this.eventBusService_.emit(InventoryItemService.Events.CREATED, {
+    await this.eventBusService_.emit(ReservationItemService.Events.CREATED, {
       id: result.id,
     })
 
@@ -99,12 +98,12 @@ export default class InventoryItemService {
   async update(
     itemId: string,
     data: Omit<
-      DeepPartial<InventoryItem>,
+      DeepPartial<ReservationItem>,
       "id" | "created_at" | "metadata" | "deleted_at"
     >
-  ): Promise<InventoryItem> {
+  ): Promise<ReservationItem> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     const item = await this.retrieve(itemId)
 
@@ -116,7 +115,7 @@ export default class InventoryItemService {
       itemRepository.merge(item, data)
       await itemRepository.save(item)
 
-      await this.eventBusService_.emit(InventoryItemService.Events.UPDATED, {
+      await this.eventBusService_.emit(ReservationItemService.Events.UPDATED, {
         id: item.id,
       })
     }
@@ -126,12 +125,29 @@ export default class InventoryItemService {
 
   async delete(id: string): Promise<void> {
     const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    const itemRepository = manager.getRepository(ReservationItem)
 
     await itemRepository.softRemove({ id })
 
-    await this.eventBusService_.emit(InventoryItemService.Events.DELETED, {
+    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
       id,
     })
+  }
+
+  async getReservedQuantity(
+    itemId: string,
+    locationIds: string[]
+  ): Promise<number> {
+    const manager = this.getManager()
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const result = await itemRepository
+      .createQueryBuilder()
+      .select("SUM(quantity)", "quantity")
+      .where("item_id = :itemId", { itemId })
+      .andWhere("location_id IN (:...locationIds)", { locationIds })
+      .getRawOne()
+
+    return result.quantity
   }
 }

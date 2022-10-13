@@ -3,8 +3,10 @@ import { defaultAdminVariantFields, defaultAdminVariantRelations } from "./"
 
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { FindConfig } from "../../../../types/common"
+import { InventoryItemDTO } from "../../../../types/inventory"
 import { ProductVariant } from "../../../../models/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
+import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
@@ -73,6 +75,9 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
+  const variantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -100,7 +105,20 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.json({ variants, count, offset, limit })
+  const result = await Promise.all(
+    variants.map(async (variant: ProductVariant): Promise<ResponseVariant> => {
+      const responseVariant: ResponseVariant = { ...variant, inventory: [] }
+      responseVariant.inventory =
+        await variantInventoryService.listInventoryItemsByVariant(variant.id)
+      return responseVariant
+    })
+  )
+
+  res.json({ variants: result, count, offset, limit })
+}
+
+type ResponseVariant = Partial<ProductVariant> & {
+  inventory: InventoryItemDTO[]
 }
 
 export class AdminGetVariantsParams {

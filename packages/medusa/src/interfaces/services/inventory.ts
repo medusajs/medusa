@@ -2,9 +2,11 @@ import { FindConfig } from "../../types/common"
 
 import {
   InventoryItemDTO,
+  ReservationItemDTO,
   InventoryLevelDTO,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  CreateReservationItemInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
 } from "../../types/inventory"
@@ -20,12 +22,19 @@ export interface IInventoryService {
     config?: FindConfig<InventoryLevelDTO>
   ): Promise<[InventoryLevelDTO[], number]>
 
-  retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO>
+  retrieveInventoryItem(
+    itemId: string,
+    config?: FindConfig<InventoryItemDTO>
+  ): Promise<InventoryItemDTO>
 
   retrieveInventoryLevel(
     itemId: string,
     locationId: string
   ): Promise<InventoryLevelDTO>
+
+  createReservationItem(
+    input: CreateReservationItemInput
+  ): Promise<ReservationItemDTO>
 
   createInventoryItem(
     input: CreateInventoryItemInput
@@ -54,5 +63,13 @@ export interface IInventoryService {
     quantity: number
   ): Promise<boolean>
 
-  retrieveQuantity(itemId: string, locationIds: string[]): Promise<number>
+  retrieveAvailableQuantity(
+    itemId: string,
+    locationIds: string[]
+  ): Promise<number>
+
+  retrieveStockedQuantity(
+    itemId: string,
+    locationIds: string[]
+  ): Promise<number>
 }

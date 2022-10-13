@@ -30,7 +30,7 @@ class SalesChannelInventoryService {
     this.inventoryService = inventoryService
   }
 
-  async retrieveItemQuantity(
+  async retrieveAvailableItemQuantity(
     salesChannelId: string,
     itemId: string
   ): Promise<number> {
@@ -38,7 +38,10 @@ class SalesChannelInventoryService {
       salesChannelId
     )
 
-    return await this.inventoryService.retrieveQuantity(itemId, locations)
+    return await this.inventoryService.retrieveAvailableQuantity(
+      itemId,
+      locations
+    )
   }
 }
 
