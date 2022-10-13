@@ -10,6 +10,8 @@ const {
   Image,
   Cart,
   PriceList,
+  CustomerGroup,
+  Customer,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
