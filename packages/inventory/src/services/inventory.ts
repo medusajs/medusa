@@ -4,24 +4,18 @@ import {
   IInventoryService,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
-  FilterableStockLocationProps,
-  CreateStockLocationInput,
-  UpdateStockLocationInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
   IEventBusService,
+  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  StockLocationDTO,
 } from "@medusajs/medusa"
 
-import {
-  InventoryItemService,
-  InventoryLevelService,
-  StockLocationService,
-} from "./"
+import { InventoryItemService, InventoryLevelService } from "./"
 
 type InjectedDependencies = {
+  stockLocationService: IStockLocationService
   eventBusService: IEventBusService
 }
 
@@ -29,20 +23,13 @@ export default class InventoryService implements IInventoryService {
   protected readonly eventBusService: IEventBusService
   protected readonly inventoryItemService: InventoryItemService
   protected readonly inventoryLevelService: InventoryLevelService
-  protected readonly stockLocationService: StockLocationService
+  protected readonly stockLocationService: IStockLocationService
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor({ eventBusService, stockLocationService }: InjectedDependencies) {
     this.eventBusService = eventBusService
+    this.stockLocationService = stockLocationService
     this.inventoryItemService = new InventoryItemService({ eventBusService })
     this.inventoryLevelService = new InventoryLevelService({ eventBusService })
-    this.stockLocationService = new StockLocationService({ eventBusService })
-  }
-
-  async listLocations(
-    selector: FilterableStockLocationProps,
-    config?: FindConfig<StockLocationDTO>
-  ): Promise<[StockLocationDTO[], number]> {
-    return this.stockLocationService.listAndCount(selector, config)
   }
 
   async listInventoryItems(
@@ -57,11 +44,6 @@ export default class InventoryService implements IInventoryService {
     config: FindConfig<InventoryLevelDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryLevelDTO[], number]> {
     return await this.inventoryLevelService.listAndCount(selector, config)
-  }
-
-  async retrieveLocation(id: string): Promise<StockLocationDTO> {
-    const locationResult = await this.stockLocationService.retrieve(id)
-    return { ...locationResult }
   }
 
   async retrieveInventoryItem(itemId: string): Promise<InventoryItemDTO> {
@@ -93,23 +75,10 @@ export default class InventoryService implements IInventoryService {
     return { ...inventoryItem }
   }
 
-  async createLocation(
-    input: CreateStockLocationInput
-  ): Promise<StockLocationDTO> {
-    return await this.stockLocationService.create(input)
-  }
-
   async createInventoryLevel(
     input: CreateInventoryLevelInput
   ): Promise<InventoryLevelDTO> {
     return await this.inventoryLevelService.create(input)
-  }
-
-  async updateLocation(
-    id: string,
-    input: UpdateStockLocationInput
-  ): Promise<StockLocationDTO> {
-    return await this.stockLocationService.update(id, input)
   }
 
   async updateInventoryItem(
@@ -152,37 +121,29 @@ export default class InventoryService implements IInventoryService {
     return { ...updatedInventoryLevel }
   }
 
-  async confirmInventory(
+  async retrieveQuantity(
     itemId: string,
-    locationIds: string[],
-    quantity: number
-  ): Promise<boolean> {
+    locationIds: string[]
+  ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService.retrieve(itemId, {
       select: ["id"],
     })
-
-    const locations = await this.stockLocationService.list(
-      { id: locationIds },
-      { select: ["id"] }
-    )
-
-    if (locations.length !== locationIds.length) {
-      const missingLocationIds = locationIds.filter((id) => {
-        return !locations.find((l) => l.id === id)
-      })
-
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Query contains invalid Locations: [${missingLocationIds.join(", ")}]`
-      )
-    }
 
     const stockedQuantity = await this.inventoryLevelService.getStockedQuantity(
       itemId,
       locationIds
     )
 
+    return stockedQuantity
+  }
+
+  async confirmInventory(
+    itemId: string,
+    locationIds: string[],
+    quantity: number
+  ): Promise<boolean> {
+    const stockedQuantity = await this.retrieveQuantity(itemId, locationIds)
     return stockedQuantity >= quantity
   }
 }

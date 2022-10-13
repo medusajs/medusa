@@ -2,12 +2,7 @@ import { ConfigModule } from "@medusajs/medusa"
 import { ConnectionOptions, createConnection } from "typeorm"
 import { CONNECTION_NAME } from "../config"
 
-import {
-  InventoryItem,
-  InventoryLevel,
-  StockLocation,
-  StockLocationAddress,
-} from "../models"
+import { InventoryItem, InventoryLevel } from "../models"
 
 export default async ({
   configModule,
@@ -20,12 +15,7 @@ export default async ({
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
-    entities: [
-      InventoryLevel,
-      InventoryItem,
-      StockLocation,
-      StockLocationAddress,
-    ],
+    entities: [InventoryLevel, InventoryItem],
     logging: configModule.projectConfig.database_logging || false,
   } as ConnectionOptions)
 }
