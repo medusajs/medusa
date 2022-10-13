@@ -1,21 +1,46 @@
 import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
+  AdminOrderEditsListRes,
   AdminOrderEditsRes,
+  AdminPostOrderEditsEditLineItemsLineItemReq,
+  AdminPostOrderEditsEditLineItemsReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-  AdminPostOrderEditsEditLineItemsReq,
-  AdminPostOrderEditsEditLineItemsLineItemReq,
+  GetOrderEditsOrderEditParams,
+  GetOrderEditsParams,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import qs from "qs"
 
 class AdminOrderEditsResource extends BaseResource {
   retrieve(
     id: string,
+    query?: GetOrderEditsOrderEditParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminOrderEditsRes> {
-    const path = `/admin/order-edits/${id}`
+    let path = `/admin/order-edits/${id}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  list(
+    query?: GetOrderEditsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminOrderEditsListRes> {
+    let path = `/admin/order-edits`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
