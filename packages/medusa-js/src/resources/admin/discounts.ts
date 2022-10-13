@@ -7,6 +7,8 @@ import {
   AdminGetDiscountsParams,
   AdminPostDiscountsDiscountConditions,
   AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionBatchParams,
+  AdminPostDiscountsDiscountConditionsConditionBatchReq,
   AdminPostDiscountsDiscountConditionsConditionParams,
   AdminPostDiscountsDiscountConditionsParams,
   AdminPostDiscountsDiscountDynamicCodesReq,
@@ -121,7 +123,7 @@ class AdminDiscountsResource extends BaseResource {
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts?${queryString}`
+      path += `?${queryString}`
     }
 
     return this.client.request("GET", path, undefined, {}, customHeaders)
@@ -152,7 +154,7 @@ class AdminDiscountsResource extends BaseResource {
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions?${queryString}`
+      path += `?${queryString}`
     }
 
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -172,7 +174,7 @@ class AdminDiscountsResource extends BaseResource {
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+      path += `?${queryString}`
     }
 
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -203,10 +205,30 @@ class AdminDiscountsResource extends BaseResource {
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+      path += `?${queryString}`
     }
 
     return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * @description Add a batch of items to a discount condition
+   */
+  addConditionResourceBatch(
+    discountId: string,
+    conditionId: string,
+    payload: AdminPostDiscountsDiscountConditionsConditionBatchReq,
+    query?: AdminPostDiscountsDiscountConditionsConditionBatchParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}/batch`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

@@ -58,10 +58,6 @@ Object {
 }
 `;
 
-exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id throws if condition does not belong to discount: DiscountCondition with id test-condition was not found for Discount test-discount-2 1`] = `"Request failed with status code 404"`;
-
-exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id test-condition was not found 1`] = `"Request failed with status code 404"`;
-
 exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `
 Object {
   "message": "Only one of products, product_types is allowed, Only one of product_types, products is allowed",
@@ -76,8 +72,6 @@ Object {
   "type": "duplicate_error",
 }
 `;
-
-exports[`/admin/discounts POST /admin/discounts/:id/conditions fails if more than one condition type is provided: Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed 1`] = `"Request failed with status code 400"`;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions should create a condition 1`] = `
 Object {
@@ -123,8 +117,6 @@ Object {
   "valid_duration": null,
 }
 `;
-
-exports[`/admin/discounts POST /admin/discounts/:id/conditions throws if discount does not exist: Discount with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id should update a condition 1`] = `
 Object {
@@ -197,7 +189,3 @@ Object {
   "valid_duration": null,
 }
 `;
-
-exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id does-not-exist was not found for Discount test-discount 1`] = `"Request failed with status code 404"`;
-
-exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if discount does not exist: Discount with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
