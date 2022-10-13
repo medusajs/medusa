@@ -1574,6 +1574,21 @@ describe("/admin/discounts", () => {
         })
       )
     })
+
+    it("should fail if discount does not exist", async () => {
+      const api = useApi()
+
+      const err = await api
+        .delete(
+          "/admin/discounts/not-exist/conditions/test-condition",
+          adminReqConfig
+        )
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id not-exist was not found"
+      )
+    })
   })
 
   describe("POST /admin/discounts/:id/conditions", () => {

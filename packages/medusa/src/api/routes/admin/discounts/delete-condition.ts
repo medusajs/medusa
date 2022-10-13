@@ -82,27 +82,23 @@ export default async (req, res) => {
     .retrieve(condition_id)
     .catch(() => void 0)
 
-  const defaultRes = {
-    id: condition_id,
-    object: "discount-condition",
-    deleted: true,
-  }
-
   if (!condition) {
+    const discount = await discountService.retrieve(
+      discount_id,
+      req.retrieveConfig
+    )
     // resolves idempotently in case of non-existing condition
-    return res.json(defaultRes)
-  }
-
-  let discount = await discountService
-    .retrieve(discount_id, {
-      select: ["id", "rule_id"],
+    return res.json({
+      id: condition_id,
+      object: "discount-condition",
+      deleted: true,
+      discount,
     })
-    .catch(() => void 0)
-
-  if (!discount) {
-    // resolves idempotently in case of non-existing condition
-    return res.json(defaultRes)
   }
+
+  let discount = await discountService.retrieve(discount_id, {
+    select: ["id", "rule_id"],
+  })
 
   if (condition.discount_rule_id !== discount.rule_id) {
     throw new MedusaError(
@@ -121,7 +117,9 @@ export default async (req, res) => {
   discount = await discountService.retrieve(discount_id, req.retrieveConfig)
 
   res.json({
-    ...defaultRes,
+    id: condition_id,
+    object: "discount-condition",
+    deleted: true,
     discount,
   })
 }
