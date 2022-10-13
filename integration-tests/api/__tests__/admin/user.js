@@ -7,6 +7,11 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const userSeeder = require("../../helpers/user-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  simpleAnalyticsConfigFactory,
+} = require("../../factories/simple-analytics-config-factory")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 
@@ -17,7 +22,7 @@ describe("/admin/users", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -322,11 +327,9 @@ describe("/admin/users", () => {
 
       const usersBeforeDelete = usersBeforeDeleteResponse.data.users
 
-      const response = await api
-        .delete(`/admin/users/${userId}`, {
-          headers: { Authorization: "Bearer test_token" },
-        })
-        .catch((err) => console.log(err))
+      const response = await api.delete(`/admin/users/${userId}`, {
+        headers: { Authorization: "Bearer test_token" },
+      })
 
       const usersAfterDeleteResponse = await api.get("/admin/users", {
         headers: {
@@ -351,6 +354,77 @@ describe("/admin/users", () => {
       expect(usersAfterDelete).toEqual(
         expect.not.arrayContaining([expect.objectContaining({ id: userId })])
       )
+    })
+  })
+})
+
+describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const [process, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_ANALYTICS: true },
+    })
+    dbConnection = connection
+    medusaProcess = process
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  describe("DELETE /admin/users", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Deletes a user and their analytics config", async () => {
+      const api = useApi()
+
+      const userId = "member-user"
+
+      await simpleAnalyticsConfigFactory(dbConnection, {
+        user_id: userId,
+      })
+
+      const response = await api.delete(`/admin/users/${userId}`, {
+        headers: { Authorization: "Bearer test_token" },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({
+        id: userId,
+        object: "user",
+        deleted: true,
+      })
+
+      const configs = await dbConnection.manager.query(
+        `SELECT * FROM public.analytics_config WHERE user_id = '${userId}'`
+      )
+
+      expect(configs).toMatchSnapshot([
+        {
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: expect.any(Date),
+          id: expect.any(String),
+          user_id: userId,
+          opt_out: false,
+          anonymize: false,
+        },
+      ])
     })
   })
 })

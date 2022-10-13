@@ -11,7 +11,6 @@ import UserService from "./user"
 
 type InjectedDependencies = {
   analyticsConfigRepository: typeof AnalyticsRepository
-  userService: UserService
   manager: EntityManager
 }
 
@@ -22,17 +21,12 @@ class AnalyticsConfigService extends TransactionBaseService {
   protected readonly analyticsConfigRepository_: typeof AnalyticsRepository
   protected readonly userService_: UserService
 
-  constructor({
-    analyticsConfigRepository,
-    userService,
-    manager,
-  }: InjectedDependencies) {
+  constructor({ analyticsConfigRepository, manager }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
     this.analyticsConfigRepository_ = analyticsConfigRepository
-    this.userService_ = userService
   }
 
   async retrieve(userId: string) {
@@ -93,7 +87,7 @@ class AnalyticsConfigService extends TransactionBaseService {
         this.analyticsConfigRepository_
       )
 
-      const config = await this.retrieve(userId).catch(() => void 0)
+      const config = await this.retrieve(userId).catch(() => undefined)
 
       if (!config) {
         return
