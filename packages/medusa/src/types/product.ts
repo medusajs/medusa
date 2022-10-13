@@ -60,9 +60,9 @@ export class FilterableProductProps {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  type?: string
+  type_id?: string[]
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]

@@ -3,26 +3,89 @@ import "reflect-metadata"
 import { Discount } from "../../../.."
 import { DiscountCondition } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, {
+  doesConditionBelongToDiscount,
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+import {
+  AdminPostDiscountsDiscountConditionsConditionBatchParams,
+  AdminPostDiscountsDiscountConditionsConditionBatchReq,
+} from "./add-resources-to-condition-batch"
+import {
+  AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionParams,
+} from "./update-condition"
+import {
+  AdminPostDiscountsDiscountConditions,
+  AdminPostDiscountsDiscountConditionsParams,
+} from "./create-condition"
+import { AdminPostDiscountsDiscountDynamicCodesReq } from "./create-dynamic-code"
+import {
+  AdminPostDiscountsDiscountParams,
+  AdminPostDiscountsDiscountReq,
+} from "./update-discount"
+import {
+  AdminPostDiscountsParams,
+  AdminPostDiscountsReq,
+} from "./create-discount"
+import { AdminGetDiscountsParams } from "./list-discounts"
+import { AdminGetDiscountsDiscountConditionsConditionParams } from "./get-condition"
+import { AdminDeleteDiscountsDiscountConditionsConditionParams } from "./delete-condition"
+import { AdminGetDiscountsDiscountCodeParams } from "./get-discount-by-code"
+import { AdminGetDiscountParams } from "./get-discount"
 
 const route = Router()
 
 export default (app) => {
   app.use("/discounts", route)
 
-  route.get("/", middlewares.wrap(require("./list-discounts").default))
-  route.post("/", middlewares.wrap(require("./create-discount").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetDiscountsParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-discounts").default)
+  )
+  route.post(
+    "/",
+    transformQuery(AdminPostDiscountsParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostDiscountsReq),
+    middlewares.wrap(require("./create-discount").default)
+  )
 
   route.get(
     "/:discount_id",
+    transformQuery(AdminGetDiscountParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
     middlewares.wrap(require("./get-discount").default)
   )
   route.get(
     "/code/:code",
+    transformQuery(AdminGetDiscountsDiscountCodeParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
     middlewares.wrap(require("./get-discount-by-code").default)
   )
   route.post(
     "/:discount_id",
+    transformQuery(AdminPostDiscountsDiscountParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostDiscountsDiscountReq),
     middlewares.wrap(require("./update-discount").default)
   )
   route.delete(
@@ -33,6 +96,7 @@ export default (app) => {
   // Dynamic codes
   route.post(
     "/:discount_id/dynamic-codes",
+    transformBody(AdminPostDiscountsDiscountDynamicCodesReq),
     middlewares.wrap(require("./create-dynamic-code").default)
   )
   route.delete(
@@ -51,21 +115,62 @@ export default (app) => {
   )
 
   // Discount condition management
-  route.get(
-    "/:discount_id/conditions/:condition_id",
-    middlewares.wrap(require("./get-condition").default)
-  )
-  route.post(
-    "/:discount_id/conditions/:condition_id",
-    middlewares.wrap(require("./update-condition").default)
-  )
   route.post(
     "/:discount_id/conditions",
+    transformQuery(AdminPostDiscountsDiscountConditionsParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostDiscountsDiscountConditions),
     middlewares.wrap(require("./create-condition").default)
   )
+
   route.delete(
     "/:discount_id/conditions/:condition_id",
+    transformQuery(AdminDeleteDiscountsDiscountConditionsConditionParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
     middlewares.wrap(require("./delete-condition").default)
+  )
+
+  const conditionRouter = Router({ mergeParams: true })
+  route.use(
+    "/:discount_id/conditions/:condition_id",
+    doesConditionBelongToDiscount,
+    conditionRouter
+  )
+
+  conditionRouter.get(
+    "/",
+    transformQuery(AdminGetDiscountsDiscountConditionsConditionParams, {
+      defaultFields: defaultAdminDiscountConditionFields,
+      defaultRelations: defaultAdminDiscountConditionRelations,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-condition").default)
+  )
+  conditionRouter.post(
+    "/",
+    transformQuery(AdminPostDiscountsDiscountConditionsConditionParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostDiscountsDiscountConditionsCondition),
+    middlewares.wrap(require("./update-condition").default)
+  )
+  conditionRouter.post(
+    "/batch",
+    transformQuery(AdminPostDiscountsDiscountConditionsConditionBatchParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostDiscountsDiscountConditionsConditionBatchReq),
+    middlewares.wrap(require("./add-resources-to-condition-batch").default)
   )
 
   return app
@@ -129,3 +234,4 @@ export * from "./list-discounts"
 export * from "./remove-region"
 export * from "./update-condition"
 export * from "./update-discount"
+export * from "./add-resources-to-condition-batch"

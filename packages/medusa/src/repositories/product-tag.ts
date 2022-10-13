@@ -1,6 +1,6 @@
 import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
-import { ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig, Selector } from "../types/common"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -67,7 +67,7 @@ export class ProductTagRepository extends Repository<ProductTag> {
 
   async findAndCountByDiscountConditionId(
     conditionId: string,
-    query: ExtendedFindConfig<ProductTag, Partial<ProductTag>>
+    query: ExtendedFindConfig<ProductTag, Selector<ProductTag>>
   ) {
     const qb = this.createQueryBuilder("pt")
 

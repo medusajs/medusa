@@ -3,9 +3,12 @@ const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
+const { simpleProductFactory } = require("../../factories")
 
 const adminSeeder = require("../../helpers/admin-seeder")
+const adminVariantsSeeder = require("../../helpers/admin-variants-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+const storeProductSeeder = require("../../helpers/store-product-seeder")
 
 jest.setTimeout(30000)
 
@@ -117,6 +120,7 @@ describe("/admin/products", () => {
 
     it("lists all product variants matching a specific product title", async () => {
       const api = useApi()
+
       const response = await api
         .get("/admin/variants?q=Test product1", {
           headers: {
@@ -143,6 +147,121 @@ describe("/admin/products", () => {
           }),
         ])
       )
+    })
+  })
+
+  describe("GET /admin/variants price selection strategy", () => {
+    beforeEach(async () => {
+      try {
+        await adminVariantsSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+      }
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("selects prices based on the passed currency code", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/variants?id=test-variant&currency_code=usd",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data).toMatchSnapshot({
+        variants: [
+          {
+            id: "test-variant",
+            original_price: 100,
+            calculated_price: 80,
+            calculated_price_type: "sale",
+            original_price_incl_tax: null,
+            calculated_price_incl_tax: null,
+            original_tax: null,
+            calculated_tax: null,
+            options: expect.any(Array),
+            prices: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("selects prices based on the passed region id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/variants?id=test-variant&region_id=reg-europe",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data).toMatchSnapshot({
+        variants: [
+          {
+            id: "test-variant",
+            original_price: 100,
+            calculated_price: 80,
+            calculated_price_type: "sale",
+            original_price_incl_tax: 100,
+            calculated_price_incl_tax: 80,
+            original_tax: 0,
+            calculated_tax: 0,
+            options: expect.any(Array),
+            prices: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("selects prices based on the passed region id and customer id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/variants?id=test-variant&region_id=reg-europe&customer_id=test-customer",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data).toMatchSnapshot({
+        variants: [
+          {
+            id: "test-variant",
+            original_price: 100,
+            calculated_price: 40,
+            calculated_price_type: "sale",
+            original_price_incl_tax: 100,
+            calculated_price_incl_tax: 40,
+            original_tax: 0,
+            calculated_tax: 0,
+            prices: expect.any(Array),
+            options: expect.any(Array),
+            product: expect.any(Object),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
     })
   })
 })
