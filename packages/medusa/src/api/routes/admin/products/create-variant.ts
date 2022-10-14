@@ -7,11 +7,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductService, ProductVariantService } from "../../../../services"
+import { Type } from "class-transformer"
+import {
+  ProductService,
+  ProductVariantService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { IInventoryService } from "../../../../interfaces"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
@@ -206,17 +211,38 @@ export default async (req, res) => {
     req.body
   )
 
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
   const productService: ProductService = req.scope.resolve("productService")
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await productVariantService
-      .withTransaction(transactionManager)
-      .create(id, validated)
-  })
+  // TODO: This would be a place to implement a distributed transaction
+
+  const variant = await productVariantService.create(id, validated)
+
+  if (validated.manage_inventory) {
+    const inventoryItem = await inventoryService.createInventoryItem({
+      sku: validated.sku,
+      origin_country: validated.origin_country,
+      hs_code: validated.hs_code ? parseInt(validated.hs_code) : undefined,
+      mid_code: validated.mid_code,
+      material: validated.material,
+      weight: validated.weight,
+      length: validated.length,
+      height: validated.height,
+      width: validated.width,
+    })
+
+    await productVariantInventoryService.attachInventoryItem(
+      variant.id,
+      inventoryItem.id,
+      1
+    )
+  }
 
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
