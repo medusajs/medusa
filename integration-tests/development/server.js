@@ -14,7 +14,7 @@ const watchFiles = () => {
   }
   WATCHING = true
 
-  const watcher = chokidar.watch("/code/packages/medusa", {
+  const watcher = chokidar.watch(medusaCore + "/medusa", {
     ignored: (path) => {
       if (
         path.includes("/node_modules") ||
