@@ -1,12 +1,18 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IInventoryService, TransactionBaseService } from "../interfaces"
+import {
+  IStockLocationService,
+  IInventoryService,
+  TransactionBaseService,
+} from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
-import { ProductVariantService } from "./"
+import { ProductVariantService, SalesChannelLocationService } from "./"
 import { InventoryItemDTO } from "../types/inventory"
 
 type InjectedDependencies = {
+  salesChannelLocationService: SalesChannelLocationService
   productVariantService: ProductVariantService
+  stockLocationService: IStockLocationService
   inventoryService: IInventoryService
 }
 
@@ -14,23 +20,82 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
+  protected readonly salesChannelLocationService: SalesChannelLocationService
   protected readonly productVariantService: ProductVariantService
+  protected readonly stockLocationService: IStockLocationService
   protected readonly inventoryService: IInventoryService
 
   constructor({
+    stockLocationService,
+    salesChannelLocationService,
     productVariantService,
     inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    this.salesChannelLocationService = salesChannelLocationService
+    this.stockLocationService = stockLocationService
     this.productVariantService = productVariantService
     this.inventoryService = inventoryService
   }
 
-  async listInventoryItemsByVariant(
+  async confirmInventory(
+    variantId: string,
+    quantity: number,
+    options: { sales_channel_id?: string | null } = {}
+  ): Promise<Boolean> {
+    const productVariant = await this.productVariantService.retrieve(
+      variantId,
+      {
+        select: ["id", "allow_backorder", "manage_inventory"],
+      }
+    )
+
+    // If the variant allows backorders or if inventory isn't managed we
+    // don't need to check inventory
+    if (productVariant.allow_backorder || !productVariant.manage_inventory) {
+      return true
+    }
+
+    const variantInventory = await this.listByVariant(variantId)
+
+    // If there are no inventory items attached to the variant we default
+    // to true
+    if (variantInventory.length === 0) {
+      return true
+    }
+
+    let locations: string[] = []
+    if (options.sales_channel_id) {
+      locations = await this.salesChannelLocationService.listLocations(
+        options.sales_channel_id
+      )
+    } else {
+      const stockLocations = await this.stockLocationService.list(
+        {},
+        { select: ["id"] }
+      )
+      locations = stockLocations.map((l) => l.id)
+    }
+
+    const hasInventory = await Promise.all(
+      variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.quantity * quantity
+        return await this.inventoryService.confirmInventory(
+          inventoryPart.inventory_item_id,
+          locations,
+          itemQuantity
+        )
+      })
+    )
+
+    return hasInventory.every(Boolean)
+  }
+
+  private async listByVariant(
     variantId: string
-  ): Promise<InventoryItemDTO[]> {
+  ): Promise<ProductVariantInventoryItem[]> {
     const manager = this.transactionManager_ || this.manager_
 
     const variantInventoryRepo = manager.getRepository(
@@ -41,8 +106,15 @@ class ProductVariantInventoryService extends TransactionBaseService {
       where: { variant_id: variantId },
     })
 
+    return variantInventory
+  }
+
+  async listInventoryItemsByVariant(
+    variantId: string
+  ): Promise<InventoryItemDTO[]> {
+    const variantInventory = await this.listByVariant(variantId)
     const [items] = await this.inventoryService.listInventoryItems({
-      id: variantInventory.map((v) => v.inventory_item_id),
+      id: variantInventory.map((i) => i.inventory_item_id),
     })
 
     return items
