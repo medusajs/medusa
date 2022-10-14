@@ -2,10 +2,16 @@ import { NumericalComparisonOperator, StringComparisonOperator } from "./common"
 
 export type InventoryItemDTO = {
   id: string
-  sku: string
-  origin_country: string
-  hs_code: number
+  sku?: string
+  origin_country?: string
+  hs_code?: number
   requires_shipping: boolean
+  mid_code?: string
+  material?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -54,6 +60,12 @@ export type FilterableInventoryItemProps = {
 export type CreateInventoryItemInput = {
   sku?: string
   origin_country?: string
+  mid_code?: string
+  material?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
   metadata?: Record<string, unknown> | null
   hs_code?: number
   requires_shipping?: boolean

@@ -17,6 +17,24 @@ export class InventoryItem extends SoftDeletableEntity {
   @Column()
   hs_code: number
 
+  @Column({ nullable: true })
+  mid_code: string
+
+  @Column({ nullable: true })
+  material: string
+
+  @Column({ type: "int", nullable: true })
+  weight: number
+
+  @Column({ type: "int", nullable: true })
+  length: number
+
+  @Column({ type: "int", nullable: true })
+  height: number
+
+  @Column({ type: "int", nullable: true })
+  width: number
+
   @Column()
   requires_shipping: boolean
 

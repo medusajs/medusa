@@ -84,6 +84,12 @@ export default class InventoryItemService {
       origin_country: data.origin_country,
       metadata: data.metadata,
       hs_code: data.hs_code,
+      mid_code: data.mid_code,
+      material: data.material,
+      weight: data.weight,
+      length: data.length,
+      height: data.height,
+      width: data.width,
       requires_shipping: data.requires_shipping || false,
     })
 
