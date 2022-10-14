@@ -939,6 +939,29 @@ export const adminHandlers = [
     }
   ),
 
+  rest.delete(
+    "/admin/discounts/:id/conditions/:conditionId/batch",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          discount: {
+            ...fixtures.get("discount"),
+            rule: {
+              ...fixtures.get("discount").rule,
+              conditions: [
+                {
+                  ...fixtures.get("discount").rule.conditions[0],
+                  products: [],
+                },
+              ],
+            },
+          },
+        })
+      )
+    }
+  ),
+
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(
       ctx.status(200),
