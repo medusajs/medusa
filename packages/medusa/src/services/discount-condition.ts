@@ -195,20 +195,18 @@ class DiscountConditionService extends TransactionBaseService {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
-      if (data.id) {
-        const resolvedCondition = await this.retrieve(data.id)
+      const resolvedCondition = await this.retrieve(data.id)
 
-        if (data.operator && data.operator !== resolvedCondition.operator) {
-          resolvedCondition.operator = data.operator
-          await discountConditionRepo.save(resolvedCondition)
-        }
-
-        await discountConditionRepo.removeConditionResources(
-          data.id,
-          resolvedConditionType.type,
-          resolvedConditionType.resource_ids
-        )
+      if (data.operator && data.operator !== resolvedCondition.operator) {
+        resolvedCondition.operator = data.operator
+        await discountConditionRepo.save(resolvedCondition)
       }
+
+      await discountConditionRepo.removeConditionResources(
+        data.id,
+        resolvedConditionType.type,
+        resolvedConditionType.resource_ids
+      )
     })
   }
 

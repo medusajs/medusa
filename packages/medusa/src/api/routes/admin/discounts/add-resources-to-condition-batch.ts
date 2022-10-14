@@ -28,7 +28,7 @@ import { FindParams } from "../../../../types/common"
  *           - resources
  *         properties:
  *           resources:
- *             description: The resources to be deleted from the discount condition
+ *             description: The resources to be added to the discount condition
  *             type: array
  *             items:
  *               required:

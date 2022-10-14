@@ -25,7 +25,7 @@ export const adminDiscountKeys = {
   },
 }
 
-export type DiscountQueryKeys = typeof adminDiscountKeys
+type DiscountQueryKeys = typeof adminDiscountKeys
 
 export const useAdminDiscounts = (
   query?: AdminGetDiscountsParams,
