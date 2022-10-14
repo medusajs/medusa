@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== `development`) {
+  return
+}
+
 const path = require("path")
 
 const Module = require("module")
