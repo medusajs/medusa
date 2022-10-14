@@ -30,6 +30,8 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
     cwd: __dirname,
     ignore: [
       "**/__fixtures__/**",
+      "**/__tests__/**",
+      "**/__mocks__/**",
       "**/index.js",
       "**/index.ts",
       "**/utils.js",
