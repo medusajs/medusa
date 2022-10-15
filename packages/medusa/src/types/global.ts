@@ -37,8 +37,12 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
+<<<<<<< HEAD
 export type ModuleResolution = {
   shouldResolve: boolean
+=======
+type ModuleResolution = {
+>>>>>>> 5c51afb50 (wip)
   resolutionPath: string
   settings: {
     registration: string

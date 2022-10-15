@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { getConfigFile } from "medusa-core-utils"
+=======
+>>>>>>> 5c51afb50 (wip)
 import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
 import logger from "./logger"
@@ -22,12 +25,36 @@ const errorHandler = isProduction
     }
   : console.log
 
+<<<<<<< HEAD
 export const handleConfigError = (error: Error): void => {
   logger.error(`Error in loading config: ${error.message}`)
   if (error.stack) {
     logger.error(error.stack)
   }
   process.exit(1)
+=======
+export const MODULE_DEFINITION = {
+  stockLocation: {
+    registration: "stockLocationService",
+    defaultPackage: "@medusajs/stock-locations",
+    label: "StockLocationService",
+    validation: (proto: any): boolean => {
+      return true
+    },
+    required: false,
+    canOverride: true,
+  },
+  inventory: {
+    registration: "inventoryService",
+    defaultPackage: "@medusajs/inventory",
+    label: "InventoryService",
+    validation: (proto: any): boolean => {
+      return true
+    },
+    required: false,
+    canOverride: true,
+  },
+>>>>>>> 5c51afb50 (wip)
 }
 
 export default (rootDirectory: string): ConfigModule => {
@@ -83,6 +110,7 @@ export default (rootDirectory: string): ConfigModule => {
   const projectModules = configModule.modules ?? {}
   for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
     let resolutionPath = settings.defaultPackage
+<<<<<<< HEAD
     let resolve = true
     if (settings.canOverride && moduleKey in projectModules) {
       if (projectModules[moduleKey]) {
@@ -94,6 +122,13 @@ export default (rootDirectory: string): ConfigModule => {
 
     moduleResolutions[moduleKey] = {
       shouldResolve: resolve,
+=======
+    if (settings.canOverride && moduleKey in projectModules) {
+      resolutionPath = resolveCwd(projectModules[moduleKey])
+    }
+
+    moduleResolutions[moduleKey] = {
+>>>>>>> 5c51afb50 (wip)
       resolutionPath,
       settings,
     }
