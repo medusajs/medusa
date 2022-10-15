@@ -1,7 +1,8 @@
 {
   "name": "@medusajs/inventory",
-  "version": "1.4.1",
+  "version": "0.0.0",
   "description": "Inventory Module for Medusa",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -28,7 +29,9 @@
   },
   "peerDependencies": {
     "@medusajs/medusa": "1.x.x",
-    "medusa-interfaces": "1.x.x",
-    "typeorm": "0.2.x"
+    "medusa-interfaces": "1.x.x"
+  },
+  "dependencies": {
+    "typeorm": "^0.2.45"
   }
 }

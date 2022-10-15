@@ -111,11 +111,11 @@ export default async (directory, featureFlagRouter) => {
   })
 
   const migrationDirs = []
-  const coreMigrations = path.resolve(
+  const corePackageMigrations = path.resolve(
     path.join(__dirname, "..", "..", "migrations")
   )
 
-  migrationDirs.push(path.join(coreMigrations, "*.js"))
+  migrationDirs.push(path.join(corePackageMigrations, "*.js"))
 
   for (const p of resolved) {
     const exists = existsSync(`${p.resolve}/migrations`)
@@ -124,9 +124,11 @@ export default async (directory, featureFlagRouter) => {
     }
   }
 
-  return getEnabledMigrations(migrationDirs, (flag) =>
+  const coreMigrations = getEnabledMigrations(migrationDirs, (flag) =>
     featureFlagRouter.isFeatureEnabled(flag)
   )
+
+  return { coreMigrations }
 }
 
 export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {

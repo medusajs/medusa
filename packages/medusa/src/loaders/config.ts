@@ -1,3 +1,4 @@
+import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
 import { getConfigFile } from "medusa-core-utils/dist"
 
@@ -8,6 +9,29 @@ const errorHandler = isProduction
       throw new Error(msg)
     }
   : console.log
+
+export const MODULE_DEFINITION = {
+  stockLocation: {
+    registration: "stockLocationService",
+    defaultPackage: "@medusajs/stock-locations",
+    label: "StockLocationService",
+    validation: (proto: any): boolean => {
+      return true
+    },
+    required: false,
+    canOverride: true,
+  },
+  inventory: {
+    registration: "inventoryService",
+    defaultPackage: "@medusajs/inventory",
+    label: "InventoryService",
+    validation: (proto: any): boolean => {
+      return true
+    },
+    required: false,
+    canOverride: true,
+  },
+}
 
 export default (rootDirectory: string): ConfigModule => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as {
@@ -50,12 +74,28 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
+  const moduleResolutions = {}
+  const projectModules = configModule.modules ?? {}
+  for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
+    let resolutionPath = settings.defaultPackage
+    if (settings.canOverride && moduleKey in projectModules) {
+      resolutionPath = resolveCwd(projectModules[moduleKey])
+    }
+
+    moduleResolutions[moduleKey] = {
+      resolutionPath,
+      settings,
+    }
+  }
+
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
+    modules: configModule.modules ?? {},
+    moduleResolutions,
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
   }

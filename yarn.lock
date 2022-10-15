@@ -4303,11 +4303,11 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
+    typeorm: ^0.2.45
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": 1.x.x
     medusa-interfaces: 1.x.x
-    typeorm: 0.2.x
   languageName: unknown
   linkType: soft
 
@@ -4442,9 +4442,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@workspace:packages/stock-location":
+"@medusajs/stock-locations@workspace:packages/stock-locations":
   version: 0.0.0-use.local
-  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+  resolution: "@medusajs/stock-locations@workspace:packages/stock-locations"
   dependencies:
     "@medusajs/medusa": ^1.4.1
     cross-env: ^5.2.1
@@ -33486,7 +33486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31":
+"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31, typeorm@npm:^0.2.45":
   version: 0.2.45
   resolution: "typeorm@npm:0.2.45"
   dependencies:
