@@ -30,8 +30,13 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isDefined, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
+import {
+  buildQuery,
+  formatException,
+  isDefined,
+  isString,
+  setMetadata,
+} from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -108,7 +113,12 @@ class ProductService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps | Selector<Product> = {},
+    selector:
+      | FilterableProductProps
+      | (Selector<Product> & {
+          q?: string
+          discount_condition_id?: string
+        }),
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -116,20 +126,8 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product[]> {
-    const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
-
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
-    if (q) {
-      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-      return products
-    }
-
-    return await productRepo.findWithRelations(relations, query)
+    const [products] = await this.listAndCount(selector, config)
+    return products
   }
 
   /**
@@ -144,7 +142,12 @@ class ProductService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps | Selector<Product>,
+    selector:
+      | FilterableProductProps
+      | (Selector<Product> & {
+          q?: string
+          discount_condition_id?: string
+        }),
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -155,7 +158,15 @@ class ProductService extends TransactionBaseService {
     const manager = this.manager_
     const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
+    let q
+    if (isString(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const { relations, ...query } = buildQuery(selector, config) as {
+      relations: string[]
+    } & FindWithoutRelationsOptions
 
     if (q) {
       return await productRepo.getFreeTextSearchResultsAndCount(
@@ -860,47 +871,6 @@ class ProductService extends TransactionBaseService {
         .emit(ProductService.Events.UPDATED, product)
       return product
     })
-  }
-
-  /**
-   * Creates a query object to be used for list queries.
-   * @param selector - the selector to create the query from
-   * @param config - the config to use for the query
-   * @return an object containing the query, relations and free-text
-   *   search param.
-   */
-  protected prepareListQuery_(
-    selector: FilterableProductProps | Selector<Product>,
-    config: FindProductConfig
-  ): {
-    q: string
-    relations: (keyof Product)[]
-    query: FindWithoutRelationsOptions
-  } {
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = buildQuery(selector, config)
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
-    }
-
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
-
-    const rels = query.relations
-    delete query.relations
-
-    return {
-      query: query as FindWithoutRelationsOptions,
-      relations: rels as (keyof Product)[],
-      q,
-    }
   }
 }
 

@@ -81,6 +81,10 @@ export class FilterableProductProps {
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
+
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
 }
 
 /**

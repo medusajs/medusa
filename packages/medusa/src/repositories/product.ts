@@ -1,4 +1,3 @@
-import { flatten, groupBy, map, merge } from "lodash"
 import {
   Brackets,
   EntityRepository,
@@ -7,11 +6,12 @@ import {
   Repository,
 } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
+import { ExtendedFindConfig, Selector } from "../types/common"
 import {
-  ExtendedFindConfig,
-  Selector,
-  WithRequiredProperty,
-} from "../types/common"
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+  queryEntityWithIds,
+} from "../utils/repository"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
@@ -26,20 +26,12 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
     sales_channel_id?: FindOperator<SalesChannel>
+    discount_condition_id?: string
   }
 }
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
-  private mergeEntitiesWithRelations(
-    entitiesAndRelations: Array<Partial<Product>>
-  ): Product[] {
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
-    )
-  }
-
   private async queryProducts(
     optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
@@ -52,6 +44,10 @@ export class ProductRepository extends Repository<Product> {
 
     const sales_channels = optionsWithoutRelations?.where?.sales_channel_id
     delete optionsWithoutRelations?.where?.sales_channel_id
+
+    const discount_condition_id =
+      optionsWithoutRelations?.where?.discount_condition_id
+    delete optionsWithoutRelations?.where?.discount_condition_id
 
     const qb = this.createQueryBuilder("product")
       .select(["product.id"])
@@ -100,6 +96,15 @@ export class ProductRepository extends Repository<Product> {
       )
     }
 
+    if (discount_condition_id) {
+      qb.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: discount_condition_id }
+      )
+    }
+
     if (optionsWithoutRelations.withDeleted) {
       qb.withDeleted()
     }
@@ -115,87 +120,6 @@ export class ProductRepository extends Repository<Product> {
     }
 
     return [entities, count]
-  }
-
-  private getGroupedRelations(relations: string[]): {
-    [toplevel: string]: string[]
-  } {
-    const groupedRelations: { [toplevel: string]: string[] } = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
-
-    return groupedRelations
-  }
-
-  private async queryProductsWithIds(
-    entityIds: string[],
-    groupedRelations: { [toplevel: string]: string[] },
-    withDeleted = false,
-    select: (keyof Product)[] = []
-  ): Promise<Product[]> {
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-        let querybuilder = this.createQueryBuilder("products")
-
-        if (select && select.length) {
-          querybuilder.select(select.map((f) => `products.${f}`))
-        }
-
-        if (toplevel === "variants") {
-          querybuilder = querybuilder
-            .leftJoinAndSelect(
-              `products.${toplevel}`,
-              toplevel,
-              "variants.deleted_at IS NULL"
-            )
-            .orderBy({
-              "variants.variant_rank": "ASC",
-            })
-        } else {
-          querybuilder = querybuilder.leftJoinAndSelect(
-            `products.${toplevel}`,
-            toplevel
-          )
-        }
-
-        for (const rel of rels) {
-          const [_, rest] = rel.split(".")
-          if (!rest) {
-            continue
-          }
-          // Regex matches all '.' except the rightmost
-          querybuilder = querybuilder.leftJoinAndSelect(
-            rel.replace(/\.(?=[^.]*\.)/g, "__"),
-            rel.replace(".", "__")
-          )
-        }
-
-        if (withDeleted) {
-          querybuilder = querybuilder
-            .where("products.id IN (:...entitiesIds)", {
-              entitiesIds: entityIds,
-            })
-            .withDeleted()
-        } else {
-          querybuilder = querybuilder.where(
-            "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
-            {
-              entitiesIds: entityIds,
-            }
-          )
-        }
-
-        return querybuilder.getMany()
-      })
-    ).then(flatten)
-
-    return entitiesIdsWithRelations
   }
 
   public async findWithRelationsAndCount(
@@ -232,17 +156,33 @@ export class ProductRepository extends Repository<Product> {
       return [toReturn, toReturn.length]
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
+    const groupedRelations = getGroupedRelations(relations)
+    const entitiesIdsWithRelations = await queryEntityWithIds(
+      this,
       entitiesIds,
       groupedRelations,
       idsOrOptionsWithoutRelations.withDeleted,
-      idsOrOptionsWithoutRelations.select
+      idsOrOptionsWithoutRelations.select,
+      [
+        (qb, alias, toplevel) => {
+          const isCustomJoin = toplevel === "variants"
+          if (isCustomJoin) {
+            qb.leftJoinAndSelect(
+              `${alias}.${toplevel}`,
+              toplevel,
+              "variants.deleted_at IS NULL"
+            ).orderBy({
+              "variants.variant_rank": "ASC",
+            })
+          }
+          return !isCustomJoin
+        },
+      ]
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
     const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+      mergeEntitiesWithRelations<Product>(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   }
@@ -280,18 +220,32 @@ export class ProductRepository extends Repository<Product> {
       return await this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
+    const groupedRelations = getGroupedRelations(relations)
+    const entitiesIdsWithRelations = await queryEntityWithIds(
+      this,
       entitiesIds,
       groupedRelations,
-      withDeleted
+      withDeleted,
+      [],
+      [
+        (qb, alias, toplevel) => {
+          const isCustomJoin = toplevel === "variants"
+          if (isCustomJoin) {
+            qb.leftJoinAndSelect(
+              `${alias}.${toplevel}`,
+              toplevel,
+              "variants.deleted_at IS NULL"
+            ).orderBy({
+              "variants.variant_rank": "ASC",
+            })
+          }
+          return !isCustomJoin
+        },
+      ]
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
-
-    return entitiesToReturn
+    return mergeEntitiesWithRelations<Product>(entitiesAndRelations)
   }
 
   public async findOneWithRelations(
@@ -339,7 +293,8 @@ export class ProductRepository extends Repository<Product> {
     options: FindWithoutRelationsOptions = { where: {} },
     relations: string[] = []
   ): Promise<[Product[], number]> {
-    const cleanedOptions = this._cleanOptions(options)
+    const options_ = { ...options }
+    const cleanedOptions = ProductRepository._cleanOptions(options_)
 
     let qb = this.createQueryBuilder("product")
       .leftJoinAndSelect("product.variants", "variant")
@@ -358,6 +313,16 @@ export class ProductRepository extends Repository<Product> {
       .skip(cleanedOptions.skip)
       .take(cleanedOptions.take)
 
+    const discountConditionId = options.where.discount_condition_id
+    if (discountConditionId) {
+      qb.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: discountConditionId }
+      )
+    }
+
     if (cleanedOptions.withDeleted) {
       qb = qb.withDeleted()
     }
@@ -373,19 +338,25 @@ export class ProductRepository extends Repository<Product> {
     return [products, count]
   }
 
-  private _cleanOptions(
+  private static _cleanOptions(
     options: FindWithoutRelationsOptions
-  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
+  ): FindWithoutRelationsOptions {
     const where = options.where ?? {}
+
     if ("description" in where) {
       delete where.description
     }
+
     if ("title" in where) {
       delete where.title
     }
 
     if ("price_list_id" in where) {
       delete where?.price_list_id
+    }
+
+    if ("discount_condition_id" in where) {
+      delete where?.discount_condition_id
     }
 
     return {
