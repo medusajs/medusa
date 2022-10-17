@@ -23,6 +23,7 @@ import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
 import { generateEntityId } from "../utils/generate-entity-id"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 export enum ProductStatus {
   DRAFT = "draft",
@@ -146,7 +147,7 @@ export class Product extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @FeatureFlagDecorators("sales_channels", [
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
     ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
     JoinTable({
       name: "product_sales_channel",

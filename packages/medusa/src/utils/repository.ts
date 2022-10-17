@@ -1,6 +1,6 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import { Repository, SelectQueryBuilder } from "typeorm"
-import { FindWithoutRelationsOptions } from "../repositories/customer-group"
+import { ExtendedFindConfig } from "../types/common"
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
@@ -27,7 +27,7 @@ export async function queryEntityWithIds<T>(
   const alias = repository.metadata.name.toLowerCase()
   return await Promise.all(
     Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-      let querybuilder = repository.createQueryBuilder(`${alias}`)
+      let querybuilder = repository.createQueryBuilder(alias)
 
       if (select && select.length) {
         querybuilder.select(select.map((f) => `${alias}.${f as string}`))
@@ -91,7 +91,7 @@ export async function queryEntityWithIds<T>(
  */
 export async function queryEntityWithoutRelations<T>(
   repository: Repository<T>,
-  optionsWithoutRelations: FindWithoutRelationsOptions,
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T, unknown>, "relations">,
   shouldCount = false,
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
