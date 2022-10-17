@@ -195,6 +195,24 @@ describe("/store/products", () => {
       }
     })
 
+    it("works when filtering by type_id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/products?type_id[]=test-type&fields=id,title,type_id`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type_id: "test-type",
+          }),
+        ])
+      )
+    })
+
     it("returns only published products", async () => {
       const api = useApi()
 

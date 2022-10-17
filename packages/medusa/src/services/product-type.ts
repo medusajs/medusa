@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, ILike } from "typeorm"
 import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
-import { FindConfig } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, isString } from "../utils"
 
@@ -53,7 +53,7 @@ class ProductTypeService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: Partial<ProductType> & {
+    selector: Selector<ProductType> & {
       q?: string
       discount_condition_id?: string
     } = {},
@@ -70,7 +70,7 @@ class ProductTypeService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: Partial<ProductType> & {
+    selector: Selector<ProductType> & {
       q?: string
       discount_condition_id?: string
     } = {},

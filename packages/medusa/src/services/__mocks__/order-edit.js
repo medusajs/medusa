@@ -93,6 +93,9 @@ export const orderEditServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  listAndCount: jest.fn().mockImplementation(() => {
+    return Promise.resolve([[orderEdit], 1])
+  }),
   computeLineItems: jest.fn().mockImplementation((orderEdit) => {
     return Promise.resolve(computeLineItems(orderEdit))
   }),
