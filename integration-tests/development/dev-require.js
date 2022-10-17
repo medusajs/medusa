@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== `development`) {
+if (process.env.NODE_ENV !== "development") {
   return
 }
 
@@ -8,25 +8,29 @@ const Module = require("module")
 const originalRequire = Module.prototype.require
 const medusaCore = path.resolve(path.join(__dirname, "../../packages"))
 
+function replacePath(requirePath, package, concatPackage = true) {
+  const idx = requirePath.indexOf(package)
+  const packPath = requirePath.substring(idx + package.length)
+
+  return (
+    medusaCore +
+    "/" +
+    (concatPackage ? package + "/" : "") +
+    packPath.replace("/dist", "/src").replace(".js", "")
+  )
+}
+
 Module.prototype.require = function (...args) {
   const interfaces = "medusa-interfaces"
-  const base = "@medusajs/"
+  const utils = "medusa-core-utils"
+  const base = "@medusajs"
 
   if (args[0].includes(base)) {
-    const idx = args[0].indexOf(base)
-
-    const packPath = args[0].substring(idx + base.length)
-    args[0] =
-      medusaCore + "/" + packPath.replace("/dist/", "/src/").replace(".js", "")
+    args[0] = replacePath(args[0], base, false)
   } else if (args[0].includes(interfaces)) {
-    const idx = args[0].indexOf(interfaces)
-    const packPath = args[0].substring(idx + interfaces.length)
-    args[0] =
-      medusaCore +
-      "/" +
-      interfaces +
-      "/" +
-      packPath.replace("/dist/", "/src/").replace(".js", "")
+    args[0] = replacePath(args[0], interfaces)
+  } else if (args[0].includes(utils)) {
+    args[0] = replacePath(args[0], utils)
   }
 
   if (args[0] === "glob") {
