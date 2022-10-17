@@ -117,7 +117,7 @@ export const DiscountConditionMapTypeToProperty = {
   [DiscountConditionType.CUSTOMER_GROUPS]: "customer_groups",
 }
 
-export type UpsertDiscountConditionInput = {
+export type DiscountConditionInput = {
   rule_id?: string
   id?: string
   operator?: DiscountConditionOperator
@@ -133,7 +133,7 @@ export type CreateDiscountRuleInput = {
   type: DiscountRuleType
   value: number
   allocation: AllocationType
-  conditions?: UpsertDiscountConditionInput[]
+  conditions?: DiscountConditionInput[]
 }
 
 export type CreateDiscountInput = {
@@ -154,7 +154,7 @@ export type UpdateDiscountRuleInput = {
   description?: string
   value?: number
   allocation?: AllocationType
-  conditions?: UpsertDiscountConditionInput[]
+  conditions?: DiscountConditionInput[]
 }
 
 export type UpdateDiscountInput = {

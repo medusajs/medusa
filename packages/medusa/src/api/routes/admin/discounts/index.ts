@@ -34,6 +34,10 @@ import { AdminGetDiscountsDiscountConditionsConditionParams } from "./get-condit
 import { AdminDeleteDiscountsDiscountConditionsConditionParams } from "./delete-condition"
 import { AdminGetDiscountsDiscountCodeParams } from "./get-discount-by-code"
 import { AdminGetDiscountParams } from "./get-discount"
+import {
+  AdminDeleteDiscountsDiscountConditionsConditionBatchParams,
+  AdminDeleteDiscountsDiscountConditionsConditionBatchReq,
+} from "./delete-resources-from-condition-batch"
 
 const route = Router()
 
@@ -172,6 +176,16 @@ export default (app) => {
     transformBody(AdminPostDiscountsDiscountConditionsConditionBatchReq),
     middlewares.wrap(require("./add-resources-to-condition-batch").default)
   )
+  conditionRouter.delete(
+    "/batch",
+    transformQuery(AdminDeleteDiscountsDiscountConditionsConditionBatchParams, {
+      defaultFields: defaultAdminDiscountsFields,
+      defaultRelations: defaultAdminDiscountsRelations,
+      isList: false,
+    }),
+    transformBody(AdminDeleteDiscountsDiscountConditionsConditionBatchReq),
+    middlewares.wrap(require("./delete-resources-from-condition-batch").default)
+  )
 
   return app
 }
@@ -235,3 +249,4 @@ export * from "./remove-region"
 export * from "./update-condition"
 export * from "./update-discount"
 export * from "./add-resources-to-condition-batch"
+export * from "./delete-resources-from-condition-batch"
