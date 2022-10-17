@@ -113,6 +113,8 @@ export default async (req, res) => {
       .registerCartCompletion(draftOrder.id, result.id)
   })
 
+  await orderService.capturePayment(result.id) // ??
+
   const order = await orderService.retrieve(result.id, {
     relations: defaultOrderRelations,
     select: defaultOrderFields,
