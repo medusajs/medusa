@@ -90,4 +90,8 @@ export class GetOrderEditsParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  order_id?: string
 }
