@@ -2319,4 +2319,135 @@ describe("/admin/discounts", () => {
       )
     })
   })
+
+  describe("DELETE /admin/discounts/:id/conditions/:condition_id/batch", () => {
+    let prod1
+    let prod2
+    let prod3
+    let prod4
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      prod1 = await simpleProductFactory(dbConnection, { type: "pants" })
+      prod2 = await simpleProductFactory(dbConnection, { type: "pants2" })
+      prod3 = await simpleProductFactory(dbConnection, { type: "pants3" })
+      prod4 = await simpleProductFactory(dbConnection, { type: "pants4" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "products",
+              operator: "in",
+              products: [prod1.id, prod2.id, prod3.id, prod4.id],
+            },
+          ],
+        },
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount-2",
+        code: "TEST2",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition-2",
+              type: "products",
+              operator: "in",
+              products: [],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should update a condition with batch items to delete", async () => {
+      const api = useApi()
+
+      const discount = await api.get(
+        "/admin/discounts/test-discount",
+        adminReqConfig
+      )
+
+      const cond = discount.data.discount.rule.conditions[0]
+
+      const response = await api.delete(
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        {
+          ...adminReqConfig,
+          data: {
+            resources: [{ id: prod2.id }, { id: prod3.id }, { id: prod4.id }],
+          },
+        }
+      )
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc.rule.conditions).toHaveLength(1)
+      expect(disc.rule.conditions[0].products).toHaveLength(1)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+          rule: expect.objectContaining({
+            conditions: expect.arrayContaining([
+              expect.objectContaining({
+                products: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: prod1.id,
+                  }),
+                ]),
+              }),
+            ]),
+          }),
+        })
+      )
+    })
+
+    it("should fail if condition does not belong to discount", async () => {
+      const api = useApi()
+
+      const err = await api
+        .delete(
+          "/admin/discounts/test-discount/conditions/test-condition-2/batch",
+          adminReqConfig
+        )
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Condition with id test-condition-2 does not belong to Discount with id test-discount"
+      )
+    })
+
+    it("should fail if discount does not exist", async () => {
+      const api = useApi()
+
+      const err = await api
+        .delete(
+          "/admin/discounts/not-exist/conditions/test-condition/batch",
+          adminReqConfig
+        )
+        .catch((e) => e)
+
+      expect(err.response.data.message).toBe(
+        "Discount with id not-exist was not found"
+      )
+    })
+  })
 })

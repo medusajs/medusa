@@ -1,7 +1,6 @@
-import DiscountConditionService from "../../../../services/discount-condition"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { DiscountService } from "../../../../services"
+import { DiscountConditionService, DiscountService } from "../../../../services"
 import {
   DiscountConditionInput,
   DiscountConditionMapTypeToProperty,
@@ -10,10 +9,10 @@ import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
- * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of resources to a discount condition"
- * description: "Add a batch of resources to a discount condition."
+ * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}/batch
+ * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
+ * summary: "Delete a batch of resources from a discount condition"
+ * description: "Delete a batch of resources from a discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
@@ -28,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  *           - resources
  *         properties:
  *           resources:
- *             description: The resources to be added to the discount condition
+ *             description: The resources to be deleted from the discount condition
  *             type: array
  *             items:
  *               required:
@@ -44,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.addConditionResourceBatch(discount_id, condition_id, {
+ *       medusa.admin.discounts.deleteConditionResourceBatch(discount_id, condition_id, {
  *         resources: [{ id: item_id }]
  *       })
  *       .then(({ discount }) => {
@@ -53,7 +52,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
@@ -88,8 +87,6 @@ import { FindParams } from "../../../../types/common"
  */
 export default async (req: Request, res: Response) => {
   const { discount_id, condition_id } = req.params
-  const validatedBody =
-    req.validatedBody as AdminPostDiscountsDiscountConditionsConditionBatchReq
 
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
@@ -100,17 +97,19 @@ export default async (req: Request, res: Response) => {
     select: ["id", "type", "discount_rule_id"],
   })
 
-  const updateObj: DiscountConditionInput = {
+  const validatedBody =
+    req.validatedBody as AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+  const data = {
     id: condition_id,
     rule_id: condition.discount_rule_id,
     [DiscountConditionMapTypeToProperty[condition.type]]:
       validatedBody.resources,
-  }
+  } as Omit<DiscountConditionInput, "id"> & { id: string }
 
   await manager.transaction(async (transactionManager) => {
     await conditionService
       .withTransaction(transactionManager)
-      .upsertCondition(updateObj, false)
+      .removeResources(data)
   })
 
   const discountService: DiscountService = req.scope.resolve("discountService")
@@ -122,9 +121,9 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsDiscountConditionsConditionBatchReq {
+export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
+
+export class AdminDeleteDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   resources: { id: string }[]
 }
-
-export class AdminPostDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
