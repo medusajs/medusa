@@ -22,24 +22,20 @@ export default async ({
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
-  let connection: Connection
-  if (!getConnectionManager().has("default")) {
-    connection = await createConnection({
-      type: configModule.projectConfig.database_type,
-      url: configModule.projectConfig.database_url,
-      database: configModule.projectConfig.database_database,
-      extra: configModule.projectConfig.database_extra || {},
-      entities,
-      namingStrategy: new ShortenedNamingStrategy(),
-      logging: configModule.projectConfig.database_logging || false,
-    } as ConnectionOptions)
-  } else {
-    connection = getConnection()
-
-    if (!connection.isConnected) {
-      await connection.connect()
-    }
+  const cnnManager = getConnectionManager()
+  if (cnnManager.has("default") && getConnection().isConnected) {
+    await getConnection().close()
   }
+
+  const connection = await createConnection({
+    type: configModule.projectConfig.database_type,
+    url: configModule.projectConfig.database_url,
+    database: configModule.projectConfig.database_database,
+    extra: configModule.projectConfig.database_extra || {},
+    entities,
+    namingStrategy: new ShortenedNamingStrategy(),
+    logging: configModule.projectConfig.database_logging || false,
+  } as ConnectionOptions)
 
   if (isSqlite) {
     await connection.query(`PRAGMA foreign_keys = OFF`)

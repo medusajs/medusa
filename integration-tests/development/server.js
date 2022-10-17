@@ -50,7 +50,9 @@ const watchFiles = () => {
     const next = path.slice(0, src + 2).join("/")
 
     for (const name of allModules) {
-      if (name.includes(medusaCore)) {
+      if (name.includes("/typeorm")) {
+        delete module.constructor._cache[name]
+      } else if (name.includes(medusaCore)) {
         if (
           name.includes("/repositories") ||
           name.includes("/loaders") ||
