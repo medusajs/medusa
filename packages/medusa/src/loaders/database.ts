@@ -35,6 +35,10 @@ export default async ({
     } as ConnectionOptions)
   } else {
     connection = getConnection()
+
+    if (!connection.isConnected) {
+      await connection.connect()
+    }
   }
 
   if (isSqlite) {
