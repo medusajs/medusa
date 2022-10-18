@@ -201,8 +201,8 @@ export default async (req, res) => {
     switch (idempotencyKey.recovery_point) {
       case "started": {
         await manager
-          .transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 const order = await orderService
@@ -248,8 +248,6 @@ export default async (req, res) => {
                   recovery_point: "swap_created",
                 }
               })
-
-            idempotencyKey = key
           })
           .catch((e) => {
             inProgress = false
@@ -260,40 +258,35 @@ export default async (req, res) => {
 
       case "swap_created": {
         await manager
-          .transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (transactionManager: EntityManager) => {
-                  const swaps = await swapService
-                    .withTransaction(transactionManager)
-                    .list({
-                      idempotency_key: idempotencyKey.idempotency_key,
-                    })
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                const swaps = await swapService
+                  .withTransaction(transactionManager)
+                  .list({
+                    idempotency_key: idempotencyKey.idempotency_key,
+                  })
 
-                  if (!swaps.length) {
-                    throw new MedusaError(
-                      MedusaError.Types.INVALID_DATA,
-                      "Swap not found"
-                    )
-                  }
-
-                  const order = await orderService
-                    .withTransaction(transactionManager)
-                    .retrieve(id, {
-                      select: defaultAdminOrdersFields,
-                      relations: defaultAdminOrdersRelations,
-                    })
-
-                  return {
-                    response_code: 200,
-                    response_body: { order },
-                  }
+                if (!swaps.length) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    "Swap not found"
+                  )
                 }
-              )
 
-            idempotencyKey = key
+                const order = await orderService
+                  .withTransaction(transactionManager)
+                  .retrieve(id, {
+                    select: defaultAdminOrdersFields,
+                    relations: defaultAdminOrdersRelations,
+                  })
+
+                return {
+                  response_code: 200,
+                  response_body: { order },
+                }
+              })
           })
           .catch((e) => {
             inProgress = false

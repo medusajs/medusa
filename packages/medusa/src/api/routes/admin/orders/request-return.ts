@@ -176,8 +176,8 @@ export default async (req, res) => {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           await manager
-            .transaction(async (transactionManager) => {
-              const { key, error } = await idempotencyKeyService
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const returnObj: ReturnObj = {
@@ -230,8 +230,6 @@ export default async (req, res) => {
                     recovery_point: "return_requested",
                   }
                 })
-
-              idempotencyKey = key
             })
             .catch((e) => {
               inProgress = false
@@ -242,8 +240,8 @@ export default async (req, res) => {
 
         case "return_requested": {
           await manager
-            .transaction(async (transactionManager) => {
-              const { key, error } = await idempotencyKeyService
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   let order: Order | Return = await orderService
@@ -287,8 +285,6 @@ export default async (req, res) => {
                     response_body: { order },
                   }
                 })
-
-              idempotencyKey = key
             })
             .catch((e) => {
               inProgress = false

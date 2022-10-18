@@ -224,8 +224,8 @@ export default async (req, res) => {
     switch (idempotencyKey.recovery_point) {
       case "started": {
         await manager
-          .transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 const order = await orderService
@@ -265,8 +265,6 @@ export default async (req, res) => {
                   recovery_point: "claim_created",
                 }
               })
-
-            idempotencyKey = key
           })
           .catch((e) => {
             inProgress = false
@@ -277,8 +275,8 @@ export default async (req, res) => {
 
       case "claim_created": {
         await manager
-          .transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 let claim = await claimService.withTransaction(manager).list({
@@ -304,8 +302,6 @@ export default async (req, res) => {
                   recovery_point: "refund_handled",
                 }
               })
-
-            idempotencyKey = key
           })
           .catch((e) => {
             inProgress = false
@@ -316,8 +312,8 @@ export default async (req, res) => {
 
       case "refund_handled": {
         await manager
-          .transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 let order = await orderService
@@ -362,8 +358,6 @@ export default async (req, res) => {
                   response_body: { order },
                 }
               })
-
-            idempotencyKey = key
           })
           .catch((e) => {
             inProgress = false

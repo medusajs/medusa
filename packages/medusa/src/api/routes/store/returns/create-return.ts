@@ -13,7 +13,6 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
-import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 
@@ -142,7 +141,6 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService: OrderService = req.scope.resolve("orderService")
     const returnService: ReturnService = req.scope.resolve("returnService")
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
@@ -153,17 +151,10 @@ export default async (req, res) => {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           await manager
-            .transaction(async (transactionManager) => {
-              const { key, error } = await idempotencyKeyService
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const order = await orderService
-                    .withTransaction(manager)
-                    .retrieve(returnDto.order_id, {
-                      select: ["refunded_total", "total"],
-                      relations: ["items"],
-                    })
-
                   const returnObj: any = {
                     order_id: returnDto.order_id,
                     idempotency_key: idempotencyKey.idempotency_key,
@@ -195,8 +186,6 @@ export default async (req, res) => {
                     recovery_point: "return_requested",
                   }
                 })
-
-              idempotencyKey = key
             })
             .catch((e) => {
               inProgress = false
@@ -207,8 +196,8 @@ export default async (req, res) => {
 
         case "return_requested": {
           await manager
-            .transaction(async (transactionManager) => {
-              const { key, error } = await idempotencyKeyService
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const returnOrders = await returnService
@@ -234,8 +223,6 @@ export default async (req, res) => {
                     response_body: { return: returnOrder },
                   }
                 })
-
-              idempotencyKey = key
             })
             .catch((e) => {
               inProgress = false

@@ -171,7 +171,7 @@ class IdempotencyKeyService extends TransactionBaseService {
         }
       | never
     >
-  ): Promise<{ key?: IdempotencyKey; error?: unknown }> {
+  ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
       const { recovery_point, response_code, response_body } = await callback(
         manager
@@ -186,9 +186,8 @@ class IdempotencyKeyService extends TransactionBaseService {
         data.response_code = response_code
       }
 
-      const key = await this.update(idempotencyKey, data)
-      return { key }
-    }, "SERIALIZABLE")
+      return await this.update(idempotencyKey, data)
+    })
   }
 }
 
