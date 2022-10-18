@@ -54,7 +54,7 @@ const watchFiles = () => {
     const allModules = Object.keys(module.constructor._cache)
     const path = file.split("/")
     const src = path.findIndex((folder) => folder === "src")
-    const next = path.slice(0, src + 1).join("/")
+    const next = path.slice(0, src + 2).join("/")
 
     for (const name of allModules) {
       if (name.includes("/typeorm")) {
