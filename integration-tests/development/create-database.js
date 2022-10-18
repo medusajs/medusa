@@ -21,7 +21,6 @@ const start = async () => {
   console.log("Seeding DB... DONE")
 
   await dbConnection.close()
-  await dbConnection.driver.disconnect()
   process.exit()
 }
 

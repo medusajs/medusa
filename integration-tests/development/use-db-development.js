@@ -6,7 +6,7 @@ const dbFactory = require("../helpers/use-template-db")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
-const DB_NAME = process.env.DB_TEMP_NAME
+const DB_NAME = "development"
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
 require("./dev-require")

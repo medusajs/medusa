@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== `development`) {
+if (process.env.NODE_ENV !== "development") {
   return
 }
 
@@ -7,17 +7,30 @@ const path = require("path")
 const Module = require("module")
 const originalRequire = Module.prototype.require
 const medusaCore = path.resolve(path.join(__dirname, "../../packages"))
-const currentPath = path.resolve(__dirname, "..")
+
+function replacePath(requirePath, package, concatPackage = true) {
+  const idx = requirePath.indexOf(package)
+  const packPath = requirePath.substring(idx + package.length)
+
+  return (
+    medusaCore +
+    "/" +
+    (concatPackage ? package + "/" : "") +
+    packPath.replace("/dist", "/src").replace(".js", "")
+  )
+}
 
 Module.prototype.require = function (...args) {
-  const base = "@medusajs/"
+  const interfaces = "medusa-interfaces"
+  const utils = "medusa-core-utils"
+  const base = "@medusajs"
 
-  if (args[0].indexOf(base) > -1) {
-    const idx = args[0].indexOf(base)
-
-    const packPath = args[0].substring(idx + base.length)
-    args[0] =
-      medusaCore + "/" + packPath.replace("/dist/", "/src/").replace(".js", "")
+  if (args[0].includes(base)) {
+    args[0] = replacePath(args[0], base, false)
+  } else if (args[0].includes(interfaces)) {
+    args[0] = replacePath(args[0], interfaces)
+  } else if (args[0].includes(utils)) {
+    args[0] = replacePath(args[0], utils)
   }
 
   if (args[0] === "glob") {
@@ -25,11 +38,9 @@ Module.prototype.require = function (...args) {
     const originalGlobSync = glob.sync
     glob.GlobSync = glob.sync = (pattern, options) => {
       if (pattern.endsWith(".js") || pattern.endsWith(".ts")) {
-        pattern = pattern
-          .replace(currentPath, medusaCore)
-          .replace(".js", ".{j,t}s")
-          .replace("/dist/", "/src/")
+        pattern = pattern.replace(".js", ".{j,t}s").replace("/dist/", "/src/")
       }
+
       return originalGlobSync.apply(this, [pattern, options])
     }
     return glob
