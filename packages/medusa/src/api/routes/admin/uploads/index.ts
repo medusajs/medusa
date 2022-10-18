@@ -18,6 +18,12 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
+  route.post(
+    "/protected",
+    upload.array("files"),
+    middlewares.wrap(require("./create-protected-upload").default)
+  )
+
   route.delete(
     "/",
     transformBody(AdminDeleteUploadsReq),

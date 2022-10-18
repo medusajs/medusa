@@ -235,6 +235,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const prodId2 = IdMap.getId("prodId2")
     const lineItemId1 = IdMap.getId("line-item-1")
     const lineItemId2 = IdMap.getId("line-item-2")
+    const orderId = IdMap.getId("order-1")
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
@@ -247,6 +248,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       })
 
       const order = await simpleOrderFactory(dbConnection, {
+        id: orderId,
         email: "test@testson.com",
         tax_rate: null,
         fulfillment_status: "fulfilled",
@@ -296,6 +298,20 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         created_by: "admin_user",
         internal_note: "test internal note",
       })
+
+      const additionalOrder = await simpleOrderFactory(dbConnection, {
+        id: IdMap.getId("random-order-id"),
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+      })
+
+      await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("random-oe-id"),
+        order_id: additionalOrder.id,
+        created_by: "admin_user",
+        internal_note: "test unused note",
+      })
     })
 
     afterEach(async () => {
@@ -309,6 +325,59 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       const response = await api.get(`/admin/order-edits`, adminHeaders)
 
       expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(2)
+      expect(response.data.offset).toEqual(0)
+      expect(response.data.limit).toEqual(20)
+      expect(response.data.order_edits).toHaveLength(2)
+      expect(response.data.order_edits).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: orderEditId,
+            created_by: "admin_user",
+            requested_by: null,
+            canceled_by: null,
+            confirmed_by: null,
+            internal_note: "test internal note",
+            items: expect.arrayContaining([]),
+            changes: [],
+            shipping_total: 0,
+            gift_card_total: 0,
+            gift_card_tax_total: 0,
+            discount_total: 0,
+            tax_total: 0,
+            total: 0,
+            subtotal: 0,
+          }),
+          expect.objectContaining({
+            order_id: IdMap.getId("random-order-id"),
+            created_by: "admin_user",
+            requested_by: null,
+            canceled_by: null,
+            confirmed_by: null,
+            internal_note: "test unused note",
+            items: expect.arrayContaining([]),
+            changes: [],
+            shipping_total: 0,
+            gift_card_total: 0,
+            gift_card_tax_total: 0,
+            discount_total: 0,
+            tax_total: 0,
+            total: 0,
+            subtotal: 0,
+          }),
+        ])
+      )
+    })
+
+    it("list order edits by order id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/order-edits?order_id=${orderId}`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.offset).toEqual(0)
       expect(response.data.limit).toEqual(20)
@@ -317,6 +386,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: orderEditId,
+            order_id: orderId,
             created_by: "admin_user",
             requested_by: null,
             canceled_by: null,
@@ -339,34 +409,35 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     it("list order edits with free text search", async () => {
       const api = useApi()
 
-      let response = await api.get(`/admin/order-edits?q=test`, adminHeaders)
+      let response = await api.get(
+        `/admin/order-edits?q=internal`,
+        adminHeaders
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.offset).toEqual(0)
       expect(response.data.limit).toEqual(20)
       expect(response.data.order_edits).toHaveLength(1)
-      expect(response.data.order_edits).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: orderEditId,
-            created_by: "admin_user",
-            requested_by: null,
-            canceled_by: null,
-            confirmed_by: null,
-            internal_note: "test internal note",
-            items: expect.arrayContaining([]),
-            changes: [],
-            shipping_total: 0,
-            gift_card_total: 0,
-            gift_card_tax_total: 0,
-            discount_total: 0,
-            tax_total: 0,
-            total: 0,
-            subtotal: 0,
-          }),
-        ])
-      )
+      expect(response.data.order_edits).toEqual([
+        expect.objectContaining({
+          id: orderEditId,
+          created_by: "admin_user",
+          requested_by: null,
+          canceled_by: null,
+          confirmed_by: null,
+          internal_note: "test internal note",
+          items: expect.arrayContaining([]),
+          changes: [],
+          shipping_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          discount_total: 0,
+          tax_total: 0,
+          total: 0,
+          subtotal: 0,
+        }),
+      ])
 
       response = await api.get(`/admin/order-edits?q=test2`, adminHeaders)
 

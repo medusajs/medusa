@@ -23,6 +23,15 @@ class AdminUploadsResource extends BaseResource {
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
+ 
+  createProtected(file: IAdminPostUploadsFileReq): ResponsePromise<AdminUploadsRes> {
+    const path = `/admin/uploads/protected`
+
+    const payload = new FormData()
+    payload.append("files", file)
+
+    return this.client.request("POST", path, payload, {}, this.headers)
+  }
 
   delete(
     payload: AdminDeleteUploadsReq,
