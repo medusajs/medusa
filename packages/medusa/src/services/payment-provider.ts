@@ -199,7 +199,8 @@ export default class PaymentProviderService extends TransactionBaseService {
         provider_id: sessionInput.provider_id,
         data: sessionData,
         status: "pending",
-      }
+        amount: sessionData.amount,
+      } as PaymentSession
 
       const created = sessionRepo.create(toCreate)
       return await sessionRepo.save(created)
@@ -287,7 +288,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
-      return sessionRepo.save(session)
+      return await sessionRepo.save(session)
     })
   }
 
@@ -298,6 +299,9 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
       const provider = this.retrieveProvider(paymentSession.provider_id)
+
+      session.amount = sessionInput.amount
+      paymentSession.data.amount = sessionInput.amount
       session.data = await provider
         .withTransaction(transactionManager)
         .updatePaymentNew(paymentSession.data, sessionInput)
@@ -305,6 +309,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
+
       return sessionRepo.save(session)
     })
   }
@@ -330,7 +335,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         this.paymentSessionRepository_
       )
 
-      return sessionRepo.remove(session)
+      return await sessionRepo.remove(session)
     })
   }
 
@@ -386,7 +391,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         cart_id: cart.id,
       })
 
-      return paymentRepo.save(created)
+      return await paymentRepo.save(created)
     })
   }
 
@@ -413,7 +418,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         data: paymentData,
       })
 
-      return paymentRepo.save(created)
+      return await paymentRepo.save(created)
     })
   }
 

@@ -230,17 +230,15 @@ class KlarnaProviderService extends PaymentService {
     return order
   }
 
-  validatePaymentCollectionUrls(options) {
+  validateKlarnaOrderUrls(property) {
     const required = ["terms", "checkout", "confirmation"]
 
-    const isMissing = required.some(
-      (prop) => !this.options_.payment_collection_urls?.[prop]
-    )
+    const isMissing = required.some((prop) => !this.options_[property]?.[prop])
 
     if (isMissing) {
       throw new Error(
-        "options.payment_collection_urls is required to create a Payment Collection Order.\n" +
-          `medusa-config.js file has to contain payment_collection_urls { ${required.join(
+        `options.${property} is required to create a Klarna Order.\n` +
+          `medusa-config.js file has to contain ${property} { ${required.join(
             ", "
           )}}`
       )
@@ -259,10 +257,11 @@ class KlarnaProviderService extends PaymentService {
 
   async paymentInputToKlarnaOrder(paymentInput) {
     if (paymentInput.cart) {
+      this.validateKlarnaOrderUrls("merchant_urls")
       return this.cartToKlarnaOrder(paymentInput.cart)
     }
 
-    this.validatePaymentCollectionUrls()
+    this.validateKlarnaOrderUrls("payment_collection_urls")
 
     let order = {
       // Custom id is stored, such that we can use it for hooks

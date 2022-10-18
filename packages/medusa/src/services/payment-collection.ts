@@ -85,29 +85,30 @@ export default class PaymentCollectionService extends TransactionBaseService {
     return paymentCollection
   }
 
-  async retrieveBySessionId(
-    sessionId: string,
-    config: FindConfig<PaymentCollection> = {}
-  ): Promise<PaymentCollection> {
+  async retrievePaymentIdBySessionId(sessionId: string): Promise<string> {
     const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
-      this.paymentCollectionRepository_
-    )
 
-    const query = buildQuery(
-      { "payment_session.payment_session_id": sessionId },
-      config
-    )
-    const paymentCollection = await paymentCollectionRepository.findOne(query)
+    const payCol = (await manager
+      .createQueryBuilder("payment_collection", "pc")
+      .select("pc.id")
+      .innerJoin(
+        "payment_collection_sessions",
+        "pcs",
+        "pcs.payment_collection_id = pc.id"
+      )
+      .where(`pcs.payment_session_id = :sessionId`, {
+        sessionId,
+      })
+      .getOne()) as PaymentCollection
 
-    if (!paymentCollection) {
+    if (!payCol) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Session Id ${sessionId} doesn't belong to a Payment Collection`
       )
     }
 
-    return paymentCollection
+    return payCol.id
   }
 
   async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
@@ -240,9 +241,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
         }
 
         sessionsInput = sessionsInput.filter((session) => {
-          return !!payCol.region.payment_providers.find(
-            ({ id }) => id === session.provider_id
-          )
+          return !!payCol.region.payment_providers.find(({ id }) => {
+            return id === session.provider_id
+          })
         })
 
         if (!this.isValidTotalAmount(payCol.amount, sessionsInput)) {
@@ -314,7 +315,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             await paymentCollectionRepository
               .createQueryBuilder()
               .delete()
-              .from(PaymentCollection)
+              .from(PaymentSession)
               .where("id IN (:...ids)", { ids: removeIds })
               .execute()
           }
@@ -330,20 +331,24 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async refreshPaymentSession(
     sessionInput: PaymentCollectionSessionInput
-  ): Promise<void> {
+  ): Promise<PaymentSession> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        if (!sessionInput.session_id) {
-          return
-        }
+        const id = sessionInput.session_id?.toString() ?? ""
 
-        const payCol = await this.retrieveBySessionId(sessionInput.session_id, {
+        const payColId = await this.retrievePaymentIdBySessionId(id)
+        const session = await this.paymentProviderService_.retrieveSession(id)
+
+        const payCol = await this.retrieve(payColId, {
           relations: ["region", "region.payment_providers", "payment_sessions"],
         })
 
-        const session = await this.paymentProviderService_.retrieveSession(
-          sessionInput.session_id
-        )
+        if (session.amount !== sessionInput.amount) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "The amount has to be the same as the existing payment session"
+          )
+        }
 
         const customer = await this.customerService_.retrieve(
           sessionInput.customer_id,
@@ -360,9 +365,25 @@ export default class PaymentCollectionService extends TransactionBaseService {
           customer,
         }
 
-        await this.paymentProviderService_
+        const sessionRefreshed = await this.paymentProviderService_
           .withTransaction(transactionManager)
           .refreshSessionNew(session, inputData)
+
+        payCol.payment_sessions = payCol.payment_sessions.map((sess) => {
+          if (sess.id === id) {
+            return sessionRefreshed
+          }
+          return sess
+        })
+
+        const manager = this.transactionManager_ ?? this.manager_
+        const paymentCollectionRepository = manager.getCustomRepository(
+          this.paymentCollectionRepository_
+        )
+
+        await paymentCollectionRepository.save(payCol)
+
+        return sessionRefreshed
       }
     )
   }

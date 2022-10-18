@@ -1,4 +1,4 @@
-import { StripeBase } from "."
+import StripeBase from "../helpers/stripe-base"
 
 class BancontactProviderService extends StripeBase {
   static identifier = "stripe-bancontact"

@@ -202,7 +202,7 @@ class AdyenService extends BaseService {
   }
 
   async createPaymentNew(paymentInput) {
-    return { custom_id: paymentInput.resource_id }
+    return { resource_id: paymentInput.resource_id }
   }
 
   /**

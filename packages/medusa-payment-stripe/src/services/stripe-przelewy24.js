@@ -1,4 +1,5 @@
-import { StripeBase } from "."
+import StripeBase from "../helpers/stripe-base"
+
 class Przelewy24ProviderService extends StripeBase {
   static identifier = "stripe-przelewy24"
 

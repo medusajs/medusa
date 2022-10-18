@@ -1,4 +1,4 @@
-import { StripeBase } from "."
+import StripeBase from "../helpers/stripe-base"
 
 class BlikProviderService extends StripeBase {
   static identifier = "stripe-blik"
