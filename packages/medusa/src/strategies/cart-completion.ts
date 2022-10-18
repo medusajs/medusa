@@ -291,7 +291,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
 
         default:
-          await this.manager__.transaction(async (transactionManager) => {
+          await this.manager_.transaction(async (transactionManager) => {
             idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .update(idempotencyKey.idempotency_key, {
@@ -306,7 +306,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     if (err) {
       if (idempotencyKey.recovery_point !== "started") {
-        await this.manager__.transaction(async (transactionManager) => {
+        await this.manager_.transaction(async (transactionManager) => {
           try {
             await orderService
               .withTransaction(transactionManager)
