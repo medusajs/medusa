@@ -263,11 +263,7 @@ class UserService extends TransactionBaseService {
       }
 
       if (this.featureFlagRouter_.isFeatureEnabled(AnalyticsFeatureFlag.key)) {
-        try {
-          await analyticsServiceTx.delete(userId)
-        } catch (error) {
-          console.warn(error)
-        }
+        await analyticsServiceTx.delete(userId)
       }
 
       await userRepo.softRemove(user)

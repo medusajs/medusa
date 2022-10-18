@@ -4,6 +4,6 @@ export type CreateAnalyticsConfig = {
 }
 
 export type UpdateAnalyticsConfig = {
-  opt_out: boolean
-  anonymize: boolean
+  opt_out?: boolean
+  anonymize?: boolean
 }

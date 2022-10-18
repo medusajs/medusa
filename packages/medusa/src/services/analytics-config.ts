@@ -51,50 +51,50 @@ class AnalyticsConfigService extends TransactionBaseService {
   }
 
   async create(userId: string, data: CreateAnalyticsConfig) {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const analyticsRepo = transactionManager.getCustomRepository(
-        this.analyticsConfigRepository_
-      )
+    const manager = this.transactionManager_ || this.manager_
+    const analyticsRepo = manager.getCustomRepository(
+      this.analyticsConfigRepository_
+    )
 
-      try {
-        const config = analyticsRepo.create({ user_id: userId, ...data })
-        return await analyticsRepo.save(config)
-      } catch (error) {
-        throw formatException(error)
-      }
-    })
+    try {
+      const config = analyticsRepo.create({ user_id: userId, ...data })
+      return await analyticsRepo.save(config)
+    } catch (error) {
+      throw formatException(error)
+    }
   }
 
   async update(userId: string, update: UpdateAnalyticsConfig) {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const analyticsRepo = transactionManager.getCustomRepository(
-        this.analyticsConfigRepository_
-      )
+    const manager = this.transactionManager_ || this.manager_
 
-      const config = await this.retrieve(userId)
+    const analyticsRepo = manager.getCustomRepository(
+      this.analyticsConfigRepository_
+    )
 
-      for (const [key, value] of Object.entries(update)) {
+    const config = await this.retrieve(userId)
+
+    for (const [key, value] of Object.entries(update)) {
+      if (value !== undefined) {
         config[key] = value
       }
+    }
 
-      return await analyticsRepo.save(config)
-    })
+    return await analyticsRepo.save(config)
   }
 
   async delete(userId: string) {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const analyticsRepo = transactionManager.getCustomRepository(
-        this.analyticsConfigRepository_
-      )
+    const manager = this.transactionManager_ || this.manager_
+    const analyticsRepo = manager.getCustomRepository(
+      this.analyticsConfigRepository_
+    )
 
-      const config = await this.retrieve(userId).catch(() => undefined)
+    const config = await this.retrieve(userId).catch(() => undefined)
 
-      if (!config) {
-        return
-      }
+    if (!config) {
+      return
+    }
 
-      await analyticsRepo.softRemove(config)
-    })
+    await analyticsRepo.softRemove(config)
   }
 }
 

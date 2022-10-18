@@ -38,11 +38,7 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
 
   describe("GET /admin/analytics-config", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -71,24 +67,22 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
 
     it("should return 404 if no config exists", async () => {
       const api = useApi()
-      try {
-        await api.get(`/admin/analytics-configs`, adminReqConfig)
-      } catch (e) {
-        expect(e.response.status).toEqual(404)
-        expect(e.response.data.message).toEqual(
-          "No analytics config found for user with id: admin_user"
-        )
-      }
+
+      const err = await api
+        .get(`/admin/analytics-configs`, adminReqConfig)
+        .catch((err) => err)
+
+      expect(err).toBeTruthy()
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toEqual(
+        "No analytics config found for user with id: admin_user"
+      )
     })
   })
 
   describe("POST /admin/analytics-config", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -124,11 +118,7 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
 
   describe("POST /admin/analytics-config/update", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -182,11 +172,7 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
 
   describe("DELETE /admin/analytics-config", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
