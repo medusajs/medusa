@@ -64,11 +64,11 @@ export class ProductRepository extends Repository<Product> {
 
       if (optionsWithoutRelations?.where?.tags) {
         const tags = optionsWithoutRelations?.where?.tags
-        delete optionsWithoutRelations?.where?.discount_condition_id
+        delete optionsWithoutRelations?.where?.tags
 
         customJoinsBuilders.push(
           (qb: SelectQueryBuilder<Product>, alias: string) => {
-            qb.leftJoin("product.tags", "tags").andWhere(
+            qb.leftJoin(`${alias}.tags`, "tags").andWhere(
               `tags.id IN (:...tag_ids)`,
               {
                 tag_ids: tags.value,
