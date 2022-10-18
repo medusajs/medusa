@@ -1,7 +1,7 @@
 import { MockManager } from "medusa-test-utils"
 
 export const IdempotencyKeyService = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
   initializeRequest: jest.fn().mockImplementation(() => {
@@ -18,15 +18,13 @@ export const IdempotencyKeyService = {
 
       if (recovery_point) {
         return {
-          key: { recovery_point },
+          recovery_point,
         }
       } else {
         return {
-          key: {
-            recovery_point: "finished",
-            response_body,
-            response_code,
-          },
+          recovery_point: "finished",
+          response_body,
+          response_code,
         }
       }
     } catch (err) {
