@@ -3,6 +3,8 @@ const express = require("express")
 const importFrom = require("import-from")
 const chokidar = require("chokidar")
 
+process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
+
 require("./dev-require")
 
 const medusaCore = path.resolve(path.join(__dirname, "../../packages"))
@@ -14,13 +16,18 @@ const watchFiles = () => {
   }
   WATCHING = true
 
-  const watcher = chokidar.watch(medusaCore + "/medusa", {
+  const watcher = chokidar.watch(medusaCore, {
     ignored: (path) => {
       if (
         path.includes("/node_modules") ||
         path.includes("/dist") ||
         path.includes("/__") ||
-        (/\..*/i.test(path) && !(path.endsWith(".js") || path.endsWith(".ts")))
+        (/\..*/i.test(path) &&
+          !(
+            path.endsWith(".js") ||
+            path.endsWith(".ts") ||
+            path.includes("/src")
+          ))
       ) {
         return true
       }
@@ -47,7 +54,7 @@ const watchFiles = () => {
     const allModules = Object.keys(module.constructor._cache)
     const path = file.split("/")
     const src = path.findIndex((folder) => folder === "src")
-    const next = path.slice(0, src + 2).join("/")
+    const next = path.slice(0, src + 1).join("/")
 
     for (const name of allModules) {
       if (name.includes("/typeorm")) {
@@ -65,9 +72,7 @@ const watchFiles = () => {
       }
     }
 
-    await bootstrapApp({
-      api: true,
-    })
+    await bootstrapApp()
 
     console.log("Server reloaded in", Date.now() - start, "ms")
   })
@@ -86,9 +91,9 @@ const bootstrapApp = async () => {
   )
   const loaders = importFrom(dir, ".").default
 
-  const cwd = path.resolve(path.join(__dirname, "../api/"))
+  const configDir = __dirname
   const { dbConnection } = await loaders({
-    directory: cwd,
+    directory: configDir,
     expressApp: app,
   })
 
