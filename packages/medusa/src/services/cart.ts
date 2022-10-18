@@ -1062,6 +1062,7 @@ class CartService extends TransactionBaseService {
     const productsToKeep = await this.productService_
       .withTransaction(this.manager_)
       .filterProductsBySalesChannel(productIds, newSalesChannelId, {
+        select: ["id", "sales_channels"],
         take: productIds.length,
       })
     const productIdsToKeep = new Set<string>(
