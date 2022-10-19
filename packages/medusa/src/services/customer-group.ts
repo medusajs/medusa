@@ -10,7 +10,6 @@ import { FindConfig, Selector } from "../types/common"
 import { CustomerGroupUpdate } from "../types/customer-groups"
 import {
   buildQuery,
-  formatException,
   isDefined,
   isString,
   PostgresError,
@@ -108,26 +107,8 @@ class CustomerGroupService extends TransactionBaseService {
         )
         return await cgRepo.addCustomers(id, ids)
       },
-      async (error: any) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.retrieve(id)
-
-          const existingCustomers = await this.customerService_.list({
-            id: ids,
-          })
-
-          const nonExistingCustomers = ids.filter(
-            (cId) => existingCustomers.findIndex((el) => el.id === cId) === -1
-          )
-
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following customer ids do not exist: ${JSON.stringify(
-              nonExistingCustomers.join(", ")
-            )}`
-          )
-        }
-        throw formatException(error)
+      async (e: any) => {
+        await this.handleCreationFail(id, ids, e)
       }
     )
   }
@@ -273,6 +254,32 @@ class CustomerGroupService extends TransactionBaseService {
     await cgRepo.removeCustomers(id, ids)
 
     return customerGroup
+  }
+
+  private async handleCreationFail(
+    id: string,
+    ids: string[],
+    error: any
+  ): Promise<never> {
+    if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
+      await this.retrieve(id)
+
+      const existingCustomers = await this.customerService_.list({
+        id: ids,
+      })
+
+      const nonExistingCustomers = ids.filter(
+        (cId) => existingCustomers.findIndex((el) => el.id === cId) === -1
+      )
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following customer ids do not exist: ${JSON.stringify(
+          nonExistingCustomers.join(", ")
+        )}`
+      )
+    }
+    throw error
   }
 }
 
