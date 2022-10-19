@@ -9,7 +9,9 @@ process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
 
 require("./dev-require")
 
-const medusaCore = path.resolve(path.join(__dirname, "../../packages"))
+const medusaCore = path
+  .resolve(path.join(__dirname, "../../packages"))
+  .replace(/\\/g, "/")
 
 let WATCHING = false
 const watchFiles = () => {
@@ -61,9 +63,10 @@ const watchFiles = () => {
     const src = path.findIndex((folder) => folder === "src")
     const next = path.slice(0, src + 2).join("/")
 
-    for (const name of allModules) {
+    for (const rawName of allModules) {
+      const name = rawName.replace(/\\/g, "/")
       if (name.includes("typeorm")) {
-        delete module.constructor._cache[name]
+        delete module.constructor._cache[rawName]
       } else if (name.includes(medusaCore)) {
         if (
           name.includes("repositories") ||
@@ -72,7 +75,7 @@ const watchFiles = () => {
           next.endsWith(".ts") ||
           name.startsWith(next)
         ) {
-          delete module.constructor._cache[name]
+          delete module.constructor._cache[rawName]
         }
       }
     }
