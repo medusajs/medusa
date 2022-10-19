@@ -4,7 +4,7 @@ export enum PostgresError {
   DUPLICATE_ERROR = "23505",
   FOREIGN_KEY_ERROR = "23503",
 }
-export const formatException = (err): Error => {
+export const formatException = (err): MedusaError => {
   switch (err.code) {
     case PostgresError.DUPLICATE_ERROR:
       return new MedusaError(
