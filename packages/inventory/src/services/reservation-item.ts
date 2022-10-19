@@ -20,6 +20,7 @@ export default class ReservationItemService {
     CREATED: "reservation-item.created",
     UPDATED: "reservation-item.updated",
     DELETED: "reservation-item.deleted",
+    DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
   protected readonly eventBusService_: IEventBusService
@@ -121,6 +122,20 @@ export default class ReservationItemService {
     }
 
     return item
+  }
+
+  async deleteByLineItem(lineItemId: string): Promise<void> {
+    const manager = this.getManager()
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    await itemRepository.softRemove({ line_item_id: lineItemId })
+
+    await this.eventBusService_.emit(
+      ReservationItemService.Events.DELETED_BY_LINE_ITEM,
+      {
+        line_item_id: lineItemId,
+      }
+    )
   }
 
   async delete(id: string): Promise<void> {

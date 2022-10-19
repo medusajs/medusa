@@ -73,7 +73,7 @@ export type CreateInventoryItemInput = {
 
 export type CreateReservationItemInput = {
   type?: string
-  line_item_id: string
+  line_item_id?: string
   item_id: string
   location_id: string
   quantity: number

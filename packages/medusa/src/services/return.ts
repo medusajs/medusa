@@ -18,7 +18,7 @@ import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
 import { buildQuery, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
-import InventoryService from "./inventory"
+import ProductVariantInventoryService from "./product-variant-inventory"
 import LineItemService from "./line-item"
 import OrderService from "./order"
 import ReturnReasonService from "./return-reason"
@@ -36,7 +36,7 @@ type InjectedDependencies = {
   returnReasonService: ReturnReasonService
   taxProviderService: TaxProviderService
   fulfillmentProviderService: FulfillmentProviderService
-  inventoryService: InventoryService
+  productVariantInventoryService: ProductVariantInventoryService
   orderService: OrderService
 }
 
@@ -58,7 +58,8 @@ class ReturnService extends TransactionBaseService {
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly returnReasonService_: ReturnReasonService
-  protected readonly inventoryService_: InventoryService
+  // eslint-disable-next-line
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly orderService_: OrderService
 
   constructor({
@@ -71,7 +72,7 @@ class ReturnService extends TransactionBaseService {
     returnReasonService,
     taxProviderService,
     fulfillmentProviderService,
-    inventoryService,
+    productVariantInventoryService,
     orderService,
   }: InjectedDependencies) {
     super(arguments[0])
@@ -85,7 +86,7 @@ class ReturnService extends TransactionBaseService {
     this.shippingOptionService_ = shippingOptionService
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.returnReasonService_ = returnReasonService
-    this.inventoryService_ = inventoryService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.orderService_ = orderService
   }
 
@@ -663,12 +664,12 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
         if (orderItem) {
-          await inventoryServiceTx.adjustInventory(
+          await this.productVariantInventoryService_.adjustInventory(
             orderItem.variant_id,
+            returnObj.location_id,
             line.received_quantity
           )
         }

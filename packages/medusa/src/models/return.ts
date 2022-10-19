@@ -69,6 +69,10 @@ export class Return extends BaseEntity {
   })
   shipping_method: ShippingMethod
 
+  @Index()
+  @Column({ nullable: true })
+  location_id: string
+
   @DbAwareColumn({ type: "jsonb", nullable: true })
   shipping_data: Record<string, unknown>
 

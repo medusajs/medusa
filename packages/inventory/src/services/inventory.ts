@@ -3,6 +3,7 @@ import {
   FindConfig,
   IInventoryService,
   FilterableInventoryItemProps,
+  FilterableReservationItemProps,
   CreateInventoryItemInput,
   CreateReservationItemInput,
   FilterableInventoryLevelProps,
@@ -124,6 +125,14 @@ export default class InventoryService implements IInventoryService {
 
   async deleteInventoryItem(itemId: string): Promise<void> {
     return await this.inventoryItemService.delete(itemId)
+  }
+
+  async deleteReservationItemsByLineItem(id: string): Promise<void> {
+    return await this.reservationItemService.deleteByLineItem(id)
+  }
+
+  async deleteReservationItem(id: string): Promise<void> {
+    return await this.reservationItemService.delete(id)
   }
 
   async adjustInventory(
