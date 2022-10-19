@@ -8,6 +8,7 @@ import {
   CreateInventoryItemInput,
   CreateReservationItemInput,
   FilterableInventoryLevelProps,
+  FilterableReservationItemProps,
   CreateInventoryLevelInput,
 } from "../../types/inventory"
 
@@ -48,6 +49,10 @@ export interface IInventoryService {
     itemId: string,
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO>
+
+  deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
+
+  deleteReservationItem(id: string): Promise<void>
 
   deleteInventoryItem(itemId: string): Promise<void>
 

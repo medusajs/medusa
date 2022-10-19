@@ -36,7 +36,7 @@ import EventBusService from "./event-bus"
 import FulfillmentService from "./fulfillment"
 import FulfillmentProviderService from "./fulfillment-provider"
 import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
+import ProductVariantInventoryService from "./product-variant-inventory"
 import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import RegionService from "./region"
@@ -61,7 +61,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
-  inventoryService: InventoryService
+  productVariantInventoryService: ProductVariantInventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
 }
@@ -104,7 +104,8 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: InventoryService
+  // eslint-disable-next-line
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
@@ -125,7 +126,7 @@ class OrderService extends TransactionBaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
-    inventoryService,
+    productVariantInventoryService,
     eventBusService,
     featureFlagRouter,
   }: InjectedDependencies) {
@@ -149,7 +150,7 @@ class OrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
-    this.inventoryService_ = inventoryService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.featureFlagRouter_ = featureFlagRouter
   }
 
@@ -490,7 +491,6 @@ class OrderService extends TransactionBaseService {
   async createFromCart(cartId: string): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
       const cart = await cartServiceTx.retrieveWithTotals(cartId, {
         relations: [
@@ -514,23 +514,6 @@ class OrderService extends TransactionBaseService {
       }
 
       const { payment, region, total } = cart
-
-      for (const item of cart.items) {
-        try {
-          await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
-          )
-        } catch (err) {
-          if (payment) {
-            await this.paymentProviderService_
-              .withTransaction(manager)
-              .cancelPayment(payment)
-          }
-          await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-          throw err
-        }
-      }
 
       const exists = await this.existsByCartId(cart.id)
       if (exists) {
@@ -641,12 +624,15 @@ class OrderService extends TransactionBaseService {
         await lineItemServiceTx.update(item.id, { order_id: result.id })
       }
 
-      for (const item of cart.items) {
-        await inventoryServiceTx.adjustInventory(
-          item.variant_id,
-          -item.quantity
-        )
-      }
+      await Promise.all(
+        cart.items.map(async (item) => {
+          return this.productVariantInventoryService_.reserveQuantity(
+            item.variant_id,
+            item.quantity,
+            { line_item_id: item.id, sales_channel_id: cart.sales_channel_id }
+          )
+        })
+      )
 
       await this.eventBus_
         .withTransaction(manager)
@@ -1029,10 +1015,13 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
-      for (const item of order.items) {
-        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
-      }
+      await Promise.all(
+        order.items.map(async (item) => {
+          return this.productVariantInventoryService_.releaseReservationsByLineItem(
+            item.id
+          )
+        })
+      )
 
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)

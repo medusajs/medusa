@@ -9,6 +9,10 @@ import {
 export class ReservationItem extends SoftDeletableEntity {
   @Index()
   @DbAwareColumn({ type: "text" })
+  line_item_id: string
+
+  @Index()
+  @DbAwareColumn({ type: "text" })
   item_id: string
 
   @Index()

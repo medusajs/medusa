@@ -48,7 +48,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const productVariant = await this.productVariantService.retrieve(
       variantId,
       {
-        select: ["id", "allow_backorder", "manage_inventory"],
+        select: [
+          "id",
+          "allow_backorder",
+          "manage_inventory",
+          "inventory_quantity",
+        ],
       }
     )
 
@@ -56,6 +61,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     // don't need to check inventory
     if (productVariant.allow_backorder || !productVariant.manage_inventory) {
       return true
+    }
+
+    if (!this.inventoryService) {
+      return productVariant.inventory_quantity >= quantity
     }
 
     const variantInventory = await this.listByVariant(variantId)
@@ -193,6 +202,96 @@ class ProductVariantInventoryService extends TransactionBaseService {
     if (existing) {
       await variantInventoryRepo.remove(existing)
     }
+  }
+
+  async reserveQuantity(
+    variantId: string,
+    quantity: number,
+    options: {
+      location_id?: string
+      line_item_id?: string
+      sales_channel_id?: string | null
+    } = {}
+  ): Promise<void> {
+    const toReserve = {
+      type: "order",
+      line_item_id: options.line_item_id,
+    }
+
+    const variantInventory = await this.listByVariant(variantId)
+
+    if (variantInventory.length === 0) {
+      return
+    }
+
+    let locationId = options.location_id
+    if (typeof locationId === "undefined" && options.sales_channel_id) {
+      const locations = await this.salesChannelLocationService.listLocations(
+        options.sales_channel_id
+      )
+
+      if (!locations.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Must provide location_id or sales_channel_id to a Sales Channel that has associated Stock Locations"
+        )
+      }
+
+      locationId = locations[0]
+    }
+
+    await Promise.all(
+      variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.quantity * quantity
+        return await this.inventoryService.createReservationItem({
+          ...toReserve,
+          location_id: locationId as string,
+          item_id: inventoryPart.inventory_item_id,
+          quantity: itemQuantity,
+        })
+      })
+    )
+  }
+
+  async releaseReservationsByLineItem(lineItemId: string) {
+    await this.inventoryService.deleteReservationItemsByLineItem(lineItemId)
+  }
+
+  async adjustInventory(
+    variantId: string,
+    locationId: string,
+    quantity: number
+  ) {
+    if (!this.inventoryService) {
+      const variant = await this.productVariantService.retrieve(variantId, {
+        select: ["id", "inventory_quantity", "manage_inventory"],
+      })
+
+      if (!variant.manage_inventory) {
+        return
+      }
+
+      await this.productVariantService.update(variantId, {
+        inventory_quantity: variant.inventory_quantity + quantity,
+      })
+    }
+
+    const variantInventory = await this.listByVariant(variantId)
+
+    if (variantInventory.length === 0) {
+      return
+    }
+
+    await Promise.all(
+      variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.quantity * quantity
+        return await this.inventoryService.adjustInventory(
+          inventoryPart.inventory_item_id,
+          locationId,
+          itemQuantity
+        )
+      })
+    )
   }
 }
 

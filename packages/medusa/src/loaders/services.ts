@@ -1,7 +1,7 @@
 import glob from "glob"
 import path from "path"
 import resolveCwd from "resolve-cwd"
-import { asFunction } from "awilix"
+import { asValue, asFunction } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
 import { ConfigModule, MedusaContainer } from "../types/global"
 import { isDefined } from "../utils"
@@ -40,12 +40,18 @@ export default async ({
 
   const moduleResolutions = configModule?.moduleResolutions ?? {}
   for (const [_, resolution] of Object.entries(moduleResolutions)) {
-    const loadedModule = await import(resolution.resolutionPath)
-    const loadedService = loadedModule.service
-    container.register({
-      [resolution.settings.registration]: asFunction(
-        (cradle) => new loadedService(cradle, configModule)
-      ).singleton(),
-    })
+    try {
+      const loadedModule = await import(resolution.resolutionPath)
+      const loadedService = loadedModule.service
+      container.register({
+        [resolution.settings.registration]: asFunction(
+          (cradle) => new loadedService(cradle, configModule)
+        ).singleton(),
+      })
+    } catch (err) {
+      container.register({
+        [resolution.settings.registration]: asValue(false),
+      })
+    }
   }
 }

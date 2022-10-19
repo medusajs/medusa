@@ -35,7 +35,6 @@ import ProductVariantInventoryService from "./product-variant-inventory"
 import DiscountService from "./discount"
 import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import LineItemAdjustmentService from "./line-item-adjustment"
 import PaymentProviderService from "./payment-provider"
@@ -72,7 +71,6 @@ type InjectedDependencies = {
   discountService: DiscountService
   giftCardService: GiftCardService
   totalsService: TotalsService
-  inventoryService: InventoryService
   customShippingOptionService: CustomShippingOptionService
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
@@ -102,6 +100,7 @@ class CartService extends TransactionBaseService {
   protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
+  // eslint-disable-next-line
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly productService_: ProductService
   protected readonly storeService_: StoreService
@@ -115,7 +114,6 @@ class CartService extends TransactionBaseService {
   protected readonly giftCardService_: GiftCardService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly totalsService_: TotalsService
-  protected readonly inventoryService_: InventoryService
   protected readonly customShippingOptionService_: CustomShippingOptionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
@@ -141,7 +139,6 @@ class CartService extends TransactionBaseService {
     totalsService,
     addressRepository,
     paymentSessionRepository,
-    inventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
     priceSelectionStrategy,
@@ -170,7 +167,6 @@ class CartService extends TransactionBaseService {
     this.totalsService_ = totalsService
     this.addressRepository_ = addressRepository
     this.paymentSessionRepository_ = paymentSessionRepository
-    this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
     this.taxProviderService_ = taxProviderService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
@@ -717,11 +713,20 @@ class CartService extends TransactionBaseService {
           : lineItem.quantity
 
         if (lineItem.variant_id) {
-          await this.productVariantInventoryService_.confirmInventory(
-            lineItem.variant_id,
-            quantity,
-            { sales_channel_id: cart.sales_channel_id }
-          )
+          const isCovered =
+            await this.productVariantInventoryService_.confirmInventory(
+              lineItem.variant_id,
+              quantity,
+              { sales_channel_id: cart.sales_channel_id }
+            )
+
+          if (!isCovered) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Variant with id: ${lineItem.variant_id} does not have the required inventory`,
+              MedusaError.Codes.INSUFFICIENT_INVENTORY
+            )
+          }
         }
 
         if (currentItem) {
