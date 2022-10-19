@@ -25,7 +25,7 @@ describe("Claims", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -201,6 +201,54 @@ describe("Claims", () => {
     )
 
     expect(response.status).toEqual(200)
+  })
+
+  test(" should throw and not have dangling claim order upon a claim creation without reasons on claim items", async () => {
+    const api = useApi()
+
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection)
+    const option = await simpleShippingOptionFactory(dbConnection, {
+      region_id: "test-region",
+    })
+
+    const err = await api
+      .post(
+        `/admin/orders/${order.id}/claims`,
+        {
+          type: "replace",
+          shipping_methods: [
+            {
+              option_id: option.id,
+              price: 0,
+            },
+          ],
+          additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+      .catch((e) => e)
+
+    const claimOrders = await dbConnection.manager.query(
+      `SELECT *
+       FROM claim_order
+       WHERE order_id = '${order.id}'`
+    )
+
+    expect(err).toBeDefined()
+    expect(err.response.status).toBe(400)
+    expect(claimOrders).toEqual([])
   })
 })
 
