@@ -13,12 +13,10 @@ import {
 } from "../types/user"
 import { buildQuery, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
-import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
 
 type UserServiceProps = {
   userRepository: typeof UserRepository
-  analyticsService: AnalyticsConfigService
   eventBusService: EventBusService
   manager: EntityManager
 }
@@ -36,7 +34,6 @@ class UserService extends TransactionBaseService {
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
-  protected readonly analyticsService_: AnalyticsConfigService
   protected readonly userRepository_: typeof UserRepository
   protected readonly eventBus_: EventBusService
 
@@ -239,7 +236,6 @@ class UserService extends TransactionBaseService {
   async delete(userId: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
-      const analyticsServiceTx = this.analyticsService_.withTransaction()
 
       // Should not fail, if user does not exist, since delete is idempotent
       const user = await userRepo.findOne({ where: { id: userId } })
@@ -247,8 +243,6 @@ class UserService extends TransactionBaseService {
       if (!user) {
         return Promise.resolve()
       }
-
-      await analyticsServiceTx.delete(userId)
 
       await userRepo.softRemove(user)
 
