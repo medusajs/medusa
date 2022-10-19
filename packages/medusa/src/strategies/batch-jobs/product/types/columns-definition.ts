@@ -9,8 +9,8 @@ import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 
 export const productColumnsDefinition: ProductColumnDefinition = {
   "Product id": {
+    name: "Product id",
     importDescriptor: {
-      name: "Product id",
       mapTo: "product.id",
     },
     exportDescriptor: {
@@ -19,8 +19,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Handle": {
+    name: "Product Handle",
     importDescriptor: {
-      name: "Product Handle",
       mapTo: "product.handle",
       required: true,
     },
@@ -30,8 +30,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Title": {
+    name: "Product Title",
     importDescriptor: {
-      name: "Product Title",
       mapTo: "product.title",
     },
     exportDescriptor: {
@@ -40,8 +40,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Subtitle": {
+    name: "Product Subtitle",
     importDescriptor: {
-      name: "Product Subtitle",
       mapTo: "product.subtitle",
     },
     exportDescriptor: {
@@ -50,8 +50,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Description": {
+    name: "Product Description",
     importDescriptor: {
-      name: "Product Description",
       mapTo: "product.description",
     },
     exportDescriptor: {
@@ -60,8 +60,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Status": {
+    name: "Product Status",
     importDescriptor: {
-      name: "Product Status",
       mapTo: "product.status",
     },
     exportDescriptor: {
@@ -70,8 +70,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Thumbnail": {
+    name: "Product Thumbnail",
     importDescriptor: {
-      name: "Product Thumbnail",
       mapTo: "product.thumbnail",
     },
     exportDescriptor: {
@@ -80,8 +80,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Weight": {
+    name: "Product Weight",
     importDescriptor: {
-      name: "Product Weight",
       mapTo: "product.weight",
     },
     exportDescriptor: {
@@ -90,8 +90,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Length": {
+    name: "Product Length",
     importDescriptor: {
-      name: "Product Length",
       mapTo: "product.length",
     },
     exportDescriptor: {
@@ -100,8 +100,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Width": {
+    name: "Product Width",
     importDescriptor: {
-      name: "Product Width",
       mapTo: "product.width",
     },
     exportDescriptor: {
@@ -110,8 +110,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Height": {
+    name: "Product Height",
     importDescriptor: {
-      name: "Product Height",
       mapTo: "product.height",
     },
     exportDescriptor: {
@@ -120,8 +120,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product HS Code": {
+    name: "Product HS Code",
     importDescriptor: {
-      name: "Product HS Code",
       mapTo: "product.hs_code",
     },
     exportDescriptor: {
@@ -131,8 +131,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Origin Country": {
+    name: "Product Origin Country",
     importDescriptor: {
-      name: "Product Origin Country",
       mapTo: "product.origin_country",
     },
     exportDescriptor: {
@@ -142,8 +142,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product MID Code": {
+    name: "Product MID Code",
     importDescriptor: {
-      name: "Product MID Code",
       mapTo: "product.mid_code",
     },
     exportDescriptor: {
@@ -153,8 +153,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Material": {
+    name: "Product Material",
     importDescriptor: {
-      name: "Product Material",
       mapTo: "product.material",
     },
     exportDescriptor: {
@@ -167,8 +167,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRODUCT-COLLECTION
 
   "Product Collection Title": {
+    name: "Product Collection Title",
     importDescriptor: {
-      name: "Product Collection Title",
       mapTo: "product.collection.title",
     },
     exportDescriptor: {
@@ -177,8 +177,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product Collection Handle": {
+    name: "Product Collection Handle",
     importDescriptor: {
-      name: "Product Collection Handle",
       mapTo: "product.collection.handle",
     },
     exportDescriptor: {
@@ -190,8 +190,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRODUCT-TYPE
 
   "Product Type": {
+    name: "Product Type",
     importDescriptor: {
-      name: "Product Type",
       match: /Product Type/,
       reducer: (
         builtLine: TParsedProductImportRowData,
@@ -216,8 +216,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRODUCT-TAGS
 
   "Product Tags": {
+    name: "Product Tags",
     importDescriptor: {
-      name: "Product Tags",
       mapTo: "product.tags",
       transform: (value: string) =>
         `${value}`.split(",").map((v) => ({ value: v })),
@@ -232,8 +232,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   //
 
   "Product Discountable": {
+    name: "Product Discountable",
     importDescriptor: {
-      name: "Product Discountable",
       mapTo: "product.discountable",
     },
     exportDescriptor: {
@@ -243,8 +243,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Product External ID": {
+    name: "Product External ID",
     importDescriptor: {
-      name: "Product External ID",
       mapTo: "product.external_id",
     },
     exportDescriptor: {
@@ -256,6 +256,7 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRODUCT-PROFILE
 
   "Product Profile Name": {
+    name: "Product Profile Name",
     exportDescriptor: {
       accessor: (product: Product): string => product?.profile?.name ?? "",
       entityName: "product",
@@ -263,6 +264,7 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   },
 
   "Product Profile Type": {
+    name: "Product Profile Type",
     exportDescriptor: {
       accessor: (product: Product): string => product?.profile?.type ?? "",
       entityName: "product",
@@ -272,8 +274,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // VARIANTS
 
   "Variant id": {
+    name: "Variant id",
     importDescriptor: {
-      name: "Variant id",
       mapTo: "variant.id",
     },
     exportDescriptor: {
@@ -282,8 +284,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Title": {
+    name: "Variant Title",
+
     importDescriptor: {
-      name: "Variant Title",
       mapTo: "variant.title",
     },
     exportDescriptor: {
@@ -292,8 +295,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant SKU": {
+    name: "Variant SKU",
+
     importDescriptor: {
-      name: "Variant SKU",
       mapTo: "variant.sku",
     },
     exportDescriptor: {
@@ -302,8 +306,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Barcode": {
+    name: "Variant Barcode",
+
     importDescriptor: {
-      name: "Variant Barcode",
       mapTo: "variant.barcode",
     },
     exportDescriptor: {
@@ -312,8 +317,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Inventory Quantity": {
+    name: "Variant Inventory Quantity",
+
     importDescriptor: {
-      name: "Variant Inventory Quantity",
       mapTo: "variant.inventory_quantity",
     },
     exportDescriptor: {
@@ -323,8 +329,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Allow backorder": {
+    name: "Variant Allow backorder",
+
     importDescriptor: {
-      name: "Variant Allow backorder",
       mapTo: "variant.allow_backorder",
     },
     exportDescriptor: {
@@ -334,8 +341,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Manage inventory": {
+    name: "Variant Manage inventory",
     importDescriptor: {
-      name: "Variant Manage inventory",
       mapTo: "variant.manage_inventory",
     },
     exportDescriptor: {
@@ -345,8 +352,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Weight": {
+    name: "Variant Weight",
+
     importDescriptor: {
-      name: "Variant Weight",
       mapTo: "variant.weight",
     },
     exportDescriptor: {
@@ -356,8 +364,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Length": {
+    name: "Variant Length",
+
     importDescriptor: {
-      name: "Variant Length",
       mapTo: "variant.length",
     },
     exportDescriptor: {
@@ -367,8 +376,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Width": {
+    name: "Variant Width",
     importDescriptor: {
-      name: "Variant Width",
       mapTo: "variant.width",
     },
     exportDescriptor: {
@@ -378,8 +387,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Height": {
+    name: "Variant Height",
     importDescriptor: {
-      name: "Variant Height",
       mapTo: "variant.height",
     },
     exportDescriptor: {
@@ -389,8 +398,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant HS Code": {
+    name: "Variant HS Code",
     importDescriptor: {
-      name: "Variant HS Code",
       mapTo: "variant.hs_code",
     },
     exportDescriptor: {
@@ -400,8 +409,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Origin Country": {
+    name: "Variant Origin Country",
     importDescriptor: {
-      name: "Variant Origin Country",
       mapTo: "variant.origin_country",
     },
     exportDescriptor: {
@@ -411,8 +420,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant MID Code": {
+    name: "Variant MID Code",
     importDescriptor: {
-      name: "Variant MID Code",
       mapTo: "variant.mid_code",
     },
     exportDescriptor: {
@@ -422,8 +431,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Variant Material": {
+    name: "Variant Material",
     importDescriptor: {
-      name: "Variant Material",
       mapTo: "variant.material",
     },
     exportDescriptor: {
@@ -438,8 +447,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRODUCT_OPTIONS
 
   "Option Name": {
+    name: "Option Name",
     importDescriptor: {
-      name: "Option Name",
       match: /Option \d+ Name/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.options"] = builtLine["product.options"] || []
@@ -466,8 +475,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Option Value": {
+    name: "Option Value",
     importDescriptor: {
-      name: "Option Value",
       match: /Option \d+ Value/,
       reducer: (
         builtLine: TParsedProductImportRowData,
@@ -505,8 +514,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   // PRICES
 
   "Price Region": {
+    name: "Price Region",
     importDescriptor: {
-      name: "Price Region",
       match: /Price (.*) \[([A-Z]{3})\]/,
       reducer: (
         builtLine: TParsedProductImportRowData,
@@ -543,8 +552,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Price Currency": {
+    name: "Price Currency",
     importDescriptor: {
-      name: "Price Currency",
       match: /Price [A-Z]{3}/,
       reducer: (
         builtLine: TParsedProductImportRowData,
@@ -578,8 +587,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
   },
   // IMAGES
   "Image Url": {
+    name: "Image Url",
     importDescriptor: {
-      name: "Image Url",
       match: /Image \d+ Url/,
       reducer: (builtLine: any, key, value): TBuiltProductImportLine => {
         builtLine["product.images"] = builtLine["product.images"] || []
@@ -604,8 +613,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
 
 export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
   "Sales Channel Name": {
+    name: "Sales Channel Name",
     importDescriptor: {
-      name: "Sales Channel Name",
       match: /Sales Channel \d+ Name/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
@@ -635,8 +644,8 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Sales Channel Description": {
+    name: "Sales Channel Description",
     importDescriptor: {
-      name: "Sales Channel Description",
       match: /Sales Channel \d+ Description/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
@@ -666,8 +675,8 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
     },
   },
   "Sales Channel Id": {
+    name: "Sales Channel Id",
     importDescriptor: {
-      name: "Sales Channel Id",
       match: /Sales Channel \d+ Id/,
       reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.sales_channels"] =
@@ -696,8 +705,10 @@ export const productImportColumnsDefinition: CsvSchema<
   TParsedProductImportRowData,
   TBuiltProductImportLine
 > = {
-  columns: Object.values(productColumnsDefinition)
-    .map((def) => ({ ...def.importDescriptor }))
+  columns: Object.entries(productColumnsDefinition)
+    .map(([name, def]) => {
+      return def.importDescriptor && { name, ...def.importDescriptor }
+    })
     .filter(
       (
         v
@@ -714,8 +725,10 @@ export const productImportSalesChannelsColumnsDefinition: CsvSchema<
   TParsedProductImportRowData,
   TBuiltProductImportLine
 > = {
-  columns: Object.values(productSalesChannelColumnsDefinition)
-    .map((def) => ({ ...def.importDescriptor }))
+  columns: Object.entries(productSalesChannelColumnsDefinition)
+    .map(([name, def]) => {
+      return def.importDescriptor && { name, ...def.importDescriptor }
+    })
     .filter(
       (
         v

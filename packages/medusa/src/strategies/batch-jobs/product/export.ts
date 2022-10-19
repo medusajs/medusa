@@ -327,12 +327,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     this.appendImagesDescriptors(dynamicImageColumnCount)
     this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
 
-    const exportedColumns = Object.entries(this.columnsDefinition)
+    const exportedColumns = Object.values(this.columnsDefinition)
       .map(
-        ([name, descriptor]) =>
+        (descriptor) =>
           descriptor.exportDescriptor &&
           !("isDynamic" in descriptor.exportDescriptor) &&
-          name
+          descriptor.name
       )
       .filter((name): name is string => !!name)
 
@@ -348,6 +348,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const columnName = columnNameBuilder(i)
 
       this.columnsDefinition[columnName] = {
+        name: columnName,
         exportDescriptor: {
           accessor: (product: Product) => product?.images[i]?.url ?? "",
           entityName: "product",
@@ -371,6 +372,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const columnNameName = columnNameNameBuilder(i)
 
       this.columnsDefinition[columnNameName] = {
+        name: columnNameName,
         exportDescriptor: {
           accessor: (product: Product) =>
             product?.sales_channels[i]?.name ?? "",
@@ -381,6 +383,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const columnNameDescription = columnNameDescriptionBuilder(i)
 
       this.columnsDefinition[columnNameDescription] = {
+        name: columnNameDescription,
         exportDescriptor: {
           accessor: (product: Product) =>
             product?.sales_channels[i]?.description ?? "",
@@ -399,6 +402,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const columnNameName = columnNameNameBuilder(i)
 
       this.columnsDefinition[columnNameName] = {
+        name: columnNameName,
         exportDescriptor: {
           accessor: (productOption: Product) =>
             productOption?.options[i]?.title ?? "",
@@ -413,6 +417,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const columnNameNameValue = columnNameValueBuilder(i)
 
       this.columnsDefinition[columnNameNameValue] = {
+        name: columnNameNameValue,
         exportDescriptor: {
           accessor: (variant: ProductVariant) =>
             variant?.options[i]?.value ?? "",
@@ -434,6 +439,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         const columnName = columnNameBuilder(priceData)
 
         this.columnsDefinition[columnName] = {
+          name: columnName,
           exportDescriptor: {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {
@@ -458,6 +464,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         const columnName = columnNameBuilder(priceData)
 
         this.columnsDefinition[columnName] = {
+          name: columnName,
           exportDescriptor: {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {

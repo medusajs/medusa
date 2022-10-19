@@ -100,12 +100,16 @@ export type TParsedProductImportRowData = Record<
  */
 export type TBuiltProductImportLine = Record<string, any>
 
+export type ProductImportDescriptor = CsvSchemaColumn<
+  TParsedProductImportRowData,
+  TBuiltProductImportLine,
+  true
+>
+
 export type ProductColumnDefinition = {
   [key: string]: {
-    importDescriptor?: CsvSchemaColumn<
-      TParsedProductImportRowData,
-      TBuiltProductImportLine
-    >
+    name: string
+    importDescriptor?: ProductImportDescriptor
     exportDescriptor?: ProductExportDescriptor | DynamicProductExportDescriptor
   }
 }
