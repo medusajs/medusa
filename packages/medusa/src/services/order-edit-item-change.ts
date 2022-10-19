@@ -83,19 +83,31 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     return await orderItemChangeRepo.find(query)
   }
 
-  async create(data: CreateOrderEditItemChangeInput): Promise<OrderItemChange> {
+  async create(
+    data: CreateOrderEditItemChangeInput
+  ): Promise<OrderItemChange | unknown> {
     return await this.atomicPhase_(async (manager) => {
       const orderItemChangeRepo = manager.getCustomRepository(
         this.orderItemChangeRepository_
       )
       const changeEntity = orderItemChangeRepo.create(data)
-      const change = await orderItemChangeRepo.save(changeEntity)
+      try {
+        const change = await orderItemChangeRepo.save(changeEntity)
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(OrderEditItemChangeService.Events.CREATED, { id: change.id })
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(OrderEditItemChangeService.Events.CREATED, { id: change.id })
-
-      return change
+        return change
+      } catch (e) {
+        if (e.code === "23505") {
+          throw new MedusaError(
+            MedusaError.Types.CONFLICT,
+            "Item change for this item already exists"
+          )
+        } else {
+          throw e
+        }
+      }
     })
   }
 
