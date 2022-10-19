@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import { AnalyticsConfigService } from "../../../../services"
 import { CreateAnalyticsConfig } from "../../../../types/analytics-config"
 
+// No OAS for this route, for internal use only.
 export default async (req: Request, res: Response) => {
   const userId = (req.user?.userId ?? req.user?.id)!
   const validatedBody = req.validatedBody as CreateAnalyticsConfig
