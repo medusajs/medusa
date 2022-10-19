@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import { AnalyticsConfig } from "../models"
 import { AnalyticsConfigRepository as AnalyticsRepository } from "../repositories/analytics-config"
 import {
   CreateAnalyticsConfig,
@@ -29,7 +30,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     this.analyticsConfigRepository_ = analyticsConfigRepository
   }
 
-  async retrieve(userId: string) {
+  async retrieve(userId: string): Promise<AnalyticsConfig> {
     const manager = this.manager_
 
     const analyticsRepo = manager.getCustomRepository(
@@ -50,7 +51,10 @@ class AnalyticsConfigService extends TransactionBaseService {
     return analyticsConfig
   }
 
-  async create(userId: string, data: CreateAnalyticsConfig) {
+  async create(
+    userId: string,
+    data: CreateAnalyticsConfig
+  ): Promise<AnalyticsConfig> {
     const manager = this.transactionManager_ || this.manager_
     const analyticsRepo = manager.getCustomRepository(
       this.analyticsConfigRepository_
@@ -64,7 +68,10 @@ class AnalyticsConfigService extends TransactionBaseService {
     }
   }
 
-  async update(userId: string, update: UpdateAnalyticsConfig) {
+  async update(
+    userId: string,
+    update: UpdateAnalyticsConfig
+  ): Promise<AnalyticsConfig> {
     const manager = this.transactionManager_ || this.manager_
 
     const analyticsRepo = manager.getCustomRepository(
@@ -82,7 +89,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     return await analyticsRepo.save(config)
   }
 
-  async delete(userId: string) {
+  async delete(userId: string): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
     const analyticsRepo = manager.getCustomRepository(
       this.analyticsConfigRepository_

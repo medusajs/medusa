@@ -30,5 +30,5 @@ export class AdminPostAnalyticsConfigAnalyticsConfigReq {
 
   @IsOptional()
   @IsBoolean()
-  anonymized?: boolean
+  anonymize?: boolean
 }
