@@ -15,6 +15,12 @@ const startServerWithEnvironment =
 
 jest.setTimeout(30000)
 
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 describe("/admin/users", () => {
   let medusaProcess
   let dbConnection
@@ -45,9 +51,7 @@ describe("/admin/users", () => {
     it("returns user by id", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/users/admin_user", {
-        headers: { Authorization: "Bearer test_token " },
-      })
+      const response = await api.get("/admin/users/admin_user", adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.user).toMatchSnapshot({
@@ -64,11 +68,7 @@ describe("/admin/users", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/users", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/users", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -112,9 +112,7 @@ describe("/admin/users", () => {
             role: "member",
             password: "test123453",
           },
-          {
-            headers: { Authorization: "Bearer test_token" },
-          }
+          adminReqConfig
         )
         .catch((err) => console.log(err))
 
@@ -136,9 +134,7 @@ describe("/admin/users", () => {
       }
 
       const response = await api
-        .post("/admin/users", payload, {
-          headers: { Authorization: "Bearer test_token" },
-        })
+        .post("/admin/users", payload, adminReqConfig)
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
@@ -158,9 +154,7 @@ describe("/admin/users", () => {
         .post(
           "/admin/users/member-user",
           { first_name: "karl" },
-          {
-            headers: { Authorization: "Bearer test_token " },
-          }
+          adminReqConfig
         )
         .catch((err) => console.log(err.response.data.message))
 
@@ -319,11 +313,10 @@ describe("/admin/users", () => {
 
       const userId = "member-user"
 
-      const usersBeforeDeleteResponse = await api.get("/admin/users", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const usersBeforeDeleteResponse = await api.get(
+        "/admin/users",
+        adminReqConfig
+      )
 
       const usersBeforeDelete = usersBeforeDeleteResponse.data.users
 
@@ -331,11 +324,10 @@ describe("/admin/users", () => {
         headers: { Authorization: "Bearer test_token" },
       })
 
-      const usersAfterDeleteResponse = await api.get("/admin/users", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const usersAfterDeleteResponse = await api.get(
+        "/admin/users",
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
@@ -399,9 +391,10 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
         user_id: userId,
       })
 
-      const response = await api.delete(`/admin/users/${userId}`, {
-        headers: { Authorization: "Bearer test_token" },
-      })
+      const response = await api.delete(
+        `/admin/users/${userId}`,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
