@@ -1,4 +1,3 @@
-import { ClaimReason, ClaimType } from "../../../../models"
 import {
   IsArray,
   IsBoolean,
@@ -11,12 +10,13 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimReason, ClaimType } from "../../../../models"
 
-import { AddressPayload } from "../../../../types/common"
-import { ClaimTypeValue } from "../../../../types/claim"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ClaimTypeValue } from "../../../../types/claim"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -223,150 +223,146 @@ export default async (req, res) => {
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case "started": {
-        await manager.transaction(async (transactionManager) => {
-          const { key, error } = await idempotencyKeyService
-            .withTransaction(transactionManager)
-            .workStage(idempotencyKey.idempotency_key, async (manager) => {
-              const order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  relations: [
-                    "customer",
-                    "shipping_address",
-                    "region",
-                    "items",
-                    "items.tax_lines",
-                    "discounts",
-                    "discounts.rule",
-                    "claims",
-                    "claims.additional_items",
-                    "claims.additional_items.tax_lines",
-                    "swaps",
-                    "swaps.additional_items",
-                    "swaps.additional_items.tax_lines",
-                  ],
+        await manager
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                const order = await orderService
+                  .withTransaction(manager)
+                  .retrieve(id, {
+                    relations: [
+                      "customer",
+                      "shipping_address",
+                      "region",
+                      "items",
+                      "items.tax_lines",
+                      "discounts",
+                      "discounts.rule",
+                      "claims",
+                      "claims.additional_items",
+                      "claims.additional_items.tax_lines",
+                      "swaps",
+                      "swaps.additional_items",
+                      "swaps.additional_items.tax_lines",
+                    ],
+                  })
+
+                await claimService.withTransaction(manager).create({
+                  idempotency_key: idempotencyKey.idempotency_key,
+                  order,
+                  type: value.type,
+                  shipping_address: value.shipping_address,
+                  claim_items: value.claim_items,
+                  return_shipping: value.return_shipping,
+                  additional_items: value.additional_items,
+                  shipping_methods: value.shipping_methods,
+                  no_notification: value.no_notification,
+                  metadata: value.metadata,
                 })
 
-              await claimService.withTransaction(manager).create({
-                idempotency_key: idempotencyKey.idempotency_key,
-                order,
-                type: value.type,
-                shipping_address: value.shipping_address,
-                claim_items: value.claim_items,
-                return_shipping: value.return_shipping,
-                additional_items: value.additional_items,
-                shipping_methods: value.shipping_methods,
-                no_notification: value.no_notification,
-                metadata: value.metadata,
+                return {
+                  recovery_point: "claim_created",
+                }
               })
-
-              return {
-                recovery_point: "claim_created",
-              }
-            })
-
-          if (error) {
+          })
+          .catch((e) => {
             inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
-        })
+            err = e
+          })
         break
       }
 
       case "claim_created": {
-        await manager.transaction(async (transactionManager) => {
-          const { key, error } = await idempotencyKeyService
-            .withTransaction(transactionManager)
-            .workStage(idempotencyKey.idempotency_key, async (manager) => {
-              let claim = await claimService.withTransaction(manager).list({
-                idempotency_key: idempotencyKey.idempotency_key,
+        await manager
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                let claim = await claimService.withTransaction(manager).list({
+                  idempotency_key: idempotencyKey.idempotency_key,
+                })
+
+                if (!claim.length) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    `Claim not found`
+                  )
+                }
+
+                claim = claim[0]
+
+                if (claim.type === "refund") {
+                  await claimService
+                    .withTransaction(manager)
+                    .processRefund(claim.id)
+                }
+
+                return {
+                  recovery_point: "refund_handled",
+                }
               })
-
-              if (!claim.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  `Claim not found`
-                )
-              }
-
-              claim = claim[0]
-
-              if (claim.type === "refund") {
-                await claimService
-                  .withTransaction(manager)
-                  .processRefund(claim.id)
-              }
-
-              return {
-                recovery_point: "refund_handled",
-              }
-            })
-
-          if (error) {
+          })
+          .catch((e) => {
             inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
-        })
+            err = e
+          })
         break
       }
 
       case "refund_handled": {
-        await manager.transaction(async (transactionManager) => {
-          const { key, error } = await idempotencyKeyService
-            .withTransaction(transactionManager)
-            .workStage(idempotencyKey.idempotency_key, async (manager) => {
-              let order = await orderService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  relations: ["items", "discounts"],
-                })
-
-              let claim = await claimService.withTransaction(manager).list(
-                {
-                  idempotency_key: idempotencyKey.idempotency_key,
-                },
-                {
-                  relations: ["return_order"],
-                }
-              )
-
-              if (!claim.length) {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  `Claim not found`
-                )
-              }
-
-              claim = claim[0]
-
-              if (claim.return_order) {
-                await returnService
+        await manager
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
+              .withTransaction(transactionManager)
+              .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                let order = await orderService
                   .withTransaction(manager)
-                  .fulfill(claim.return_order.id)
-              }
+                  .retrieve(id, {
+                    relations: ["items", "discounts"],
+                  })
 
-              order = await orderService.withTransaction(manager).retrieve(id, {
-                select: defaultAdminOrdersFields,
-                relations: defaultAdminOrdersRelations,
+                let claim = await claimService.withTransaction(manager).list(
+                  {
+                    idempotency_key: idempotencyKey.idempotency_key,
+                  },
+                  {
+                    relations: ["return_order"],
+                  }
+                )
+
+                if (!claim.length) {
+                  throw new MedusaError(
+                    MedusaError.Types.INVALID_DATA,
+                    `Claim not found`
+                  )
+                }
+
+                claim = claim[0]
+
+                if (claim.return_order) {
+                  await returnService
+                    .withTransaction(manager)
+                    .fulfill(claim.return_order.id)
+                }
+
+                order = await orderService
+                  .withTransaction(manager)
+                  .retrieve(id, {
+                    select: defaultAdminOrdersFields,
+                    relations: defaultAdminOrdersRelations,
+                  })
+
+                return {
+                  response_code: 200,
+                  response_body: { order },
+                }
               })
-
-              return {
-                response_code: 200,
-                response_body: { order },
-              }
-            })
-
-          if (error) {
+          })
+          .catch((e) => {
             inProgress = false
-            err = error
-          } else {
-            idempotencyKey = key
-          }
-        })
+            err = e
+          })
         break
       }
 
