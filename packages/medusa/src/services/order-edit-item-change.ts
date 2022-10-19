@@ -85,7 +85,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
   async create(
     data: CreateOrderEditItemChangeInput
-  ): Promise<OrderItemChange | unknown> {
+  ): Promise<OrderItemChange | never> {
     return await this.atomicPhase_(async (manager) => {
       const orderItemChangeRepo = manager.getCustomRepository(
         this.orderItemChangeRepository_

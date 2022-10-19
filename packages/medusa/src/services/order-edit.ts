@@ -413,12 +413,12 @@ export default class OrderEditService extends TransactionBaseService {
       // if a change does not exist it means that we are updating an existing item and therefore creating an update change.
       // otherwise we are updating either a change of type ADD or UPDATE
       if (!change) {
-        change = (await orderEditItemChangeServiceTx.create({
+        change = await orderEditItemChangeServiceTx.create({
           type: OrderEditItemChangeType.ITEM_UPDATE,
           order_edit_id: orderEditId,
           original_line_item_id: lineItem.original_item_id as string,
           line_item_id: itemId,
-        })) as OrderItemChange
+        })
       }
 
       await this.lineItemService_
