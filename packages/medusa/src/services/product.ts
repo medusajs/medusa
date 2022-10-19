@@ -28,6 +28,7 @@ import {
   FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
+  ProductSelector,
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isDefined, setMetadata } from "../utils"
@@ -108,7 +109,7 @@ class ProductService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps | Selector<Product> = {},
+    selector: ProductSelector,
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -116,20 +117,8 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product[]> {
-    const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
-
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
-    if (q) {
-      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-      return products
-    }
-
-    return await productRepo.findWithRelations(relations, query)
+    const [products] = await this.listAndCount(selector, config)
+    return products
   }
 
   /**
@@ -144,7 +133,7 @@ class ProductService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps | Selector<Product>,
+    selector: ProductSelector,
     config: FindProductConfig = {
       relations: [],
       skip: 0,

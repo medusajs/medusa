@@ -10,9 +10,16 @@ const {
   ProductVariant,
   ProductOptionValue,
   MoneyAmount,
+  DiscountConditionType,
+  DiscountConditionOperator,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
-const { simpleProductFactory } = require("../../factories")
+const {
+  simpleProductFactory,
+  simpleDiscountFactory,
+} = require("../../factories")
+const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
+const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
@@ -172,11 +179,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?type_id[]=test-type", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?type_id[]=test-type", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -188,6 +191,79 @@ describe("/admin/products", () => {
           expect.objectContaining({
             type_id: "test-type",
           }),
+        ])
+      )
+    })
+
+    it("returns a list of products filtered by discount condition id", async () => {
+      const api = useApi()
+
+      const resProd = await api.get("/admin/products", adminHeaders)
+
+      const prod1 = resProd.data.products[0]
+      const prod2 = resProd.data.products[2]
+
+      const buildDiscountData = (code, conditionId, products) => {
+        return {
+          code,
+          rule: {
+            type: DiscountRuleType.PERCENTAGE,
+            value: 10,
+            allocation: AllocationType.TOTAL,
+            conditions: [
+              {
+                id: conditionId,
+                type: DiscountConditionType.PRODUCTS,
+                operator: DiscountConditionOperator.IN,
+                product_tags: products,
+              },
+            ],
+          },
+        }
+      }
+
+      const discountConditionId = IdMap.getId("discount-condition-prod-1")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-1", discountConditionId, [prod1.id])
+      )
+
+      const discountConditionId2 = IdMap.getId("discount-condition-prod-2")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-2", discountConditionId2, [prod2.id])
+      )
+
+      let res = await api.get(
+        `/admin/products?discount_condition_id=${discountConditionId}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(1)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: prod1.id })])
+      )
+
+      res = await api.get(
+        `/admin/products?discount_condition_id=${discountConditionId2}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(1)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: prod2.id })])
+      )
+
+      res = await api.get(`/admin/products`, adminHeaders)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(5)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: prod1.id }),
+          expect.objectContaining({ id: prod2.id }),
         ])
       )
     })

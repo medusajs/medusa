@@ -26,6 +26,7 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
     sales_channel_id?: FindOperator<SalesChannel>
+    discount_condition_id?: string
   }
 }
 
@@ -52,6 +53,10 @@ export class ProductRepository extends Repository<Product> {
 
     const sales_channels = optionsWithoutRelations?.where?.sales_channel_id
     delete optionsWithoutRelations?.where?.sales_channel_id
+
+    const discount_condition_id =
+      optionsWithoutRelations?.where?.discount_condition_id
+    delete optionsWithoutRelations?.where?.discount_condition_id
 
     const qb = this.createQueryBuilder("product")
       .select(["product.id"])
@@ -97,6 +102,15 @@ export class ProductRepository extends Repository<Product> {
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
         { sales_channels_ids: sales_channels.value }
+      )
+    }
+
+    if (discount_condition_id) {
+      qb.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: discount_condition_id }
       )
     }
 
@@ -358,6 +372,16 @@ export class ProductRepository extends Repository<Product> {
       .skip(cleanedOptions.skip)
       .take(cleanedOptions.take)
 
+    const discountConditionId = options.where.discount_condition_id
+    if (discountConditionId) {
+      qb.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: discountConditionId }
+      )
+    }
+
     if (cleanedOptions.withDeleted) {
       qb = qb.withDeleted()
     }
@@ -386,6 +410,10 @@ export class ProductRepository extends Repository<Product> {
 
     if ("price_list_id" in where) {
       delete where?.price_list_id
+    }
+
+    if ("discount_condition_id" in where) {
+      delete where?.discount_condition_id
     }
 
     return {
