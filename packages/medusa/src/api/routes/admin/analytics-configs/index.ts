@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { AnalyticsConfig } from "../../../.."
+import { DeleteResponse } from "../../../../types/common"
 import middlewares, { transformBody } from "../../../middlewares"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { AdminPostAnalyticsConfigReq } from "./create-analytics-config"
@@ -35,6 +36,8 @@ export default (app: Router) => {
 export type AdminAnalyticsConfigRes = {
   analytics_config: AnalyticsConfig
 }
+
+export type AdminAnalyticsConfigDeleteRes = DeleteResponse
 
 export * from "./create-analytics-config"
 export * from "./update-analytics-config"
