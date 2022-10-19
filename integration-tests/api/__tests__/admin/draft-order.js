@@ -98,7 +98,10 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api
+      const {
+        status,
+        data: { draft_order },
+      } = await api
         .post("/admin/draft-orders", payload, {
           headers: {
             Authorization: "Bearer test_token",
@@ -108,8 +111,36 @@ describe("/admin/draft-orders", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.draft_order.cart.billing_address_id).toBeDefined()
+      expect(status).toEqual(200)
+      expect(draft_order.cart.billing_address_id).not.toBeNull()
+      expect(draft_order.cart.shipping_address_id).not.toBeNull()
+
+      const afterCreate = await api.get(
+        `/admin/draft-orders/${draft_order.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(
+        afterCreate.data.draft_order.cart.shipping_address
+      ).toMatchSnapshot({
+        id: "oli-shipping",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+      expect(afterCreate.data.draft_order.cart.billing_address).toMatchSnapshot(
+        {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          first_name: "kap",
+          last_name: "test",
+          country_code: "us",
+        }
+      )
     })
 
     it("creates a draft order with a shipping address that is an AddressPayload and a billing adress that is an ID", async () => {
@@ -139,7 +170,10 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api
+      const {
+        status,
+        data: { draft_order },
+      } = await api
         .post("/admin/draft-orders", payload, {
           headers: {
             Authorization: "Bearer test_token",
@@ -149,8 +183,36 @@ describe("/admin/draft-orders", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.draft_order.cart.billing_address_id).toBeDefined()
+      expect(status).toEqual(200)
+      expect(draft_order.cart.billing_address_id).not.toBeNull()
+      expect(draft_order.cart.shipping_address_id).not.toBeNull()
+
+      const afterCreate = await api.get(
+        `/admin/draft-orders/${draft_order.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(afterCreate.data.draft_order.cart.billing_address).toMatchSnapshot(
+        {
+          id: "oli-shipping",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        }
+      )
+      expect(
+        afterCreate.data.draft_order.cart.shipping_address
+      ).toMatchSnapshot({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        first_name: "kap",
+        last_name: "test",
+        country_code: "us",
+      })
     })
 
     it("creates a draft order cart and creates new user", async () => {
