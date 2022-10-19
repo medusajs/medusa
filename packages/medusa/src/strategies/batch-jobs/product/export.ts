@@ -10,7 +10,7 @@ import {
   ProductExportBatchJob,
   ProductExportBatchJobContext,
   ProductExportPriceData,
-} from "./types/types"
+} from "./types"
 import { FindProductConfig } from "../../../types/product"
 import { FlagRouter } from "../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"

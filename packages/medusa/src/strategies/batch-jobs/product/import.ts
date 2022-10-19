@@ -28,7 +28,7 @@ import {
   ProductImportCsvSchema,
   ProductImportJobContext,
   TParsedProductImportRowData,
-} from "./types/types"
+} from "./types"
 import {
   productImportColumnsDefinition,
   productImportSalesChannelsColumnsDefinition,

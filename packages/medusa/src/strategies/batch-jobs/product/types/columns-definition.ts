@@ -4,7 +4,7 @@ import {
   ProductExportPriceData,
   TBuiltProductImportLine,
   TParsedProductImportRowData,
-} from "./types"
+} from "./index"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 
 export const productColumnsDefinition: ProductColumnDefinition = {
