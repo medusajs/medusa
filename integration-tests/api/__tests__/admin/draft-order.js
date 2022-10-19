@@ -71,6 +71,150 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order with a billing address that is an AddressPayload and a shipping address that is an ID", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        billing_address: {
+          first_name: "kap",
+          last_name: "test",
+          country_code: "us",
+        },
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const {
+        status,
+        data: { draft_order },
+      } = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(status).toEqual(200)
+      expect(draft_order.cart.billing_address_id).not.toBeNull()
+      expect(draft_order.cart.shipping_address_id).not.toBeNull()
+
+      const afterCreate = await api.get(
+        `/admin/draft-orders/${draft_order.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(
+        afterCreate.data.draft_order.cart.shipping_address
+      ).toMatchSnapshot({
+        id: "oli-shipping",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+      expect(afterCreate.data.draft_order.cart.billing_address).toMatchSnapshot(
+        {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          first_name: "kap",
+          last_name: "test",
+          country_code: "us",
+        }
+      )
+    })
+
+    it("creates a draft order with a shipping address that is an AddressPayload and a billing adress that is an ID", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: {
+          first_name: "kap",
+          last_name: "test",
+          country_code: "us",
+        },
+        billing_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const {
+        status,
+        data: { draft_order },
+      } = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(status).toEqual(200)
+      expect(draft_order.cart.billing_address_id).not.toBeNull()
+      expect(draft_order.cart.shipping_address_id).not.toBeNull()
+
+      const afterCreate = await api.get(
+        `/admin/draft-orders/${draft_order.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(afterCreate.data.draft_order.cart.billing_address).toMatchSnapshot(
+        {
+          id: "oli-shipping",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        }
+      )
+      expect(
+        afterCreate.data.draft_order.cart.shipping_address
+      ).toMatchSnapshot({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        first_name: "kap",
+        last_name: "test",
+        country_code: "us",
+      })
+    })
+
     it("creates a draft order cart and creates new user", async () => {
       const api = useApi()
 
