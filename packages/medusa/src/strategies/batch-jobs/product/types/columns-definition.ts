@@ -257,6 +257,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
 
   "Product Profile Name": {
     name: "Product Profile Name",
+    importDescriptor: {
+      mapTo: "__not_supported__",
+    },
     exportDescriptor: {
       accessor: (product: Product): string => product?.profile?.name ?? "",
       entityName: "product",
@@ -265,6 +268,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
 
   "Product Profile Type": {
     name: "Product Profile Type",
+    importDescriptor: {
+      mapTo: "__not_supported__",
+    },
     exportDescriptor: {
       accessor: (product: Product): string => product?.profile?.type ?? "",
       entityName: "product",
