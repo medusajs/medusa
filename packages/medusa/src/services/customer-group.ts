@@ -258,7 +258,7 @@ class CustomerGroupService extends TransactionBaseService {
 
   private async handleCreationFail(
     id: string,
-    ids,
+    ids: string[],
     error: any
   ): Promise<never> {
     if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
