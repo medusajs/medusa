@@ -1,4 +1,4 @@
-import { CartService, DraftOrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,18 +7,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
 } from "."
-
-import { AddressPayload } from "../../../../types/common"
 import { DraftOrderStatus } from "../../../../models"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import { Type } from "class-transformer"
+import { CartService, DraftOrderService } from "../../../../services"
+import { CartUpdateProps } from "../../../../types/cart"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
-
+import { IsType } from "../../../../utils/validators/is-type"
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
@@ -47,10 +47,14 @@ import { validator } from "../../../../utils/validator"
  *             format: email
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
- *             $ref: "#/components/schemas/address_fields"
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address_fields"
+ *               - type: string
  *           shipping_address:
  *             description: "The Address to be used for shipping."
- *             $ref: "#/components/schemas/address_fields"
+ *             anyOf:
+ *               - $ref: "#/components/schemas/address_fields"
+ *               - type: string
  *           discounts:
  *             description: "An array of Discount codes to add to the Draft Order."
  *             type: array
@@ -125,6 +129,7 @@ export default async (req, res) => {
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
+
   const cartService: CartService = req.scope.resolve("cartService")
 
   const draftOrder = await draftOrderService.retrieve(id)
@@ -147,9 +152,23 @@ export default async (req, res) => {
       delete validated.no_notification_order
     }
 
-    await cartService
-      .withTransaction(transactionManager)
-      .update(draftOrder.cart_id, validated)
+    const { shipping_address, billing_address, ...rest } = validated
+
+    const cartDataToUpdate: CartUpdateProps = { ...rest }
+
+    if (typeof shipping_address === "string") {
+      cartDataToUpdate.shipping_address_id = shipping_address
+    } else {
+      cartDataToUpdate.shipping_address = shipping_address
+    }
+
+    if (typeof billing_address === "string") {
+      cartDataToUpdate.billing_address_id = billing_address
+    } else {
+      cartDataToUpdate.billing_address = billing_address
+    }
+
+    await cartService.update(draftOrder.cart_id, cartDataToUpdate)
   })
 
   draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
@@ -174,12 +193,12 @@ export class AdminPostDraftOrdersDraftOrderReq {
   email?: string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
 
   @IsArray()
   @IsOptional()
