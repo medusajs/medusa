@@ -63,12 +63,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
                     .retrieve(id)
@@ -89,25 +88,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                   return {
                     recovery_point: "tax_lines_created",
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
         case "tax_lines_created": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
                     .authorizePayment(id, {
@@ -120,6 +114,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                       cart.payment_session.status === "requires_more" ||
                       cart.payment_session.status === "pending"
                     ) {
+                      await cartService
+                        .withTransaction(transactionManager)
+                        .deleteTaxLines(id)
+
                       return {
                         response_code: 200,
                         response_body: {
@@ -134,36 +132,25 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                   return {
                     recovery_point: "payment_authorized",
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
 
         case "payment_authorized": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieve(id, {
-                      select: ["total"],
-                      relations: [
-                        "items",
-                        "items.adjustments",
-                        "payment",
-                        "payment_sessions",
-                      ],
+                    .retrieveWithTotals(id, {
+                      relations: ["payment", "payment_sessions"],
                     })
 
                   // If cart is part of swap, we register swap as complete
@@ -289,16 +276,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                       }
                     }
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
 
@@ -322,6 +305,19 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
 
     if (err) {
+      if (idempotencyKey.recovery_point !== "started") {
+        await this.manager_.transaction(async (transactionManager) => {
+          try {
+            await orderService
+              .withTransaction(transactionManager)
+              .retrieveByCartId(id)
+          } catch (error) {
+            await cartService
+              .withTransaction(transactionManager)
+              .deleteTaxLines(id)
+          }
+        })
+      }
       throw err
     }
 

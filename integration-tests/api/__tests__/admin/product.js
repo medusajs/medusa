@@ -10,10 +10,24 @@ const {
   ProductVariant,
   ProductOptionValue,
   MoneyAmount,
+  DiscountConditionType,
+  DiscountConditionOperator,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
+const {
+  simpleProductFactory,
+  simpleDiscountFactory,
+} = require("../../factories")
+const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
+const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
+
+const adminHeaders = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 describe("/admin/products", () => {
   let medusaProcess
@@ -34,13 +48,8 @@ describe("/admin/products", () => {
 
   describe("GET /admin/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -52,11 +61,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -80,11 +85,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products?q=", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?q=", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -113,21 +114,13 @@ describe("/admin/products", () => {
 
       // update test-product status to proposed
       await api
-        .post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
 
       const response = await api
-        .get("/admin/products?status[]=proposed", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?status[]=proposed", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -155,11 +148,7 @@ describe("/admin/products", () => {
       ]
 
       const response = await api
-        .get("/admin/products?status[]=published,proposed", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?status[]=published,proposed", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -186,6 +175,99 @@ describe("/admin/products", () => {
       }
     })
 
+    it("returns a list of products where type_id is test-type", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?type_id[]=test-type", adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type_id: "test-type",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of products filtered by discount condition id", async () => {
+      const api = useApi()
+
+      const resProd = await api.get("/admin/products", adminHeaders)
+
+      const prod1 = resProd.data.products[0]
+      const prod2 = resProd.data.products[2]
+
+      const buildDiscountData = (code, conditionId, products) => {
+        return {
+          code,
+          rule: {
+            type: DiscountRuleType.PERCENTAGE,
+            value: 10,
+            allocation: AllocationType.TOTAL,
+            conditions: [
+              {
+                id: conditionId,
+                type: DiscountConditionType.PRODUCTS,
+                operator: DiscountConditionOperator.IN,
+                product_tags: products,
+              },
+            ],
+          },
+        }
+      }
+
+      const discountConditionId = IdMap.getId("discount-condition-prod-1")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-1", discountConditionId, [prod1.id])
+      )
+
+      const discountConditionId2 = IdMap.getId("discount-condition-prod-2")
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-2", discountConditionId2, [prod2.id])
+      )
+
+      let res = await api.get(
+        `/admin/products?discount_condition_id=${discountConditionId}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(1)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: prod1.id })])
+      )
+
+      res = await api.get(
+        `/admin/products?discount_condition_id=${discountConditionId2}`,
+        adminHeaders
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(1)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([expect.objectContaining({ id: prod2.id })])
+      )
+
+      res = await api.get(`/admin/products`, adminHeaders)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toHaveLength(5)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: prod1.id }),
+          expect.objectContaining({ id: prod2.id }),
+        ])
+      )
+    })
+
     it("doesn't expand collection and types", async () => {
       const api = useApi()
 
@@ -197,11 +279,10 @@ describe("/admin/products", () => {
       ]
 
       const response = await api
-        .get("/admin/products?status[]=published,proposed&expand=tags", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(
+          "/admin/products?status[]=published,proposed&expand=tags",
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -232,11 +313,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?deleted_at[gt]=01-26-1990&q=test", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?deleted_at[gt]=01-26-1990&q=test", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -257,11 +334,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?q=t&limit=2", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?q=t&limit=2", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -274,11 +347,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?q=test+product1", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?q=test+product1", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -304,11 +373,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?q=t&offset=1", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?q=t&offset=1", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -321,11 +386,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?deleted_at[gt]=01-26-1990", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?deleted_at[gt]=01-26-1990", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -350,11 +411,7 @@ describe("/admin/products", () => {
       ]
 
       const response = await api
-        .get("/admin/products?collection_id[]=test-collection1", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?collection_id[]=test-collection1", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -391,11 +448,7 @@ describe("/admin/products", () => {
       ]
 
       const response = await api
-        .get("/admin/products?tags[]=tag3", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?tags[]=tag3", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -436,11 +489,10 @@ describe("/admin/products", () => {
       ]
 
       const response = await api
-        .get("/admin/products?collection_id[]=test-collection1&tags[]=tag4", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(
+          "/admin/products?collection_id[]=test-collection1&tags[]=tag4",
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -487,22 +539,12 @@ describe("/admin/products", () => {
         ],
       }
 
-      await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      await api.post("/admin/products", payload, adminHeaders).catch((err) => {
+        console.log(err)
+      })
 
       const response = await api
-        .get("/admin/products?is_giftcard=true", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?is_giftcard=true", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -582,22 +624,12 @@ describe("/admin/products", () => {
         ],
       }
 
-      await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      await api.post("/admin/products", payload, adminHeaders).catch((err) => {
+        console.log(err)
+      })
 
       const response = await api
-        .get("/admin/products?is_giftcard=false", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products?is_giftcard=false", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -613,11 +645,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -870,13 +898,8 @@ describe("/admin/products", () => {
 
   describe("POST /admin/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -919,11 +942,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1074,11 +1093,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1119,11 +1134,7 @@ describe("/admin/products", () => {
       }
 
       const creationResponse = await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1133,11 +1144,7 @@ describe("/admin/products", () => {
       const productId = creationResponse.data.product.id
 
       const response = await api
-        .get(`/admin/products/${productId}`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(`/admin/products/${productId}`, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1175,11 +1182,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1217,11 +1220,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1324,11 +1323,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1346,11 +1341,7 @@ describe("/admin/products", () => {
       }
 
       try {
-        await api.post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        await api.post("/admin/products/test-product", payload, adminHeaders)
       } catch (e) {
         expect(e.response.status).toEqual(400)
         expect(e.response.data.type).toEqual("invalid_data")
@@ -1377,11 +1368,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1419,11 +1406,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product/options", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product/options", payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1443,15 +1426,86 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("DELETE /admin/products/:id/options/:option_id", () => {
+    beforeEach(async () => {
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-without-variants",
+        variants: [],
+        options: [
+          {
+            id: "test-product-option",
+            title: "Test option",
+          },
+        ],
+      })
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-with-variant",
+        variants: [
+          {
+            product_id: "test-product-with-variant",
+            options: [{ option_id: "test-product-option-1", value: "test" }],
+          },
+        ],
+        options: [
+          {
+            id: "test-product-option-1",
+            title: "Test option 1",
+          },
+        ],
+      })
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("deletes a product option", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          "/admin/products/test-product-without-variants/options/test-product-option",
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          options: [],
+          id: "test-product-without-variants",
+          variants: [],
+        })
+      )
+    })
+
+    it("deletes a values associated with deleted option", async () => {
+      const api = useApi()
+
+      const response = await api.delete(
+        "/admin/products/test-product-with-variant/options/test-product-option-1",
+        adminHeaders
+      )
+
+      const values = await dbConnection.manager.find(ProductOptionValue, {
+        where: { option_id: "test-product-option-1" },
+        withDeleted: true,
+      })
+
+      expect(values).toEqual([
+        expect.objectContaining({ deleted_at: expect.any(Date) }),
+      ])
+    })
+  })
+
   describe("GET /admin/products/:id/variants", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1463,11 +1517,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products/test-product/variants", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products/test-product/variants", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1499,14 +1549,9 @@ describe("/admin/products", () => {
 
   describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1526,11 +1571,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product/variants/test-variant", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product/variants/test-variant",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1566,11 +1611,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product1/variants/test-variant_3", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product1/variants/test-variant_3",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1614,11 +1659,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product/variants/test-variant", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product/variants/test-variant",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1661,11 +1706,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product/variants/test-variant", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product/variants/test-variant",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1699,11 +1744,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product/variants/test-variant", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product/variants/test-variant",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1742,11 +1787,11 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/test-product1/variants/test-variant_3", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/products/test-product1/variants/test-variant_3",
+          data,
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -1773,7 +1818,7 @@ describe("/admin/products", () => {
     })
   })
 
-  describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
+  describe("variant creation", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -1789,15 +1834,76 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
+    it("create a product variant with prices (regional and currency)", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "New variant",
+        sku: "new-sku",
+        ean: "new-ean",
+        upc: "new-upc",
+        barcode: "new-barcode",
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 100,
+          },
+          {
+            region_id: "test-region",
+            amount: 200,
+          },
+        ],
+        options: [{ option_id: "test-option", value: "inserted value" }],
+      }
+
+      const res = await api
+        .post("/admin/products/test-product/variants", payload, adminHeaders)
+        .catch((err) => console.log(err))
+
+      const insertedVariant = res.data.product.variants.find(
+        (v) => v.sku === "new-sku"
+      )
+
+      expect(res.status).toEqual(200)
+
+      expect(insertedVariant.prices).toEqual([
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          variant_id: insertedVariant.id,
+          region_id: null,
+        }),
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: null,
+          variant_id: insertedVariant.id,
+          region_id: "test-region",
+        }),
+      ])
+    })
+  })
+
+  describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
+    beforeEach(async () => {
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("successfully deletes a product", async () => {
       const api = useApi()
 
       const response = await api
-        .delete("/admin/products/test-product", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/products/test-product", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1822,11 +1928,7 @@ describe("/admin/products", () => {
       expect(variantPre).not.toEqual(undefined)
 
       const response = await api
-        .delete("/admin/products/test-product", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/products/test-product", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -1860,11 +1962,7 @@ describe("/admin/products", () => {
       // Soft delete the variant
       const response = await api.delete(
         "/admin/products/test-product/variants/test-variant_2",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
@@ -1909,11 +2007,10 @@ describe("/admin/products", () => {
       expect(optValPre).not.toEqual(undefined)
 
       // Soft delete the product
-      const response = await api.delete("/admin/products/test-product", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.delete(
+        "/admin/products/test-product",
+        adminHeaders
+      )
 
       expect(response.status).toEqual(200)
 
@@ -1959,11 +2056,7 @@ describe("/admin/products", () => {
       // Soft delete the variant
       const response = await api.delete(
         "/admin/products/test-product/variants/test-variant",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       expect(response.status).toEqual(200)
@@ -2005,11 +2098,10 @@ describe("/admin/products", () => {
       expect(pricePre).not.toEqual(undefined)
 
       // Soft delete the product
-      const response = await api.delete("/admin/products/test-product", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.delete(
+        "/admin/products/test-product",
+        adminHeaders
+      )
 
       expect(response.status).toEqual(200)
 
@@ -2044,11 +2136,7 @@ describe("/admin/products", () => {
 
       // First we soft-delete the product
       const response = await api
-        .delete("/admin/products/test-product", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/products/test-product", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -2076,22 +2164,14 @@ describe("/admin/products", () => {
         ],
       }
 
-      const res = await api.post("/admin/products", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const res = await api.post("/admin/products", payload, adminHeaders)
 
       expect(res.status).toEqual(200)
       expect(res.data.product.handle).toEqual("test-product")
 
       // Delete product again to ensure uniqueness is enforced in all cases
       const response2 = await api
-        .delete("/admin/products/test-product", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/products/test-product", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -2124,11 +2204,7 @@ describe("/admin/products", () => {
       }
 
       try {
-        await api.post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        await api.post("/admin/products", payload, adminHeaders)
       } catch (error) {
         expect(error.response.data.message).toMatch(
           "Product with handle test-product already exists."
@@ -2141,11 +2217,7 @@ describe("/admin/products", () => {
 
       // First we soft-delete the product collection
       const response = await api
-        .delete("/admin/collections/test-collection", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/collections/test-collection", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -2158,11 +2230,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .delete("/admin/collections/test-collection", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete("/admin/collections/test-collection", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -2176,11 +2244,7 @@ describe("/admin/products", () => {
         handle: "test-collection",
       }
 
-      const res = await api.post("/admin/collections", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const res = await api.post("/admin/collections", payload, adminHeaders)
 
       expect(res.status).toEqual(200)
       expect(res.data.collection.handle).toEqual("test-collection")
@@ -2196,11 +2260,7 @@ describe("/admin/products", () => {
       }
 
       try {
-        await api.post("/admin/collections", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        await api.post("/admin/collections", payload, adminHeaders)
       } catch (error) {
         expect(error.response.data.message).toMatch(
           "Product_collection with handle test-collection already exists."
@@ -2212,21 +2272,16 @@ describe("/admin/products", () => {
       const api = useApi()
 
       await api
-        .get("/admin/products/test-product", {
-          headers: {
-            Authorization: "bearer test_token",
-          },
-        })
+        .get("/admin/products/test-product", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
 
       const response = await api
-        .delete("/admin/products/test-product/variants/test-variant", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete(
+          "/admin/products/test-product/variants/test-variant",
+          adminHeaders
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -2250,11 +2305,7 @@ describe("/admin/products", () => {
       }
 
       const res = await api
-        .post("/admin/products/test-product/variants", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/products/test-product/variants", payload, adminHeaders)
         .catch((err) => console.log(err))
 
       expect(res.status).toEqual(200)
@@ -2272,15 +2323,48 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("POST /admin/products/:id/variants/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleProductFactory(dbConnection, {
+        id: "test-product-to-update",
+        variants: [
+          {
+            id: "test-variant-to-update",
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully updates variant without prices", async () => {
+      const api = useApi()
+
+      const res = await api
+        .post(
+          "/admin/products/test-product-to-update/variants/test-variant-to-update",
+          {
+            inventory_quantity: 10,
+          },
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+    })
+  })
+
   describe("GET /admin/products/tag-usage", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -2292,11 +2376,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/products/tag-usage", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/products/tag-usage", adminHeaders)
         .catch((err) => {
           console.log(err)
         })

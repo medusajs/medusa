@@ -42,6 +42,18 @@ post:
                 Set a batch job in dry_run mode to get some information on what
                 will be done without applying any modifications.
               default: false
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/batch-jobs/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/batch-jobs/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Batch Job
   responses:
@@ -53,6 +65,18 @@ post:
             properties:
               batch_job:
                 $ref: ../components/schemas/batch_job.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
 get:
   operationId: GetBatchJobs
   summary: List Batch Jobs
@@ -294,6 +318,18 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/batch-jobs/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/batch-jobs/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Batch Job
   responses:
@@ -316,3 +352,15 @@ get:
               limit:
                 type: integer
                 description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -1,10 +1,14 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
-import middlewares, { transformBody, transformQuery } from "../../../middlewares"
-import { StorePostCartsCartReq } from "./update-cart";
-import { StorePostCartReq } from "./create-cart";
+import { DeleteResponse, FindParams } from "../../../../types/common"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+import { StorePostCartsCartReq } from "./update-cart"
+import { StorePostCartReq } from "./create-cart"
+
 const route = Router()
 
 export default (app, container) => {
@@ -25,7 +29,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: defaultStoreCartRelations,
       defaultFields: defaultStoreCartFields,
       isList: false,
@@ -117,14 +121,7 @@ export default (app, container) => {
   return app
 }
 
-export const defaultStoreCartFields: (keyof Cart)[] = [
-  "subtotal",
-  "tax_total",
-  "shipping_total",
-  "discount_total",
-  "gift_card_total",
-  "total",
-]
+export const defaultStoreCartFields: (keyof Cart)[] = []
 
 export const defaultStoreCartRelations = [
   "gift_cards",

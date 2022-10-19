@@ -30,10 +30,10 @@ export class ShippingMethodTaxLine extends TaxLine {
 }
 
 /**
- * @schema sales_channel_tax_line
- * title: "Sales Channel"
- * description: "A Sales Channel"
- * x-resourceId: sales_channel_tax_line
+ * @schema shipping_method_tax_line
+ * title: "Shipping Method Tax Line"
+ * description: "Shipping Method Tax Line"
+ * x-resourceId: shipping_method_tax_line
  * required:
  *   - shipping_method_id
  *   - rate

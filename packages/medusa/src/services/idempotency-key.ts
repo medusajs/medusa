@@ -20,7 +20,8 @@ class IdempotencyKeyService extends TransactionBaseService {
   protected readonly idempotencyKeyRepository_: typeof IdempotencyKeyRepository
 
   constructor({ manager, idempotencyKeyRepository }: InjectedDependencies) {
-    super({ manager, idempotencyKeyRepository })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.idempotencyKeyRepository_ = idempotencyKeyRepository
@@ -170,28 +171,23 @@ class IdempotencyKeyService extends TransactionBaseService {
         }
       | never
     >
-  ): Promise<{ key?: IdempotencyKey; error?: unknown }> {
-    try {
-      return await this.atomicPhase_(async (manager) => {
-        const { recovery_point, response_code, response_body } = await callback(
-          manager
-        )
+  ): Promise<IdempotencyKey> {
+    return await this.atomicPhase_(async (manager) => {
+      const { recovery_point, response_code, response_body } = await callback(
+        manager
+      )
 
-        const data: DeepPartial<IdempotencyKey> = {
-          recovery_point: recovery_point ?? "finished",
-        }
+      const data: DeepPartial<IdempotencyKey> = {
+        recovery_point: recovery_point ?? "finished",
+      }
 
-        if (!recovery_point) {
-          data.response_body = response_body
-          data.response_code = response_code
-        }
+      if (!recovery_point) {
+        data.response_body = response_body
+        data.response_code = response_code
+      }
 
-        const key = await this.update(idempotencyKey, data)
-        return { key }
-      }, "SERIALIZABLE")
-    } catch (err) {
-      return { error: err }
-    }
+      return await this.update(idempotencyKey, data)
+    })
   }
 }
 

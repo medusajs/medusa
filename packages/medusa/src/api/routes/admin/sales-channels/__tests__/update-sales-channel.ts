@@ -1,6 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
+import SalesChannelFeatureFlag from "../../../../../loaders/feature-flags/sales-channels";
 
 describe("POST /admin/regions/:region_id/countries", () => {
   describe("successful creation", () => {
@@ -18,7 +19,7 @@ describe("POST /admin/regions/:region_id/countries", () => {
             userId: IdMap.getId("admin_user"),
           },
         },
-        flags: ["sales_channels"],
+        flags: [SalesChannelFeatureFlag],
       })
     })
 

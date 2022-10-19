@@ -10,17 +10,17 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/update-collection.d.ts:40
+medusa/dist/api/routes/admin/collections/update-collection.d.ts:77
 
 ___
 
 ### metadata
 
-• `Optional` **metadata**: `object`
+• `Optional` **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/update-collection.d.ts:41
+medusa/dist/api/routes/admin/collections/update-collection.d.ts:78
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/update-collection.d.ts:39
+medusa/dist/api/routes/admin/collections/update-collection.d.ts:76

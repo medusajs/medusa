@@ -18,42 +18,37 @@ const adminReqConfig = {
 }
 
 const setupJobDb = async (dbConnection) => {
-  try {
-    await adminSeeder(dbConnection)
-    await userSeeder(dbConnection)
+  await adminSeeder(dbConnection)
+  await userSeeder(dbConnection)
 
-    await simpleBatchJobFactory(dbConnection, {
-      id: "job_1",
-      type: "product-export",
-      created_by: "admin_user",
-    })
-    await simpleBatchJobFactory(dbConnection, {
-      id: "job_2",
-      type: "product-export",
-      created_by: "admin_user",
-    })
-    await simpleBatchJobFactory(dbConnection, {
-      id: "job_3",
-      type: "product-export",
-      created_by: "admin_user",
-    })
-    await simpleBatchJobFactory(dbConnection, {
-      id: "job_4",
-      type: "product-export",
-      status: "awaiting_confirmation",
-      created_by: "member-user",
-    })
-    await simpleBatchJobFactory(dbConnection, {
-      id: "job_5",
-      type: "product-export",
-      status: "completed",
-      completed_at: "2022-06-27T22:00:00.000Z",
-      created_by: "admin_user",
-    })
-  } catch (err) {
-    console.log(err)
-    throw err
-  }
+  await simpleBatchJobFactory(dbConnection, {
+    id: "job_1",
+    type: "product-export",
+    created_by: "admin_user",
+  })
+  await simpleBatchJobFactory(dbConnection, {
+    id: "job_2",
+    type: "product-export",
+    created_by: "admin_user",
+  })
+  await simpleBatchJobFactory(dbConnection, {
+    id: "job_3",
+    type: "product-export",
+    created_by: "admin_user",
+  })
+  await simpleBatchJobFactory(dbConnection, {
+    id: "job_4",
+    type: "product-export",
+    status: "awaiting_confirmation",
+    created_by: "member-user",
+  })
+  await simpleBatchJobFactory(dbConnection, {
+    id: "job_5",
+    type: "product-export",
+    status: "completed",
+    completed_at: "2022-06-27T22:00:00.000Z",
+    created_by: "admin_user",
+  })
 }
 
 describe("/admin/batch-jobs", () => {
@@ -251,18 +246,13 @@ describe("/admin/batch-jobs", () => {
 
   describe("POST /admin/batch-jobs/:id/cancel", () => {
     beforeEach(async () => {
-      try {
-        await setupJobDb(dbConnection)
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_complete",
-          type: "product-export",
-          created_by: "admin_user",
-          completed_at: new Date(),
-        })
-      } catch (e) {
-        console.log(e)
-        throw e
-      }
+      await setupJobDb(dbConnection)
+      await simpleBatchJobFactory(dbConnection, {
+        id: "job_complete",
+        type: "product-export",
+        created_by: "admin_user",
+        completed_at: new Date(),
+      })
     })
 
     afterEach(async () => {

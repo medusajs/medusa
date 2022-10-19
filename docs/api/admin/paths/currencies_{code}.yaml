@@ -1,0 +1,31 @@
+post:
+  operationId: PostCurrenciesCurrency
+  summary: Update a Currency
+  description: Update a Currency
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: code
+      required: true
+      description: The code of the Currency.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            includes_tax:
+              type: boolean
+              description: '[EXPERIMENTAL] Tax included in prices of currency.'
+  tags:
+    - Currency
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              currency:
+                $ref: ../components/schemas/currency.yaml

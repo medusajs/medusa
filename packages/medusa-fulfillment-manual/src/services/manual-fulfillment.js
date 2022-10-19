@@ -19,7 +19,7 @@ class ManualFulfillmentService extends FulfillmentService {
     ]
   }
 
-  validateFulfillmentData(data, cart) {
+  validateFulfillmentData(_, data, cart) {
     return data
   }
 

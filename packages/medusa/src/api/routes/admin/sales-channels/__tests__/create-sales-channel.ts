@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 
 import { request } from "../../../../../helpers/test-request"
 import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
+import SalesChannelFeatureFlag from "../../../../../loaders/feature-flags/sales-channels";
 
 describe("POST /admin/sales-channels", () => {
   describe("successfully get a sales channel", () => {
@@ -18,7 +19,7 @@ describe("POST /admin/sales-channels", () => {
           name: "sales channel 1 name",
           description: "sales channel 1 description",
         },
-        flags: ["sales_channels"],
+        flags: [SalesChannelFeatureFlag],
       })
     })
 

@@ -18,9 +18,9 @@ In addition, you need to configure a webhook listener on your PayPal Developer D
 
 Webhooks are used in scenarios where the customer might leave the page during the authorization and before the checkout flow is fully complete. It will then create the order or swap after the payment is authorized if they weren’t created
 
-Additionally, you need a Medusa server installed and set up. If not, you can follow our [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to get started.
+Additionally, you need a Medusa server installed and set up. If not, you can follow the [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to get started.
 
-You also need [Medusa Admin](../admin/quickstart.md) installed to enable PayPal as a payment provider. You can alternatively use our [REST APIs](https://docs.medusajs.com/api/admin/auth).
+You also need [Medusa Admin](../admin/quickstart.md) installed to enable PayPal as a payment provider. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin).
 
 ## Medusa Server
 
@@ -80,17 +80,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add PayPal to Regions
 
-Run your Medusa server and Medusa admin, then open the Medusa admin and login.
-
-Choose Settings from the Sidebar. Then, choose Regions.
-
-![Region Settings](https://i.imgur.com/wRkmbLY.png)
-
-Then, choose the regions you want to add PayPal as a payment provider. In the right-side settings, scroll down to “Payment Providers” and choose “paypal”.
-
-![Choose PayPal](https://i.imgur.com/AJ2Yez8.png)
-
-Once you’re done, click Save. PayPal is now a payment provider in your store in the regions you added it to.
+You can refer to [this documentation in the user guide](../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like PayPal to a region.
 
 ## Storefront Setup
 
@@ -256,8 +246,8 @@ Here’s briefly what this code snippet does:
 1. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProvider` component the Client ID.
 2. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 3. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed which calls the `completeOrder` function.
-4. In `completeOrder`, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store/cart/select-a-payment-session). Then, you send a request to the server to [update the payment session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) data with the authorization data received from PayPal.
-5. You then [complete the cart and place the order](https://docs.medusajs.com/api/store/cart/complete-a-cart). If that is done successfully, you navigate to the `/order-confirmed` page.
+4. In `completeOrder`, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the server to [update the payment session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) data with the authorization data received from PayPal.
+5. You then [complete the cart and place the order](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete). If that is done successfully, you navigate to the `/order-confirmed` page.
 
 The last step is to add this component as the component to render when PayPal is available as a payment provider.
 
@@ -385,8 +375,8 @@ Here’s briefly what this code snippet does:
 3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProvider` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added.
 4. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 5. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed.
-6. In the fulfillment function, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store/cart/select-a-payment-session). Then, you send a request to the server to [update the payment session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) data with the authorization data received from PayPal.
-7. You then [complete the cart and place the order](https://docs.medusajs.com/api/store/cart/complete-a-cart). If that is done successfully, you just show a success alert. You can change this based on the behavior you want in your storefront.
+6. In the fulfillment function, you first ensure that the payment session for the PayPal payment provider is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession). Then, you send a request to the server to [update the payment session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) data with the authorization data received from PayPal.
+7. You then [complete the cart and place the order](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete). If that is done successfully, you just show a success alert. You can change this based on the behavior you want in your storefront.
 
 You can then import this component where you want to show it in your storefront.
 
@@ -404,6 +394,6 @@ Clicking this button lets you capture the payment for an order. You can also ref
 
 Refunding or Capturing payments is reflected in your PayPal dashboard as well.
 
-## What's Next 🚀
+## What's Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

@@ -22,7 +22,6 @@
     "@babel/runtime": "^7.9.6",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.2",
-    "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-test-utils": "^1.1.37"
   },

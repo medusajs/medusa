@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/region.d.ts:23
+medusa/dist/models/region.d.ts:24
 
 ___
 
@@ -125,6 +125,16 @@ ___
 #### Defined in
 
 medusa/dist/interfaces/models/base-entity.d.ts:5
+
+___
+
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/region.d.ts:23
 
 ___
 

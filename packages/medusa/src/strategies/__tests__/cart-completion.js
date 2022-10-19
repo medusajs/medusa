@@ -13,20 +13,22 @@ const IdempotencyKeyServiceMock = {
 
       if (recovery_point) {
         return {
-          key: { idempotency_key: key, recovery_point },
+          idempotency_key: key,
+          recovery_point,
         }
       } else {
         return {
-          key: {
-            recovery_point: "finished",
-            response_body,
-            response_code,
-          },
+          recovery_point: "finished",
+          response_body,
+          response_code,
         }
       }
     } catch (err) {
       return { error: err }
     }
+  }),
+  update: jest.fn().mockImplementation((key, data) => {
+    return data
   }),
 }
 
@@ -181,8 +183,10 @@ describe("CartCompletionStrategy", () => {
             return this
           },
           createTaxLines: jest.fn(() => Promise.resolve(cart)),
+          deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),
+          retrieveWithTotals: jest.fn(() => Promise.resolve(cart)),
         }
         const orderServiceMock = {
           withTransaction: function () {
@@ -205,7 +209,7 @@ describe("CartCompletionStrategy", () => {
           idempotencyKeyService: idempotencyKeyServiceMock,
           orderService: orderServiceMock,
           swapService: swapServiceMock,
-          manager: MockManager
+          manager: MockManager,
         })
 
         const val = await completionStrat.complete(cart.id, idempotencyKey, {})

@@ -59,17 +59,8 @@ class DraftOrderService extends TransactionBaseService {
     productVariantService,
     shippingOptionService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      draftOrderRepository,
-      paymentRepository,
-      orderRepository,
-      eventBusService,
-      cartService,
-      lineItemService,
-      productVariantService,
-      shippingOptionService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.draftOrderRepository_ = draftOrderRepository

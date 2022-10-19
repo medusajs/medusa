@@ -210,6 +210,25 @@ import { isDefined } from "../../../../utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.batchJobs.list()
+ *       .then(({ batch_jobs, limit, offset, count }) => {
+ *         console.log(batch_jobs.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/batch-jobs' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Batch Job
  * responses:
@@ -232,6 +251,18 @@ import { isDefined } from "../../../../utils"
  *            limit:
  *               type: integer
  *               description: The number of items per page
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "401":
+ *    $ref: "#/components/responses/unauthorized"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res) => {
   const batchService: BatchJobService = req.scope.resolve("batchJobService")
@@ -289,27 +320,37 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   type?: string[]
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   confirmed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   pre_processed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   completed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   failed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator | null
 

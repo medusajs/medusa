@@ -1,12 +1,15 @@
 const path = require("path")
+const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
 const apisPath = path.join(__dirname, "../../docs/api")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
+const announcementBar = JSON.parse(fs.readFileSync('./announcement.json'))
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config = {
   title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
@@ -43,6 +46,7 @@ module.exports = {
       placeholder: "Search docs...",
       appId: algoliaAppId,
       contextualSearch: false,
+      externalUrlRegex: "https://medusajs.com"
     },
     prism: {
       defaultLanguage: "js",
@@ -61,8 +65,13 @@ module.exports = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docsSidebar",
           label: "Docs"
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "userGuideSidebar",
+          label: "User Guide"
         },
         {
           type: 'dropdown',
@@ -87,30 +96,6 @@ module.exports = {
               </a>`
             },
           ],
-        },
-        {
-          type: 'dropdown',
-          label: 'References',
-          items: [
-            {
-              to: "cli/reference",
-              label: "CLI Reference",
-            },
-            {
-              to: "advanced/backend/subscribers/events-list",
-              label: "Events Reference",
-            },
-            {
-              type: "docSidebar",
-              sidebarId: "jsClientSidebar",
-              label: "JS Client Reference",
-            },
-            {
-              type: "docSidebar",
-              sidebarId: "servicesSidebar",
-              label: "Services Reference",
-            },
-          ]
         },
         {
           href: "https://github.com/medusajs/medusa",
@@ -157,11 +142,27 @@ module.exports = {
               label: "GitHub",
               href: "https://github.com/medusajs/medusa",
             },
+            {
+              label: "Integrations",
+              href: "https://medusajs.notion.site/1a0ada9903874e0185d0b8ce0591b359?v=0631285851ba4021aa07c3b48dd4801a",
+            },
           ],
         },
       ],
       copyright: `© ${new Date().getFullYear()} Medusa`,
     },
+    sidebarFooter: [
+      {
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        label: 'Report an Issue',
+        className: 'alert-icon',
+      },
+      {
+        href: "https://medusajs.com/",
+        label: 'Go to medusajs.com',
+        className: 'topright-icon',
+      },
+    ],
   },
   presets: [
     [
@@ -179,6 +180,9 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
+        },
+        gtag: {
+          trackingID: 'G-S7G7X3JYS3',
         },
       },
     ],
@@ -213,10 +217,22 @@ module.exports = {
             expandResponses: "200,204",
             generatedPayloadSamplesMaxDepth: 4,
             showObjectSchemaExamples: true,
-            requiredPropsFirst: true
+            requiredPropsFirst: true,
+            hideRequestPayloadSample: true
+          },
+          theme: {
+            sidebar: {
+              width: '250px'
+            }
           }
         }
       },
     ],
   ],
 }
+
+if (Object.keys(announcementBar).length) {
+  config.themeConfig.announcementBar = announcementBar
+}
+
+module.exports = config

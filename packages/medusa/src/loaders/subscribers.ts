@@ -15,9 +15,9 @@ export default ({ container }: { container: MedusaContainer }) => {
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
-  core.forEach(fn => {
+  core.forEach((fn) => {
     const loaded = require(fn).default
 
-    container.build(asFunction(cradle => new loaded(cradle)).singleton())
+    container.build(asFunction((cradle) => new loaded(cradle)).singleton())
   })
 }

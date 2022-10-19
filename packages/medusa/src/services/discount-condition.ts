@@ -12,10 +12,9 @@ import {
 } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { FindConfig } from "../types/common"
-import { UpsertDiscountConditionInput } from "../types/discount"
-import { PostgresError } from "../utils/exception-formatter"
+import { DiscountConditionInput } from "../types/discount"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, PostgresError } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -28,6 +27,7 @@ type InjectedDependencies = {
  * @implements {BaseService}
  */
 class DiscountConditionService extends TransactionBaseService {
+  // eslint-disable-next-line max-len
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
@@ -39,7 +39,7 @@ class DiscountConditionService extends TransactionBaseService {
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({ manager, discountConditionRepository, eventBusService })
+    super(arguments[0])
 
     this.manager_ = manager
     this.discountConditionRepository_ = discountConditionRepository
@@ -69,10 +69,10 @@ class DiscountConditionService extends TransactionBaseService {
     return condition
   }
 
-  protected static resolveConditionType_(data: UpsertDiscountConditionInput):
+  protected static resolveConditionType_(data: DiscountConditionInput):
     | {
         type: DiscountConditionType
-        resource_ids: string[]
+        resource_ids: (string | { id: string })[]
       }
     | undefined {
     switch (true) {
@@ -107,7 +107,8 @@ class DiscountConditionService extends TransactionBaseService {
   }
 
   async upsertCondition(
-    data: UpsertDiscountConditionInput
+    data: DiscountConditionInput,
+    overrideExisting: boolean = true
   ): Promise<
     (
       | DiscountConditionProduct
@@ -146,7 +147,7 @@ class DiscountConditionService extends TransactionBaseService {
             data.id,
             resolvedConditionType.resource_ids,
             resolvedConditionType.type,
-            true
+            overrideExisting
           )
         }
 
@@ -175,6 +176,38 @@ class DiscountConditionService extends TransactionBaseService {
         }
       }
     )
+  }
+
+  async removeResources(
+    data: Omit<DiscountConditionInput, "id"> & { id: string }
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const resolvedConditionType =
+        DiscountConditionService.resolveConditionType_(data)
+
+      if (!resolvedConditionType) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Missing one of products, collections, tags, types or customer groups in data`
+        )
+      }
+
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
+
+      const resolvedCondition = await this.retrieve(data.id)
+
+      if (data.operator && data.operator !== resolvedCondition.operator) {
+        resolvedCondition.operator = data.operator
+        await discountConditionRepo.save(resolvedCondition)
+      }
+
+      await discountConditionRepo.removeConditionResources(
+        data.id,
+        resolvedConditionType.type,
+        resolvedConditionType.resource_ids
+      )
+    })
   }
 
   async delete(discountConditionId: string): Promise<DiscountCondition | void> {

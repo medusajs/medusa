@@ -16,12 +16,13 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
+  @Index()
   @Column()
   currency_code: string
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency?: Currency
 
   @Column({ type: "int" })
   amount: number
@@ -58,7 +59,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {

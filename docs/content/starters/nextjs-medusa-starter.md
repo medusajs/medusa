@@ -1,4 +1,4 @@
-# Quickstart: Next.js Storefront
+# Next.js Storefront Quickstart
 
 This document guides you to install and set up the Next.js Storefront for your Medusa Server.
 
@@ -16,19 +16,20 @@ This document assumes you already have a Medusa server installed. If you don’t
 
 ## Installation
 
-1. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
+1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
 npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
 ```
 
-1. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
+2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
+cd my-medusa-storefront
 mv .env.template .env.local
 ```
 
-1. Make sure the Medusa server is running, then run the local Next.js server:
+3\. Make sure the Medusa server is running, then run the local Next.js server:
 
 ```bash
 npm run dev
@@ -211,7 +212,7 @@ You can learn more about development with Next.js through [their documentation](
 
 ![Checkout Page](https://i.imgur.com/VC8SYfb.png)
 
-## What’s Next 🚀
+## What’s Next
 
-- Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
+- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
 - Learn [how to install Medusa Admin](../admin/quickstart.md).

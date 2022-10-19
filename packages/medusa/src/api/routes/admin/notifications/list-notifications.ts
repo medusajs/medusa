@@ -27,6 +27,25 @@ import { validator } from "../../../../utils/validator"
  *   - (query) resource_id {string} The ID of the resource that the Notification refers to.
  *   - (query) to {string} The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
  *   - (query) include_resends {string} A boolean indicating whether the result set should include resent notifications or not
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.notifications.list()
+ *       .then(({ notifications }) => {
+ *         console.log(notifications.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/notifications' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Notification
  * responses:
@@ -40,6 +59,18 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/notification"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const notificationService: NotificationService = req.scope.resolve(

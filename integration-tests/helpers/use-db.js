@@ -1,18 +1,19 @@
 const path = require("path")
-require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
 const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
 const dbFactory = require("./use-template-db")
 
-const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
-const DB_USERNAME = process.env.DB_USERNAME || "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration-${workerId}`
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
+  host: DB_HOST,
 }
 
 const keepTables = [
@@ -69,8 +70,7 @@ const DbTestUtil = {
 
   shutdown: async function () {
     await this.db_.close()
-    const databaseName = `medusa-integration-${workerId}`
-    return await dropDatabase({ databaseName }, pgGodCredentials)
+    return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
 }
 
@@ -117,9 +117,7 @@ module.exports = {
       instance.setDb(dbConnection)
       return dbConnection
     } else {
-      const databaseName = `medusa-integration-${workerId}`
-
-      await dbFactory.createFromTemplate(databaseName)
+      await dbFactory.createFromTemplate(DB_NAME)
 
       // get migraitons with enabled featureflags
       const migrationDir = path.resolve(

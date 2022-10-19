@@ -14,7 +14,6 @@ import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}
@@ -87,6 +86,26 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *             example:
  *               ip: "::1"
  *               user_agent: "Chrome"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.carts.update(cart_id, {
+ *         email: 'user@example.com'
+ *       })
+ *       .then(({ cart }) => {
+ *         console.log(cart.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com"
+ *       }'
  * tags:
  *   - Cart
  * responses:
@@ -98,6 +117,16 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { id } = req.params
@@ -122,12 +151,10 @@ export default async (req, res) => {
     }
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  const data = await decorateLineItemsWithTotals(cart, req)
-
   res.json({ cart: data })
 }
 

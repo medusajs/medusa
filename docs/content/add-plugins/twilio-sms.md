@@ -16,13 +16,13 @@ This plugin only gives you access to the Twilio SMS API but does not implement s
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow our [Quickstart guide](../quickstart/quick-start.md) if you don’t.
+Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.md) if you don’t.
 
 You also must have a [Twilio account created](https://www.twilio.com/sms) so if you don’t already please go ahead and create one.
 
 ## Retrieve Credentials
 
-For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these 3 from your [Twilio Console’s homepage](https://console.twilio.com).
+For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these three from your [Twilio Console’s homepage](https://console.twilio.com).
 
 ## Install Plugin
 
@@ -110,7 +110,7 @@ If you create an order now on your storefront, you should receive a message from
 
 :::tip
 
-If you don’t have a storefront set up yet, you can install one of our [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+If you don’t have a storefront set up yet, you can install one of the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
 
 :::
 
@@ -122,7 +122,7 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ![Twilio Dashboard](https://i.imgur.com/MXtQMiL.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](../admin/quickstart.md) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

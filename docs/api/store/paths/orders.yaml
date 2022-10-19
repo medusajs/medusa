@@ -29,6 +29,15 @@ get:
           postal_code:
             type: string
             description: The postal code of the shipping address
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/orders/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/orders/getundefined
   tags:
     - Order
   responses:
@@ -40,3 +49,13 @@ get:
             properties:
               order:
                 $ref: ../components/schemas/order.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

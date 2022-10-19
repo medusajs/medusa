@@ -18,7 +18,7 @@ Plugins run within the same process as the core Medusa server eliminating the ne
 
 ### Official Plugins
 
-Medusa has official plugins that cover different aspects and functionalities such as payment, CMS, fulfillment, and notifications. You can check out the available plugins under the [packages directory in the Medusa repository on GitHub](https://github.com/medusajs/medusa/tree/master/packages).
+Medusa has official plugins that cover different aspects and functionalities such as payment, Content Management System (CMS), fulfillment, and notifications. You can check out the available plugins under the [packages directory in the Medusa repository on GitHub](https://github.com/medusajs/medusa/tree/master/packages).
 
 :::tip
 
@@ -48,7 +48,7 @@ If you’re installing an official plugin from the Medusa repository, you can fi
 
 For community plugins, please refer to the installation instructions of that plugin to learn about any required configurations.
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to [create your own plugin](create.md).
 - Learn how to [create a fulfillment provider](../shipping/add-fulfillment-provider.md) or a [payment provider](../payment/how-to-create-payment-provider.md).

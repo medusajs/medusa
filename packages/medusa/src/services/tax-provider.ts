@@ -1,19 +1,19 @@
 import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import Redis from "ioredis"
 
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import {
-  LineItemTaxLine,
-  TaxProvider,
-  LineItem,
-  ShippingMethodTaxLine,
-  ShippingMethod,
-  Region,
   Cart,
+  LineItem,
+  LineItemTaxLine,
+  Region,
+  ShippingMethod,
+  ShippingMethodTaxLine,
+  TaxProvider,
 } from "../models"
 import { isCart } from "../types/cart"
 import {
@@ -47,7 +47,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
-  protected readonly redis_: Redis
+  protected readonly redis_: Redis.Redis
   protected readonly eventBus_: EventBusService
 
   constructor(container: AwilixContainer) {
@@ -89,6 +89,16 @@ class TaxProviderService extends TransactionBaseService {
     }
 
     return provider
+  }
+
+  async clearLineItemsTaxLines(itemIds: string[]): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const taxLineRepo = transactionManager.getCustomRepository(
+        this.taxLineRepo_
+      )
+
+      await taxLineRepo.delete({ item_id: In(itemIds) })
+    })
   }
 
   async clearTaxLines(cartId: string): Promise<void> {
@@ -438,7 +448,7 @@ class TaxProviderService extends TransactionBaseService {
     productId: string,
     regionId: string,
     value: TaxServiceRate[]
-  ): Promise<void> {
+  ): Promise<null | string> {
     const cacheKey = this.getCacheKey(productId, regionId)
     return await this.redis_.set(
       cacheKey,

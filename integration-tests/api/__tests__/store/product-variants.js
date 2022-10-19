@@ -26,30 +26,25 @@ describe("/store/variants", () => {
 
   describe("GET /store/variants", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
+      await productSeeder(dbConnection)
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "prod",
-            variants: [
-              {
-                title: "test1",
-                inventory_quantity: 10,
-              },
-              {
-                title: "test2",
-                inventory_quantity: 12,
-              },
-            ],
-          },
-          100
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "prod",
+          variants: [
+            {
+              title: "test1",
+              inventory_quantity: 10,
+            },
+            {
+              title: "test2",
+              inventory_quantity: 12,
+            },
+          ],
+        },
+        100
+      )
     })
 
     afterEach(async () => {
@@ -169,30 +164,25 @@ describe("/store/variants", () => {
 
   describe("GET /store/variants advanced pricing", () => {
     beforeEach(async () => {
-      try {
-        await storeProductSeeder(dbConnection)
+      await storeProductSeeder(dbConnection)
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "prod",
-            variants: [
-              {
-                title: "test1",
-                inventory_quantity: 10,
-              },
-              {
-                title: "test2",
-                inventory_quantity: 12,
-              },
-            ],
-          },
-          100
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "prod",
+          variants: [
+            {
+              title: "test1",
+              inventory_quantity: 10,
+            },
+            {
+              title: "test2",
+              inventory_quantity: 12,
+            },
+          ],
+        },
+        100
+      )
     })
 
     afterEach(async () => {

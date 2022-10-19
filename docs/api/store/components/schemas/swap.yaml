@@ -93,7 +93,7 @@ properties:
     $ref: ./address.yaml
   shipping_methods:
     description: >-
-      The Shipping Methods used to fulfill the addtional items purchased.
+      The Shipping Methods used to fulfill the additional items purchased.
       Available if the relation `shipping_methods` is expanded.
     type: array
     items:

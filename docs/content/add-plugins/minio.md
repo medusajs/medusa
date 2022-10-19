@@ -117,6 +117,66 @@ Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to t
 
 ![Image Uploaded on Admin](https://i.imgur.com/alabX2i.png)
 
+## Private Buckets
+
+### Handle Exports
+
+Medusa provides export functionalities including exporting products and orders. For exports to work, you must [set up a private bucket](#create-private-bucket).
+
+### Handle Imports
+
+Medusa provides import functionalities including importing products. For imports to work, you must [set the private bucket](#add-private-bucket-environment-variable) to be the same as the public bucket.
+
+### Create Private Bucket
+
+To create a private bucket, follow along the [steps mentioned earlier](#create-a-minio-bucket), but keep Access Policy set to private.
+
+### Add Private Bucket Environment Variable
+
+Add the following environment variable on your Medusa server:
+
+```bash
+MINIO_PRIVATE_BUCKET=exports
+```
+
+Then, add a new option to the plugin’s options in `medusa-config.js`:
+
+```jsx
+{
+    resolve: `medusa-file-minio`,
+    options: {
+        //...
+        private_bucket: process.env.MINIO_PRIVATE_BUCKET
+    },
+},
+```
+
+### Use Different Secret and Access Keys
+
+If you only add the `private_bucket` option, the same secret and access keys that you used for the public bucket will be used to access the private bucket.
+
+If you want to use different keys, set the following environment variables:
+
+```bash
+MINIO_PRIVATE_ACCESS_KEY=<YOUR_PRIVATE_ACCESS_KEY>
+MINIO_PRIVATE_SECRET_KEY=<YOUR_PRIVATE_SECRET_KEY>
+```
+
+Where `<YOUR_PRIVATE_ACCESS_KEY>` and `<YOUR_PRIVATE_SECRET_KEY>` are the access key and secret access key that have access to the private MinIO bucket.
+
+Then, add two new options to the plugin’s options in `medusa-config.js`:
+
+```jsx
+{
+    resolve: `medusa-file-minio`,
+    options: {
+        //...
+        private_access_key_id: process.env.MINIO_PRIVATE_ACCESS_KEY,
+        private_secret_access_key: process.env.MINIO_PRIVATE_SECRET_KEY
+    },
+},
+```
+
 ## Next.js Storefront Configuration
 
 If you’re using a [Next.js](../starters/nextjs-medusa-starter.md) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO server.
@@ -139,6 +199,6 @@ module.exports = {
 
 Where `127.0.0.1` is the domain of your local MinIO server.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

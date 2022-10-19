@@ -84,6 +84,9 @@ properties:
       Option.
     type: object
     example: {}
+  includes_tax:
+    description: '[EXPERIMENTAL] Does the shipping option price include tax'
+    type: boolean
   created_at:
     type: string
     description: The date with timezone at which the resource was created.

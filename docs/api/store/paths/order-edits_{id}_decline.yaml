@@ -1,0 +1,47 @@
+post:
+  operationId: PostOrderEditsOrderEditDecline
+  summary: Decline an OrderEdit
+  description: Declines an OrderEdit.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the OrderEdit.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            declined_reason:
+              type: string
+              description: The reason for declining the OrderEdit.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order-edits_{id}_decline/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order-edits_{id}_decline/postundefined
+  tags:
+    - OrderEdit
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order_edit:
+                $ref: ../components/schemas/order_edit.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

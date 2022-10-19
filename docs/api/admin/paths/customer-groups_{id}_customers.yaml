@@ -10,6 +10,18 @@ get:
       description: The ID of the customer group.
       schema:
         type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/customer-groups_{id}_customers/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/customer-groups_{id}_customers/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Customer Group
   responses:
@@ -32,3 +44,15 @@ get:
               limit:
                 type: integer
                 description: The number of items per page
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -121,12 +121,7 @@ Object {
     "symbol_native": "$",
   },
   "default_currency_code": "usd",
-  "feature_flags": Array [
-    Object {
-      "key": "sales_channels",
-      "value": false,
-    },
-  ],
+  "feature_flags": Any<Array>,
   "fulfillment_providers": Array [
     Object {
       "id": "test-ful",

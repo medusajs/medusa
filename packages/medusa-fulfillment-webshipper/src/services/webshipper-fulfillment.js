@@ -390,6 +390,8 @@ class WebshipperFulfillmentService extends FulfillmentService {
             state: shipping_address.province,
             phone: shipping_address.phone,
             email: fromOrder.email,
+            personal_customs_no:
+              shipping_address.metadata?.personal_customs_no || null,
           },
           currency: fromOrder.currency_code.toUpperCase(),
         },

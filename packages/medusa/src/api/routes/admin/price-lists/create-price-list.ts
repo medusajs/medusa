@@ -1,26 +1,29 @@
 import {
-  AdminPriceListPricesCreateReq,
-  CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
-import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
+import {
+  AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 
-import { EntityManager } from "typeorm"
-import PriceListService from "../../../../services/price-list"
-import { Request } from "express"
 import { Type } from "class-transformer"
+import { Request } from "express"
+import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import PriceListService from "../../../../services/price-list"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [post] /price-lists
  * operationId: "PostPriceListsPriceList"
- * summary: "Creates a Price List"
+ * summary: "Create a Price List"
  * description: "Creates a Price List"
  * x-authenticated: true
  * requestBody:
@@ -98,6 +101,53 @@ import { Type } from "class-transformer"
  *                 id:
  *                   description: The ID of a customer group
  *                   type: string
+ *           includes_tax:
+ *              description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *              type: boolean
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       import { PriceListType } from "@medusajs/medusa"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.priceLists.create({
+ *         name: 'New Price List',
+ *         description: 'A new price list',
+ *         type: PriceListType.SALE,
+ *         prices: [
+ *           {
+ *             amount: 1000,
+ *             variant_id,
+ *             currency_code: 'eur'
+ *           }
+ *         ]
+ *       })
+ *       .then(({ price_list }) => {
+ *         console.log(price_list.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/price-lists' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "New Price List",
+ *           "description": "A new price list",
+ *           "type": "sale",
+ *           "prices": [
+ *             {
+ *               "amount": 1000,
+ *               "variant_id": "afafa",
+ *               "currency_code": "eur"
+ *             }
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Price List
  * responses:
@@ -109,6 +159,18 @@ import { Type } from "class-transformer"
  *           properties:
  *             price_list:
  *               $ref: "#/components/schemas/price_list"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res) => {
   const priceListService: PriceListService =
@@ -159,4 +221,10 @@ export class AdminPostPriceListsPriceListReq {
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
   customer_groups?: CustomerGroup[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

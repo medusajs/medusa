@@ -1,6 +1,5 @@
 import {
   AllocationType,
-  Discount,
   DiscountConditionOperator,
   DiscountRuleType,
 } from "../../../../models"
@@ -17,17 +16,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-
-import { AdminPostDiscountsDiscountParams } from "./update-discount"
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 import { Type } from "class-transformer"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /discounts
@@ -139,6 +135,44 @@ import { validator } from "../../../../utils/validator"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.discounts.create({
+ *         code: 'TEST',
+ *         rule: {
+ *           type: DiscountRuleType.FIXED,
+ *           value: 10,
+ *           allocation: AllocationType.ITEM
+ *         },
+ *         is_dynamic: false,
+ *         is_disabled: false
+ *       })
+ *       .then(({ discount }) => {
+ *         console.log(discount.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/discounts' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "code": "TEST",
+ *           "rule": {
+ *              "type": "fixed",
+ *              "value": 10,
+ *              "allocation": "item"
+ *           }
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:
@@ -150,33 +184,34 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             discount:
  *               $ref: "#/components/schemas/discount"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 
-export default async (req, res) => {
-  const validated = await validator(AdminPostDiscountsReq, req.body)
-
-  const validatedParams = await validator(
-    AdminPostDiscountsDiscountParams,
-    req.query
-  )
-
+export default async (req: Request, res: Response) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   const created = await manager.transaction(async (transactionManager) => {
     return await discountService
       .withTransaction(transactionManager)
-      .create(validated)
+      .create(req.validatedBody as AdminPostDiscountsReq)
   })
 
-  const config = getRetrieveConfig<Discount>(
-    defaultAdminDiscountsFields,
-    defaultAdminDiscountsRelations,
-    validatedParams?.fields?.split(",") as (keyof Discount)[],
-    validatedParams?.expand?.split(",")
+  const discount = await discountService.retrieve(
+    created.id,
+    req.retrieveConfig
   )
-
-  const discount = await discountService.retrieve(created.id, config)
 
   res.status(200).json({ discount })
 }
@@ -259,12 +294,4 @@ export class AdminCreateCondition extends AdminUpsertConditionsReq {
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsParams {
-  @IsArray()
-  @IsOptional()
-  expand?: string[]
-
-  @IsArray()
-  @IsOptional()
-  fields?: string[]
-}
+export class AdminPostDiscountsParams extends FindParams {}

@@ -1,10 +1,10 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductService from "../product"
-import { FlagRouter } from "../../utils/flag-router";
+import { FlagRouter } from "../../utils/flag-router"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -110,7 +110,7 @@ describe("ProductService", () => {
     productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: (id) =>
@@ -250,7 +250,7 @@ describe("ProductService", () => {
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       update: (variant, update) => {
@@ -491,15 +491,14 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       addOptionValue: jest.fn(),
     }
 
     const productOptionRepository = MockRepository({
-      create: () =>
-        Promise.resolve({ id: IdMap.getId("Material"), title: "Material" }),
+      create: () => ({ id: IdMap.getId("Material"), title: "Material" }),
     })
 
     const productService = new ProductService({

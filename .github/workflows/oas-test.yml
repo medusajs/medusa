@@ -31,4 +31,4 @@ jobs:
 
       - name: Build OAS
         run: |
-          yarn openapi:generate
+          yarn openapi:generate --dry-run

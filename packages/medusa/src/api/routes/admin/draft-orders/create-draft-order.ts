@@ -50,12 +50,12 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *               - $ref: "#/components/schemas/address_fields"
  *               - type: string
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *               - $ref: "#/components/schemas/address_fields"
  *               - type: string
  *           items:
  *             description: The Line Items that have been received.
@@ -120,6 +120,53 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           metadata:
  *             description: The optional key-value map with additional details about the Draft Order.
  *             type: object
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.draftOrders.create({
+ *         email: 'user@example.com',
+ *         region_id,
+ *         items: [
+ *           {
+ *             quantity: 1
+ *           }
+ *         ],
+ *         shipping_methods: [
+ *           {
+ *             option_id
+ *           }
+ *         ],
+ *       })
+ *       .then(({ draft_order }) => {
+ *         console.log(draft_order.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "email": "user@example.com",
+ *           "region_id": "{region_id}"
+ *           "items": [
+ *              {
+ *                "quantity": 1
+ *              }
+ *           ],
+ *           "shipping_methods": [
+ *              {
+ *                "option_id": "{option_id}"
+ *              }
+ *           ]
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Draft Order
  * responses:
@@ -131,6 +178,18 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           properties:
  *             draft_order:
  *               $ref: "#/components/schemas/draft-order"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 
 export default async (req, res) => {

@@ -11,9 +11,9 @@ export const formatException = (err): Error => {
         MedusaError.Types.DUPLICATE_ERROR,
         `${err.table.charAt(0).toUpperCase()}${err.table.slice(
           1
-        )} with ${err.detail
-          .slice(4)
-          .replace(/[()=]/g, (s) => (s === "=" ? " " : ""))}`
+        )} with ${err.detail.slice(4).replace(/[()=]/g, (s) => {
+          return s === "=" ? " " : ""
+        })}`
       )
     case PostgresError.FOREIGN_KEY_ERROR: {
       const matches =

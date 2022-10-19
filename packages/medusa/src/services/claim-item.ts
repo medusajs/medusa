@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService as BaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
 import { ClaimItemRepository } from "../repositories/claim-item"
@@ -11,7 +11,7 @@ import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
-class ClaimItemService extends BaseService {
+class ClaimItemService extends TransactionBaseService {
   static Events = {
     CREATED: "claim_item.created",
     UPDATED: "claim_item.updated",

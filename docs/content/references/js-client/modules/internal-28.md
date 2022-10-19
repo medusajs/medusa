@@ -2,14 +2,38 @@
 
 ## Classes
 
-- [AdminGetVariantsParams](../classes/internal-28.AdminGetVariantsParams.md)
+- [AdminDeleteUploadsReq](../classes/internal-28.AdminDeleteUploadsReq.md)
+- [AdminPostUploadsDownloadUrlReq](../classes/internal-28.AdminPostUploadsDownloadUrlReq.md)
+- [IAdminPostUploadsFileReq](../classes/internal-28.IAdminPostUploadsFileReq.md)
 
 ## Type Aliases
 
-### AdminVariantsListRes
+### AdminUploadsDownloadUrlRes
 
-Ƭ **AdminVariantsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `variants`: [`ProductVariant`](../classes/internal.ProductVariant.md)[]  }
+Ƭ **AdminUploadsDownloadUrlRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `download_url` | `string` |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/variants/index.d.ts:9
+medusa/dist/api/routes/admin/uploads/index.d.ts:10
+
+___
+
+### AdminUploadsRes
+
+Ƭ **AdminUploadsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `uploads` | { `url`: `string`  }[] |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/uploads/index.d.ts:4

@@ -1,6 +1,6 @@
 # Contentful
 
-In this document, you’ll learn how to integrate a Medusa server with Contentful to add rich CMS functionalities
+In this document, you’ll learn how to integrate a Medusa server with Contentful to add rich Content Management System (CMS) functionalities
 
 ## Overview
 
@@ -36,7 +36,7 @@ This installs a new Medusa server in the directory `medusa-contentful`.
 
 ### Add Contentful Environment Variables
 
-Change to the `medusa-contentful` directory. In `.env` you’ll find 3 variables:
+Change to the `medusa-contentful` directory. In `.env` you’ll find three variables:
 
 ```bash
 CONTENTFUL_SPACE_ID=
@@ -172,7 +172,7 @@ npm run seed
 To start the server run the following command:
 
 ```bash
-npm start
+npm run start
 ```
 
 If you seeded the database with demo data, you should see that events related to the products are triggered.
@@ -257,7 +257,7 @@ You should find the field "Content Delivery API - access token”. Copy its valu
 Make sure the Medusa server is still running. Then, start the storefront:
 
 ```bash
-npm start
+npm run start
 ```
 
 This starts the storefront at `localhost:8000`. Open it in your browser and you should see on the homepage the Featured Product section with the products you chose on Contentful.
@@ -274,7 +274,7 @@ If you make changes to the data while your Gatsby storefront is running, the cha
 
 :::
 
-## What’s Next :rocket:
+## What’s Next
 
 - Learn [how to customize your Contentful server and storefront](./customize-contentful.md).
 - Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).

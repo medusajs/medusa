@@ -26,13 +26,8 @@ describe("/store/products", () => {
 
   describe("GET /store/products", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -200,6 +195,24 @@ describe("/store/products", () => {
       }
     })
 
+    it("works when filtering by type_id", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/store/products?type_id[]=test-type&fields=id,title,type_id`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type_id: "test-type",
+          }),
+        ])
+      )
+    })
+
     it("returns only published products", async () => {
       const api = useApi()
 
@@ -249,13 +262,8 @@ describe("/store/products", () => {
 
   describe("list params", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -351,32 +359,27 @@ describe("/store/products", () => {
 
   describe("list params", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "testprod",
-            status: "published",
-            variants: [{ title: "test-variant" }],
-          },
-          11
-        )
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "testprod",
+          status: "published",
+          variants: [{ title: "test-variant" }],
+        },
+        11
+      )
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            title: "testprod3",
-            status: "published",
-            variants: [{ title: "test-variant1" }],
-          },
-          12
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "testprod3",
+          status: "published",
+          variants: [{ title: "test-variant1" }],
+        },
+        12
+      )
     })
 
     afterEach(async () => {
@@ -419,13 +422,8 @@ describe("/store/products", () => {
 
   describe("/store/products/:id", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {

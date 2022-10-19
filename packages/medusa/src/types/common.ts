@@ -32,6 +32,7 @@ export type PartialPick<T, K extends keyof T> = {
 export type Writable<T> = {
   -readonly [key in keyof T]:
     | T[key]
+    | FindOperator<T[key]>
     | FindOperator<T[key][]>
     | FindOperator<string[]>
 }
@@ -55,7 +56,7 @@ export type Selector<TEntity> = {
     | DateComparisonOperator
     | StringComparisonOperator
     | NumericalComparisonOperator
-    | FindOperator<TEntity[key][] | string[]>
+    | FindOperator<TEntity[key][] | string | string[]>
 }
 
 export type TotalField =
@@ -91,6 +92,7 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   defaultFields?: (keyof TEntity | string)[]
   defaultRelations?: string[]
   allowedFields?: string[]
+  allowedRelations?: string[]
   defaultLimit?: number
   isList?: boolean
 }

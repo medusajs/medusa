@@ -1,5 +1,114 @@
 # Change Log
 
+## 1.5.0
+
+### Minor Changes
+
+- [#2372](https://github.com/medusajs/medusa/pull/2372) [`3d255302b`](https://github.com/medusajs/medusa/commit/3d255302b022a06b492807774412b1db05fa8d06) Thanks [@srindom](https://github.com/srindom)! - Improve performance of cart total calculations
+
+### Patch Changes
+
+- [#2369](https://github.com/medusajs/medusa/pull/2369) [`d2b272fab`](https://github.com/medusajs/medusa/commit/d2b272fab649bb272b8af4f2f00aafe89965995e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Trim discount code on insert and retrieve
+
+* [#2210](https://github.com/medusajs/medusa/pull/2210) [`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81) Thanks [@srindom](https://github.com/srindom)! - Adds a BatchJob strategy for importing prices to PriceLists
+
+- [#2276](https://github.com/medusajs/medusa/pull/2276) [`678a06752`](https://github.com/medusajs/medusa/commit/678a06752a03f71d77265a874fd7d07361337862) Thanks [@adrien2p](https://github.com/adrien2p)! - Finalise service migration and fix super constructor arguments
+
+* [#2351](https://github.com/medusajs/medusa/pull/2351) [`d8a5942d3`](https://github.com/medusajs/medusa/commit/d8a5942d3d85671e2923668bdbf2867957f5554b) Thanks [@ayushthe1](https://github.com/ayushthe1)! - Fix wrongly referenced product id in ProductImportStrategy
+  Fix assigning nested objects properly
+
+- [#2374](https://github.com/medusajs/medusa/pull/2374) [`edd35631f`](https://github.com/medusajs/medusa/commit/edd35631f722009bdcb2439ff8c2326025425d33) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Add sales channel to order on creation
+
+* [#1790](https://github.com/medusajs/medusa/pull/1790) [`df62e618b`](https://github.com/medusajs/medusa/commit/df62e618bcc365ef376b96705d63b465b48b0191) Thanks [@adrien2p](https://github.com/adrien2p)! - Migrate Stripe providers to the new AbstractPaymentService
+
+- [#2224](https://github.com/medusajs/medusa/pull/2224) [`3f7317028`](https://github.com/medusajs/medusa/commit/3f7317028808cd3c1b44cb7b66694501a7c706c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Normalize discount code before querying DB in `DiscountService.retrieveByCode`
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
+## 1.4.1
+
+### Patch Changes
+
+- [`d2932d328`](https://github.com/medusajs/medusa/commit/d2932d328c30a2b40a49853fa337ae0e35b29ae8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Expose list-currencies endpoint by removing the feature flag guard on router
+
+* [`d2932d328`](https://github.com/medusajs/medusa/commit/d2932d328c30a2b40a49853fa337ae0e35b29ae8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Cleanup Tax lines in case of a failed cart completion
+
+## 1.4.0
+
+### Minor Changes
+
+- [#2185](https://github.com/medusajs/medusa/pull/2185) [`64949dc72`](https://github.com/medusajs/medusa/commit/64949dc721a6c697e3eb7091db9f2d261111a766) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - Adds missing response types for currency endpoints and exports route. Adds currency endpoints to medusa-js and medusa-react.
+
+### Patch Changes
+
+- [#2150](https://github.com/medusajs/medusa/pull/2150) [`b6161d240`](https://github.com/medusajs/medusa/commit/b6161d24043b8b910320475b8616b7e29a96f6cd) Thanks [@adrien2p](https://github.com/adrien2p)! - Handle new line char in csv cell and fix import strategy
+
+* [#2155](https://github.com/medusajs/medusa/pull/2155) [`af80e0fd2`](https://github.com/medusajs/medusa/commit/af80e0fd2ed75cd3c15282ddcbfb949060dfdd33) Thanks [@srindom](https://github.com/srindom)! - Make prices optional param when updating a variant
+
+## 1.3.9
+
+### Patch Changes
+
+- [#2197](https://github.com/medusajs/medusa/pull/2197) [`eb3b02baf`](https://github.com/medusajs/medusa/commit/eb3b02baf422ec2038d5e229d7ac1e35ddc3c561) Thanks [@srindom](https://github.com/srindom)! - Create cart with country code in shipping address
+
+## 1.3.8
+
+### Patch Changes
+
+- [#2069](https://github.com/medusajs/medusa/pull/2069) [`ad717b953`](https://github.com/medusajs/medusa/commit/ad717b9533a0500e20c4e312d1ee48b35ea9d5e1) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Remove deprecated dependency `@hapi/joi`
+
+* [#1846](https://github.com/medusajs/medusa/pull/1846) [`d14a0398f`](https://github.com/medusajs/medusa/commit/d14a0398fb884a1cd472c147af8ff5fa6fdbe4cb) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Fixes an error thrown when deleting product options on a product without variants
+
+- [#2000](https://github.com/medusajs/medusa/pull/2000) [`ba6416f09`](https://github.com/medusajs/medusa/commit/ba6416f095e465cc07e35bfc6d6f311c12f57574) Thanks [@fPolic](https://github.com/fPolic)! - Convert SwapService to TypeScript
+
+- Updated dependencies [[`ad717b953`](https://github.com/medusajs/medusa/commit/ad717b9533a0500e20c4e312d1ee48b35ea9d5e1)]:
+  - @medusajs/medusa-cli@1.3.3
+
+## 1.3.7
+
+### Patch Changes
+
+- [#2105](https://github.com/medusajs/medusa/pull/2105) [`846ae637e`](https://github.com/medusajs/medusa/commit/846ae637e2be6d557df37f45421da689127b9da6) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix development hot reload on Windows
+
+## 1.3.6
+
+### Patch Changes
+
+- [#2045](https://github.com/medusajs/medusa/pull/2045) [`15a5b029a`](https://github.com/medusajs/medusa/commit/15a5b029ae3bd954481c558beeac87ace7ab945d) Thanks [@srindom](https://github.com/srindom)! - Join tracking links to all fulfillments in admin/orders
+
+* [#2017](https://github.com/medusajs/medusa/pull/2017) [`900260c5b`](https://github.com/medusajs/medusa/commit/900260c5b9df4f4f927db5bb6921e5e139ff269a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Adds enabled features flags to tracking event in `medusa-telemetry`
+
+- [#1976](https://github.com/medusajs/medusa/pull/1976) [`42ed20951`](https://github.com/medusajs/medusa/commit/42ed209518bf0278d1bef3c4c47d0ee21cae84c8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert CollectionService to TypeScript
+
+* [#975](https://github.com/medusajs/medusa/pull/975) [`a54dc68db`](https://github.com/medusajs/medusa/commit/a54dc68db7a7d476cf4bf8d36c122c7f34629c90) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Allow filtering of customer orders
+
+- [#1995](https://github.com/medusajs/medusa/pull/1995) [`aaebb38ea`](https://github.com/medusajs/medusa/commit/aaebb38eae883a225779b03556900ea813c991d2) Thanks [@adrien2p](https://github.com/adrien2p)! - Convert IdempotencyKeyService to TypeScript
+  Add await to retrieve in lock method
+
+* [#1854](https://github.com/medusajs/medusa/pull/1854) [`9e0cb1212`](https://github.com/medusajs/medusa/commit/9e0cb1212023d7035165ddd269edab3efc7ebe29) Thanks [@srindom](https://github.com/srindom)! - Fixes issue where failed cart completion attempts could not be retried without 500 error
+
+- [#1962](https://github.com/medusajs/medusa/pull/1962) [`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert FulfillmentService to TypeScript
+
+* [#1963](https://github.com/medusajs/medusa/pull/1963) [`152934f8b`](https://github.com/medusajs/medusa/commit/152934f8b07cb3095788091df6823f9665fdf43d) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert ShippingProfileService to TypeScript
+
+- [#2067](https://github.com/medusajs/medusa/pull/2067) [`8c4be3353`](https://github.com/medusajs/medusa/commit/8c4be3353630efd18759eb893666e44b1b49e2b7) Thanks [@endigo](https://github.com/endigo)! - add Mongolian native currency tugrug
+
+* [#1914](https://github.com/medusajs/medusa/pull/1914) [`bda83a84b`](https://github.com/medusajs/medusa/commit/bda83a84bc99a4741da2076f59071c177bc5534f) Thanks [@fPolic](https://github.com/fPolic)! - Convert RegionService to TypeScript
+
+- [#1983](https://github.com/medusajs/medusa/pull/1983) [`11fab121f`](https://github.com/medusajs/medusa/commit/11fab121f4c4b5ec3b6a3afccd4c44844bc5e3d9) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert OauthService to TypeScript
+
+* [#1982](https://github.com/medusajs/medusa/pull/1982) [`40ae53567`](https://github.com/medusajs/medusa/commit/40ae53567a23ebe562e571fa22f1721eed174c82) Thanks [@chemicalkosek](https://github.com/chemicalkosek)! - Add payment providers Przelewy24 and Blik through Stripe
+
+- [#1988](https://github.com/medusajs/medusa/pull/1988) [`80e02130b`](https://github.com/medusajs/medusa/commit/80e02130b4a444287920989654b607f07dd8d4f8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Convert SystemPaymentProvider to TypeScript
+
+* [#2024](https://github.com/medusajs/medusa/pull/2024) [`c31290c91`](https://github.com/medusajs/medusa/commit/c31290c911450a06d5e4da3dc5e4e3977071a6ea) Thanks [@adrien2p](https://github.com/adrien2p)! - Add new `isDefined` utility
+
+- [#1968](https://github.com/medusajs/medusa/pull/1968) [`4b663cca3`](https://github.com/medusajs/medusa/commit/4b663cca3acf43b0e02a1fb94b8d4f14913bfe45) Thanks [@adrien2p](https://github.com/adrien2p)! - Use transactions in CartCompletionStrategy phases
+
+- Updated dependencies [[`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557)]:
+  - medusa-interfaces@1.3.3
+
 ## 1.3.5
 
 ### Patch Changes

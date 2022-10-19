@@ -1,9 +1,12 @@
 import cors from "cors"
 import { Router } from "express"
 import middlewares from "../../middlewares"
+import analyticsConfigs from "./analytics-configs"
 import appRoutes from "./apps"
 import authRoutes from "./auth"
+import batchRoutes from "./batch"
 import collectionRoutes from "./collections"
+import currencyRoutes from "./currencies"
 import customerGroupRoutes from "./customer-groups"
 import customerRoutes from "./customers"
 import discountRoutes from "./discounts"
@@ -12,9 +15,9 @@ import giftCardRoutes from "./gift-cards"
 import inviteRoutes, { unauthenticatedInviteRoutes } from "./invites"
 import noteRoutes from "./notes"
 import notificationRoutes from "./notifications"
+import orderEditRoutes from "./order-edits"
 import orderRoutes from "./orders"
 import priceListRoutes from "./price-lists"
-import batchRoutes from "./batch"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
 import productRoutes from "./products"
@@ -65,11 +68,13 @@ export default (app, container, config) => {
   // Calls all middleware that has been registered to run after authentication.
   middlewareService.usePostAuthentication(app)
 
+  analyticsConfigs(route)
   appRoutes(route)
   batchRoutes(route)
   collectionRoutes(route)
   customerGroupRoutes(route)
   customerRoutes(route)
+  currencyRoutes(route)
   discountRoutes(route)
   draftOrderRoutes(route)
   giftCardRoutes(route)
@@ -77,15 +82,16 @@ export default (app, container, config) => {
   noteRoutes(route)
   notificationRoutes(route)
   orderRoutes(route, featureFlagRouter)
-  priceListRoutes(route)
+  orderEditRoutes(route)
+  priceListRoutes(route, featureFlagRouter)
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
-  regionRoutes(route)
+  regionRoutes(route, featureFlagRouter)
   returnReasonRoutes(route)
   returnRoutes(route)
   salesChannelRoutes(route)
-  shippingOptionRoutes(route)
+  shippingOptionRoutes(route, featureFlagRouter)
   shippingProfileRoutes(route)
   storeRoutes(route)
   swapRoutes(route)

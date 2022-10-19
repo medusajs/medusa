@@ -1,21 +1,27 @@
-const { PriceList, CustomerGroup } = require("@medusajs/medusa")
 const path = require("path")
+const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductFactory,
   simplePriceListFactory,
+  simpleRegionFactory,
 } = require("../../factories")
-const {
-  simpleCustomerGroupFactory,
-} = require("../../factories/simple-customer-group-factory")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -37,14 +43,9 @@ describe("/admin/price-lists", () => {
 
   describe("POST /admin/price-list", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-        await productSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
+      await productSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -54,6 +55,11 @@ describe("/admin/price-lists", () => {
 
     it("creates a price list", async () => {
       const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection, {
+        id: "region-pl-infer-currency",
+        currency_code: "hrk",
+      })
 
       const payload = {
         name: "VIP Summer sale",
@@ -71,6 +77,11 @@ describe("/admin/price-lists", () => {
           {
             amount: 85,
             currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          {
+            amount: 105,
+            region_id: region.id,
             variant_id: "test-variant",
           },
         ],
@@ -108,6 +119,12 @@ describe("/admin/price-lists", () => {
               currency_code: "usd",
               variant_id: "test-variant",
             }),
+            expect.objectContaining({
+              id: expect.any(String),
+              amount: 105,
+              currency_code: region.currency_code,
+              variant_id: "test-variant",
+            }),
           ],
         })
       )
@@ -116,14 +133,9 @@ describe("/admin/price-lists", () => {
 
   describe("GET /admin/price-lists", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -375,15 +387,10 @@ describe("/admin/price-lists", () => {
 
   describe("POST /admin/price-lists/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -662,14 +669,9 @@ describe("/admin/price-lists", () => {
 
   describe("POST /admin/price-lists/:id/prices/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -952,14 +954,9 @@ describe("/admin/price-lists", () => {
 
   describe("DELETE /admin/price-lists/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1004,14 +1001,9 @@ describe("/admin/price-lists", () => {
 
   describe("tests cascade on delete", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1048,14 +1040,9 @@ describe("/admin/price-lists", () => {
 
   describe("DELETE /admin/price-lists/:id/prices/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await productSeeder(dbConnection)
-        await priceListSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await productSeeder(dbConnection)
+      await priceListSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -1105,59 +1092,54 @@ describe("/admin/price-lists", () => {
   describe("GET /admin/price-lists/:id/products", () => {
     let tag
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            id: "test-prod-1",
-            title: "MedusaHeadphones",
-            variants: [{ id: "test-variant-1" }, { id: "test-variant-2" }],
-          },
-          1
-        )
+      await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-1",
+          title: "MedusaHeadphones",
+          variants: [{ id: "test-variant-1" }, { id: "test-variant-2" }],
+        },
+        1
+      )
 
-        const prod = await simpleProductFactory(
-          dbConnection,
-          {
-            id: "test-prod-2",
-            tags: ["test-tag"],
-            variants: [{ id: "test-variant-3" }, { id: "test-variant-4" }],
-          },
-          2
-        )
+      const prod = await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-2",
+          tags: ["test-tag"],
+          variants: [{ id: "test-variant-3" }, { id: "test-variant-4" }],
+        },
+        2
+      )
 
-        tag = prod.tags[0].id
+      tag = prod.tags[0].id
 
-        await simpleProductFactory(
-          dbConnection,
-          {
-            id: "test-prod-3",
-            variants: [{ id: "test-variant-5" }],
-          },
-          3
-        )
+      await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-3",
+          variants: [{ id: "test-variant-5" }],
+        },
+        3
+      )
 
-        await simplePriceListFactory(dbConnection, {
-          id: "test-list",
-          customer_groups: ["test-group"],
-          prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
-          ],
-        })
-        await simplePriceListFactory(dbConnection, {
-          id: "test-list-2",
-          prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
-          ],
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list",
+        customer_groups: ["test-group"],
+        prices: [
+          { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
+          { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
+        ],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-2",
+        prices: [
+          { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
+          { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -1181,54 +1163,52 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toHaveLength(2)
-      expect(response.data.products).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: "test-prod-1",
-            variants: [
-              expect.objectContaining({
-                id: "test-variant-1",
-                prices: [
-                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                  expect.objectContaining({
-                    currency_code: "usd",
-                    amount: 150,
-                    price_list_id: "test-list",
-                  }),
-                ],
-              }),
-              expect.objectContaining({
-                id: "test-variant-2",
-                prices: [
-                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                ],
-              }),
-            ],
-          }),
-          expect.objectContaining({
-            id: "test-prod-2",
-            variants: [
-              expect.objectContaining({
-                id: "test-variant-3",
-                prices: [
-                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                ],
-              }),
-              expect.objectContaining({
-                id: "test-variant-4",
-                prices: [
-                  expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                  expect.objectContaining({
-                    currency_code: "usd",
-                    amount: 150,
-                    price_list_id: "test-list",
-                  }),
-                ],
-              }),
-            ],
-          }),
-        ])
-      )
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ]),
+            }),
+          ]),
+        }),
+        expect.objectContaining({
+          id: "test-prod-2",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant-3",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: "test-variant-4",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ]),
+            }),
+          ]),
+        }),
+      ])
     })
 
     it("lists only product 2", async () => {
@@ -1248,9 +1228,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.count).toEqual(1)
       expect(response.data.products).toHaveLength(1)
       expect(response.data.products).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ id: "test-prod-2" }),
-        ])
+        expect.arrayContaining([expect.objectContaining({ id: "test-prod-2" })])
       )
     })
 
@@ -1290,61 +1268,56 @@ describe("/admin/price-lists", () => {
     }
 
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
+      await adminSeeder(dbConnection)
 
-        product1 = await simpleProductFactory(
-          dbConnection,
-          {
-            id: "test-prod-1",
-            title: "some product",
-            variants: [
-              {
-                id: `simple-test-variant-${Math.random() * 1000}`,
-                title: "Test",
-                prices: [{ currency: "usd", amount: 100 }],
-              },
-              {
-                id: `simple-test-variant-${Math.random() * 1000}`,
-                title: "Test 2",
-                prices: [{ currency: "usd", amount: 200 }],
-              },
-            ],
-          },
-          1
-        )
-
-        product2 = await simpleProductFactory(
-          dbConnection,
-          {
-            id: "test-prod-2",
-            title: "some product 2",
-          },
-          2
-        )
-
-        await simplePriceListFactory(dbConnection, {
-          id: "test-list",
-          customer_groups: ["test-group"],
-          prices: [
-            ...product1.variants.map((variant, i) => ({
-              id: getCustomPriceIdFromVariant(variant.id, i),
-              variant_id: variant.id,
-              currency_code: "usd",
-              amount: (i + 1) * 150,
-            })),
-            ...product2.variants.map((variant, i) => ({
-              id: getCustomPriceIdFromVariant(variant.id, i),
-              variant_id: variant.id,
-              currency_code: "usd",
-              amount: (i + 1) * 150,
-            })),
+      product1 = await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-1",
+          title: "some product",
+          variants: [
+            {
+              id: `simple-test-variant-${Math.random() * 1000}`,
+              title: "Test",
+              prices: [{ currency: "usd", amount: 100 }],
+            },
+            {
+              id: `simple-test-variant-${Math.random() * 1000}`,
+              title: "Test 2",
+              prices: [{ currency: "usd", amount: 200 }],
+            },
           ],
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+        },
+        1
+      )
+
+      product2 = await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-2",
+          title: "some product 2",
+        },
+        2
+      )
+
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list",
+        customer_groups: ["test-group"],
+        prices: [
+          ...product1.variants.map((variant, i) => ({
+            id: getCustomPriceIdFromVariant(variant.id, i),
+            variant_id: variant.id,
+            currency_code: "usd",
+            amount: (i + 1) * 150,
+          })),
+          ...product2.variants.map((variant, i) => ({
+            id: getCustomPriceIdFromVariant(variant.id, i),
+            variant_id: variant.id,
+            currency_code: "usd",
+            amount: (i + 1) * 150,
+          })),
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -1429,6 +1402,116 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(2)
+    })
+  })
+})
+
+describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/price-lists", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const [process, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
+      verbose: false,
+    })
+    dbConnection = connection
+    medusaProcess = process
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  describe("POST /admin/price-list", () => {
+    const priceListIncludesTaxId = "price-list-1-includes-tax"
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+        await productSeeder(dbConnection)
+        await simplePriceListFactory(dbConnection, {
+          id: priceListIncludesTaxId,
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should creates a price list that includes tax", async () => {
+      const api = useApi()
+
+      const payload = {
+        name: "VIP Summer sale",
+        description: "Summer sale for VIP customers. 25% off selected items.",
+        type: "sale",
+        status: "active",
+        starts_at: "2022-07-01T00:00:00.000Z",
+        ends_at: "2022-07-31T00:00:00.000Z",
+        customer_groups: [
+          {
+            id: "customer-group-1",
+          },
+        ],
+        prices: [
+          {
+            amount: 85,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+        ],
+        includes_tax: true,
+      }
+
+      const response = await api
+        .post("/admin/price-lists", payload, adminReqConfig)
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_list).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          includes_tax: true,
+        })
+      )
+    })
+
+    it("should update a price list that include_tax", async () => {
+      const api = useApi()
+
+      let response = await api
+        .get(`/admin/price-lists/${priceListIncludesTaxId}`, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.price_list.includes_tax).toBe(false)
+
+      response = await api
+        .post(
+          `/admin/price-lists/${priceListIncludesTaxId}`,
+          { includes_tax: true },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.price_list.includes_tax).toBe(true)
     })
   })
 })

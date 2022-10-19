@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.1.33
+
+### Patch Changes
+
+- [`5cb7618a2`](https://github.com/medusajs/medusa/commit/5cb7618a220c420ec2917875f91b8c1f814298f2) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Force bump medusa-core-utils
+
+## 1.1.32
+
+### Patch Changes
+
+- [#2210](https://github.com/medusajs/medusa/pull/2210) [`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81) Thanks [@srindom](https://github.com/srindom)! - Adds `computerizeAmount` utility to convert human money format into the DB format Medusa uses (integer of lowest currency unit)
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

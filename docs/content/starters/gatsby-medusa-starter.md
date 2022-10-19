@@ -1,4 +1,4 @@
-# Quickstart: Gatsby Storefront
+# Gatsby Storefront Quickstart
 
 This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
 
@@ -31,6 +31,7 @@ gatsby new my-medusa-storefront https://github.com/medusajs/gatsby-starter-medus
 2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
+cd my-medusa-storefront
 mv .env.template .env.development
 ```
 
@@ -52,7 +53,7 @@ To customize the components, pages, and UI of your Gatsby storefront, just edit 
 
 The Gatsby storefront uses the [gatsby-source-medusa](https://github.com/medusajs/medusa/tree/master/packages/gatsby-source-medusa) plugin to source data from your Medusa server. This data includes products, collections, and regions, and as a result, you can query this data in the storefront starter using GraphQL queries. You can also explore the data in your store on `localhost:8000/___graphql`.
 
-Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. We will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
+Because of this, you must rebuild the site every time you update any of this data for it to be reflected in your storefront. The Medusa team will soon be releasing a new version of the plugin which adds incremental builds, which will improve build times.
 
 ### Change Port
 
@@ -77,7 +78,7 @@ STORE_CORS=http://localhost:<PORT>
 
 :::info
 
-For more details about the Store CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+For more details about the Store Cross-Origin Resource Sharing (CORS) configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
 
 :::
 
@@ -106,8 +107,8 @@ The Gatsby storefront comes with a lot of features out of the box including:
 
     ![Request Return for Order](https://i.imgur.com/mAChp3f.png)
 
-## What’s Next 🚀
+## What’s Next
 
-- Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
+- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
 - Learn how to [deploy the Gatsby storefront on Netlify](../deployments/storefront/deploying-gatsby-on-netlify.md).
 - Learn how to add [Stripe as a payment provider](../add-plugins/stripe.md#gatsby-storefront).

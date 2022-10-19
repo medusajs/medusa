@@ -10,10 +10,10 @@ import {
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
-import { DiscountRule } from "./discount-rule"
-import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { DiscountRule } from "./discount-rule"
+import { Region } from "./region"
 
 @Entity()
 export class Discount extends SoftDeletableEntity {
@@ -78,11 +78,13 @@ export class Discount extends SoftDeletableEntity {
   metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private upperCaseCode(): void {
-    if (this.id) return
+  private upperCaseCodeAndTrim(): void {
+    this.code = this.code.toUpperCase().trim()
+    if (this.id) {
+      return
+    }
 
     this.id = generateEntityId(this.id, "disc")
-    this.code = this.code.toUpperCase()
   }
 }
 

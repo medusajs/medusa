@@ -3,12 +3,11 @@ import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
- * summary: "List Product Collections"
+ * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."
  * parameters:
  *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
@@ -57,6 +56,20 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.collections.list()
+ *       .then(({ collections, limit, offset, count }) => {
+ *         console.log(collections.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/collections'
  * tags:
  *   - Collection
  * responses:
@@ -79,26 +92,31 @@ import { validator } from "../../../../utils/validator"
  *            limit:
  *               type: integer
  *               description: The number of items per page
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetCollectionsParams, req.query)
-  const { limit, offset, ...filterableFields } = validated
-
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const listConfig = {
-    skip: offset,
-    take: limit,
-  }
+  const { listConfig, filterableFields } = req
+  const { skip, take } = req.listConfig
 
   const [collections, count] = await productCollectionService.listAndCount(
     filterableFields,
     listConfig
   )
 
-  res.status(200).json({ collections, count, limit, offset })
+  res.status(200).json({ collections, count, limit: take, offset: skip })
 }
 
 export class StoreGetCollectionsParams {

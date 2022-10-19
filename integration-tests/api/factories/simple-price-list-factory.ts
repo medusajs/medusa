@@ -26,6 +26,7 @@ export type PriceListFactoryData = {
   ends_at?: Date
   customer_groups?: string[]
   prices?: ProductListPrice[]
+  includes_tax?: boolean
 }
 
 export const simplePriceListFactory = async (
@@ -59,6 +60,7 @@ export const simplePriceListFactory = async (
     starts_at: data.starts_at || null,
     ends_at: data.ends_at || null,
     customer_groups: customerGroups,
+    includes_tax: data.includes_tax,
   }
 
   const toSave = manager.create(PriceList, toCreate)

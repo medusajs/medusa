@@ -119,7 +119,7 @@ const plugins = [
 Run your server with the following command:
 
 ```bash npm2yarn
-npm start
+npm run start
 ```
 
 Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
@@ -185,7 +185,7 @@ After adding the above subscriber, run your server again if it isn’t running a
 
 ![The customer created event is recoreded on the Segment source](https://i.imgur.com/4LD41xE.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how [services](../advanced/backend/services/create-service.md) and [subscribers](../advanced/backend/subscribers/create-subscriber.md) work.
 - Check out a [full list of events](../advanced/backend/subscribers/events-list.md) in Medusa.

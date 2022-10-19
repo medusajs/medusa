@@ -18,11 +18,7 @@ describe("/admin/auth", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd })
 
-    try {
-      await adminSeeder(dbConnection)
-    } catch (e) {
-      throw e
-    }
+    await adminSeeder(dbConnection)
   })
 
   afterAll(async () => {

@@ -1,19 +1,20 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
 
-import { FilterableProductProps } from "../../../../types/product"
-import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../../models"
 import { Type } from "class-transformer"
+import { Product } from "../../../../models"
+import { PricedProduct } from "../../../../types/pricing"
+import { FilterableProductProps } from "../../../../types/product"
 
 /**
  * @oas [get] /products
  * operationId: "GetProducts"
- * summary: "List Product"
+ * summary: "List Products"
  * description: "Retrieves a list of Product"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the product.
  *   - in: query
  *     name: id
  *     style: form
@@ -73,11 +74,19 @@ import { Type } from "class-transformer"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  *   - (query) title {string} title to search for.
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
  *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} type ID to search for.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting products were created.
@@ -148,6 +157,25 @@ import { Type } from "class-transformer"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.products.list()
+ *       .then(({ products, limit, offset, count }) => {
+ *         console.log(products.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/products' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Product
  * responses:
@@ -170,6 +198,18 @@ import { Type } from "class-transformer"
  *             limit:
  *               type: integer
  *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")

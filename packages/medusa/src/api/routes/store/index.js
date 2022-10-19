@@ -7,6 +7,7 @@ import collectionRoutes from "./collections"
 import customerRoutes from "./customers"
 import giftCardRoutes from "./gift-cards"
 import orderRoutes from "./orders"
+import orderEditRoutes from "./order-edits"
 import productRoutes from "./products"
 import regionRoutes from "./regions"
 import returnReasonRoutes from "./return-reasons"
@@ -35,6 +36,7 @@ export default (app, container, config) => {
   customerRoutes(route, container)
   productRoutes(route)
   orderRoutes(route)
+  orderEditRoutes(route)
   cartRoutes(route, container)
   shippingOptionRoutes(route)
   regionRoutes(route)

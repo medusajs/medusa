@@ -1,15 +1,25 @@
 import { Router } from "express"
 import { ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
 import "reflect-metadata"
+import { AdminGetProductTypesParams } from "./list-product-types"
 
 const route = Router()
 
 export default (app) => {
   app.use("/product-types", route)
 
-  route.get("/", middlewares.wrap(require("./list-product-types").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetProductTypesParams, {
+      defaultFields: defaultAdminProductTypeFields,
+      defaultRelations: defaultAdminProductTypeRelations,
+      allowedFields: allowedAdminProductTypeFields,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-product-types").default)
+  )
 
   return app
 }

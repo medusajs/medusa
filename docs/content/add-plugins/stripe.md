@@ -4,7 +4,7 @@ This document guides you through setting up Stripe payments in your Medusa serve
 
 ## Video Guide
 
-You can also follow our video guide to learn how the setup works:
+You can also follow this video guide to learn how the setup works:
 
 <div>
   <video width="100%" height="100%" playsinline autoplay muted controls>
@@ -26,7 +26,7 @@ Before you proceed with this guide, make sure you create a [Stripe account](http
 
 This section guides you over the steps necessary to add Stripe as a payment provider to your Medusa server.
 
-If you don’t have a Medusa server installed yet, you must follow our [quickstart guide](../quickstart/quick-start) first.
+If you don’t have a Medusa server installed yet, you must follow the [quickstart guide](../quickstart/quick-start) first.
 
 ### Install the Stripe Plugin
 
@@ -61,7 +61,7 @@ You might find that this code is already available but commented out. You can pr
 
 :::
 
-The Stripe plugin uses 2 configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
+The Stripe plugin uses two configuration options. The `api_key` is essential to both your development and production environments. As for the `webhook_secret`, it’s essential for your production environment. So, if you’re only using Stripe for development you can skip adding the value for this option at the moment.
 
 ### Retrieve Stripe's Keys
 
@@ -107,17 +107,7 @@ If you don’t have a Medusa admin installed, make sure to follow along with [th
 
 ### Add Stripe to Regions
 
-First, make sure that both your Medusa server and Medusa Admin are running.
-
-Then, in your Medusa Admin, log in and choose Settings from the Sidebar. Then, choose Regions.
-
-![Settings](https://i.imgur.com/wRkmbLY.png)
-
-Then, choose the regions you want to add Stripe as a payment provider. In the right-side settings, scroll down to “Payment Providers” and choose Stripe.
-
-![Choose Stripe](https://i.imgur.com/FH5vgWh.png)
-
-Once you’re done, click Save. Stripe is now a payment provider in your store in the regions you selected.
+You can refer to [this documentation in the user guide](../user-guide/regions/providers.mdx#manage-payment-providers) to learn how to add a payment provider like Stripe to a region.
 
 ## Storefront Setup
 
@@ -171,10 +161,10 @@ This section will go over how to add Stripe into a React-based framework. The in
 
 The integration with stripe must have the following workflow:
 
-1. During checkout when the user reaches the payment section, you should [create payment sessions](https://docs.medusajs.com/api/store/cart/initialize-payment-sessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment providers.
-2. If Stripe is available as a payment provider, you should select Stripe as [the payment session](https://docs.medusajs.com/api/store/cart/select-a-payment-session) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
+1. During checkout when the user reaches the payment section, you should [create payment sessions](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions). This will initialize the `payment_sessions` array in the `cart` object received. The `payment_sessions` is an array of available payment providers.
+2. If Stripe is available as a payment provider, you should select Stripe as [the payment session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) for the current cart. This will initialize the `payment_session` object in the `cart` object to include data related to Stripe and the current payment session. This includes the payment intent and client secret.
 3. After the user enters their card details and submits the form, confirm the payment with Stripe.
-4. If the payment is confirmed successfully, [complete the order](https://docs.medusajs.com/api/store/cart/complete-a-cart) in Medusa. Otherwise show an error.
+4. If the payment is confirmed successfully, [complete the order](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) in Medusa. Otherwise show an error.
 
 #### Install Dependencies
 
@@ -366,6 +356,6 @@ Clicking this button allows you to capture the payment for an order. You can als
 
 Refunding or Capturing payments is reflected in your Stripe’s dashboard as well. This gives you access to all of Stripe’s analytical capabilities.
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

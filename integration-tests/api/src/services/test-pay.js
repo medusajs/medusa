@@ -42,6 +42,12 @@ class TestPayService extends AbstractPaymentService {
   }
 
   async authorizePayment(sessionData, context = {}) {
+    if (
+      sessionData.cart_id === "cart-id-tax-line-testing-for-pending-payment"
+    ) {
+      return { data: {}, status: "pending" }
+    }
+
     return { data: {}, status: "authorized" }
   }
 

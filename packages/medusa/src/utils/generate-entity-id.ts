@@ -11,6 +11,6 @@ export function generateEntityId(idProperty: string, prefix?: string): string {
   }
 
   const id = ulid()
-  prefix = prefix ? `${prefix}_` : ''
+  prefix = prefix ? `${prefix}_` : ""
   return `${prefix}${id}`
 }

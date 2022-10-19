@@ -1,1 +1,3 @@
-export default (fn) => (...args) => fn(...args).catch(args[2])
+export default (fn) =>
+  (...args) =>
+    fn(...args).catch(args[2])

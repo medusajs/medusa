@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.3.0
+
+### Minor Changes
+
+- [#2171](https://github.com/medusajs/medusa/pull/2171) [`ee8fe3a88`](https://github.com/medusajs/medusa/commit/ee8fe3a88bb1af20ed8976bd5cf0146da140e29f) Thanks [@fPolic](https://github.com/fPolic)! - Add return `fileKey` for Spaces upload
+
+## 1.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557)]:
+  - medusa-interfaces@1.3.3
+
 ## 1.2.4
 
 ### Patch Changes

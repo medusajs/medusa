@@ -1,0 +1,13 @@
+title: Multiple Errors
+x-resourceId: multiple_errors
+properties:
+  errors:
+    type: array
+    description: Array of errors
+    items:
+      $ref: ./error.yaml
+  message:
+    type: string
+    default: >-
+      Provided request body contains errors. Please check the data and retry the
+      request

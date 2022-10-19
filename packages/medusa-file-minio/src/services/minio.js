@@ -20,32 +20,42 @@ class MinioService extends AbstractFileService {
     this.endpoint_ = options.endpoint
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
-    this.downloadUrlDuration = options.download_url_duration ?? 60  // 60 seconds
+    this.downloadUrlDuration = options.download_url_duration ?? 60 // 60 seconds
   }
 
   upload(file) {
     this.updateAwsConfig_()
 
+    return this.uploadFile(file)
+  }
+
+  uploadProtected(file) {
+    this.validatePrivateBucketConfiguration_(true)
+    this.updateAwsConfig_(true)
+
+    return this.uploadFile(file, { isProtected: true })
+  }
+
+  uploadFile(file, options = { isProtected: false }) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
-      Bucket: this.bucket_,
+      ACL: options.isProtected ? "private" : "public-read",
+      Bucket: options.isProtected ? this.private_bucket_ : this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
     }
 
     return new Promise((resolve, reject) => {
       s3.upload(params, (err, data) => {
-        console.log(data, err)
         if (err) {
           reject(err)
           return
         }
 
-        resolve({ url: data.Location })
+        resolve({ url: data.Location, key: data.Key })
       })
     })
   }
@@ -55,27 +65,33 @@ class MinioService extends AbstractFileService {
 
     const s3 = new aws.S3()
     const params = {
-      Key: `${file}`,
+      Bucket: this.bucket_,
+      Key: `${file.fileKey}`,
     }
 
-    return await Promise.all(
-      [
-        s3.deleteObject({...params, Bucket: this.bucket_}, (err, data) => {
-          if (err) {
-            reject(err)
-            return
-          }
-          resolve(data)
-        }),
-        s3.deleteObject({...params, Bucket: this.private_bucket_}, (err, data) => {
+    return await Promise.all([
+      new Promise((resolve, reject) =>
+        s3.deleteObject({ ...params, Bucket: this.bucket_ }, (err, data) => {
           if (err) {
             reject(err)
             return
           }
           resolve(data)
         })
-      ]
-    ) 
+      ),
+      new Promise((resolve, reject) =>
+        s3.deleteObject(
+          { ...params, Bucket: this.private_bucket_ },
+          (err, data) => {
+            if (err) {
+              reject(err)
+              return
+            }
+            resolve(data)
+          }
+        )
+      ),
+    ])
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {
@@ -125,16 +141,19 @@ class MinioService extends AbstractFileService {
     const params = {
       Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires:  this.downloadUrlDuration,
+      Expires: this.downloadUrlDuration,
     }
 
     return await s3.getSignedUrlPromise("getObject", params)
   }
 
   validatePrivateBucketConfiguration_(usePrivateBucket) {
-    if (usePrivateBucket && !this.private_bucket_) {
+    if (
+      usePrivateBucket &&
+      (!this.private_access_key_id_ || !this.private_bucket_)
+    ) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_CONFIGURATION,
+        MedusaError.Types.UNEXPECTED_STATE,
         "Private bucket is not configured"
       )
     }

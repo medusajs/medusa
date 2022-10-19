@@ -28,13 +28,8 @@ describe("Promotions", () => {
 
   describe("Money amount", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await promotionsSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await promotionsSeeder(dbConnection)
     })
 
     afterEach(async () => {

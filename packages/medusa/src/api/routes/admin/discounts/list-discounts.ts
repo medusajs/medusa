@@ -1,20 +1,15 @@
 import {
   IsBoolean,
-  IsInt,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-import _, { pickBy } from "lodash"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 
 import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
-import { Discount } from "../../../.."
-import DiscountService from "../../../../services/discount"
-import { FindConfig } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { Request, Response } from "express"
+import { DiscountService } from "../../../../services"
 
 /**
  * @oas [get] /discounts
@@ -43,6 +38,25 @@ import { isDefined } from "../../../../utils"
  *   - (query) limit=20 {number} The number of items in the response
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.discounts.list()
+ *       .then(({ discounts, limit, offset, count }) => {
+ *         console.log(discounts.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/discounts' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Discount
  * responses:
@@ -65,39 +79,42 @@ import { isDefined } from "../../../../utils"
  *             limit:
  *               type: integer
  *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
-  const validated = await validator(AdminGetDiscountsParams, req.query)
-
+export default async (req: Request, res: Response) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  const relations =
-    validated.expand?.split(",") ?? defaultAdminDiscountsRelations
-
-  const listConfig: FindConfig<Discount> = {
-    select: defaultAdminDiscountsFields,
-    relations,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" },
-  }
-
-  const filterableFields = _.omit(validated, ["limit", "offset", "expand"])
+  const { filterableFields, listConfig } = req
+  const { skip, take } = listConfig
 
   const [discounts, count] = await discountService.listAndCount(
-    pickBy(filterableFields, (val) => isDefined(val)),
+    filterableFields,
     listConfig
   )
 
   res.status(200).json({
     discounts,
     count,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset: skip,
+    limit: take,
   })
 }
 
-export class AdminGetDiscountsParams {
+export class AdminGetDiscountsParams extends extendedFindParamsMixin({
+  limit: 20,
+  offset: 0,
+}) {
   @ValidateNested()
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
@@ -116,18 +133,4 @@ export class AdminGetDiscountsParams {
   @IsOptional()
   @Transform(({ value }) => value === "true")
   is_disabled?: boolean
-
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  limit = 20
-
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  offset = 0
-
-  @IsString()
-  @IsOptional()
-  expand?: string
 }
