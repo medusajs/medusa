@@ -1,9 +1,10 @@
 import fs from "fs"
+import { IFileService } from "../../../../interfaces"
 
 /**
- * @oas [post] /uploads
- * operationId: "PostUploads"
- * summary: "Upload files"
+ * @oas [post] /uploads/protected
+ * operationId: "PostUploadsProtected"
+ * summary: "Upload files with acl or in a non-public bucket"
  * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * requestBody:
@@ -22,14 +23,14 @@ import fs from "fs"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.uploads.create(file)
+ *       medusa.admin.uploads.createProtected(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/uploads/protected' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
@@ -69,11 +70,11 @@ import fs from "fs"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const fileService = req.scope.resolve("fileService")
+  const fileService: IFileService = req.scope.resolve("fileService")
 
   const result = await Promise.all(
     req.files.map(async (f) => {
-      return fileService.upload(f).then((result) => {
+      return fileService.uploadProtected(f).then((result) => {
         fs.unlinkSync(f.path)
         return result
       })
@@ -82,7 +83,6 @@ export default async (req, res) => {
 
   res.status(200).json({ uploads: result })
 }
-
 export class IAdminPostUploadsFileReq {
   originalName: string
   path: string
