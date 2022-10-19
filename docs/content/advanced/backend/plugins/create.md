@@ -10,6 +10,12 @@ This guide uses the Medusa CLI throughout different steps. If you don’t have t
 npm install @medusajs/medusa-cli -g
 ```
 
+:::note
+
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../../troubleshooting/cli-installation-errors.mdx).
+
+:::
+
 ## Initialize Project
 
 The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa project:
@@ -184,7 +190,7 @@ medusa-plugin-custom
 
 This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
-- How to create endpoints for [storefront](../endpoints/add-storefront.md) and [admin](../endpoints/add-admin.md)
+- How to [create endpoints](../endpoints/add.md)
 - How to [create a service](../services/create-service.md)
 - How to [create a subscriber](../subscribers/create-subscriber.md)
 - How to [create an entity](./../entities/index.md)
@@ -449,7 +455,7 @@ To install any published plugin, you can run the following command on any Medusa
 npm install medusa-plugin-custom
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out [available Services in Medusa](references/services/../../../../../references/services/classes/AuthService.md) that you can use in your plugin.
 - Check out [available events](../subscribers/events-list.md) that you can listen to in Subscribers.

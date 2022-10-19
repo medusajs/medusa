@@ -48,7 +48,7 @@ npm run seed
 
 This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
 
-## What's Next :rocket:
+## What's Next
 
 - Learn [how to create a migration](index.md)
 - Learn more about [setting up your development server](../../../tutorial/set-up-your-development-environment).

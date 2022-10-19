@@ -274,7 +274,7 @@ If you make changes to the data while your Gatsby storefront is running, the cha
 
 :::
 
-## What’s Next :rocket:
+## What’s Next
 
 - Learn [how to customize your Contentful server and storefront](./customize-contentful.md).
 - Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).

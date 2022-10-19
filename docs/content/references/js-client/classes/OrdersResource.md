@@ -10,7 +10,7 @@
 
 ### lookupOrder
 
-▸ **lookupOrder**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+▸ **lookupOrder**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 **`Description`**
 
@@ -20,22 +20,22 @@ Look up an order using order details
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StoreGetOrdersParams`](internal-35.StoreGetOrdersParams.md) | details used to look up the order |
+| `payload` | [`StoreGetOrdersParams`](internal-38.StoreGetOrdersParams.md) | details used to look up the order |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:41](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/orders.ts#L41)
+[medusa-js/src/resources/orders.ts:41](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/orders.ts#L41)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 **`Description`**
 
@@ -50,17 +50,17 @@ Retrieves an order
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/orders.ts#L13)
+[medusa-js/src/resources/orders.ts:13](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/orders.ts#L13)
 
 ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 **`Description`**
 
@@ -75,8 +75,8 @@ Retrieves an order by cart id
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-35.md#storeordersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-38.md#storeordersres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:27](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/orders.ts#L27)
+[medusa-js/src/resources/orders.ts:27](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/orders.ts#L27)

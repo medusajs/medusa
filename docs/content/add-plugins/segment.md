@@ -185,7 +185,7 @@ After adding the above subscriber, run your server again if it isn’t running a
 
 ![The customer created event is recoreded on the Segment source](https://i.imgur.com/4LD41xE.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how [services](../advanced/backend/services/create-service.md) and [subscribers](../advanced/backend/subscribers/create-subscriber.md) work.
 - Check out a [full list of events](../advanced/backend/subscribers/events-list.md) in Medusa.

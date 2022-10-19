@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Use PriceList API
+# How to Use PriceList APIs
 
 In this document, you’ll learn how to use the PriceList Admin APIs to create, update, and manage prices in a price list.
 
@@ -135,7 +135,7 @@ fetch(`<SERVER_URL>/admin/price-lists`, {
 
 ```bash
 curl --location --request POST '<YOUR_SERVER_URL>/admin/price-lists' \
---header 'Authorization: Bearer {api_token}' \
+--header 'Authorization: Bearer <API_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "New Price List",
@@ -198,7 +198,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`)
 
 ```jsx
 curl --location --request GET '<SERVER_URL>/admin/price-lists/{id}' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -248,7 +248,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 
 ```bash
 curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer {api_token}' \
+--header 'Authorization: Bearer <API_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "ends_at": "2022-10-11"
@@ -322,7 +322,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
 
 ```bash
 curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer {api_token}' \
+--header 'Authorization: Bearer <API_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "prices": [
@@ -374,7 +374,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/price
 
 ```bash
 curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -414,7 +414,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/price
 
 ```jsx
 curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -456,7 +456,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 
 ```jsx
 curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer {api_token}'
+--header 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -466,7 +466,7 @@ This request returns the ID of the deleted price list.
 
 ---
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [price lists](./index.md).
 - Learn how the [price selection strategy works](../price-selection-strategy/index.md).

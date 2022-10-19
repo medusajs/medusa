@@ -2,33 +2,43 @@
 
 ## Classes
 
-- [AdminGetNotesParams](../classes/internal-10.AdminGetNotesParams.md)
-- [AdminPostNotesNoteReq](../classes/internal-10.AdminPostNotesNoteReq.md)
-- [AdminPostNotesReq](../classes/internal-10.AdminPostNotesReq.md)
-- [Note](../classes/internal-10.Note.md)
+- [AdminPostInvitesInviteAcceptReq](../classes/internal-10.AdminPostInvitesInviteAcceptReq.md)
+- [AdminPostInvitesInviteAcceptUserReq](../classes/internal-10.AdminPostInvitesInviteAcceptUserReq.md)
+- [AdminPostInvitesReq](../classes/internal-10.AdminPostInvitesReq.md)
+- [Invite](../classes/internal-10.Invite.md)
 
 ## Type Aliases
 
-### AdminNotesListRes
+### AdminListInvitesRes
 
-Ƭ **AdminNotesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `notes`: [`Note`](../classes/internal-10.Note.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/notes/index.d.ts:10
-
-___
-
-### AdminNotesRes
-
-Ƭ **AdminNotesRes**: `Object`
+Ƭ **AdminListInvitesRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `note` | [`Note`](../classes/internal-10.Note.md) |
+| `invites` | [`Invite`](../classes/internal-10.Invite.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/notes/index.d.ts:6
+medusa/dist/api/routes/admin/invites/index.d.ts:8
+
+___
+
+### AdminPostInvitesPayload
+
+Ƭ **AdminPostInvitesPayload**: `Omit`<[`AdminPostInvitesReq`](../classes/internal-10.AdminPostInvitesReq.md), ``"role"``\> & { `role`: [`InviteUserRolesEnum`](internal-10.md#inviteuserrolesenum)  }
+
+#### Defined in
+
+[medusa-js/src/typings.ts:47](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/typings.ts#L47)
+
+___
+
+### InviteUserRolesEnum
+
+Ƭ **InviteUserRolesEnum**: \`${AdminPostInvitesReq["role"]}\`
+
+#### Defined in
+
+[medusa-js/src/typings.ts:45](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/typings.ts#L45)

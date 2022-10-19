@@ -1,0 +1,140 @@
+delete:
+  operationId: DeleteOrderEditsOrderEdit
+  summary: Delete an Order Edit
+  description: Deletes an Order Edit
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order Edit to delete.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order-edits_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order-edits_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - OrderEdit
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted Order Edit.
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                format: order_edit
+              deleted:
+                type: boolean
+                description: Whether or not the Order Edit was deleted.
+                default: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+get:
+  operationId: GetOrderEditsOrderEdit
+  summary: Retrieve an OrderEdit
+  description: Retrieves a OrderEdit.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the OrderEdit.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order-edits_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order-edits_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - OrderEdit
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order_edit:
+                $ref: ../components/schemas/order_edit.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostOrderEditsOrderEdit
+  summary: Updates an OrderEdit
+  description: Updates a OrderEdit.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the OrderEdit.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order-edits_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order-edits_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - OrderEdit
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order_edit:
+                $ref: ../components/schemas/order_edit.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

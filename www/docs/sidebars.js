@@ -204,6 +204,11 @@ module.exports = {
               id: "advanced/storefront/how-to-implement-checkout-flow",
               label: "Implement Checkout"
             },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-sales-channels",
+              label: "Use SalesChannels APIs"
+            },
           ]
         },
         {
@@ -217,24 +222,35 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/admin/import-prices",
+              label: "Import Prices"
+            },
+            {
+              type: "doc",
               id: "advanced/backend/taxes/manual-calculation",
               label: "Calculate Taxes Manually"
             },
             {
               type: "doc",
-              id: "advanced/backend/price-lists/use-api"
+              id: "advanced/backend/price-lists/use-api",
+              label: "Use PriceList APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Use SalesChannel APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Use CustomerGroup APIs"
             },
           ]
         },
         {
           type: "doc",
-          id: "advanced/backend/endpoints/add-storefront",
-          label: "Create Endpoint for Storefront"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/endpoints/add-admin",
-          label: "Create Endpoint for Admin"
+          id: "advanced/backend/endpoints/add",
+          label: "Create an Endpoint"
         },
         {
           type: "doc",
@@ -367,6 +383,10 @@ module.exports = {
         {
           type: "doc",
           id: "advanced/backend/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customer-groups/index"
         },
       ]
     },
@@ -503,6 +523,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/cors-issues",
           label: "CORS issues",
         },
@@ -614,8 +639,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCollectionsResource",
               label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
             },
             {
               type: "doc",
@@ -664,6 +699,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminPriceListResource",
               label: "priceLists",
             },
@@ -696,6 +736,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminReturnsResource",
               label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
             },
             {
               type: "doc",
@@ -798,6 +843,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
         },
@@ -825,7 +875,7 @@ module.exports = {
         {
           type: "doc",
           id: "references/js-client/classes/ReturnReasonsResource",
-          label: "returnReason",
+          label: "returnReasons",
         },
         {
           type: "doc",

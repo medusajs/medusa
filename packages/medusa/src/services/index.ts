@@ -8,6 +8,7 @@ export { default as CustomShippingOptionService } from "./custom-shipping-option
 export { default as CustomerGroupService } from "./customer-group"
 export { default as CustomerService } from "./customer"
 export { default as DiscountService } from "./discount"
+export { default as DiscountConditionService } from "./discount-condition"
 export { default as DraftOrderService } from "./draft-order"
 export { default as EventBusService } from "./event-bus"
 export { default as FulfillmentProviderService } from "./fulfillment-provider"

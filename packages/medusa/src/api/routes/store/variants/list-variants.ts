@@ -1,19 +1,19 @@
+import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"
-import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import { IsType } from "../../../../utils/validators/is-type"
+import { Type } from "class-transformer"
+import { omit } from "lodash"
+import { defaultStoreVariantRelations } from "."
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { Type } from "class-transformer"
-import { defaultStoreVariantRelations } from "."
-import { omit } from "lodash"
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /variants
@@ -77,7 +77,9 @@ import { validator } from "../../../../utils/validator"
  *             variants:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product_variant"
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/product_variant"
+ *                   - $ref: "#/components/schemas/product_variant_prices_fields"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
