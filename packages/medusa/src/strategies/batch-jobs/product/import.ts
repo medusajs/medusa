@@ -761,7 +761,23 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Collection Title", mapTo: "product.collection.title" },
     { name: "Product Collection Handle", mapTo: "product.collection.handle" },
     // PRODUCT-TYPE
-    { name: "Product Type", mapTo: "product.type.value" },
+    {
+      name: "Product Type",
+      match: /Product Type/,
+      reducer: (
+        builtLine: TParsedProductImportRowData,
+        key,
+        value
+      ): TBuiltProductImportLine => {
+        if (typeof value === "undefined" || value === null) {
+          builtLine["product.type"] = undefined
+        } else {
+          builtLine["product.type.value"] = value
+        }
+
+        return builtLine
+      },
+    },
     // PRODUCT-TAGS
     {
       name: "Product Tags",

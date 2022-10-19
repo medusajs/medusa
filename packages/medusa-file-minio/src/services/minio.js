@@ -26,13 +26,24 @@ class MinioService extends AbstractFileService {
   upload(file) {
     this.updateAwsConfig_()
 
+    return this.uploadFile(file)
+  }
+
+  uploadProtected(file) {
+    this.validatePrivateBucketConfiguration_(true)
+    this.updateAwsConfig_(true)
+
+    return this.uploadFile(file, { isProtected: true })
+  }
+
+  uploadFile(file, options = { isProtected: false }) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
-      Bucket: this.bucket_,
+      ACL: options.isProtected ? "private" : "public-read",
+      Bucket: options.isProtected ? this.private_bucket_ : this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
     }
@@ -137,9 +148,12 @@ class MinioService extends AbstractFileService {
   }
 
   validatePrivateBucketConfiguration_(usePrivateBucket) {
-    if (usePrivateBucket && !this.private_bucket_) {
+    if (
+      usePrivateBucket &&
+      (!this.private_access_key_id_ || !this.private_bucket_)
+    ) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_CONFIGURATION,
+        MedusaError.Types.UNEXPECTED_STATE,
         "Private bucket is not configured"
       )
     }

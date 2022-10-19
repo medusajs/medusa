@@ -70,7 +70,8 @@
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "generate:entities": "typedoc --options typedoc.entities.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "generate:announcement": "node ./scripts/doc-change-release.js"
+    "generate:announcement": "node ./scripts/doc-change-release.js",
+    "version:staging": "yarn changeset pre enter staging && yarn changeset version"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.5",

@@ -175,125 +175,121 @@ export default async (req, res) => {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          await manager.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                const returnObj: ReturnObj = {
-                  order_id: id,
-                  idempotency_key: idempotencyKey.idempotency_key,
-                  items: value.items,
-                }
-
-                if (value.return_shipping) {
-                  returnObj.shipping_method = value.return_shipping
-                }
-
-                if (isDefined(value.refund) && value.refund < 0) {
-                  returnObj.refund_amount = 0
-                } else {
-                  if (value.refund && value.refund >= 0) {
-                    returnObj.refund_amount = value.refund
+          await manager
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                  const returnObj: ReturnObj = {
+                    order_id: id,
+                    idempotency_key: idempotencyKey.idempotency_key,
+                    items: value.items,
                   }
-                }
 
-                const order = await orderService
-                  .withTransaction(manager)
-                  .retrieve(id)
+                  if (value.return_shipping) {
+                    returnObj.shipping_method = value.return_shipping
+                  }
 
-                const evaluatedNoNotification =
-                  value.no_notification !== undefined
-                    ? value.no_notification
-                    : order.no_notification
-                returnObj.no_notification = evaluatedNoNotification
+                  if (isDefined(value.refund) && value.refund < 0) {
+                    returnObj.refund_amount = 0
+                  } else {
+                    if (value.refund && value.refund >= 0) {
+                      returnObj.refund_amount = value.refund
+                    }
+                  }
 
-                const createdReturn = await returnService
-                  .withTransaction(manager)
-                  .create(returnObj)
-
-                if (value.return_shipping) {
-                  await returnService
+                  const order = await orderService
                     .withTransaction(manager)
-                    .fulfill(createdReturn.id)
-                }
+                    .retrieve(id)
 
-                await eventBus
-                  .withTransaction(manager)
-                  .emit("order.return_requested", {
-                    id,
-                    return_id: createdReturn.id,
-                    no_notification: evaluatedNoNotification,
-                  })
+                  const evaluatedNoNotification =
+                    value.no_notification !== undefined
+                      ? value.no_notification
+                      : order.no_notification
+                  returnObj.no_notification = evaluatedNoNotification
 
-                return {
-                  recovery_point: "return_requested",
-                }
-              })
+                  const createdReturn = await returnService
+                    .withTransaction(manager)
+                    .create(returnObj)
 
-            if (error) {
+                  if (value.return_shipping) {
+                    await returnService
+                      .withTransaction(manager)
+                      .fulfill(createdReturn.id)
+                  }
+
+                  await eventBus
+                    .withTransaction(manager)
+                    .emit("order.return_requested", {
+                      id,
+                      return_id: createdReturn.id,
+                      no_notification: evaluatedNoNotification,
+                    })
+
+                  return {
+                    recovery_point: "return_requested",
+                  }
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key
-            }
-          })
+              err = e
+            })
           break
         }
 
         case "return_requested": {
-          await manager.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                let order: Order | Return = await orderService
-                  .withTransaction(manager)
-                  .retrieve(id, { relations: ["returns"] })
-
-                /**
-                 * If we are ready to receive immediately, we find the newly created return
-                 * and register it as received.
-                 */
-                if (value.receive_now) {
-                  const returns = await returnService
+          await manager
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                  let order: Order | Return = await orderService
                     .withTransaction(manager)
-                    .list({
-                      idempotency_key: idempotencyKey.idempotency_key,
-                    })
+                    .retrieve(id, { relations: ["returns"] })
 
-                  if (!returns.length) {
-                    throw new MedusaError(
-                      MedusaError.Types.INVALID_DATA,
-                      `Return not found`
-                    )
+                  /**
+                   * If we are ready to receive immediately, we find the newly created return
+                   * and register it as received.
+                   */
+                  if (value.receive_now) {
+                    const returns = await returnService
+                      .withTransaction(manager)
+                      .list({
+                        idempotency_key: idempotencyKey.idempotency_key,
+                      })
+
+                    if (!returns.length) {
+                      throw new MedusaError(
+                        MedusaError.Types.INVALID_DATA,
+                        `Return not found`
+                      )
+                    }
+
+                    const returnOrder = returns[0]
+
+                    order = await returnService
+                      .withTransaction(manager)
+                      .receive(returnOrder.id, value.items, value.refund)
                   }
 
-                  const returnOrder = returns[0]
-
-                  order = await returnService
+                  order = await orderService
                     .withTransaction(manager)
-                    .receive(returnOrder.id, value.items, value.refund)
-                }
+                    .retrieve(id, {
+                      select: defaultAdminOrdersFields,
+                      relations: defaultAdminOrdersRelations,
+                    })
 
-                order = await orderService
-                  .withTransaction(manager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
-                  })
-
-                return {
-                  response_code: 200,
-                  response_body: { order },
-                }
-              })
-
-            if (error) {
+                  return {
+                    response_code: 200,
+                    response_body: { order },
+                  }
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key
-            }
-          })
+              err = e
+            })
           break
         }
 

@@ -8,12 +8,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import { Product, ProductOptionValue, ProductStatus } from "../models"
+import {
+  PriceList,
+  Product,
+  ProductOptionValue,
+  ProductStatus,
+  SalesChannel,
+} from "../models"
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator, FindConfig } from "./common"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import { PriceListLoadConfig } from "./price-list"
+import { FindOperator } from "typeorm"
 
 /**
  * API Level DTOs + Validation rules
@@ -60,12 +67,16 @@ export class FilterableProductProps {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  type?: string
+  type_id?: string[]
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
+
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
 
   @IsOptional()
   @ValidateNested()
@@ -82,6 +93,15 @@ export class FilterableProductProps {
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 }
+
+export type ProductSelector =
+  | FilterableProductProps
+  | (Selector<Product> & {
+      q?: string
+      discount_condition_id?: string
+      price_list_id?: string[] | FindOperator<PriceList>
+      sales_channel_id?: string[] | FindOperator<SalesChannel>
+    })
 
 /**
  * Service Level DTOs
