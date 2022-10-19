@@ -15,7 +15,7 @@ import {
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { FlagRouter } from "../../../../utils/flag-router"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
-import { InjectedProps } from "../../../batch-jobs/product/types"
+import { InjectedProps } from "../../../batch-jobs/product/types/types"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),

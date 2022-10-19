@@ -4,11 +4,14 @@ In this document, you’ll learn how to create endpoints in your Medusa server.
 
 ## Overview
 
-Custom endpoints reside under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file that is named `index` (for example, `index.ts`). This file should export a function that returns an Express router.
+Custom endpoints reside under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or
+JavaScript file that is named `index` (for example, `types.ts`). This file should export a function that returns an
+Express router.
 
 ## Implementation
 
-To create a new endpoint, start by creating a new file in `src/api` called `index.ts`. At its basic format, `index.ts` should look something like this:
+To create a new endpoint, start by creating a new file in `src/api` called `types.ts`. At its basic format, `types.ts`
+should look something like this:
 
 ```ts
 import { Router } from "express"
@@ -29,7 +32,8 @@ export default (rootDirectory, pluginOptions) => {
 This exports a function that returns an Express router. The function receives two parameters:
 
 - `rootDirectory` is the absolute path to the root directory that your server is running from.
-- `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+- `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it
+  will be an empty object.
 
 ### Endpoints Path
 
@@ -37,23 +41,28 @@ Your endpoint can be under any path you wish.
 
 By Medusa’s conventions:
 
-- All Storefront REST APIs are prefixed by `/store`. For example, the `/store/products` endpoint lets you retrieve the products to display them on your storefront.
-- All Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the products to display them on your Admin.
+- All Storefront REST APIs are prefixed by `/store`. For example, the `/store/products` endpoint lets you retrieve the
+  products to display them on your storefront.
+- All Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the
+  products to display them on your Admin.
 
-You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the previous example.
+You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the
+previous example.
 
 ## CORS Configuration
 
-If you’re adding a storefront or admin endpoint and you want to access these endpoints from the storefront or Medusa admin, you need to pass your endpoints Cross-Origin Resource Origin (CORS) options using the `cors` package.
+If you’re adding a storefront or admin endpoint and you want to access these endpoints from the storefront or Medusa
+admin, you need to pass your endpoints Cross-Origin Resource Origin (CORS) options using the `cors` package.
 
-First, you need to import your Medusa configurations along with the `cors` library:
+First, you need to import your Medusa configurations along with the `cors` library:
 
 ```ts
 import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 ```
 
-Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations. If it’s a storefront endpoint, pass the `origin` property storefront options:
+Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations. If it’s a storefront
+endpoint, pass the `origin` property storefront options:
 
 ```ts
 const corsOptions = {
@@ -71,7 +80,7 @@ const corsOptions = {
 }
 ```
 
-Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route:
+Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route:
 
 ```ts
 router.options("/admin/hello", cors(corsOptions))
@@ -84,7 +93,7 @@ router.get("/admin/hello", cors(corsOptions), (req, res) => {
 
 ### Same File
 
-You can add more than one endpoint in `src/api/index.ts`:
+You can add more than one endpoint in `src/api/types.ts`:
 
 ```ts
 router.options("/store/hello", cors(storeCorsOptions))
@@ -106,7 +115,7 @@ router.get("/admin/hello", cors(adminCorsOptions), (req, res) => {
 
 Alternatively, you can add multiple files for each endpoint or set of endpoints for readability and easy maintenance.
 
-To do that with the previous example, first, create the file `src/api/store.ts` with the following content:
+To do that with the previous example, first, create the file `src/api/store.ts` with the following content:
 
 ```ts
 import cors from "cors"
@@ -126,9 +135,9 @@ export default (router) => {
 }
 ```
 
-You export a function that receives an Express router as a parameter and adds the endpoint `store/hello` to it.
+You export a function that receives an Express router as a parameter and adds the endpoint `store/hello` to it.
 
-Next, create the file `src/api/admin.ts` with the following content:
+Next, create the file `src/api/admin.ts` with the following content:
 
 ```ts
 import cors from "cors"
@@ -148,9 +157,9 @@ export default (router) => {
 }
 ```
 
-Again, you export a function that receives an Express router as a parameter and adds the endpoint `admin/hello` to it.
+Again, you export a function that receives an Express router as a parameter and adds the endpoint `admin/hello` to it.
 
-Finally, in `src/api/index.ts` import the two functions at the beginning of the file:
+Finally, in `src/api/types.ts` import the two functions at the beginning of the file:
 
 ```ts
 import storeRoutes from "./store"
@@ -176,7 +185,7 @@ Protected routes are routes that should be accessible by logged-in customers or 
 
 ### Protect Store Routes
 
-To make a storefront route protected, first, import the `authenticate-customer` middleware:
+To make a storefront route protected, first, import the `authenticate-customer` middleware:
 
 ```ts
 import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
@@ -195,13 +204,14 @@ router.get("/store/hello", cors(corsOptions), authenticate(), async (req, res) =
 })
 ```
 
-Please note that the endpoint is still accessible by all users, however, you’ll be able to access the current logged-in customer if there’s any.
+Please note that the endpoint is still accessible by all users, however, you’ll be able to access the current logged-in
+customer if there’s any.
 
 To disallow guest customers from accessing the endpoint, you can throw an error if `req.user` is `false`.
 
 ### Protect Admin Routes
 
-To make an admin route protected, first, import the `authenticate` middleware:
+To make an admin route protected, first, import the `authenticate` middleware:
 
 ```ts
 import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
@@ -225,9 +235,12 @@ Now, only authenticated users can access this endpoint.
 
 ## Use Services
 
-Services in Medusa bundle a set of functionalities into one class. Then, you can use that class anywhere in your backend. For example, you can use the `ProductService` to retrieve products or perform operations like creating or updating a product.
+Services in Medusa bundle a set of functionalities into one class. Then, you can use that class anywhere in your
+backend. For example, you can use the `ProductService` to retrieve products or perform operations like creating or
+updating a product.
 
-You can retrieve any registered service in your endpoint using `req.scope.resolve` passing it the service’s registration name.
+You can retrieve any registered service in your endpoint using `req.scope.resolve` passing it the service’s registration
+name.
 
 Here’s an example of an endpoint that retrieves the count of products in your store:
 
@@ -243,11 +256,13 @@ router.get("/admin/products/count", cors(corsOptions), authenticate(), (req, res
 })
 ```
 
-The `productService` has a `count` method that returns a Promise. This Promise resolves to the count of the products. You return a JSON of the product count.
+The `productService` has a `count` method that returns a Promise. This Promise resolves to the count of the products.
+You return a JSON of the product count.
 
 ## Building Files
 
-Custom endpoints must be transpiled and moved to the `dist` directory. This happens when you run your server using `medusa develop` and while it’s running, and when you run the following command:
+Custom endpoints must be transpiled and moved to the `dist` directory. This happens when you run your server
+using `medusa develop` and while it’s running, and when you run the following command:
 
 ```bash npm2yarn
 npm run build
@@ -255,5 +270,6 @@ npm run build
 
 ## What’s Next
 
-- Check out the available [Admin](https://docs.medusajs.com/api/admin/) and [Storefront](https://docs.medusajs.com/api/store/) APIs.
+- Check out the available [Admin](https://docs.medusajs.com/api/admin/)
+  and [Storefront](https://docs.medusajs.com/api/store/) APIs.
 - Learn how to create a [Service](./../services/create-service.md).

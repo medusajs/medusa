@@ -1,6 +1,6 @@
 import set from "lodash/set"
 
-import { TParsedProductImportRowData } from "./types"
+import { TParsedProductImportRowData } from "./types/types"
 import { csvRevertCellContentFormatter } from "../../../utils"
 
 /**

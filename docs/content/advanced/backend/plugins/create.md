@@ -1,10 +1,12 @@
 # Create a Plugin
 
-In this document, you’ll learn how to create a plugin and publish it. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](overview.md).
+In this document, you’ll learn how to create a plugin and publish it. If you’re interested to learn more about what
+plugins are and where to find available official and community plugins, check out the [overview document](overview.md).
 
 ## Prerequisites
 
-This guide uses the Medusa CLI throughout different steps. If you don’t have the Medusa CLI installed you can install it with the following command:
+This guide uses the Medusa CLI throughout different steps. If you don’t have the Medusa CLI installed you can install it
+with the following command:
 
 ```bash npm2yarn
 npm install @medusajs/medusa-cli -g
@@ -12,27 +14,32 @@ npm install @medusajs/medusa-cli -g
 
 :::note
 
-If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../../troubleshooting/cli-installation-errors.mdx).
+If you run into any errors while installing the CLI tool, check out
+the [troubleshooting guide](../../../troubleshooting/cli-installation-errors.mdx).
 
 :::
 
 ## Initialize Project
 
-The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa project:
+The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa
+project:
 
 ```bash
 medusa new medusa-plugin-custom
 ```
 
-Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Medusa, plugins are named based on their functionalities.
+Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Medusa, plugins are named based on their
+functionalities.
 
-By convention, all plugin names start with `medusa` followed by a descriptive name of what the plugin does. For example, the Stripe plugin is named `medusa-payment-stripe`.
+By convention, all plugin names start with `medusa` followed by a descriptive name of what the plugin does. For example,
+the Stripe plugin is named `medusa-payment-stripe`.
 
 ## Changes to package.json
 
 ### Rename Project Name
 
-Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
+Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you
+chose when running the `medusa new` command.
 
 ### Change Dependencies
 
@@ -56,7 +63,9 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
 }
 ```
 
-For a plugin, a lot of these dependencies are not necessary or should be labeled as [peer dependencies](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies). Therefore, it’s important to make changes to the dependencies of your plugin.
+For a plugin, a lot of these dependencies are not necessary or should be labeled
+as [peer dependencies](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies). Therefore, it’s
+important to make changes to the dependencies of your plugin.
 
 The recommended change is the following:
 
@@ -74,9 +83,11 @@ The recommended change is the following:
 }
 ```
 
-The packages `@medusajs/medusa` and `medusa-interfaces` act as peer dependencies. They’ll be installed while you develop your package, and they are required when your plugin is installed in another NPM project.
+The packages `@medusajs/medusa` and `medusa-interfaces` act as peer dependencies. They’ll be installed while you develop
+your package, and they are required when your plugin is installed in another NPM project.
 
-You remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
+You remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are
+fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
 
 Additionally, you remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
@@ -86,13 +97,15 @@ Once you’re done making these changes, re-run the install command to update yo
 npm install
 ```
 
-This section includes recommended changes to your `package.json`. You can skip any of these changes if you don’t find them necessary to your plugin.
+This section includes recommended changes to your `package.json`. You can skip any of these changes if you don’t find
+them necessary to your plugin.
 
 ### Recommended: Change scripts
 
 :::caution
 
-If you don't make changes to the `build` and `watch` commands, please be aware of the [expected plugin structure](#plugin-structure).
+If you don't make changes to the `build` and `watch` commands, please be aware of
+the [expected plugin structure](#plugin-structure).
 
 :::
 
@@ -138,24 +151,30 @@ npm install --save-dev cross-env
 
 ### Recommended: Change Basic Info
 
-`package.json` holds information that further describes the package or the author that created the package. It is recommended to make the following changes:
+`package.json` holds information that further describes the package or the author that created the package. It is
+recommended to make the following changes:
 
 - `description`: Change this to a sentence that describes what your plugin does.
 - `author`: Your name and email.
 - `repository`: The repository that holds your plugin’s codebase.
-- `keywords`: This should hold the keywords that are related to your plugin. It’s recommended that all plugins use the keywords `medusa-plugin` or `medusa`.
+- `keywords`: This should hold the keywords that are related to your plugin. It’s recommended that all plugins use the
+  keywords `medusa-plugin` or `medusa`.
 
 ## Develop your Plugin
 
-Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that's relevant to your plugin.
+Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that's
+relevant to your plugin.
 
 ### Plugin Structure
 
-While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, etc...
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This
+includes creating services, endpoints, migrations, etc...
 
-However, before you test the changes on a Medusa server or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
+However, before you test the changes on a Medusa server or publish your plugin, you must transpile your files, which
+moves them into the root of your plugin directory.
 
-For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
+For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch`
+commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
 
 If files and directories aren't placed in the root of your plugin, the Medusa server won't detect or load them.
 
@@ -176,7 +195,7 @@ medusa-plugin-custom
 |      |
 |      |_ _ _ api
 |      |     |
-|      |     |_ _ _ index.ts
+|      |     |_ _ _ types.ts
 |      |
 |      |_ _ _ migrations
 |      |
@@ -188,7 +207,8 @@ medusa-plugin-custom
 
 ### Development Resources
 
-This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
+This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that,
+you can check out these guides:
 
 - How to [create endpoints](../endpoints/add.md)
 - How to [create a service](../services/create-service.md)
@@ -198,7 +218,8 @@ This guide doesn't cover how to create different files and components. If you’
 
 ## Add Plugin Configuration
 
-Plugins often allow developers that will later use them to enter their own configuration. For example, you can allow developers to specify the API key of a service you’re integrating.
+Plugins often allow developers that will later use them to enter their own configuration. For example, you can allow
+developers to specify the API key of a service you’re integrating.
 
 To pass a plugin its configurations on a Medusa server, you have to add it to the `plugins` array in `medusa-config.js`:
 
@@ -250,7 +271,8 @@ Make sure to include in the README of your plugin the configurations that can be
 
 ## Test Your Plugin
 
-While you develop your plugin, you’ll need to test it on an actual Medusa server. This can be done by using the [npm link](https://docs.npmjs.com/cli/v8/commands/npm-link) command.
+While you develop your plugin, you’ll need to test it on an actual Medusa server. This can be done by using
+the [npm link](https://docs.npmjs.com/cli/v8/commands/npm-link) command.
 
 In the root of your plugin directory, run the following command:
 
@@ -266,7 +288,8 @@ npm link medusa-plugin-custom
 
 Where `medusa-plugin-custom` is the package name of your plugin.
 
-After linking to your plugin in a local Medusa server, either run the `build` or `watch` commands in your plugin directory:
+After linking to your plugin in a local Medusa server, either run the `build` or `watch` commands in your plugin
+directory:
 
 ```bash npm2yarn
 # in the directory of the plugin
@@ -275,7 +298,8 @@ npm run watch
 
 :::tip
 
-If you’re running the `watch` command, you don’t need to run the `build` command every time you make a change to your plugin.
+If you’re running the `watch` command, you don’t need to run the `build` command every time you make a change to your
+plugin.
 
 :::
 
@@ -296,7 +320,8 @@ const plugins = [
 
 :::note
 
-If your plugin has migrations, you must run them before you start the server. Check out the [Migrations guide](../migrations/overview.md#migrate-command) for more details.
+If your plugin has migrations, you must run them before you start the server. Check out
+the [Migrations guide](../migrations/overview.md#migrate-command) for more details.
 
 :::
 
@@ -310,7 +335,8 @@ npm run start
 
 #### Error: The class must be a valid service implementation
 
-Please make sure that your plugin is following the correct structure. If the error persists then please try the following fix:
+Please make sure that your plugin is following the correct structure. If the error persists then please try the
+following fix:
 
 ```bash npm2yarn
 cd <SERVER_PATH>/node_modules/medusa-interfaces
@@ -325,7 +351,8 @@ npm link your-plugin
 
 Where `<SERVER_PATH>` is the path to your Medusa server and `<PLUGIN_PATH>` is the path to your plugin.
 
-This links the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
+This links the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then links your
+plugin to your `medusa-backend`.
 
 #### APIs not loading
 
@@ -342,7 +369,8 @@ cd <SERVER_PATH>
 npm run start
 ```
 
-Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>` is the name of your plugin as it is in your plugin `package.json` file.
+Where `<SERVER_PATH>` is the path to your Medusa server, `<PLUGIN_PATH>` is the path to your plugin and `<PLUGIN_NAME>`
+is the name of your plugin as it is in your plugin `package.json` file.
 
 :::note
 
@@ -354,7 +382,8 @@ It is safe to ignore any `cross-env: command not found` error you may receive.
 
 Not all files that you use while developing your plugin are necessary to be published.
 
-For example, the files you add in the `src` directory are compiled to the root of the plugin directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files in the root.
+For example, the files you add in the `src` directory are compiled to the root of the plugin directory before
+publishing. Then, when a developer installs your plugin, they’ll just be using the files in the root.
 
 So, you can ignore files and directories like `src` from the final published NPM package.
 
@@ -385,13 +414,15 @@ develop.sh
 
 ## Publish Plugin
 
-Once you’re done developing your plugin you can publish the package on NPM’s registry so that other developers can benefit from it and use it.
+Once you’re done developing your plugin you can publish the package on NPM’s registry so that other developers can
+benefit from it and use it.
 
 Before you publish a plugin, you must [create an account on NPM](https://www.npmjs.com/signup).
 
 ### Prepare Plugin
 
-Before you publish or update your plugin, make sure to run the `prepare` command [defined earlier](#recommended-change-scripts):
+Before you publish or update your plugin, make sure to run the `prepare`
+command [defined earlier](#recommended-change-scripts):
 
 ```bash npm2yarn
 npm run prepare
@@ -437,13 +468,17 @@ npm publish
 
 ## Add Plugin to Medusa’s Repository
 
-All officially-supported plugins are available in the [`packages` directory of the Medusa GitHub repository](https://github.com/medusajs/medusa/tree/master/packages).
+All officially-supported plugins are available in
+the [`packages` directory of the Medusa GitHub repository](https://github.com/medusajs/medusa/tree/master/packages).
 
-If you’re interested in adding your plugin, you need to create a new pull request (PR) where you add your plugin inside the `packages` directory. Our team will then review your plugin, and if it’s approved the PR will be merged and your plugin will be available on Medusa’s repository.
+If you’re interested in adding your plugin, you need to create a new pull request (PR) where you add your plugin inside
+the `packages` directory. Our team will then review your plugin, and if it’s approved the PR will be merged and your
+plugin will be available on Medusa’s repository.
 
 :::note
 
-Before contributing to the Medusa repository, please check out the [contribution guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+Before contributing to the Medusa repository, please check out
+the [contribution guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
 :::
 
@@ -457,6 +492,8 @@ npm install medusa-plugin-custom
 
 ## What’s Next
 
-- Check out [available Services in Medusa](references/services/../../../../../references/services/classes/AuthService.md) that you can use in your plugin.
+- Check
+  out [available Services in Medusa](references/services/../../../../../references/services/classes/AuthService.md) that
+  you can use in your plugin.
 - Check out [available events](../subscribers/events-list.md) that you can listen to in Subscribers.
 - Check out [available official plugins](https://github.com/medusajs/medusa/tree/master/packages).

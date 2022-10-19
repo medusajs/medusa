@@ -6,16 +6,19 @@ import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
 import { defaultAdminProductRelations } from "../../../api"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
+  DynamicProductExportDescriptor,
   ProductExportBatchJob,
   ProductExportBatchJobContext,
-  ProductExportColumnSchemaDescriptor,
   ProductExportPriceData,
-  productExportSchemaDescriptors,
-} from "./index"
+} from "./types/types"
 import { FindProductConfig } from "../../../types/product"
 import { FlagRouter } from "../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { csvCellContentFormatter } from "../../../utils"
+import {
+  productColumnsDefinition,
+  productSalesChannelColumnsDefinition,
+} from "./types/columns-definition"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -48,10 +51,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
    * column descriptors to this map.
    *
    */
-  protected readonly columnDescriptors: Map<
-    string,
-    ProductExportColumnSchemaDescriptor
-  > = new Map(productExportSchemaDescriptors)
+  protected readonly columnsDefinition = { ...productColumnsDefinition }
+  protected readonly salesChannelsColumnsDefinition = {
+    ...productSalesChannelColumnsDefinition,
+  }
 
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
@@ -324,58 +327,114 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     this.appendImagesDescriptors(dynamicImageColumnCount)
     this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
 
-    return (
-      [...this.columnDescriptors.keys()].join(this.DELIMITER_) + this.NEWLINE_
-    )
+    const exportedColumns = Object.entries(this.columnsDefinition)
+      .map(
+        ([name, descriptor]) =>
+          descriptor.exportDescriptor &&
+          !("isDynamic" in descriptor.exportDescriptor) &&
+          name
+      )
+      .filter((name): name is string => !!name)
+
+    return exportedColumns.join(this.DELIMITER_) + this.NEWLINE_
   }
 
   private appendImagesDescriptors(maxImagesCount: number): void {
+    const columnNameBuilder = (this.columnsDefinition["Image Url"]!
+      .exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
     for (let i = 0; i < maxImagesCount; ++i) {
-      this.columnDescriptors.set(`Image ${i + 1} Url`, {
-        accessor: (product: Product) => product?.images[i]?.url ?? "",
-        entityName: "product",
-      })
+      const columnName = columnNameBuilder(i)
+
+      this.columnsDefinition[columnName] = {
+        exportDescriptor: {
+          accessor: (product: Product) => product?.images[i]?.url ?? "",
+          entityName: "product",
+        },
+      }
     }
   }
 
   private appendSalesChannelsDescriptors(maxScCount: number): void {
+    const columnNameNameBuilder = (this.salesChannelsColumnsDefinition[
+      "Sales Channel Name"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameDescriptionBuilder = (this.salesChannelsColumnsDefinition[
+      "Sales Channel Description"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
     for (let i = 0; i < maxScCount; ++i) {
-      this.columnDescriptors.set(`Sales channel ${i + 1} Name`, {
-        accessor: (product: Product) => product?.sales_channels[i]?.name ?? "",
-        entityName: "product",
-      })
-      this.columnDescriptors.set(`Sales channel ${i + 1} Description`, {
-        accessor: (product: Product) =>
-          product?.sales_channels[i]?.description ?? "",
-        entityName: "product",
-      })
+      const columnNameName = columnNameNameBuilder(i)
+
+      this.columnsDefinition[columnNameName] = {
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.sales_channels[i]?.name ?? "",
+          entityName: "product",
+        },
+      }
+
+      const columnNameDescription = columnNameDescriptionBuilder(i)
+
+      this.columnsDefinition[columnNameDescription] = {
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.sales_channels[i]?.description ?? "",
+          entityName: "product",
+        },
+      }
     }
   }
 
   private appendOptionsDescriptors(maxOptionsCount: number): void {
     for (let i = 0; i < maxOptionsCount; ++i) {
-      this.columnDescriptors
-        .set(`Option ${i + 1} Name`, {
+      const columnNameNameBuilder = (this.columnsDefinition["Option Name"]!
+        .exportDescriptor as DynamicProductExportDescriptor)!
+        .buildDynamicColumnName
+
+      const columnNameName = columnNameNameBuilder(i)
+
+      this.columnsDefinition[columnNameName] = {
+        exportDescriptor: {
           accessor: (productOption: Product) =>
             productOption?.options[i]?.title ?? "",
           entityName: "product",
-        })
-        .set(`Option ${i + 1} Value`, {
+        },
+      }
+
+      const columnNameValueBuilder = (this.columnsDefinition["Option Value"]!
+        .exportDescriptor as DynamicProductExportDescriptor)!
+        .buildDynamicColumnName
+
+      const columnNameNameValue = columnNameValueBuilder(i)
+
+      this.columnsDefinition[columnNameNameValue] = {
+        exportDescriptor: {
           accessor: (variant: ProductVariant) =>
             variant?.options[i]?.value ?? "",
           entityName: "variant",
-        })
+        },
+      }
     }
   }
 
   private appendMoneyAmountDescriptors(
     pricesData: ProductExportPriceData[]
   ): void {
+    const columnNameBuilder = (this.columnsDefinition["Price Currency"]!
+      .exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
     for (const priceData of pricesData) {
       if (priceData.currency_code) {
-        this.columnDescriptors.set(
-          `Price ${priceData.currency_code?.toUpperCase()}`,
-          {
+        const columnName = columnNameBuilder(priceData)
+
+        this.columnsDefinition[columnName] = {
+          exportDescriptor: {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {
                 return (
@@ -388,18 +447,18 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               return price?.amount?.toString() ?? ""
             },
             entityName: "variant",
-          }
-        )
+          },
+        }
       }
 
       if (priceData.region) {
-        this.columnDescriptors.set(
-          `Price ${priceData.region.name} ${
-            priceData.region?.currency_code
-              ? "[" + priceData.region?.currency_code.toUpperCase() + "]"
-              : ""
-          }`,
-          {
+        const columnNameBuilder = (this.columnsDefinition["Price Region"]!
+          .exportDescriptor as DynamicProductExportDescriptor)!
+          .buildDynamicColumnName
+        const columnName = columnNameBuilder(priceData)
+
+        this.columnsDefinition[columnName] = {
+          exportDescriptor: {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {
                 return (
@@ -414,8 +473,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               return price?.amount?.toString() ?? ""
             },
             entityName: "variant",
-          }
-        )
+          },
+        }
       }
     }
   }
@@ -425,7 +484,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
     for (const variant of product.variants) {
       const variantLineData: string[] = []
-      for (const [, columnSchema] of this.columnDescriptors.entries()) {
+      for (const [, { exportDescriptor: columnSchema }] of Object.entries(
+        this.columnsDefinition
+      )) {
+        if (!columnSchema || "isDynamic" in columnSchema) continue
+
         if (columnSchema.entityName === "product") {
           const formattedContent = csvCellContentFormatter(
             columnSchema.accessor(product)
