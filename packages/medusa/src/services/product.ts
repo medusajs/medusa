@@ -25,13 +25,12 @@ import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
   CreateProductInput,
-  FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, isDefined, isString, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
@@ -144,7 +143,15 @@ class ProductService extends TransactionBaseService {
     const manager = this.manager_
     const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
+    let q
+    if (isString(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const { relations, ...query } = buildQuery(selector, config) as {
+      relations: string[]
+    } & FindWithoutRelationsOptions
 
     if (q) {
       return await productRepo.getFreeTextSearchResultsAndCount(
@@ -849,47 +856,6 @@ class ProductService extends TransactionBaseService {
         .emit(ProductService.Events.UPDATED, product)
       return product
     })
-  }
-
-  /**
-   * Creates a query object to be used for list queries.
-   * @param selector - the selector to create the query from
-   * @param config - the config to use for the query
-   * @return an object containing the query, relations and free-text
-   *   search param.
-   */
-  protected prepareListQuery_(
-    selector: FilterableProductProps | Selector<Product>,
-    config: FindProductConfig
-  ): {
-    q: string
-    relations: (keyof Product)[]
-    query: FindWithoutRelationsOptions
-  } {
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = buildQuery(selector, config)
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
-    }
-
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
-
-    const rels = query.relations
-    delete query.relations
-
-    return {
-      query: query as FindWithoutRelationsOptions,
-      relations: rels as (keyof Product)[],
-      q,
-    }
   }
 }
 
