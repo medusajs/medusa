@@ -63,12 +63,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
                     .retrieve(id)
@@ -89,25 +88,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                   return {
                     recovery_point: "tax_lines_created",
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
         case "tax_lines_created": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
                     .authorizePayment(id, {
@@ -138,26 +132,21 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                   return {
                     recovery_point: "payment_authorized",
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
 
         case "payment_authorized": {
-          await this.manager_.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (manager: EntityManager) => {
+          await this.manager_
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
                     .retrieveWithTotals(id, {
@@ -287,16 +276,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                       }
                     }
                   }
-                }
-              )
-
-            if (error) {
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key as IdempotencyKey
-            }
-          })
+              err = e
+            })
           break
         }
 

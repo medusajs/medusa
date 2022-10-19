@@ -14,6 +14,7 @@ import { FilterableProductProps } from "../../../../types/product"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the product.
  *   - in: query
  *     name: id
  *     style: form
