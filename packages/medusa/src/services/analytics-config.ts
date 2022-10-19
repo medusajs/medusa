@@ -51,6 +51,9 @@ class AnalyticsConfigService extends TransactionBaseService {
     return analyticsConfig
   }
 
+  /**
+   * Creates an analytics config.
+   */
   async create(
     userId: string,
     data: CreateAnalyticsConfig
@@ -68,6 +71,9 @@ class AnalyticsConfigService extends TransactionBaseService {
     }
   }
 
+  /**
+   * Updates an analytics config. If the config does not exist, it will be created instead.
+   */
   async update(
     userId: string,
     update: UpdateAnalyticsConfig
@@ -78,7 +84,14 @@ class AnalyticsConfigService extends TransactionBaseService {
       this.analyticsConfigRepository_
     )
 
-    const config = await this.retrieve(userId)
+    const config = await this.retrieve(userId).catch(() => undefined)
+
+    if (!config) {
+      return this.create(userId, {
+        opt_out: update.opt_out ?? false,
+        anonymize: update.anonymize ?? false,
+      })
+    }
 
     for (const [key, value] of Object.entries(update)) {
       if (value !== undefined) {
@@ -89,6 +102,9 @@ class AnalyticsConfigService extends TransactionBaseService {
     return await analyticsRepo.save(config)
   }
 
+  /**
+   * Deletes an analytics config.
+   */
   async delete(userId: string): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
     const analyticsRepo = manager.getCustomRepository(

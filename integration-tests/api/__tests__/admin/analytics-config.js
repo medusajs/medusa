@@ -151,22 +151,26 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
       })
     })
 
-    it("should fail update the config of the logged in user if a config does not exist", async () => {
+    it("should create a config for the user is no config exists", async () => {
       const api = useApi()
-      try {
-        await api.post(
-          `/admin/analytics-configs/update`,
-          {
-            opt_out: true,
-          },
-          adminReqConfig
-        )
-      } catch (e) {
-        expect(e.response.status).toEqual(404)
-        expect(e.response.data.message).toEqual(
-          "No analytics config found for user with id: admin_user"
-        )
-      }
+      const res = await api.post(
+        `/admin/analytics-configs/update`,
+        {
+          opt_out: true,
+        },
+        adminReqConfig
+      )
+
+      expect(res.data).toMatchSnapshot({
+        analytics_config: {
+          id: expect.any(String),
+          user_id: "admin_user",
+          opt_out: true,
+          anonymize: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+      })
     })
   })
 
