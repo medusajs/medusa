@@ -3,6 +3,8 @@ const express = require("express")
 const importFrom = require("import-from")
 const chokidar = require("chokidar")
 
+require("dotenv").config({ path: path.join(__dirname, ".env.development") })
+
 process.env.DEV_MODE = !!process[Symbol.for("ts-node.register.instance")]
 
 require("./dev-require")
@@ -17,7 +19,8 @@ const watchFiles = () => {
   WATCHING = true
 
   const watcher = chokidar.watch(medusaCore, {
-    ignored: (path) => {
+    ignored: (rawPath) => {
+      const path = rawPath.replace(/\\/g, "/")
       if (
         path.includes("/node_modules") ||
         path.includes("/dist") ||
@@ -36,14 +39,16 @@ const watchFiles = () => {
     },
   })
 
-  watcher.on("change", async function (file) {
+  watcher.on("change", async function (rawFile) {
     console.log("Reloading server...")
     const start = Date.now()
+
+    const file = rawFile.replace(/\\/g, "/")
 
     if (file.includes("/models") || file.includes("/repositories")) {
       Object.keys(require.cache).forEach(function (id) {
         const name = require.cache[id].filename
-        if (!name.includes("/typeorm")) {
+        if (!name.includes("typeorm")) {
           return
         }
 
@@ -57,12 +62,12 @@ const watchFiles = () => {
     const next = path.slice(0, src + 2).join("/")
 
     for (const name of allModules) {
-      if (name.includes("/typeorm")) {
+      if (name.includes("typeorm")) {
         delete module.constructor._cache[name]
       } else if (name.includes(medusaCore)) {
         if (
-          name.includes("/repositories") ||
-          name.includes("/loaders") ||
+          name.includes("repositories") ||
+          name.includes("loaders") ||
           next.endsWith(".js") ||
           next.endsWith(".ts") ||
           name.startsWith(next)
