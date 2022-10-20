@@ -1,0 +1,18 @@
+.table-of-contents {
+  font-size: 0.85rem;
+}
+
+.table-of-contents::before {
+  content: "ON THIS PAGE";
+  display: inline-block;
+  font-size: 0.85rem;
+  padding-bottom: 4px;
+}
+
+.table-of-contents .table-of-contents__link--active {
+  border-left: 3px solid var(--ifm-link-color);
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+  margin-left: -14px;
+  padding-left: 10px;
+}

@@ -1,0 +1,63 @@
+article {
+  max-width: var(--ifm-docs-page-max-width);
+}
+
+.padding-top--md {
+  padding-top: 2rem !important;
+}
+
+.pagination-nav {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--ifm-docs-page-max-width);
+}
+
+.col {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+details summary {
+  cursor: pointer;
+}
+
+.reference-table th:nth-child(2),
+.reference-table td:nth-child(2) {
+  width: 40%;
+}
+
+.reference-table th:nth-child(3),
+.reference-table td:nth-child(3) {
+  width: 50%;
+}
+
+.reference-table .theme-code-block span {
+  max-width: 100%;
+  word-break: break-word;
+  white-space: break-spaces;
+}
+
+/* User Guide Styling */
+html[data-theme="dark"] kbd {
+  --ifm-color-emphasis-0: var(--ifm-color-gray-200);
+}
+
+kbd {
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  
+  font: 100% var(--ifm-font-family-monospace) !important;
+}
+
+.ui-icon {
+  vertical-align: sub;
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (min-width: 966px) {
+  [class*=docItemContainer] > article {
+    margin-left: 50px;
+    margin-right: 50px;
+    max-width: none
+  }
+}

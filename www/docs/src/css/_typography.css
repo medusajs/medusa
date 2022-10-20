@@ -1,0 +1,16 @@
+h1 {
+  font-size: 2.5em;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+}
+
+p {
+  font-weight: 400;
+}
+
+.theme-doc-markdown a:hover {
+  color: #6e3eff;
+  text-decoration: none;
+}

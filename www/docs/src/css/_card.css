@@ -1,0 +1,13 @@
+.box-link,
+.box-link:hover {
+  color: #0a3149;
+}
+
+html:not([data-theme=dark]) .card {
+  border: 1px solid #cbcbcb;
+  border-radius: 8px;
+}
+
+html[data-theme="dark"] .card {
+  border: 1px solid var(--ifm-color-primary);
+}
