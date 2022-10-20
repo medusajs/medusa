@@ -68,7 +68,7 @@ describe("Product import batch job", () => {
     await db.teardown()
   })
 
-  it.only("should import a csv file", async () => {
+  it("should import a csv file", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
 
