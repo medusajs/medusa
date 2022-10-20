@@ -105,7 +105,7 @@ const bootstrapApp = async () => {
     expressApp: app,
   })
 
-  const port = 80
+  const port = process.env.SERVER_PORT ?? 9000
   server = app.listen(port, (err) => {
     watchFiles()
     console.log(`Server Running at localhost:${port}`)
