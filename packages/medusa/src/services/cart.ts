@@ -15,6 +15,7 @@ import {
   PaymentSession,
   SalesChannel,
   ShippingMethod,
+  ShippingMethodTaxLine,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -2191,27 +2192,43 @@ class CartService extends TransactionBaseService {
       exclude_shipping: true,
     })
 
-    const taxLines = await this.taxProviderService_
-      .withTransaction(this.manager_)
-      .getTaxLines(cart.items, calculationContext)
+    const include_tax = totalsConfig?.force_taxes || cart.region.automatic_taxes
 
-    const taxLinesMap = new Map<string, LineItemTaxLine[]>()
+    const lineItemsTaxLinesMap = new Map<string, LineItemTaxLine[]>()
+    const shippingMethodsTaxLinesMap = new Map<
+      string,
+      ShippingMethodTaxLine[]
+    >()
 
-    taxLines.forEach((taxLine) => {
-      if ("item_id" in taxLine) {
-        const itemTaxLines = taxLinesMap.get(taxLine.item_id) ?? []
-        itemTaxLines.push(taxLine)
-        taxLinesMap.set(taxLine.item_id, itemTaxLines)
-      }
-    })
+    if (include_tax) {
+      const taxLines = await this.taxProviderService_
+        .withTransaction(this.manager_)
+        .getTaxLines(cart.items, calculationContext)
+
+      taxLines.forEach((taxLine) => {
+        if ("item_id" in taxLine) {
+          const itemTaxLines = lineItemsTaxLinesMap.get(taxLine.item_id) ?? []
+          itemTaxLines.push(taxLine)
+          lineItemsTaxLinesMap.set(taxLine.item_id, itemTaxLines)
+        }
+        if ("shipping_method_id" in taxLine) {
+          const shippingMethodTaxLines =
+            shippingMethodsTaxLinesMap.get(taxLine.shipping_method_id) ?? []
+          shippingMethodTaxLines.push(taxLine)
+          shippingMethodsTaxLinesMap.set(
+            taxLine.shipping_method_id,
+            shippingMethodTaxLines
+          )
+        }
+      })
+    }
 
     cart.items = await Promise.all(
       (cart.items || []).map(async (item) => {
-        const tax_lines = taxLinesMap.get(item.id)
+        const tax_lines = lineItemsTaxLinesMap.get(item.id)
         const itemTotals = await totalsService.getLineItemTotals(item, cart, {
-          include_tax: totalsConfig?.force_taxes || cart.region.automatic_taxes,
-          calculation_context: calculationContext,
           tax_lines,
+          calculation_context: calculationContext,
         })
 
         return Object.assign(item, itemTotals)
@@ -2220,12 +2237,12 @@ class CartService extends TransactionBaseService {
 
     cart.shipping_methods = await Promise.all(
       (cart.shipping_methods || []).map(async (shippingMethod) => {
+        const tax_lines = shippingMethodsTaxLinesMap.get(shippingMethod.id)
         const shippingTotals = await totalsService.getShippingMethodTotals(
           shippingMethod,
           cart,
           {
-            include_tax:
-              totalsConfig?.force_taxes || cart.region.automatic_taxes,
+            tax_lines,
             calculation_context: calculationContext,
           }
         )
