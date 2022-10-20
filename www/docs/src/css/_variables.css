@@ -1,0 +1,76 @@
+/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Colors */
+  --ifm-color-primary: #7C53FF;
+  --ifm-color-primary-dark: #6231ff;
+  --ifm-color-primary-darker: #5520ff;
+  --ifm-color-primary-darkest: #3800ed;
+  --ifm-color-primary-light: #9675ff;
+  --ifm-color-primary-lighter: #a386ff;
+  --ifm-color-primary-lightest: #c9b8ff;
+  --ifm-medusa-gray: #f0f0f0;
+
+  /* Fonts */
+  --ifm-code-font-size: 80%;
+  --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+
+  /* Sidebar */
+  --doc-sidebar-width: 250px !important;
+
+  /* Docs Page */
+  --ifm-docs-page-max-width: 850px;
+
+  /* Toc */
+  --ifm-toc-border-color: #f0f0f0;
+  --ifm-toc-link-color: #a6acb5;
+  --ifm-toc-padding-horizontal: 9px;
+  --ifm-menu-active: #111827;
+
+  /* Navbar */
+  --ifm-navbar-shadow: 0px 1px 0px 0px #E5E7EB;
+  --ifm-navbar-padding-top: 16px;
+  --ifm-navbar-padding-bottom: 17px;
+  --ifm-navbar-padding-vertical: 16px;
+  --ifm-navbar-padding-horizontal: 24px;
+  --ifm-navbar-height: 57px;
+  --ifm-navbar-link-hover-color: #111827;
+  --ifm-navbar-link-color: #6B7280;
+
+  /* Color Mode toggler */
+  --mode-tabs-bg: #F3F4F6;
+  --mode-button-text-color: #6B7280;
+  --mode-button-active-bg: #FFFFFF;
+  --mode-button-active-border-color: #E5E7EB;
+  --mode-button-active-text-color: #111827;
+}
+
+html[data-theme="dark"] {
+  --ifm-navbar-background-color: rgba(5, 1, 13, 1);
+  /* --ifm-color-primary: #7C53FF; */
+  --ifm-color-primary-dark: #6231ff;
+  --ifm-color-primary-darker: #5520ff;
+  --ifm-color-primary-darkest: #3800ed;
+  --ifm-color-primary: #9675ff;
+  --ifm-color-primary-lighter: #a386ff;
+  --ifm-color-primary-lightest: #c9b8ff;
+  --ifm-background-color: rgba(5, 1, 13, 1);
+  --ifm-background-surface-color: rgba(5, 1, 13, 1);
+  --ifm-medusa-gray: #292929;
+  --ifm-menu-color: #fff;
+  --ifm-toc-border-color: #333;
+  --ifm-menu-active: #fff;
+  --ifm-menu-color: rgba(255, 255, 255, 0.5);
+  --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
+
+  --ifm-navbar-link-hover-color: #F3F3F3;
+  --ifm-navbar-link-color: #8A8A8A;
+
+  /* Color Mode toggler */
+  --mode-tabs-bg: #222222;
+  --mode-button-text-color: #8A8A8A;
+  --mode-button-active-bg: #161616;
+  --mode-button-active-border-color: #393939;
+  --mode-button-active-text-color: #F3F3F3;
+}

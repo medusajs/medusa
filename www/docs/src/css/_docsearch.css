@@ -1,0 +1,14 @@
+.DocSearch-Button {
+  width: 100%;
+  max-width: 175px;
+  border-radius: 8px !important;
+  --docsearch-container-background: #f5f6f7;
+}
+
+span.DocSearch-Button-Key {
+  display: none;
+}
+
+.DocSearch-Container {
+  z-index: 1001 !important;
+}

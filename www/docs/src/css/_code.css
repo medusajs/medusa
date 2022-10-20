@@ -1,0 +1,32 @@
+[data-theme="dark"] pre code {
+  background-color: var(--ifm-code-background);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme="dark"] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.prism-code {
+  background-color: none;
+  word-break: break-word;
+  font-size: 0.8rem;
+  outline: none !important;
+}
+
+.prism-code div,
+.prism-code div:focus,
+.prism-code div:active {
+  outline: none !important;
+}
+
+[data-theme="dark"] .theme-doc-markdown a.card:hover {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}

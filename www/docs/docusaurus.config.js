@@ -55,12 +55,11 @@ const config = {
       darkTheme: require("prism-react-renderer/themes/vsDark"),
     },
     navbar: {
-      hideOnScroll: true,
+      hideOnScroll: false,
       logo: {
         alt: "Medusa",
-        src: "img/logo.svg",
-        srcDark: "img/logo-dark.svg",
-        width: 100
+        src: "img/logo-dark.svg",
+        srcDark: "img/logo-dark.svg"
       },
       items: [
         {
@@ -74,37 +73,22 @@ const config = {
           label: "User Guide"
         },
         {
-          type: 'dropdown',
-          label: 'REST API Reference',
-          items: [
-            {
-              type: 'html',
-              value: `
-              <a href="/api/store" target="_blank" rel="noopener noreferrer" class="dropdown__link">Store
-                <svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_node_modules-@docusaurus-theme-classic-lib-theme-Icon-ExternalLink-styles-module">
-                  <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path>
-                </svg>
-              </a>`
-            },
-            {
-              type: 'html',
-              value: `
-              <a href="/api/admin" target="_blank" rel="noopener noreferrer" class="dropdown__link">Admin
-                <svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_node_modules-@docusaurus-theme-classic-lib-theme-Icon-ExternalLink-styles-module">
-                  <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path>
-                </svg>
-              </a>`
-            },
-          ],
+          href: "/api/store",
+          label: "Store API",
+          prependBaseUrlToHref: true,
+          target: '_blank'
         },
         {
-          href: "https://github.com/medusajs/medusa",
-          className: "navbar-github-link",
-          position: "right",
+          href: "/api/admin",
+          label: "Admin API",
+          prependBaseUrlToHref: true,
+          target: '_blank'
         },
         {
-          type: "search",
+          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
           position: "right",
+          label: "Report an Issue",
+          className: "right-divider"
         },
       ],
     },

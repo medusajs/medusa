@@ -1,0 +1,28 @@
+footer .footer__items svg {
+  display: none;
+}
+
+footer .footer__items li {
+  width: 150px;
+}
+
+footer .footer__title {
+  width: 150px;
+}
+
+html:not([data-theme="dark"]) footer {
+  background-color: #ffffff !important;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+html[data-theme="dark"] footer:not(.theme-doc-footer) {
+  background-color: var(--ifm-color-gray-800);
+}
+
+@media screen and (min-width: 966px) {
+  footer .footer__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
