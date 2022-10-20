@@ -133,7 +133,7 @@ describe("Product import batch job", () => {
     expect(batchJob.status).toBe("completed")
 
     const productsResponse = await api.get("/admin/products", adminReqConfig)
-    expect(productsResponse.data.count).toBe(2)
+    expect(productsResponse.data.count).toBe(3)
     expect(productsResponse.data.products).toEqual(
       expect.arrayContaining([
         // NEW PRODUCT
@@ -199,6 +199,65 @@ describe("Product import batch job", () => {
               value: "123_1",
             }),
           ],
+        }),
+        expect.objectContaining({
+          title: "Test product",
+          description:
+            "Hopper Stripes Bedding, available as duvet cover, pillow sham and sheet.\\n100% organic cotton, soft and crisp to the touch. Made in Portugal.",
+          handle: "test-product-product-1-1",
+          is_giftcard: false,
+          status: "draft",
+          thumbnail: "test-image.png",
+          variants: [
+            // NEW VARIANT
+            expect.objectContaining({
+              title: "Test variant",
+              sku: "test-sku-1-1",
+              barcode: "test-barcode-1-1",
+              ean: null,
+              upc: null,
+              inventory_quantity: 10,
+              prices: [
+                expect.objectContaining({
+                  currency_code: "eur",
+                  amount: 100,
+                  region_id: "region-product-import-0",
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 110,
+                }),
+                expect.objectContaining({
+                  currency_code: "dkk",
+                  amount: 130,
+                  region_id: "region-product-import-1",
+                }),
+              ],
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "option 1 value red",
+                }),
+                expect.objectContaining({
+                  value: "option 2 value 1",
+                }),
+              ]),
+            }),
+          ],
+          type: null,
+          images: [
+            expect.objectContaining({
+              url: "test-image.png",
+            }),
+          ],
+          options: [
+            expect.objectContaining({
+              title: "test-option-1",
+            }),
+            expect.objectContaining({
+              title: "test-option-2",
+            }),
+          ],
+          tags: [],
         }),
         // UPDATED PRODUCT
         expect.objectContaining({
