@@ -219,8 +219,9 @@ export const productColumnsDefinition: ProductColumnDefinition = {
     name: "Product Tags",
     importDescriptor: {
       mapTo: "product.tags",
-      transform: (value: string) =>
-        `${value}`.split(",").map((v) => ({ value: v })),
+      transform: (value: string) => {
+        return value && `${value}`.split(",").map((v) => ({ value: v }))
+      },
     },
     exportDescriptor: {
       accessor: (product: Product): string =>
