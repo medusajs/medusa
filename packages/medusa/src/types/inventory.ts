@@ -2,16 +2,16 @@ import { NumericalComparisonOperator, StringComparisonOperator } from "./common"
 
 export type InventoryItemDTO = {
   id: string
-  sku?: string
-  origin_country?: string
-  hs_code?: number
+  sku?: string | null
+  origin_country?: string | null
+  hs_code?: number | null
   requires_shipping: boolean
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
+  mid_code?: string | null
+  material?: string | null
+  weight?: number | null
+  length?: number | null
+  height?: number | null
+  width?: number | null
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date

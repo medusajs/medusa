@@ -20,6 +20,7 @@ import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
 import modelsLoader from "./models"
+import moduleLoader from "./module"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
@@ -88,6 +89,8 @@ export default async ({
     logger: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
+
+  await moduleLoader({ container, configModule })
 
   await redisLoader({ container, configModule, logger: Logger })
 

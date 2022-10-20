@@ -8,34 +8,34 @@ import {
 @Entity()
 export class InventoryItem extends SoftDeletableEntity {
   @Index({ unique: true })
-  @DbAwareColumn({ type: "text" })
-  sku: string
+  @DbAwareColumn({ type: "text", nullable: true })
+  sku: string | null
 
-  @DbAwareColumn({ type: "text" })
-  origin_country: string
-
-  @Column()
-  hs_code: number
-
-  @Column({ nullable: true })
-  mid_code: string
-
-  @Column({ nullable: true })
-  material: string
+  @DbAwareColumn({ type: "text", nullable: true })
+  origin_country: string | null
 
   @Column({ type: "int", nullable: true })
-  weight: number
+  hs_code: number | null
+
+  @DbAwareColumn({ type: "text", nullable: true })
+  mid_code: string | null
+
+  @DbAwareColumn({ type: "text", nullable: true })
+  material: string | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  height: number | null
 
-  @Column()
+  @Column({ type: "int", nullable: true })
+  width: number | null
+
+  @Column({ default: true })
   requires_shipping: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })

@@ -77,6 +77,49 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
+  initAndMigrate: async function ({ cwd }) {
+    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    const { projectConfig, featureFlags } = require(configPath)
+
+    await dbFactory.createFromTemplate(DB_NAME)
+
+    // use migration command
+    const migrateUp = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `commands`,
+      `migrate`
+    )).migrateUp
+
+    await migrateUp(cwd)
+
+    const modelsLoader = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `loaders`,
+      `models`
+    )).default
+
+    const entities = modelsLoader({}, { register: false })
+    const enabledEntities = entities.filter(
+      (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
+    )
+
+    const dbConnection = await createConnection({
+      type: "postgres",
+      url: DB_URL,
+      entities: enabledEntities,
+    })
+
+    instance.setDb(dbConnection)
+    return dbConnection
+  },
   initDb: async function ({ cwd }) {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
     const { projectConfig, featureFlags } = require(configPath)
