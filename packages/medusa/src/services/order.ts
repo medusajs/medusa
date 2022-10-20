@@ -601,11 +601,13 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         cart.items.map(async (item) => {
-          return this.productVariantInventoryService_.reserveQuantity(
-            item.variant_id,
-            item.quantity,
-            { line_item_id: item.id, sales_channel_id: cart.sales_channel_id }
-          )
+          if (item.variant_id) {
+            return this.productVariantInventoryService_.reserveQuantity(
+              item.variant_id,
+              item.quantity,
+              { line_item_id: item.id, sales_channel_id: cart.sales_channel_id }
+            )
+          }
         })
       )
 
@@ -990,11 +992,17 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
       await Promise.all(
         order.items.map(async (item) => {
-          return this.productVariantInventoryService_.releaseReservationsByLineItem(
-            item.id
-          )
+          if (item.variant_id) {
+            return await inventoryServiceTx.releaseReservationsByLineItem(
+              item.id,
+              item.variant_id,
+              item.quantity
+            )
+          }
         })
       )
 

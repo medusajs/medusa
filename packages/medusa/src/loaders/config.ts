@@ -111,6 +111,7 @@ export default (rootDirectory: string): ConfigModule => {
   for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
     let resolutionPath = settings.defaultPackage
 <<<<<<< HEAD
+<<<<<<< HEAD
     let resolve = true
     if (settings.canOverride && moduleKey in projectModules) {
       if (projectModules[moduleKey]) {
@@ -123,12 +124,23 @@ export default (rootDirectory: string): ConfigModule => {
     moduleResolutions[moduleKey] = {
       shouldResolve: resolve,
 =======
+=======
+    let resolve = true
+>>>>>>> 75896c404 (fix: integration tests)
     if (settings.canOverride && moduleKey in projectModules) {
-      resolutionPath = resolveCwd(projectModules[moduleKey])
+      if (projectModules[moduleKey]) {
+        resolutionPath = resolveCwd(projectModules[moduleKey])
+      } else {
+        resolve = false
+      }
     }
 
     moduleResolutions[moduleKey] = {
+<<<<<<< HEAD
 >>>>>>> 5c51afb50 (wip)
+=======
+      shouldResolve: resolve,
+>>>>>>> 75896c404 (fix: integration tests)
       resolutionPath,
       settings,
     }

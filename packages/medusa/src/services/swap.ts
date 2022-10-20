@@ -351,6 +351,12 @@ class SwapService extends TransactionBaseService {
       if (additionalItems) {
         newItems = await Promise.all(
           additionalItems.map(async ({ variant_id, quantity }) => {
+            if (variant_id === null) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                "You must include a variant when creating additional items on a swap"
+              )
+            }
             return this.lineItemService_
               .withTransaction(manager)
               .generate(variant_id, order.region_id, quantity)
@@ -769,14 +775,16 @@ class SwapService extends TransactionBaseService {
 
         await Promise.all(
           items.map(async (item) => {
-            await this.productVariantInventoryService_.reserveQuantity(
-              item.variant_id,
-              item.quantity,
-              {
-                line_item_id: item.id,
-                sales_channel_id: cart.sales_channel_id,
-              }
-            )
+            if (item.variant_id) {
+              await this.productVariantInventoryService_.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  line_item_id: item.id,
+                  sales_channel_id: cart.sales_channel_id,
+                }
+              )
+            }
           })
         )
       }

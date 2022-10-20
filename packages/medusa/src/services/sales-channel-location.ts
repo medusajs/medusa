@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { IStockLocationService } from "../interfaces/services"
+import { IStockLocationService, TransactionBaseService } from "../interfaces"
 import { SalesChannelService, EventBusService } from "./"
 
 import { SalesChannelLocation } from "../models"
@@ -11,8 +11,9 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-class SalesChannelLocationService {
-  protected manager: EntityManager
+class SalesChannelLocationService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
   protected readonly salesChannelService: SalesChannelService
   protected readonly eventBusService: EventBusService
@@ -24,7 +25,10 @@ class SalesChannelLocationService {
     eventBusService,
     manager,
   }: InjectedDependencies) {
-    this.manager = manager
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
+    this.manager_ = manager
     this.salesChannelService = salesChannelService
     this.eventBusService = eventBusService
     this.stockLocationService = stockLocationService
@@ -34,7 +38,8 @@ class SalesChannelLocationService {
     salesChannelId: string,
     locationId: string
   ): Promise<void> {
-    await this.manager.delete(SalesChannelLocation, {
+    const manager = this.transactionManager_ || this.manager_
+    await manager.delete(SalesChannelLocation, {
       sales_channel_id: salesChannelId,
       location_id: locationId,
     })
@@ -44,21 +49,27 @@ class SalesChannelLocationService {
     salesChannelId: string,
     locationId: string
   ): Promise<void> {
-    const salesChannel = await this.salesChannelService.retrieve(salesChannelId)
+    const manager = this.transactionManager_ || this.manager_
+    const salesChannel = await this.salesChannelService
+      .withTransaction(manager)
+      .retrieve(salesChannelId)
     const stockLocation = await this.stockLocationService.retrieve(locationId)
 
-    const salesChannelLocation = this.manager.create(SalesChannelLocation, {
+    const salesChannelLocation = manager.create(SalesChannelLocation, {
       sales_channel_id: salesChannel.id,
       location_id: stockLocation.id,
     })
 
-    await this.manager.save(salesChannelLocation)
+    await manager.save(salesChannelLocation)
   }
 
   async listLocations(salesChannelId: string): Promise<string[]> {
-    const salesChannel = await this.salesChannelService.retrieve(salesChannelId)
+    const manager = this.transactionManager_ || this.manager_
+    const salesChannel = await this.salesChannelService
+      .withTransaction(manager)
+      .retrieve(salesChannelId)
 
-    const locations = await this.manager.find(SalesChannelLocation, {
+    const locations = await manager.find(SalesChannelLocation, {
       where: { sales_channel_id: salesChannel.id },
     })
 

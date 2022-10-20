@@ -42,7 +42,11 @@ export type ModuleResolution = {
   shouldResolve: boolean
 =======
 type ModuleResolution = {
+<<<<<<< HEAD
 >>>>>>> 5c51afb50 (wip)
+=======
+  shouldResolve: boolean
+>>>>>>> 75896c404 (fix: integration tests)
   resolutionPath: string
   settings: {
     registration: string
