@@ -70,7 +70,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieve(id)
+                    .retrieveWithTotals(id)
 
                   if (cart.completed_at) {
                     return {

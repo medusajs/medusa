@@ -11,6 +11,7 @@ import {
   Discount,
   DiscountRuleType,
   LineItem,
+  LineItemTaxLine,
   PaymentSession,
   SalesChannel,
   ShippingMethod,
@@ -1421,27 +1422,18 @@ class CartService extends TransactionBaseService {
           this.cartRepository_
         )
 
-        const cart = await this.retrieve(cartId, {
-          select: ["total"],
-          relations: [
-            "items",
-            "items.adjustments",
-            "region",
-            "payment_sessions",
-          ],
+        const cart = await this.retrieveWithTotals(cartId, {
+          relations: ["payment_sessions"],
         })
 
-        if (typeof cart.total === "undefined") {
-          throw new MedusaError(
-            MedusaError.Types.UNEXPECTED_STATE,
-            "cart.total should be defined"
-          )
-        }
-
         // If cart total is 0, we don't perform anything payment related
-        if (cart.total <= 0) {
+        if (cart.total! <= 0) {
           cart.payment_authorized_at = new Date()
-          return await cartRepository.save(cart)
+          await cartRepository.save({
+            id: cart.id,
+            payment_authorized_at: cart.payment_authorized_at,
+          })
+          return cart
         }
 
         if (!cart.payment_session) {
@@ -1455,22 +1447,28 @@ class CartService extends TransactionBaseService {
           .withTransaction(transactionManager)
           .authorizePayment(cart.payment_session, context)) as PaymentSession
 
-        const freshCart = (await this.retrieve(cart.id, {
-          select: ["total"],
-          relations: ["payment_sessions", "items", "items.adjustments"],
+        const freshCart = (await this.retrieveNew(cart.id, {
+          relations: ["payment_sessions"],
         })) as Cart & { payment_session: PaymentSession }
 
         if (session.status === "authorized") {
           freshCart.payment = await this.paymentProviderService_
             .withTransaction(transactionManager)
-            .createPayment(freshCart)
+            .createPayment({
+              id: cart.id,
+              region: cart.region,
+              total: cart.total!,
+              payment_session: freshCart.payment_session,
+            })
           freshCart.payment_authorized_at = new Date()
         }
 
         const updatedCart = await cartRepository.save(freshCart)
+
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, updatedCart)
+
         return updatedCart
       }
     )
@@ -2150,19 +2148,8 @@ class CartService extends TransactionBaseService {
   async createTaxLines(id: string): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(id, {
-          relations: [
-            "customer",
-            "discounts",
-            "discounts.rule",
-            "gift_cards",
-            "items",
-            "items.adjustments",
-            "region",
-            "region.tax_rates",
-            "shipping_address",
-            "shipping_methods",
-          ],
+        const cart = await this.retrieveWithTotals(id, {
+          relations: ["customer"],
         })
 
         const calculationContext = await this.totalsService_
@@ -2181,7 +2168,7 @@ class CartService extends TransactionBaseService {
   async deleteTaxLines(id: string): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(id, {
+        const cart = await this.retrieveNew(id, {
           relations: [
             "items",
             "items.tax_lines",
@@ -2204,11 +2191,27 @@ class CartService extends TransactionBaseService {
       exclude_shipping: true,
     })
 
+    const taxLines = await this.taxProviderService_
+      .withTransaction(this.manager_)
+      .getTaxLines(cart.items, calculationContext)
+
+    const taxLinesMap = new Map<string, LineItemTaxLine[]>()
+
+    taxLines.forEach((taxLine) => {
+      if ("item_id" in taxLine) {
+        const itemTaxLines = taxLinesMap.get(taxLine.item_id) ?? []
+        itemTaxLines.push(taxLine)
+        taxLinesMap.set(taxLine.item_id, itemTaxLines)
+      }
+    })
+
     cart.items = await Promise.all(
       (cart.items || []).map(async (item) => {
+        const tax_lines = taxLinesMap.get(item.id)
         const itemTotals = await totalsService.getLineItemTotals(item, cart, {
           include_tax: totalsConfig?.force_taxes || cart.region.automatic_taxes,
           calculation_context: calculationContext,
+          tax_lines,
         })
 
         return Object.assign(item, itemTotals)

@@ -254,6 +254,7 @@ class TaxProviderService extends TransactionBaseService {
     lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
+    console.log("getTaxLines")
     const calculationLines = await Promise.all(
       lineItems.map(async (l) => {
         if (l.is_return) {

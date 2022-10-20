@@ -62,6 +62,7 @@ type LineItemTotalsOptions = {
   use_tax_lines?: boolean
   exclude_gift_cards?: boolean
   calculation_context?: TaxCalculationContext
+  tax_lines?: (ShippingMethodTaxLine | LineItemTaxLine)[]
 }
 
 type GetLineItemTotalOptions = {
@@ -816,6 +817,9 @@ class TotalsService extends TransactionBaseService {
 
         lineItemTotals.total += lineItemTotals.tax_total
         lineItemTotals.original_total += lineItemTotals.original_tax_total
+      } else if (options.tax_lines) {
+        // If the consumer giving us the tax lines then use them
+        lineItemTotals.tax_lines = options.tax_lines as LineItemTaxLine[]
       } else {
         let taxLines: LineItemTaxLine[]
 
