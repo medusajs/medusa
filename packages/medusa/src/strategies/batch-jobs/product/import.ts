@@ -17,19 +17,22 @@ import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
 } from "../../../types/product-variant"
-import {
-  ImportJobContext,
-  InjectedProps,
-  OperationType,
-  ProductImportBatchJob,
-  ProductImportCsvSchema,
-  TBuiltProductImportLine,
-  TParsedProductImportRowData,
-} from "./types"
-import { BatchJob, Product, SalesChannel } from "../../../models"
+import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import {
+  OperationType,
+  ProductImportBatchJob,
+  ProductImportCsvSchema,
+  ProductImportInjectedProps,
+  ProductImportJobContext,
+  TParsedProductImportRowData,
+} from "./types"
+import {
+  productImportColumnsDefinition,
+  productImportSalesChannelsColumnsDefinition,
+} from "./types/columns-definition"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -76,7 +79,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     fileService,
     manager,
     featureFlagRouter,
-  }: InjectedProps) {
+  }: ProductImportInjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -85,10 +88,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     )
 
     this.csvParser_ = new CsvParser({
-      ...CSVSchema,
       columns: [
-        ...CSVSchema.columns,
-        ...(isSalesChannelsFeatureOn ? SalesChannelsSchema.columns : []),
+        ...productImportColumnsDefinition.columns,
+        ...(isSalesChannelsFeatureOn
+          ? productImportSalesChannelsColumnsDefinition.columns
+          : []),
       ],
     })
 
@@ -235,7 +239,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .retrieve(batchJobId)
 
-    const csvFileKey = (batchJob.context as ImportJobContext).fileKey
+    const csvFileKey = (batchJob.context as ProductImportJobContext).fileKey
     const csvStream = await this.fileService_.getDownloadStream({
       fileKey: csvFileKey,
     })
@@ -393,7 +397,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
-              "name" | "id"
+              "name" | "id" | "description"
             >[]
           )
         }
@@ -437,7 +441,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,
-              "name" | "id"
+              "name" | "id" | "description"
             >[]
           )
         }
@@ -685,7 +689,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         result: { advancement_count: batchJob.result.count },
       })
 
-    const { fileKey } = batchJob.context as ImportJobContext
+    const { fileKey } = batchJob.context as ProductImportJobContext
 
     await this.fileService_
       .withTransaction(transactionManager)
@@ -728,258 +732,3 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 }
 
 export default ProductImportStrategy
-
-/**
- * Schema definition for the CSV parser.
- */
-const CSVSchema: ProductImportCsvSchema = {
-  columns: [
-    // PRODUCT
-    {
-      name: "Product id",
-      mapTo: "product.id",
-    },
-    {
-      name: "Product Handle",
-      mapTo: "product.handle",
-      required: true,
-    },
-    { name: "Product Title", mapTo: "product.title" },
-    { name: "Product Subtitle", mapTo: "product.subtitle" },
-    { name: "Product Description", mapTo: "product.description" },
-    { name: "Product Status", mapTo: "product.status" },
-    { name: "Product Thumbnail", mapTo: "product.thumbnail" },
-    { name: "Product Weight", mapTo: "product.weight" },
-    { name: "Product Length", mapTo: "product.length" },
-    { name: "Product Width", mapTo: "product.width" },
-    { name: "Product Height", mapTo: "product.height" },
-    { name: "Product HS Code", mapTo: "product.hs_code" },
-    { name: "Product Origin Country", mapTo: "product.origin_country" },
-    { name: "Product MID Code", mapTo: "product.mid_code" },
-    { name: "Product Material", mapTo: "product.material" },
-    // PRODUCT-COLLECTION
-    { name: "Product Collection Title", mapTo: "product.collection.title" },
-    { name: "Product Collection Handle", mapTo: "product.collection.handle" },
-    // PRODUCT-TYPE
-    {
-      name: "Product Type",
-      match: /Product Type/,
-      reducer: (
-        builtLine: TParsedProductImportRowData,
-        key,
-        value
-      ): TBuiltProductImportLine => {
-        if (typeof value === "undefined" || value === null) {
-          builtLine["product.type"] = undefined
-        } else {
-          builtLine["product.type.value"] = value
-        }
-
-        return builtLine
-      },
-    },
-    // PRODUCT-TAGS
-    {
-      name: "Product Tags",
-      mapTo: "product.tags",
-      transform: (value: string) =>
-        `${value}`.split(",").map((v) => ({ value: v })),
-    },
-    //
-    { name: "Product Discountable", mapTo: "product.discountable" },
-    { name: "Product External ID", mapTo: "product.external_id" },
-
-    // VARIANTS
-    {
-      name: "Variant id",
-      mapTo: "variant.id",
-    },
-    { name: "Variant Title", mapTo: "variant.title" },
-    { name: "Variant SKU", mapTo: "variant.sku" },
-    { name: "Variant Barcode", mapTo: "variant.barcode" },
-    { name: "Variant Inventory Quantity", mapTo: "variant.inventory_quantity" },
-    { name: "Variant Allow backorder", mapTo: "variant.allow_backorder" },
-    { name: "Variant Manage inventory", mapTo: "variant.manage_inventory" },
-    { name: "Variant Weight", mapTo: "variant.weight" },
-    { name: "Variant Length", mapTo: "variant.length" },
-    { name: "Variant Width", mapTo: "variant.width" },
-    { name: "Variant Height", mapTo: "variant.height" },
-    { name: "Variant HS Code", mapTo: "variant.hs_code" },
-    { name: "Variant Origin Country", mapTo: "variant.origin_country" },
-    { name: "Variant MID Code", mapTo: "variant.mid_code" },
-    { name: "Variant Material", mapTo: "variant.material" },
-
-    // ==== DYNAMIC FIELDS ====
-
-    // PRODUCT_OPTIONS
-    {
-      name: "Option Name",
-      match: /Option \d+ Name/,
-      reducer: (builtLine, key, value): TBuiltProductImportLine => {
-        builtLine["product.options"] = builtLine["product.options"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const options = builtLine["product.options"] as Record<
-          string,
-          string | number
-        >[]
-
-        options.push({ title: value })
-
-        return builtLine
-      },
-    },
-    {
-      name: "Option Value",
-      match: /Option \d+ Value/,
-      reducer: (
-        builtLine: TParsedProductImportRowData,
-        key: string,
-        value: string,
-        context: any
-      ): TBuiltProductImportLine => {
-        builtLine["variant.options"] = builtLine["variant.options"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const options = builtLine["variant.options"] as Record<
-          string,
-          string | number
-        >[]
-
-        options.push({
-          value,
-          _title: context.line[key.slice(0, -6) + " Name"],
-        })
-
-        return builtLine
-      },
-    },
-
-    // PRICES
-    {
-      name: "Price Region",
-      match: /Price (.*) \[([A-Z]{3})\]/,
-      reducer: (
-        builtLine: TParsedProductImportRowData,
-        key,
-        value
-      ): TBuiltProductImportLine => {
-        builtLine["variant.prices"] = builtLine["variant.prices"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const [, regionName] =
-          key.trim().match(/Price (.*) \[([A-Z]{3})\]/) || []
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
-          amount: parseFloat(value),
-          regionName,
-        })
-
-        return builtLine
-      },
-    },
-    {
-      name: "Price Currency",
-      match: /Price [A-Z]{3}/,
-      reducer: (
-        builtLine: TParsedProductImportRowData,
-        key,
-        value
-      ): TBuiltProductImportLine => {
-        builtLine["variant.prices"] = builtLine["variant.prices"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const currency = key.trim().split(" ")[1]
-
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
-          amount: parseFloat(value),
-          currency_code: currency,
-        })
-
-        return builtLine
-      },
-    },
-    // IMAGES
-    {
-      name: "Image Url",
-      match: /Image \d+ Url/,
-      reducer: (builtLine: any, key, value): TBuiltProductImportLine => {
-        builtLine["product.images"] = builtLine["product.images"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        builtLine["product.images"].push(value)
-
-        return builtLine
-      },
-    },
-  ],
-}
-
-const SalesChannelsSchema: ProductImportCsvSchema = {
-  columns: [
-    {
-      name: "Sales Channel Name",
-      match: /Sales Channel \d+ Name/,
-      reducer: (builtLine, key, value): TBuiltProductImportLine => {
-        builtLine["product.sales_channels"] =
-          builtLine["product.sales_channels"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const channels = builtLine["product.sales_channels"] as Record<
-          string,
-          string | number
-        >[]
-
-        channels.push({
-          name: value,
-        })
-
-        return builtLine
-      },
-    },
-    {
-      name: "Sales Channel Id",
-      match: /Sales Channel \d+ Id/,
-      reducer: (builtLine, key, value): TBuiltProductImportLine => {
-        builtLine["product.sales_channels"] =
-          builtLine["product.sales_channels"] || []
-
-        if (typeof value === "undefined" || value === null) {
-          return builtLine
-        }
-
-        const channels = builtLine["product.sales_channels"] as Record<
-          string,
-          string | number
-        >[]
-
-        channels.push({
-          id: value,
-        })
-
-        return builtLine
-      },
-    },
-  ],
-}
