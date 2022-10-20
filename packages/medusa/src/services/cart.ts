@@ -661,6 +661,10 @@ class CartService extends TransactionBaseService {
       return true
     }
 
+    if (!lineItem.variant_id) {
+      return true
+    }
+
     const lineItemVariant = await this.productVariantService_
       .withTransaction(this.manager_)
       .retrieve(lineItem.variant_id)
@@ -818,9 +822,16 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
-            const cart = await this.retrieve(cartId, {
-              select: ["id", "sales_channel_id"],
-            })
+            const select: (keyof Cart)[] = ["id"]
+            if (
+              this.featureFlagRouter_.isFeatureEnabled(
+                SalesChannelFeatureFlag.key
+              )
+            ) {
+              select.push("sales_channel_id")
+            }
+
+            const cart = await this.retrieve(cartId, { select: select })
 
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
@@ -1918,28 +1929,32 @@ class CartService extends TransactionBaseService {
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {
-            const availablePrice = await this.priceSelectionStrategy_
-              .withTransaction(transactionManager)
-              .calculateVariantPrice(item.variant_id, {
-                region_id: region.id,
-                currency_code: region.currency_code,
-                quantity: item.quantity,
-                customer_id: customer_id || cart.customer_id,
-                include_discount_prices: true,
-              })
-              .catch(() => undefined)
+            if (item.variant_id) {
+              const availablePrice = await this.priceSelectionStrategy_
+                .withTransaction(transactionManager)
+                .calculateVariantPrice(item.variant_id, {
+                  region_id: region.id,
+                  currency_code: region.currency_code,
+                  quantity: item.quantity,
+                  customer_id: customer_id || cart.customer_id,
+                  include_discount_prices: true,
+                })
+                .catch(() => undefined)
 
-            if (
-              availablePrice !== undefined &&
-              availablePrice.calculatedPrice !== null
-            ) {
-              return lineItemServiceTx.update(item.id, {
-                has_shipping: false,
-                unit_price: availablePrice.calculatedPrice,
-              })
+              if (
+                availablePrice !== undefined &&
+                availablePrice.calculatedPrice !== null
+              ) {
+                return lineItemServiceTx.update(item.id, {
+                  has_shipping: false,
+                  unit_price: availablePrice.calculatedPrice,
+                })
+              } else {
+                await lineItemServiceTx.delete(item.id)
+                return
+              }
             } else {
-              await lineItemServiceTx.delete(item.id)
-              return
+              return item
             }
           })
         )

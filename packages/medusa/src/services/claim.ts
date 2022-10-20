@@ -347,14 +347,16 @@ export default class ClaimService extends TransactionBaseService {
 
           await Promise.all(
             newItems.map(async (newItem) => {
-              await this.productVariantInventoryService_.reserveQuantity(
-                newItem.variant_id,
-                newItem.quantity,
-                {
-                  line_item_id: newItem.id,
-                  sales_channel_id: order.sales_channel_id,
-                }
-              )
+              if (newItem.variant_id) {
+                await this.productVariantInventoryService_.reserveQuantity(
+                  newItem.variant_id,
+                  newItem.quantity,
+                  {
+                    line_item_id: newItem.id,
+                    sales_channel_id: order.sales_channel_id,
+                  }
+                )
+              }
             })
           )
         }

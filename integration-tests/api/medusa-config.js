@@ -12,4 +12,8 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
   },
+  modules: {
+    inventory: false,
+    stockLocations: false,
+  },
 }

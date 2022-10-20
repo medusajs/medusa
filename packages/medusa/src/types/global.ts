@@ -38,6 +38,7 @@ export type Logger = _Logger & {
 }
 
 type ModuleResolution = {
+  shouldResolve: boolean
   resolutionPath: string
   settings: {
     registration: string

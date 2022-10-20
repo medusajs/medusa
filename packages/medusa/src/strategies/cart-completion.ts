@@ -5,6 +5,8 @@ import { IdempotencyKey, Order } from "../models"
 import CartService from "../services/cart"
 import IdempotencyKeyService from "../services/idempotency-key"
 import OrderService from "../services/order"
+import ProductVariantInventoryService from "../services/product-variant-inventory"
+import PaymentProviderService from "../services/payment-provider"
 import SwapService from "../services/swap"
 import { RequestContext } from "../types/request"
 
@@ -19,6 +21,8 @@ type InjectedDependencies = {
   orderService: OrderService
   swapService: SwapService
   manager: EntityManager
+  productVariantInventoryService: ProductVariantInventoryService
+  paymentProviderService: PaymentProviderService
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
@@ -26,6 +30,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
   protected readonly idempotencyKeyService_: IdempotencyKeyService
   protected readonly cartService_: CartService
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly paymentProviderService_: PaymentProviderService
   protected readonly orderService_: OrderService
   protected readonly swapService_: SwapService
 
@@ -35,14 +41,18 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     orderService,
     swapService,
     manager,
+    productVariantInventoryService,
+    paymentProviderService,
   }: InjectedDependencies) {
     super()
 
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.idempotencyKeyService_ = idempotencyKeyService
     this.cartService_ = cartService
     this.orderService_ = orderService
     this.swapService_ = swapService
     this.manager_ = manager
+    this.paymentProviderService_ = paymentProviderService
   }
 
   async complete(
@@ -54,8 +64,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     const idempotencyKeyService = this.idempotencyKeyService_
     const cartService = this.cartService_
+    const productVariantInventoryService = this.productVariantInventoryService_
     const orderService = this.orderService_
     const swapService = this.swapService_
+    const paymentProviderService = this.paymentProviderService_
 
     let inProgress = true
     let err: unknown = false
@@ -68,9 +80,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const cart = await cartService
-                    .withTransaction(manager)
-                    .retrieve(id)
+                  const cartServiceTx = cartService.withTransaction(manager)
+                  const cart = await cartServiceTx.retrieve(id)
 
                   if (cart.completed_at) {
                     return {
@@ -83,7 +94,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                     }
                   }
 
-                  await cartService.withTransaction(manager).createTaxLines(id)
+                  await cartServiceTx.createTaxLines(id)
 
                   return {
                     recovery_point: "tax_lines_created",
@@ -147,48 +158,88 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
               idempotencyKey = await idempotencyKeyService
                 .withTransaction(transactionManager)
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const cart = await cartService
-                    .withTransaction(manager)
-                    .retrieveWithTotals(id, {
-                      relations: ["payment", "payment_sessions"],
-                    })
+                  const cartServiceTx = cartService.withTransaction(manager)
+                  const cart = await cartServiceTx.retrieveWithTotals(id, {
+                    relations: ["items", "payment", "payment_sessions"],
+                  })
+
+                  let allowBackorder = false
+                  let swapId: string
+                  if (cart.type === "swap") {
+                    const swap = await swapService.retrieveByCartId(id)
+                    allowBackorder = swap.allow_backorder
+                    swapId = swap.id
+                  }
+
+                  if (!allowBackorder) {
+                    const inventoryServiceTx =
+                      productVariantInventoryService.withTransaction(manager)
+
+                    try {
+                      await Promise.all(
+                        cart.items.map(async (item) => {
+                          if (item.variant_id) {
+                            const inventoryConfirmed =
+                              await inventoryServiceTx.confirmInventory(
+                                item.variant_id,
+                                item.quantity,
+                                { sales_channel_id: cart.sales_channel_id }
+                              )
+
+                            if (!inventoryConfirmed) {
+                              throw new MedusaError(
+                                MedusaError.Types.NOT_ALLOWED,
+                                `Variant with id: ${item.variant_id} does not have the required inventory`,
+                                MedusaError.Codes.INSUFFICIENT_INVENTORY
+                              )
+                            }
+                          }
+                        })
+                      )
+                    } catch (error) {
+                      if (
+                        error &&
+                        error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
+                      ) {
+                        if (cart.payment) {
+                          await paymentProviderService
+                            .withTransaction(manager)
+                            .cancelPayment(cart.payment)
+                        }
+                        await cartServiceTx.update(cart.id, {
+                          payment_authorized_at: null,
+                        })
+
+                        return {
+                          response_code: 409,
+                          response_body: {
+                            message: error.message,
+                            type: error.type,
+                            code: error.code,
+                          },
+                        }
+                      } else {
+                        throw error
+                      }
+                    }
+                  }
 
                   // If cart is part of swap, we register swap as complete
                   switch (cart.type) {
                     case "swap": {
-                      try {
-                        const swapId = cart.metadata?.swap_id
-                        let swap = await swapService
-                          .withTransaction(manager)
-                          .registerCartCompletion(swapId as string)
+                      let swap = await swapService
+                        .withTransaction(manager)
+                        .registerCartCompletion(swapId!)
 
-                        swap = await swapService
-                          .withTransaction(manager)
-                          .retrieve(swap.id, {
-                            relations: ["shipping_address"],
-                          })
+                      swap = await swapService
+                        .withTransaction(manager)
+                        .retrieve(swap.id, {
+                          relations: ["shipping_address"],
+                        })
 
-                        return {
-                          response_code: 200,
-                          response_body: { data: swap, type: "swap" },
-                        }
-                      } catch (error) {
-                        if (
-                          error &&
-                          error.code ===
-                            MedusaError.Codes.INSUFFICIENT_INVENTORY
-                        ) {
-                          return {
-                            response_code: 409,
-                            response_body: {
-                              message: error.message,
-                              type: error.type,
-                              code: error.code,
-                            },
-                          }
-                        } else {
-                          throw error
-                        }
+                      return {
+                        response_code: 200,
+                        response_body: { data: swap, type: "swap" },
                       }
                     }
                     default: {
@@ -238,19 +289,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                           return {
                             response_code: 200,
                             response_body: { data: order, type: "order" },
-                          }
-                        } else if (
-                          error &&
-                          error.code ===
-                            MedusaError.Codes.INSUFFICIENT_INVENTORY
-                        ) {
-                          return {
-                            response_code: 409,
-                            response_body: {
-                              message: error.message,
-                              type: error.type,
-                              code: error.code,
-                            },
                           }
                         } else {
                           throw error

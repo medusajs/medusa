@@ -664,10 +664,12 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
-        if (orderItem) {
-          await this.productVariantInventoryService_.adjustInventory(
+        if (orderItem && orderItem.variant_id) {
+          await inventoryServiceTx.adjustInventory(
             orderItem.variant_id,
             returnObj.location_id,
             line.received_quantity

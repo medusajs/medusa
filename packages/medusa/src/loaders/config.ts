@@ -78,11 +78,17 @@ export default (rootDirectory: string): ConfigModule => {
   const projectModules = configModule.modules ?? {}
   for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
     let resolutionPath = settings.defaultPackage
+    let resolve = true
     if (settings.canOverride && moduleKey in projectModules) {
-      resolutionPath = resolveCwd(projectModules[moduleKey])
+      if (projectModules[moduleKey]) {
+        resolutionPath = resolveCwd(projectModules[moduleKey])
+      } else {
+        resolve = false
+      }
     }
 
     moduleResolutions[moduleKey] = {
+      shouldResolve: resolve,
       resolutionPath,
       settings,
     }
