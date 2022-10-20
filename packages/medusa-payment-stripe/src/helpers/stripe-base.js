@@ -170,46 +170,17 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
-    try {
-      const stripeId = cart.customer?.metadata?.stripe_id || undefined
-
-      if (stripeId !== paymentSessionData.customer) {
-        return this.createPayment(cart)
-      } else {
-        if (
-          cart.total &&
-          paymentSessionData.amount === Math.round(cart.total)
-        ) {
-          return sessionData
-        }
-
-        return this.stripe_.paymentIntents.update(paymentSessionData.id, {
-          amount: Math.round(cart.total),
-        })
-      }
-    } catch (error) {
-      throw error
-    }
+    return await this.stripeProviderService_.updatePayment(
+      paymentSessionData,
+      cart
+    )
   }
 
   async updatePaymentNew(paymentSessionData, paymentInput) {
-    try {
-      const stripeId = paymentInput.customer?.metadata?.stripe_id
-
-      if (stripeId !== paymentInput.customer_id) {
-        return this.createPaymentNew(paymentInput)
-      } else {
-        if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
-          return sessionData
-        }
-
-        return this.stripe_.paymentIntents.update(paymentSessionData.id, {
-          amount: Math.round(paymentInput.amount),
-        })
-      }
-    } catch (error) {
-      throw error
-    }
+    return await this.stripeProviderService_.updatePaymentNew(
+      paymentSessionData,
+      paymentInput
+    )
   }
 
   async deletePayment(paymentSession) {

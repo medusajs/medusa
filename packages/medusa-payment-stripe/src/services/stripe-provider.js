@@ -268,7 +268,6 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async authorizePayment(paymentSession, context = {}) {
     const stat = await this.getStatus(paymentSession.data)
-
     try {
       return { data: paymentSession.data, status: stat }
     } catch (error) {
@@ -305,6 +304,26 @@ class StripeProviderService extends AbstractPaymentService {
 
         return this.stripe_.paymentIntents.update(sessionData.id, {
           amount: Math.round(cart.total),
+        })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updatePaymentNew(paymentSessionData, paymentInput) {
+    try {
+      const stripeId = paymentInput.customer?.metadata?.stripe_id
+
+      if (stripeId !== paymentInput.customer_id) {
+        return this.createPaymentNew(paymentInput)
+      } else {
+        if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
+          return sessionData
+        }
+
+        return this.stripe_.paymentIntents.update(paymentSessionData.id, {
+          amount: Math.round(paymentInput.amount),
         })
       }
     } catch (error) {

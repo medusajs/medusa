@@ -27,6 +27,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
             description text NULL,
             amount integer NOT NULL,
             authorized_amount integer NULL,
+            captured_amount integer NULL,
             refunded_amount integer NULL,
             region_id character varying NOT NULL,
             currency_code character varying NOT NULL,
