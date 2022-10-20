@@ -334,11 +334,7 @@ class CartService extends TransactionBaseService {
       query.relations = relations
     }
 
-    if (select && select.length > 0) {
-      query.select = select
-    } else {
-      query.select = undefined
-    }
+    query.select = select?.length ? select : undefined
 
     const queryRelations = query.relations
     query.relations = undefined

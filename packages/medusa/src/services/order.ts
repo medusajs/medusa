@@ -166,25 +166,8 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Order[]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-    const query = buildQuery(selector, config)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    if (select && select.length) {
-      query.select = select
-    }
-
-    if (relations && relations.length) {
-      query.relations = relations
-    }
-
-    const raw = await orderRepo.find(query)
-
-    return await Promise.all(
-      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
-    )
+    const [orders] = await this.listAndCount(selector, config)
+    return orders
   }
 
   /**
@@ -241,11 +224,9 @@ class OrderService extends TransactionBaseService {
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    if (select && select.length) {
-      query.select = select
-    }
-
+    query.select = select
     const rels = relations
+
     delete query.relations
 
     const raw = await orderRepo.findWithRelations(rels, query)
@@ -314,14 +295,14 @@ class OrderService extends TransactionBaseService {
       select = select.filter((v) => !totalFields.includes(v))
     }
 
-    const toSelect = [...select]
+    const toSelect = select
     if (toSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
       toSelect.push("tax_rate")
     }
 
     return {
       relations,
-      select: toSelect,
+      select: toSelect.length ? toSelect : undefined,
       totalsToSelect,
     }
   }
@@ -349,9 +330,7 @@ class OrderService extends TransactionBaseService {
       query.relations = relations
     }
 
-    if (select && select.length > 0) {
-      query.select = select
-    }
+    query.select = select?.length ? select : undefined
 
     const rels = query.relations
     delete query.relations
@@ -389,9 +368,7 @@ class OrderService extends TransactionBaseService {
       query.relations = relations
     }
 
-    if (select && select.length > 0) {
-      query.select = select
-    }
+    query.select = select?.length ? select : undefined
 
     const raw = await orderRepo.findOne(query)
 
@@ -428,9 +405,7 @@ class OrderService extends TransactionBaseService {
       query.relations = relations
     }
 
-    if (select && select.length > 0) {
-      query.select = select
-    }
+    query.select = select?.length ? select : undefined
 
     const rels = query.relations
     delete query.relations
