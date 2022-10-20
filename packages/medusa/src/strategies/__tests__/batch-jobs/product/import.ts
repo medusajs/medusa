@@ -15,7 +15,7 @@ import {
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { FlagRouter } from "../../../../utils/flag-router"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
-import { InjectedProps } from "../../../batch-jobs/product/types"
+import { ProductImportInjectedProps } from "../../../batch-jobs/product/types"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -147,7 +147,7 @@ describe("Product import strategy", () => {
       productVariantServiceMock as unknown as ProductVariantService,
     regionService: regionServiceMock as unknown as RegionService,
     featureFlagRouter: new FlagRouter({}),
-  } as unknown as InjectedProps)
+  } as unknown as ProductImportInjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
     const getImportInstructionsSpy = jest.spyOn(

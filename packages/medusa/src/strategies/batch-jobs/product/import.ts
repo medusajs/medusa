@@ -21,11 +21,11 @@ import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { FileService } from "medusa-interfaces"
 import {
   OperationType,
   ProductImportBatchJob,
   ProductImportCsvSchema,
+  ProductImportInjectedProps,
   ProductImportJobContext,
   TParsedProductImportRowData,
 } from "./types"
@@ -33,19 +33,6 @@ import {
   productImportColumnsDefinition,
   productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
-
-type InjectedProps = {
-  batchJobService: BatchJobService
-  productService: ProductService
-  productVariantService: ProductVariantService
-  shippingProfileService: ShippingProfileService
-  salesChannelService: SalesChannelService
-  regionService: RegionService
-  fileService: typeof FileService
-
-  featureFlagRouter: FlagRouter
-  manager: EntityManager
-}
 
 /**
  * Process this many variant rows before reporting progress.
@@ -92,7 +79,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     fileService,
     manager,
     featureFlagRouter,
-  }: InjectedProps) {
+  }: ProductImportInjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

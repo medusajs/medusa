@@ -9,6 +9,7 @@ import {
   DynamicProductExportDescriptor,
   ProductExportBatchJob,
   ProductExportBatchJobContext,
+  ProductExportInjectedDependencies,
   ProductExportPriceData,
 } from "./types"
 import { FindProductConfig } from "../../../types/product"
@@ -19,14 +20,6 @@ import {
   productColumnsDefinition,
   productSalesChannelColumnsDefinition,
 } from "./types/columns-definition"
-
-type InjectedDependencies = {
-  manager: EntityManager
-  batchJobService: BatchJobService
-  productService: ProductService
-  fileService: IFileService
-  featureFlagRouter: FlagRouter
-}
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   public static identifier = "product-export-strategy"
@@ -66,7 +59,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     productService,
     fileService,
     featureFlagRouter,
-  }: InjectedDependencies) {
+  }: ProductExportInjectedDependencies) {
     super({
       manager,
       batchJobService,

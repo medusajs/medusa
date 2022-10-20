@@ -1,6 +1,26 @@
 import { BatchJob, Product, ProductVariant } from "../../../../models"
 import { Selector } from "../../../../types/common"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
+import {
+  BatchJobService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingProfileService,
+} from "../../../../services"
+import { FileService } from "medusa-interfaces"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { EntityManager } from "typeorm"
+import { IFileService } from "../../../../interfaces"
+
+export type ProductExportInjectedDependencies = {
+  manager: EntityManager
+  batchJobService: BatchJobService
+  productService: ProductService
+  fileService: IFileService
+  featureFlagRouter: FlagRouter
+}
 
 export type ProductExportBatchJobContext = {
   retry_count?: number
@@ -52,6 +72,19 @@ export type ProductExportDescriptor =
       accessor: (variant: ProductVariant) => string
       entityName: Extract<ProductExportColumnSchemaEntity, "variant">
     }
+
+export type ProductImportInjectedProps = {
+  batchJobService: BatchJobService
+  productService: ProductService
+  productVariantService: ProductVariantService
+  shippingProfileService: ShippingProfileService
+  salesChannelService: SalesChannelService
+  regionService: RegionService
+  fileService: typeof FileService
+
+  featureFlagRouter: FlagRouter
+  manager: EntityManager
+}
 
 /**
  * Import Batch job context column type.
