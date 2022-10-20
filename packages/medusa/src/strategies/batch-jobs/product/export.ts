@@ -351,6 +351,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   }
 
   private appendSalesChannelsDescriptors(maxScCount: number): void {
+    const columnNameIdBuilder = (this.salesChannelsColumnsDefinition[
+      "Sales Channel Id"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
     const columnNameNameBuilder = (this.salesChannelsColumnsDefinition[
       "Sales Channel Name"
     ]!.exportDescriptor as DynamicProductExportDescriptor)!
@@ -362,6 +367,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       .buildDynamicColumnName
 
     for (let i = 0; i < maxScCount; ++i) {
+      const columnNameId = columnNameIdBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.sales_channels[i]?.name ?? "",
+          entityName: "product",
+        },
+      }
+
       const columnNameName = columnNameNameBuilder(i)
 
       this.columnsDefinition[columnNameName] = {

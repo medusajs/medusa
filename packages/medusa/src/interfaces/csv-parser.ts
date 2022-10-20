@@ -48,7 +48,9 @@ export type CsvSchemaColumn<
   ? {
       name: string
     }
-  : {}) & {
+  : {
+      name?: string
+    }) & {
   required?: boolean
   validator?: AbstractCsvValidator<TCsvLine, TBuiltLine>
 } & (

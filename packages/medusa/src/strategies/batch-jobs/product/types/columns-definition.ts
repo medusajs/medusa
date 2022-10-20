@@ -8,8 +8,8 @@ import {
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 
 export const productColumnsDefinition: ProductColumnDefinition = {
-  "Product id": {
-    name: "Product id",
+  "Product Id": {
+    name: "Product Id",
     importDescriptor: {
       mapTo: "product.id",
     },
@@ -242,8 +242,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
       entityName: "product",
     },
   },
-  "Product External ID": {
-    name: "Product External ID",
+  "Product External Id": {
+    name: "Product External Id",
     importDescriptor: {
       mapTo: "product.external_id",
     },
@@ -279,8 +279,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
 
   // VARIANTS
 
-  "Variant id": {
-    name: "Variant id",
+  "Variant Id": {
+    name: "Variant Id",
     importDescriptor: {
       mapTo: "variant.id",
     },
@@ -334,8 +334,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
       entityName: "variant",
     },
   },
-  "Variant Allow backorder": {
-    name: "Variant Allow backorder",
+  "Variant Allow Backorder": {
+    name: "Variant Allow Backorder",
 
     importDescriptor: {
       mapTo: "variant.allow_backorder",
@@ -346,8 +346,8 @@ export const productColumnsDefinition: ProductColumnDefinition = {
       entityName: "variant",
     },
   },
-  "Variant Manage inventory": {
-    name: "Variant Manage inventory",
+  "Variant Manage Inventory": {
+    name: "Variant Manage Inventory",
     importDescriptor: {
       mapTo: "variant.manage_inventory",
     },
@@ -645,7 +645,7 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
     exportDescriptor: {
       isDynamic: true,
       buildDynamicColumnName: (index: number) => {
-        return `Sales channel ${index + 1} Name`
+        return `Sales Channel ${index + 1} Name`
       },
     },
   },
@@ -676,7 +676,7 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
     exportDescriptor: {
       isDynamic: true,
       buildDynamicColumnName: (index: number) => {
-        return `Sales channel ${index + 1} Description`
+        return `Sales Channel ${index + 1} Description`
       },
     },
   },
@@ -702,6 +702,12 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
         })
 
         return builtLine
+      },
+    },
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Sales Channel ${index + 1} Id`
       },
     },
   },
