@@ -11,10 +11,21 @@
   --ifm-color-primary-lighter: #a386ff;
   --ifm-color-primary-lightest: #c9b8ff;
   --ifm-medusa-gray: #f0f0f0;
+  --ifm-color-headers: #111827;
+  --ifm-color-content: #6B7280;
 
   /* Fonts */
   --ifm-code-font-size: 80%;
   --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  --ifm-font-size-base: 14px;
+  --ifm-line-height-base: 24px;
+
+  --ifm-heading-font-weight: 600;
+  --ifm-h1-font-size: 30px;
+  --ifm-h1-line-height: 48px;
+  --ifm-h2-font-size: 24px;
+  --ifm-h2-line-height: 36px;
+
 
   /* Sidebar */
   --doc-sidebar-width: 250px !important;
@@ -44,6 +55,9 @@
   --mode-button-active-bg: #FFFFFF;
   --mode-button-active-border-color: #E5E7EB;
   --mode-button-active-text-color: #111827;
+
+  /* Screen Width */
+  --ifm-container-width-xl: 960px;
 }
 
 html[data-theme="dark"] {
@@ -66,6 +80,9 @@ html[data-theme="dark"] {
 
   --ifm-navbar-link-hover-color: #F3F3F3;
   --ifm-navbar-link-color: #8A8A8A;
+
+  --ifm-color-headers: #F3F3F3;
+  --ifm-color-content: #8A8A8A;
 
   /* Color Mode toggler */
   --mode-tabs-bg: #222222;

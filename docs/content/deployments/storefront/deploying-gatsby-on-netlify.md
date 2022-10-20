@@ -1,3 +1,7 @@
+---
+description: 'Learn step-by-step.'
+---
+
 # Deploy Gatsby Storefront on Netlify
 
 In this document, you’ll learn how to deploy the Gatsby Storefront on [Netlify](https://www.netlify.com/).

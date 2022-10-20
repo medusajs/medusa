@@ -1,3 +1,7 @@
+---
+description: 'Learn step-by-step.'
+---
+
 # Deploy Medusa Admin on Netlify
 
 In this document, you’ll learn how to deploy the Medusa Admin on [Netlify](https://www.netlify.com/).

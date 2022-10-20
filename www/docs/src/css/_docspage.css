@@ -37,6 +37,14 @@ details summary {
   white-space: break-spaces;
 }
 
+.container {
+  padding-top: 38px !important;
+}
+
+.pagination-nav {
+  display: none;
+}
+
 /* User Guide Styling */
 html[data-theme="dark"] kbd {
   --ifm-color-emphasis-0: var(--ifm-color-gray-200);
