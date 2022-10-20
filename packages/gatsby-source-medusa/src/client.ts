@@ -20,7 +20,7 @@ export const createClient = (options: MedusaPluginOptions): any => {
       await medusaRequest(storeUrl, path).then(({ data }) => {
         products = [...products, ...data.products]
         count = data.count
-        offset = data.products.length
+        offset = products.length
       })
     } while (products.length < count)
 
@@ -96,7 +96,7 @@ export const createClient = (options: MedusaPluginOptions): any => {
       await medusaRequest(storeUrl, path).then(({ data }) => {
         collections = [...collections, ...data.collections]
         count = data.count
-        offset = data.collections.length
+        offset = collections.length
       })
     } while (collections.length < count)
 
