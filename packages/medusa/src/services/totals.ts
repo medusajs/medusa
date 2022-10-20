@@ -208,7 +208,7 @@ class TotalsService extends TransactionBaseService {
       tax_lines: shippingMethod.tax_lines || [],
     }
 
-    if (opts.tax_lines) {
+    if (opts.tax_lines?.length) {
       // If the consumer giving us the tax lines then use them
       totals.tax_lines = opts.tax_lines as ShippingMethodTaxLine[]
     } else {
@@ -791,7 +791,7 @@ class TotalsService extends TransactionBaseService {
       tax_lines: lineItem.tax_lines || [],
     }
 
-    if (options.tax_lines) {
+    if (options.tax_lines?.length) {
       // If the consumer giving us the tax lines then use them
       lineItemTotals.tax_lines = options.tax_lines as LineItemTaxLine[]
     } else {
