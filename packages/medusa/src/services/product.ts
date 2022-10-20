@@ -32,7 +32,6 @@ import {
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isDefined, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -362,61 +361,57 @@ class ProductService extends TransactionBaseService {
         rest.discountable = false
       }
 
-      try {
-        let product = productRepo.create(rest)
+      let product = productRepo.create(rest)
 
-        if (images?.length) {
-          product.images = await imageRepo.upsertImages(images)
-        }
+      if (images?.length) {
+        product.images = await imageRepo.upsertImages(images)
+      }
 
-        if (tags?.length) {
-          product.tags = await productTagRepo.upsertTags(tags)
-        }
+      if (tags?.length) {
+        product.tags = await productTagRepo.upsertTags(tags)
+      }
 
-        if (typeof type !== `undefined`) {
-          product.type_id = (await productTypeRepo.upsertType(type))?.id || null
-        }
+      if (typeof type !== `undefined`) {
+        product.type_id = (await productTypeRepo.upsertType(type))?.id || null
+      }
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-        ) {
-          if (isDefined(salesChannels)) {
-            product.sales_channels = []
-            if (salesChannels?.length) {
-              const salesChannelIds = salesChannels?.map((sc) => sc.id)
-              product.sales_channels = salesChannelIds?.map(
-                (id) => ({ id } as SalesChannel)
-              )
-            }
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (isDefined(salesChannels)) {
+          product.sales_channels = []
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
           }
         }
-
-        product = await productRepo.save(product)
-
-        product.options = await Promise.all(
-          (options ?? []).map(async (option) => {
-            const res = optionRepo.create({
-              ...option,
-              product_id: product.id,
-            })
-            await optionRepo.save(res)
-            return res
-          })
-        )
-
-        const result = await this.retrieve(product.id, {
-          relations: ["options"],
-        })
-
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(ProductService.Events.CREATED, {
-            id: result.id,
-          })
-        return result
-      } catch (error) {
-        throw formatException(error)
       }
+
+      product = await productRepo.save(product)
+
+      product.options = await Promise.all(
+        (options ?? []).map(async (option) => {
+          const res = optionRepo.create({
+            ...option,
+            product_id: product.id,
+          })
+          await optionRepo.save(res)
+          return res
+        })
+      )
+
+      const result = await this.retrieve(product.id, {
+        relations: ["options"],
+      })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.CREATED, {
+          id: result.id,
+        })
+      return result
     })
   }
 
