@@ -1,10 +1,11 @@
-import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
+import {BeforeInsert, Column, Entity, Index, JoinTable, ManyToMany, OneToMany} from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "./product"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
 import { generateEntityId } from "../utils/generate-entity-id"
+import {Image} from "./image";
 
 @Entity()
 export class ProductCollection extends SoftDeletableEntity {
@@ -15,8 +16,28 @@ export class ProductCollection extends SoftDeletableEntity {
   @Column({ nullable: true })
   handle: string
 
+  @Column({ type: "text", nullable: true })
+  description: string | null
+
   @OneToMany(() => Product, (product) => product.collection)
   products: Product[]
+
+  @ManyToMany(() => Image, { cascade: ["insert"] })
+  @JoinTable({
+    name: "product_collection_images",
+    joinColumn: {
+      name: "product_collection_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "image_id",
+      referencedColumnName: "id",
+    },
+  })
+  images: Image[]
+
+  @Column({ nullable: true })
+  thumbnail: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
@@ -82,4 +103,16 @@ export class ProductCollection extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *   description:
+ *     description: "A short description of the Product Collection."
+ *     type: string
+ *     example: Every programmer's best friend.
+ *   images:
+ *     description: "Images of the Product Collection"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/image"
+ *   thumbnail:
+ *     description: "A URL to an image file that can be used to identify the Product Collection."
+ *     type: string
  */

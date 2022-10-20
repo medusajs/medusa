@@ -1,4 +1,4 @@
-import { IsObject, IsOptional, IsString } from "class-validator"
+import {IsArray, IsObject, IsOptional, IsString} from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import ProductCollectionService from "../../../../services/product-collection"
@@ -100,6 +100,17 @@ export default async (req: Request, res: Response) => {
  *   handle:
  *     type: string
  *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+*    description:
+ *     type: string
+ *     description:  An optional description of the Collection.
+ *   images:
+ *     description: Images of the Product Collection.
+ *     type: array
+ *     items:
+ *       type: string
+ *   thumbnail:
+ *     description: The thumbnail to use for the Product Collection.
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
@@ -112,6 +123,18 @@ export class AdminPostCollectionsCollectionReq {
   @IsString()
   @IsOptional()
   handle?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsArray()
+  @IsOptional()
+  images: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 
   @IsObject()
   @IsOptional()

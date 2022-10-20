@@ -64,10 +64,12 @@ export const defaultAdminCollectionsFields = [
   "id",
   "title",
   "handle",
+  "description",
+  "thumbnail",
   "created_at",
   "updated_at",
 ]
-export const defaultAdminCollectionsRelations = ["products"]
+export const defaultAdminCollectionsRelations = ["products", "images"]
 
 /**
  * @schema AdminCollectionsListRes

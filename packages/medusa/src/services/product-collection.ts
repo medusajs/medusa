@@ -22,6 +22,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   productRepository: typeof ProductRepository
   productCollectionRepository: typeof ProductCollectionRepository
+  imageRepository: typeof ImageRepository
 }
 
 type ListAndCountSelector = Selector<ProductCollection> & {
@@ -37,6 +38,7 @@ class ProductCollectionService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: typeof ProductRepository
+  protected readonly imageRepository_: typeof ImageRepository
 
   static readonly Events = {
     CREATED: "product-collection.created",
@@ -50,6 +52,7 @@ class ProductCollectionService extends TransactionBaseService {
     productCollectionRepository,
     productRepository,
     eventBusService,
+    imageRepository,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -57,6 +60,7 @@ class ProductCollectionService extends TransactionBaseService {
     this.productCollectionRepository_ = productCollectionRepository
     this.productRepository_ = productRepository
     this.eventBus_ = eventBusService
+    this.imageRepository_ = imageRepository
   }
 
   /**
@@ -132,8 +136,21 @@ class ProductCollectionService extends TransactionBaseService {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
+      const imageRepo = manager.withRepository(
+        this.imageRepository_
+      )
+      
       let productCollection = collectionRepo.create(collection)
       productCollection = await collectionRepo.save(productCollection);
+
+      const { images, ...rest } = collection
+      if (!rest.thumbnail && images && images.length) {
+        rest.thumbnail = images[0]
+      }
+
+      if (images?.length) {
+	      productCollection.images = await imageRepo.upsertImages(images)
+	    }
 
       await this.eventBus_
         .withTransaction(manager)
@@ -159,10 +176,23 @@ class ProductCollectionService extends TransactionBaseService {
       const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
+      const imageRepo = manager.withRepository(
+        this.imageRepository_
+      )
 
-      let productCollection = await this.retrieve(collectionId)
+      let productCollection = await this.retrieve(collectionId, {
+        relations: ["images"],
+      })
 
-      const { metadata, ...rest } = update
+      const { metadata, images, ...rest } = update
+
+      if (!collection.thumbnail && !update.thumbnail && images?.length) {
+        collection.thumbnail = images[0]
+      }
+
+      if (images?.length) {
+        collection.images = await imageRepo.upsertImages(images)
+      }
 
       if (metadata) {
         productCollection.metadata = setMetadata(productCollection, metadata)

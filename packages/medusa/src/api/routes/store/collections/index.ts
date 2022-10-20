@@ -18,11 +18,16 @@ export default (app) => {
     middlewares.wrap(require("./list-collections").default)
   )
   route.get("/:id", middlewares.wrap(require("./get-collection").default))
+  route.get(
+      "/:id/products",
+      middlewares.wrap(require("./get-collection-products").default)
+  )
 
   return app
 }
 
-export const defaultStoreCollectionRelations = []
+export const allStoreCollectionRelations = ["products", "images"]
+export const defaultStoreCollectionRelations = ["images"]
 export const allowedFields = [
   "id",
   "title",
@@ -77,3 +82,4 @@ export type StoreCollectionsRes = {
 
 export * from "./get-collection"
 export * from "./list-collections"
+export * from "./get-collection-products"
