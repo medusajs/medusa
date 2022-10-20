@@ -396,7 +396,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createPaymentNew(
-    paymentInput: PaymentProviderDataInput
+    paymentInput: Omit<PaymentProviderDataInput, "customer">
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
       const { payment_session, currency_code, amount, provider_id } =
@@ -612,6 +612,46 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const toCreate = {
         order_id,
+        amount,
+        reason,
+        note,
+      }
+
+      const created = refundRepo.create(toCreate)
+      return refundRepo.save(created)
+    })
+  }
+
+  async refundFromPayment(
+    payment: Payment,
+    amount: number,
+    reason: string,
+    note?: string
+  ): Promise<Refund> {
+    return await this.atomicPhase_(async (manager) => {
+      const refundable = payment.amount - payment.amount_refunded
+
+      if (refundable < amount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Refund amount is higher that the refundable amount"
+        )
+      }
+
+      const provider = this.retrieveProvider(payment.provider_id)
+      payment.data = await provider
+        .withTransaction(manager)
+        .refundPayment(payment, amount)
+
+      payment.amount_refunded += amount
+
+      const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
+      await paymentRepo.save(payment)
+
+      const refundRepo = manager.getCustomRepository(this.refundRepository_)
+
+      const toCreate = {
+        payment_id: payment.id,
         amount,
         reason,
         note,

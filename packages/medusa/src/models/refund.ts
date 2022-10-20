@@ -5,12 +5,16 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToOne,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Payment } from "./payment"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 export enum RefundReason {
   DISCOUNT = "discount",
@@ -23,12 +27,24 @@ export enum RefundReason {
 @Entity()
 export class Refund extends BaseEntity {
   @Index()
-  @Column()
+  @Column({ nullable: true })
   order_id: string
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    Index(),
+    Column({ nullable: true }),
+  ])
+  payment_id: string
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    OneToOne(() => Payment, { nullable: true }),
+    JoinColumn({ name: "payment_id" }),
+  ])
+  payment: Payment
 
   @Column({ type: "int" })
   amount: number
