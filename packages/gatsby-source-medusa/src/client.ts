@@ -1,21 +1,4 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from "axios"
-
-function medusaRequest(
-  storeURL: string,
-  path = "",
-  headers = {}
-): AxiosPromise {
-  const options: AxiosRequestConfig = {
-    method: "GET",
-    withCredentials: true,
-    url: path,
-    headers: headers,
-  }
-
-  const client = axios.create({ baseURL: storeURL })
-
-  return client(options)
-}
+import { medusaRequest } from "./utils/medusaRequest";
 
 export const createClient = (options: MedusaPluginOptions): any => {
   const { storeUrl, apiKey } = options
