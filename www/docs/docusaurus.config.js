@@ -160,7 +160,8 @@ const config = {
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
           ],
-          showLastUpdateTime: true
+          showLastUpdateTime: true,
+          breadcrumbs: false,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
