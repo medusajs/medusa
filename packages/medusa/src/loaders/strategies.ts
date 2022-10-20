@@ -1,6 +1,6 @@
 import glob from "glob"
 import path from "path"
-import { asFunction, aliasTo } from "awilix"
+import { aliasTo, asFunction } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
@@ -34,6 +34,7 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
     "**/utils.ts",
     "**/types.js",
     "**/types.ts",
+    "**/types/**",
   ]
   if (!useMock) {
     ignore.push("**/__tests__/**", "**/__mocks__/**")
