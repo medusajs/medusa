@@ -22,6 +22,8 @@ function cleanTempData() {
   // cleanup tmp ops files
   const opsFiles = path.resolve("__tests__", "batch-jobs", "product", "imports")
 
+  console.warn("Cleaning up temp data", opsFiles)
+
   fs.rmSync(opsFiles, { recursive: true, force: true })
 }
 
@@ -39,7 +41,7 @@ describe("Product import batch job", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
+      verbose: true,
     })
   })
 
