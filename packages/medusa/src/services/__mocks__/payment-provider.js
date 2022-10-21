@@ -19,6 +19,8 @@ export const DefaultProviderMock = {
   capturePayment: jest.fn().mockReturnValue(Promise.resolve()),
   refundPayment: jest.fn().mockReturnValue(Promise.resolve()),
   cancelPayment: jest.fn().mockReturnValue(Promise.resolve({})),
+  deletePayment: jest.fn().mockReturnValue(Promise.resolve({})),
+  authorizePayment: jest.fn().mockReturnValue(Promise.resolve({})),
 }
 
 export const PaymentProviderServiceMock = {
@@ -60,6 +62,15 @@ export const PaymentProviderServiceMock = {
     }
     throw new Error("Provider Not Found")
   }),
+  refreshSessionNew: jest.fn().mockImplementation((session, inputData) => {
+    DefaultProviderMock.deletePayment()
+    PaymentProviderServiceMock.createSessionNew(inputData)
+    return Promise.resolve({
+      ...session,
+      id: `${session.id}_refreshed`,
+    })
+  }),
+  authorizePayment: jest.fn().mockReturnValue(Promise.resolve({})),
 }
 
 const mock = jest.fn().mockImplementation(() => {

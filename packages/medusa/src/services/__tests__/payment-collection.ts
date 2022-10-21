@@ -7,7 +7,10 @@ import {
 } from "../index"
 import { PaymentCollectionStatus, PaymentCollectionType } from "../../models"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import {
+  DefaultProviderMock,
+  PaymentProviderServiceMock,
+} from "../__mocks__/payment-provider"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { PaymentCollectionSessionInput } from "../../types/payment-collection"
 
@@ -66,6 +69,69 @@ describe("PaymentCollectionService", () => {
     status: PaymentCollectionStatus.AUTHORIZED,
   }
 
+  const zeroSample = {
+    id: IdMap.getId("payment-collection-zero"),
+    region_id: IdMap.getId("region1"),
+    amount: 0,
+    status: PaymentCollectionStatus.NOT_PAID,
+  }
+
+  const noSessionSample = {
+    id: IdMap.getId("payment-collection-zero"),
+    region_id: IdMap.getId("region1"),
+    amount: 10000,
+    status: PaymentCollectionStatus.NOT_PAID,
+  }
+
+  const fullyAuthorizedSample = {
+    id: IdMap.getId("payment-collection-id2"),
+    region_id: IdMap.getId("region1"),
+    amount: 35000,
+    region: {
+      payment_providers: [
+        {
+          id: IdMap.getId("region1_provider1"),
+        },
+      ],
+    },
+    payment_sessions: [
+      {
+        id: IdMap.getId("payCol_session1"),
+        authorized_at: Date.now(),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 35000,
+      },
+    ],
+    status: PaymentCollectionStatus.AUTHORIZED,
+  }
+
+  const partiallyAuthorizedSample = {
+    id: IdMap.getId("payment-collection-id2"),
+    region_id: IdMap.getId("region1"),
+    amount: 70000,
+    region: {
+      payment_providers: [
+        {
+          id: IdMap.getId("region1_provider1"),
+        },
+      ],
+    },
+    payment_sessions: [
+      {
+        id: IdMap.getId("payCol_session1"),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 35000,
+      },
+      {
+        id: IdMap.getId("payCol_session2"),
+        authorized_at: Date.now(),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 35000,
+      },
+    ],
+    status: PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
+  }
+
   const paymentCollectionRepository = MockRepository({
     findOne: (query) => {
       const map = {
@@ -74,6 +140,10 @@ describe("PaymentCollectionService", () => {
           paymentCollectionAuthorizedSample,
         [IdMap.getId("payment-collection-session")]:
           paymentCollectionWithSessions,
+        [IdMap.getId("payment-collection-zero")]: zeroSample,
+        [IdMap.getId("payment-collection-no-session")]: noSessionSample,
+        [IdMap.getId("payment-collection-fully")]: fullyAuthorizedSample,
+        [IdMap.getId("payment-collection-patial")]: partiallyAuthorizedSample,
       }
 
       if (map[query?.where?.id]) {
@@ -265,11 +335,14 @@ describe("PaymentCollectionService", () => {
         inp
       )
 
+      expect(ret).rejects.toThrowError(
+        new Error(
+          `Cannot set payment sessions for a payment collection with status ${PaymentCollectionStatus.AUTHORIZED}`
+        )
+      )
+
       expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
         0
-      )
-      expect(ret).rejects.toThrow(
-        `Cannot set payment sessionf for a payment collection with status ${PaymentCollectionStatus.AUTHORIZED}`
       )
     })
 
@@ -382,25 +455,124 @@ describe("PaymentCollectionService", () => {
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
     })
-  })
 
-  it("should add a new session and delete existing one", async () => {
-    const inp: PaymentCollectionSessionInput[] = [
-      {
+    it("should add a new session and delete existing one", async () => {
+      const inp: PaymentCollectionSessionInput[] = [
+        {
+          amount: 100,
+          provider_id: IdMap.getId("region1_provider1"),
+          customer_id: IdMap.getId("lebron"),
+        },
+      ]
+      await paymentCollectionService.setPaymentSessions(
+        IdMap.getId("payment-collection-session"),
+        inp
+      )
+
+      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+        1
+      )
+      expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
+        0
+      )
+      expect(paymentCollectionRepository.delete).toHaveBeenCalledTimes(1)
+
+      expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
+    })
+
+    it("should refresh a payment session", async () => {
+      PaymentProviderServiceMock.retrieveSession = jest
+        .fn()
+        .mockImplementation((id) => {
+          return Promise.resolve({
+            provider_id: IdMap.getId("region1_provider1"),
+            amount: 100,
+            id,
+          })
+        })
+
+      jest.fn().mockImplementation(() => {
+        return Promise.resolve()
+      }),
+        jest
+          .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
+          .mockImplementation(async () =>
+            IdMap.getId("payment-collection-session")
+          )
+
+      await paymentCollectionService.refreshPaymentSession({
+        customer_id: "customer1",
         amount: 100,
         provider_id: IdMap.getId("region1_provider1"),
-        customer_id: IdMap.getId("lebron"),
-      },
-    ]
-    await paymentCollectionService.setPaymentSessions(
-      IdMap.getId("payment-collection-session"),
-      inp
-    )
+        session_id: IdMap.getId("payment-collection-payCol_session1"),
+      })
 
-    expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(1)
-    expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(0)
-    expect(paymentCollectionRepository.delete).toHaveBeenCalledTimes(1)
+      expect(
+        PaymentProviderServiceMock.refreshSessionNew
+      ).toHaveBeenCalledTimes(1)
+      expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(1)
+      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+        1
+      )
+    })
 
-    expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
+    it("should fail to refresh a payment session if the amount is different", async () => {
+      PaymentProviderServiceMock.retrieveSession = jest
+        .fn()
+        .mockImplementation((id) => {
+          return Promise.resolve({
+            provider_id: IdMap.getId("region1_provider1"),
+            amount: 100,
+            id,
+          })
+        })
+
+      jest
+        .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
+        .mockImplementation(async () =>
+          IdMap.getId("payment-collection-session")
+        )
+
+      const sess = paymentCollectionService.refreshPaymentSession({
+        customer_id: "customer1",
+        amount: 80,
+        provider_id: IdMap.getId("region1_provider1"),
+        session_id: IdMap.getId("payment-collection-payCol_session1"),
+      })
+
+      expect(sess).rejects.toThrow(
+        "The amount has to be the same as the existing payment session"
+      )
+
+      expect(
+        PaymentProviderServiceMock.refreshSessionNew
+      ).toHaveBeenCalledTimes(0)
+      expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+        0
+      )
+    })
+  })
+
+  describe("PaymentCollectionService - Authorize Payments", () => {
+    it("should mark as paid if amount is 0", async () => {
+      paymentCollectionService.authorize(IdMap.getId("payment-collection-zero"))
+
+      expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
+        0
+      )
+    })
+
+    it("should reject payment collection without payment sessions", async () => {
+      const ret = paymentCollectionService.authorize(
+        IdMap.getId("payment-collection-no-session")
+      )
+
+      expect(ret).rejects.toThrowError(
+        new Error(
+          "You cannot complete a Payment Collection without a payment session."
+        )
+      )
+    })
   })
 })

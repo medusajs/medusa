@@ -438,7 +438,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         return await paymentCollectionRepository.save(payCol)
       }
 
-      if (payCol.payment_sessions.length === 0) {
+      if (!payCol.payment_sessions?.length) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "You cannot complete a Payment Collection without a payment session."
