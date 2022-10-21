@@ -49,7 +49,9 @@ const cartService = {
   withTransaction: function () {
     return this
   },
-  retrieveWithTotals: jest.fn().mockReturnValue(Promise.resolve()),
+  retrieveWithTotals: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ id: "cart" })),
 } as unknown as CartService
 
 const customShippingOptionService = {
@@ -827,6 +829,12 @@ describe("SwapService", () => {
       withTransaction: function () {
         return this
       },
+      retrieveWithTotals: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: "cart",
+          items: [{ id: "test-item", variant_id: "variant" }],
+        })
+      ),
     } as unknown as CartService
 
     const paymentProviderService = {
@@ -865,7 +873,8 @@ describe("SwapService", () => {
         other: "data",
       }
 
-      cartService.retrieve = (() => cart) as unknown as CartService["retrieve"]
+      cartService.retrieveWithTotals = (() =>
+        cart) as unknown as CartService["retrieveWithTotals"]
 
       const swapRepo = MockRepository({
         findOneWithRelations: () => Promise.resolve(existing),
