@@ -71,11 +71,13 @@
     "generate:entities": "typedoc --options typedoc.entities.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
     "generate:announcement": "node ./scripts/doc-change-release.js",
-    "version:staging": "yarn changeset pre enter staging && yarn changeset version"
+    "version:staging": "yarn changeset pre enter staging && yarn changeset version",
+    "check:freshness": "node ./scripts/freshness-check.js"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.5",
     "@changesets/cli": "^2.23.0",
+    "@linear/sdk": "^1.22.0",
     "@octokit/core": "^4.0.5",
     "global": "^4.4.0",
     "import-from": "^3.0.0",

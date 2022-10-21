@@ -12,7 +12,7 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.md).
 
-You also need to (../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
+You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
 
 ## Create a Notification Provider
 

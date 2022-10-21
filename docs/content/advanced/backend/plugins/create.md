@@ -315,9 +315,13 @@ Please make sure that your plugin is following the correct structure. If the err
 ```bash npm2yarn
 cd <SERVER_PATH>/node_modules/medusa-interfaces
 npm link
+cd <SERVER_PATH>/node_modules/@medusajs/medusa
+npm link
 cd <PLUGIN_PATH>
 rm -rf node_modules/medusa-interfaces
+rm -rf node_modules/@medusajs/medusa
 npm link medusa-interfaces
+npm link @medusajs/medusa
 npm link
 cd <SERVER_PATH>
 npm link your-plugin
@@ -325,7 +329,7 @@ npm link your-plugin
 
 Where `<SERVER_PATH>` is the path to your Medusa server and `<PLUGIN_PATH>` is the path to your plugin.
 
-This links the `medusa-interfaces` package from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
+This links the `medusa-interfaces` and `@medusajs/medusa` packages from your `medusa-backend` to your plugin directory and then links your plugin to your `medusa-backend`.
 
 #### APIs not loading
 
