@@ -74,3 +74,17 @@ Object {
   "updated_at": Any<String>,
 }
 `;
+
+exports[`[MEDUSA_FF_ANALYTICS] /admin/analytics-config DELETE /admin/users Deletes a user and their analytics config 1`] = `
+Array [
+  Object {
+    "anonymize": false,
+    "created_at": Any<Date>,
+    "deleted_at": Any<Date>,
+    "id": Any<String>,
+    "opt_out": false,
+    "updated_at": Any<Date>,
+    "user_id": "member-user",
+  },
+]
+`;

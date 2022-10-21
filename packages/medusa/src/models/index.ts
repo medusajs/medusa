@@ -1,4 +1,5 @@
 export * from "./address"
+export * from "./analytics-config"
 export * from "./batch-job"
 export * from "./cart"
 export * from "./claim-image"
