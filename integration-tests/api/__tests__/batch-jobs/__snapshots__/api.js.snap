@@ -206,24 +206,3 @@ Object {
   "updated_at": Any<String>,
 }
 `;
-
-exports[`/admin/batch-jobs POST /admin/batch-jobs/:id/cancel Fails to cancel a batch job created by a different user 1`] = `
-Object {
-  "canceled_at": Any<String>,
-  "completed_at": null,
-  "confirmed_at": null,
-  "context": Object {},
-  "created_at": Any<String>,
-  "created_by": "admin_user",
-  "deleted_at": null,
-  "dry_run": false,
-  "failed_at": null,
-  "id": "job_1",
-  "pre_processed_at": null,
-  "processing_at": null,
-  "result": null,
-  "status": "canceled",
-  "type": "product-export",
-  "updated_at": Any<String>,
-}
-`;
