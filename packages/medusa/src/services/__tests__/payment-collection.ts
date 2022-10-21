@@ -87,6 +87,7 @@ describe("PaymentCollectionService", () => {
     id: IdMap.getId("payment-collection-id2"),
     region_id: IdMap.getId("region1"),
     amount: 35000,
+    authorized_amount: 35000,
     region: {
       payment_providers: [
         {
@@ -97,15 +98,45 @@ describe("PaymentCollectionService", () => {
     payment_sessions: [
       {
         id: IdMap.getId("payCol_session1"),
-        authorized_at: Date.now(),
+        payment_authorized_at: Date.now(),
         provider_id: IdMap.getId("region1_provider1"),
         amount: 35000,
       },
     ],
+    payments: [],
     status: PaymentCollectionStatus.AUTHORIZED,
   }
 
   const partiallyAuthorizedSample = {
+    id: IdMap.getId("payment-collection-id2"),
+    region_id: IdMap.getId("region1"),
+    amount: 70000,
+    authorized_amount: 35000,
+    region: {
+      payment_providers: [
+        {
+          id: IdMap.getId("region1_provider1"),
+        },
+      ],
+    },
+    payment_sessions: [
+      {
+        id: IdMap.getId("payCol_session1"),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 35000,
+      },
+      {
+        id: IdMap.getId("payCol_session2"),
+        payment_authorized_at: Date.now(),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 35000,
+      },
+    ],
+    payments: [],
+    status: PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
+  }
+
+  const notAuthorizedSample = {
     id: IdMap.getId("payment-collection-id2"),
     region_id: IdMap.getId("region1"),
     amount: 70000,
@@ -124,11 +155,11 @@ describe("PaymentCollectionService", () => {
       },
       {
         id: IdMap.getId("payCol_session2"),
-        authorized_at: Date.now(),
         provider_id: IdMap.getId("region1_provider1"),
         amount: 35000,
       },
     ],
+    payments: [],
     status: PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
   }
 
@@ -143,7 +174,8 @@ describe("PaymentCollectionService", () => {
         [IdMap.getId("payment-collection-zero")]: zeroSample,
         [IdMap.getId("payment-collection-no-session")]: noSessionSample,
         [IdMap.getId("payment-collection-fully")]: fullyAuthorizedSample,
-        [IdMap.getId("payment-collection-patial")]: partiallyAuthorizedSample,
+        [IdMap.getId("payment-collection-partial")]: partiallyAuthorizedSample,
+        [IdMap.getId("payment-collection-not-authorized")]: notAuthorizedSample,
       }
 
       if (map[query?.where?.id]) {
@@ -556,7 +588,9 @@ describe("PaymentCollectionService", () => {
 
   describe("PaymentCollectionService - Authorize Payments", () => {
     it("should mark as paid if amount is 0", async () => {
-      paymentCollectionService.authorize(IdMap.getId("payment-collection-zero"))
+      await paymentCollectionService.authorize(
+        IdMap.getId("payment-collection-zero")
+      )
 
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
         0
@@ -573,6 +607,48 @@ describe("PaymentCollectionService", () => {
           "You cannot complete a Payment Collection without a payment session."
         )
       )
+    })
+
+    it("should call authorizePayments for all sessions", async () => {
+      await paymentCollectionService.authorize(
+        IdMap.getId("payment-collection-not-authorized")
+      )
+
+      expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
+        2
+      )
+      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+        2
+      )
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+    })
+
+    it("should skip authorized sessions - partially authorized", async () => {
+      await paymentCollectionService.authorize(
+        IdMap.getId("payment-collection-partial")
+      )
+
+      expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
+        1
+      )
+      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+        1
+      )
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+    })
+
+    it("should skip authorized sessions - fully authorized", async () => {
+      await paymentCollectionService.authorize(
+        IdMap.getId("payment-collection-fully")
+      )
+
+      expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
+        0
+      )
+      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+        0
+      )
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
     })
   })
 })

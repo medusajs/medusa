@@ -70,7 +70,12 @@ export const PaymentProviderServiceMock = {
       id: `${session.id}_refreshed`,
     })
   }),
-  authorizePayment: jest.fn().mockReturnValue(Promise.resolve({})),
+  authorizePayment: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ status: "authorized" })),
+  createPaymentNew: jest.fn().mockImplementation((session, inputData) => {
+    Promise.resolve(inputData)
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
