@@ -15,7 +15,7 @@ import {
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { FlagRouter } from "../../../../utils/flag-router"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
-import { InjectedProps } from "../../../batch-jobs/product/types"
+import { ProductImportInjectedProps } from "../../../batch-jobs/product/types"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -32,7 +32,7 @@ let fakeJob = {
 }
 
 async function* generateCSVDataForStream() {
-  yield "Product id,Product Handle,Product Title,Product Subtitle,Product Description,Product Status,Product Thumbnail,Product Weight,Product Length,Product Width,Product Height,Product HS Code,Product Origin Country,Product MID Code,Product Material,Product Collection Title,Product Collection Handle,Product Type,Product Tags,Product Discountable,Product External ID,Variant id,Variant Title,Variant SKU,Variant Barcode,Variant Inventory Quantity,Variant Allow backorder,Variant Manage inventory,Variant Weight,Variant Length,Variant Width,Variant Height,Variant HS Code,Variant Origin Country,Variant MID Code,Variant Material,Price france [USD],Price USD,Price denmark [DKK],Price Denmark [DKK],Option 1 Name,Option 1 Value,Option 2 Name,Option 2 Value,Image 1 Url\n"
+  yield "Product Id,Product Handle,Product Title,Product Subtitle,Product Description,Product Status,Product Thumbnail,Product Weight,Product Length,Product Width,Product Height,Product HS Code,Product Origin Country,Product MID Code,Product Material,Product Collection Title,Product Collection Handle,Product Type,Product Tags,Product Discountable,Product External Id,Variant Id,Variant Title,Variant SKU,Variant Barcode,Variant Inventory Quantity,Variant Allow Backorder,Variant Manage Inventory,Variant Weight,Variant Length,Variant Width,Variant Height,Variant HS Code,Variant Origin Country,Variant MID Code,Variant Material,Price france [USD],Price USD,Price denmark [DKK],Price Denmark [DKK],Option 1 Name,Option 1 Value,Option 2 Name,Option 2 Value,Image 1 Url\n"
   yield ",test-product-product-1,Test product,,test-product-description-1,draft,,,,,,,,,,Test collection 1,test-collection1,test-type-1,123_1,TRUE,,SebniWTDeC,Test variant,test-sku-1,test-barcode-1,10,FALSE,TRUE,,,,,,,,,100,110,130,,test-option-1,option 1 value red,test-option-2,option 2 value 1,test-image.png\n"
   yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,,Test variant,test-sku-2,test-barcode-2,10,FALSE,TRUE,,,,,,,,,,,,110,test-option,Option 1 value 1,,,test-image.png\n"
   yield "5VxiEkmnPV,test-product-product-2,Test product,,test-product-description,draft,,,,,,,,,,Test collection,test-collection2,test-type,123,TRUE,,3SS1MHGDEJ,Test variant,test-sku-3,test-barcode-3,10,FALSE,TRUE,,,,,,,,,,120,,,test-option,Option 1 Value blue,,,test-image.png\n"
@@ -147,7 +147,7 @@ describe("Product import strategy", () => {
       productVariantServiceMock as unknown as ProductVariantService,
     regionService: regionServiceMock as unknown as RegionService,
     featureFlagRouter: new FlagRouter({}),
-  } as unknown as InjectedProps)
+  } as unknown as ProductImportInjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
     const getImportInstructionsSpy = jest.spyOn(
