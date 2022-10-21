@@ -962,7 +962,10 @@ class TotalsService extends TransactionBaseService {
    */
   async getGiftCardTotal(
     cartOrOrder: Cart | Order,
-    opts: { gift_cardable?: number } = {}
+    opts: {
+      gift_cardable?: number
+      tax_lines?: (LineItemTaxLine | ShippingMethodTaxLine)[]
+    } = {}
   ): Promise<{
     total: number
     tax_total: number

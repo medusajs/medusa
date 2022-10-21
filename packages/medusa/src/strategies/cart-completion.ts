@@ -149,9 +149,15 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieveWithTotals(id, {
-                      relations: ["payment", "payment_sessions"],
-                    })
+                    .retrieveWithTotals(
+                      id,
+                      {
+                        relations: ["payment", "payment_sessions"],
+                      },
+                      {
+                        useExistingTaxLines: true,
+                      }
+                    )
 
                   // If cart is part of swap, we register swap as complete
                   switch (cart.type) {

@@ -467,19 +467,15 @@ class OrderService extends TransactionBaseService {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartServiceTx.retrieveWithTotals(cartId, {
-        relations: [
-          "region",
-          "payment",
-          "items",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "shipping_methods",
-          "items",
-          "items.adjustments",
-        ],
-      })
+      const cart = await cartServiceTx.retrieveWithTotals(
+        cartId,
+        {
+          relations: ["region", "payment"],
+        },
+        {
+          useExistingTaxLines: true,
+        }
+      )
 
       if (cart.items.length === 0) {
         throw new MedusaError(
