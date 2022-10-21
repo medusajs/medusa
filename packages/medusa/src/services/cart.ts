@@ -24,6 +24,7 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
 } from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
@@ -2038,23 +2039,25 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createTaxLines(id: string): Promise<void> {
+  async createTaxLines(cartOrId: string | Cart): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieveNew(id, {
-          relations: [
-            "customer",
-            "discounts",
-            "discounts.rule",
-            "gift_cards",
-            "items",
-            "items.adjustments",
-            "region",
-            "region.tax_rates",
-            "shipping_address",
-            "shipping_methods",
-          ],
-        })
+        const cart = isCart(cartOrId)
+          ? cartOrId
+          : await this.retrieveNew(cartOrId, {
+              relations: [
+                "customer",
+                "discounts",
+                "discounts.rule",
+                "gift_cards",
+                "items",
+                "items.adjustments",
+                "region",
+                "region.tax_rates",
+                "shipping_address",
+                "shipping_methods",
+              ],
+            })
 
         const calculationContext = await this.totalsService_
           .withTransaction(transactionManager)

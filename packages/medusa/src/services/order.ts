@@ -4,6 +4,7 @@ import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
+  Cart,
   ClaimOrder,
   Fulfillment,
   FulfillmentItem,
@@ -26,7 +27,7 @@ import {
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import CartService from "./cart"
 import CustomerService from "./customer"
@@ -512,23 +513,25 @@ class OrderService extends TransactionBaseService {
 
   /**
    * Creates an order from a cart
-   * @param cartId - id of the cart to create an order from
    * @return resolves to the creation result.
+   * @param cartOrId
    */
-  async createFromCart(cartId: string): Promise<Order | never> {
+  async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartServiceTx.retrieveWithTotals(
-        cartId,
-        {
-          relations: ["region", "payment"],
-        },
-        {
-          useExistingTaxLines: true,
-        }
-      )
+      const cart = isString(cartOrId)
+        ? await cartServiceTx.retrieveWithTotals(
+            cartOrId,
+            {
+              relations: ["region", "payment"],
+            },
+            {
+              useExistingTaxLines: true,
+            }
+          )
+        : cartOrId
 
       if (cart.items.length === 0) {
         throw new MedusaError(
@@ -630,7 +633,15 @@ class OrderService extends TransactionBaseService {
           })
       }
 
-      let gcBalance = await this.totalsService_.getGiftCardableAmount(cart)
+      if (!isDefined(cart.discount_total) || !isDefined(cart.subtotal)) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Unable to crate order from cart. The cart does not have subtotal and/or discount_total."
+        )
+      }
+
+      // cardable amount
+      let gcBalance = cart.subtotal - cart.discount_total
       const gcService = this.giftCardService_.withTransaction(manager)
 
       for (const g of cart.gift_cards) {

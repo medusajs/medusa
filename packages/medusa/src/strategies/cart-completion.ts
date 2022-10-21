@@ -70,7 +70,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieveWithTotals(id)
+                    .retrieveWithTotals(id, {
+                      relations: ["customer", "region"],
+                    })
 
                   if (cart.completed_at) {
                     return {
@@ -83,7 +85,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                     }
                   }
 
-                  await cartService.withTransaction(manager).createTaxLines(id)
+                  await cartService
+                    .withTransaction(manager)
+                    .createTaxLines(cart)
 
                   return {
                     recovery_point: "tax_lines_created",
@@ -154,7 +158,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                     .retrieveWithTotals(
                       id,
                       {
-                        relations: ["payment", "payment_sessions"],
+                        relations: ["region", "payment", "payment_sessions"],
                       },
                       {
                         useExistingTaxLines: true,
@@ -220,7 +224,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                       try {
                         order = await orderService
                           .withTransaction(manager)
-                          .createFromCart(cart.id)
+                          .createFromCart(cart)
                       } catch (error) {
                         if (
                           error &&
