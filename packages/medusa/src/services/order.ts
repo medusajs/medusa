@@ -357,13 +357,13 @@ class OrderService extends TransactionBaseService {
   }
 
   private async retrieveNew(
-    orderId: string,
+    selector: Selector<Order>,
     options: FindConfig<Order> = {}
   ): Promise<Order> {
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.orderRepository_)
 
-    const query = buildQuery({ id: orderId }, options)
+    const query = buildQuery(selector, options)
 
     if ((options.select || []).length <= 0) {
       query.select = undefined
@@ -375,9 +375,12 @@ class OrderService extends TransactionBaseService {
     const raw = await cartRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with ${orderId} was not found`
+        `Order with ${selectorConstraints} was not found`
       )
     }
 
@@ -389,9 +392,23 @@ class OrderService extends TransactionBaseService {
     options: FindConfig<Order> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Order> {
+    return await this.retrieveByWithTotals(
+      {
+        id: orderId,
+      },
+      options,
+      totalsConfig
+    )
+  }
+
+  async retrieveByWithTotals(
+    selector: Selector<Order>,
+    options: FindConfig<Order> = {},
+    totalsConfig: TotalsConfig = {}
+  ): Promise<Order> {
     const relations = this.getTotalsRelations(options)
 
-    const order = await this.retrieveNew(orderId, {
+    const order = await this.retrieveNew(selector, {
       ...options,
       relations,
     })
@@ -542,24 +559,27 @@ class OrderService extends TransactionBaseService {
 
       const { payment, region, total } = cart
 
-      for (const item of cart.items) {
-        try {
-          await inventoryServiceTx.confirmInventory(
+      await Promise.all(
+        cart.items.map(async (item) => {
+          return await inventoryServiceTx.confirmInventory(
             item.variant_id,
             item.quantity
           )
-        } catch (err) {
-          if (payment) {
-            await this.paymentProviderService_
-              .withTransaction(manager)
-              .cancelPayment(payment)
-          }
-          await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-          throw err
+        })
+      ).catch(async (err) => {
+        if (payment) {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .cancelPayment(payment)
         }
-      }
+        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
+        throw err
+      })
 
-      const exists = await this.existsByCartId(cart.id)
+      const exists = !!(await this.retrieveNew({ cart_id: cart.id }).catch(
+        () => false
+      ))
+
       if (exists) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
@@ -633,15 +653,15 @@ class OrderService extends TransactionBaseService {
           })
       }
 
-      if (!isDefined(cart.discount_total) || !isDefined(cart.subtotal)) {
+      if (!isDefined(cart.subtotal) || !isDefined(cart.discount_total)) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "Unable to crate order from cart. The cart does not have subtotal and/or discount_total."
+          "Unable to compute gift cardable amount during order creation from cart. The cart is missing the subtotal and/or discount_total"
         )
       }
 
-      // cardable amount
-      let gcBalance = cart.subtotal - cart.discount_total
+      // gift cardable amount
+      let gcBalance = cart.subtotal! - cart.discount_total!
       const gcService = this.giftCardService_.withTransaction(manager)
 
       for (const g of cart.gift_cards) {
