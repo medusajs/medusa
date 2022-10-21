@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # How to Add Cart Functionality
 
 This document guides you through how you can add cart-related functionalities to your storefront. That includes creating and updating a cart and managing items in the cart.
@@ -168,12 +171,18 @@ A cart has different data associated with it including the region, email, addres
 
 You can use the following snippet to update any of the cart’s data:
 
+<Tabs groupId="request-type">
+<TabItem value="client" label="Medusa JS Client" default>
+
 ```jsx
 medusa.carts.update(cartId, {
   region_id
 })
 .then(({ cart }) => setCart(cart));
 ```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
@@ -188,6 +197,9 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 .then((response) => response.json())
 .then(({ cart }) => setCart(cart));
 ```
+
+</TabItem>
+</Tabs>
 
 This request accepts the ID of the cart as a path parameter. In its body, you can pass any data you want to update in the cart such as the region.
 
