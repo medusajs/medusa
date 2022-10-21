@@ -7,7 +7,6 @@ import {
   CreateAnalyticsConfig,
   UpdateAnalyticsConfig,
 } from "../types/analytics-config"
-import { formatException } from "../utils"
 import UserService from "./user"
 
 type InjectedDependencies = {
@@ -63,12 +62,8 @@ class AnalyticsConfigService extends TransactionBaseService {
       this.analyticsConfigRepository_
     )
 
-    try {
-      const config = analyticsRepo.create({ user_id: userId, ...data })
-      return await analyticsRepo.save(config)
-    } catch (error) {
-      throw formatException(error)
-    }
+    const config = analyticsRepo.create({ user_id: userId, ...data })
+    return await analyticsRepo.save(config)
   }
 
   /**
