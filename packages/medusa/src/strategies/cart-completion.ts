@@ -106,7 +106,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                     .withTransaction(manager)
                     .authorizePayment(id, {
                       ...context,
-                      idempotency_key: idempotencyKey.idempotency_key,
+                      cart_id: id,
+                      idempotency_key: idempotencyKey,
+                      useExistingTaxLine: true,
                     })
 
                   if (cart.payment_session) {
@@ -265,14 +267,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
                       order = await orderService
                         .withTransaction(manager)
-                        .retrieve(order.id, {
-                          select: [
-                            "subtotal",
-                            "tax_total",
-                            "shipping_total",
-                            "discount_total",
-                            "total",
-                          ],
+                        .retrieveWithTotals(order.id, {
                           relations: ["shipping_address", "items", "payments"],
                         })
 

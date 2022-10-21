@@ -98,13 +98,13 @@ export default class totalsNewService extends TransactionBaseService {
       useExistingTaxLines?: boolean
     }
   ): Promise<Map<string, LineItemTotals>> {
-    let lineItemsTaxLinesMap
+    let lineItemsTaxLinesMap = new Map()
     if (includeTax) {
       if (useExistingTaxLines) {
         items.forEach((item) => {
           lineItemsTaxLinesMap.set(item.id, item.tax_lines ?? [])
         })
-      } else {
+      } else if (items.length) {
         const { lineItemsTaxLines } = await this.getTaxLinesMap(
           items,
           calculationContext
@@ -115,8 +115,8 @@ export default class totalsNewService extends TransactionBaseService {
 
     const useOrderLineCalculation = isOrder && taxRate
     const calculationMethod = useOrderLineCalculation
-      ? this.getOrderLineItemTotals
-      : this.getLineItemTotals
+      ? this.getOrderLineItemTotals.bind(this)
+      : this.getLineItemTotals.bind(this)
 
     const itemsTotals = new Map<string, LineItemTotals>()
     for (const item of items) {
@@ -434,13 +434,13 @@ export default class totalsNewService extends TransactionBaseService {
       useExistingTaxLines?: boolean
     }
   ): Promise<Map<string, ShippingMethodTotals>> {
-    let shippingMethodsTaxLinesMap
+    let shippingMethodsTaxLinesMap = new Map()
     if (includeTax) {
       if (useExistingTaxLines) {
-        shippingMethods.forEach(sm => {
-          shippingMethodsTaxLinesMap.set(sm.id, sm.tax_lines ?? ]\)
+        shippingMethods.forEach((sm) => {
+          shippingMethodsTaxLinesMap.set(sm.id, sm.tax_lines ?? [])
         })
-      } else {
+      } else if (shippingMethods.length) {
         const { shippingMethodsTaxLines } = await this.getTaxLinesMap(
           [],
           calculationContext
@@ -451,8 +451,8 @@ export default class totalsNewService extends TransactionBaseService {
 
     const useOrderShippingMethodCalculation = isOrder && taxRate
     const calculationMethod = useOrderShippingMethodCalculation
-      ? this.getOrderShippingMethodTotals
-      : this.getShippingMethodTotals
+      ? this.getOrderShippingMethodTotals.bind(this)
+      : this.getShippingMethodTotals.bind(this)
 
     const shippingMethodsTotals = new Map<string, ShippingMethodTotals>()
     for (const shippingMethod of shippingMethods) {

@@ -1,4 +1,4 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
 import SwapService from "../swap"
 import { InventoryServiceMock } from "../__mocks__/inventory"
@@ -16,7 +16,7 @@ import {
   TotalsService,
 } from "../index"
 import CartService from "../cart"
-import { Order, ReturnItem, Swap } from "../../models"
+import { Order, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import LineItemAdjustmentService from "../line-item-adjustment"
 
@@ -49,6 +49,7 @@ const cartService = {
   withTransaction: function () {
     return this
   },
+  retrieveWithTotals: jest.fn().mockReturnValue(Promise.resolve()),
 } as unknown as CartService
 
 const customShippingOptionService = {

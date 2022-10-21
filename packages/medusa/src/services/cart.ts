@@ -10,7 +10,6 @@ import {
   CustomShippingOption,
   Discount,
   DiscountRuleType,
-  IdempotencyKey,
   LineItem,
   PaymentSession,
   SalesChannel,
@@ -179,126 +178,6 @@ class CartService extends TransactionBaseService {
     this.salesChannelService_ = salesChannelService
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
-  }
-
-  private getTotalsRelations(config: FindConfig<Cart>): string[] {
-    const relationSet = new Set(config.relations)
-
-    relationSet.add("items")
-    relationSet.add("items.tax_lines")
-    relationSet.add("items.adjustments")
-    relationSet.add("gift_cards")
-    relationSet.add("discounts")
-    relationSet.add("discounts.rule")
-    relationSet.add("shipping_methods")
-    relationSet.add("shipping_methods.tax_lines")
-    relationSet.add("shipping_address")
-    relationSet.add("region")
-    relationSet.add("region.tax_rates")
-
-    return Array.from(relationSet.values())
-  }
-
-  protected transformQueryForTotals_(
-    config: FindConfig<Cart>
-  ): FindConfig<Cart> & { totalsToSelect: TotalField[] } {
-    let { select, relations } = config
-
-    if (!select) {
-      return {
-        select,
-        relations,
-        totalsToSelect: [],
-      }
-    }
-
-    const totalFields = [
-      "subtotal",
-      "tax_total",
-      "shipping_total",
-      "discount_total",
-      "gift_card_total",
-      "total",
-    ]
-
-    const totalsToSelect = select.filter((v) =>
-      totalFields.includes(v)
-    ) as TotalField[]
-    if (totalsToSelect.length > 0) {
-      const relationSet = new Set(relations)
-      relationSet.add("items")
-      relationSet.add("items.tax_lines")
-      relationSet.add("gift_cards")
-      relationSet.add("discounts")
-      relationSet.add("discounts.rule")
-      // relationSet.add("discounts.parent_discount")
-      // relationSet.add("discounts.parent_discount.rule")
-      // relationSet.add("discounts.parent_discount.regions")
-      relationSet.add("shipping_methods")
-      relationSet.add("shipping_address")
-      relationSet.add("region")
-      relationSet.add("region.tax_rates")
-      relations = Array.from(relationSet.values())
-
-      select = select.filter((v) => !totalFields.includes(v))
-    }
-
-    return {
-      relations,
-      select,
-      totalsToSelect,
-    }
-  }
-
-  protected async decorateTotals_(
-    cart: Cart,
-    totalsToSelect: TotalField[],
-    options: TotalsConfig = { force_taxes: false }
-  ): Promise<Cart> {
-    const totals: { [K in TotalField]?: number | null } = {}
-
-    for (const key of totalsToSelect) {
-      switch (key) {
-        case "total": {
-          totals.total = await this.totalsService_.getTotal(cart, {
-            force_taxes: options.force_taxes,
-          })
-          break
-        }
-        case "shipping_total": {
-          totals.shipping_total = await this.totalsService_.getShippingTotal(
-            cart
-          )
-          break
-        }
-        case "discount_total":
-          totals.discount_total = await this.totalsService_.getDiscountTotal(
-            cart
-          )
-          break
-        case "tax_total":
-          totals.tax_total = await this.totalsService_.getTaxTotal(
-            cart,
-            options.force_taxes
-          )
-          break
-        case "gift_card_total": {
-          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
-            cart
-          )
-          totals.gift_card_total = giftCardBreakdown.total
-          totals.gift_card_tax_total = giftCardBreakdown.tax_total
-          break
-        }
-        case "subtotal":
-          totals.subtotal = await this.totalsService_.getSubtotal(cart)
-          break
-        default:
-          break
-      }
-    }
-
-    return Object.assign(cart, totals)
   }
 
   /**
@@ -1419,7 +1298,10 @@ class CartService extends TransactionBaseService {
    */
   async authorizePayment(
     cartId: string,
-    context: Record<string, unknown> & { idempotencyKey?: IdempotencyKey } = {}
+    context: Record<string, unknown> & {
+      cart_id: string
+      useExistingTaxLine?: boolean
+    } = { cart_id: "" }
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
@@ -1427,16 +1309,13 @@ class CartService extends TransactionBaseService {
           this.cartRepository_
         )
 
-        const useExistingTaxLines =
-          !!context.idempotencyKey &&
-          context.idempotencyKey.recovery_point !== "started"
         const cart = await this.retrieveWithTotals(
           cartId,
           {
             relations: ["payment_sessions"],
           },
           {
-            useExistingTaxLines,
+            useExistingTaxLines: !!context.useExistingTaxLines,
           }
         )
 
@@ -2211,14 +2090,15 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
-    const totalsService = this.totalsService_
-
     const useExistingTaxLines = totalsConfig.useExistingTaxLines
-    const calculationContext = await totalsService.getCalculationContext(cart, {
-      exclude_shipping: true,
-    })
+    const calculationContext = await this.totalsService_.getCalculationContext(
+      cart,
+      {
+        exclude_shipping: true,
+      }
+    )
 
-    const includeTax = totalsConfig?.force_taxes || cart.region.automatic_taxes
+    const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
 
     const itemsTotals = await this.totalsNewService_.getLineItemsTotals(
       cart.items,
@@ -2237,7 +2117,7 @@ class CartService extends TransactionBaseService {
       await this.totalsNewService_.getShippingMethodsTotals(
         cart.shipping_methods,
         {
-          includeTax,
+          includeTax: true,
           calculationContext,
           discounts: cart.discounts,
           useExistingTaxLines,
@@ -2312,6 +2192,126 @@ class CartService extends TransactionBaseService {
     await this.lineItemAdjustmentService_
       .withTransaction(transactionManager)
       .createAdjustments(cart)
+  }
+
+  protected transformQueryForTotals_(
+    config: FindConfig<Cart>
+  ): FindConfig<Cart> & { totalsToSelect: TotalField[] } {
+    let { select, relations } = config
+
+    if (!select) {
+      return {
+        select,
+        relations,
+        totalsToSelect: [],
+      }
+    }
+
+    const totalFields = [
+      "subtotal",
+      "tax_total",
+      "shipping_total",
+      "discount_total",
+      "gift_card_total",
+      "total",
+    ]
+
+    const totalsToSelect = select.filter((v) =>
+      totalFields.includes(v)
+    ) as TotalField[]
+    if (totalsToSelect.length > 0) {
+      const relationSet = new Set(relations)
+      relationSet.add("items")
+      relationSet.add("items.tax_lines")
+      relationSet.add("gift_cards")
+      relationSet.add("discounts")
+      relationSet.add("discounts.rule")
+      // relationSet.add("discounts.parent_discount")
+      // relationSet.add("discounts.parent_discount.rule")
+      // relationSet.add("discounts.parent_discount.regions")
+      relationSet.add("shipping_methods")
+      relationSet.add("shipping_address")
+      relationSet.add("region")
+      relationSet.add("region.tax_rates")
+      relations = Array.from(relationSet.values())
+
+      select = select.filter((v) => !totalFields.includes(v))
+    }
+
+    return {
+      relations,
+      select,
+      totalsToSelect,
+    }
+  }
+
+  protected async decorateTotals_(
+    cart: Cart,
+    totalsToSelect: TotalField[],
+    options: TotalsConfig = { force_taxes: false }
+  ): Promise<Cart> {
+    const totals: { [K in TotalField]?: number | null } = {}
+
+    for (const key of totalsToSelect) {
+      switch (key) {
+        case "total": {
+          totals.total = await this.totalsService_.getTotal(cart, {
+            force_taxes: options.force_taxes,
+          })
+          break
+        }
+        case "shipping_total": {
+          totals.shipping_total = await this.totalsService_.getShippingTotal(
+            cart
+          )
+          break
+        }
+        case "discount_total":
+          totals.discount_total = await this.totalsService_.getDiscountTotal(
+            cart
+          )
+          break
+        case "tax_total":
+          totals.tax_total = await this.totalsService_.getTaxTotal(
+            cart,
+            options.force_taxes
+          )
+          break
+        case "gift_card_total": {
+          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
+            cart
+          )
+          totals.gift_card_total = giftCardBreakdown.total
+          totals.gift_card_tax_total = giftCardBreakdown.tax_total
+          break
+        }
+        case "subtotal":
+          totals.subtotal = await this.totalsService_.getSubtotal(cart)
+          break
+        default:
+          break
+      }
+    }
+
+    return Object.assign(cart, totals)
+  }
+
+  private getTotalsRelations(config: FindConfig<Cart>): string[] {
+    const relationSet = new Set(config.relations)
+
+    relationSet.add("items")
+    relationSet.add("items.tax_lines")
+    relationSet.add("items.adjustments")
+    relationSet.add("gift_cards")
+    relationSet.add("discounts")
+    relationSet.add("discounts.rule")
+    relationSet.add("shipping_methods")
+    relationSet.add("shipping_methods.tax_lines")
+    relationSet.add("shipping_address")
+    relationSet.add("region")
+    relationSet.add("region.tax_rates")
+
+    return Array.from(relationSet.values())
   }
 }
 

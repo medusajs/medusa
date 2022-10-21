@@ -3,8 +3,6 @@ import { Column } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 export class TaxLine extends BaseEntity {
-  readonly object = "tax-line"
-
   @Column({ type: "real" })
   rate: number
 

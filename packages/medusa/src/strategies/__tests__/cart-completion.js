@@ -1,5 +1,6 @@
 import { MockManager } from "medusa-test-utils"
 import CartCompletionStrategy from "../cart-completion"
+import { TotalsNewServiceMock } from "../../services/__mocks__/totals-new"
 
 const IdempotencyKeyServiceMock = {
   withTransaction: function () {
@@ -63,7 +64,12 @@ const toTest = [
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledWith(
           "test-cart",
           {
-            idempotency_key: "ikey",
+            cart_id: "test-cart",
+            idempotency_key: {
+              idempotency_key: "ikey",
+              recovery_point: "tax_lines_created",
+            },
+            useExistingTaxLine: true,
           }
         )
 
@@ -72,17 +78,13 @@ const toTest = [
           "test-cart"
         )
 
-        expect(orderServiceMock.retrieve).toHaveBeenCalledTimes(1)
-        expect(orderServiceMock.retrieve).toHaveBeenCalledWith("test-cart", {
-          select: [
-            "subtotal",
-            "tax_total",
-            "shipping_total",
-            "discount_total",
-            "total",
-          ],
-          relations: ["shipping_address", "items", "payments"],
-        })
+        expect(orderServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
+        expect(orderServiceMock.retrieveWithTotals).toHaveBeenCalledWith(
+          "test-cart",
+          {
+            relations: ["shipping_address", "items", "payments"],
+          }
+        )
       },
     },
   ],
@@ -187,6 +189,7 @@ describe("CartCompletionStrategy", () => {
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),
           retrieveWithTotals: jest.fn(() => Promise.resolve(cart)),
+          totalsNewService: TotalsNewServiceMock,
         }
         const orderServiceMock = {
           withTransaction: function () {
@@ -194,6 +197,8 @@ describe("CartCompletionStrategy", () => {
           },
           createFromCart: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve({})),
+          retrieveWithTotals: jest.fn(() => Promise.resolve({})),
+          totalsNewService: TotalsNewServiceMock,
         }
         const swapServiceMock = {
           withTransaction: function () {
