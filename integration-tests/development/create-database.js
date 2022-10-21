@@ -1,3 +1,7 @@
+const path = require("path")
+
+require("dotenv").config({ path: path.join(__dirname, ".env.development") })
+
 const { initDb } = require("./use-db-development")
 
 require("./dev-require")
