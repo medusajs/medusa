@@ -2548,7 +2548,7 @@ paths:
     get:
       operationId: GetGiftCardsCode
       summary: Get Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
+      description: Retrieves a Gift Card by its associated unique code.
       parameters:
         - in: path
           name: code
@@ -7879,7 +7879,7 @@ components:
         sku:
           description: >-
             The unique stock keeping unit used to identify the Product Variant.
-            This will usually be a unqiue identifer for the item that is to be
+            This will usually be a unique identifer for the item that is to be
             shipped, and can be referenced across multiple systems.
           type: string
           example: shirt-123

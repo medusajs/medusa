@@ -1,7 +1,7 @@
 get:
   operationId: GetGiftCardsCode
   summary: Get Gift Card by Code
-  description: Retrieves a Gift Card by its associated unqiue code.
+  description: Retrieves a Gift Card by its associated unique code.
   parameters:
     - in: path
       name: code
