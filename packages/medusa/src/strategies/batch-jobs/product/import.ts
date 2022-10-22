@@ -6,6 +6,7 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -26,7 +27,7 @@ import {
   TBuiltProductImportLine,
   TParsedProductImportRowData,
 } from "./types"
-import { BatchJob, Product, SalesChannel } from "../../../models"
+import { BatchJob, Product, SalesChannel} from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -55,6 +56,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
+  protected readonly productCollectionService_: ProductCollectionService
   protected readonly batchJobService_: BatchJobService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
@@ -69,6 +71,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   constructor({
     batchJobService,
     productService,
+    productCollectionService,
     salesChannelService,
     productVariantService,
     shippingProfileService,
@@ -98,6 +101,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService_ = productService
+    this.productCollectionService_ = productCollectionService
     this.salesChannelService_ = salesChannelService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
@@ -274,16 +278,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             {
               key: "product-import-count",
               name: "Products/variants to import",
-              message: `There will be ${
-                ops[OperationType.ProductCreate].length
-              } products created (${
-                ops[OperationType.ProductUpdate].length
-              }  updated).
-             ${
-               ops[OperationType.VariantCreate].length
-             } variants will be created and ${
-                ops[OperationType.VariantUpdate].length
-              } updated`,
+              message: `There will be ${ops[OperationType.ProductCreate].length
+                } products created (${ops[OperationType.ProductUpdate].length
+                }  updated).
+             ${ops[OperationType.VariantCreate].length
+                } variants will be created and ${ops[OperationType.VariantUpdate].length
+                } updated`,
             },
           ],
         },
@@ -383,11 +383,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+
+
     for (const productOp of productOps) {
       const productData = transformProductData(
         productOp
       ) as unknown as CreateProductInput
-
       try {
         if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
           productData["sales_channels"] = await this.processSalesChannels(
@@ -396,6 +397,39 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
               "name" | "id"
             >[]
           )
+        }
+
+        var collectionNotExists = true;
+        try {
+          var collectionHandle = await this.productCollectionService_
+            .withTransaction(transactionManager)
+            .retrieveByHandle(productOp["product.collection.handle"] as string)
+          collectionNotExists = false;
+        } catch (error) {
+          // console.log(error)
+        }
+
+        try {
+          var collectionTitle = await this.productCollectionService_
+            .withTransaction(transactionManager)
+            .retrieveByTitle(productOp["product.collection.title"] as string)
+          collectionNotExists = false;
+        } catch (error) {
+          // console.log(error)
+        }
+
+        if (collectionNotExists) {
+          try {
+            const collectionCreated = await this.productCollectionService_
+              .withTransaction(transactionManager)
+              .create({
+                title: productOp["product.collection.title"] as string,
+                handle: productOp["product.collection.handle"] as string
+              })
+            productData.collection_id = collectionCreated.id
+          } catch (error) {
+            console.log(error)
+          }
         }
 
         await productServiceTx.create(productData)
@@ -862,12 +896,12 @@ const CSVSchema: ProductImportCsvSchema = {
 
         const [, regionName] =
           key.trim().match(/Price (.*) \[([A-Z]{3})\]/) || []
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
-          amount: parseFloat(value),
-          regionName,
-        })
+          ; (
+            builtLine["variant.prices"] as Record<string, string | number>[]
+          ).push({
+            amount: parseFloat(value),
+            regionName,
+          })
 
         return builtLine
       },
@@ -888,12 +922,12 @@ const CSVSchema: ProductImportCsvSchema = {
 
         const currency = key.trim().split(" ")[1]
 
-        ;(
-          builtLine["variant.prices"] as Record<string, string | number>[]
-        ).push({
-          amount: parseFloat(value),
-          currency_code: currency,
-        })
+          ; (
+            builtLine["variant.prices"] as Record<string, string | number>[]
+          ).push({
+            amount: parseFloat(value),
+            currency_code: currency,
+          })
 
         return builtLine
       },
