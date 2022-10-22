@@ -425,11 +425,14 @@ class ProductService extends TransactionBaseService {
         const result = await this.retrieve(product.id, {
           relations: ["options"],
         })
-      
-        const savedCollection = await this.productCollectionService_
-        .withTransaction(manager)
-        .addProducts(product.collection.title, [result.id])
 
+
+        if (rest.collection_id != null){
+          const savedCollection = await this.productCollectionService_
+          .withTransaction(manager)
+          .addProducts(rest.collection_id, [result.id])
+        }
+      
         await this.eventBus_
           .withTransaction(manager)
           .emit(ProductService.Events.CREATED, {
