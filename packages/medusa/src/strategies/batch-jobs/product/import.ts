@@ -400,23 +400,25 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         }
 
         var collectionNotExists = true;
+        var collectionId:string = "";
         try {
           var collectionHandle = await this.productCollectionService_
             .withTransaction(transactionManager)
             .retrieveByHandle(productOp["product.collection.handle"] as string)
           collectionNotExists = false;
+          collectionId = collectionHandle.id;
         } catch (error) {
           // console.log(error)
         }
 
-        try {
-          var collectionTitle = await this.productCollectionService_
-            .withTransaction(transactionManager)
-            .retrieveByTitle(productOp["product.collection.title"] as string)
-          collectionNotExists = false;
-        } catch (error) {
-          // console.log(error)
-        }
+        // try {
+        //   var collectionTitle = await this.productCollectionService_
+        //     .withTransaction(transactionManager)
+        //     .retrieveByTitle(productOp["product.collection.title"] as string)
+        //   collectionNotExists = false;
+        // } catch (error) {
+        //   console.log(error)
+        // }
 
         if (collectionNotExists) {
           try {
@@ -430,6 +432,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           } catch (error) {
             console.log(error)
           }
+        }else if (collectionId != ""){
+            productData.collection_id = collectionId
         }
 
         await productServiceTx.create(productData)
