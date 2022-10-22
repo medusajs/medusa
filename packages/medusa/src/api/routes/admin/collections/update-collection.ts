@@ -130,7 +130,7 @@ export class AdminPostCollectionsCollectionReq {
 
   @IsArray()
   @IsOptional()
-  images: string[]
+  images?: string[]
 
   @IsString()
   @IsOptional()

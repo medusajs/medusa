@@ -1,12 +1,9 @@
 import {
   AdminPostCollectionsReq,
-  AdminCollectionsRes,
   AdminPostCollectionsCollectionReq,
-  AdminCollectionsDeleteRes,
-  AdminCollectionsListRes,
   AdminGetCollectionsParams,
   AdminPostProductsToCollectionReq,
-  AdminDeleteProductsFromCollectionReq,
+  AdminDeleteProductsFromCollectionReq, ProductCollection,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -22,7 +19,7 @@ class AdminCollectionsResource extends BaseResource {
   create(
     payload: AdminPostCollectionsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -38,7 +35,7 @@ class AdminCollectionsResource extends BaseResource {
     id: string,
     payload: AdminPostCollectionsCollectionReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -52,7 +49,7 @@ class AdminCollectionsResource extends BaseResource {
   delete(
     id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsDeleteRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections/${id}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
@@ -66,7 +63,7 @@ class AdminCollectionsResource extends BaseResource {
   retrieve(
     id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections/${id}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
@@ -80,7 +77,7 @@ class AdminCollectionsResource extends BaseResource {
   list(
     query?: AdminGetCollectionsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsListRes> {
+  ): ResponsePromise<ProductCollection[]> {
     let path = `/admin/collections`
 
     if (query) {
@@ -101,7 +98,7 @@ class AdminCollectionsResource extends BaseResource {
     id: string,
     payload: AdminPostProductsToCollectionReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections/${id}/products/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -116,7 +113,7 @@ class AdminCollectionsResource extends BaseResource {
     id: string,
     payload: AdminDeleteProductsFromCollectionReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCollectionsDeleteRes> {
+  ): ResponsePromise<ProductCollection> {
     const path = `/admin/collections/${id}/products/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }

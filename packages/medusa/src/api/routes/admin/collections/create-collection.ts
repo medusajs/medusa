@@ -1,4 +1,10 @@
-import {IsArray, IsNotEmpty, IsObject, IsOptional, IsString} from "class-validator"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
@@ -127,7 +133,7 @@ export class AdminPostCollectionsReq {
 
   @IsArray()
   @IsOptional()
-  images: string[]
+  images?: string[]
 
   @IsString()
   @IsOptional()
