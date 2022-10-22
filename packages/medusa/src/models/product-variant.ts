@@ -131,7 +131,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/money_amount"
  *   sku:
- *     description: "The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems."
+ *     description: "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems."
  *     type: string
  *     example: shirt-123
  *   barcode:
