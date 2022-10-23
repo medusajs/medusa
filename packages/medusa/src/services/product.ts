@@ -2,12 +2,11 @@ import { FlagRouter } from "../utils/flag-router"
 
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { ProductVariantService, SearchService, ProductCollectionService } from "."
+import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
-  ProductCollection,
   ProductOption,
   ProductTag,
   ProductType,
@@ -44,7 +43,6 @@ type InjectedDependencies = {
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
   productVariantService: ProductVariantService
-  productCollectionService: ProductCollectionService
   searchService: SearchService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
@@ -61,8 +59,6 @@ class ProductService extends TransactionBaseService {
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
   protected readonly productVariantService_: ProductVariantService
-  protected readonly productCollectionService_: ProductCollectionService
-
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
@@ -81,7 +77,6 @@ class ProductService extends TransactionBaseService {
     productVariantRepository,
     eventBusService,
     productVariantService,
-    productCollectionService,
     productTypeRepository,
     productTagRepository,
     imageRepository,
@@ -97,7 +92,6 @@ class ProductService extends TransactionBaseService {
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
-    this.productCollectionService_ = productCollectionService
     this.productTypeRepository_ = productTypeRepository
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
@@ -380,9 +374,8 @@ class ProductService extends TransactionBaseService {
       }
 
       try {
-      
         let product = productRepo.create(rest)
-      
+
         if (images?.length) {
           product.images = await imageRepo.upsertImages(images)
         }
@@ -426,13 +419,6 @@ class ProductService extends TransactionBaseService {
           relations: ["options"],
         })
 
-
-        if (rest.collection_id != null){
-          const savedCollection = await this.productCollectionService_
-          .withTransaction(manager)
-          .addProducts(rest.collection_id, [result.id])
-        }
-      
         await this.eventBus_
           .withTransaction(manager)
           .emit(ProductService.Events.CREATED, {
