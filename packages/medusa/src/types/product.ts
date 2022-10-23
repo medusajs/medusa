@@ -151,6 +151,7 @@ export type CreateProductInput = {
   status?: ProductStatus
   type?: CreateProductProductTypeInput
   collection_id?: string
+  collection?: {}
   tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
   variants?: CreateProductProductVariantInput[]
