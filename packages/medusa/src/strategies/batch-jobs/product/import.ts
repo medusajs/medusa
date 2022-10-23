@@ -401,6 +401,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         var collectionNotExists = true;
         var collectionId:string = "";
+
+        // check if exists the collection and retreive the collectionId if exists.
         try {
           var collectionHandle = await this.productCollectionService_
             .withTransaction(transactionManager)
@@ -411,15 +413,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           // console.log(error)
         }
 
-        // try {
-        //   var collectionTitle = await this.productCollectionService_
-        //     .withTransaction(transactionManager)
-        //     .retrieveByTitle(productOp["product.collection.title"] as string)
-        //   collectionNotExists = false;
-        // } catch (error) {
-        //   console.log(error)
-        // }
 
+        // if this attribut it's not deleted ProductRepo will not associate the product to its collection
+        delete productData.collection
+
+
+        // if the collection it doesn't exist it's created
         if (collectionNotExists) {
           try {
             const collectionCreated = await this.productCollectionService_
@@ -432,6 +431,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           } catch (error) {
             console.log(error)
           }
+          //if the collection exists the passes the collection_id to ProductService
         }else if (collectionId != ""){
             productData.collection_id = collectionId
         }
