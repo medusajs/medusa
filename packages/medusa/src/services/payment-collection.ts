@@ -1,4 +1,4 @@
-import { DeepPartial, EntityManager, IsNull } from "typeorm"
+import { DeepPartial, EntityManager, Equal } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
@@ -80,68 +80,82 @@ export default class PaymentCollectionService extends TransactionBaseService {
     )
 
     const query = buildQuery({ id: paymentCollectionId }, config)
-    const paymentCollection = await paymentCollectionRepository.findOne(query)
 
-    if (!paymentCollection) {
+    const paymentCollection = await paymentCollectionRepository.find(query)
+
+    if (!paymentCollection.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Payment collection with id ${paymentCollectionId} was not found`
       )
     }
 
-    return paymentCollection
+    return paymentCollection[0]
   }
 
-  async getPaymentCollectionIdBySessionId(sessionId: string): Promise<string> {
+  async getPaymentCollectionIdBySessionId(
+    sessionId: string,
+    config: FindConfig<PaymentCollection> = {}
+  ): Promise<PaymentCollection> {
     const manager = this.transactionManager_ ?? this.manager_
+    const paymentCollectionRepository = manager.getCustomRepository(
+      this.paymentCollectionRepository_
+    )
 
-    const payCol = (await manager
-      .createQueryBuilder("payment_collection", "pc")
-      .select("pc.id")
-      .innerJoin(
-        "payment_collection_sessions",
-        "pcs",
-        "pcs.payment_collection_id = pc.id"
-      )
-      .where(`pcs.payment_session_id = :sessionId`, {
-        sessionId,
-      })
-      .getOne()) as PaymentCollection
+    const paymentCollection = await paymentCollectionRepository.find({
+      join: {
+        alias: "payment_col",
+        innerJoin: { payment_sessions: "payment_col.payment_sessions" },
+      },
+      where: (qb) => {
+        qb.where(
+          "payment_col_payment_sessions.payment_session_id = :sessionId",
+          { sessionId }
+        )
+      },
+      relations: config.relations,
+      select: config.select,
+    })
 
-    if (!payCol) {
+    if (!paymentCollection.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Session Id ${sessionId} doesn't belong to a Payment Collection`
+        `Payment collection related to Payment Session id ${sessionId} was not found`
       )
     }
 
-    return payCol.id
+    return paymentCollection[0]
   }
 
-  async getPaymentCollectionIdByPaymentId(paymentId: string): Promise<string> {
+  async getPaymentCollectionIdByPaymentId(
+    paymentId: string,
+    config: FindConfig<PaymentCollection> = {}
+  ): Promise<PaymentCollection> {
     const manager = this.transactionManager_ ?? this.manager_
+    const paymentCollectionRepository = manager.getCustomRepository(
+      this.paymentCollectionRepository_
+    )
 
-    const payCol = (await manager
-      .createQueryBuilder("payment_collection", "pc")
-      .select("pc.id")
-      .innerJoin(
-        "payment_collection_payments",
-        "p",
-        "p.payment_collection_id = pc.id"
-      )
-      .where(`p.payment_id = :sessionId`, {
-        sessionId: paymentId,
-      })
-      .getOne()) as PaymentCollection
+    const paymentCollection = await paymentCollectionRepository.find({
+      join: {
+        alias: "payment_col",
+        innerJoin: { payments: "payment_col.payments" },
+      },
+      where: (qb) => {
+        qb.where("payment_col_payments.payment_id = :paymentId", { paymentId })
+      },
+      relations: config.relations,
+      select: config.select,
+    })
 
-    if (!payCol) {
+    if (!paymentCollection.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Payment Id ${paymentId} doesn't belong to a Payment Collection`
+        `Payment collection related to Payment id ${paymentId} was not found`
       )
     }
 
-    return payCol.id
+    return paymentCollection[0]
   }
 
   async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
@@ -356,19 +370,25 @@ export default class PaymentCollectionService extends TransactionBaseService {
   }
 
   async refreshPaymentSession(
+    paymentCollectionId: string,
+    sessionId: string,
     sessionInput: PaymentCollectionSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const id = sessionInput.session_id?.toString() ?? ""
-
-      const payColId = await this.getPaymentCollectionIdBySessionId(id)
-      const session = await this.paymentProviderService_.retrieveSession(id)
-
-      const payCol = await this.retrieve(payColId, {
+      const payCol = await this.getPaymentCollectionIdBySessionId(sessionId, {
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
-      if (session.amount !== sessionInput.amount) {
+      if (paymentCollectionId !== payCol.id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Payment Session ${sessionId} does not belong to Payment Collection ${paymentCollectionId}`
+        )
+      }
+
+      const session = payCol.payment_sessions.find(({ id }) => sessionId === id)
+
+      if (session?.amount !== sessionInput.amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "The amount has to be the same as the existing payment session"
@@ -395,7 +415,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         .refreshSessionNew(session, inputData)
 
       payCol.payment_sessions = payCol.payment_sessions.map((sess) => {
-        if (sess.id === id) {
+        if (sess.id === sessionId) {
           return sessionRefreshed
         }
         return sess
@@ -515,20 +535,15 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const paymentProviderServiceTx =
-        this.paymentProviderService_.withTransaction(manager)
-
-      const capturedPayment = await paymentProviderServiceTx
+      let captureError: Error | null = null
+      const capturedPayment = await this.paymentProviderService_
+        .withTransaction(manager)
         .capturePayment(payment)
-        .catch(async (err) => {
-          await this.eventBusService_
-            .withTransaction(manager)
-            .emit(PaymentCollectionService.Events.PAYMENT_CAPTURE_FAILED, {
-              ...payment,
-              error: err,
-            })
+        .catch((err) => {
+          captureError = err
         })
 
+      payCol.captured_amount = payCol.captured_amount ?? 0
       if (capturedPayment) {
         payCol.captured_amount += payment.amount
       }
@@ -548,6 +563,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
       await paymentCollectionRepository.save(payCol)
 
       if (!capturedPayment) {
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(PaymentCollectionService.Events.PAYMENT_CAPTURE_FAILED, {
+            ...payment,
+            error: captureError,
+          })
+
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           `Failed to capture Payment ${payment.id}`
@@ -563,15 +585,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
   }
 
   async capture(paymentId: string): Promise<Payment> {
-    const payColId = await this.getPaymentCollectionIdByPaymentId(paymentId)
+    const payCol = await this.getPaymentCollectionIdByPaymentId(paymentId, {
+      relations: ["payments"],
+    })
 
-    const payment = await this.paymentProviderService_.retrievePayment(
-      paymentId
-    )
+    const payment = payCol.payments.find(({ id }) => paymentId === id)
 
-    const payCol = await this.retrieve(payColId)
-
-    return await this.capturePayment(payCol, payment)
+    return await this.capturePayment(payCol, payment!)
   }
 
   async captureAll(paymentCollectionId: string): Promise<Payment[]> {
@@ -616,18 +636,15 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
+      let refundError: Error | null = null
       const refund = await this.paymentProviderService_
         .withTransaction(manager)
         .refundFromPayment(payment, amount, reason, note)
-        .catch(async (err) => {
-          await this.eventBusService_
-            .withTransaction(manager)
-            .emit(PaymentCollectionService.Events.REFUND_FAILED, {
-              ...payment,
-              error: err,
-            })
+        .catch((err) => {
+          refundError = err
         })
 
+      payCol.refunded_amount = payCol.refunded_amount ?? 0
       if (refund) {
         payCol.refunded_amount += refund.amount
       }
@@ -647,6 +664,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
       await paymentCollectionRepository.save(payCol)
 
       if (!refund) {
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(PaymentCollectionService.Events.REFUND_FAILED, {
+            ...payment,
+            error: refundError,
+          })
+
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           `Failed to refund Payment ${payment.id}`
@@ -667,12 +691,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
     reason: string,
     note?: string
   ): Promise<Refund> {
-    const payColId = await this.getPaymentCollectionIdByPaymentId(paymentId)
+    const payCol = await this.getPaymentCollectionIdByPaymentId(paymentId)
 
     const payment = await this.paymentProviderService_.retrievePayment(
       paymentId
     )
-    const payCol = await this.retrieve(payColId)
 
     return await this.refundPayment(payCol, payment, amount, reason, note)
   }

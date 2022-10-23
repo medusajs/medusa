@@ -199,7 +199,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         provider_id: sessionInput.provider_id,
         data: sessionData,
         status: "pending",
-        amount: sessionData.amount,
+        amount: sessionInput.amount,
       } as PaymentSession
 
       const created = sessionRepo.create(toCreate)
