@@ -1,0 +1,23 @@
+.alert {
+  padding: 16px;
+  border: 1px solid var(--ifm-note-border-color) !important;
+  background-color: var(--ifm-note-background);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.alert p > code {
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 14px !important;
+}
+
+html:not([data-theme="dark"]) [class*=alert--] p > code {
+  --ifm-code-background: #F9FAFB;
+  --ifm-alert-background-color-highlight: #F9FAFB;
+}
+
+[data-theme="dark"] [class*=alert--] p > code {
+  --ifm-code-background: #222222;
+  --ifm-alert-background-color-highlight: #222222;
+}

@@ -58,6 +58,15 @@
 
   /* Screen Width */
   --ifm-container-width-xl: 960px;
+
+  /* Notes */
+  --ifm-note-background: #F9FAFB;
+  --ifm-note-border-color: #E5E7EB;
+  --ifm-note-text-color: #4B5563;
+
+  /* Code */
+  --ifm-code-border-radius: 8px;
+  --ifm-code-border-color: #E5E7EB;
 }
 
 html[data-theme="dark"] {
@@ -90,4 +99,12 @@ html[data-theme="dark"] {
   --mode-button-active-bg: #161616;
   --mode-button-active-border-color: #393939;
   --mode-button-active-text-color: #F3F3F3;
+
+  /* Notes */
+  --ifm-note-background: #222222;
+  --ifm-note-border-color: #393939;
+  --ifm-note-text-color: #8A8A8A;
+
+  /* Code */
+  --ifm-code-border-color: #393939;
 }
