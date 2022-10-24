@@ -70,18 +70,33 @@ export default async (req, res) => {
     })
   }
 
-  async function autorizePaymentCollection(req, payColId) {
+  async function autorizePaymentCollection(req, id, paymentIntentId) {
     const manager = req.scope.resolve("manager")
     const paymentCollectionService = req.scope.resolve(
       "paymentCollectonService"
     )
 
-    await manager.transaction(async (m) => {
-      const payCol = await paymentCollectionService
-        .withTransaction(m)
-        .retrieve(payColId)
-    })
-    // TODO: complete authorization
+    const paycol = await paymentCollectionService
+      .retrieve(id, { relations: ["payments"] })
+      .catch(() => undefined)
+
+    if (paycol?.payments?.length) {
+      if (event.type === "payment_intent.succeeded") {
+        const payment = paycol.payments.find((pay) => {
+          return (
+            pay.data.purchase_units[0].payments.authorizations[0].id ===
+            paymentIntentId
+          )
+        })
+        if (payment && !payment.captured_at) {
+          await manager.transaction(async (manager) => {
+            await paymentCollectionService
+              .withTransaction(manager)
+              .capture(payment.id)
+          })
+        }
+      }
+    }
   }
 
   try {
@@ -100,7 +115,8 @@ export default async (req, res) => {
     }
 
     if (isPaymentCollection(customId)) {
-      await autorizePaymentCollection(req, customId)
+      const paymentIntentId = purchaseUnit.payments.authorizations[0].id
+      await autorizePaymentCollection(req, customId, paymentIntentId)
     } else {
       await autorizeCart(req, customId)
     }
