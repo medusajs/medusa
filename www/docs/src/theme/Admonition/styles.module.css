@@ -1,0 +1,31 @@
+.admonition {
+  margin-bottom: 32px;
+}
+
+.admonitionIcon {
+  display: inline-block;
+}
+
+.admonitionIcon svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.admonitionIcon {
+  height: 15px;
+  width: 15px;
+  margin-right: 16px;
+}
+
+.admonitionContent {
+  font-size: 14px;
+  color: var(--ifm-note-text-color);
+}
+
+.admonitionContent > :last-child {
+  margin-bottom: 0;
+}
+
+.admonitionContentContainer {
+  display: flex;
+}

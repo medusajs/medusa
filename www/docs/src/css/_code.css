@@ -2,6 +2,10 @@
   background-color: var(--ifm-code-background);
 }
 
+code {
+  border: 1px solid var(--ifm-code-border-color);
+}
+
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
