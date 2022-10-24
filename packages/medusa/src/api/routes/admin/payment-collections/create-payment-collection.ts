@@ -1,7 +1,8 @@
 import {
   IsObject,
   IsEnum,
-  IsNumber,
+  IsInt,
+  IsNotEmpty,
   IsOptional,
   IsString,
 } from "class-validator"
@@ -40,7 +41,8 @@ export class AdminCreatePaymentCollectionRequest {
   @IsString()
   currency_code: string
 
-  @IsNumber()
+  @IsInt()
+  @IsNotEmpty()
   amount: number
 
   @IsEnum(PaymentCollectionType)

@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
 import { EntityManager } from "typeorm"
@@ -31,7 +31,8 @@ export class PaymentCollectionSessionInputRequest {
   @IsString()
   customer_id: string
 
-  @IsNumber()
+  @IsInt()
+  @IsNotEmpty()
   amount: number
 
   @IsString()

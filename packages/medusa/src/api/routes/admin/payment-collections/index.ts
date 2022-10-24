@@ -66,6 +66,16 @@ export default (app, container) => {
     middlewares.wrap(require("./capture-payment").default)
   )
 
+  route.post(
+    ":id/payments/refund",
+    middlewares.wrap(require("./refund-all-payment-collection").default)
+  )
+
+  route.post(
+    "/payments/:payment_id/refund",
+    middlewares.wrap(require("./refund-payment").default)
+  )
+
   return app
 }
 
