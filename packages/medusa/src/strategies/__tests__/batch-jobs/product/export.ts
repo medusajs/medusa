@@ -7,7 +7,7 @@ import {
   AdminPostBatchesReq,
   defaultAdminProductRelations,
 } from "../../../../api"
-import { ProductExportBatchJob } from "../../../batch-jobs/product"
+import { ProductExportBatchJob } from "../../../batch-jobs/product/types"
 import { Request } from "express"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -129,7 +129,7 @@ describe("Product export strategy", () => {
     )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product id.*/)
+    expect(template).toMatch(/.*Product Id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -149,17 +149,17 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Product Type.*/)
     expect(template).toMatch(/.*Product Tags.*/)
     expect(template).toMatch(/.*Product Discountable.*/)
-    expect(template).toMatch(/.*Product External ID.*/)
+    expect(template).toMatch(/.*Product External Id.*/)
     expect(template).toMatch(/.*Product Profile Name.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant id.*/)
+    expect(template).toMatch(/.*Variant Id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
-    expect(template).toMatch(/.*Variant Allow backorder.*/)
-    expect(template).toMatch(/.*Variant Manage inventory.*/)
+    expect(template).toMatch(/.*Variant Allow Backorder.*/)
+    expect(template).toMatch(/.*Variant Manage Inventory.*/)
     expect(template).toMatch(/.*Variant Weight.*/)
     expect(template).toMatch(/.*Variant Length.*/)
     expect(template).toMatch(/.*Variant Width.*/)
@@ -174,10 +174,12 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Option 2 Name.*/)
     expect(template).toMatch(/.*Option 2 Value.*/)
 
-    expect(template).not.toMatch(/.*Sales channel 1 Name.*/)
-    expect(template).not.toMatch(/.*Sales channel 1 Description.*/)
-    expect(template).not.toMatch(/.*Sales channel 2 Name.*/)
-    expect(template).not.toMatch(/.*Sales channel 2 Description.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Id.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Name.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Description.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Id.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Name.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Description.*/)
 
     expect(template).toMatch(/.*Price USD.*/)
     expect(template).toMatch(/.*Price france \[USD\].*/)
@@ -298,7 +300,7 @@ describe("Product export strategy", () => {
   })
 })
 
-describe("Product export strategy with sales channels", () => {
+describe("Product export strategy with sales Channels", () => {
   const outputDataStorage: string[] = []
   const fileServiceMock = {
     delete: jest.fn(),
@@ -394,7 +396,7 @@ describe("Product export strategy with sales channels", () => {
     )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product id.*/)
+    expect(template).toMatch(/.*Product Id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -414,17 +416,17 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Product Type.*/)
     expect(template).toMatch(/.*Product Tags.*/)
     expect(template).toMatch(/.*Product Discountable.*/)
-    expect(template).toMatch(/.*Product External ID.*/)
+    expect(template).toMatch(/.*Product External Id.*/)
     expect(template).toMatch(/.*Product Profile Name.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant id.*/)
+    expect(template).toMatch(/.*Variant Id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
-    expect(template).toMatch(/.*Variant Allow backorder.*/)
-    expect(template).toMatch(/.*Variant Manage inventory.*/)
+    expect(template).toMatch(/.*Variant Allow Backorder.*/)
+    expect(template).toMatch(/.*Variant Manage Inventory.*/)
     expect(template).toMatch(/.*Variant Weight.*/)
     expect(template).toMatch(/.*Variant Length.*/)
     expect(template).toMatch(/.*Variant Width.*/)
@@ -444,10 +446,12 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Price denmark \[DKK\].*/)
     expect(template).toMatch(/.*Price Denmark \[DKK\].*/)
 
-    expect(template).toMatch(/.*Sales channel 1 Name.*/)
-    expect(template).toMatch(/.*Sales channel 1 Description.*/)
-    expect(template).toMatch(/.*Sales channel 2 Name.*/)
-    expect(template).toMatch(/.*Sales channel 2 Description.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Id.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Name.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Description.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Id.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Name.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Description.*/)
 
     expect(template).toMatch(/.*Image 1 Url.*/)
   })

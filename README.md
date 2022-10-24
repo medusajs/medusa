@@ -97,12 +97,12 @@ Write-ups for all features will be made available in [Github discussions](https
 - [x]  Promotions API
 - [x]  Price Lists API
 - [x]  Price Selection Strategy
-- [ ]  Import / Export API
-- [ ]  Sales Channel API
+- [x]  Import / Export API
+- [x]  Sales Channel API
+- [ ]  Extended Order API (managing placed orders)
+- [ ]  PaymentCollection API (collecting payments separate from carts and draft orders)
+- [ ]  Multi-warehouse API
 - [ ]  Extended Product API (custom fields, publishing control, and more)
-- [ ]  Extended Order API (managing placed orders, improved inventory control, and more)
-- [ ]  Multi-warehouse support
-- [ ]  GraphQL API
 
 ## Plugins
 
