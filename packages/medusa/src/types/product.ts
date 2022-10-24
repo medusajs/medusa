@@ -150,6 +150,7 @@ export type CreateProductInput = {
   handle?: string
   status?: ProductStatus
   type?: CreateProductProductTypeInput
+  collection?:{}
   collection_id?: string
   tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
