@@ -5,7 +5,11 @@ import {
   PaymentCollectionService,
   PaymentProviderService,
 } from "../index"
-import { PaymentCollectionStatus, PaymentCollectionType } from "../../models"
+import {
+  PaymentCollectionStatus,
+  PaymentCollectionType,
+  PaymentCollection,
+} from "../../models"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import {
   DefaultProviderMock,
@@ -32,6 +36,13 @@ describe("PaymentCollectionService", () => {
         },
       ],
     },
+    payment_sessions: [
+      {
+        id: IdMap.getId("payCol_session1"),
+        provider_id: IdMap.getId("region1_provider1"),
+        amount: 100,
+      },
+    ],
     amount: 100,
     created_at: new Date(),
     metadata: {
@@ -60,7 +71,7 @@ describe("PaymentCollectionService", () => {
     amount: 100,
     created_at: new Date(),
     status: PaymentCollectionStatus.NOT_PAID,
-  }
+  } as PaymentCollection
 
   const paymentCollectionAuthorizedSample = {
     id: IdMap.getId("payment-collection-id2"),
@@ -84,7 +95,7 @@ describe("PaymentCollectionService", () => {
   }
 
   const fullyAuthorizedSample = {
-    id: IdMap.getId("payment-collection-id2"),
+    id: IdMap.getId("payment-collection-fully"),
     region_id: IdMap.getId("region1"),
     amount: 35000,
     authorized_amount: 35000,
@@ -103,12 +114,18 @@ describe("PaymentCollectionService", () => {
         amount: 35000,
       },
     ],
-    payments: [],
+    payments: [
+      {
+        id: IdMap.getId("payment-123"),
+        amount: 35000,
+        captured_amount: 0,
+      },
+    ],
     status: PaymentCollectionStatus.AUTHORIZED,
-  }
+  } as unknown as PaymentCollection
 
   const partiallyAuthorizedSample = {
-    id: IdMap.getId("payment-collection-id2"),
+    id: IdMap.getId("payment-collection-partial"),
     region_id: IdMap.getId("region1"),
     amount: 70000,
     authorized_amount: 35000,
@@ -137,7 +154,7 @@ describe("PaymentCollectionService", () => {
   }
 
   const notAuthorizedSample = {
-    id: IdMap.getId("payment-collection-id2"),
+    id: IdMap.getId("payment-collection-not-authorized"),
     region_id: IdMap.getId("region1"),
     amount: 70000,
     region: {
@@ -161,10 +178,10 @@ describe("PaymentCollectionService", () => {
     ],
     payments: [],
     status: PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
-  }
+  } as unknown as PaymentCollection
 
   const paymentCollectionRepository = MockRepository({
-    findOne: (query) => {
+    find: (query) => {
       const map = {
         [IdMap.getId("payment-collection-id1")]: paymentCollectionSample,
         [IdMap.getId("payment-collection-id2")]:
@@ -179,7 +196,7 @@ describe("PaymentCollectionService", () => {
       }
 
       if (map[query?.where?.id]) {
-        return { ...map[query?.where?.id] }
+        return [{ ...map[query?.where?.id] }]
       }
       return
     },
@@ -188,6 +205,9 @@ describe("PaymentCollectionService", () => {
         ...paymentCollectionSample,
         ...data,
       }
+    },
+    save: (data) => {
+      return data
     },
   })
   const getFunctionMock = () => {
@@ -214,8 +234,8 @@ describe("PaymentCollectionService", () => {
     await paymentCollectionService.retrieve(
       IdMap.getId("payment-collection-id1")
     )
-    expect(paymentCollectionRepository.findOne).toHaveBeenCalledTimes(1)
-    expect(paymentCollectionRepository.findOne).toHaveBeenCalledWith({
+    expect(paymentCollectionRepository.find).toHaveBeenCalledTimes(1)
+    expect(paymentCollectionRepository.find).toHaveBeenCalledWith({
       where: { id: IdMap.getId("payment-collection-id1") },
     })
   })
@@ -225,8 +245,11 @@ describe("PaymentCollectionService", () => {
       IdMap.getId("payment-collection-non-existing-id")
     )
 
-    expect(paymentCollectionRepository.findOne).toHaveBeenCalledTimes(1)
     expect(payCol).rejects.toThrow(Error)
+
+    payCol.catch(() => {
+      expect(paymentCollectionRepository.find).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("should create a payment collection", async () => {
@@ -312,9 +335,12 @@ describe("PaymentCollectionService", () => {
       IdMap.getId("payment-collection-non-existing"),
       submittedChanges
     )
-    expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(0)
-    expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+
     expect(payCol).rejects.toThrow(Error)
+    payCol.catch(() => {
+      expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(0)
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+    })
   })
 
   it("should delete a payment collection", async () => {
@@ -355,7 +381,7 @@ describe("PaymentCollectionService", () => {
     expect(entity).rejects.toThrow(Error)
   })
 
-  describe("PaymentCollectionService - Manage Payment Sessions", () => {
+  describe("Manage Payment Sessions", () => {
     it("should throw error if payment collection doesn't have the correct status", async () => {
       const inp: PaymentCollectionSessionInput = {
         amount: 100,
@@ -373,9 +399,11 @@ describe("PaymentCollectionService", () => {
         )
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
-        0
-      )
+      ret.catch(() => {
+        expect(
+          PaymentProviderServiceMock.createSessionNew
+        ).toHaveBeenCalledTimes(0)
+      })
     })
 
     it("should throw error if amount is different than requested", async () => {
@@ -435,10 +463,13 @@ describe("PaymentCollectionService", () => {
         multInp
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
-        0
-      )
       expect(multiRet).rejects.toThrow(`The total amount must be equal to 100`)
+
+      multiRet.catch(() => {
+        expect(
+          PaymentProviderServiceMock.createSessionNew
+        ).toHaveBeenCalledTimes(0)
+      })
     })
 
     it("should throw error if customer_id is not found", async () => {
@@ -456,7 +487,9 @@ describe("PaymentCollectionService", () => {
         0
       )
       await expect(ret).rejects.toThrow(`Invalid customer_id`)
-      expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      ret.catch(() => {
+        expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
+      })
     })
 
     it("should add a new session and update existing one", async () => {
@@ -513,31 +546,19 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should refresh a payment session", async () => {
-      PaymentProviderServiceMock.retrieveSession = jest
-        .fn()
-        .mockImplementation((id) => {
-          return Promise.resolve({
-            provider_id: IdMap.getId("region1_provider1"),
-            amount: 100,
-            id,
-          })
-        })
+      jest
+        .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
+        .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
 
-      jest.fn().mockImplementation(() => {
-        return Promise.resolve()
-      }),
-        jest
-          .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
-          .mockImplementation(async () =>
-            IdMap.getId("payment-collection-session")
-          )
-
-      await paymentCollectionService.refreshPaymentSession({
-        customer_id: "customer1",
-        amount: 100,
-        provider_id: IdMap.getId("region1_provider1"),
-        session_id: IdMap.getId("payment-collection-payCol_session1"),
-      })
+      await paymentCollectionService.refreshPaymentSession(
+        IdMap.getId("payment-collection-session"),
+        IdMap.getId("payCol_session1"),
+        {
+          customer_id: "customer1",
+          amount: 100,
+          provider_id: IdMap.getId("region1_provider1"),
+        }
+      )
 
       expect(
         PaymentProviderServiceMock.refreshSessionNew
@@ -549,44 +570,37 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should fail to refresh a payment session if the amount is different", async () => {
-      PaymentProviderServiceMock.retrieveSession = jest
-        .fn()
-        .mockImplementation((id) => {
-          return Promise.resolve({
-            provider_id: IdMap.getId("region1_provider1"),
-            amount: 100,
-            id,
-          })
-        })
-
       jest
         .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
-        .mockImplementation(async () =>
-          IdMap.getId("payment-collection-session")
-        )
+        .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
 
-      const sess = paymentCollectionService.refreshPaymentSession({
-        customer_id: "customer1",
-        amount: 80,
-        provider_id: IdMap.getId("region1_provider1"),
-        session_id: IdMap.getId("payment-collection-payCol_session1"),
-      })
+      const sess = paymentCollectionService.refreshPaymentSession(
+        IdMap.getId("payment-collection-session"),
+        IdMap.getId("payCol_session1"),
+        {
+          customer_id: "customer1",
+          amount: 80,
+          provider_id: IdMap.getId("region1_provider1"),
+        }
+      )
 
       expect(sess).rejects.toThrow(
         "The amount has to be the same as the existing payment session"
       )
 
-      expect(
-        PaymentProviderServiceMock.refreshSessionNew
-      ).toHaveBeenCalledTimes(0)
-      expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(0)
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
-        0
-      )
+      sess.catch(() => {
+        expect(
+          PaymentProviderServiceMock.refreshSessionNew
+        ).toHaveBeenCalledTimes(0)
+        expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(0)
+        expect(
+          PaymentProviderServiceMock.createSessionNew
+        ).toHaveBeenCalledTimes(0)
+      })
     })
   })
 
-  describe("PaymentCollectionService - Authorize Payments", () => {
+  describe("Authorize Payments", () => {
     it("should mark as paid if amount is 0", async () => {
       await paymentCollectionService.authorize(
         IdMap.getId("payment-collection-zero")
@@ -649,6 +663,75 @@ describe("PaymentCollectionService", () => {
         0
       )
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("Capture Payments", () => {
+    it("should throw error if the status is not authorized", async () => {
+      jest
+        .spyOn(paymentCollectionService, "getPaymentCollectionIdByPaymentId")
+        .mockReturnValue(Promise.resolve(notAuthorizedSample))
+
+      PaymentProviderServiceMock.capturePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve())
+
+      const ret = paymentCollectionService.capture(
+        IdMap.getId("payment-collection-not-authorized")
+      )
+
+      expect(ret).rejects.toThrowError(
+        new Error(
+          `A Payment Collection with status ${PaymentCollectionStatus.PARTIALLY_AUTHORIZED} cannot capture payment`
+        )
+      )
+      ret.catch(() => {
+        expect(PaymentProviderServiceMock.capturePayment).toHaveBeenCalledTimes(
+          0
+        )
+      })
+    })
+
+    it("should emit PAYMENT_CAPTURE_FAILED if payment capture has failed", async () => {
+      jest
+        .spyOn(paymentCollectionService, "getPaymentCollectionIdByPaymentId")
+        .mockResolvedValue(fullyAuthorizedSample)
+
+      PaymentProviderServiceMock.retrievePayment = jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: IdMap.getId("payment-123"),
+          amount: 35000,
+          captured_amount: 0,
+        })
+      )
+
+      PaymentProviderServiceMock.capturePayment = jest
+        .fn()
+        .mockRejectedValue("capture failed")
+
+      const ret = paymentCollectionService.capture(IdMap.getId("payment-123"))
+
+      expect(ret).rejects.toThrowError(
+        new Error(`Failed to capture Payment ${IdMap.getId("payment-123")}`)
+      )
+
+      ret.catch(() => {
+        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
+          PaymentCollectionService.Events.PAYMENT_CAPTURE_FAILED,
+          expect.objectContaining({
+            id: IdMap.getId("payment-123"),
+            captured_amount: 0,
+            error: "capture failed",
+          })
+        )
+
+        expect(paymentCollectionRepository.save).toHaveBeenCalledWith(
+          expect.objectContaining({
+            captured_amount: 0,
+          })
+        )
+      })
     })
   })
 })

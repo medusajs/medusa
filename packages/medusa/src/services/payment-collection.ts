@@ -316,7 +316,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         }
 
         const existingSession = payCol.payment_sessions?.find(
-          ({ id }) => session.session_id === id
+          (sess) => session.session_id === sess?.id
         )
 
         const inputData: PaymentProviderDataInput = {
@@ -386,7 +386,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const session = payCol.payment_sessions.find(({ id }) => sessionId === id)
+      const session = payCol.payment_sessions.find(
+        (sess) => sessionId === sess?.id
+      )
 
       if (session?.amount !== sessionInput.amount) {
         throw new MedusaError(
@@ -517,7 +519,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     payCol: PaymentCollection,
     payment: Payment
   ): Promise<Payment> {
-    if (payment.captured_at) {
+    if (payment?.captured_at) {
       return payment
     }
 
@@ -589,7 +591,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
       relations: ["payments"],
     })
 
-    const payment = payCol.payments.find(({ id }) => paymentId === id)
+    const payment = payCol.payments.find((payment) => paymentId === payment?.id)
 
     return await this.capturePayment(payCol, payment!)
   }
