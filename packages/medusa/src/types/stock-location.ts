@@ -1,14 +1,14 @@
 import { StringComparisonOperator } from "./common"
 
 export type StockLocationAddressDTO = {
-  id: string
+  id?: string
   address_1: string
-  address_2: string
-  city: string
-  country_code: string
-  phone: string
-  postal_code: string
-  province: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  phone?: string
+  postal_code?: string
+  province?: string
 }
 
 export type StockLocationDTO = {
@@ -29,11 +29,11 @@ export type FilterableStockLocationProps = {
 export type StockLocationAddressInput = {
   address_1: string
   address_2?: string
-  city: string
-  country_code: string
-  phone: string
-  province: string
-  postal_code: string
+  city?: string
+  country_code?: string
+  phone?: string
+  province?: string
+  postal_code?: string
 }
 
 export type CreateStockLocationInput = {

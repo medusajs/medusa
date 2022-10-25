@@ -4,7 +4,6 @@ import { Transform, Type } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getLevelsByItemId } from "./utils/join-levels"
 import { getVariantsByItemId } from "./utils/join-variants"
-
 import {
   ProductVariantInventoryService,
   ProductVariantService,
@@ -78,10 +77,14 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
   variant?: ProductVariant
 }
 
-export class AdminGetInventoryItemParams extends extendedFindParamsMixin({
+export class AdminGetInventoryItemsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
   @IsOptional()
   @IsString()
   q?: string

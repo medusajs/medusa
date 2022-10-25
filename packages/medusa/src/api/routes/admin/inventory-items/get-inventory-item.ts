@@ -15,4 +15,4 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ inventory_item: data })
 }
 
-export class AdminGetInventoryItemParams extends FindParams {}
+export class AdminGetInventoryItemsItemParams extends FindParams {}

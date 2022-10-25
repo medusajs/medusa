@@ -2,8 +2,20 @@ import { Router } from "express"
 import "reflect-metadata"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import { StockLocationDTO } from "../../../../types/stock-location"
-import middlewares, { transformQuery } from "../../../middlewares"
-import { AdminGetStockLocationParams } from "./list-stock-locations"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+import { AdminGetStockLocationsParams } from "./list-stock-locations"
+import { AdminGetStockLocationsLocationParams } from "./get-stock-location"
+import {
+  AdminPostStockLocationsLocationParams,
+  AdminPostStockLocationsLocationReq,
+} from "./update-stock-location"
+import {
+  AdminPostStockLocationsParams,
+  AdminPostStockLocationsReq,
+} from "./create-stock-location"
 
 const route = Router()
 
@@ -12,146 +24,44 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(AdminGetStockLocationParams, {
+    transformQuery(AdminGetStockLocationsParams, {
       defaultFields: defaultAdminStockLocationFields,
       defaultRelations: defaultAdminStockLocationRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-stock-locations").default)
   )
-  // route.post(
-  //   "/",
-  //   transformQuery(AdminPostDiscountsParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminPostDiscountsReq),
-  //   middlewares.wrap(require("./create-discount").default)
-  // )
+  route.post(
+    "/",
+    transformQuery(AdminPostStockLocationsParams, {
+      defaultFields: defaultAdminStockLocationFields,
+      defaultRelations: defaultAdminStockLocationRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostStockLocationsReq),
+    middlewares.wrap(require("./create-stock-location").default)
+  )
 
-  // route.get(
-  //   "/:discount_id",
-  //   transformQuery(AdminGetDiscountParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   middlewares.wrap(require("./get-discount").default)
-  // )
-  // route.get(
-  //   "/code/:code",
-  //   transformQuery(AdminGetDiscountsDiscountCodeParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   middlewares.wrap(require("./get-discount-by-code").default)
-  // )
-  // route.post(
-  //   "/:discount_id",
-  //   transformQuery(AdminPostDiscountsDiscountParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminPostDiscountsDiscountReq),
-  //   middlewares.wrap(require("./update-discount").default)
-  // )
-  // route.delete(
-  //   "/:discount_id",
-  //   middlewares.wrap(require("./delete-discount").default)
-  // )
+  route.get(
+    "/:id",
+    transformQuery(AdminGetStockLocationsLocationParams, {
+      defaultFields: defaultAdminStockLocationFields,
+      defaultRelations: defaultAdminStockLocationRelations,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-stock-location").default)
+  )
 
-  // // Dynamic codes
-  // route.post(
-  //   "/:discount_id/dynamic-codes",
-  //   transformBody(AdminPostDiscountsDiscountDynamicCodesReq),
-  //   middlewares.wrap(require("./create-dynamic-code").default)
-  // )
-  // route.delete(
-  //   "/:discount_id/dynamic-codes/:code",
-  //   middlewares.wrap(require("./delete-dynamic-code").default)
-  // )
-
-  // // Discount region management
-  // route.post(
-  //   "/:discount_id/regions/:region_id",
-  //   middlewares.wrap(require("./add-region").default)
-  // )
-  // route.delete(
-  //   "/:discount_id/regions/:region_id",
-  //   middlewares.wrap(require("./remove-region").default)
-  // )
-
-  // // Discount condition management
-  // route.post(
-  //   "/:discount_id/conditions",
-  //   transformQuery(AdminPostDiscountsDiscountConditionsParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminPostDiscountsDiscountConditions),
-  //   middlewares.wrap(require("./create-condition").default)
-  // )
-
-  // route.delete(
-  //   "/:discount_id/conditions/:condition_id",
-  //   transformQuery(AdminDeleteDiscountsDiscountConditionsConditionParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   middlewares.wrap(require("./delete-condition").default)
-  // )
-
-  // const conditionRouter = Router({ mergeParams: true })
-  // route.use(
-  //   "/:discount_id/conditions/:condition_id",
-  //   doesConditionBelongToDiscount,
-  //   conditionRouter
-  // )
-
-  // conditionRouter.get(
-  //   "/",
-  //   transformQuery(AdminGetDiscountsDiscountConditionsConditionParams, {
-  //     defaultFields: defaultAdminDiscountConditionFields,
-  //     defaultRelations: defaultAdminDiscountConditionRelations,
-  //     isList: false,
-  //   }),
-  //   middlewares.wrap(require("./get-condition").default)
-  // )
-  // conditionRouter.post(
-  //   "/",
-  //   transformQuery(AdminPostDiscountsDiscountConditionsConditionParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminPostDiscountsDiscountConditionsCondition),
-  //   middlewares.wrap(require("./update-condition").default)
-  // )
-  // conditionRouter.post(
-  //   "/batch",
-  //   transformQuery(AdminPostDiscountsDiscountConditionsConditionBatchParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminPostDiscountsDiscountConditionsConditionBatchReq),
-  //   middlewares.wrap(require("./add-resources-to-condition-batch").default)
-  // )
-  // conditionRouter.delete(
-  //   "/batch",
-  //   transformQuery(AdminDeleteDiscountsDiscountConditionsConditionBatchParams, {
-  //     defaultFields: defaultAdminDiscountsFields,
-  //     defaultRelations: defaultAdminDiscountsRelations,
-  //     isList: false,
-  //   }),
-  //   transformBody(AdminDeleteDiscountsDiscountConditionsConditionBatchReq),
-  //   middlewares.wrap(require("./delete-resources-from-condition-batch").default)
-  // )
+  route.post(
+    "/:id",
+    transformQuery(AdminPostStockLocationsLocationParams, {
+      defaultFields: defaultAdminStockLocationFields,
+      defaultRelations: defaultAdminStockLocationRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostStockLocationsLocationReq),
+    middlewares.wrap(require("./update-stock-location").default)
+  )
 
   return app
 }
@@ -178,3 +88,6 @@ export type AdminStockLocationsListRes = PaginatedResponse & {
 }
 
 export * from "./list-stock-locations"
+export * from "./get-stock-location"
+export * from "./create-stock-location"
+export * from "./update-stock-location"

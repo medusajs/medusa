@@ -3,6 +3,7 @@ import {
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
+  AdminPostSalesChannelsChannelStockLocationsReq,
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsListRes,
   AdminDeleteSalesChannelsChannelProductsBatchReq,
@@ -119,6 +120,22 @@ class AdminSalesChannelsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}/products/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * Add a location to a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description Add a stock location to a SalesChannel
+   * @returns the Medusa SalesChannel
+   */
+  addLocation(
+    salesChannelId: string,
+    payload: AdminPostSalesChannelsChannelStockLocationsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}/stock-locations`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }

@@ -19,9 +19,9 @@ type InjectedDependencies = {
 
 export default class StockLocationService {
   static Events = {
-    CREATED: "inventory-level.created",
-    UPDATED: "inventory-level.updated",
-    DELETED: "inventory-level.deleted",
+    CREATED: "stock-location.created",
+    UPDATED: "stock-location.updated",
+    DELETED: "stock-location.deleted",
   }
 
   protected readonly manager_: EntityManager

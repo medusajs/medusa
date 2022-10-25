@@ -9,6 +9,7 @@ import AdminDiscountsResource from "./discounts"
 import AdminDraftOrdersResource from "./draft-orders"
 import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
+import AdminInventoryItemsResource from "./inventory-items"
 import AdminNotesResource from "./notes"
 import AdminNotificationsResource from "./notifications"
 import AdminOrdersResource from "./orders"
@@ -40,6 +41,7 @@ class Admin extends BaseResource {
   public collections = new CollectionsResource(this.client)
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
+  public inventoryItems = new AdminInventoryItemsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public priceLists = new AdminPriceListResource(this.client)

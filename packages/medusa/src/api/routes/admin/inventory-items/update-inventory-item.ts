@@ -10,11 +10,9 @@ export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
-  console.log(req.validatedBody)
-
   await inventoryService.updateInventoryItem(
     id,
-    req.validatedBody as AdminPostInventoryItemsInventoryItemReq
+    req.validatedBody as AdminPostInventoryItemsItemReq
   )
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
@@ -25,7 +23,7 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ inventory_item: inventoryItem })
 }
 
-export class AdminPostInventoryItemsInventoryItemReq {
+export class AdminPostInventoryItemsItemReq {
   @IsString()
   @IsOptional()
   sku?: string
