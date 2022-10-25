@@ -83,10 +83,7 @@ export default async (req, res) => {
     if (paycol?.payments?.length) {
       if (event.type === "payment_intent.succeeded") {
         const payment = paycol.payments.find((pay) => {
-          return (
-            pay.data.purchase_units[0].payments.authorizations[0].id ===
-            paymentIntentId
-          )
+          return pay.data.id === paymentIntentId
         })
         if (payment && !payment.captured_at) {
           await manager.transaction(async (manager) => {
@@ -115,7 +112,7 @@ export default async (req, res) => {
     }
 
     if (isPaymentCollection(customId)) {
-      const paymentIntentId = purchaseUnit.payments.authorizations[0].id
+      const paymentIntentId = order.id
       await autorizePaymentCollection(req, customId, paymentIntentId)
     } else {
       await autorizeCart(req, customId)

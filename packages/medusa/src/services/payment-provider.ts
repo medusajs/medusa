@@ -184,9 +184,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     sessionInput: PaymentProviderDataInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider: AbstractPaymentService = this.retrieveProvider(
-        sessionInput.provider_id
-      )
+      const provider = this.retrieveProvider(sessionInput.provider_id)
       const sessionData = await provider
         .withTransaction(transactionManager)
         .createPaymentNew(sessionInput)
