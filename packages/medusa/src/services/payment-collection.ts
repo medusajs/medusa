@@ -481,11 +481,14 @@ export default class PaymentCollectionService extends TransactionBaseService {
         if (auth?.status === PaymentSessionStatus.AUTHORIZED) {
           authorizedAmount += session.amount
 
-          const inputData: Omit<PaymentProviderDataInput, "customer"> = {
+          const inputData: Omit<PaymentProviderDataInput, "customer"> & {
+            payment_session: PaymentSession
+          } = {
             amount: session.amount,
             currency_code: payCol.currency_code,
             provider_id: session.provider_id,
             resource_id: payCol.id,
+            payment_session: session,
           }
 
           payCol.payments.push(
