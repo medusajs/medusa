@@ -468,7 +468,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
       }
 
       let authorizedAmount = 0
-      for (const session of payCol.payment_sessions) {
+      for (let i = 0; i < payCol.payment_sessions.length; i++) {
+        const session = payCol.payment_sessions[i]
+
         if (session.payment_authorized_at) {
           authorizedAmount += session.amount
           continue
@@ -477,6 +479,10 @@ export default class PaymentCollectionService extends TransactionBaseService {
         const auth = await this.paymentProviderService_
           .withTransaction(manager)
           .authorizePayment(session, context)
+
+        if (auth) {
+          payCol.payment_sessions[i] = auth
+        }
 
         if (auth?.status === PaymentSessionStatus.AUTHORIZED) {
           authorizedAmount += session.amount
@@ -488,7 +494,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             currency_code: payCol.currency_code,
             provider_id: session.provider_id,
             resource_id: payCol.id,
-            payment_session: session,
+            payment_session: auth,
           }
 
           payCol.payments.push(

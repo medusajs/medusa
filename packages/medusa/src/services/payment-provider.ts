@@ -17,6 +17,8 @@ import {
   Refund,
 } from "../models"
 import { PaymentProviderDataInput } from "../types/payment-collection"
+import { FlagRouter } from "../utils/flag-router"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -25,6 +27,7 @@ type InjectedDependencies = {
   paymentProviderRepository: typeof PaymentProviderRepository
   paymentRepository: typeof PaymentRepository
   refundRepository: typeof RefundRepository
+  featureFlagRouter: FlagRouter
 } & {
   [key in `${PaymentProviderKey}`]:
     | AbstractPaymentService
@@ -43,6 +46,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -53,6 +57,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentProviderRepository_ = container.paymentProviderRepository
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
+    this.featureFlagRouter_ = container.featureFlagRouter
   }
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
@@ -464,6 +469,13 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       session.data = data
       session.status = status
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key) &&
+        status === PaymentSessionStatus.AUTHORIZED
+      ) {
+        session.payment_authorized_at = new Date()
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
