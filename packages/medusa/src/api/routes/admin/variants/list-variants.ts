@@ -1,8 +1,4 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
-
-import { InventoryItemDTO } from "../../../../types/inventory"
-import { PricedVariant } from "../../../../types/pricing"
-import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { Type } from "class-transformer"
 import { omit } from "lodash"
 import {
@@ -122,9 +118,6 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const variantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
-
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -167,25 +160,12 @@ export default async (req, res) => {
     include_discount_prices: true,
   })
 
-  const result = await Promise.all(
-    variants.map(async (variant: PricedVariant): Promise<ResponseVariant> => {
-      const responseVariant: ResponseVariant = { ...variant, inventory: [] }
-      responseVariant.inventory =
-        await variantInventoryService.listInventoryItemsByVariant(variant.id!)
-      return responseVariant
-    })
-  )
-
   res.json({
-    variants: result,
+    variants,
     count,
     offset: req.listConfig.offset,
     limit: req.listConfig.limit,
   })
-}
-
-type ResponseVariant = Partial<PricedVariant> & {
-  inventory: InventoryItemDTO[]
 }
 
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {

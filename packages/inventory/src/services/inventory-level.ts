@@ -113,7 +113,7 @@ export default class InventoryLevelService {
       return item[key] !== data[key]
     })
 
-    if (!shouldUpdate) {
+    if (shouldUpdate) {
       levelRepository.merge(item, data)
       await levelRepository.save(item)
 

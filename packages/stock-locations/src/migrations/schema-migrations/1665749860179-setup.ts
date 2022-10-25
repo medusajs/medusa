@@ -46,7 +46,7 @@ export class setup1665749860179 implements MigrationInterface {
       `CREATE TABLE "stock_location_address" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "address_1" text NOT NULL, "address_2" text, "city" text, "country_code" text, "phone" text, "province" text, "postal_code" text, "metadata" jsonb, CONSTRAINT "PK_b79bc27285bede680501b7b81a5" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "stock_location" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "name" text NOT NULL, "address_id" text NOT NULL, "metadata" jsonb, CONSTRAINT "PK_adf770067d0df1421f525fa25cc" PRIMARY KEY ("id"))`
+      `CREATE TABLE "stock_location" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "name" text NOT NULL, "address_id" text, "metadata" jsonb, CONSTRAINT "PK_adf770067d0df1421f525fa25cc" PRIMARY KEY ("id"))`
     )
   }
 

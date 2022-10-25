@@ -22,6 +22,14 @@ export default (app) => {
     middlewares.wrap(require("./list-variants").default)
   )
 
+  const variantRouter = Router({ mergeParams: true })
+  route.use("/:id", variantRouter)
+
+  variantRouter.get(
+    "/inventory",
+    middlewares.wrap(require("./get-inventory").default)
+  )
+
   return app
 }
 

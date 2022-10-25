@@ -4,7 +4,7 @@ export type InventoryItemDTO = {
   id: string
   sku?: string | null
   origin_country?: string | null
-  hs_code?: number | null
+  hs_code?: string | null
   requires_shipping: boolean
   mid_code?: string | null
   material?: string | null
@@ -53,7 +53,7 @@ export type FilterableInventoryItemProps = {
   id?: string | string[]
   sku?: string | string[] | StringComparisonOperator
   origin_country?: string | string[]
-  hs_code?: number | number[] | NumericalComparisonOperator
+  hs_code?: string | string[] | StringComparisonOperator
   requires_shipping?: boolean
 }
 
@@ -67,7 +67,7 @@ export type CreateInventoryItemInput = {
   height?: number
   width?: number
   metadata?: Record<string, unknown> | null
-  hs_code?: number
+  hs_code?: string
   requires_shipping?: boolean
 }
 

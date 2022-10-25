@@ -14,8 +14,8 @@ export class InventoryItem extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text", nullable: true })
   origin_country: string | null
 
-  @Column({ type: "int", nullable: true })
-  hs_code: number | null
+  @Column({ type: "text", nullable: true })
+  hs_code: string | null
 
   @DbAwareColumn({ type: "text", nullable: true })
   mid_code: string | null
