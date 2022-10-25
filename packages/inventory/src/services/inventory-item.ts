@@ -118,7 +118,7 @@ export default class InventoryItemService {
       return item[key] !== data[key]
     })
 
-    if (!shouldUpdate) {
+    if (shouldUpdate) {
       itemRepository.merge(item, data)
       await itemRepository.save(item)
 

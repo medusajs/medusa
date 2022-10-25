@@ -117,7 +117,7 @@ export default class InventoryService implements IInventoryService {
 
   async updateInventoryItem(
     itemId: string,
-    input: CreateInventoryItemInput
+    input: Partial<CreateInventoryItemInput>
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService.update(itemId, input)
     return { ...inventoryItem }

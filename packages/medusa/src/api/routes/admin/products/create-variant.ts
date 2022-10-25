@@ -228,7 +228,7 @@ export default async (req, res) => {
     const inventoryItem = await inventoryService.createInventoryItem({
       sku: validated.sku,
       origin_country: validated.origin_country,
-      hs_code: validated.hs_code ? parseInt(validated.hs_code) : undefined,
+      hs_code: validated.hs_code,
       mid_code: validated.mid_code,
       material: validated.material,
       weight: validated.weight,

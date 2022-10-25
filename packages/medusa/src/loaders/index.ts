@@ -90,15 +90,11 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-<<<<<<< HEAD
   const modulesActivity = Logger.activity("Resolving modules")
   track("MODULES_INIT_STARTED")
   await moduleLoader({ container, configModule, logger: Logger })
   const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
-=======
-  await moduleLoader({ container, configModule })
->>>>>>> 5341b0e9d (fix: integration test of inventory)
 
   await redisLoader({ container, configModule, logger: Logger })
 

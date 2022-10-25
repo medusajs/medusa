@@ -10,8 +10,8 @@ export class StockLocation extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   name: string
 
-  @DbAwareColumn({ type: "text" })
-  address_id: string
+  @DbAwareColumn({ type: "text", nullable: true })
+  address_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

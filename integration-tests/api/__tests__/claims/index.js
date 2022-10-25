@@ -25,11 +25,7 @@ describe("Claims", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-<<<<<<< HEAD
     medusaProcess = await setupServer({ cwd })
-=======
-    medusaProcess = await setupServer({ cwd, verbose: false })
->>>>>>> 75896c404 (fix: integration tests)
   })
 
   afterAll(async () => {

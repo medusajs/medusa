@@ -45,7 +45,7 @@ class inventorySetup1665748086258 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "inventory_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "sku" text, "origin_country" text, "hs_code" integer, "mid_code" text, "material" text, "weight" integer, "length" integer, "height" integer, "width" integer, "requires_shipping" boolean NOT NULL DEFAULT true, "metadata" jsonb, CONSTRAINT "PK_94f5cbcb5f280f2f30bd4a9fd90" PRIMARY KEY ("id"))`
+      `CREATE TABLE "inventory_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "sku" text, "origin_country" text, "hs_code" text, "mid_code" text, "material" text, "weight" integer, "length" integer, "height" integer, "width" integer, "requires_shipping" boolean NOT NULL DEFAULT true, "metadata" jsonb, CONSTRAINT "PK_94f5cbcb5f280f2f30bd4a9fd90" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE UNIQUE INDEX "IDX_d6ea8a96077963efdebaa65044" ON "inventory_item" ("sku") `

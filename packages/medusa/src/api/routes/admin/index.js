@@ -7,6 +7,7 @@ import authRoutes from "./auth"
 import batchRoutes from "./batch"
 import collectionRoutes from "./collections"
 import currencyRoutes from "./currencies"
+import inventoryItemRoutes from "./inventory-items"
 import customerGroupRoutes from "./customer-groups"
 import customerRoutes from "./customers"
 import discountRoutes from "./discounts"
@@ -28,6 +29,7 @@ import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
 import storeRoutes from "./store"
+import stockLocationRoutes from "./stock-locations"
 import swapRoutes from "./swaps"
 import taxRateRoutes from "./tax-rates"
 import uploadRoutes from "./uploads"
@@ -74,17 +76,18 @@ export default (app, container, config) => {
   appRoutes(route)
   batchRoutes(route)
   collectionRoutes(route)
+  currencyRoutes(route)
   customerGroupRoutes(route)
   customerRoutes(route)
-  currencyRoutes(route)
   discountRoutes(route)
   draftOrderRoutes(route)
   giftCardRoutes(route)
+  inventoryItemRoutes(route)
   inviteRoutes(route)
   noteRoutes(route)
   notificationRoutes(route)
-  orderRoutes(route, featureFlagRouter)
   orderEditRoutes(route)
+  orderRoutes(route, featureFlagRouter)
   priceListRoutes(route, featureFlagRouter)
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
@@ -95,6 +98,7 @@ export default (app, container, config) => {
   salesChannelRoutes(route)
   shippingOptionRoutes(route, featureFlagRouter)
   shippingProfileRoutes(route)
+  stockLocationRoutes(route)
   storeRoutes(route)
   swapRoutes(route)
   taxRateRoutes(route)

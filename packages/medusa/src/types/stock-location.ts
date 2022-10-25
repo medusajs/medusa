@@ -38,7 +38,7 @@ export type StockLocationAddressInput = {
 
 export type CreateStockLocationInput = {
   name: string
-  address: string | StockLocationAddressInput
+  address?: string | StockLocationAddressInput
 }
 
 export type UpdateStockLocationInput = {

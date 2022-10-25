@@ -88,13 +88,15 @@ export default class StockLocationService {
         name: data.name,
       })
 
-      if (typeof data.address === "string") {
-        loc.address_id = data.address
-      } else {
-        const locAddressRepo = manager.getRepository(StockLocationAddress)
-        const locAddress = locAddressRepo.create(data.address)
-        const addressResult = await locAddressRepo.save(locAddress)
-        loc.address_id = addressResult.id
+      if (typeof data.address !== "undefined") {
+        if (typeof data.address === "string") {
+          loc.address_id = data.address
+        } else {
+          const locAddressRepo = manager.getRepository(StockLocationAddress)
+          const locAddress = locAddressRepo.create(data.address)
+          const addressResult = await locAddressRepo.save(locAddress)
+          loc.address_id = addressResult.id
+        }
       }
 
       const result = await locationRepo.save(loc)
@@ -120,18 +122,26 @@ export default class StockLocationService {
       const { address, ...data } = updateData
 
       let hasUpdated = false
-      const shouldUpdate = Object.keys(data).some((key) => {
+      let shouldUpdate = Object.keys(data).some((key) => {
         return item[key] !== data[key]
       })
 
-      if (!shouldUpdate) {
-        const toSave = locationRepo.merge(item, data)
-        await locationRepo.save(toSave)
-        hasUpdated = true
+      if (address) {
+        if (item.address_id) {
+          await this.updateAddress(item.address_id, address, { manager })
+          hasUpdated = true
+        } else {
+          const locAddressRepo = manager.getRepository(StockLocationAddress)
+          const locAddress = locAddressRepo.create(address)
+          const addressResult = await locAddressRepo.save(locAddress)
+          data.address_id = addressResult.id
+        }
+        shouldUpdate = true
       }
 
-      if (address) {
-        await this.updateAddress(item.address_id, address, { manager })
+      if (shouldUpdate) {
+        const toSave = locationRepo.merge(item, data)
+        await locationRepo.save(toSave)
         hasUpdated = true
       }
 

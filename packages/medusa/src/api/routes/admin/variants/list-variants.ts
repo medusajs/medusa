@@ -1,6 +1,5 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
-
 import { Type } from "class-transformer"
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { omit } from "lodash"
 import {
   CartService,
@@ -8,7 +7,6 @@ import {
   RegionService,
 } from "../../../../services"
 import ProductVariantService from "../../../../services/product-variant"
-import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { AdminPriceSelectionParams } from "../../../../types/price-selection"
 import { IsType } from "../../../../utils/validators/is-type"
@@ -120,9 +118,6 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const variantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
-
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
