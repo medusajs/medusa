@@ -14,6 +14,7 @@ import { Connection, getManager } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
+import createRoutes from "./custom-routes"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
@@ -170,6 +171,8 @@ export default async ({
   await apiLoader({ container, app: expressApp, configModule })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
+
+  createRoutes({ configModule, app: expressApp })
 
   const defaultsActivity = Logger.activity("Initializing defaults")
   track("DEFAULTS_INIT_STARTED")

@@ -1,5 +1,5 @@
-import { ConfigModule } from "../types/global"
 import { getConfigFile } from "medusa-core-utils/dist"
+import { ConfigModule } from "../types/global"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
@@ -58,5 +58,6 @@ export default (rootDirectory: string): ConfigModule => {
     },
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
+    customRoutes: configModule?.customRoutes ?? [],
   }
 }

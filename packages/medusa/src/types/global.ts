@@ -2,6 +2,7 @@ import { AwilixContainer } from "awilix"
 import { Request } from "express"
 import { LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
+import { CustomEndpoint } from "../loaders/custom-routes"
 import { Customer, User } from "../models"
 import { FindConfig, RequestQueryFields } from "./common"
 
@@ -63,4 +64,5 @@ export type ConfigModule = {
       }
     | string
   )[]
+  customRoutes: CustomEndpoint[]
 }

@@ -327,7 +327,7 @@ function registerApi(
     if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
       logger.progress(
         activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+        `No custom endpoints registered for ${pluginDetails.name}`
       )
     }
     return app
