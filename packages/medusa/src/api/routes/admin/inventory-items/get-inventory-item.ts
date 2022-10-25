@@ -10,7 +10,7 @@ export default async (req: Request, res: Response) => {
     req.scope.resolve("inventoryService")
   const item = await inventoryService.retrieveInventoryItem(id)
 
-  const [data] = await joinLevels([item], inventoryService)
+  const [data] = await joinLevels([item], [], inventoryService)
 
   res.status(200).json({ inventory_item: data })
 }
