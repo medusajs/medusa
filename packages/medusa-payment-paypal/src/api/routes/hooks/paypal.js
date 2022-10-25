@@ -76,24 +76,9 @@ export default async (req, res) => {
       "paymentCollectonService"
     )
 
-    const paycol = await paymentCollectionService
-      .retrieve(id, { relations: ["payments"] })
-      .catch(() => undefined)
-
-    if (paycol?.payments?.length) {
-      if (event.type === "payment_intent.succeeded") {
-        const payment = paycol.payments.find((pay) => {
-          return pay.data.id === paymentIntentId
-        })
-        if (payment && !payment.captured_at) {
-          await manager.transaction(async (manager) => {
-            await paymentCollectionService
-              .withTransaction(manager)
-              .capture(payment.id)
-          })
-        }
-      }
-    }
+    await manager.transaction(async (manager) => {
+      await paymentCollectionService.withTransaction(manager).authorize(id)
+    })
   }
 
   try {
