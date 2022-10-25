@@ -327,6 +327,187 @@ If you run your Gatsby storefront while the Medusa server is running, you should
 
 ![Search bar in the Gatsby storefront](https://i.imgur.com/INtlcIo.png)
 
+## Gatsby and React-Based Storefront guide for Algolia plugin
+## Algolia with Gatsby
+
+1.  Sign up for an [Algolia account](https://www.algolia.com/users/sign_up).
+
+2.  Create a new index in your Algolia dashboard.
+
+3.  Install the `algoliasearch` and `react-instantsearch-dom` packages:
+
+    ```
+    npm install --save algoliasearch react-instantsearch-dom
+    ```
+
+4.  Import the packages in the `gatsby-config.js` file:
+
+    ```javascript
+    require("dotenv").config({
+      path: `.env.${process.env.NODE_ENV}`,
+    })
+
+    const algoliaConfig = {
+      appId: process.env.GATSBY_ALGOLIA_APP_ID,
+      apiKey: process.env.GATSBY_ALGOLIA_API_KEY,
+      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    }
+
+    const plugins = [
+      {
+        resolve: `gatsby-plugin-algolia`,
+        options: {
+          appId: algoliaConfig.appId,
+          apiKey: algoliaConfig.apiKey,
+          indexName: algoliaConfig.indexName,
+          queries,
+          chunkSize: 10000, // default: 1000
+        },
+      },
+    ]
+    ```
+
+5.  Create a `gatsby-node.js` file and add the following code:
+
+    ```javascript
+    const path = require("path")
+    const { paginate } = require("gatsby-awesome-pagination")
+    const algoliasearch = require("algoliasearch")
+
+    const client = algoliasearch(
+      process.env.GATSBY_ALGOLIA_APP_ID,
+      process.env.GATSBY_ALGOLIA_API_KEY
+    )
+    const index = client.initIndex(process.env.GATSBY_ALGOLIA_INDEX_NAME)
+
+    exports.createPages = ({ graphql, actions }) => {
+      const { createPage } = actions
+
+      return graphql(`
+        {
+          allAlgoliaProduct {
+            edges {
+              node {
+                objectID: id
+                slug
+              }
+            }
+          }
+        }
+      `).then(({ data }) => {
+        const products = data.allAlgoliaProduct.edges
+
+        // Create a page for each product
+        products.forEach(({ node }) => {
+          createPage({
+            path: `/products/${node.slug}`,
+            component: path.resolve(`./src/templates/product.js`),
+            context: {
+              objectID: node.objectID,
+            },
+          })
+        })
+
+        // Pagination for products list
+        paginate({
+          createPage,
+          items: products,
+          itemsPerPage: 10,
+          component: path.resolve(`./src/templates/products.js`),
+          pathPrefix: "/products",
+        })
+      })
+    }
+
+    exports.onCreateNode = ({ node, actions }) => {
+      const { createNodeField } = actions
+
+      if (node.internal.type === `AlgoliaProduct`) {
+        const value = createFilePath({ node, getNode })
+
+        createNodeField({
+          name: `slug`,
+          node,
+          value,
+        })
+      }
+    }
+
+    exports.sourceNodes = ({ actions }) => {
+      const { createTypes } = actions
+
+      const typeDefs = `
+        type AlgoliaProduct implements Node {
+          id: String!
+          slug: String!
+        }
+      `
+
+      createTypes(typeDefs)
+    }
+    ```
+
+6.  Create a `.env.development` and `.env.production` file and add the following environment variables:
+
+    ```
+    GATSBY_ALGOLIA_APP_ID=
+    GATSBY_ALGOLIA_API_KEY=
+    GATSBY_ALGOLIA_INDEX_NAME=
+    ```
+
+## Algolia with React
+
+1.  Sign up for an [Algolia account](https://www.algolia.com/users/sign_up).
+
+2.  Create a new index in your Algolia dashboard.
+
+3.  Install the `algoliasearch` and `react-instantsearch-dom` packages:
+
+    ```
+    npm install --save algoliasearch react-instantsearch-dom
+    ```
+
+4.  Import the packages in the `App.js` file:
+
+    ```javascript
+    import algoliasearch from "algoliasearch/lite"
+    import { InstantSearch, Configure, Highlight } from "react-instantsearch-dom"
+
+    const searchClient = algoliasearch(
+      process.env.REACT_APP_ALGOLIA_APP_ID,
+      process.env.REACT_APP_ALGOLIA_API_KEY
+    )
+    ```
+
+5.  Add the following code to the `render` method:
+
+    ```javascript
+    <InstantSearch
+      searchClient={searchClient}
+      indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
+    >
+      <Configure hitsPerPage={10} />
+      <input type="search" />
+      <ul>
+        {hits.map(hit => (
+          <li key={hit.objectID}>
+            <a href={`/products/${hit.slug}`}>
+              <Highlight attribute="name" hit={hit} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </InstantSearch>
+    ```
+
+6.  Create a `.env` file and add the following environment variables:
+
+    ```
+    REACT_APP_ALGOLIA_APP_ID=
+    REACT_APP_ALGOLIA_API_KEY=
+    REACT_APP_ALGOLIA_INDEX_NAME=
+    ```
+
 ## What’s Next
 
 - Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
