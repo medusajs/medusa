@@ -2,6 +2,7 @@ import {
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
+  AdminPostSalesChannelsChannelStockLocationsReq,
   AdminSalesChannelsDeleteRes,
   AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
@@ -146,6 +147,40 @@ export const useAdminAddProductsToSalesChannel = (
   return useMutation(
     (payload: AdminPostSalesChannelsChannelProductsBatchReq) => {
       return client.admin.salesChannels.addProducts(id, payload)
+    },
+    buildOptions(
+      queryClient,
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.detail(id),
+        adminProductKeys.list({ sales_channel_id: [id] }),
+      ],
+      options
+    )
+  )
+}
+
+/**
+ * Adds a stock location to a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+ * @description Add products to a sales channel
+ * @param id
+ * @param options
+ */
+export const useAdminAddStockLocationToSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminPostSalesChannelsChannelStockLocationsReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostSalesChannelsChannelStockLocationsReq) => {
+      return client.admin.salesChannels.addLocation(id, payload)
     },
     buildOptions(
       queryClient,

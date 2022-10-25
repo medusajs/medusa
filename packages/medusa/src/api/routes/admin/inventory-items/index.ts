@@ -6,8 +6,14 @@ import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetInventoryItemParams } from "./list-inventory-items"
-import { AdminPostInventoryItemsInventoryItemReq } from "./update-inventory-item"
+import { AdminGetInventoryItemsParams } from "./list-inventory-items"
+import { AdminGetInventoryItemsItemParams } from "./get-inventory-item"
+import { AdminPostInventoryItemsItemReq } from "./update-inventory-item"
+import { AdminGetInventoryItemsItemLocationLevelsParams } from "./list-location-levels"
+import {
+  AdminPostInventoryItemsItemLocationLevelsReq,
+  AdminPostInventoryItemsItemLocationLevelsParams,
+} from "./create-location-level"
 
 const route = Router()
 
@@ -16,7 +22,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(AdminGetInventoryItemParams, {
+    transformQuery(AdminGetInventoryItemsParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: true,
@@ -26,18 +32,39 @@ export default (app) => {
 
   route.post(
     "/:id",
-    transformQuery(AdminGetInventoryItemParams, {
+    transformQuery(AdminGetInventoryItemsItemParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: false,
     }),
-    transformBody(AdminPostInventoryItemsInventoryItemReq),
+    transformBody(AdminPostInventoryItemsItemReq),
     middlewares.wrap(require("./update-inventory-item").default)
+  )
+
+  route.post(
+    "/:id/location-levels",
+    transformQuery(AdminPostInventoryItemsItemLocationLevelsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsItemLocationLevelsReq),
+    middlewares.wrap(require("./create-location-level").default)
+  )
+
+  route.get(
+    "/:id/location-levels",
+    transformQuery(AdminGetInventoryItemsItemLocationLevelsParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    middlewares.wrap(require("./list-location-levels").default)
   )
 
   route.get(
     "/:id",
-    transformQuery(AdminGetInventoryItemParams, {
+    transformQuery(AdminGetInventoryItemsItemParams, {
       defaultFields: defaultAdminInventoryItemFields,
       defaultRelations: defaultAdminInventoryItemRelations,
       isList: false,
@@ -74,7 +101,11 @@ export type AdminInventoryItemsRes = {
 export type AdminInventoryItemsDeleteRes = DeleteResponse
 
 export type AdminInventoryItemsListRes = PaginatedResponse & {
-  inventory_item: InventoryItemDTO[]
+  inventory_items: InventoryItemDTO[]
 }
 
 export * from "./list-inventory-items"
+export * from "./get-inventory-item"
+export * from "./update-inventory-item"
+export * from "./list-location-levels"
+export * from "./create-location-level"

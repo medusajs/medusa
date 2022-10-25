@@ -26,7 +26,7 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class AdminGetStockLocationParams extends extendedFindParamsMixin({
+export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
