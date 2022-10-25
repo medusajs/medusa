@@ -51,6 +51,7 @@ export type FilterableReservationItemProps = {
 
 export type FilterableInventoryItemProps = {
   id?: string | string[]
+  q?: string
   sku?: string | string[] | StringComparisonOperator
   origin_country?: string | string[]
   hs_code?: string | string[] | StringComparisonOperator

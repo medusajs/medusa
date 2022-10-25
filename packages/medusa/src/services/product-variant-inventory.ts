@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import {
   IStockLocationService,
   IInventoryService,
@@ -8,6 +8,7 @@ import {
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
 import { InventoryItemDTO } from "../types/inventory"
+import { ProductVariant } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -109,6 +110,20 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return hasInventory.every(Boolean)
   }
 
+  async listByItem(itemIds: string[]): Promise<ProductVariantInventoryItem[]> {
+    const manager = this.transactionManager_ || this.manager_
+
+    const variantInventoryRepo = manager.getRepository(
+      ProductVariantInventoryItem
+    )
+
+    const variantInventory = await variantInventoryRepo.find({
+      where: { inventory_item_id: In(itemIds) },
+    })
+
+    return variantInventory
+  }
+
   private async listByVariant(
     variantId: string
   ): Promise<ProductVariantInventoryItem[]> {
@@ -123,6 +138,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
     })
 
     return variantInventory
+  }
+
+  async listVariantsByItem(itemId: string): Promise<ProductVariant[]> {
+    if (!this.inventoryService) {
+      return []
+    }
+
+    const variantInventory = await this.listByItem([itemId])
+    const items = await this.productVariantService.list({
+      id: variantInventory.map((i) => i.variant_id),
+    })
+
+    return items
   }
 
   async listInventoryItemsByVariant(

@@ -1,4 +1,4 @@
-import { getConnection, DeepPartial, EntityManager } from "typeorm"
+import { ILike, getConnection, DeepPartial, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -52,6 +52,13 @@ export default class InventoryItemService {
     const itemRepository = manager.getRepository(InventoryItem)
 
     const query = buildQuery(selector, config)
+
+    if (query.where.q) {
+      query.where.sku = ILike(`%${query.where.q as string}%`)
+
+      delete query.where.q
+    }
+
     return await itemRepository.findAndCount(query)
   }
 
