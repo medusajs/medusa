@@ -331,9 +331,13 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUserId: userId,
-        })
+        result = await orderEditService.requestConfirmation(
+          orderEditId,
+          "payment collection description",
+          {
+            loggedInUserId: userId,
+          }
+        )
       })
 
       it("sets fields correctly for update", async () => {
@@ -363,9 +367,13 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUserId: userId,
-        })
+        result = await orderEditService.requestConfirmation(
+          orderEditId,
+          "payment description text",
+          {
+            loggedInUserId: userId,
+          }
+        )
       })
 
       afterEach(() => {

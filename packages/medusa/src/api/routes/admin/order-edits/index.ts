@@ -18,6 +18,7 @@ import { AdminPostOrderEditsEditLineItemsReq } from "./add-line-item"
 import { AdminPostOrderEditsEditLineItemsLineItemReq } from "./update-order-edit-line-item"
 import { GetOrderEditsParams } from "./list-order-edit"
 import { GetOrderEditsOrderEditParams } from "./get-order-edit"
+import { AdminPostOrderEditsRequestConfirmationReq } from "./request-confirmation"
 
 const route = Router()
 
@@ -85,6 +86,7 @@ export default (app) => {
 
   route.post(
     "/:id/request",
+    transformBody(AdminPostOrderEditsRequestConfirmationReq),
     middlewares.wrap(require("./request-confirmation").default)
   )
 
@@ -121,3 +123,4 @@ export * from "./create-order-edit"
 export * from "./get-order-edit"
 export * from "./list-order-edit"
 export * from "./add-line-item"
+export * from "./request-confirmation"
