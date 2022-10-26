@@ -1,4 +1,4 @@
-import { ILike, getConnection, DeepPartial, EntityManager } from "typeorm"
+import { ILike, In, getConnection, DeepPartial, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -37,21 +37,19 @@ export default class InventoryItemService {
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<InventoryItem[]> {
-    const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
-
-    const query = buildQuery(selector, config)
-    return await itemRepository.find(query)
+    const queryBuilder = this.getListQuery(selector, config)
+    return await queryBuilder.getMany()
   }
 
-  async listAndCount(
+  private getListQuery(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[InventoryItem[], number]> {
+  ) {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(InventoryItem)
-
     const query = buildQuery(selector, config)
+
+    const queryBuilder = itemRepository.createQueryBuilder("item")
 
     if (query.where.q) {
       query.where.sku = ILike(`%${query.where.q as string}%`)
@@ -59,7 +57,38 @@ export default class InventoryItemService {
       delete query.where.q
     }
 
-    return await itemRepository.findAndCount(query)
+    if (query.where.location_id) {
+      const locationIds = Array.isArray(selector.location_id)
+        ? selector.location_id
+        : [selector.location_id]
+
+      queryBuilder.innerJoin(
+        "inventory_level",
+        "level",
+        "level.item_id = item.id AND level.location_id IN (:...locationIds)",
+        { locationIds }
+      )
+
+      delete query.where.location_id
+    }
+
+    if (query.where) {
+      queryBuilder.where(query.where)
+    }
+
+    if (query.select) {
+      query.select.forEach((s) => queryBuilder.addSelect("item." + s))
+    }
+
+    return queryBuilder
+  }
+
+  async listAndCount(
+    selector: FilterableInventoryItemProps = {},
+    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[InventoryItem[], number]> {
+    const queryBuilder = this.getListQuery(selector, config)
+    return await queryBuilder.getManyAndCount()
   }
 
   async retrieve(

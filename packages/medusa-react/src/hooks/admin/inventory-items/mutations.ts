@@ -55,7 +55,7 @@ export const useAdminCreateInventoryItemLocationLevel = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostInventoryItemsItemLocationLevelsReq) =>
-      client.admin.inventoryItems.createInventoryLevel(id, payload),
+      client.admin.inventoryItems.createLocationLevel(id, payload),
     buildOptions(
       queryClient,
       [adminInventoryItemsKeys.lists(), adminInventoryItemsKeys.detail(id)],

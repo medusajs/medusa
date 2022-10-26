@@ -75,7 +75,7 @@ export const useAdminInventoryItemLocationLevels = (
   id: string,
   query?: AdminGetInventoryItemsParams,
   options?: UseQueryOptionsWrapper<
-    Response<AdminInventoryItemsListRes>,
+    Response<AdminInventoryItemsRes>,
     Error,
     ReturnType<InventoryItemsQueryKeys["detail"]>
   >
@@ -83,7 +83,7 @@ export const useAdminInventoryItemLocationLevels = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminInventoryItemsKeys.detail(id),
-    () => client.admin.inventoryItems.listInventoryItems(id, query),
+    () => client.admin.inventoryItems.listLocationLevels(id, query),
     options
   )
   return { ...data, ...rest } as const

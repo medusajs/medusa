@@ -60,6 +60,9 @@ export class Store extends BaseEntity {
   @FeatureFlagColumn("sales_channels", { nullable: true })
   default_sales_channel_id: string
 
+  @Column({ nullable: true })
+  default_location_id: string
+
   @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
     JoinColumn({ name: "default_sales_channel_id" }),
