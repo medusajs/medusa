@@ -48,6 +48,11 @@ class AuthResource extends BaseResource {
     const path = `/store/auth/${email}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
+  
+  signOut(): ResponsePromise<StoreDeleteAuthRes> {
+    const path = `/store/auth`
+    return this.client.request("DELETE", path)
+  }
 }
 
 export default AuthResource
