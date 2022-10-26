@@ -58,6 +58,6 @@ export default (rootDirectory: string): ConfigModule => {
     },
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
-    customRoutes: configModule?.customRoutes ?? [],
+    routes: configModule?.routes ?? [],
   }
 }

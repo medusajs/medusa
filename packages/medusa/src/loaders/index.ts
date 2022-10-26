@@ -14,7 +14,7 @@ import { Connection, getManager } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import createRoutes from "./custom-routes"
+import createRoutes from "./custom-api"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
@@ -160,6 +160,13 @@ export default async ({
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
+  const routeActivity = Logger.activity("Registering custom handlers")
+  track("HANDLERS_INIT_COMPLETED")
+  createRoutes({ configModule, app: expressApp })
+  const routeAct =
+    Logger.success(routeActivity, "Custom handlers initialized") || {}
+  track("HANDLERS_INIT_COMPLETED", { duration: routeAct.duration })
+
   const subActivity = Logger.activity("Initializing subscribers")
   track("SUBSCRIBERS_INIT_STARTED")
   subscribersLoader({ container })
@@ -171,8 +178,6 @@ export default async ({
   await apiLoader({ container, app: expressApp, configModule })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
-
-  createRoutes({ configModule, app: expressApp })
 
   const defaultsActivity = Logger.activity("Initializing defaults")
   track("DEFAULTS_INIT_STARTED")

@@ -13,12 +13,14 @@ type Handler = (
   next: NextFunction
 ) => Promise<void>
 
-export type CustomEndpoint = {
+export type MedusaRoute = {
   method: AllowedMethods
   path: string
   handler: Handler | Handler[]
+  routes: MedusaRoute[]
   options: {
     requires_auth?: boolean
+    prefix?: string
   }
 }
 
@@ -36,10 +38,10 @@ export default ({
   app: Express
   configModule: ConfigModule
 }) => {
-  configModule.customRoutes.map(async (customRoute) => {
+  configModule.routes.map(async (customRoute) => {
     await validateRouteConfig(customRoute)
 
-    let { handler, path, method, options } = customRoute
+    let { handler, path, method, routes, options } = customRoute
 
     handler = Array.isArray(handler) ? handler : [handler]
 
