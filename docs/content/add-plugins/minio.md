@@ -20,18 +20,13 @@ After installing it, make sure MinIO is always running when your Medusa server i
 
 ### Change MinIO port
 
-After setting up and installing MinIO on your system/sub-system, you can run the following command to change MinIO port to `9001` (or any other available port) instead of `9000` to avoid the port clash
-
-```bash npm2yarn
-minio server ~/minio --console-address :9090 --address :9001
-```
-
-:::warning
-
 In MinIO’s documentation, port `9000` is used for the address of the MinIO server. However, this collides with the port for the Medusa server. You must change the port for MinIO to another one (for example, port `9001`).
 
-:::
+After setting up and installing MinIO on your system/sub-system, you can run the following command to change MinIO port to `9001` (or any other available port) instead of `9000` to avoid the port clash
 
+```bash
+minio server ~/minio --console-address :9090 --address :9001
+```
 
 ### Create a MinIO bucket
 
