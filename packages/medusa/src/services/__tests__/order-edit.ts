@@ -5,10 +5,13 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
+  PaymentCollectionService,
+  PaymentProviderService,
   TaxProviderService,
   TotalsService,
 } from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { OrderServiceMock } from "../__mocks__/order"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
@@ -183,6 +186,18 @@ describe("OrderEditService", () => {
     },
   })
 
+  const paymentCollectionService = {
+    withTransaction: function () {
+      return this
+    },
+    create: jest.fn().mockImplementation(async (data) => {
+      return { ...data }
+    }),
+  }
+  const paymentCollectionServiceMock = jest.fn().mockImplementation(() => {
+    return paymentCollectionService
+  })()
+
   const orderEditService = new OrderEditService({
     manager: MockManager,
     orderEditRepository,
@@ -195,6 +210,10 @@ describe("OrderEditService", () => {
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
+    paymentCollectionService:
+      paymentCollectionServiceMock as unknown as PaymentCollectionService,
+    paymentProviderService:
+      PaymentProviderServiceMock as unknown as PaymentProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
@@ -331,6 +350,10 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
+        jest.spyOn(orderEditService, "getTotals").mockResolvedValue({
+          difference_due: 1500,
+        } as any)
+
         result = await orderEditService.requestConfirmation(
           orderEditId,
           "payment collection description",

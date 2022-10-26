@@ -74,16 +74,6 @@ export default async (req: Request, res: Response) => {
       )
     }
 
-    if (
-      orderEdit.payment_collection &&
-      orderEdit.payment_collection.status !== PaymentCollectionStatus.AUTHORIZED
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Unable to complete an order edit if the payment is not authorized"
-      )
-    }
-
     return await orderEditServiceTx.confirm(id, {
       loggedInUserId: userId,
     })

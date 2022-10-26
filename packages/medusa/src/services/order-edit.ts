@@ -10,6 +10,7 @@ import {
   OrderEdit,
   OrderEditItemChangeType,
   OrderEditStatus,
+  PaymentCollectionStatus,
   PaymentCollectionType,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
@@ -691,6 +692,7 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit.requested_by = context.loggedInUserId
 
       const total = await this.getTotals(orderEdit.id)
+
       if (total.difference_due > 0) {
         const paymentCollection = await this.paymentCollectionService_
           .withTransaction(manager)
@@ -800,6 +802,16 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit.confirmed_by = context.loggedInUserId
 
       if (orderEdit.payment_collection) {
+        if (
+          orderEdit.payment_collection.status !==
+          PaymentCollectionStatus.AUTHORIZED
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Unable to complete an order edit if the payment is not authorized"
+          )
+        }
+
         for (const payment of orderEdit.payment_collection.payments) {
           await this.paymentProviderService_.updatePayment(payment.id, {
             order_id: orderEdit.order_id,
