@@ -15,6 +15,8 @@ export default (container, config) => {
   return app
 }
 
+// Middleware
+export { default as middlewares } from "./middlewares"
 // Admin
 export * from "./routes/admin/auth"
 export * from "./routes/admin/batch"

@@ -1,5 +1,4 @@
 import { Express, NextFunction, Request, Response } from "express"
-import middlewares from "../api/middlewares"
 import { ConfigModule } from "../types/global"
 
 enum AllowedMethods {
@@ -37,23 +36,15 @@ export default ({
   app: Express
   configModule: ConfigModule
 }) => {
-  const createRoute = async (customRoute: CustomEndpoint) => {
+  configModule.customRoutes.map(async (customRoute) => {
     await validateRouteConfig(customRoute)
 
-    const { handler, path, method, options } = customRoute
+    let { handler, path, method, options } = customRoute
 
-    if (options.requires_auth) {
-      app.use(path, middlewares.authenticate())
-    }
+    handler = Array.isArray(handler) ? handler : [handler]
 
-    if (Array.isArray(handler)) {
-      handler.forEach((h) => app[method.toLowerCase()](path, h))
-    } else {
-      app[method.toLowerCase()](path, handler)
-    }
-  }
-
-  configModule.customRoutes.map(async (customRoute) => createRoute(customRoute))
+    app[method.toLowerCase()](path, handler)
+  })
 
   return app
 }
