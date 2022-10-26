@@ -1,4 +1,7 @@
-import { InventoryItemDTO } from "../../../../types/inventory"
+import {
+  InventoryItemDTO,
+  InventoryLevelDTO,
+} from "../../../../types/inventory"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import {
   SalesChannelLocationService,
@@ -7,6 +10,7 @@ import {
 import { SalesChannel } from "../../../../models"
 import { IInventoryService } from "../../../../interfaces"
 import ProductVariantService from "../../../../services/product-variant"
+import { joinLevels } from "../inventory-items/utils/join-levels"
 
 export default async (req, res) => {
   const { id } = req.params
@@ -46,7 +50,7 @@ export default async (req, res) => {
   const inventory = await variantInventoryService.listInventoryItemsByVariant(
     variant.id
   )
-  responseVariant.inventory = inventory
+  responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
     responseVariant.sales_channel_availability = await Promise.all(
@@ -78,9 +82,13 @@ export default async (req, res) => {
 
 type SalesChannelDTO = Partial<SalesChannel> & { locations: string[] }
 
+type ResponseInventoryItem = Partial<InventoryItemDTO> & {
+  location_levels?: InventoryLevelDTO[]
+}
+
 type ResponseVariant = {
   id: string
-  inventory: InventoryItemDTO[]
+  inventory: ResponseInventoryItem[]
   sales_channel_availability: {
     channel_name: string
     channel_id: string

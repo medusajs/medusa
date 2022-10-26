@@ -1,7 +1,7 @@
 import {
-  AdminInventoryItemsRes,
-  AdminInventoryItemsListRes,
-  AdminGetInventoryItemsParams,
+  AdminStockLocationsRes,
+  AdminStockLocationsListRes,
+  AdminGetStockLocationsParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
@@ -9,13 +9,13 @@ import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils"
 
-const ADMIN_INVENTORY_ITEMS_QUERY_KEY = `admin_inventory_items` as const
+const ADMIN_STOCK_LOCATIONS_QUERY_KEY = `admin_stock_locations` as const
 
-export const adminInventoryItemsKeys = queryKeysFactory(
-  ADMIN_INVENTORY_ITEMS_QUERY_KEY
+export const adminStockLocationsKeys = queryKeysFactory(
+  ADMIN_STOCK_LOCATIONS_QUERY_KEY
 )
 
-type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
+type StockLocationsQueryKeys = typeof adminStockLocationsKeys
 
 /** retrieve a sales channel
  * @experimental This feature is under development and may change in the future.
@@ -23,18 +23,18 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  * @description gets a sales channel
  * @returns a medusa sales channel
  */
-export const useAdminInventoryItem = (
+export const useAdminStockLocation = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<AdminInventoryItemsRes>,
+    Response<AdminStockLocationsRes>,
     Error,
-    ReturnType<InventoryItemsQueryKeys["detail"]>
+    ReturnType<StockLocationsQueryKeys["detail"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminInventoryItemsKeys.detail(id),
-    () => client.admin.inventoryItems.retrieve(id),
+    adminStockLocationsKeys.detail(id),
+    () => client.admin.stockLocations.retrieve(id),
     options
   )
   return { ...data, ...rest } as const
@@ -47,18 +47,18 @@ export const useAdminInventoryItem = (
  * @description Retrieve a list of sales channel
  * @returns a list of sales channel as well as the pagination properties
  */
-export const useAdminInventoryItems = (
-  query?: AdminGetInventoryItemsParams,
+export const useAdminStockLocations = (
+  query?: AdminGetStockLocationsParams,
   options?: UseQueryOptionsWrapper<
-    Response<AdminInventoryItemsListRes>,
+    Response<AdminStockLocationsListRes>,
     Error,
-    ReturnType<InventoryItemsQueryKeys["list"]>
+    ReturnType<StockLocationsQueryKeys["list"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminInventoryItemsKeys.list(query),
-    () => client.admin.inventoryItems.list(query),
+    adminStockLocationsKeys.list(query),
+    () => client.admin.stockLocations.list(query),
     options
   )
   return { ...data, ...rest } as const

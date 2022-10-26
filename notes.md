@@ -26,3 +26,7 @@
 
 - When creating claims, swaps, order edits, etc. we should confirm inventory in the controller instead of within the swap/claimService.
 - The claims/swaps/etc should be allowed to be created without the necessary inventory and then be cleaned up with a manual action if an order comes in that cannot be fulfilled.
+
+## Nested queries
+
+- When creating a query that has to filter based on a nested relationship e.g. find InventoryItems that have InventoryLevels at location X, you end up with a difficult query.

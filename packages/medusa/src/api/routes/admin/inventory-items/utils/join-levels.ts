@@ -4,15 +4,10 @@ import {
   InventoryLevelDTO,
 } from "../../../../../types/inventory"
 
-export const getLevelsByItemId = async (
-  items: InventoryItemDTO[],
-  locationIds: string[],
-  inventoryService: IInventoryService
+export const buildLevelsByItemId = (
+  levels: InventoryLevelDTO[],
+  locationIds: string[]
 ) => {
-  const [levels] = await inventoryService.listInventoryLevels({
-    item_id: items.map((i) => i.id),
-  })
-
   return levels.reduce((acc, level) => {
     if (locationIds.length) {
       if (!locationIds.includes(level.location_id)) {
@@ -28,6 +23,18 @@ export const getLevelsByItemId = async (
 
     return acc
   }, {})
+}
+
+export const getLevelsByItemId = async (
+  items: InventoryItemDTO[],
+  locationIds: string[],
+  inventoryService: IInventoryService
+) => {
+  const [levels] = await inventoryService.listInventoryLevels({
+    item_id: items.map((i) => i.id),
+  })
+
+  return buildLevelsByItemId(levels, locationIds)
 }
 
 export const joinLevels = async (

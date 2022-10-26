@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { IsString, IsBoolean, IsOptional } from "class-validator"
-import { Transform, Type } from "class-transformer"
+import { Transform } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
-import { getLevelsByItemId } from "./utils/join-levels"
+import { buildLevelsByItemId, getLevelsByItemId } from "./utils/join-levels"
 import { getVariantsByItemId } from "./utils/join-variants"
 import {
   ProductVariantInventoryService,
@@ -38,8 +38,6 @@ export default async (req: Request, res: Response) => {
     locationIds = Array.isArray(filterableFields.location_id)
       ? filterableFields.location_id
       : [filterableFields.location_id]
-
-    delete filterableFields.location_id
   }
 
   const [items, count] = await inventoryService.listInventoryItems(
@@ -52,6 +50,7 @@ export default async (req: Request, res: Response) => {
     locationIds,
     inventoryService
   )
+
   const variantsByItemId = await getVariantsByItemId(
     items,
     productVariantInventoryService,

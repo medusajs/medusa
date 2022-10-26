@@ -4,7 +4,6 @@ import {
   AdminPostInventoryItemsItemReq,
   AdminInventoryItemsListRes,
   AdminGetInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
@@ -59,7 +58,7 @@ class AdminInventoryItemsResource extends BaseResource {
       path += `?${queryString}`
     }
 
-    return this.client.request("POST", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /** update an inventory item
