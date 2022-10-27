@@ -5,6 +5,7 @@ import { PaginatedResponse } from "../../../../types/common"
 import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetVariantsParams } from "./list-variants"
+import { ResponseVariant } from "./get-inventory"
 
 const route = Router()
 
@@ -86,6 +87,10 @@ export const allowedAdminVariantRelations: (keyof ProductVariant)[] = [
   "prices",
   "options",
 ]
+
+export type AdminVariantInventoryRes = {
+  variant: ResponseVariant
+}
 
 export type AdminVariantsListRes = PaginatedResponse & {
   variants: PricedVariant[]

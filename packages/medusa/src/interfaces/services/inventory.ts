@@ -10,6 +10,7 @@ import {
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   CreateInventoryLevelInput,
+  UpdateInventoryLevelInput,
 } from "../../types/inventory"
 
 export interface IInventoryService {
@@ -17,6 +18,11 @@ export interface IInventoryService {
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>
   ): Promise<[InventoryItemDTO[], number]>
+
+  listReservationItems(
+    selector: FilterableReservationItemProps,
+    config?: FindConfig<ReservationItemDTO>
+  ): Promise<[ReservationItemDTO[], number]>
 
   listInventoryLevels(
     selector: FilterableInventoryLevelProps,
@@ -45,6 +51,12 @@ export interface IInventoryService {
     data: CreateInventoryLevelInput
   ): Promise<InventoryLevelDTO>
 
+  updateInventoryLevel(
+    itemId: string,
+    locationId: string,
+    update: UpdateInventoryLevelInput
+  ): Promise<InventoryLevelDTO>
+
   updateInventoryItem(
     itemId: string,
     input: CreateInventoryItemInput
@@ -55,6 +67,8 @@ export interface IInventoryService {
   deleteReservationItem(id: string): Promise<void>
 
   deleteInventoryItem(itemId: string): Promise<void>
+
+  deleteInventoryLevel(itemId: string, locationId: string): Promise<void>
 
   adjustInventory(
     itemId: string,

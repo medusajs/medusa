@@ -95,3 +95,8 @@ export type CreateInventoryLevelInput = {
   stocked_quantity: number
   incoming_quantity: number
 }
+
+export type UpdateInventoryLevelInput = {
+  stocked_quantity?: number
+  incoming_quantity?: number
+}
