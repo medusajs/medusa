@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:19
+medusa/dist/models/swap.d.ts:20
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:22
+medusa/dist/models/swap.d.ts:23
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:20
+medusa/dist/models/swap.d.ts:21
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:21
+medusa/dist/models/swap.d.ts:22
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:23
+medusa/dist/models/swap.d.ts:24
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:18
+medusa/dist/models/swap.d.ts:19
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:24
+medusa/dist/models/swap.d.ts:25
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:25
+medusa/dist/models/swap.d.ts:26
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:26
+medusa/dist/models/swap.d.ts:27

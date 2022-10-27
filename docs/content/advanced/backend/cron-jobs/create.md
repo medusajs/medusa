@@ -20,17 +20,17 @@ Redis is required for cron jobs to work. Make sure you [install Redis](../../../
 
 ## 1. Create a File
 
-Each cron job should reside in a file under the `src/loaders` directory.
+Each cron job should reside in a TypeScript or JavaScript file under the `src/loaders` directory.
 
 Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the cron job in. You can use any name for the file.
 
-For the example in this tutorial, you can create the file `src/loaders/publish.js`.
+For the example in this tutorial, you can create the file `src/loaders/publish.ts`.
 
 ## 2. Create Cron Job
 
-To create a cron job, add the following code in the file you created, which is `src/loaders/publish.js` in this example:
+To create a cron job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
-```jsx
+```ts
 const publishJob = async (container, options) => {
   const eventBus = container.resolve("eventBusService");
   eventBus.createCronJob("publish-products", {}, "0 0 * * *", async () => {
@@ -72,7 +72,7 @@ To pass data to your cron job, you can add them to the object passed as a second
 
 For example:
 
-```jsx
+```ts
 eventBus.createCronJob("publish-products", {
     data: {
       productId

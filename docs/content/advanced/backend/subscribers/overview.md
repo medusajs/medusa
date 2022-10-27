@@ -16,7 +16,7 @@ Subscribers register handlers for an events and allows you to perform an action 
 
 Natively in Medusa there are subscribers to handle different events. However, you can also create your own custom subscribers.
 
-Custom subscribers reside in your project's `src/subscribers` directory. Files here should export classes, which will be treated as subscribers by Medusa. By convention, the class name should end with `Subscriber` and the file name should be the camel-case version of the class name without `Subscriber`. For example, the `WelcomeSubscriber` class is in the file `src/subscribers/welcome.js`.
+Custom subscribers are TypeScript or JavaScript files in your project's `src/subscribers` directory. Files here should export classes, which will be treated as subscribers by Medusa. By convention, the class name should end with `Subscriber` and the file name should be the camel-case version of the class name without `Subscriber`. For example, the `WelcomeSubscriber` class is in the file `src/subscribers/welcome.ts`.
 
 Whenever an event is emitted, the subscriber’s registered handler method is executed. The handler method receives as a parameter an object that holds data related to the event. For example, if an order is placed the `order.placed` event will be emitted and all the handlers will receive the order id in the parameter object.
 

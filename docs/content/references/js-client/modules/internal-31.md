@@ -2,30 +2,36 @@
 
 ## Classes
 
-- [StoreGetCollectionsParams](../classes/internal-31.StoreGetCollectionsParams.md)
+- [StorePostAuthReq](../classes/internal-31.StorePostAuthReq.md)
 
 ## Type Aliases
 
-### StoreCollectionsListRes
+### StoreAuthRes
 
-Ƭ **StoreCollectionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `collections`: [`ProductCollection`](../classes/internal.ProductCollection.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/store/collections/index.d.ts:7
-
-___
-
-### StoreCollectionsRes
-
-Ƭ **StoreCollectionsRes**: `Object`
+Ƭ **StoreAuthRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `collection` | [`ProductCollection`](../classes/internal.ProductCollection.md) |
+| `customer` | [`Customer`](../classes/internal.Customer.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/collections/index.d.ts:10
+medusa/dist/api/routes/store/auth/index.d.ts:4
+
+___
+
+### StoreGetAuthEmailRes
+
+Ƭ **StoreGetAuthEmailRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `exists` | `boolean` |
+
+#### Defined in
+
+medusa/dist/api/routes/store/auth/index.d.ts:7

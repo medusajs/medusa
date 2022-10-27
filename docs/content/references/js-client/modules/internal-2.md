@@ -93,4 +93,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:59
+medusa/dist/types/common.d.ts:60

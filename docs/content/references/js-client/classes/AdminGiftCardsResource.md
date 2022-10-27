@@ -10,7 +10,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 **`Description`**
 
@@ -20,16 +20,16 @@ Creates a gift card
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostGiftCardsReq`](internal-8.AdminPostGiftCardsReq.md) |
+| `payload` | [`AdminPostGiftCardsReq`](internal-9.AdminPostGiftCardsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/gift-cards.ts#L17)
+[medusa-js/src/resources/admin/gift-cards.ts:17](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/gift-cards.ts#L17)
 
 ___
 
@@ -54,13 +54,13 @@ Deletes a gift card
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:40](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/gift-cards.ts#L40)
+[medusa-js/src/resources/admin/gift-cards.ts:40](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/gift-cards.ts#L40)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsListRes`](../modules/internal-8.md#admingiftcardslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsListRes`](../modules/internal-9.md#admingiftcardslistres)\>
 
 **`Description`**
 
@@ -70,22 +70,22 @@ Lists gift cards
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetGiftCardsParams`](internal-8.AdminGetGiftCardsParams.md) |
+| `query?` | [`AdminGetGiftCardsParams`](internal-9.AdminGetGiftCardsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsListRes`](../modules/internal-8.md#admingiftcardslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsListRes`](../modules/internal-9.md#admingiftcardslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:62](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/gift-cards.ts#L62)
+[medusa-js/src/resources/admin/gift-cards.ts:62](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/gift-cards.ts#L62)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 **`Description`**
 
@@ -100,17 +100,17 @@ Deletes a gift card
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:51](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/gift-cards.ts#L51)
+[medusa-js/src/resources/admin/gift-cards.ts:51](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/gift-cards.ts#L51)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 **`Description`**
 
@@ -121,13 +121,13 @@ Updates a gift card
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostGiftCardsGiftCardReq`](internal-8.AdminPostGiftCardsGiftCardReq.md) |
+| `payload` | [`AdminPostGiftCardsGiftCardReq`](internal-9.AdminPostGiftCardsGiftCardReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-8.md#admingiftcardsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGiftCardsRes`](../modules/internal-9.md#admingiftcardsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:28](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/gift-cards.ts#L28)
+[medusa-js/src/resources/admin/gift-cards.ts:28](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/gift-cards.ts#L28)
