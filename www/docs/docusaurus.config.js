@@ -60,12 +60,6 @@ const config = {
       background: {
         light: 'rgb(255, 255, 255)',
         dark: 'rgb(50, 50, 50)'
-      },
-      config: {
-        container: {
-          left: 250,
-          right: 40
-        }
       }
     },
     navbar: {
