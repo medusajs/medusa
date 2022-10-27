@@ -20,6 +20,7 @@ import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-cha
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import LineItemAdjustmentService from "../line-item-adjustment"
+import { PaymentCollectionServiceMock } from "../__mocks__/payment-collection"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -185,19 +186,6 @@ describe("OrderEditService", () => {
       }
     },
   })
-
-  const paymentCollectionService = {
-    withTransaction: function () {
-      return this
-    },
-    create: jest.fn().mockImplementation(async (data) => {
-      return { ...data }
-    }),
-  }
-  const paymentCollectionServiceMock = jest.fn().mockImplementation(() => {
-    return paymentCollectionService
-  })()
-
   const orderEditService = new OrderEditService({
     manager: MockManager,
     orderEditRepository,
@@ -211,7 +199,7 @@ describe("OrderEditService", () => {
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
     paymentCollectionService:
-      paymentCollectionServiceMock as unknown as PaymentCollectionService,
+      PaymentCollectionServiceMock as unknown as PaymentCollectionService,
     paymentProviderService:
       PaymentProviderServiceMock as unknown as PaymentProviderService,
   })
@@ -375,6 +363,7 @@ describe("OrderEditService", () => {
           ...orderEditWithChanges,
           requested_at: expect.any(Date),
           requested_by: userId,
+          payment_collection_id: IdMap.getId("paycol_1"),
         })
 
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
