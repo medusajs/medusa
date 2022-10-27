@@ -1,4 +1,4 @@
-import { Express, NextFunction, Request, Response } from "express"
+import { Express, NextFunction, Request, Response, Router } from "express"
 import { ConfigModule } from "../types/global"
 
 enum AllowedMethods {
@@ -18,10 +18,7 @@ export type MedusaRoute = {
   path: string
   handler: Handler | Handler[]
   routes: MedusaRoute[]
-  options: {
-    requires_auth?: boolean
-    prefix?: string
-  }
+  options: {}
 }
 
 const validateRouteConfig = async (customRoute) => {
@@ -41,11 +38,22 @@ export default ({
   configModule.routes.map(async (customRoute) => {
     await validateRouteConfig(customRoute)
 
-    let { handler, path, method, routes, options } = customRoute
+    let { handler, path, method, routes } = customRoute
 
-    handler = Array.isArray(handler) ? handler : [handler]
+    if (routes) {
+      const subRouter = Router({ mergeParams: true })
 
-    app[method.toLowerCase()](path, handler)
+      app.use(path, subRouter)
+
+      routes.map((route) => {
+        const { handler, path, method } = route
+        subRouter[method.toLowerCase()](path, handler)
+      })
+    } else {
+      handler = Array.isArray(handler) ? handler : [handler]
+
+      app[method.toLowerCase()](path, handler)
+    }
   })
 
   return app
