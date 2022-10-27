@@ -82,6 +82,7 @@ export default class ReservationItemService {
 
     const inventoryItem = itemRepository.create({
       item_id: data.item_id,
+      line_item_id: data.line_item_id,
       location_id: data.location_id,
       quantity: data.quantity,
       metadata: data.metadata,

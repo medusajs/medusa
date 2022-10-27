@@ -5,6 +5,7 @@ import {
   AdminInventoryItemsListRes,
   AdminGetInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -67,12 +68,44 @@ class AdminInventoryItemsResource extends BaseResource {
    * @description updates an inventory item
    * @returns the updated medusa inventory item
    */
+  deleteLocationLevel(
+    inventoryItemId: string,
+    locationId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminInventoryItemsRes> {
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  /** update an inventory item
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please install @medusajs/inventory
+   * @description updates an inventory item
+   * @returns the updated medusa inventory item
+   */
   createLocationLevel(
     inventoryItemId: string,
     payload: AdminPostInventoryItemsItemLocationLevelsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
     const path = `/admin/inventory-items/${inventoryItemId}/location-levels`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /** update an inventory item
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please install @medusajs/inventory
+   * @description updates an inventory item
+   * @returns the updated medusa inventory item
+   */
+  updateLocationLevel(
+    inventoryItemId: string,
+    locationId: string,
+    payload: AdminPostInventoryItemsItemLocationLevelsLevelReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminInventoryItemsRes> {
+    const path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 

@@ -129,7 +129,7 @@ export default class InventoryLevelService {
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.softRemove({ id })
+    await levelRepository.delete({ id })
 
     await this.eventBusService_.emit(InventoryLevelService.Events.DELETED, {
       id,

@@ -57,7 +57,7 @@ export default class InventoryItemService {
       delete query.where.q
     }
 
-    if (query.where.location_id) {
+    if ("location_id" in query.where) {
       const locationIds = Array.isArray(selector.location_id)
         ? selector.location_id
         : [selector.location_id]
@@ -72,12 +72,32 @@ export default class InventoryItemService {
       delete query.where.location_id
     }
 
+    if (query.take) {
+      queryBuilder.take(query.take)
+    }
+
+    if (query.skip) {
+      queryBuilder.skip(query.skip)
+    }
+
     if (query.where) {
       queryBuilder.where(query.where)
     }
 
     if (query.select) {
-      query.select.forEach((s) => queryBuilder.addSelect("item." + s))
+      queryBuilder.select(query.select.map((s) => "item." + s))
+    }
+
+    if (query.order) {
+      const toSelect: string[] = []
+      const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {
+        const key = `item.${k}`
+        toSelect.push(key)
+        acc[key] = v
+        return acc
+      }, {})
+      queryBuilder.addSelect(toSelect)
+      queryBuilder.orderBy(parsed)
     }
 
     return queryBuilder

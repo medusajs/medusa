@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { IsString, IsBoolean, IsOptional } from "class-validator"
 import { Transform } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
-import { buildLevelsByItemId, getLevelsByItemId } from "./utils/join-levels"
+import { getLevelsByItemId } from "./utils/join-levels"
 import { getVariantsByItemId } from "./utils/join-variants"
 import {
   ProductVariantInventoryService,

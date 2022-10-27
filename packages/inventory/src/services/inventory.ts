@@ -8,6 +8,7 @@ import {
   CreateReservationItemInput,
   FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
+  UpdateInventoryLevelInput,
   IEventBusService,
   InventoryItemDTO,
   ReservationItemDTO,
@@ -51,6 +52,17 @@ export default class InventoryService implements IInventoryService {
     config: FindConfig<InventoryLevelDTO> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryLevelDTO[], number]> {
     return await this.inventoryLevelService.listAndCount(selector, config)
+  }
+
+  async listReservationItems(
+    selector: FilterableReservationItemProps,
+    config: FindConfig<ReservationItemDTO> = {
+      relations: [],
+      skip: 0,
+      take: 10,
+    }
+  ): Promise<[ReservationItemDTO[], number]> {
+    return await this.reservationItemService.listAndCount(selector, config)
   }
 
   async retrieveInventoryItem(
@@ -125,6 +137,42 @@ export default class InventoryService implements IInventoryService {
 
   async deleteInventoryItem(itemId: string): Promise<void> {
     return await this.inventoryItemService.delete(itemId)
+  }
+
+  async deleteInventoryLevel(
+    itemId: string,
+    locationId: string
+  ): Promise<void> {
+    const [inventoryLevel] = await this.inventoryLevelService.list(
+      { item_id: itemId, location_id: locationId },
+      { take: 1 }
+    )
+
+    if (!inventoryLevel) {
+      return
+    }
+
+    return await this.inventoryLevelService.delete(inventoryLevel.id)
+  }
+
+  async updateInventoryLevel(
+    itemId: string,
+    locationId: string,
+    input: UpdateInventoryLevelInput
+  ): Promise<InventoryLevelDTO> {
+    const [inventoryLevel] = await this.inventoryLevelService.list(
+      { item_id: itemId, location_id: locationId },
+      { take: 1 }
+    )
+
+    if (!inventoryLevel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Inventory level for item ${itemId} and location ${locationId} not found`
+      )
+    }
+
+    return await this.inventoryLevelService.update(inventoryLevel.id, input)
   }
 
   async deleteReservationItemsByLineItem(id: string): Promise<void> {

@@ -86,7 +86,7 @@ type ResponseInventoryItem = Partial<InventoryItemDTO> & {
   location_levels?: InventoryLevelDTO[]
 }
 
-type ResponseVariant = {
+export type ResponseVariant = {
   id: string
   inventory: ResponseInventoryItem[]
   sales_channel_availability: {

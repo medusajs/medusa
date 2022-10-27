@@ -51,7 +51,7 @@ class inventorySetup1665748086258 implements MigrationInterface {
       `CREATE UNIQUE INDEX "IDX_d6ea8a96077963efdebaa65044" ON "inventory_item" ("sku") `
     )
     await queryRunner.query(
-      `CREATE TABLE "reservation_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "line_item_id" text NOT NULL, "item_id" text NOT NULL, "location_id" text NOT NULL, "quantity" integer NOT NULL, "metadata" jsonb, CONSTRAINT "PK_0080a75ff7fac5703092e675f50" PRIMARY KEY ("id"))`
+      `CREATE TABLE "reservation_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "line_item_id" text, "item_id" text NOT NULL, "location_id" text NOT NULL, "quantity" integer NOT NULL, "metadata" jsonb, CONSTRAINT "PK_0080a75ff7fac5703092e675f50" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_b33347f11cb7509fa1a2d164a7" ON "reservation_item" ("line_item_id") `

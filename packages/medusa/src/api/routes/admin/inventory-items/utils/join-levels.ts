@@ -4,8 +4,12 @@ import {
   InventoryLevelDTO,
 } from "../../../../../types/inventory"
 
+type LevelWithAvailability = InventoryLevelDTO & {
+  available_quantity: number
+}
+
 export const buildLevelsByItemId = (
-  levels: InventoryLevelDTO[],
+  levels: (LevelWithAvailability | InventoryLevelDTO)[],
   locationIds: string[]
 ) => {
   return levels.reduce((acc, level) => {
@@ -34,7 +38,20 @@ export const getLevelsByItemId = async (
     item_id: items.map((i) => i.id),
   })
 
-  return buildLevelsByItemId(levels, locationIds)
+  const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
+    levels.map(async (level) => {
+      const availability = await inventoryService.retrieveAvailableQuantity(
+        level.item_id,
+        [level.location_id]
+      )
+      return {
+        ...level,
+        available_quantity: availability,
+      }
+    })
+  )
+
+  return buildLevelsByItemId(levelsWithAvailability, locationIds)
 }
 
 export const joinLevels = async (

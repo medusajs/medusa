@@ -14,6 +14,10 @@ import {
   AdminPostInventoryItemsItemLocationLevelsReq,
   AdminPostInventoryItemsItemLocationLevelsParams,
 } from "./create-location-level"
+import {
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelParams,
+} from "./update-location-level"
 
 const route = Router()
 
@@ -60,6 +64,22 @@ export default (app) => {
       isList: false,
     }),
     middlewares.wrap(require("./list-location-levels").default)
+  )
+
+  route.delete(
+    "/:id/location-levels/:location_id",
+    middlewares.wrap(require("./delete-location-level").default)
+  )
+
+  route.post(
+    "/:id/location-levels/:location_id",
+    transformQuery(AdminPostInventoryItemsItemLocationLevelsLevelParams, {
+      defaultFields: defaultAdminInventoryItemFields,
+      defaultRelations: defaultAdminInventoryItemRelations,
+      isList: false,
+    }),
+    transformBody(AdminPostInventoryItemsItemLocationLevelsLevelReq),
+    middlewares.wrap(require("./update-location-level").default)
   )
 
   route.get(
@@ -109,3 +129,4 @@ export * from "./get-inventory-item"
 export * from "./update-inventory-item"
 export * from "./list-location-levels"
 export * from "./create-location-level"
+export * from "./update-location-level"
