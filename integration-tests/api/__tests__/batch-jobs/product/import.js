@@ -16,6 +16,26 @@ const adminReqConfig = {
   },
 }
 
+function getImportFile() {
+  return path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import.csv"
+  )
+}
+
+function copyTemplateFile() {
+  const csvTemplate = path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-template.csv"
+  )
+  const destination = getImportFile()
+  fs.copyFileSync(csvTemplate, destination)
+}
+
 jest.setTimeout(1000000)
 
 function cleanTempData() {
@@ -71,6 +91,8 @@ describe("Product import batch job", () => {
   it("should import a csv file", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
+
+    copyTemplateFile()
 
     const existingProductToBeUpdated = await simpleProductFactory(
       dbConnection,

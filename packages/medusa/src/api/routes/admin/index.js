@@ -1,6 +1,7 @@
 import cors from "cors"
 import { Router } from "express"
 import middlewares from "../../middlewares"
+import analyticsConfigs from "./analytics-configs"
 import appRoutes from "./apps"
 import authRoutes from "./auth"
 import batchRoutes from "./batch"
@@ -67,6 +68,7 @@ export default (app, container, config) => {
   // Calls all middleware that has been registered to run after authentication.
   middlewareService.usePostAuthentication(app)
 
+  analyticsConfigs(route)
   appRoutes(route)
   batchRoutes(route)
   collectionRoutes(route)
