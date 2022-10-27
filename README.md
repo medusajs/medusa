@@ -85,7 +85,7 @@ See more of the [ecommerce features on our documentation](https://docs.medusajs.
 
 ## Roadmap
 
-Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
+Write-ups for all features will be made available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
 
 ### **2022**
 
