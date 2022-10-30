@@ -26,18 +26,23 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const coreFull = path.join(__dirname, corePath)
 
+  const ignore = [
+    "**/__fixtures__/**",
+    "**/index.js",
+    "**/index.ts",
+    "**/utils.js",
+    "**/utils.ts",
+    "**/types.js",
+    "**/types.ts",
+    "**/types/**",
+  ]
+  if (!useMock) {
+    ignore.push("**/__tests__/**", "**/__mocks__/**")
+  }
+
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: [
-      "**/__fixtures__/**",
-      "**/index.js",
-      "**/index.ts",
-      "**/utils.js",
-      "**/utils.ts",
-      "**/types.js",
-      "**/types.ts",
-      "**/types/**",
-    ],
+    ignore,
   })
 
   core.forEach((fn) => {

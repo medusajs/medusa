@@ -628,7 +628,7 @@ function resolvePlugin(pluginName: string): {
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
     return {
-      resolve: resolvedPath,
+      resolve: resolvedPath + (process.env.DEV_MODE ? "/src" : ""),
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},
