@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.45-alpha.0
+
+### Patch Changes
+
+- Support automatic payment methods option
+
 ## 1.1.44
 
 ### Patch Changes
