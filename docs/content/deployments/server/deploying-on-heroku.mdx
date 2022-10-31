@@ -30,7 +30,7 @@ Furthermore, your Medusa server should be configured to work with PostgreSQL and
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 - Heroku's CLI tool. You can follow [Heroku's documentation to learn how to install it for your operating system](https://devcenter.heroku.com/articles/heroku-cli).
 
 ## Deploy to Heroku
@@ -60,9 +60,9 @@ Where `<APP_NAME>` is the name of the app you'll create. You can use any name yo
 
 Medusa requires a Postgres database and a Redis instance to work. You can add those to your Heroku app using Add-ons.
 
-:::tip
+:::note
 
-In this section, the add-ons are used with a free plan. It's highly recommended that you don't use a free plan in a production environment.
+If you don't have a payment method set up in your Heroku account, you'll be asked to enter your payment details when you try to install these addons.
 
 :::
 
@@ -70,39 +70,21 @@ In this section, the add-ons are used with a free plan. It's highly recommended 
 
 Add a Postgres add-on to your Heroku app with the following command:
 
-:::note
-
-This add-on is added with a free plan. However, Heroku might require you to add a payment method to proceed.
-
-:::
-
 ```bash
-heroku addons:create heroku-postgresql:hobby-dev
+heroku addons:create heroku-postgresql:hobby-basic
 ```
 
-This uses the free plan of Heroku Postgres. Make sure to check out [more information regarding the plans and pricing of Heroku Postgres](https://elements.heroku.com/addons/heroku-postgresql#pricing).
+This uses Heroku Postgres's basic plan. You can check out [the available plans and pricing of Heroku Postgres on Heroku's website.](https://elements.heroku.com/addons/heroku-postgresql#pricing)
 
 #### Redis
 
-:::note
-
-The Add-on used here for Redis is [Upstash](https://devcenter.heroku.com/articles/upstash-redis) which is currently in beta. However, it provides a generous free plan. You can alternatively go for [Stackhero](https://elements.heroku.com/addons/stackhero-redis) but it does not have a free plan.
-
-:::
-
 Add a Redis instance to your Heroku app with the following command:
 
-:::note
-
-This add-on is added with a free plan. However, Heroku might require you to add a payment method to proceed.
-
-:::
-
 ```bash
-heroku addons:create upstash-redis
+heroku addons:create stackhero-redis:ist-ebi1rc
 ```
 
-This uses the free plan of Upstash. Make sure to check out [more information regarding the plans and pricing of Upstash](https://elements.heroku.com/addons/upstash-redis#pricing).
+This uses the lowest plan in Stackhero Redis. You can check out [the plans and pricing of Stackhero Redis on Heroku's website.](https://elements.heroku.com/addons/stackhero-redis#pricing)
 
 ### 4. Configure Environment Variables on Heroku
 
@@ -133,12 +115,12 @@ heroku buildpacks:set heroku/nodejs
 
 #### Configure the Redis URL
 
-Upstash adds the Redis URL under the environment variable `UPSTASH_REDIS_URL`. However, Medusa looks for the `REDIS_URL` environment variable when initializing the connection with Redis.
+Stackhero Redis adds the Redis URL under the environment variable `STACKHERO_REDIS_URL_TLS`. However, Medusa looks for the `REDIS_URL` environment variable when initializing the connection with Redis.
 
-Retrieve the value of `UPSTASH_REDIS_URL` with the following command:
+Retrieve the value of `STACKHERO_REDIS_URL_TLS` with the following command:
 
 ```bash
-heroku config:get UPSTASH_REDIS_URL
+heroku config:get STACKHERO_REDIS_URL_TLS
 ```
 
 This prints the value of the environment variable which is a Redis connection string.

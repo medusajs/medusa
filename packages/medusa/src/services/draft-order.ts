@@ -1,18 +1,18 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
-import { PaymentRepository } from "../repositories/payment"
-import EventBusService from "./event-bus"
-import CartService from "./cart"
-import LineItemService from "./line-item"
 import { OrderRepository } from "../repositories/order"
+import { PaymentRepository } from "../repositories/payment"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
+import { DraftOrderCreateProps } from "../types/draft-orders"
+import { buildQuery } from "../utils"
+import CartService from "./cart"
+import EventBusService from "./event-bus"
+import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
-import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders"
-import { TransactionBaseService } from "../interfaces"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
-import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -59,6 +59,7 @@ class DraftOrderService extends TransactionBaseService {
     productVariantService,
     shippingOptionService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -232,7 +233,7 @@ class DraftOrderService extends TransactionBaseService {
    * @param data - data to create draft order from
    * @return the created draft order
    */
-  async create(data: AdminPostDraftOrdersReq): Promise<DraftOrder> {
+  async create(data: DraftOrderCreateProps): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(

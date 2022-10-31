@@ -1,16 +1,6 @@
-import ClaimItemService from "./claim-item"
-import EventBusService from "./event-bus"
-import FulfillmentProviderService from "./fulfillment-provider"
-import FulfillmentService from "./fulfillment"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ReturnService from "./return"
-import ShippingOptionService from "./shipping-option"
-import TaxProviderService from "./tax-provider"
-import TotalsService from "./totals"
-import { AddressRepository } from "../repositories/address"
+import { MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
   ClaimOrder,
@@ -20,15 +10,25 @@ import {
   LineItem,
   ReturnItem,
 } from "../models"
+import { AddressRepository } from "../repositories/address"
 import { ClaimRepository } from "../repositories/claim"
-import { DeepPartial, EntityManager } from "typeorm"
 import { LineItemRepository } from "../repositories/line-item"
-import { MedusaError } from "medusa-core-utils"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isDefined, setMetadata } from "../utils"
-import { FindConfig } from "../types/common"
 import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
+import { FindConfig } from "../types/common"
+import { buildQuery, isDefined, setMetadata } from "../utils"
+import ClaimItemService from "./claim-item"
+import EventBusService from "./event-bus"
+import FulfillmentService from "./fulfillment"
+import FulfillmentProviderService from "./fulfillment-provider"
+import InventoryService from "./inventory"
+import LineItemService from "./line-item"
+import PaymentProviderService from "./payment-provider"
+import RegionService from "./region"
+import ReturnService from "./return"
+import ShippingOptionService from "./shipping-option"
+import TaxProviderService from "./tax-provider"
+import TotalsService from "./totals"
 
 type InjectedDependencies = {
   manager: EntityManager

@@ -133,7 +133,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   async removeConditionResources(
     id: string,
     type: DiscountConditionType,
-    resourceIds: string[]
+    resourceIds: (string | { id: string })[]
   ): Promise<DeleteResult | void> {
     const { conditionTable, joinTableForeignKey } =
       this.getJoinTableResourceIdentifiers(type)
@@ -142,10 +142,13 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return Promise.resolve()
     }
 
+    const idsToDelete = resourceIds.map((rId): string => {
+      return isString(rId) ? rId : rId.id
+    })
     return await this.createQueryBuilder()
       .delete()
       .from(conditionTable)
-      .where({ condition_id: id, [joinTableForeignKey]: In(resourceIds) })
+      .where({ condition_id: id, [joinTableForeignKey]: In(idsToDelete) })
       .execute()
   }
 

@@ -10,6 +10,7 @@ For example, if you want to create a service `helloService`, create the file `he
 
 ```ts
 import { TransactionBaseService } from '@medusajs/medusa';
+import { EntityManager } from 'typeorm';
 
 class HelloService extends TransactionBaseService {
   protected manager_: EntityManager;

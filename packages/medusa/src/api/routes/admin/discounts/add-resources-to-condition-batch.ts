@@ -3,8 +3,8 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { DiscountService } from "../../../../services"
 import {
+  DiscountConditionInput,
   DiscountConditionMapTypeToProperty,
-  UpsertDiscountConditionInput,
 } from "../../../../types/discount"
 import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
@@ -18,7 +18,7 @@ import { FindParams } from "../../../../types/common"
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
  *   - (path) condition_id=* {string} The ID of the condition on which to add the item.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each discount of the result.
+ *   - (query) expand {string} (Comma separated) Which relations should be expanded in each discount of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each discount of the result.
  * requestBody:
  *   content:
@@ -42,7 +42,6 @@ import { FindParams } from "../../../../types/common"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
- *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.addConditionResourceBatch(discount_id, condition_id, {
@@ -101,7 +100,7 @@ export default async (req: Request, res: Response) => {
     select: ["id", "type", "discount_rule_id"],
   })
 
-  const updateObj: UpsertDiscountConditionInput = {
+  const updateObj: DiscountConditionInput = {
     id: condition_id,
     rule_id: condition.discount_rule_id,
     [DiscountConditionMapTypeToProperty[condition.type]]:
