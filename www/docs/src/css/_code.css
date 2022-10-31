@@ -1,6 +1,6 @@
-[data-theme="dark"] pre code {
+/* [data-theme="dark"] pre code {
   background-color: var(--ifm-code-background);
-}
+} */
 
 code {
   border: 1px solid var(--ifm-code-border-color);

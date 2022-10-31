@@ -29,7 +29,7 @@ p {
 }
 
 .markdown > p {
-  margin-bottom: 8px;
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
 }
 
 .markdown a,
@@ -41,7 +41,7 @@ p {
   font-weight: var(--ifm-link-weight);
 }
 
-.markdown a:not(.hash-link):after {
+.markdown a:not(.hash-link):not(.card):after {
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -51,8 +51,22 @@ p {
 }
 
 .markdown p + h2,
-.markdown p + h3,
-.markdown .alert + h2,
-.markdown .alert + h3 {
-  margin-top: 64px;
+.markdown .alert + h2 {
+  margin-top: calc(var(--ifm-base-margin-vertical) * 2);
+}
+
+.markdown p + .alert {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+.markdown {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
+}
+
+.markdown p + p > img:not(.ui-icon) {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
+p + img:not(.ui-icon) {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
 }

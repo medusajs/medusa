@@ -71,7 +71,9 @@
   --ifm-code-border-color: #E5E7EB;
 
   --ifm-hr-background-color: #E5E7EB;
-  --ifm-hr-margin-vertical: 64px;
+
+  --ifm-base-margin-vertical: 32px;
+  --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
 }
 
 html[data-theme="dark"] {
