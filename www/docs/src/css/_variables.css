@@ -25,6 +25,8 @@
   --ifm-h1-line-height: 48px;
   --ifm-h2-font-size: 24px;
   --ifm-h2-line-height: 36px;
+  --ifm-link-color: #4B5563;
+  --ifm-link-weight: 600;
 
 
   /* Sidebar */
@@ -67,6 +69,9 @@
   /* Code */
   --ifm-code-border-radius: 8px;
   --ifm-code-border-color: #E5E7EB;
+
+  --ifm-hr-background-color: #E5E7EB;
+  --ifm-hr-margin-vertical: 64px;
 }
 
 html[data-theme="dark"] {
@@ -93,6 +98,8 @@ html[data-theme="dark"] {
   --ifm-color-headers: #F3F3F3;
   --ifm-color-content: #8A8A8A;
 
+  --ifm-link-color: #8A8A8A;
+
   /* Color Mode toggler */
   --mode-tabs-bg: #222222;
   --mode-button-text-color: #8A8A8A;
@@ -107,4 +114,6 @@ html[data-theme="dark"] {
 
   /* Code */
   --ifm-code-border-color: #393939;
+
+  --ifm-hr-background-color: #2D2D2D;
 }

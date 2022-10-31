@@ -27,3 +27,32 @@ p {
 .markdown > h2 {
   font-size: 24px !important;
 }
+
+.markdown > p {
+  margin-bottom: 8px;
+}
+
+.markdown a,
+.markdown a:hover {
+  color: var(--ifm-link-color);
+}
+
+.markdown a:not(.hash-link) {
+  font-weight: var(--ifm-link-weight);
+}
+
+.markdown a:not(.hash-link):after {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url('/img/link-icon.svg');
+  content: '';
+  vertical-align: middle;
+}
+
+.markdown p + h2,
+.markdown p + h3,
+.markdown .alert + h2,
+.markdown .alert + h3 {
+  margin-top: 64px;
+}
