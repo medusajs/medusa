@@ -4,7 +4,9 @@ import { EntityManager } from "typeorm"
 import { IdempotencyKey, Order } from "../models"
 import CartService from "../services/cart"
 import IdempotencyKeyService from "../services/idempotency-key"
-import OrderService from "../services/order"
+import OrderService, {
+  ORDER_CART_ALREADY_EXISTS_ERROR,
+} from "../services/order"
 import SwapService from "../services/swap"
 import { RequestContext } from "../types/request"
 
@@ -12,6 +14,7 @@ import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
+import { isDefined } from "../utils"
 
 type InjectedDependencies = {
   idempotencyKeyService: IdempotencyKeyService
@@ -52,11 +55,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   ): Promise<CartCompletionResponse> {
     let idempotencyKey: IdempotencyKey = ikey
 
-    const idempotencyKeyService = this.idempotencyKeyService_
-    const cartService = this.cartService_
-    const orderService = this.orderService_
-    const swapService = this.swapService_
-
     let inProgress = true
     let err: unknown = false
 
@@ -65,45 +63,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         case "started": {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
-              idempotencyKey = await idempotencyKeyService
+              idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
-                .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const cart = await cartService
-                    .withTransaction(manager)
-                    .retrieveNew(id, {
-                      relations: [
-                        "customer",
-                        "discounts",
-                        "discounts.rule",
-                        "gift_cards",
-                        "items",
-                        "items.adjustments",
-                        "region",
-                        "region.tax_rates",
-                        "shipping_address",
-                        "shipping_methods",
-                      ],
-                    })
-
-                  if (cart.completed_at) {
-                    return {
-                      response_code: 409,
-                      response_body: {
-                        code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
-                        message: "Cart has already been completed",
-                        type: MedusaError.Types.NOT_ALLOWED,
-                      },
-                    }
-                  }
-
-                  await cartService
-                    .withTransaction(manager)
-                    .createTaxLines(cart)
-
-                  return {
-                    recovery_point: "tax_lines_created",
-                  }
-                })
+                .workStage(
+                  idempotencyKey.idempotency_key,
+                  async (manager) => await this.handleStarted(id, { manager })
+                )
             })
             .catch((e) => {
               inProgress = false
@@ -114,42 +79,16 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         case "tax_lines_created": {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
-              idempotencyKey = await idempotencyKeyService
+              idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
-                .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const cart = await cartService
-                    .withTransaction(manager)
-                    .authorizePayment(id, {
-                      ...context,
-                      cart_id: id,
-                      idempotency_key: idempotencyKey,
-                      useExistingTaxLine: true,
+                .workStage(
+                  idempotencyKey.idempotency_key,
+                  async (manager) =>
+                    await this.handlerTaxLineCreated(id, idempotencyKey, {
+                      context,
+                      manager,
                     })
-
-                  if (cart.payment_session) {
-                    if (
-                      cart.payment_session.status === "requires_more" ||
-                      cart.payment_session.status === "pending"
-                    ) {
-                      await cartService
-                        .withTransaction(transactionManager)
-                        .deleteTaxLines(id)
-
-                      return {
-                        response_code: 200,
-                        response_body: {
-                          data: cart,
-                          payment_status: cart.payment_session.status,
-                          type: "cart",
-                        },
-                      }
-                    }
-                  }
-
-                  return {
-                    recovery_point: "payment_authorized",
-                  }
-                })
+                )
             })
             .catch((e) => {
               inProgress = false
@@ -161,130 +100,13 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         case "payment_authorized": {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
-              idempotencyKey = await idempotencyKeyService
+              idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
-                .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                  const cart = await cartService
-                    .withTransaction(manager)
-                    .retrieveWithTotals(
-                      id,
-                      {
-                        relations: ["region", "payment", "payment_sessions"],
-                      },
-                      {
-                        useExistingTaxLines: true,
-                      }
-                    )
-
-                  // If cart is part of swap, we register swap as complete
-                  switch (cart.type) {
-                    case "swap": {
-                      try {
-                        const swapId = cart.metadata?.swap_id
-                        let swap = await swapService
-                          .withTransaction(manager)
-                          .registerCartCompletion(swapId as string)
-
-                        swap = await swapService
-                          .withTransaction(manager)
-                          .retrieve(swap.id, {
-                            relations: ["shipping_address"],
-                          })
-
-                        return {
-                          response_code: 200,
-                          response_body: { data: swap, type: "swap" },
-                        }
-                      } catch (error) {
-                        if (
-                          error &&
-                          error.code ===
-                            MedusaError.Codes.INSUFFICIENT_INVENTORY
-                        ) {
-                          return {
-                            response_code: 409,
-                            response_body: {
-                              message: error.message,
-                              type: error.type,
-                              code: error.code,
-                            },
-                          }
-                        } else {
-                          throw error
-                        }
-                      }
-                    }
-                    default: {
-                      if (typeof cart.total === "undefined") {
-                        return {
-                          response_code: 500,
-                          response_body: {
-                            message: "Unexpected state",
-                          },
-                        }
-                      }
-
-                      if (!cart.payment && cart.total > 0) {
-                        throw new MedusaError(
-                          MedusaError.Types.INVALID_DATA,
-                          `Cart payment not authorized`
-                        )
-                      }
-
-                      let order: Order
-                      try {
-                        order = await orderService
-                          .withTransaction(manager)
-                          .createFromCart(cart)
-                      } catch (error) {
-                        if (
-                          error &&
-                          error.message === "Order from cart already exists"
-                        ) {
-                          order = await orderService
-                            .withTransaction(manager)
-                            .retrieveByWithTotals(
-                              { cart_id: id },
-                              {
-                                relations: ["shipping_address", "payments"],
-                              }
-                            )
-
-                          return {
-                            response_code: 200,
-                            response_body: { data: order, type: "order" },
-                          }
-                        } else if (
-                          error &&
-                          error.code ===
-                            MedusaError.Codes.INSUFFICIENT_INVENTORY
-                        ) {
-                          return {
-                            response_code: 409,
-                            response_body: {
-                              message: error.message,
-                              type: error.type,
-                              code: error.code,
-                            },
-                          }
-                        } else {
-                          throw error
-                        }
-                      }
-
-                      order = await orderService
-                        .withTransaction(manager)
-                        .retrieveWithTotals(order.id, {
-                          relations: ["shipping_address", "items", "payments"],
-                        })
-
-                      return {
-                        response_code: 200,
-                        response_body: { data: order, type: "order" },
-                      }
-                    }
-                  }
-                })
+                .workStage(
+                  idempotencyKey.idempotency_key,
+                  async (manager) =>
+                    await this.handlePaymentAuthorized(id, { manager })
+                )
             })
             .catch((e) => {
               inProgress = false
@@ -300,7 +122,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
         default:
           await this.manager_.transaction(async (transactionManager) => {
-            idempotencyKey = await idempotencyKeyService
+            idempotencyKey = await this.idempotencyKeyService_
               .withTransaction(transactionManager)
               .update(idempotencyKey.idempotency_key, {
                 recovery_point: "finished",
@@ -316,11 +138,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       if (idempotencyKey.recovery_point !== "started") {
         await this.manager_.transaction(async (transactionManager) => {
           try {
-            await orderService
+            await this.orderService_
               .withTransaction(transactionManager)
               .retrieveByCartId(id)
           } catch (error) {
-            await cartService
+            await this.cartService_
               .withTransaction(transactionManager)
               .deleteTaxLines(id)
           }
@@ -332,6 +154,197 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     return {
       response_body: idempotencyKey.response_body,
       response_code: idempotencyKey.response_code,
+    }
+  }
+
+  protected async handleStarted(
+    id: string,
+    { manager }: { manager: EntityManager }
+  ) {
+    const cart = await this.cartService_
+      .withTransaction(manager)
+      .retrieveNew(id, {
+        relations: [
+          "customer",
+          "discounts",
+          "discounts.rule",
+          "gift_cards",
+          "items",
+          "items.adjustments",
+          "region",
+          "region.tax_rates",
+          "shipping_address",
+          "shipping_methods",
+        ],
+      })
+
+    if (cart.completed_at) {
+      return {
+        response_code: 409,
+        response_body: {
+          code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
+          message: "Cart has already been completed",
+          type: MedusaError.Types.NOT_ALLOWED,
+        },
+      }
+    }
+
+    await this.cartService_.withTransaction(manager).createTaxLines(cart)
+
+    return {
+      recovery_point: "tax_lines_created",
+    }
+  }
+
+  protected async handlerTaxLineCreated(
+    id: string,
+    idempotencyKey: IdempotencyKey,
+    { context, manager }: { context: any; manager: EntityManager }
+  ) {
+    const cart = await this.cartService_
+      .withTransaction(manager)
+      .authorizePayment(id, {
+        ...context,
+        cart_id: id,
+        idempotency_key: idempotencyKey,
+        useExistingTaxLine: true,
+      })
+
+    if (cart.payment_session) {
+      if (
+        cart.payment_session.status === "requires_more" ||
+        cart.payment_session.status === "pending"
+      ) {
+        await this.cartService_.withTransaction(manager).deleteTaxLines(id)
+
+        return {
+          response_code: 200,
+          response_body: {
+            data: cart,
+            payment_status: cart.payment_session.status,
+            type: "cart",
+          },
+        }
+      }
+    }
+
+    return {
+      recovery_point: "payment_authorized",
+    }
+  }
+
+  protected async handlePaymentAuthorized(
+    id: string,
+    { manager }: { manager: EntityManager }
+  ) {
+    const cart = await this.cartService_
+      .withTransaction(manager)
+      .retrieveWithTotals(
+        id,
+        {
+          relations: ["region", "payment", "payment_sessions"],
+        },
+        {
+          useExistingTaxLines: true,
+        }
+      )
+
+    // If cart is part of swap, we register swap as complete
+    if (cart.type === "swap") {
+      try {
+        const swapId = cart.metadata?.swap_id
+        let swap = await this.swapService_
+          .withTransaction(manager)
+          .registerCartCompletion(swapId as string)
+
+        swap = await this.swapService_
+          .withTransaction(manager)
+          .retrieve(swap.id, {
+            relations: ["shipping_address"],
+          })
+
+        return {
+          response_code: 200,
+          response_body: { data: swap, type: "swap" },
+        }
+      } catch (error) {
+        if (error && error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY) {
+          return {
+            response_code: 409,
+            response_body: {
+              message: error.message,
+              type: error.type,
+              code: error.code,
+            },
+          }
+        } else {
+          throw error
+        }
+      }
+    }
+
+    if (!isDefined(cart.total)) {
+      return {
+        response_code: 500,
+        response_body: {
+          message: "Unexpected state",
+        },
+      }
+    }
+
+    if (!cart.payment && cart.total > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cart payment not authorized`
+      )
+    }
+
+    let order: Order
+    try {
+      order = await this.orderService_
+        .withTransaction(manager)
+        .createFromCart(cart)
+    } catch (error) {
+      if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
+        order = await this.orderService_
+          .withTransaction(manager)
+          .retrieveByWithTotals(
+            { cart_id: id },
+            {
+              relations: ["shipping_address", "payments"],
+            }
+          )
+
+        return {
+          response_code: 200,
+          response_body: { data: order, type: "order" },
+        }
+      } else if (
+        error &&
+        error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
+      ) {
+        return {
+          response_code: 409,
+          response_body: {
+            message: error.message,
+            type: error.type,
+            code: error.code,
+          },
+        }
+      } else {
+        throw error
+      }
+    }
+
+    order = await this.orderService_
+      .withTransaction(manager)
+      .retrieveWithTotals(order.id, {
+        relations: ["shipping_address", "items", "payments"],
+      })
+
+    return {
+      response_code: 200,
+      response_body: { data: order, type: "order" },
     }
   }
 }

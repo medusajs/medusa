@@ -46,6 +46,8 @@ import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
 import { TotalsNewService } from "./index"
 
+export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
+
 type InjectedDependencies = {
   manager: EntityManager
   orderRepository: typeof OrderRepository
@@ -583,7 +585,7 @@ class OrderService extends TransactionBaseService {
       if (exists) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
-          "Order from cart already exists"
+          ORDER_CART_ALREADY_EXISTS_ERROR
         )
       }
 
