@@ -7,24 +7,21 @@ import {
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
-import { ConfigModule, Logger } from "../types/global"
+import { ConfigModule } from "../types/global"
 
 type Options = {
   configModule: ConfigModule
   container: AwilixContainer
-  logger: Logger
 }
 
 export default async ({
   container,
   configModule,
-  logger,
 }: Options): Promise<Connection> => {
   const entities = container.resolve("db_entities")
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
-  logger.info(JSON.stringify(configModule.projectConfig))
   const cnnManager = getConnectionManager()
   if (cnnManager.has("default") && getConnection().isConnected) {
     await getConnection().close()

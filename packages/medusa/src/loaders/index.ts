@@ -118,7 +118,6 @@ export default async ({
   const dbConnection = await databaseLoader({
     container,
     configModule,
-    logger: Logger,
   })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
