@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsArray, IsInt, IsOptional, ValidateNested } from "class-validator"
 
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
@@ -120,6 +120,10 @@ export default async (req, res) => {
 }
 
 export class StoreGetCollectionsParams {
+  @IsOptional()
+  @IsArray()
+  handle?: string[]
+
   @IsOptional()
   @IsInt()
   @Type(() => Number)
