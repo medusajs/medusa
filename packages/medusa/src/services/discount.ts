@@ -37,7 +37,6 @@ import {
 } from "../types/discount"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
-import { formatException } from "../utils/exception-formatter"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
@@ -200,39 +199,35 @@ class DiscountService extends TransactionBaseService {
           "Fixed discounts can have one region"
         )
       }
-      try {
-        if (discount.regions) {
-          discount.regions = (await Promise.all(
-            discount.regions.map(async (regionId) =>
-              this.regionService_.withTransaction(manager).retrieve(regionId)
-            )
-          )) as Region[]
-        }
-
-        const discountRule = ruleRepo.create(validatedRule)
-        const createdDiscountRule = await ruleRepo.save(discountRule)
-
-        const created: Discount = discountRepo.create(
-          discount as DeepPartial<Discount>
-        )
-        created.rule = createdDiscountRule
-
-        const result = await discountRepo.save(created)
-
-        if (conditions?.length) {
-          await Promise.all(
-            conditions.map(async (cond) => {
-              await this.discountConditionService_
-                .withTransaction(manager)
-                .upsertCondition({ rule_id: result.rule_id, ...cond })
-            })
+      if (discount.regions) {
+        discount.regions = (await Promise.all(
+          discount.regions.map(async (regionId) =>
+            this.regionService_.withTransaction(manager).retrieve(regionId)
           )
-        }
-
-        return result
-      } catch (error) {
-        throw formatException(error)
+        )) as Region[]
       }
+
+      const discountRule = ruleRepo.create(validatedRule)
+      const createdDiscountRule = await ruleRepo.save(discountRule)
+
+      const created: Discount = discountRepo.create(
+        discount as DeepPartial<Discount>
+      )
+      created.rule = createdDiscountRule
+
+      const result = await discountRepo.save(created)
+
+      if (conditions?.length) {
+        await Promise.all(
+          conditions.map(async (cond) => {
+            await this.discountConditionService_
+              .withTransaction(manager)
+              .upsertCondition({ rule_id: result.rule_id, ...cond })
+          })
+        )
+      }
+
+      return result
     })
   }
 

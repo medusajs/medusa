@@ -2891,6 +2891,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-typed-document-node/core@npm:^3.1.0":
+  version: 3.1.1
+  resolution: "@graphql-typed-document-node/core@npm:3.1.1"
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: c186e5adceb0dfdaa770856d2f17c831a474f5927d79f984326ecb3d8680ba3c1ee2314f7def1d863692cd9cbe4dffc8bb52fc74ee0aa9b31e9491f24ef59f90
+  languageName: node
+  linkType: hard
+
 "@hapi/address@npm:^2.1.2":
   version: 2.1.4
   resolution: "@hapi/address@npm:2.1.4"
@@ -4162,6 +4171,17 @@ __metadata:
   dependencies:
     "@lezer/common": ^0.15.0
   checksum: 5cd5123aca5cb2f268d265b6c21922ba3426ba60b9bbc1df85f4bfeed48097a444c656e642557fa93de8a8eb00d3254f502ce2796ae9edc1d186f14fa540a863
+  languageName: node
+  linkType: hard
+
+"@linear/sdk@npm:^1.22.0":
+  version: 1.22.0
+  resolution: "@linear/sdk@npm:1.22.0"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.0
+    graphql: ^15.4.0
+    isomorphic-unfetch: ^3.1.0
+  checksum: 7e8f24f617631d027fd606334a498b04014d4c33603bcb3e08073d14f86260d116597983567f8bc147a935e4557180158175b52b9a9a8a270a234b946894a82b
   languageName: node
   linkType: hard
 
@@ -18218,7 +18238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.5.1, graphql@npm:^15.7.2":
+"graphql@npm:^15.4.0, graphql@npm:^15.5.1, graphql@npm:^15.7.2":
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: 30cc09b77170a9d1ed68e4c017ec8c5265f69501c96e4f34f8f6613f39a886c96dd9853eac925f212566ed651736334c8fe24ceae6c44e8d7625c95c3009a801
@@ -30050,6 +30070,7 @@ __metadata:
     "@babel/runtime": ^7.11.2
     "@changesets/changelog-github": ^0.4.5
     "@changesets/cli": ^2.23.0
+    "@linear/sdk": ^1.22.0
     "@octokit/core": ^4.0.5
     "@redocly/cli": latest
     "@typescript-eslint/eslint-plugin": ^5.36.2
@@ -30077,6 +30098,7 @@ __metadata:
     resolve-cwd: ^3.0.0
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
+    ts-node: ^10.9.1
     turbo: ^1.3.1
     typedoc: 0.23.10
     typedoc-frontmatter-plugin: "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin"
@@ -32919,6 +32941,44 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: 4abdce27533810b473af1ca46bff6cee1b230545fee6ca43fd0c0b89aaa9d13d4813b52111ff91a2e06167ceb6811dbfb1dd031b8bc8b242103afda6abf9a501
+  languageName: node
+  linkType: hard
+
+"ts-node@npm:^10.9.1":
+  version: 10.9.1
+  resolution: "ts-node@npm:10.9.1"
+  dependencies:
+    "@cspotcode/source-map-support": ^0.8.0
+    "@tsconfig/node10": ^1.0.7
+    "@tsconfig/node12": ^1.0.7
+    "@tsconfig/node14": ^1.0.0
+    "@tsconfig/node16": ^1.0.2
+    acorn: ^8.4.1
+    acorn-walk: ^8.1.1
+    arg: ^4.1.0
+    create-require: ^1.1.0
+    diff: ^4.0.1
+    make-error: ^1.1.1
+    v8-compile-cache-lib: ^3.0.1
+    yn: 3.1.1
+  peerDependencies:
+    "@swc/core": ">=1.2.50"
+    "@swc/wasm": ">=1.2.50"
+    "@types/node": "*"
+    typescript: ">=2.7"
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    "@swc/wasm":
+      optional: true
+  bin:
+    ts-node: dist/bin.js
+    ts-node-cwd: dist/bin-cwd.js
+    ts-node-esm: dist/bin-esm.js
+    ts-node-script: dist/bin-script.js
+    ts-node-transpile-only: dist/bin-transpile.js
+    ts-script: dist/bin-script-deprecated.js
+  checksum: 95187932fb83f3901e22546bd2feeac7d2feb4f412f42ac3a595f049a23e8dcf70516dffb51866391228ea2dbcfaea039e250fb2bb334d48a86ab2b6aea0ae2d
   languageName: node
   linkType: hard
 
