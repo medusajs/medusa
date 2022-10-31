@@ -12,6 +12,10 @@
   font-size: 14px !important;
 }
 
+.alert a {
+  text-decoration: none;
+}
+
 html:not([data-theme="dark"]) [class*=alert--] p > code {
   --ifm-code-background: #F9FAFB;
   --ifm-alert-background-color-highlight: #F9FAFB;
