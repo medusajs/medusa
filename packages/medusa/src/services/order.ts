@@ -1492,31 +1492,20 @@ class OrderService extends TransactionBaseService {
     order: Order,
     totalsConfig: TotalsConfig = {}
   ): Promise<Order> {
-    const useExistingTaxLines = totalsConfig.useExistingTaxLines
     const calculationContext = await this.totalsService_.getCalculationContext(
-      order,
-      {
-        exclude_shipping: true,
-      }
+      order
     )
 
     const includeTax = totalsConfig?.force_taxes || order.region.automatic_taxes
+    const useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    const itemsTotals = await this.totalsNewService_.getLineItemsTotals(
-      order.items,
-      {
+    const [itemsTotals, shippingTotals] = await Promise.all([
+      await this.totalsNewService_.getLineItemsTotals(order.items, {
         isOrder: true,
         includeTax,
         calculationContext,
         useExistingTaxLines,
-      }
-    )
-
-    order.items = (order.items || []).map((item) => {
-      return Object.assign(item, itemsTotals.get(item.id) ?? {})
-    })
-
-    const shippingTotals =
+      }),
       await this.totalsNewService_.getShippingMethodsTotals(
         order.shipping_methods,
         {
@@ -1526,36 +1515,38 @@ class OrderService extends TransactionBaseService {
           discounts: order.discounts,
           useExistingTaxLines,
         }
-      )
+      ),
+    ])
+
+    order.subtotal = 0
+    order.discount_total = 0
+    order.shipping_total = 0
+    let item_tax_total = 0
+    let shipping_tax_total = 0
+
+    order.items = (order.items || []).map((item) => {
+      const itemWithTotals = Object.assign(item, itemsTotals.get(item.id) ?? {})
+
+      order.subtotal! += itemWithTotals.subtotal ?? 0
+      order.discount_total! += itemWithTotals.discount_total ?? 0
+      item_tax_total += itemWithTotals.tax_total ?? 0
+
+      return itemWithTotals
+    })
 
     order.shipping_methods = (order.shipping_methods || []).map(
       (shippingMethod) => {
-        return Object.assign(
+        const methodWithTotals = Object.assign(
           shippingMethod,
           shippingTotals.get(shippingMethod.id) ?? {}
         )
+
+        order.shipping_total! += methodWithTotals.subtotal ?? 0
+        shipping_tax_total += methodWithTotals.tax_total ?? 0
+
+        return methodWithTotals
       }
     )
-
-    order.shipping_total = order.shipping_methods.reduce((acc, method) => {
-      return acc + (method.subtotal ?? 0)
-    }, 0)
-
-    order.subtotal = order.items.reduce((acc, item) => {
-      return acc + (item.subtotal ?? 0)
-    }, 0)
-
-    order.discount_total = order.items.reduce((acc, item) => {
-      return acc + (item.discount_total ?? 0)
-    }, 0)
-
-    const item_tax_total = order.items.reduce((acc, item) => {
-      return acc + (item.tax_total ?? 0)
-    }, 0)
-
-    const shipping_tax_total = order.shipping_methods.reduce((acc, method) => {
-      return acc + (method.tax_total ?? 0)
-    }, 0)
 
     const giftCardTotal = await this.totalsNewService_.getGiftCardTotals(
       order.subtotal - order.discount_total,
@@ -1569,8 +1560,13 @@ class OrderService extends TransactionBaseService {
 
     order.tax_total = item_tax_total + shipping_tax_total
 
-    order.refunded_total = this.totalsService_.getRefundedTotal(order)
-    order.paid_total = this.totalsService_.getPaidTotal(order)
+    order.refunded_total = Math.round(
+      order.refunds?.reduce((acc, next) => acc + next.amount, 0)
+    )
+    order.paid_total = order.payments?.reduce(
+      (acc, next) => (acc += next.amount),
+      0
+    )
     order.refundable_amount = order.paid_total - order.refunded_total
 
     const items: LineItem[] = []

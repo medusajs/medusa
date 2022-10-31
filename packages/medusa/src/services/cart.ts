@@ -2093,30 +2093,19 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
-    const useExistingTaxLines = totalsConfig.useExistingTaxLines
     const calculationContext = await this.totalsService_.getCalculationContext(
-      cart,
-      {
-        exclude_shipping: true,
-      }
+      cart
     )
 
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
+    const useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    const itemsTotals = await this.totalsNewService_.getLineItemsTotals(
-      cart.items,
-      {
+    const [itemsTotals, shippingTotals] = await Promise.all([
+      await this.totalsNewService_.getLineItemsTotals(cart.items, {
         includeTax,
         calculationContext,
         useExistingTaxLines,
-      }
-    )
-
-    cart.items = (cart.items || []).map((item) => {
-      return Object.assign(item, itemsTotals.get(item.id) ?? {})
-    })
-
-    const shippingTotals =
+      }),
       await this.totalsNewService_.getShippingMethodsTotals(
         cart.shipping_methods,
         {
@@ -2125,36 +2114,38 @@ class CartService extends TransactionBaseService {
           discounts: cart.discounts,
           useExistingTaxLines,
         }
-      )
+      ),
+    ])
+
+    cart.subtotal = 0
+    cart.discount_total = 0
+    cart.item_tax_total = 0
+    cart.shipping_total = 0
+    cart.shipping_tax_total = 0
+
+    cart.items = (cart.items || []).map((item) => {
+      const itemWithTotals = Object.assign(item, itemsTotals.get(item.id) ?? {})
+
+      cart.subtotal! += itemWithTotals.subtotal ?? 0
+      cart.discount_total! += itemWithTotals.discount_total ?? 0
+      cart.item_tax_total! += itemWithTotals.tax_total ?? 0
+
+      return itemWithTotals
+    })
 
     cart.shipping_methods = (cart.shipping_methods || []).map(
       (shippingMethod) => {
-        return Object.assign(
+        const methodWithTotals = Object.assign(
           shippingMethod,
           shippingTotals.get(shippingMethod.id) ?? {}
         )
+
+        cart.shipping_total! += methodWithTotals.subtotal ?? 0
+        cart.shipping_tax_total! += methodWithTotals.tax_total ?? 0
+
+        return methodWithTotals
       }
     )
-
-    cart.shipping_total = cart.shipping_methods.reduce((acc, method) => {
-      return acc + (method.subtotal ?? 0)
-    }, 0)
-
-    cart.subtotal = cart.items.reduce((acc, item) => {
-      return acc + (item.subtotal ?? 0)
-    }, 0)
-
-    cart.discount_total = cart.items.reduce((acc, item) => {
-      return acc + (item.discount_total ?? 0)
-    }, 0)
-
-    cart.item_tax_total = cart.items.reduce((acc, item) => {
-      return acc + (item.tax_total ?? 0)
-    }, 0)
-
-    cart.shipping_tax_total = cart.shipping_methods.reduce((acc, method) => {
-      return acc + (method.tax_total ?? 0)
-    }, 0)
 
     const giftCardTotal = await this.totalsNewService_.getGiftCardTotals(
       cart.subtotal - cart.discount_total,
