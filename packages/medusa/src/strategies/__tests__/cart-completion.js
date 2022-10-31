@@ -58,7 +58,9 @@ const toTest = [
         })
 
         expect(cartServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
-        expect(cartServiceMock.createTaxLines).toHaveBeenCalledWith("test-cart")
+        expect(cartServiceMock.createTaxLines).toHaveBeenCalledWith(
+          expect.objectContaining({ id: "test-cart" })
+        )
 
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledTimes(1)
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledWith(
@@ -75,7 +77,7 @@ const toTest = [
 
         expect(orderServiceMock.createFromCart).toHaveBeenCalledTimes(1)
         expect(orderServiceMock.createFromCart).toHaveBeenCalledWith(
-          "test-cart"
+          expect.objectContaining({ id: "test-cart" })
         )
 
         expect(orderServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
@@ -188,6 +190,7 @@ describe("CartCompletionStrategy", () => {
           deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),
+          retrieveNew: jest.fn(() => Promise.resolve(cart)),
           retrieveWithTotals: jest.fn(() => Promise.resolve(cart)),
           totalsNewService: TotalsNewServiceMock,
         }

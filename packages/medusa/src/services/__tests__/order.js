@@ -186,6 +186,8 @@ describe("OrderService", () => {
           { id: "item_2", variant_id: "variant-2", quantity: 1 },
         ],
         total: 100,
+        subtotal: 100,
+        discount_total: 0,
       }
 
       orderService.cartService_.retrieveWithTotals = jest.fn(() =>
@@ -284,6 +286,7 @@ describe("OrderService", () => {
         ],
         subtotal: 100,
         total: 100,
+        discount_total: 0,
       }
 
       orderService.cartService_.retrieveWithTotals = () => {
@@ -376,9 +379,11 @@ describe("OrderService", () => {
           { id: "item_2", variant_id: "variant-2", quantity: 1 },
         ],
         total: 0,
+        subtotal: 0,
+        discount_total: 0,
       }
       orderService.cartService_.retrieveWithTotals = () => Promise.resolve(cart)
-      await orderService.createFromCart(cart)
+      await orderService.createFromCart("cart_id")
       const order = {
         payment_status: "awaiting",
         email: cart.email,

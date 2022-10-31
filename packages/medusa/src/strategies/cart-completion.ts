@@ -70,8 +70,19 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(idempotencyKey.idempotency_key, async (manager) => {
                   const cart = await cartService
                     .withTransaction(manager)
-                    .retrieveWithTotals(id, {
-                      relations: ["customer", "region"],
+                    .retrieveNew(id, {
+                      relations: [
+                        "customer",
+                        "discounts",
+                        "discounts.rule",
+                        "gift_cards",
+                        "items",
+                        "items.adjustments",
+                        "region",
+                        "region.tax_rates",
+                        "shipping_address",
+                        "shipping_methods",
+                      ],
                     })
 
                   if (cart.completed_at) {

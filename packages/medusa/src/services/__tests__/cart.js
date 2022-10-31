@@ -816,9 +816,7 @@ describe("CartService", () => {
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledWith(
         expect.arrayContaining([
           "items",
-          "items.adjustments",
           "shipping_methods",
-          "shipping_methods.tax_lines",
           "shipping_address",
           "billing_address",
           "gift_cards",
@@ -829,10 +827,6 @@ describe("CartService", () => {
           "discounts",
           "discounts.rule",
           "discounts.regions",
-          "items.tax_lines",
-          "region.tax_rates",
-          "items.adjustments",
-          "shipping_methods.tax_lines",
         ]),
         {
           where: { id: "withpays" },
