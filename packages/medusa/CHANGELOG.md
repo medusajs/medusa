@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.6.0-alpha.1
+
+### Patch Changes
+
+- [#2482](https://github.com/medusajs/medusa/pull/2482) [`58c7ffdc6`](https://github.com/medusajs/medusa/commit/58c7ffdc6ec1d06f76aaa9427505dc452398770f) Thanks [@srindom](https://github.com/srindom)! - fix(medusa): allow filtering collections by handle
+
+* [`144ce0e42`](https://github.com/medusajs/medusa/commit/144ce0e42cd894a2cd5b40b68c095fd1eda851a9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Capture DraftOrder payment immediately in register-payment.ts
+
 ## 1.6.0-alpha.0
 
 ### Minor Changes
