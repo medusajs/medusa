@@ -2,7 +2,6 @@ import cors from "cors"
 import { Router } from "express"
 import { parseCorsOrigins } from "medusa-core-utils"
 import middlewares from "../../middlewares"
-import productTypesRoutes from "../admin/product-types"
 import authRoutes from "./auth"
 import cartRoutes from "./carts"
 import collectionRoutes from "./collections"
@@ -20,6 +19,7 @@ import returnRoutes from "./returns"
 import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
+import productTypesRoutes from "./product-types"
 
 const route = Router()
 

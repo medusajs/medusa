@@ -1,9 +1,9 @@
 import { Router } from "express"
-import { ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 import "reflect-metadata"
 import { StoreGetProductTypesParams } from "./list-product-types"
+import { ProductType } from "../../../../models"
 
 const route = Router()
 
@@ -20,6 +20,7 @@ export default (app) => {
     }),
     middlewares.wrap(require("./list-product-types").default)
   )
+  route.get("/:id", middlewares.wrap(require("./get-product-type").default))
 
   return app
 }
@@ -66,4 +67,9 @@ export type StoreProductTypesListRes = PaginatedResponse & {
   product_types: ProductType[]
 }
 
+export type StoreProductTypesRes = {
+  product_type: ProductType
+}
+
+export * from "./get-product-type"
 export * from "./list-product-types"

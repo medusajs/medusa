@@ -1,10 +1,10 @@
+import { IsNumber, IsOptional, IsString } from "class-validator"
+
 import {
   DateComparisonOperator,
-  FindPaginationParams,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { IsOptional, IsString } from "class-validator"
-
+import { Type } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
 
