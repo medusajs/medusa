@@ -413,7 +413,9 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
         0
       )
-      expect(ret).rejects.toThrow(`The total amount must be equal to 100`)
+      expect(ret).rejects.toThrow(
+        `The sum of sessions is not equal to 100 on Payment Collection`
+      )
 
       const multInp: PaymentCollectionSessionInput[] = [
         {
@@ -435,7 +437,9 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
         0
       )
-      expect(multiRet).rejects.toThrow(`The total amount must be equal to 100`)
+      expect(multiRet).rejects.toThrow(
+        `The sum of sessions is not equal to 100 on Payment Collection`
+      )
     })
 
     it("should ignore sessions where provider doesn't belong to the region", async () => {
@@ -456,7 +460,9 @@ describe("PaymentCollectionService", () => {
         multInp
       )
 
-      expect(multiRet).rejects.toThrow(`The total amount must be equal to 100`)
+      expect(multiRet).rejects.toThrow(
+        `The sum of sessions is not equal to 100 on Payment Collection`
+      )
 
       multiRet.catch(() => {
         expect(
@@ -515,6 +521,10 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should add a new session and delete existing one", async () => {
+      jest
+        .spyOn(paymentCollectionRepository, "deleteMultiple")
+        .mockReturnValue(Promise.resolve())
+
       const inp: PaymentCollectionSessionInput[] = [
         {
           amount: 100,
@@ -533,7 +543,9 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
         0
       )
-      expect(paymentCollectionRepository.delete).toHaveBeenCalledTimes(1)
+      expect(paymentCollectionRepository.deleteMultiple).toHaveBeenCalledTimes(
+        1
+      )
 
       expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(1)
     })
