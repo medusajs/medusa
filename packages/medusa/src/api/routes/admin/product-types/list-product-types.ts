@@ -171,8 +171,4 @@ export class AdminGetProductTypesParams extends FindPaginationParams {
   @IsString()
   @IsOptional()
   order?: string
-
-  @IsString()
-  @IsOptional()
-  discount_condition_id?: string
 }

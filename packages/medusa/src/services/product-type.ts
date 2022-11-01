@@ -5,6 +5,7 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, isString } from "../utils"
+import { CreateProductType } from "../types/product-type"
 
 class ProductTypeService extends TransactionBaseService {
   protected readonly typeRepository_: typeof ProductTypeRepository
@@ -41,6 +42,20 @@ class ProductTypeService extends TransactionBaseService {
     }
 
     return type
+  }
+
+  /**
+   * Creates a product type
+   * @param productType - the product type to create
+   * @return created product type
+   */
+  async create(productType: CreateProductType): Promise<ProductType> {
+    return await this.atomicPhase_(async (manager) => {
+      const typeRepository = manager.getCustomRepository(this.typeRepository_)
+
+      const result = typeRepository.create(productType)
+      return await typeRepository.save(result)
+    })
   }
 
   /**

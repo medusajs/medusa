@@ -20,6 +20,11 @@ export default (app) => {
     middlewares.wrap(require("./list-product-types").default)
   )
 
+  const typeRouter = Router({ mergeParams: true })
+  route.use("/:id", typeRouter)
+
+  typeRouter.get("/", middlewares.wrap(require("./get-collection").default))
+
   return app
 }
 
@@ -59,3 +64,4 @@ export type AdminProductTypesListRes = PaginatedResponse & {
 }
 
 export * from "./list-product-types"
+export * from "./get-product-type"
