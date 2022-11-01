@@ -39,6 +39,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     CREATED: "payment-collection.created",
     UPDATED: "payment-collection.updated",
     DELETED: "payment-collection.deleted",
+    PAYMENT_AUTHORIZED: "payment-collection.payment_authorized",
     PAYMENT_CAPTURED: "payment-collection.payment_captured",
     PAYMENT_CAPTURE_FAILED: "payment-collection.payment_capture_failed",
     REFUND_CREATED: "payment-collection.payment_refund_created",
@@ -363,9 +364,8 @@ export default class PaymentCollectionService extends TransactionBaseService {
       }
 
       payCol.payment_sessions = paymentSessions
-      await paymentCollectionRepository.save(payCol)
 
-      return payCol
+      return await paymentCollectionRepository.save(payCol)
     })
   }
 
@@ -397,12 +397,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const customer = await this.customerService_.retrieve(
-        sessionInput.customer_id,
-        {
+      const customer = await this.customerService_
+        .withTransaction(manager)
+        .retrieve(sessionInput.customer_id, {
           select: ["id", "email", "metadata"],
-        }
-      )
+        })
 
       const inputData: PaymentProviderDataInput = {
         resource_id: payCol.id,
@@ -509,7 +508,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(PaymentCollectionService.Events.UPDATED, payColCopy)
+        .emit(PaymentCollectionService.Events.PAYMENT_AUTHORIZED, payColCopy)
 
       return payCol
     })
@@ -604,7 +603,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     const allPayments: Payment[] = []
     for (const payment of payCol.payments) {
       const captured = await this.capturePayment(payCol, payment).catch(
-        () => null
+        () => void 0
       )
 
       if (captured) {
@@ -719,7 +718,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         payment.amount,
         reason,
         note
-      ).catch(() => null)
+      ).catch(() => void 0)
 
       if (refunded) {
         allRefunds.push(refunded)
