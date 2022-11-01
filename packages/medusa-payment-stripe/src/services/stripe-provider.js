@@ -149,6 +149,10 @@ class StripeProviderService extends AbstractPaymentService {
       ...intentRequestData,
     }
 
+    if (this.options_?.automatic_payment_methods) {
+      intentRequest.automatic_payment_methods = { enabled: true }
+    }
+
     if (customer_id) {
       const customer = await this.customerService_
         .withTransaction(this.manager_)
