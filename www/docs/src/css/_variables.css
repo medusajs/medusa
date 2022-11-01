@@ -15,7 +15,7 @@
   --ifm-color-content: #6B7280;
 
   /* Fonts */
-  --ifm-code-font-size: 80%;
+  --ifm-code-font-size: 14px;
   --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
   --ifm-font-size-base: 14px;
   --ifm-line-height-base: 24px;
@@ -77,6 +77,14 @@
 
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
+
+  --ifm-tooltip-background-color: #fff;
+  --ifm-tooltip-border-color: #E5E7EB;
+  --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
+
+  --ifm-code-tabs-active-bg: transparent;
+  --ifm-code-tabs-active-color: #F4F4F4;
+  --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
 }
 
 html[data-theme="dark"] {
@@ -124,4 +132,11 @@ html[data-theme="dark"] {
   --ifm-code-border-color: #393939;
 
   --ifm-hr-background-color: #2D2D2D;
+
+  --ifm-code-tabs-active-bg: #222222;
+  --ifm-code-tabs-active-color: #F3F3F3;
+  --ifm-code-action-hover-bg: rgba(255, 255, 255, 0.05);
+
+  --ifm-tooltip-background-color: #222222;
+  --ifm-tooltip-border-color: #393939;
 }

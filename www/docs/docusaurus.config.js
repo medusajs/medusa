@@ -51,15 +51,14 @@ const config = {
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
-      theme: require("prism-react-renderer/themes/vsDark"),
-      darkTheme: require("prism-react-renderer/themes/vsDark"),
+      theme: require("./src/themes/medusaDocs"),
     },
     navbar: {
       hideOnScroll: false,
       logo: {
         alt: "Medusa",
-        src: "img/logo-dark.svg",
-        srcDark: "img/logo-dark.svg"
+        src: "img/logo.png",
+        srcDark: "img/logo-dark.png"
       },
       items: [
         {
@@ -147,6 +146,7 @@ const config = {
         className: 'topright-icon',
       },
     ],
+    reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml'
   },
   presets: [
     [
