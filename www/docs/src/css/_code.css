@@ -20,7 +20,6 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .prism-code {
   background-color: none;
   word-break: break-word;
-  font-size: 0.8rem;
   outline: none !important;
 }
 
@@ -33,4 +32,109 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 [data-theme="dark"] .theme-doc-markdown a.card:hover {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
+}
+
+.code-tabs {
+  position: relative;
+}
+
+.code-tabs .tabs,
+.code-header {
+  padding: 8px 16px;
+}
+
+.code-header {
+  background-color: #161616;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: var(--ifm-code-border-radius) var(--ifm-code-border-radius) 0px 0px;
+}
+
+.code-tabs .tabs {
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow-x: auto;
+
+  backface-visibility: hidden;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.code-tabs .tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.code-tabs .tabs__item {
+  color: #6F6F6F;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  border-radius: 99999px;
+}
+
+.code-tabs .tabs__item:not(:first-child) {
+  margin-left: 4px;
+}
+
+.code-tabs .tabs__item--active {
+  border-color: #393939;
+  background-color: var(--ifm-code-tabs-active-bg);
+  color: var(--ifm-code-tabs-active-color);
+  font-size: 13px;
+}
+
+.theme-code-block {
+  border-radius: 0 0 var(--ifm-code-border-radius) var(--ifm-code-border-radius) !important;
+}
+
+.code-action {
+  background-color: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.code-action:hover {
+  background-color: var(--ifm-code-action-hover-bg);
+}
+
+.code-action:not(:first-child) {
+  margin-left: 8px;
+}
+
+a.code-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-action img {
+  height: 20px;
+  width: 20px;
+}
+
+.theme-code-block [class*=buttonGroup] {
+  display: none;
+}
+
+@media screen and (min-width: 568px) {
+  .code-tabs .tabs {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 567px) {
+  .code-action {
+    visibility: hidden;
+  }
+
+  .code-tabs .tabs {
+    max-width: 100%;
+  }
 }
