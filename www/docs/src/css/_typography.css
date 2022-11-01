@@ -41,7 +41,7 @@ p {
   font-weight: var(--ifm-link-weight);
 }
 
-.markdown a:not(.hash-link):not(.card):after {
+.markdown a:not(.hash-link):not(.card):not(.img-url):after {
   display: inline-block;
   width: 16px;
   height: 16px;
