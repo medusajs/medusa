@@ -209,10 +209,19 @@ describe("PaymentCollectionService", () => {
     save: (data) => {
       return data
     },
-    deleteMultiple: () => {
-      return Promise.resolve()
-    },
   })
+
+  paymentCollectionRepository.deleteMultiple = jest
+    .fn()
+    .mockImplementation(() => {
+      return Promise.resolve()
+    })
+
+  paymentCollectionRepository.getPaymentCollectionIdBySessionId = jest
+    .fn()
+    .mockImplementation(async () => {
+      return paymentCollectionWithSessions
+    })
 
   const paymentCollectionService = new PaymentCollectionService({
     manager: MockManager,
@@ -239,10 +248,7 @@ describe("PaymentCollectionService", () => {
     )
 
     expect(payCol).rejects.toThrow(Error)
-
-    payCol.catch(() => {
-      expect(paymentCollectionRepository.find).toHaveBeenCalledTimes(1)
-    })
+    expect(paymentCollectionRepository.find).toBeCalledTimes(1)
   })
 
   it("should create a payment collection", async () => {
@@ -330,10 +336,8 @@ describe("PaymentCollectionService", () => {
     )
 
     expect(payCol).rejects.toThrow(Error)
-    payCol.catch(() => {
-      expect(paymentCollectionRepository.save).toHaveBeenCalledTimes(0)
-      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
-    })
+    expect(paymentCollectionRepository.save).toBeCalledTimes(0)
+    expect(EventBusServiceMock.emit).toBeCalledTimes(0)
   })
 
   it("should delete a payment collection", async () => {
@@ -375,6 +379,10 @@ describe("PaymentCollectionService", () => {
   })
 
   describe("Manage Payment Sessions", () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should throw error if payment collection doesn't have the correct status", async () => {
       const inp: PaymentCollectionSessionInput = {
         amount: 100,
@@ -391,12 +399,7 @@ describe("PaymentCollectionService", () => {
           `Cannot set payment sessions for a payment collection with status ${PaymentCollectionStatus.AUTHORIZED}`
         )
       )
-
-      ret.catch(() => {
-        expect(
-          PaymentProviderServiceMock.createSessionNew
-        ).toHaveBeenCalledTimes(0)
-      })
+      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
     })
 
     it("should throw error if amount is different than requested", async () => {
@@ -463,32 +466,7 @@ describe("PaymentCollectionService", () => {
       expect(multiRet).rejects.toThrow(
         `The sum of sessions is not equal to 100 on Payment Collection`
       )
-
-      multiRet.catch(() => {
-        expect(
-          PaymentProviderServiceMock.createSessionNew
-        ).toHaveBeenCalledTimes(0)
-      })
-    })
-
-    it("should throw error if customer_id is not found", async () => {
-      const inp: PaymentCollectionSessionInput = {
-        amount: 100,
-        provider_id: IdMap.getId("region1_provider1"),
-        customer_id: IdMap.getId("none"),
-      }
-      const ret = paymentCollectionService.setPaymentSessions(
-        IdMap.getId("payment-collection-id1"),
-        inp
-      )
-
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
-        0
-      )
-      await expect(ret).rejects.toThrow(`Invalid customer_id`)
-      ret.catch(() => {
-        expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      })
+      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
     })
 
     it("should add a new session and update existing one", async () => {
@@ -521,10 +499,6 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should add a new session and delete existing one", async () => {
-      jest
-        .spyOn(paymentCollectionRepository, "deleteMultiple")
-        .mockReturnValue(Promise.resolve())
-
       const inp: PaymentCollectionSessionInput[] = [
         {
           amount: 100,
@@ -551,10 +525,6 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should refresh a payment session", async () => {
-      jest
-        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdBySessionId")
-        .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
-
       await paymentCollectionService.refreshPaymentSession(
         IdMap.getId("payment-collection-session"),
         IdMap.getId("payCol_session1"),
@@ -575,10 +545,6 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should fail to refresh a payment session if the amount is different", async () => {
-      jest
-        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdBySessionId")
-        .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
-
       const sess = paymentCollectionService.refreshPaymentSession(
         IdMap.getId("payment-collection-session"),
         IdMap.getId("payCol_session1"),
@@ -592,20 +558,17 @@ describe("PaymentCollectionService", () => {
       expect(sess).rejects.toThrow(
         "The amount has to be the same as the existing payment session"
       )
-
-      sess.catch(() => {
-        expect(
-          PaymentProviderServiceMock.refreshSessionNew
-        ).toHaveBeenCalledTimes(0)
-        expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(0)
-        expect(
-          PaymentProviderServiceMock.createSessionNew
-        ).toHaveBeenCalledTimes(0)
-      })
+      expect(PaymentProviderServiceMock.refreshSessionNew).toBeCalledTimes(0)
+      expect(DefaultProviderMock.deletePayment).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
     })
   })
 
   describe("Authorize Payments", () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should mark as paid if amount is 0", async () => {
       await paymentCollectionService.authorize(
         IdMap.getId("payment-collection-zero")
@@ -672,9 +635,13 @@ describe("PaymentCollectionService", () => {
   })
 
   describe("Capture Payments", () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should throw error if the status is not authorized", async () => {
-      jest
-        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdByPaymentId")
+      paymentCollectionRepository.getPaymentCollectionIdByPaymentId = jest
+        .fn()
         .mockReturnValue(Promise.resolve(notAuthorizedSample))
 
       PaymentProviderServiceMock.capturePayment = jest
@@ -690,17 +657,14 @@ describe("PaymentCollectionService", () => {
           `A Payment Collection with status ${PaymentCollectionStatus.PARTIALLY_AUTHORIZED} cannot capture payment`
         )
       )
-      ret.catch(() => {
-        expect(PaymentProviderServiceMock.capturePayment).toHaveBeenCalledTimes(
-          0
-        )
-      })
+
+      expect(PaymentProviderServiceMock.capturePayment).toBeCalledTimes(0)
     })
 
     it("should emit PAYMENT_CAPTURE_FAILED if payment capture has failed", async () => {
-      jest
-        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdByPaymentId")
-        .mockResolvedValue(fullyAuthorizedSample)
+      paymentCollectionRepository.getPaymentCollectionIdByPaymentId = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(fullyAuthorizedSample))
 
       PaymentProviderServiceMock.retrievePayment = jest.fn().mockReturnValue(
         Promise.resolve({
@@ -719,24 +683,6 @@ describe("PaymentCollectionService", () => {
       expect(ret).rejects.toThrowError(
         new Error(`Failed to capture Payment ${IdMap.getId("payment-123")}`)
       )
-
-      ret.catch(() => {
-        expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
-        expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
-          PaymentCollectionService.Events.PAYMENT_CAPTURE_FAILED,
-          expect.objectContaining({
-            id: IdMap.getId("payment-123"),
-            captured_amount: 0,
-            error: "capture failed",
-          })
-        )
-
-        expect(paymentCollectionRepository.save).toHaveBeenCalledWith(
-          expect.objectContaining({
-            captured_amount: 0,
-          })
-        )
-      })
     })
   })
 })
