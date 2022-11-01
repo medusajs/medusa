@@ -37,9 +37,12 @@
 
   /* Toc */
   --ifm-toc-border-color: #f0f0f0;
-  --ifm-toc-link-color: #a6acb5;
+  --ifm-toc-link-color: #6B7280;
   --ifm-toc-padding-horizontal: 9px;
   --ifm-menu-active: #111827;
+  --ifm-toc-link-active: #111827;
+  --ifm-toc-divider-color: #E5E7EB;
+  --ifm-toc-link-padding-left: 16px;
 
   /* Navbar */
   --ifm-navbar-shadow: 0px 1px 0px 0px #E5E7EB;
@@ -93,6 +96,9 @@ html[data-theme="dark"] {
   --ifm-menu-active: #fff;
   --ifm-menu-color: rgba(255, 255, 255, 0.5);
   --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
+  --ifm-toc-link-active: #F3F3F3;
+  --ifm-toc-link-color: #737373;
+  --ifm-toc-divider-color: #393939;
 
   --ifm-navbar-link-hover-color: #F3F3F3;
   --ifm-navbar-link-color: #8A8A8A;

@@ -38,6 +38,7 @@ details summary {
 
 .container {
   padding-top: 38px !important;
+  max-width: 100% !important;
 }
 
 .pagination-nav {
@@ -59,6 +60,27 @@ kbd {
   vertical-align: sub;
   width: 20px;
   height: 20px;
+}
+
+.markdown-doc-wrapper {
+  margin: 0 auto;
+  max-width: var(--ifm-container-width);
+  padding: 0 var(--ifm-spacing-horizontal);
+  width: 100%;
+}
+
+.markdown-doc-wrapper--fluid {
+  max-width: inherit;
+}
+
+.markdown-row {
+  margin: 0;
+}
+
+@media (min-width: 1440px) {
+  .markdown-doc-wrapper {
+    max-width: var(--ifm-container-width-xl) !important;
+  }
 }
 
 @media screen and (min-width: 966px) {
