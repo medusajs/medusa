@@ -11,9 +11,9 @@ const errorHandler = isProduction
   : console.log
 
 export const handleConfigError = (error: Error): void => {
-  logger.warn(`Error in loading config: ${error.message}`)
+  logger.error(`Error in loading config: ${error.message}`)
   if (error.stack) {
-    logger.warn(error.stack)
+    logger.error(error.stack)
   }
   process.exit(1)
 }
