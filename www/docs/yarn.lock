@@ -6436,7 +6436,6 @@ __metadata:
     prism-react-renderer: ^1.3.1
     react: ^17.0.1
     react-dom: ^17.0.1
-    react-tooltip: ^4.4.3
     react-transition-group: ^4.4.5
     redocusaurus: ^1.3.0
     url-loader: ^4.1.1
@@ -10517,7 +10516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10876,19 +10875,6 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: d72340a058da1ce6552281abf87bc1869b1635b298bda0e2e8c50e1ed90c3b6b40df45abe8d22ca2a495f24371ea7fe40420cd5ce7ba9fd41e62b959058ca548
-  languageName: node
-  linkType: hard
-
-"react-tooltip@npm:^4.4.3":
-  version: 4.4.3
-  resolution: "react-tooltip@npm:4.4.3"
-  dependencies:
-    prop-types: ^15.8.1
-    uuid: ^7.0.3
-  peerDependencies:
-    react: ">=16.0.0"
-    react-dom: ">=16.0.0"
-  checksum: 009bab488e92f54c693af9d8c1fe051bcfde77b8f55fdda9146313610c63de602b75466d1f38ba84c3eb9d1715331be4535d3308fe2b56e31d8680339d821d78
   languageName: node
   linkType: hard
 
@@ -12826,15 +12812,6 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "uuid@npm:7.0.3"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 2eee5723b0fcce8256f5bfd3112af6c453b5471db00af9c3533e3d5a6e57de83513f9a145a570890457bd7abf2c2aa05797291d950ac666e5a074895dc63168b
   languageName: node
   linkType: hard
 
