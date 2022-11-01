@@ -547,7 +547,7 @@ describe("PaymentCollectionService", () => {
 
     it("should refresh a payment session", async () => {
       jest
-        .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
+        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdBySessionId")
         .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
 
       await paymentCollectionService.refreshPaymentSession(
@@ -571,7 +571,7 @@ describe("PaymentCollectionService", () => {
 
     it("should fail to refresh a payment session if the amount is different", async () => {
       jest
-        .spyOn(paymentCollectionService, "getPaymentCollectionIdBySessionId")
+        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdBySessionId")
         .mockReturnValue(Promise.resolve(paymentCollectionWithSessions))
 
       const sess = paymentCollectionService.refreshPaymentSession(
@@ -669,7 +669,7 @@ describe("PaymentCollectionService", () => {
   describe("Capture Payments", () => {
     it("should throw error if the status is not authorized", async () => {
       jest
-        .spyOn(paymentCollectionService, "getPaymentCollectionIdByPaymentId")
+        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdByPaymentId")
         .mockReturnValue(Promise.resolve(notAuthorizedSample))
 
       PaymentProviderServiceMock.capturePayment = jest
@@ -694,7 +694,7 @@ describe("PaymentCollectionService", () => {
 
     it("should emit PAYMENT_CAPTURE_FAILED if payment capture has failed", async () => {
       jest
-        .spyOn(paymentCollectionService, "getPaymentCollectionIdByPaymentId")
+        .spyOn(paymentCollectionRepository, "getPaymentCollectionIdByPaymentId")
         .mockResolvedValue(fullyAuthorizedSample)
 
       PaymentProviderServiceMock.retrievePayment = jest.fn().mockReturnValue(
