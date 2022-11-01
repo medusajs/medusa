@@ -209,17 +209,10 @@ describe("PaymentCollectionService", () => {
     save: (data) => {
       return data
     },
+    deleteMultiple: () => {
+      return Promise.resolve()
+    },
   })
-  const getFunctionMock = () => {
-    return jest.fn().mockImplementation(() => {
-      return paymentCollectionRepository
-    })
-  }
-  paymentCollectionRepository.createQueryBuilder = getFunctionMock()
-  paymentCollectionRepository.from = getFunctionMock()
-  paymentCollectionRepository.delete = getFunctionMock()
-  paymentCollectionRepository.where = getFunctionMock()
-  paymentCollectionRepository.execute = getFunctionMock()
 
   const paymentCollectionService = new PaymentCollectionService({
     manager: MockManager,

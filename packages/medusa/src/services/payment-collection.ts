@@ -240,15 +240,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       for (const session of sessionsInput) {
         if (!customer) {
-          customer = await this.customerService_.retrieve(session.customer_id, {
-            select: ["id", "email", "metadata"],
-          })
-          if (!customer) {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              `Invalid customer_id`
-            )
-          }
+          customer = await this.customerService_
+            .withTransaction(manager)
+            .retrieve(session.customer_id, {
+              select: ["id", "email", "metadata"],
+            })
         }
 
         const existingSession = payCol.payment_sessions?.find(
@@ -289,12 +285,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
           .filter((id) => !selectedSessionIds.includes(id))
 
         if (removeIds.length) {
-          await paymentCollectionRepository
-            .createQueryBuilder()
-            .delete()
-            .from(PaymentSession)
-            .where("id IN (:...ids)", { ids: removeIds })
-            .execute()
+          await paymentCollectionRepository.deleteMultiple(removeIds)
         }
       }
 

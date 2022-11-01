@@ -2,6 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { PaymentCollection } from "./../models/payment-collection"
 import { EntityRepository, Repository } from "typeorm"
 import { FindConfig } from "../types/common"
+import { PaymentSession } from "../models"
 
 @EntityRepository(PaymentCollection)
 // eslint-disable-next-line max-len
@@ -59,5 +60,13 @@ export class PaymentCollectionRepository extends Repository<PaymentCollection> {
     }
 
     return paymentCollection[0]
+  }
+
+  async deleteMultiple(ids: string[]): Promise<void> {
+    await this.createQueryBuilder()
+      .delete()
+      .from(PaymentSession)
+      .where("id IN (:...ids)", { ids })
+      .execute()
   }
 }
