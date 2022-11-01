@@ -1,5 +1,14 @@
 # Change Log
 
+## 3.0.0-alpha.1
+
+### Patch Changes
+
+- [`21bc2aa81`](https://github.com/medusajs/medusa/commit/21bc2aa81f5ab7c03338c331fd18042357b87fe7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Update lockfile
+
+- Updated dependencies [[`21bc2aa81`](https://github.com/medusajs/medusa/commit/21bc2aa81f5ab7c03338c331fd18042357b87fe7)]:
+  - @medusajs/medusa@1.6.0-alpha.2
+
 ## 3.0.0-alpha.0
 
 ### Patch Changes

@@ -24351,7 +24351,7 @@ __metadata:
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.6.0-alpha.0
+    "@medusajs/medusa": ^1.6.0-alpha.2
     react: ">=16"
     react-query: ">= 3.29.0"
   languageName: unknown
