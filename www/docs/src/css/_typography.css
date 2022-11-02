@@ -45,9 +45,16 @@ p {
   display: inline-block;
   width: 16px;
   height: 16px;
-  background-image: url('/img/link-icon.svg');
   content: '';
   vertical-align: middle;
+}
+
+html:not([data-theme="dark"]) .markdown a:not(.hash-link):not(.card):not(.img-url):after {
+  background-image: url('/img/link-icon.svg');
+}
+
+[data-theme="dark"] .markdown a:not(.hash-link):not(.card):not(.img-url):after {
+  background-image: url('/img/link-icon-dark.svg');
 }
 
 .markdown p + h2,

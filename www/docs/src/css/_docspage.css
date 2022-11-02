@@ -36,7 +36,7 @@ details summary {
   white-space: break-spaces;
 }
 
-.container {
+.container:not(.footer-container) {
   padding-top: 38px !important;
   max-width: 100% !important;
 }
@@ -103,7 +103,7 @@ html:not([data-theme="dark"]) .doc-footer {
   cursor: pointer;
   font-weight: 600;
   background-color: var(--ifm-primary-btn-background-color);
-  border: 1px solid var(--ifm-primary-border-color);
+  border: 1px solid var(--ifm-primary-btn-border-color);
 }
 
 .theme-edit-this-page:hover {
