@@ -92,7 +92,62 @@ const config = {
       ],
     },
     footer: {
+      logo: {
+        alt: "Medusa",
+        src: "img/logo.png",
+        srcDark: "img/logo-dark.png"
+      },
       links: [
+        {
+          title: 'Product',
+          items: [
+            {
+              label: 'Get started',
+              to: '/quickstart/quick-start'
+            },
+            {
+              label: 'Docs',
+              to: '/'
+            },
+            {
+              label: 'Store API',
+              to: '/api/store'
+            },
+            {
+              label: 'Admin API',
+              to: '/api/admin'
+            }
+          ]
+        },
+        {
+          title: 'Company',
+          items: [
+            {
+              label: 'Careers',
+              href: 'https://medusajs.notion.site/Careers-at-Medusa-f986a1d41eb146d888f9590a360547d1'
+            },
+            {
+              label: 'Pricing',
+              href: 'https://medusajs.com/pricing/'
+            },
+            {
+              label: 'Press Kit',
+              href: 'https://medusajs.notion.site/Media-Kit-9d885bb679674b458bca316f841322b6'
+            },
+            {
+              label: 'About',
+              href: 'https://medusajs.notion.site/'
+            },
+            {
+              label: 'Blog',
+              href: 'https://medusajs.com/blog'
+            },
+            {
+              label: 'Contact',
+              href: 'https://medusajs.com/contact-us/'
+            }
+          ]
+        },
         {
           title: "Community",
           items: [
@@ -101,33 +156,12 @@ const config = {
               href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
+              label: "Discussions",
+              href: "https://github.com/medusajs/medusa/discussions",
+            },
+            {
               label: "Discord",
               href: "https://discord.gg/medusajs",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/medusajs",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "Medusa Home",
-              href: "https://medusajs.com",
-            },
-            {
-              label: "Contact",
-              href: "https://ky5eo2x1u81.typeform.com/get-in-touch",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/medusajs/medusa",
-            },
-            {
-              label: "Integrations",
-              href: "https://medusajs.notion.site/1a0ada9903874e0185d0b8ce0591b359?v=0631285851ba4021aa07c3b48dd4801a",
             },
           ],
         },
@@ -144,6 +178,20 @@ const config = {
         href: "https://medusajs.com/",
         label: 'Go to medusajs.com',
         className: 'topright-icon',
+      },
+    ],
+    socialLinks: [
+      {
+        type: 'discord',
+        href: 'https://discord.gg/medusajs'
+      },
+      {
+        type: 'twitter',
+        href: 'https://twitter.com/medusajs'
+      },
+      {
+        type: 'github',
+        href: 'https://github.com/medusajs/medusa'
       },
     ],
     reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml'

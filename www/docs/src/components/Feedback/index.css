@@ -36,7 +36,7 @@
   cursor: pointer;
   font-weight: 600;
   background-color: var(--ifm-primary-btn-background-color);
-  border: 1px solid var(--ifm-primary-border-color);
+  border: 1px solid var(--ifm-primary-btn-border-color);
   color: var(--ifm-primary-btn-color);
 }
 
