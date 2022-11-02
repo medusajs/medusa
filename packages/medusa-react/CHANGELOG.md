@@ -1,5 +1,19 @@
 # Change Log
 
+## 3.0.0
+
+### Patch Changes
+
+- [#2433](https://github.com/medusajs/medusa/pull/2433) [`3c5e31c64`](https://github.com/medusajs/medusa/commit/3c5e31c6455695f854e9df7a3592c12b899fa1e1) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Add protected uploads to fileservices
+
+* [#2430](https://github.com/medusajs/medusa/pull/2430) [`765a2cccd`](https://github.com/medusajs/medusa/commit/765a2cccda2c4c552ede9ec23e0c1e3dd4ea44fc) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(medusa, medusa-js, medusa-react): add resources to discount condition by batch
+
+- [#2444](https://github.com/medusajs/medusa/pull/2444) [`48411157b`](https://github.com/medusajs/medusa/commit/48411157b1cdec0a67f91e06de8ac547af89d7af) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Support batch remove resources on discount condition
+
+- Updated dependencies [[`211720f24`](https://github.com/medusajs/medusa/commit/211720f24cbcb1f01c36aa35660e1ff0c4518ebd), [`c71744245`](https://github.com/medusajs/medusa/commit/c717442451cf9fc2e0961edded5b49ea5a78760e), [`3c5e31c64`](https://github.com/medusajs/medusa/commit/3c5e31c6455695f854e9df7a3592c12b899fa1e1), [`13611e3e5`](https://github.com/medusajs/medusa/commit/13611e3e53d449fbfab7a88f848f6652a360bd14), [`765a2cccd`](https://github.com/medusajs/medusa/commit/765a2cccda2c4c552ede9ec23e0c1e3dd4ea44fc), [`69e579758`](https://github.com/medusajs/medusa/commit/69e579758f81332094d6f0dfa6fbcbc359b0d92c), [`05f921711`](https://github.com/medusajs/medusa/commit/05f921711fb0ac3603d29955648d8ba563a7da7d), [`19ca18e71`](https://github.com/medusajs/medusa/commit/19ca18e71c8feea7277e09db3c5e9e6316adb6ab), [`a9c703d56`](https://github.com/medusajs/medusa/commit/a9c703d56c2678fb509af7f9e1fe2cb65f95ba9d), [`58c7ffdc6`](https://github.com/medusajs/medusa/commit/58c7ffdc6ec1d06f76aaa9427505dc452398770f), [`9deec0fc3`](https://github.com/medusajs/medusa/commit/9deec0fc3c3ff9d89ca194b8b05948141799a412), [`299c4ae7f`](https://github.com/medusajs/medusa/commit/299c4ae7f55b0586f283d7f21792b7b204df421a), [`48411157b`](https://github.com/medusajs/medusa/commit/48411157b1cdec0a67f91e06de8ac547af89d7af), [`144ce0e42`](https://github.com/medusajs/medusa/commit/144ce0e42cd894a2cd5b40b68c095fd1eda851a9), [`8be67c734`](https://github.com/medusajs/medusa/commit/8be67c734c970ef03bf0afaf74cc3818e305466d)]:
+  - @medusajs/medusa@1.6.0
+  - @medusajs/medusa-js@1.3.2
+
 ## 2.0.0
 
 ### Patch Changes

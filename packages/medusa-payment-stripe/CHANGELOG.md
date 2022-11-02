@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.45
+
+### Patch Changes
+
+- [`a014e3623`](https://github.com/medusajs/medusa/commit/a014e3623c64f747e7496abccb8d0c7c01093d8b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support automatic payment methods
+
 ## 1.1.44
 
 ### Patch Changes
