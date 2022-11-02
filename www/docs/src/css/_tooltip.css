@@ -5,7 +5,6 @@
 .tooltip-box {
   position: absolute;
   top: calc(-100% - 17px);
-  left: calc(-50% - 30px);
   z-index: 100000;
   padding: 8px 16px;
   max-width: 170px;
@@ -27,4 +26,16 @@
 
 .tooltip-box.visible {
   opacity: 1;
+}
+
+.inline-tooltip {
+  display: inline-block;
+}
+
+.tooltip-container:not(.inline-tooltip) .tooltip-box {
+  left: calc(-50% - 30px);
+}
+
+.inline-tooltip .tooltip-box {
+  left: 15%;
 }

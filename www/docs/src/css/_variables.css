@@ -1,5 +1,6 @@
 /* You can override the default Infima variables here. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
 :root {
   /* Colors */
@@ -17,6 +18,7 @@
   /* Fonts */
   --ifm-code-font-size: 14px;
   --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  --ifm-font-family-monospace: 'Roboto Mono',SFMono-Regular, Menlo, Monaco, Consolas,'Liberation Mono', 'Courier New', monospace;
   --ifm-font-size-base: 14px;
   --ifm-line-height-base: 24px;
 
@@ -71,7 +73,10 @@
 
   /* Code */
   --ifm-code-border-radius: 8px;
+  --ifm-code-padding-horizontal: 8px;
   --ifm-code-border-color: #E5E7EB;
+  --ifm-code-background: #F9FAFB;
+  --ifm-code-color: #4B5563;
 
   --ifm-hr-background-color: #E5E7EB;
 
@@ -85,6 +90,10 @@
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+
+  --ifm-primary-btn-background-color: #fff;
+  --ifm-primary-btn-color: #111827;
+  --ifm-primary-border-color: #E5E7EB;
 }
 
 html[data-theme="dark"] {
@@ -130,6 +139,8 @@ html[data-theme="dark"] {
 
   /* Code */
   --ifm-code-border-color: #393939;
+  --ifm-code-background: #222222;
+  --ifm-code-color: #8A8A8A;
 
   --ifm-hr-background-color: #2D2D2D;
 
@@ -139,4 +150,9 @@ html[data-theme="dark"] {
 
   --ifm-tooltip-background-color: #222222;
   --ifm-tooltip-border-color: #393939;
+
+
+  --ifm-primary-btn-background-color: #222222;
+  --ifm-primary-btn-color: #F3F3F3;
+  --ifm-primary-border-color: #393939;
 }

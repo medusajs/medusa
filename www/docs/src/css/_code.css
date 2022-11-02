@@ -4,6 +4,15 @@
 
 code {
   border: 1px solid var(--ifm-code-border-color);
+  color: var(--ifm-code-color);
+}
+
+.inline-code-copy {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  display: inline;
+  color: var(--ifm-code-color)
 }
 
 .docusaurus-highlight-code-line {
@@ -121,6 +130,10 @@ a.code-action {
 
 .theme-code-block [class*=buttonGroup] {
   display: none;
+}
+
+.copy-action {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 568px) {

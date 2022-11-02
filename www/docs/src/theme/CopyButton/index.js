@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import copy from 'copy-text-to-clipboard';
 import Tooltip from '../Tooltip';
 
-export default function CopyButton ({ children, buttonClassName, text }) {
+export default function CopyButton ({ children, buttonClassName, text, tooltipClassName }) {
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeout = useRef(undefined);
 
@@ -17,7 +17,7 @@ export default function CopyButton ({ children, buttonClassName, text }) {
   useEffect(() => () => window.clearTimeout(copyTimeout.current), []);
 
   return (
-    <Tooltip text={isCopied ? `Copied!` : `Copy to Clipboard`}>
+    <Tooltip text={isCopied ? `Copied!` : `Copy to Clipboard`} tooltipClassName={tooltipClassName}>
       <button className={`copy-action ${buttonClassName}`} onClick={handleCopy}>
         {children}
       </button>
