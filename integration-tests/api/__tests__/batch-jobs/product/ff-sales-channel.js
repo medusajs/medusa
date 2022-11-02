@@ -14,6 +14,26 @@ const startServerWithEnvironment =
 
 jest.setTimeout(30000)
 
+function getImportFile() {
+  return path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-ss.csv"
+  )
+}
+
+function copyTemplateFile() {
+  const csvTemplate = path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-ss-template.csv"
+  )
+  const destination = getImportFile()
+  fs.copyFileSync(csvTemplate, destination)
+}
+
 const adminReqConfig = {
   headers: {
     Authorization: "Bearer test_token",
@@ -81,6 +101,8 @@ describe("Product import - Sales Channel", () => {
   it("Import products to an existing sales channel", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
+
+    copyTemplateFile()
 
     const response = await api.post(
       "/admin/batch-jobs",

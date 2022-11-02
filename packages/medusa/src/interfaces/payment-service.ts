@@ -7,6 +7,7 @@ import {
   PaymentSessionStatus,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
+import { PaymentProviderDataInput } from "../types/payment-collection"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
@@ -76,12 +77,20 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionData>
 
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
+  public abstract createPaymentNew(
+    paymentInput: PaymentProviderDataInput
+  ): Promise<PaymentSessionData>
 
   public abstract retrievePayment(paymentData: PaymentData): Promise<Data>
 
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
     cart: Cart
+  ): Promise<PaymentSessionData>
+
+  public abstract updatePaymentNew(
+    paymentSessionData: PaymentSessionData,
+    paymentInput: PaymentProviderDataInput
   ): Promise<PaymentSessionData>
 
   public abstract authorizePayment(
