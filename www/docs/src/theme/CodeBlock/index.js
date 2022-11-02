@@ -7,7 +7,6 @@ import ThemedImage from '@theme/ThemedImage';
 import Tooltip from '../Tooltip';
 import CopyButton from '../CopyButton';
 import {useThemeConfig} from '@docusaurus/theme-common';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 /**
  * Best attempt to make the children a plain string so it is copyable. If there
@@ -34,30 +33,26 @@ export default function CodeBlock({children: rawChildren, ...props}) {
   const {reportCodeLinkPrefix} = useThemeConfig();
 
   return (
-    <BrowserOnly>
-      {() => (
-        <div className='code-wrapper'>
-          <div className='code-header'>
-            <Tooltip text="Report Incorrect Code">
-              <a href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(`Docs(Code Issue): Code Issue in ${document?.title}`)}`} target="_blank" className='report-code code-action img-url'>
-                <ThemedImage alt='Report Incorrect Code' sources={{
-                  light: useBaseUrl('/img/alert-code.png'),
-                  dark: useBaseUrl('/img/alert-code-dark.png')
-                }} />
-              </a>
-            </Tooltip>
-            <CopyButton buttonClassName='code-action' text={children}>
-              <ThemedImage alt='Copy to Clipboard' sources={{
-                light: useBaseUrl('/img/clipboard-copy.png'),
-                dark: useBaseUrl('/img/clipboard-copy-dark.png')
-              }} />
-            </CopyButton>
-          </div>
-          <CodeBlockComp key={String(isBrowser)} {...props}>
-            {children}
-          </CodeBlockComp>
-        </div>
-      )}
-    </BrowserOnly>
+    <div className='code-wrapper'>
+      <div className='code-header'>
+        <Tooltip text="Report Incorrect Code">
+          <a href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(`Docs(Code Issue): Code Issue in ${isBrowser ? document?.title : ''}`)}`} target="_blank" className='report-code code-action img-url'>
+            <ThemedImage alt='Report Incorrect Code' sources={{
+              light: useBaseUrl('/img/alert-code.png'),
+              dark: useBaseUrl('/img/alert-code-dark.png')
+            }} />
+          </a>
+        </Tooltip>
+        <CopyButton buttonClassName='code-action' text={children}>
+          <ThemedImage alt='Copy to Clipboard' sources={{
+            light: useBaseUrl('/img/clipboard-copy.png'),
+            dark: useBaseUrl('/img/clipboard-copy-dark.png')
+          }} />
+        </CopyButton>
+      </div>
+      <CodeBlockComp key={String(isBrowser)} {...props}>
+        {children}
+      </CodeBlockComp>
+    </div>
   );
 }
