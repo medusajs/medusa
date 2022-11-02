@@ -210,16 +210,6 @@ describe("PaymentCollectionService", () => {
       return data
     },
   })
-  const getFunctionMock = () => {
-    return jest.fn().mockImplementation(() => {
-      return paymentCollectionRepository
-    })
-  }
-  paymentCollectionRepository.createQueryBuilder = getFunctionMock()
-  paymentCollectionRepository.from = getFunctionMock()
-  paymentCollectionRepository.delete = getFunctionMock()
-  paymentCollectionRepository.where = getFunctionMock()
-  paymentCollectionRepository.execute = getFunctionMock()
 
   paymentCollectionRepository.deleteMultiple = jest
     .fn()
