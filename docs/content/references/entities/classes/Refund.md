@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/refund.ts:34](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L34)
+[models/refund.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L50)
 
 ___
 
@@ -42,7 +42,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -56,7 +56,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:46](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L46)
+[models/refund.ts:62](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L62)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:43](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L43)
+[models/refund.ts:59](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L59)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:37](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L37)
+[models/refund.ts:53](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L53)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:31](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L31)
+[models/refund.ts:41](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L41)
 
 ___
 
@@ -106,7 +106,27 @@ ___
 
 #### Defined in
 
-[models/refund.ts:27](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L27)
+[models/refund.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L31)
+
+___
+
+### payment
+
+• **payment**: [`Payment`](Payment.md)
+
+#### Defined in
+
+[models/refund.ts:47](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L47)
+
+___
+
+### payment\_id
+
+• **payment\_id**: `string`
+
+#### Defined in
+
+[models/refund.ts:37](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L37)
 
 ___
 
@@ -116,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:40](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L40)
+[models/refund.ts:56](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L56)
 
 ___
 
@@ -130,7 +150,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -144,4 +164,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/refund.ts:48](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L48)
+[models/refund.ts:64](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L64)
