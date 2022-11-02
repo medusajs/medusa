@@ -440,7 +440,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const payRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
       )
-      return payRepo.save(payment)
+      return await payRepo.save(payment)
     })
   }
 
@@ -489,7 +489,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
-      return sessionRepo.save(session)
+      return await sessionRepo.save(session)
     })
   }
 
@@ -534,7 +534,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const paymentRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
       )
-      return paymentRepo.save(payment)
+      return await paymentRepo.save(payment)
     })
   }
 
@@ -618,7 +618,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
 
       const created = refundRepo.create(toCreate)
-      return refundRepo.save(created)
+      return await refundRepo.save(created)
     })
   }
 
@@ -658,7 +658,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
 
       const created = refundRepo.create(toCreate)
-      return refundRepo.save(created)
+      return await refundRepo.save(created)
     })
   }
 
