@@ -5,10 +5,13 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
+  PaymentCollectionService,
+  PaymentProviderService,
   TaxProviderService,
   TotalsService,
 } from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { OrderServiceMock } from "../__mocks__/order"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
@@ -17,6 +20,7 @@ import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-cha
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import LineItemAdjustmentService from "../line-item-adjustment"
+import { PaymentCollectionServiceMock } from "../__mocks__/payment-collection"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -182,7 +186,6 @@ describe("OrderEditService", () => {
       }
     },
   })
-
   const orderEditService = new OrderEditService({
     manager: MockManager,
     orderEditRepository,
@@ -195,6 +198,10 @@ describe("OrderEditService", () => {
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
+    paymentCollectionService:
+      PaymentCollectionServiceMock as unknown as PaymentCollectionService,
+    paymentProviderService:
+      PaymentProviderServiceMock as unknown as PaymentProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
@@ -331,9 +338,17 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUserId: userId,
-        })
+        jest.spyOn(orderEditService, "getTotals").mockResolvedValue({
+          difference_due: 1500,
+        } as any)
+
+        result = await orderEditService.requestConfirmation(
+          orderEditId,
+          "payment collection description",
+          {
+            loggedInUserId: userId,
+          }
+        )
       })
 
       it("sets fields correctly for update", async () => {
@@ -348,6 +363,7 @@ describe("OrderEditService", () => {
           ...orderEditWithChanges,
           requested_at: expect.any(Date),
           requested_by: userId,
+          payment_collection_id: IdMap.getId("paycol_1"),
         })
 
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
@@ -363,9 +379,13 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        result = await orderEditService.requestConfirmation(orderEditId, {
-          loggedInUserId: userId,
-        })
+        result = await orderEditService.requestConfirmation(
+          orderEditId,
+          "payment description text",
+          {
+            loggedInUserId: userId,
+          }
+        )
       })
 
       afterEach(() => {

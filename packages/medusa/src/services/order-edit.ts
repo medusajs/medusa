@@ -10,6 +10,8 @@ import {
   OrderEdit,
   OrderEditItemChangeType,
   OrderEditStatus,
+  PaymentCollectionStatus,
+  PaymentCollectionType,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -18,6 +20,8 @@ import {
   LineItemService,
   OrderEditItemChangeService,
   OrderService,
+  PaymentCollectionService,
+  PaymentProviderService,
   TaxProviderService,
   TotalsService,
 } from "./index"
@@ -37,6 +41,8 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
+  paymentCollectionService: PaymentCollectionService
+  paymentProviderService: PaymentProviderService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -61,6 +67,8 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
+  protected readonly paymentCollectionService_: PaymentCollectionService
+  protected readonly paymentProviderService_: PaymentProviderService
 
   constructor({
     manager,
@@ -72,6 +80,8 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
+    paymentCollectionService,
+    paymentProviderService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -85,6 +95,8 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
+    this.paymentCollectionService_ = paymentCollectionService
+    this.paymentProviderService_ = paymentProviderService
   }
 
   async retrieve(
@@ -650,6 +662,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async requestConfirmation(
     orderEditId: string,
+    description?: string,
     context: {
       loggedInUserId?: string
     } = {}
@@ -660,7 +673,7 @@ export default class OrderEditService extends TransactionBaseService {
       )
 
       let orderEdit = await this.retrieve(orderEditId, {
-        relations: ["changes"],
+        relations: ["changes", "order"],
         select: ["id", "requested_at"],
       })
 
@@ -677,6 +690,23 @@ export default class OrderEditService extends TransactionBaseService {
 
       orderEdit.requested_at = new Date()
       orderEdit.requested_by = context.loggedInUserId
+
+      const total = await this.getTotals(orderEdit.id)
+
+      if (total.difference_due > 0) {
+        const paymentCollection = await this.paymentCollectionService_
+          .withTransaction(manager)
+          .create({
+            type: PaymentCollectionType.ORDER_EDIT,
+            amount: total.difference_due,
+            currency_code: orderEdit.order.currency_code,
+            region_id: orderEdit.order.region_id,
+            description: description,
+            created_by: context.loggedInUserId as string,
+          })
+
+        orderEdit.payment_collection_id = paymentCollection.id
+      }
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -736,7 +766,9 @@ export default class OrderEditService extends TransactionBaseService {
         this.orderEditRepository_
       )
 
-      let orderEdit = await this.retrieve(orderEditId)
+      let orderEdit = await this.retrieve(orderEditId, {
+        relations: ["payment_collection", "payment_collection.payments"],
+      })
 
       if (
         [OrderEditStatus.CANCELED, OrderEditStatus.DECLINED].includes(
@@ -768,6 +800,35 @@ export default class OrderEditService extends TransactionBaseService {
 
       orderEdit.confirmed_at = new Date()
       orderEdit.confirmed_by = context.loggedInUserId
+
+      if (orderEdit.payment_collection) {
+        if (
+          orderEdit.payment_collection.status !==
+          PaymentCollectionStatus.AUTHORIZED
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Unable to complete an order edit if the payment is not authorized"
+          )
+        }
+
+        for (const payment of orderEdit.payment_collection.payments) {
+          await this.paymentProviderService_.updatePayment(payment.id, {
+            order_id: orderEdit.order_id,
+          })
+        }
+      } else {
+        const total = await this.getTotals(orderEdit.id)
+        if (total.difference_due < 0) {
+          await this.orderService_
+            .withTransaction(manager)
+            .createRefund(
+              orderEdit.order_id,
+              total.difference_due * -1,
+              "Order Edit Difference"
+            )
+        }
+      }
 
       orderEdit = await orderEditRepository.save(orderEdit)
 

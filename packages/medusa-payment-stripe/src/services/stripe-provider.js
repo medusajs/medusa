@@ -129,7 +129,7 @@ class StripeProviderService extends AbstractPaymentService {
    * @param {Cart} cart - cart to create a payment for
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async createPayment(cart, intentRequestData = {}) {
+  async createPayment(cart, intentRequestData = null) {
     const { customer_id, region_id, email } = cart
     const { currency_code } = await this.regionService_
       .withTransaction(this.manager_)
@@ -137,20 +137,26 @@ class StripeProviderService extends AbstractPaymentService {
 
     const amount = cart.total
 
-    const intentRequest = {
+    let intentRequest = {
       description:
         cart?.context?.payment_description ??
         this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
       metadata: { cart_id: `${cart.id}` },
-      setup_future_usage: "on_session",
-      capture_method: this.options_.capture ? "automatic" : "manual",
-      ...intentRequestData,
     }
 
-    if (this.options_?.automatic_payment_methods) {
-      intentRequest.automatic_payment_methods = { enabled: true }
+    if (intentRequestData === null) {
+      intentRequest = {
+        ...intentRequest,
+        capture_method: this.options_.capture ? "automatic" : "manual",
+        setup_future_usage: "on_session",
+      }
+    } else {
+      intentRequest = {
+        ...intentRequest,
+        ...intentRequestData,
+      }
     }
 
     if (customer_id) {
@@ -179,7 +185,7 @@ class StripeProviderService extends AbstractPaymentService {
     return await this.stripe_.paymentIntents.create(intentRequest)
   }
 
-  async createPaymentNew(paymentInput, intentRequestData = {}) {
+  async createPaymentNew(paymentInput, intentRequestData = null) {
     const { customer, currency_code, amount, resource_id, cart } = paymentInput
     const { id: customer_id, email } = customer
 
@@ -190,9 +196,19 @@ class StripeProviderService extends AbstractPaymentService {
       amount: Math.round(amount),
       currency: currency_code,
       metadata: { resource_id },
-      setup_future_usage: "on_session",
-      capture_method: this.options_.capture ? "automatic" : "manual",
-      ...intentRequestData,
+    }
+
+    if (intentRequestData === null) {
+      intentRequest = {
+        ...intentRequest,
+        capture_method: this.options_.capture ? "automatic" : "manual",
+        setup_future_usage: "on_session",
+      }
+    } else {
+      intentRequest = {
+        ...intentRequest,
+        ...intentRequestData,
+      }
     }
 
     if (customer_id) {
@@ -300,7 +316,7 @@ class StripeProviderService extends AbstractPaymentService {
       const stripeId = paymentInput.customer?.metadata?.stripe_id
 
       if (stripeId !== paymentInput.customer_id) {
-        return await this.createPaymentNew(paymentInput)
+        return this.createPaymentNew(paymentInput)
       } else {
         if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
           return sessionData

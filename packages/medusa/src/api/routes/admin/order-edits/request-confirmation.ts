@@ -1,4 +1,5 @@
 import { EntityManager } from "typeorm"
+import { IsOptional, IsString, IsObject } from "class-validator"
 import { OrderEditService } from "../../../../services"
 import {
   defaultOrderEditFields,
@@ -54,6 +55,8 @@ import {
  */
 export default async (req, res) => {
   const { id } = req.params
+  const validatedBody =
+    req.validatedBody as AdminPostOrderEditsRequestConfirmationReq
 
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
@@ -65,7 +68,9 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .requestConfirmation(id, { loggedInUserId: loggedInUser })
+      .requestConfirmation(id, validatedBody.description, {
+        loggedInUserId: loggedInUser,
+      })
   })
 
   const orderEdit = await orderEditService.retrieve(id, {
@@ -76,4 +81,10 @@ export default async (req, res) => {
   res.status(200).send({
     order_edit: orderEdit,
   })
+}
+
+export class AdminPostOrderEditsRequestConfirmationReq {
+  @IsString()
+  @IsOptional()
+  description?: string | undefined
 }
