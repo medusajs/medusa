@@ -9,7 +9,7 @@ export default function FooterWrapper(props) {
   return (
     <>
       {!metadata.frontMatter?.hide_footer && (
-        <div className='docusaurus-mt-lg'>
+        <div className='docusaurus-mt-lg doc-footer'>
           <Feedback />
           <Footer {...props} />
         </div>

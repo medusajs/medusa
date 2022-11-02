@@ -90,6 +90,10 @@
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+
+  --ifm-primary-btn-background-color: #fff;
+  --ifm-primary-btn-color: #111827;
+  --ifm-primary-border-color: #E5E7EB;
 }
 
 html[data-theme="dark"] {
@@ -146,4 +150,9 @@ html[data-theme="dark"] {
 
   --ifm-tooltip-background-color: #222222;
   --ifm-tooltip-border-color: #393939;
+
+
+  --ifm-primary-btn-background-color: #222222;
+  --ifm-primary-btn-color: #F3F3F3;
+  --ifm-primary-border-color: #393939;
 }
