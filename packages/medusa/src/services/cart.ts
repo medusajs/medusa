@@ -2093,29 +2093,60 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
+    const manager = this.transactionManager_ ?? this.manager_
+    const totalsNewServiceTx = this.totalsNewService_.withTransaction(manager)
+
     const calculationContext = await this.totalsService_.getCalculationContext(
       cart
     )
-
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
-    const useExistingTaxLines = totalsConfig.useExistingTaxLines
+    const cartItems = [...cart.items]
+    const cartShippingMethods = [...cart.shipping_methods]
+    let useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    const [itemsTotals, shippingTotals] = await Promise.all([
-      await this.totalsNewService_.getLineItemsTotals(cart.items, {
+    // If we are forced to use the existing tax lines then at least one item must have a tax line
+    if (
+      useExistingTaxLines &&
+      !cartItems.some((item) => item.tax_lines?.length)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Can't compute cart totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
+      )
+    }
+
+    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
+    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
+    // the total service to use the tax lines from the items and methods
+    if (!useExistingTaxLines) {
+      const taxLinesMaps = await this.taxProviderService_
+        .withTransaction(manager)
+        .getTaxLinesMap(cartItems, calculationContext)
+
+      cartItems.forEach((item) => {
+        item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
+      })
+      cartShippingMethods.forEach((method) => {
+        method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
+      })
+
+      useExistingTaxLines = true
+    }
+
+    const itemsTotals = await totalsNewServiceTx.getLineItemsTotals(cartItems, {
+      includeTax,
+      calculationContext,
+      useExistingTaxLines,
+    })
+    const shippingTotals = await totalsNewServiceTx.getShippingMethodsTotals(
+      cartShippingMethods,
+      {
+        discounts: cart.discounts,
         includeTax,
         calculationContext,
         useExistingTaxLines,
-      }),
-      await this.totalsNewService_.getShippingMethodsTotals(
-        cart.shipping_methods,
-        {
-          includeTax: true,
-          calculationContext,
-          discounts: cart.discounts,
-          useExistingTaxLines,
-        }
-      ),
-    ])
+      }
+    )
 
     cart.subtotal = 0
     cart.discount_total = 0
@@ -2124,7 +2155,7 @@ class CartService extends TransactionBaseService {
     cart.shipping_tax_total = 0
 
     cart.items = (cart.items || []).map((item) => {
-      const itemWithTotals = Object.assign(item, itemsTotals.get(item.id) ?? {})
+      const itemWithTotals = Object.assign(item, itemsTotals[item.id] ?? {})
 
       cart.subtotal! += itemWithTotals.subtotal ?? 0
       cart.discount_total! += itemWithTotals.discount_total ?? 0
@@ -2137,7 +2168,7 @@ class CartService extends TransactionBaseService {
       (shippingMethod) => {
         const methodWithTotals = Object.assign(
           shippingMethod,
-          shippingTotals.get(shippingMethod.id) ?? {}
+          shippingTotals[shippingMethod.id] ?? {}
         )
 
         cart.shipping_total! += methodWithTotals.subtotal ?? 0
@@ -2239,6 +2270,13 @@ class CartService extends TransactionBaseService {
     }
   }
 
+  /**
+   * @deprecated Use decorateTotals instead
+   * @param cart
+   * @param totalsToSelect
+   * @param options
+   * @protected
+   */
   protected async decorateTotals_(
     cart: Cart,
     totalsToSelect: TotalField[],

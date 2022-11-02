@@ -23,7 +23,7 @@ import {
   TransactionBaseService,
 } from "../interfaces"
 
-import { TaxServiceRate } from "../types/tax-service"
+import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
 
 import TaxRateService from "./tax-rate"
 import EventBusService from "./event-bus"
@@ -254,7 +254,6 @@ class TaxProviderService extends TransactionBaseService {
     lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
-    console.log("getTaxLines")
     const calculationLines = await Promise.all(
       lineItems.map(async (l) => {
         if (l.is_return) {
@@ -332,6 +331,42 @@ class TaxProviderService extends TransactionBaseService {
         metadata: pl.metadata,
       })
     })
+  }
+
+  /**
+   * Return a map of tax lines for line items and shipping methods
+   * @param items
+   * @param calculationContext
+   * @protected
+   */
+  async getTaxLinesMap(
+    items: LineItem[],
+    calculationContext: TaxCalculationContext
+  ): Promise<TaxLinesMaps> {
+    const lineItemsTaxLinesMap = {}
+    const shippingMethodsTaxLinesMap = {}
+
+    const taxLines = await this.getTaxLines(items, calculationContext)
+
+    taxLines.forEach((taxLine) => {
+      if ("item_id" in taxLine) {
+        const itemTaxLines = lineItemsTaxLinesMap[taxLine.item_id] ?? []
+        itemTaxLines.push(taxLine)
+        lineItemsTaxLinesMap[taxLine.item_id] = itemTaxLines
+      }
+      if ("shipping_method_id" in taxLine) {
+        const shippingMethodTaxLines =
+          shippingMethodsTaxLinesMap[taxLine.shipping_method_id] ?? []
+        shippingMethodTaxLines.push(taxLine)
+        shippingMethodsTaxLinesMap[taxLine.shipping_method_id] =
+          shippingMethodTaxLines
+      }
+    })
+
+    return {
+      lineItemsTaxLines: lineItemsTaxLinesMap,
+      shippingMethodsTaxLines: shippingMethodsTaxLinesMap,
+    }
   }
 
   /**

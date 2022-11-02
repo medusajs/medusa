@@ -44,7 +44,7 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
-import { TotalsNewService } from "./index"
+import { TaxProviderService, TotalsNewService } from "./index"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -61,6 +61,7 @@ type InjectedDependencies = {
   lineItemService: LineItemService
   totalsService: TotalsService
   totalsNewService: TotalsNewService
+  taxProviderService: TaxProviderService
   regionService: RegionService
   cartService: CartService
   addressRepository: typeof AddressRepository
@@ -110,6 +111,7 @@ class OrderService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly totalsService_: TotalsService
   protected readonly totalsNewService_: TotalsNewService
+  protected readonly taxProviderService_: TaxProviderService
   protected readonly regionService_: RegionService
   protected readonly cartService_: CartService
   protected readonly addressRepository_: typeof AddressRepository
@@ -132,6 +134,7 @@ class OrderService extends TransactionBaseService {
     lineItemService,
     totalsService,
     totalsNewService,
+    taxProviderService,
     regionService,
     cartService,
     addressRepository,
@@ -153,6 +156,7 @@ class OrderService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.totalsService_ = totalsService
     this.totalsNewService_ = totalsNewService
+    this.taxProviderService_ = taxProviderService
     this.regionService_ = regionService
     this.fulfillmentService_ = fulfillmentService
     this.discountService_ = discountService
@@ -540,6 +544,17 @@ class OrderService extends TransactionBaseService {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
+      const exists = !!(await this.retrieveNew({
+        cart_id: isString(cartOrId) ? cartOrId : cartOrId?.id,
+      }).catch(() => false))
+
+      if (exists) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          ORDER_CART_ALREADY_EXISTS_ERROR
+        )
+      }
+
       const cart = isString(cartOrId)
         ? await cartServiceTx.retrieveWithTotals(
             cartOrId,
@@ -577,17 +592,6 @@ class OrderService extends TransactionBaseService {
         await cartServiceTx.update(cart.id, { payment_authorized_at: null })
         throw err
       })
-
-      const exists = !!(await this.retrieveNew({ cart_id: cart.id }).catch(
-        () => false
-      ))
-
-      if (exists) {
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          ORDER_CART_ALREADY_EXISTS_ERROR
-        )
-      }
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -687,23 +691,28 @@ class OrderService extends TransactionBaseService {
         gcBalance = gcBalance - usage
       }
 
-      for (const method of cart.shipping_methods) {
-        await this.shippingOptionService_
-          .withTransaction(manager)
-          .updateShippingMethod(method.id, { order_id: result.id })
-      }
-
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      for (const item of cart.items) {
-        await lineItemServiceTx.update(item.id, { order_id: result.id })
-      }
 
-      for (const item of cart.items) {
-        await inventoryServiceTx.adjustInventory(
-          item.variant_id,
-          -item.quantity
-        )
-      }
+      await Promise.all(
+        [
+          cart.items.map((item) => {
+            return [
+              lineItemServiceTx.update(item.id, { order_id: result.id }),
+              inventoryServiceTx.adjustInventory(
+                item.variant_id,
+                -item.quantity
+              ),
+            ]
+          }),
+          cart.shipping_methods.map((method) => {
+            return shippingOptionServiceTx.updateShippingMethod(method.id, {
+              order_id: result.id,
+            })
+          }),
+        ].flat(Infinity)
+      )
 
       await this.eventBus_
         .withTransaction(manager)
@@ -1494,56 +1503,113 @@ class OrderService extends TransactionBaseService {
     order: Order,
     totalsConfig: TotalsConfig = {}
   ): Promise<Order> {
+    const manager = this.transactionManager_ ?? this.manager_
+    const totalsNewServiceTx = this.totalsNewService_.withTransaction(manager)
+
     const calculationContext = await this.totalsService_.getCalculationContext(
       order
     )
-
     const includeTax = totalsConfig?.force_taxes || order.region.automatic_taxes
-    const useExistingTaxLines = totalsConfig.useExistingTaxLines
+    const orderItems = [...order.items]
+    const orderShippingMethods = [...order.shipping_methods]
+    let useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    const [itemsTotals, shippingTotals] = await Promise.all([
-      await this.totalsNewService_.getLineItemsTotals(order.items, {
+    // If we are forced to use the existing tax lines then at least one item must have a tax line
+    if (
+      useExistingTaxLines &&
+      !orderItems.some((item) => item.tax_lines?.length)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Can't compute order totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
+      )
+    }
+
+    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
+    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
+    // the total service to use the tax lines from the items and methods
+    if (!useExistingTaxLines) {
+      const taxLinesMaps = await this.taxProviderService_
+        .withTransaction(manager)
+        .getTaxLinesMap(orderItems, calculationContext)
+
+      orderItems.forEach((item) => {
+        item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
+      })
+      orderShippingMethods.forEach((method) => {
+        method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
+      })
+
+      useExistingTaxLines = true
+    }
+
+    const itemsTotals = await totalsNewServiceTx.getLineItemsTotals(
+      orderItems,
+      {
         isOrder: true,
         includeTax,
         calculationContext,
         useExistingTaxLines,
-      }),
-      await this.totalsNewService_.getShippingMethodsTotals(
-        order.shipping_methods,
-        {
-          isOrder: true,
-          includeTax: true,
-          calculationContext,
-          discounts: order.discounts,
-          useExistingTaxLines,
-        }
-      ),
-    ])
+      }
+    )
+    const shippingTotals = await totalsNewServiceTx.getShippingMethodsTotals(
+      orderShippingMethods,
+      {
+        isOrder: true,
+        discounts: order.discounts,
+        includeTax,
+        calculationContext,
+        useExistingTaxLines,
+      }
+    )
 
     order.subtotal = 0
     order.discount_total = 0
     order.shipping_total = 0
+    order.refunded_total = Math.round(
+      order.refunds?.reduce((acc, next) => acc + next.amount, 0)
+    )
+    order.paid_total = order.payments?.reduce(
+      (acc, next) => (acc += next.amount),
+      0
+    )
+    order.refundable_amount = order.paid_total - order.refunded_total
     let item_tax_total = 0
     let shipping_tax_total = 0
 
     order.items = (order.items || []).map((item) => {
-      const itemWithTotals = Object.assign(item, itemsTotals.get(item.id) ?? {})
+      const refundable = totalsNewServiceTx.getLineItemRefund(
+        {
+          ...item,
+          quantity: item.quantity - (item.returned_quantity || 0),
+        },
+        {
+          calculationContext,
+          taxRate: order.tax_rate,
+        }
+      )
 
-      order.subtotal! += itemWithTotals.subtotal ?? 0
-      order.discount_total! += itemWithTotals.discount_total ?? 0
+      const itemWithTotals = {
+        ...item,
+        ...(itemsTotals[item.id] ?? {}),
+        refundable,
+      }
+
+      order.subtotal += itemWithTotals.subtotal ?? 0
+      order.discount_total += itemWithTotals.discount_total ?? 0
       item_tax_total += itemWithTotals.tax_total ?? 0
 
-      return itemWithTotals
+      return itemWithTotals as LineItem
     })
 
     order.shipping_methods = (order.shipping_methods || []).map(
       (shippingMethod) => {
         const methodWithTotals = Object.assign(
           shippingMethod,
-          shippingTotals.get(shippingMethod.id) ?? {}
+          shippingTotals[shippingMethod.id] ?? {}
         )
 
-        order.shipping_total! += methodWithTotals.subtotal ?? 0
+        order.shipping_total += methodWithTotals.subtotal ?? 0
         shipping_tax_total += methodWithTotals.tax_total ?? 0
 
         return methodWithTotals
@@ -1562,53 +1628,36 @@ class OrderService extends TransactionBaseService {
 
     order.tax_total = item_tax_total + shipping_tax_total
 
-    order.refunded_total = Math.round(
-      order.refunds?.reduce((acc, next) => acc + next.amount, 0)
-    )
-    order.paid_total = order.payments?.reduce(
-      (acc, next) => (acc += next.amount),
-      0
-    )
-    order.refundable_amount = order.paid_total - order.refunded_total
-
-    const items: LineItem[] = []
-    for (const item of order.items) {
-      items.push({
-        ...item,
-        refundable: await this.totalsService_.getLineItemRefund(order, {
-          ...item,
-          quantity: item.quantity - (item.returned_quantity || 0),
-        } as LineItem),
-      } as LineItem)
-    }
-    order.items = items
-
-    for (const s of order.swaps) {
-      const items: LineItem[] = []
-      for (const item of s.additional_items) {
-        items.push({
-          ...item,
-          refundable: await this.totalsService_.getLineItemRefund(order, {
+    for (const swap of order.swaps) {
+      swap.additional_items = swap.additional_items.map((item) => {
+        item.refundable = totalsNewServiceTx.getLineItemRefund(
+          {
             ...item,
             quantity: item.quantity - (item.returned_quantity || 0),
-          } as LineItem),
-        } as LineItem)
-      }
-      s.additional_items = items
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
     }
 
-    for (const c of order.claims) {
-      const items: LineItem[] = []
-      for (const item of c.additional_items) {
-        items.push({
-          ...item,
-          refundable: await this.totalsService_.getLineItemRefund(order, {
+    for (const claim of order.claims) {
+      claim.additional_items = claim.additional_items.map((item) => {
+        item.refundable = totalsNewServiceTx.getLineItemRefund(
+          {
             ...item,
             quantity: item.quantity - (item.returned_quantity || 0),
-          } as LineItem),
-        } as LineItem)
-      }
-      c.additional_items = items
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
     }
 
     order.total =
@@ -1620,6 +1669,12 @@ class OrderService extends TransactionBaseService {
     return order
   }
 
+  /**
+   * @deprecated use decorateTotalsNew instead, the name might change in the future
+   * @param order
+   * @param totalsFields
+   * @protected
+   */
   protected async decorateTotals(
     order: Order,
     totalsFields: string[] = []

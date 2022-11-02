@@ -84,7 +84,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(
                   idempotencyKey.idempotency_key,
                   async (manager) =>
-                    await this.handlerTaxLineCreated(id, idempotencyKey, {
+                    await this.handleTaxLineCreated(id, idempotencyKey, {
                       context,
                       manager,
                     })
@@ -196,7 +196,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
   }
 
-  protected async handlerTaxLineCreated(
+  protected async handleTaxLineCreated(
     id: string,
     idempotencyKey: IdempotencyKey,
     { context, manager }: { context: any; manager: EntityManager }
