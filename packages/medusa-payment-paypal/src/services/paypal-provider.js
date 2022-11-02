@@ -118,6 +118,34 @@ class PayPalProviderService extends PaymentService {
     return { id: res.result.id }
   }
 
+  async createPaymentNew(paymentInput) {
+    const { resource_id, currency_code, amount } = paymentInput
+
+    const request = new PayPal.orders.OrdersCreateRequest()
+    request.requestBody({
+      intent: "AUTHORIZE",
+      application_context: {
+        shipping_preference: "NO_SHIPPING",
+      },
+      purchase_units: [
+        {
+          custom_id: resource_id,
+          amount: {
+            currency_code: currency_code.toUpperCase(),
+            value: roundToTwo(
+              humanizeAmount(amount, currency_code),
+              currency_code
+            ),
+          },
+        },
+      ],
+    })
+
+    const res = await this.paypal_.execute(request)
+
+    return { id: res.result.id }
+  }
+
   /**
    * Retrieves a PayPal order.
    * @param {object} data - the data stored with the payment
@@ -213,6 +241,35 @@ class PayPalProviderService extends PaymentService {
       return sessionData
     } catch (error) {
       return this.createPayment(cart)
+    }
+  }
+
+  async updatePaymentNew(sessionData, paymentInput) {
+    try {
+      const { currency_code, amount } = paymentInput
+
+      const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
+      request.requestBody([
+        {
+          op: "replace",
+          path: "/purchase_units/@reference_id=='default'",
+          value: {
+            amount: {
+              currency_code: currency_code.toUpperCase(),
+              value: roundToTwo(
+                humanizeAmount(amount, currency_code),
+                currency_code
+              ),
+            },
+          },
+        },
+      ])
+
+      await this.paypal_.execute(request)
+
+      return sessionData
+    } catch (error) {
+      return this.createPaymentNew(paymentInput)
     }
   }
 
