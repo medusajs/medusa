@@ -136,6 +136,19 @@ a.code-action {
   cursor: pointer;
 }
 
+[data-theme="dark"] .code-header,
+[data-theme="dark"] .theme-code-block {
+  border: 1px solid var(--ifm-code-border-color);
+}
+
+[data-theme="dark"] .code-header {
+  border-bottom: none;
+}
+
+[data-theme="dark"] .theme-code-block {
+  border-top: none;
+}
+
 @media screen and (min-width: 568px) {
   .code-tabs .tabs {
     max-width: 90%;
