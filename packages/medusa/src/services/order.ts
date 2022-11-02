@@ -1546,7 +1546,7 @@ class OrderService extends TransactionBaseService {
     const itemsTotals = await totalsNewServiceTx.getLineItemsTotals(
       orderItems,
       {
-        isOrder: true,
+        taxRate: order.tax_rate,
         includeTax,
         calculationContext,
         useExistingTaxLines,
@@ -1555,7 +1555,7 @@ class OrderService extends TransactionBaseService {
     const shippingTotals = await totalsNewServiceTx.getShippingMethodsTotals(
       orderShippingMethods,
       {
-        isOrder: true,
+        taxRate: order.tax_rate,
         discounts: order.discounts,
         includeTax,
         calculationContext,

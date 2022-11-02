@@ -8,7 +8,6 @@ import {
   Discount,
   DiscountRuleType,
   GiftCard,
-  GiftCardTransaction,
   LineItem,
   LineItemTaxLine,
   Region,
@@ -75,34 +74,31 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the totals for each item
+   * Calcul and return the items totals for either the legacy calculation or the new calculation
    * @param items
-   * @param calculationContext
    * @param includeTax
+   * @param calculationContext
    * @param taxRate
-   * @param isOrder
-   * @param useExistingTaxLines Force to use the tax lines of the shipping method instead of fetching them
+   * @param useExistingTaxLines Force to use the tax lines of the line item instead of fetching them
    */
   async getLineItemsTotals(
     items: LineItem[],
     {
       includeTax,
       calculationContext,
-      isOrder,
       taxRate,
       useExistingTaxLines,
     }: {
-      calculationContext: TaxCalculationContext
-      isOrder?: boolean
       includeTax?: boolean
-      taxRate?: number
+      calculationContext: TaxCalculationContext
+      taxRate?: number | null
       useExistingTaxLines?: boolean
     }
   ): Promise<{ [lineItemId: string]: LineItemTotals }> {
     const manager = this.transactionManager_ ?? this.manager_
     let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
-    if (includeTax) {
+    if (!taxRate && includeTax) {
       if (useExistingTaxLines) {
         items.forEach((item) => {
           lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
@@ -115,9 +111,8 @@ export default class TotalsNewService extends TransactionBaseService {
       }
     }
 
-    const useOrderLineCalculation = isOrder && taxRate
-    const calculationMethod = useOrderLineCalculation
-      ? this.getOrderLineItemTotals.bind(this)
+    const calculationMethod = taxRate
+      ? this.getLineItemTotalsLegacy.bind(this)
       : this.getLineItemTotals.bind(this)
 
     const itemsTotals: { [lineItemId: string]: LineItemTotals } = {}
@@ -125,14 +120,12 @@ export default class TotalsNewService extends TransactionBaseService {
       const lineItemAllocation =
         calculationContext.allocation_map[item.id] || {}
 
-      const itemTotals = await calculationMethod(item, {
-        includeTax,
+      itemsTotals[item.id] = await calculationMethod(item, {
         taxRate,
         lineItemAllocation,
         taxLines: lineItemsTaxLinesMap[item.id],
         calculationContext,
       })
-      itemsTotals[item.id] = itemTotals
     }
 
     return itemsTotals
@@ -141,33 +134,31 @@ export default class TotalsNewService extends TransactionBaseService {
   /**
    * Calcul and return the totals for an item
    * @param item
+   * @param includeTax
    * @param lineItemAllocation
-   * @param taxLines
-   * @param include_tax
+   * @param taxLines Only needed to force the usage of the specified tax lines, often in the case where the item does not hold the tax lines
    * @param calculationContext
    */
   async getLineItemTotals(
     item: LineItem,
     {
+      includeTax,
       lineItemAllocation,
       taxLines,
-      includeTax,
       calculationContext,
     }: {
+      includeTax?: boolean
       lineItemAllocation: LineAllocationsMap[number]
       taxLines?: (LineItemTaxLine | ShippingMethodTaxLine)[]
-      includeTax?: boolean
       calculationContext: TaxCalculationContext
     }
   ): Promise<LineItemTotals> {
-    const manager = this.transactionManager_ ?? this.manager_
     let subtotal = item.unit_price * item.quantity
     if (
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       ) &&
-      item.includes_tax &&
-      includeTax
+      item.includes_tax
     ) {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
@@ -187,11 +178,12 @@ export default class TotalsNewService extends TransactionBaseService {
       tax_lines: (taxLines ?? item.tax_lines ?? []) as LineItemTaxLine[],
     }
 
-    if (!totals.tax_lines && includeTax) {
-      const { lineItemsTaxLines } = await this.taxProviderService_
-        .withTransaction(manager)
-        .getTaxLinesMap([item], calculationContext)
-      totals.tax_lines = lineItemsTaxLines[item.id] ?? []
+    // Force the tax lines to exist anyway
+    if (includeTax && !totals.tax_lines.length) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Tax Lines must be joined to calculate taxes"
+      )
     }
 
     if (totals.tax_lines.length > 0) {
@@ -231,46 +223,30 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the totals for an order item
+   * Calcul and return the legacy calculated totals using the tax rate
    * @param item
    * @param taxRate
    * @param lineItemAllocation
-   * @param taxLines
-   * @param includeTax
    * @param calculationContext
    */
-  async getOrderLineItemTotals(
+  async getLineItemTotalsLegacy(
     item: LineItem,
     {
       taxRate,
       lineItemAllocation,
-      taxLines,
-      includeTax,
       calculationContext,
     }: {
       lineItemAllocation: LineAllocationsMap[number]
       calculationContext: TaxCalculationContext
-      includeTax?: boolean
-      taxRate?: number
-      taxLines?: (LineItemTaxLine | ShippingMethodTaxLine)[]
+      taxRate: number
     }
   ): Promise<LineItemTotals> {
-    if (!taxRate) {
-      return await this.getLineItemTotals(item, {
-        lineItemAllocation,
-        taxLines,
-        includeTax,
-        calculationContext,
-      })
-    }
-
     let subtotal = item.unit_price * item.quantity
     if (
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       ) &&
-      item.includes_tax &&
-      includeTax
+      item.includes_tax
     ) {
       subtotal = 0 // in that case we need to know the tax rate to compute it later
     }
@@ -287,34 +263,32 @@ export default class TotalsNewService extends TransactionBaseService {
       original_total: subtotal,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: (taxLines ?? item.tax_lines ?? []) as LineItemTaxLine[],
+      tax_lines: item.tax_lines,
     }
 
-    if (includeTax) {
-      taxRate = taxRate / 100
+    taxRate = taxRate / 100
 
-      const includesTax =
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        ) && item.includes_tax
-      const taxIncludedInPrice = !item.includes_tax
-        ? 0
-        : Math.round(
-            calculatePriceTaxAmount({
-              price: item.unit_price,
-              taxRate: taxRate,
-              includesTax,
-            })
-          )
-      totals.subtotal = (item.unit_price - taxIncludedInPrice) * item.quantity
-      totals.total = totals.subtotal
+    const includesTax =
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && item.includes_tax
+    const taxIncludedInPrice = !item.includes_tax
+      ? 0
+      : Math.round(
+          calculatePriceTaxAmount({
+            price: item.unit_price,
+            taxRate: taxRate,
+            includesTax,
+          })
+        )
+    totals.subtotal = (item.unit_price - taxIncludedInPrice) * item.quantity
+    totals.total = totals.subtotal
 
-      totals.original_tax_total = totals.subtotal * taxRate
-      totals.tax_total = (totals.subtotal - discount_total) * taxRate
+    totals.original_tax_total = totals.subtotal * taxRate
+    totals.tax_total = (totals.subtotal - discount_total) * taxRate
 
-      totals.total += totals.tax_total
-      totals.original_total += totals.original_tax_total
-    }
+    totals.total += totals.tax_total
+    totals.original_total += totals.original_tax_total
 
     return totals
   }
@@ -342,7 +316,7 @@ export default class TotalsNewService extends TransactionBaseService {
      * Used for backcompat with old tax system
      */
     if (taxRate != null) {
-      return this.getLineItemRefundOld(lineItem, {
+      return this.getLineItemRefundLegacy(lineItem, {
         calculationContext,
         taxRate,
       })
@@ -395,7 +369,6 @@ export default class TotalsNewService extends TransactionBaseService {
    * @param giftCardTransactions
    * @param region
    * @param giftCards
-   * @param subtotal
    */
   async getGiftCardTotals(
     giftCardableAmount: number,
@@ -405,8 +378,11 @@ export default class TotalsNewService extends TransactionBaseService {
       giftCards,
     }: {
       region: Region
-      items?: LineItem[]
-      giftCardTransactions?: GiftCardTransaction[]
+      giftCardTransactions?: {
+        tax_rate: number
+        is_taxable: boolean
+        amount: number
+      }[]
       giftCards?: GiftCard[]
     }
   ): Promise<{
@@ -449,7 +425,11 @@ export default class TotalsNewService extends TransactionBaseService {
     giftCardTransactions,
     region,
   }: {
-    giftCardTransactions: GiftCardTransaction[]
+    giftCardTransactions: {
+      tax_rate: number
+      is_taxable: boolean
+      amount: number
+    }[]
     region: { gift_cards_taxable: boolean; tax_rate: number }
   }): { total: number; tax_total: number } {
     return giftCardTransactions.reduce(
@@ -479,30 +459,27 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   *
+   * Calcul and return the shipping methods totals for either the legacy calculation or the new calculation
    * @param shippingMethods
-   * @param isOrder
+   * @param includeTax
    * @param discounts
    * @param taxRate
-   * @param includeTax
    * @param calculationContext
    * @param useExistingTaxLines Force to use the tax lines of the shipping method instead of fetching them
    */
   async getShippingMethodsTotals(
     shippingMethods: ShippingMethod[],
     {
-      isOrder,
+      includeTax,
       discounts,
       taxRate,
-      includeTax,
       calculationContext,
       useExistingTaxLines,
     }: {
+      includeTax?: boolean
       calculationContext: TaxCalculationContext
       discounts?: Discount[]
-      includeTax?: boolean
-      isOrder?: boolean
-      taxRate?: number
+      taxRate?: number | null
       useExistingTaxLines?: boolean
     }
   ): Promise<{ [lineItemId: string]: ShippingMethodTotals }> {
@@ -511,7 +488,7 @@ export default class TotalsNewService extends TransactionBaseService {
       [shippingMethodId: string]: ShippingMethodTaxLine[]
     } = {}
 
-    if (includeTax) {
+    if (!taxRate && includeTax) {
       if (useExistingTaxLines) {
         shippingMethods.forEach((sm) => {
           shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
@@ -524,27 +501,36 @@ export default class TotalsNewService extends TransactionBaseService {
       }
     }
 
-    const useOrderShippingMethodCalculation = isOrder && taxRate
-    const calculationMethod = useOrderShippingMethodCalculation
-      ? this.getOrderShippingMethodTotals.bind(this)
+    const calculationMethod = taxRate
+      ? this.getShippingMethodTotalsLegacy.bind(this)
       : this.getShippingMethodTotals.bind(this)
 
     const shippingMethodsTotals: {
       [lineItemId: string]: ShippingMethodTotals
     } = {}
     for (const shippingMethod of shippingMethods) {
-      const shippingMethodTotals = await calculationMethod(shippingMethod, {
-        includeTax,
-        calculationContext,
-        taxLines: shippingMethodsTaxLinesMap[shippingMethod.id],
-        discounts,
-      })
-      shippingMethodsTotals[shippingMethod.id] = shippingMethodTotals
+      shippingMethodsTotals[shippingMethod.id] = await calculationMethod(
+        shippingMethod,
+        {
+          includeTax,
+          calculationContext,
+          taxLines: shippingMethodsTaxLinesMap[shippingMethod.id],
+          discounts,
+        }
+      )
     }
 
     return shippingMethodsTotals
   }
 
+  /**
+   * Calcul and return the shipping method totals
+   * @param shippingMethod
+   * @param includeTax
+   * @param calculationContext
+   * @param taxLines
+   * @param discounts
+   */
   async getShippingMethodTotals(
     shippingMethod: ShippingMethod,
     {
@@ -553,13 +539,12 @@ export default class TotalsNewService extends TransactionBaseService {
       taxLines,
       discounts,
     }: {
-      calculationContext: TaxCalculationContext
       includeTax?: boolean
+      calculationContext: TaxCalculationContext
       taxLines?: (ShippingMethodTaxLine | LineItemTaxLine)[]
       discounts?: Discount[]
     }
   ) {
-    const manager = this.transactionManager_ ?? this.manager_
     const totals: ShippingMethodTotals = {
       price: shippingMethod.price,
       original_total: shippingMethod.price,
@@ -577,32 +562,31 @@ export default class TotalsNewService extends TransactionBaseService {
       shipping_methods: [shippingMethod],
     }
 
-    if (!totals.tax_lines && includeTax) {
-      const { shippingMethodsTaxLines } = await this.taxProviderService_
-        .withTransaction(manager)
-        .getTaxLinesMap([], calculationContext)
-      totals.tax_lines = shippingMethodsTaxLines[shippingMethod.id] ?? []
+    // Force the tax lines to exist anyway
+    if (includeTax && !totals.tax_lines.length) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Tax Lines must be joined to calculate taxes"
+      )
     }
 
-    if (totals.tax_lines.length > 0) {
-      const includesTax =
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        ) && shippingMethod.includes_tax
+    const includesTax =
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && shippingMethod.includes_tax
 
-      totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
-        [],
-        totals.tax_lines,
-        calculationContext_
-      )
-      totals.tax_total = totals.original_tax_total
+    totals.original_tax_total = await this.taxCalculationStrategy_.calculate(
+      [],
+      totals.tax_lines,
+      calculationContext_
+    )
+    totals.tax_total = totals.original_tax_total
 
-      if (includesTax) {
-        totals.subtotal -= totals.tax_total
-      } else {
-        totals.original_total += totals.original_tax_total
-        totals.total += totals.tax_total
-      }
+    if (includesTax) {
+      totals.subtotal -= totals.tax_total
+    } else {
+      totals.original_total += totals.original_tax_total
+      totals.total += totals.tax_total
     }
 
     const hasFreeShipping = discounts?.some(
@@ -618,31 +602,25 @@ export default class TotalsNewService extends TransactionBaseService {
     return totals
   }
 
-  async getOrderShippingMethodTotals(
+  /**
+   * Calcul and return the shipping method totals legacy using teh tax rate
+   * @param shippingMethod
+   * @param calculationContext
+   * @param taxLines
+   * @param discounts
+   */
+  async getShippingMethodTotalsLegacy(
     shippingMethod: ShippingMethod,
     {
-      includeTax,
       calculationContext,
-      taxLines,
       discounts,
       taxRate,
     }: {
       calculationContext: TaxCalculationContext
-      includeTax?: boolean
-      taxLines?: (ShippingMethodTaxLine | LineItemTaxLine)[]
       discounts?: Discount[]
-      taxRate?: number
+      taxRate: number
     }
   ): Promise<ShippingMethodTotals> {
-    if (!taxRate) {
-      return await this.getShippingMethodTotals(shippingMethod, {
-        includeTax,
-        calculationContext,
-        taxLines,
-        discounts,
-      })
-    }
-
     const totals: ShippingMethodTotals = {
       price: shippingMethod.price,
       original_total: shippingMethod.price,
@@ -650,9 +628,7 @@ export default class TotalsNewService extends TransactionBaseService {
       subtotal: shippingMethod.price,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: (taxLines ??
-        shippingMethod.tax_lines ??
-        []) as ShippingMethodTaxLine[],
+      tax_lines: shippingMethod.tax_lines,
     }
 
     totals.original_tax_total = Math.round(totals.price * (taxRate / 100))
@@ -661,13 +637,18 @@ export default class TotalsNewService extends TransactionBaseService {
     return totals
   }
 
-  protected getLineItemRefundOld(
+  /**
+   * @param lineItem
+   * @param calculationContext
+   * @param taxRate
+   * @protected
+   */
+  getLineItemRefundLegacy(
     lineItem: {
       id: string
       unit_price: number
       includes_tax: boolean
       quantity: number
-      tax_lines: LineItemTaxLine[]
     },
     {
       calculationContext,
