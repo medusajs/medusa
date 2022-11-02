@@ -1,5 +1,6 @@
 export * from "./api"
 export * from "./interfaces"
+export * from "./types/global"
 export * from "./types/price-list"
 export * from "./types/batch-job"
 export * from "./models"
