@@ -1,18 +1,20 @@
-# Class: StoreService
+# Class: DiscountConditionService
 
-Provides layer to manipulate store settings.
+Provides layer to manipulate discount conditions.
+
+**`Implements`**
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`StoreService`**
+  ↳ **`DiscountConditionService`**
 
 ## Constructors
 
 ### constructor
 
-• **new StoreService**(`__namedParameters`)
+• **new DiscountConditionService**(`__namedParameters`)
 
 #### Parameters
 
@@ -26,7 +28,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L31)
+[packages/medusa/src/services/discount-condition.ts:37](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L37)
 
 ## Properties
 
@@ -58,13 +60,13 @@ TransactionBaseService.\_\_container\_\_
 
 ___
 
-### currencyRepository\_
+### discountConditionRepository\_
 
-• `Protected` `Readonly` **currencyRepository\_**: typeof `CurrencyRepository`
+• `Protected` `Readonly` **discountConditionRepository\_**: typeof `DiscountConditionRepository`
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:28](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L28)
+[packages/medusa/src/services/discount-condition.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L31)
 
 ___
 
@@ -74,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:29](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L29)
+[packages/medusa/src/services/discount-condition.ts:32](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L32)
 
 ___
 
@@ -88,23 +90,13 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L24)
-
-___
-
-### storeRepository\_
-
-• `Protected` `Readonly` **storeRepository\_**: typeof `StoreRepository`
-
-#### Defined in
-
-[packages/medusa/src/services/store.ts:27](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L27)
+[packages/medusa/src/services/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L34)
 
 ___
 
 ### transactionManager\_
 
-• `Protected` **transactionManager\_**: `EntityManager`
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
 #### Overrides
 
@@ -112,33 +104,9 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L25)
+[packages/medusa/src/services/discount-condition.ts:35](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L35)
 
 ## Methods
-
-### addCurrency
-
-▸ **addCurrency**(`code`): `Promise`<`Store`\>
-
-Add a currency to the store
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `code` | `string` | 3 character ISO currency code |
-
-#### Returns
-
-`Promise`<`Store`\>
-
-result after update
-
-#### Defined in
-
-[packages/medusa/src/services/store.ts:209](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L209)
-
-___
 
 ### atomicPhase\_
 
@@ -179,89 +147,64 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### create
+### delete
 
-▸ **create**(): `Promise`<`Store`\>
-
-Creates a store if it doesn't already exist.
-
-#### Returns
-
-`Promise`<`Store`\>
-
-The store.
-
-#### Defined in
-
-[packages/medusa/src/services/store.ts:54](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L54)
-
-___
-
-### getDefaultCurrency\_
-
-▸ `Protected` **getDefaultCurrency_**(`code`): `Partial`<`Currency`\>
+▸ **delete**(`discountConditionId`): `Promise`<`void` \| `DiscountCondition`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `code` | `string` |
+| `discountConditionId` | `string` |
 
 #### Returns
 
-`Partial`<`Currency`\>
+`Promise`<`void` \| `DiscountCondition`\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:103](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L103)
+[packages/medusa/src/services/discount-condition.ts:213](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L213)
 
 ___
 
-### removeCurrency
+### removeResources
 
-▸ **removeCurrency**(`code`): `Promise`<`any`\>
-
-Removes a currency from the store
+▸ **removeResources**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `code` | `string` | 3 character ISO currency code |
+| Name | Type |
+| :------ | :------ |
+| `data` | `Omit`<`DiscountConditionInput`, ``"id"``\> & { `id`: `string`  } |
 
 #### Returns
 
-`Promise`<`any`\>
-
-result after update
+`Promise`<`void`\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:253](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L253)
+[packages/medusa/src/services/discount-condition.ts:181](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L181)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`config?`): `Promise`<`Store`\>
-
-Retrieve the store settings. There is always a maximum of one store.
+▸ **retrieve**(`conditionId`, `config?`): `Promise`<`DiscountCondition`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `config` | `FindConfig`<`Store`\> | The config object from which the query will be built |
+| Name | Type |
+| :------ | :------ |
+| `conditionId` | `string` |
+| `config?` | `FindConfig`<`DiscountCondition`\> |
 
 #### Returns
 
-`Promise`<`Store`\>
-
-the store
+`Promise`<`DiscountCondition`\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:90](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L90)
+[packages/medusa/src/services/discount-condition.ts:49](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L49)
 
 ___
 
@@ -289,33 +232,30 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
+### upsertCondition
 
-▸ **update**(`data`): `Promise`<`Store`\>
-
-Updates a store
+▸ **upsertCondition**(`data`, `overrideExisting?`): `Promise`<(`DiscountConditionCustomerGroup` \| `DiscountConditionProduct` \| `DiscountConditionProductCollection` \| `DiscountConditionProductTag` \| `DiscountConditionProductType`)[]\>
 
 #### Parameters
 
-| Name | Type | Description |
+| Name | Type | Default value |
 | :------ | :------ | :------ |
-| `data` | `UpdateStoreInput` | an object with the update values. |
+| `data` | `DiscountConditionInput` | `undefined` |
+| `overrideExisting` | `boolean` | `true` |
 
 #### Returns
 
-`Promise`<`Store`\>
-
-resolves to the update result.
+`Promise`<(`DiscountConditionCustomerGroup` \| `DiscountConditionProduct` \| `DiscountConditionProductCollection` \| `DiscountConditionProductTag` \| `DiscountConditionProductType`)[]\>
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:119](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/store.ts#L119)
+[packages/medusa/src/services/discount-condition.ts:109](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L109)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`StoreService`](StoreService.md)
+▸ **withTransaction**(`transactionManager?`): [`DiscountConditionService`](DiscountConditionService.md)
 
 #### Parameters
 
@@ -325,7 +265,7 @@ ___
 
 #### Returns
 
-[`StoreService`](StoreService.md)
+[`DiscountConditionService`](DiscountConditionService.md)
 
 #### Inherited from
 
@@ -334,3 +274,23 @@ TransactionBaseService.withTransaction
 #### Defined in
 
 [packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### resolveConditionType\_
+
+▸ `Static` `Protected` **resolveConditionType_**(`data`): `undefined` \| { `resource_ids`: (`string` \| { `id`: `string`  })[] ; `type`: `DiscountConditionType`  }
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `DiscountConditionInput` |
+
+#### Returns
+
+`undefined` \| { `resource_ids`: (`string` \| { `id`: `string`  })[] ; `type`: `DiscountConditionType`  }
+
+#### Defined in
+
+[packages/medusa/src/services/discount-condition.ts:72](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/discount-condition.ts#L72)
