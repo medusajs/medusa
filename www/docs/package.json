@@ -23,6 +23,7 @@
     "@svgr/webpack": "6.2.1",
     "algoliasearch-helper": "^3.8.2",
     "clsx": "^1.1.1",
+    "docusaurus-plugin-image-zoom": "^0.1.1",
     "docusaurus-plugin-segment": "^1.0.3",
     "docusaurus2-dotenv": "^1.4.0",
     "file-loader": "^6.2.0",

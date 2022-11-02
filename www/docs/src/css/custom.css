@@ -196,9 +196,17 @@ article {
   font-weight: 400;
 }
 
+.medium-zoom-overlay {
+  z-index: var(--ifm-z-index-overlay);
+}
+
+.medium-zoom-image--opened {
+  z-index: var(--ifm-z-index-overlay);
+}
+
 /* Medusa logo */
 .sidebar-bg img {
- width: 100px;   
+ width: 100px;
 }
 
 .padding-top--md {
@@ -373,7 +381,7 @@ html[data-theme="dark"] kbd {
 
 kbd {
   --ifm-color-emphasis-800: var(--ifm-color-gray-800);
-  
+
   font: 100% var(--ifm-font-family-monospace) !important;
 }
 
@@ -415,8 +423,8 @@ kbd {
   color: var(--ifm-menu-color)
 }
 
-.menu__link:hover, 
-.menu__link--active, 
+.menu__link:hover,
+.menu__link--active,
 .menu__list-item-collapsible:hover,
 .menu__list-item-collapsible--active,
 .redocusaurus .menu-content label:hover,
@@ -425,7 +433,7 @@ kbd {
   color: var(--ifm-menu-active);
 }
 
-.menu__link--active, 
+.menu__link--active,
 .menu__list-item-collapsible--active,
 .redocusaurus .menu-content label.active {
   font-weight: 600 !important;
