@@ -178,6 +178,15 @@ export default class TotalsNewService extends TransactionBaseService {
       tax_lines: (taxLines ?? item.tax_lines ?? []) as LineItemTaxLine[],
     }
 
+    if (item.is_return) {
+      if (typeof item.tax_lines === "undefined") {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Return Line Items must join tax lines"
+        )
+      }
+    }
+
     // Force the tax lines to exist anyway
     if (includeTax && !totals.tax_lines.length) {
       throw new MedusaError(

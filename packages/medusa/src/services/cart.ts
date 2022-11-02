@@ -2124,6 +2124,9 @@ class CartService extends TransactionBaseService {
         .getTaxLinesMap(cartItems, calculationContext)
 
       cartItems.forEach((item) => {
+        if (item.is_return) {
+          return
+        }
         item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
       })
       cartShippingMethods.forEach((method) => {

@@ -1534,6 +1534,9 @@ class OrderService extends TransactionBaseService {
         .getTaxLinesMap(orderItems, calculationContext)
 
       orderItems.forEach((item) => {
+        if (item.is_return) {
+          return
+        }
         item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
       })
       orderShippingMethods.forEach((method) => {
