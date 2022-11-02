@@ -1,9 +1,5 @@
 # Namespace: internal
 
-## Namespaces
-
-- [&quot;/Users/shahednasser/medusa/packages/medusa/dist/types/global&quot;](internal-15.__Users_shahednasser_medusa_packages_medusa_dist_types_global_.md)
-
 ## Classes
 
 - [AdminDeletePriceListPricesPricesReq](../classes/internal-15.AdminDeletePriceListPricesPricesReq.md)
@@ -66,7 +62,7 @@ medusa/dist/api/routes/admin/price-lists/index.d.ts:21
 
 ### AdminGetPriceListsPriceListProductsParams\_base
 
-• `Const` **AdminGetPriceListsPriceListProductsParams\_base**: [`"/Users/shahednasser/medusa/packages/medusa/dist/types/global"`](internal-15.__Users_shahednasser_medusa_packages_medusa_dist_types_global_.md)
+• `Const` **AdminGetPriceListsPriceListProductsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
 
 #### Defined in
 

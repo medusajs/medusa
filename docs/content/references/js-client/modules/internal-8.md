@@ -6,7 +6,11 @@
 - [AdminPostDraftOrdersDraftOrderLineItemsItemReq](../classes/internal-8.AdminPostDraftOrdersDraftOrderLineItemsItemReq.md)
 - [AdminPostDraftOrdersDraftOrderLineItemsReq](../classes/internal-8.AdminPostDraftOrdersDraftOrderLineItemsReq.md)
 - [AdminPostDraftOrdersDraftOrderReq](../classes/internal-8.AdminPostDraftOrdersDraftOrderReq.md)
+- [AdminPostDraftOrdersReq](../classes/internal-8.AdminPostDraftOrdersReq.md)
 - [Discount](../classes/internal-8.Discount.md)
+- [Discount](../classes/internal-8.Discount-1.md)
+- [Item](../classes/internal-8.Item.md)
+- [ShippingMethod](../classes/internal-8.ShippingMethod.md)
 
 ## Type Aliases
 
