@@ -11,6 +11,12 @@ export const taxProviderServiceMock = {
   getTaxLines: jest.fn().mockImplementation((_) => {
     return Promise.resolve([])
   }),
+  getTaxLinesMap: jest.fn().mockImplementation((_) => {
+    return Promise.resolve({
+      lineItemsTaxLines: {},
+      shippingMethodsTaxLines: {},
+    })
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
