@@ -310,7 +310,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         this.paymentSessionRepository_
       )
 
-      return sessionRepo.save(session)
+      return await sessionRepo.save(session)
     })
   }
 
@@ -468,7 +468,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
-      return sessionRepo.save(session)
+      return await sessionRepo.save(session)
     })
   }
 
