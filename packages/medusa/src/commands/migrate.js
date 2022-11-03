@@ -1,6 +1,7 @@
 import { createConnection } from "typeorm"
 import { getConfigFile } from "medusa-core-utils"
 import featureFlagLoader from "../loaders/feature-flags"
+import { handleConfigError } from "../loaders/config"
 import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
@@ -11,7 +12,11 @@ const t = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
+  const { configModule, error } = getConfigFile(directory, `medusa-config`)
+
+  if (error) {
+    handleConfigError(error)
+  }
 
   const featureFlagRouter = featureFlagLoader(configModule)
 

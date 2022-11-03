@@ -27,6 +27,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
             description text NULL,
             amount integer NOT NULL,
             authorized_amount integer NULL,
+            captured_amount integer NULL,
             refunded_amount integer NULL,
             region_id character varying NOT NULL,
             currency_code character varying NOT NULL,
@@ -71,6 +72,12 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE "order_edit" ADD CONSTRAINT "FK_order_edit_payment_collection_id" FOREIGN KEY ("payment_collection_id") REFERENCES "payment_collection"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
         ALTER TABLE payment_session ADD COLUMN payment_authorized_at timestamp WITH time zone NULL;
+        ALTER TABLE payment_session ADD COLUMN amount integer NULL;
+        ALTER TABLE payment_session ALTER COLUMN cart_id DROP NOT NULL;
+
+        ALTER TABLE refund ADD COLUMN payment_id character varying NULL;
+        CREATE INDEX "IDX_refund_payment_id" ON "refund" ("payment_id");
+        ALTER TABLE "refund" ADD CONSTRAINT "FK_refund_payment_id" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
     `)
 
     // Add missing indexes
@@ -85,6 +92,12 @@ export class paymentCollection1664880666982 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
+        DROP INDEX "IDX_order_edit_payment_collection_id";
+        ALTER TABLE order_edit DROP CONSTRAINT "FK_order_edit_payment_collection_id";
+
+        DROP INDEX "IDX_refund_payment_id";
+        ALTER TABLE refund DROP CONSTRAINT "FK_refund_payment_id";
+
         ALTER TABLE payment_collection DROP CONSTRAINT "FK_payment_collection_region_id";
         ALTER TABLE payment_collection_sessions DROP CONSTRAINT "FK_payment_collection_sessions_payment_collection_id";
         ALTER TABLE payment_collection_sessions DROP CONSTRAINT "FK_payment_collection_sessions_payment_session_id";
@@ -92,6 +105,9 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE payment_collection_payments DROP CONSTRAINT "FK_payment_collection_payments_payment_id";
         ALTER TABLE order_edit DROP COLUMN payment_collection_id;
         ALTER TABLE payment_session DROP COLUMN payment_authorized_at;
+        ALTER TABLE payment_session DROP COLUMN amount;
+        ALTER TABLE payment_session ALTER COLUMN cart_id SET NOT NULL;
+        ALTER TABLE refund DROP COLUMN payment_id;
 
         DROP TABLE payment_collection;
         DROP TABLE payment_collection_sessions;
@@ -99,10 +115,6 @@ export class paymentCollection1664880666982 implements MigrationInterface {
 
         DROP TYPE "PAYMENT_COLLECTION_TYPE_ENUM";
         DROP TYPE "PAYMENT_COLLECTION_STATUS_ENUM";
-
-        DROP INDEX "IDX_order_edit_payment_collection_id";
-        ALTER TABLE order_edit DROP CONSTRAINT "FK_order_edit_payment_collection_id";
-
     `)
 
     await queryRunner.query(`
