@@ -40,14 +40,14 @@ export default function CodeBlock({children: rawChildren, ...props}) {
             <ThemedImage alt='Report Incorrect Code' sources={{
               light: useBaseUrl('/img/alert-code.png'),
               dark: useBaseUrl('/img/alert-code-dark.png')
-            }} />
+            }} className="no-zoom-img" />
           </a>
         </Tooltip>
         <CopyButton buttonClassName='code-action' text={children}>
           <ThemedImage alt='Copy to Clipboard' sources={{
             light: useBaseUrl('/img/clipboard-copy.png'),
             dark: useBaseUrl('/img/clipboard-copy-dark.png')
-          }} />
+          }} className="no-zoom-img" />
         </CopyButton>
       </div>
       <CodeBlockComp key={String(isBrowser)} {...props}>

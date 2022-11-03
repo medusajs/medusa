@@ -67,7 +67,7 @@ function CardLink({item}) {
   let icon;
   if (item.customProps && item.customProps.themedImage) {
     icon = (
-      <div className={clsx(styles.imageContainer)}>
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
         <ThemedImage alt={item.label} sources={{
           light: item.customProps.themedImage.light,
           dark: item.customProps.themedImage.dark
@@ -76,7 +76,7 @@ function CardLink({item}) {
     )
   } else if (item.customProps && item.customProps.image) {
     icon = (
-      <div className={clsx(styles.imageContainer)}>
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
         <img src={item.customProps.image} alt={item.label} />
       </div>
     );
@@ -84,7 +84,7 @@ function CardLink({item}) {
     icon = item.customProps.icon;
   } else {
     icon = (
-      <div className={clsx(styles.imageContainer)}>
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
         {isInternalUrl(item.href) ? '📄️' : '🔗'}
       </div>
     );

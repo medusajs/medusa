@@ -7,17 +7,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function NoteIcon() {
   return (
-    <img src={useBaseUrl('/img/info-icon.png')} />
+    <img src={useBaseUrl('/img/info-icon.png')} className="no-zoom-img" />
   );
 }
 function TipIcon() {
   return (
-    <img src={useBaseUrl('/img/tip-icon.png')} height={16} width={12} />
+    <img src={useBaseUrl('/img/tip-icon.png')} height={16} width={12} className="no-zoom-img" />
   );
 }
 function DangerIcon() {
   return (
-    <img src={useBaseUrl('/img/alert-icon.png')} />
+    <img src={useBaseUrl('/img/alert-icon.png')} className="no-zoom-img" />
   );
 }
 function InfoIcon() {

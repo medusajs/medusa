@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:18](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L18)
+[medusa-js/src/resources/customers.ts:18](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L18)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:17](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L17)
+[medusa-js/src/resources/customers.ts:17](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L17)
 
 ## Methods
 
@@ -47,7 +47,7 @@ Creates a customer
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:26](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L26)
+[medusa-js/src/resources/customers.ts:26](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L26)
 
 ___
 
@@ -71,7 +71,7 @@ The token is not returned but should be sent out to the customer in an email.
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:101](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L101)
+[medusa-js/src/resources/customers.ts:101](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L101)
 
 ___
 
@@ -94,7 +94,7 @@ Retrieve customer orders
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:66](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L66)
+[medusa-js/src/resources/customers.ts:66](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L66)
 
 ___
 
@@ -117,7 +117,7 @@ Resets customer password
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:86](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L86)
+[medusa-js/src/resources/customers.ts:86](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L86)
 
 ___
 
@@ -139,7 +139,7 @@ Retrieves the customer that is currently logged
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:39](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L39)
+[medusa-js/src/resources/customers.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L39)
 
 ___
 
@@ -162,4 +162,4 @@ Updates a customer
 
 #### Defined in
 
-[medusa-js/src/resources/customers.ts:52](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/customers.ts#L52)
+[medusa-js/src/resources/customers.ts:52](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/customers.ts#L52)

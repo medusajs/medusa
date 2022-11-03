@@ -95,13 +95,31 @@ describe("Price list import batch job", () => {
     copyTemplateFile()
 
     const product = await simpleProductFactory(dbConnection, {
+      options: [
+        {
+          title: "Size",
+          id: "size",
+        },
+      ],
       variants: [
         {
           id: "test-pl-variant",
+          options: [
+            {
+              option_id: "size",
+              value: "S",
+            },
+          ],
         },
         {
           id: "test-pl-sku-variant",
           sku: "pl-sku",
+          options: [
+            {
+              option_id: "size",
+              value: "M",
+            },
+          ],
         },
       ],
     })
@@ -216,8 +234,13 @@ describe("Price list import batch job", () => {
 
     const product = await simpleProductFactory(dbConnection, {
       variants: [
-        { id: "test-pl-variant" },
-        { id: "test-pl-sku-variant", sku: "pl-sku" },
+        {
+          id: "test-pl-variant",
+        },
+        {
+          id: "test-pl-sku-variant",
+          sku: "pl-sku",
+        },
       ],
     })
 

@@ -26,6 +26,21 @@ export const useAdminUploadFile = (
   }, buildOptions(queryClient, undefined, options))
 }
 
+export const useAdminUploadProtectedFile = (
+  options?: UseMutationOptions<
+    Response<AdminUploadsRes>,
+    Error,
+    IAdminPostUploadsFileReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation((payload: IAdminPostUploadsFileReq) => {
+    return client.admin.uploads.createProtected(payload)
+  }, buildOptions(queryClient, undefined, options))
+}
+
 export const useAdminCreatePresignedDownloadUrl = (
   options?: UseMutationOptions<
     Response<AdminUploadsDownloadUrlRes>,

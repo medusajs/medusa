@@ -124,6 +124,14 @@ html:not([data-theme="dark"]) .doc-footer {
   font-weight: 600 !important;
 }
 
+.medium-zoom-overlay {
+  z-index: var(--ifm-z-index-overlay);
+}
+
+.medium-zoom-image--opened {
+  z-index: var(--ifm-z-index-overlay);
+}
+
 @media (min-width: 1440px) {
   .markdown-doc-wrapper {
     max-width: var(--ifm-container-width-xl) !important;

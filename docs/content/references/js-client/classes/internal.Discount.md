@@ -182,9 +182,9 @@ medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ___
 
-### upperCaseCode
+### upperCaseCodeAndTrim
 
-• `Private` **upperCaseCode**: `any`
+• `Private` **upperCaseCodeAndTrim**: `any`
 
 #### Defined in
 

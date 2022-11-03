@@ -32,7 +32,8 @@ const config = {
       {
         apiKey: process.env.SEGMENT_API_KEY || "temp"
       }
-    ]
+    ],
+    require.resolve("docusaurus-plugin-image-zoom")
   ],
   themeConfig: {
     colorMode: {
@@ -52,6 +53,9 @@ const config = {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
       theme: require("./src/themes/medusaDocs"),
+    },
+    zoom: {
+      selector: '.markdown :not(.no-zoom-img) > img:not(.no-zoom-img)'
     },
     navbar: {
       hideOnScroll: false,

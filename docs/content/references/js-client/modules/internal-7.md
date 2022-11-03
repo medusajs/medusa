@@ -1,13 +1,20 @@
 # Namespace: internal
 
+## Namespaces
+
+- [&quot;/home/runner/work/medusa/medusa/packages/medusa/dist/types/global&quot;](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
+
 ## Classes
 
 - [AdminCreateCondition](../classes/internal-7.AdminCreateCondition.md)
+- [AdminDeleteDiscountsDiscountConditionsConditionBatchReq](../classes/internal-7.AdminDeleteDiscountsDiscountConditionsConditionBatchReq.md)
 - [AdminGetDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminGetDiscountsDiscountConditionsConditionParams.md)
 - [AdminGetDiscountsDiscountRuleParams](../classes/internal-7.AdminGetDiscountsDiscountRuleParams.md)
 - [AdminGetDiscountsParams](../classes/internal-7.AdminGetDiscountsParams.md)
 - [AdminPostDiscountsDiscountConditions](../classes/internal-7.AdminPostDiscountsDiscountConditions.md)
 - [AdminPostDiscountsDiscountConditionsCondition](../classes/internal-7.AdminPostDiscountsDiscountConditionsCondition.md)
+- [AdminPostDiscountsDiscountConditionsConditionBatchParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionBatchParams.md)
+- [AdminPostDiscountsDiscountConditionsConditionBatchReq](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionBatchReq.md)
 - [AdminPostDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionParams.md)
 - [AdminPostDiscountsDiscountConditionsParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsParams.md)
 - [AdminPostDiscountsDiscountDynamicCodesReq](../classes/internal-7.AdminPostDiscountsDiscountDynamicCodesReq.md)
@@ -59,3 +66,13 @@ ___
 #### Defined in
 
 medusa/dist/api/routes/admin/discounts/index.d.ts:11
+
+## Variables
+
+### AdminGetDiscountsParams\_base
+
+• `Const` **AdminGetDiscountsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
+
+#### Defined in
+
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:86

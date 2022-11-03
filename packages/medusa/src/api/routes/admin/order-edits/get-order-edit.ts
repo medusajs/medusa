@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /order-edits/{id}
@@ -9,6 +10,8 @@ import { OrderEditService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,3 +67,5 @@ export default async (req: Request, res: Response) => {
 
   return res.json({ order_edit: orderEdit })
 }
+
+export class GetOrderEditsOrderEditParams extends FindParams {}
