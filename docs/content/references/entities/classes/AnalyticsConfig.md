@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: ClaimImage
+# Class: AnalyticsConfig
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`ClaimImage`**
+  ↳ **`AnalyticsConfig`**
 
 ## Constructors
 
 ### constructor
 
-• **new ClaimImage**()
+• **new AnalyticsConfig**()
 
 #### Inherited from
 
@@ -22,23 +22,13 @@ SoftDeletableEntity.constructor
 
 ## Properties
 
-### claim\_item
+### anonymize
 
-• **claim\_item**: [`ClaimItem`](ClaimItem.md)
-
-#### Defined in
-
-[models/claim-image.ts:23](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/claim-image.ts#L23)
-
-___
-
-### claim\_item\_id
-
-• **claim\_item\_id**: `string`
+• **anonymize**: `boolean`
 
 #### Defined in
 
-[models/claim-image.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/claim-image.ts#L19)
+[models/analytics-config.ts:17](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L17)
 
 ___
 
@@ -84,13 +74,13 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### opt\_out
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **opt\_out**: `boolean`
 
 #### Defined in
 
-[models/claim-image.ts:29](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/claim-image.ts#L29)
+[models/analytics-config.ts:14](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L14)
 
 ___
 
@@ -108,13 +98,13 @@ SoftDeletableEntity.updated\_at
 
 ___
 
-### url
+### user\_id
 
-• **url**: `string`
+• **user\_id**: `string`
 
 #### Defined in
 
-[models/claim-image.ts:26](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/claim-image.ts#L26)
+[models/analytics-config.ts:11](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L11)
 
 ## Methods
 
@@ -128,4 +118,4 @@ ___
 
 #### Defined in
 
-[models/claim-image.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/claim-image.ts#L31)
+[models/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L19)
