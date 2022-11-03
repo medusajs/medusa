@@ -18,7 +18,7 @@ API Level DTOs + Validation rules
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:12
+medusa/dist/types/product.d.ts:13
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:20
+medusa/dist/types/product.d.ts:22
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:22
+medusa/dist/types/product.d.ts:24
 
 ___
 
@@ -48,7 +48,17 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:15
+medusa/dist/types/product.d.ts:16
+
+___
+
+### discount\_condition\_id
+
+• `Optional` **discount\_condition\_id**: `string`
+
+#### Defined in
+
+medusa/dist/types/product.d.ts:21
 
 ___
 
@@ -58,7 +68,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:16
+medusa/dist/types/product.d.ts:17
 
 ___
 
@@ -68,7 +78,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:8
+medusa/dist/types/product.d.ts:9
 
 ___
 
@@ -78,7 +88,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:17
+medusa/dist/types/product.d.ts:18
 
 ___
 
@@ -88,7 +98,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:11
+medusa/dist/types/product.d.ts:12
 
 ___
 
@@ -98,7 +108,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:9
+medusa/dist/types/product.d.ts:10
 
 ___
 
@@ -108,7 +118,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:19
+medusa/dist/types/product.d.ts:20
 
 ___
 
@@ -118,7 +128,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:10
+medusa/dist/types/product.d.ts:11
 
 ___
 
@@ -128,7 +138,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:13
+medusa/dist/types/product.d.ts:14
 
 ___
 
@@ -138,17 +148,17 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:14
+medusa/dist/types/product.d.ts:15
 
 ___
 
-### type
+### type\_id
 
-• `Optional` **type**: `string`
+• `Optional` **type\_id**: `string`[]
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:18
+medusa/dist/types/product.d.ts:19
 
 ___
 
@@ -158,4 +168,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/product.d.ts:21
+medusa/dist/types/product.d.ts:23
