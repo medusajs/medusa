@@ -161,22 +161,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
-    const cart = await this.cartService_
-      .withTransaction(manager)
-      .retrieveNew(id, {
-        relations: [
-          "customer",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "items",
-          "items.adjustments",
-          "region",
-          "region.tax_rates",
-          "shipping_address",
-          "shipping_methods",
-        ],
-      })
+    const cart = await this.cartService_.withTransaction(manager).retrieve(id, {
+      relations: [
+        "customer",
+        "discounts",
+        "discounts.rule",
+        "gift_cards",
+        "items",
+        "items.adjustments",
+        "region",
+        "region.tax_rates",
+        "shipping_address",
+        "shipping_methods",
+      ],
+    })
 
     if (cart.completed_at) {
       return {

@@ -1,4 +1,4 @@
-export const TotalsNewServiceMock = {
+export const newTotalsServiceMock = {
   withTransaction: function () {
     return this
   },
@@ -36,7 +36,7 @@ export const TotalsNewServiceMock = {
 }
 
 const mock = jest.fn().mockImplementation(() => {
-  return TotalsNewServiceMock
+  return newTotalsServiceMock
 })
 
 export default mock

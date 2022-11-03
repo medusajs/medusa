@@ -15,7 +15,6 @@ import {
   PaymentSession,
   PaymentSessionStatus,
   Refund,
-  Region,
 } from "../models"
 import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
@@ -376,13 +375,13 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createPayment(data: {
-    id: string
-    total: number
-    region: Region
+    cartId: string
+    amount: number
+    currency_code: string
     payment_session: PaymentSession
   }): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session: paymentSession, region, total } = data
+      const { payment_session: paymentSession, currency_code, amount } = data
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider
@@ -395,10 +394,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
-        amount: total,
-        currency_code: region.currency_code,
+        amount,
+        currency_code,
         data: paymentData,
-        cart_id: data.id,
+        cart_id: data.cartId,
       })
 
       return await paymentRepo.save(created)

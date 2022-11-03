@@ -14,7 +14,7 @@ import {
   ShippingMethod,
   ShippingMethodTaxLine,
 } from "../models"
-import { TaxProviderService, TotalsService } from "./index"
+import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
@@ -44,37 +44,36 @@ type ShippingMethodTotals = {
 }
 
 type InjectedDependencies = {
-  totalsService: TotalsService
+  manager: EntityManager
   taxProviderService: TaxProviderService
   taxCalculationStrategy: ITaxCalculationStrategy
   featureFlagRouter: FlagRouter
 }
 
-export default class TotalsNewService extends TransactionBaseService {
+export default class NewTotalsService extends TransactionBaseService {
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
-  protected readonly totalsService_: TotalsService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
-    totalsService,
+    manager,
     taxProviderService,
     featureFlagRouter,
     taxCalculationStrategy,
   }: InjectedDependencies) {
     super(arguments[0])
 
-    this.totalsService_ = totalsService
+    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
     this.featureFlagRouter_ = featureFlagRouter
     this.taxCalculationStrategy_ = taxCalculationStrategy
   }
 
   /**
-   * Calcul and return the items totals for either the legacy calculation or the new calculation
+   * Calculate and return the items totals for either the legacy calculation or the new calculation
    * @param items
    * @param includeTax
    * @param calculationContext
@@ -122,6 +121,7 @@ export default class TotalsNewService extends TransactionBaseService {
 
       itemsTotals[item.id] = await calculationMethod(item, {
         taxRate,
+        includeTax,
         lineItemAllocation,
         taxLines: lineItemsTaxLinesMap[item.id],
         calculationContext,
@@ -132,14 +132,14 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the totals for an item
+   * Calculate and return the totals for an item
    * @param item
    * @param includeTax
    * @param lineItemAllocation
    * @param taxLines Only needed to force the usage of the specified tax lines, often in the case where the item does not hold the tax lines
    * @param calculationContext
    */
-  async getLineItemTotals(
+  protected async getLineItemTotals(
     item: LineItem,
     {
       includeTax,
@@ -175,24 +175,29 @@ export default class TotalsNewService extends TransactionBaseService {
       original_total: subtotal,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: (taxLines ?? item.tax_lines ?? []) as LineItemTaxLine[],
+      tax_lines: (taxLines ?? []) as LineItemTaxLine[],
+    }
+
+    if (includeTax) {
+      totals.tax_lines = totals.tax_lines.length
+        ? totals.tax_lines
+        : item.tax_lines
+
+      if (!totals.tax_lines) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Tax Lines must be joined to calculate taxes"
+        )
+      }
     }
 
     if (item.is_return) {
-      if (typeof item.tax_lines === "undefined") {
+      if (!isDefined(item.tax_lines)) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           "Return Line Items must join tax lines"
         )
       }
-    }
-
-    // Force the tax lines to exist anyway
-    if (includeTax && !totals.tax_lines.length) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Tax Lines must be joined to calculate taxes"
-      )
     }
 
     if (totals.tax_lines.length > 0) {
@@ -232,13 +237,13 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the legacy calculated totals using the tax rate
+   * Calculate and return the legacy calculated totals using the tax rate
    * @param item
    * @param taxRate
    * @param lineItemAllocation
    * @param calculationContext
    */
-  async getLineItemTotalsLegacy(
+  protected async getLineItemTotalsLegacy(
     item: LineItem,
     {
       taxRate,
@@ -272,7 +277,7 @@ export default class TotalsNewService extends TransactionBaseService {
       original_total: subtotal,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: item.tax_lines,
+      tax_lines: [],
     }
 
     taxRate = taxRate / 100
@@ -373,7 +378,7 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the gift cards totals
+   * Calculate and return the gift cards totals
    * @param giftCardableAmount
    * @param giftCardTransactions
    * @param region
@@ -398,6 +403,13 @@ export default class TotalsNewService extends TransactionBaseService {
     total: number
     tax_total: number
   }> {
+    if (!giftCards && !giftCardTransactions) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Cannot calculate the gift cart totals. Niether the gift cards or gift card transactions have been provided"
+      )
+    }
+
     if (giftCardTransactions) {
       return this.getGiftCardTransactionsTotals({
         giftCardTransactions,
@@ -426,7 +438,7 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the gift cards totals based on their transactions
+   * Calculate and return the gift cards totals based on their transactions
    * @param gift_card_transactions
    * @param region
    */
@@ -468,7 +480,7 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the shipping methods totals for either the legacy calculation or the new calculation
+   * Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
    * @param shippingMethods
    * @param includeTax
    * @param discounts
@@ -533,14 +545,14 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the shipping method totals
+   * Calculate and return the shipping method totals
    * @param shippingMethod
    * @param includeTax
    * @param calculationContext
    * @param taxLines
    * @param discounts
    */
-  async getShippingMethodTotals(
+  protected async getShippingMethodTotals(
     shippingMethod: ShippingMethod,
     {
       includeTax,
@@ -561,22 +573,25 @@ export default class TotalsNewService extends TransactionBaseService {
       subtotal: shippingMethod.price,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: (taxLines ??
-        shippingMethod.tax_lines ??
-        []) as ShippingMethodTaxLine[],
+      tax_lines: (taxLines ?? []) as ShippingMethodTaxLine[],
+    }
+
+    if (includeTax) {
+      totals.tax_lines = totals.tax_lines.length
+        ? totals.tax_lines
+        : shippingMethod.tax_lines
+
+      if (!totals.tax_lines) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Tax Lines must be joined to calculate taxes"
+        )
+      }
     }
 
     const calculationContext_: TaxCalculationContext = {
       ...calculationContext,
       shipping_methods: [shippingMethod],
-    }
-
-    // Force the tax lines to exist anyway
-    if (includeTax && !totals.tax_lines.length) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Tax Lines must be joined to calculate taxes"
-      )
     }
 
     const includesTax =
@@ -612,13 +627,13 @@ export default class TotalsNewService extends TransactionBaseService {
   }
 
   /**
-   * Calcul and return the shipping method totals legacy using teh tax rate
+   * Calculate and return the shipping method totals legacy using teh tax rate
    * @param shippingMethod
    * @param calculationContext
    * @param taxLines
    * @param discounts
    */
-  async getShippingMethodTotalsLegacy(
+  protected async getShippingMethodTotalsLegacy(
     shippingMethod: ShippingMethod,
     {
       calculationContext,
@@ -637,7 +652,7 @@ export default class TotalsNewService extends TransactionBaseService {
       subtotal: shippingMethod.price,
       original_tax_total: 0,
       tax_total: 0,
-      tax_lines: shippingMethod.tax_lines,
+      tax_lines: [],
     }
 
     totals.original_tax_total = Math.round(totals.price * (taxRate / 100))

@@ -44,7 +44,7 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
-import { TaxProviderService, TotalsNewService } from "./index"
+import { NewTotalsService, TaxProviderService } from "./index"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -60,7 +60,7 @@ type InjectedDependencies = {
   fulfillmentService: FulfillmentService
   lineItemService: LineItemService
   totalsService: TotalsService
-  totalsNewService: TotalsNewService
+  newTotalsService: NewTotalsService
   taxProviderService: TaxProviderService
   regionService: RegionService
   cartService: CartService
@@ -110,7 +110,7 @@ class OrderService extends TransactionBaseService {
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService
   protected readonly totalsService_: TotalsService
-  protected readonly totalsNewService_: TotalsNewService
+  protected readonly newTotalsService_: NewTotalsService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly regionService_: RegionService
   protected readonly cartService_: CartService
@@ -133,7 +133,7 @@ class OrderService extends TransactionBaseService {
     fulfillmentService,
     lineItemService,
     totalsService,
-    totalsNewService,
+    newTotalsService,
     taxProviderService,
     regionService,
     cartService,
@@ -155,7 +155,7 @@ class OrderService extends TransactionBaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.lineItemService_ = lineItemService
     this.totalsService_ = totalsService
-    this.totalsNewService_ = totalsNewService
+    this.newTotalsService_ = newTotalsService
     this.taxProviderService_ = taxProviderService
     this.regionService_ = regionService
     this.fulfillmentService_ = fulfillmentService
@@ -326,52 +326,29 @@ class OrderService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param orderId - id of order to retrieve
+   * @param orderIdOrSelector - id or selector of order to retrieve
    * @param config - config of order to retrieve
    * @return the order document
    */
   async retrieve(
-    orderId: string,
+    orderIdOrSelector: string | Selector<Order>,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const { totalsToSelect } = this.transformQueryForTotals(config)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const query = {
-      where: { id: orderId },
-    } as FindConfig<Order>
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
+    if (totalsToSelect?.length) {
+      return await this.retrieveLegacy(orderIdOrSelector, config)
     }
 
-    query.select = select?.length ? select : undefined
-
-    const rels = query.relations
-    delete query.relations
-    const raw = await orderRepo.findOneWithRelations(rels, query)
-    if (!raw) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Order with ${orderId} was not found`
-      )
-    }
-
-    return await this.decorateTotals(raw, totalsToSelect)
-  }
-
-  private async retrieveNew(
-    selector: Selector<Order>,
-    options: FindConfig<Order> = {}
-  ): Promise<Order> {
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.orderRepository_)
 
-    const query = buildQuery(selector, options)
+    const selector = isString(orderIdOrSelector)
+      ? { id: orderIdOrSelector }
+      : orderIdOrSelector
+    const query = buildQuery(selector, config)
 
-    if ((options.select || []).length <= 0) {
+    if (!(config.select || []).length) {
       query.select = undefined
     }
 
@@ -391,6 +368,44 @@ class OrderService extends TransactionBaseService {
     }
 
     return raw
+  }
+
+  protected async retrieveLegacy(
+    orderIdOrSelector: string | Selector<Order>,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals(config)
+
+    const selector = isString(orderIdOrSelector)
+      ? { id: orderIdOrSelector }
+      : orderIdOrSelector
+    const query = buildQuery(selector, config)
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    query.select = select?.length ? select : undefined
+
+    const rels = query.relations
+    delete query.relations
+
+    const raw = await orderRepo.findOneWithRelations(rels, query)
+
+    if (!raw) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with ${selectorConstraints} was not found`
+      )
+    }
+
+    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   async retrieveWithTotals(
@@ -414,12 +429,12 @@ class OrderService extends TransactionBaseService {
   ): Promise<Order> {
     const relations = this.getTotalsRelations(options)
 
-    const order = await this.retrieveNew(selector, {
+    const order = await this.retrieve(selector, {
       ...options,
       relations,
     })
 
-    return await this.decorateTotalsNew(order, totalsConfig)
+    return await this.decorateTotals(order, totalsConfig)
   }
 
   /**
@@ -544,7 +559,7 @@ class OrderService extends TransactionBaseService {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const exists = !!(await this.retrieveNew({
+      const exists = !!(await this.retrieve({
         cart_id: isString(cartOrId) ? cartOrId : cartOrId?.id,
       }).catch(() => false))
 
@@ -1499,210 +1514,10 @@ class OrderService extends TransactionBaseService {
     })
   }
 
-  async decorateTotalsNew(
-    order: Order,
-    totalsConfig: TotalsConfig = {}
-  ): Promise<Order> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const totalsNewServiceTx = this.totalsNewService_.withTransaction(manager)
-
-    const calculationContext = await this.totalsService_.getCalculationContext(
-      order
-    )
-    const includeTax = totalsConfig?.force_taxes || order.region.automatic_taxes
-    const orderItems = [...order.items]
-    const orderShippingMethods = [...order.shipping_methods]
-    let useExistingTaxLines = totalsConfig.useExistingTaxLines
-
-    // If we are forced to use the existing tax lines then at least one item must have a tax line
-    if (
-      useExistingTaxLines &&
-      !orderItems.some((item) => item.tax_lines?.length)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Can't compute order totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
-      )
-    }
-
-    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
-    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
-    // the total service to use the tax lines from the items and methods
-    if (!useExistingTaxLines) {
-      const taxLinesMaps = await this.taxProviderService_
-        .withTransaction(manager)
-        .getTaxLinesMap(orderItems, calculationContext)
-
-      orderItems.forEach((item) => {
-        if (item.is_return) {
-          return
-        }
-        item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
-      })
-      orderShippingMethods.forEach((method) => {
-        method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
-      })
-
-      useExistingTaxLines = true
-    }
-
-    const itemsTotals = await totalsNewServiceTx.getLineItemsTotals(
-      orderItems,
-      {
-        taxRate: order.tax_rate,
-        includeTax,
-        calculationContext,
-        useExistingTaxLines,
-      }
-    )
-    const shippingTotals = await totalsNewServiceTx.getShippingMethodsTotals(
-      orderShippingMethods,
-      {
-        taxRate: order.tax_rate,
-        discounts: order.discounts,
-        includeTax,
-        calculationContext,
-        useExistingTaxLines,
-      }
-    )
-
-    order.subtotal = 0
-    order.discount_total = 0
-    order.shipping_total = 0
-    order.refunded_total = Math.round(
-      order.refunds?.reduce((acc, next) => acc + next.amount, 0)
-    )
-    order.paid_total = order.payments?.reduce(
-      (acc, next) => (acc += next.amount),
-      0
-    )
-    order.refundable_amount = order.paid_total - order.refunded_total
-    let item_tax_total = 0
-    let shipping_tax_total = 0
-
-    order.items = (order.items || []).map((item) => {
-      const refundable = totalsNewServiceTx.getLineItemRefund(
-        {
-          ...item,
-          quantity: item.quantity - (item.returned_quantity || 0),
-        },
-        {
-          calculationContext,
-          taxRate: order.tax_rate,
-        }
-      )
-
-      const itemWithTotals = {
-        ...item,
-        ...(itemsTotals[item.id] ?? {}),
-        refundable,
-      }
-
-      order.subtotal += itemWithTotals.subtotal ?? 0
-      order.discount_total += itemWithTotals.discount_total ?? 0
-      item_tax_total += itemWithTotals.tax_total ?? 0
-
-      return itemWithTotals as LineItem
-    })
-
-    order.shipping_methods = (order.shipping_methods || []).map(
-      (shippingMethod) => {
-        const methodWithTotals = Object.assign(
-          shippingMethod,
-          shippingTotals[shippingMethod.id] ?? {}
-        )
-
-        order.shipping_total += methodWithTotals.subtotal ?? 0
-        shipping_tax_total += methodWithTotals.tax_total ?? 0
-
-        return methodWithTotals
-      }
-    )
-
-    const giftCardTotal = await this.totalsNewService_.getGiftCardTotals(
-      order.subtotal - order.discount_total,
-      {
-        region: order.region,
-        giftCards: order.gift_cards,
-      }
-    )
-    order.gift_card_total = giftCardTotal.total || 0
-    order.gift_card_tax_total = giftCardTotal.tax_total || 0
-
-    order.tax_total = item_tax_total + shipping_tax_total
-
-    for (const swap of order.swaps) {
-      swap.additional_items = swap.additional_items.map((item) => {
-        item.refundable = totalsNewServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
-        return item
-      })
-    }
-
-    for (const claim of order.claims) {
-      claim.additional_items = claim.additional_items.map((item) => {
-        item.refundable = totalsNewServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
-        return item
-      })
-    }
-
-    order.total =
-      order.subtotal +
-      order.shipping_total +
-      order.tax_total -
-      (order.gift_card_total + order.discount_total + order.gift_card_tax_total)
-
-    return order
-  }
-
-  /**
-   * @deprecated use decorateTotalsNew instead, the name might change in the future
-   * @param order
-   * @param totalsFields
-   * @protected
-   */
-  protected async decorateTotals(
+  protected async decorateTotalsLegacy(
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
-    if (totalsFields.some((field) => ["subtotal", "total"].includes(field))) {
-      const calculationContext =
-        await this.totalsService_.getCalculationContext(order, {
-          exclude_shipping: true,
-        })
-      order.items = await Promise.all(
-        (order.items || []).map(async (item) => {
-          const itemTotals = await this.totalsService_.getLineItemTotals(
-            item,
-            order,
-            {
-              include_tax: true,
-              calculation_context: calculationContext,
-            }
-          )
-
-          return Object.assign(item, itemTotals)
-        })
-      )
-    }
-
     for (const totalField of totalsFields) {
       switch (totalField) {
         case "shipping_total": {
@@ -1804,6 +1619,190 @@ class OrderService extends TransactionBaseService {
         }
       }
     }
+    return order
+  }
+
+  /**
+   * @param order
+   * @param totalsFieldsOrConfig
+   * @protected
+   */
+  async decorateTotals(
+    order: Order,
+    totalsFieldsOrConfig?: string[] | TotalsConfig
+  ): Promise<Order> {
+    if (Array.isArray(totalsFieldsOrConfig)) {
+      return await this.decorateTotalsLegacy(order, totalsFieldsOrConfig)
+    }
+
+    const totalsConfig = totalsFieldsOrConfig ?? {}
+    const manager = this.transactionManager_ ?? this.manager_
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
+
+    const calculationContext = await this.totalsService_.getCalculationContext(
+      order
+    )
+    const includeTax = totalsConfig?.force_taxes || order.region.automatic_taxes
+    const orderItems = [...order.items]
+    const orderShippingMethods = [...order.shipping_methods]
+    let useExistingTaxLines = totalsConfig.useExistingTaxLines
+
+    // If we are forced to use the existing tax lines then at least one item must have a tax line
+    if (
+      useExistingTaxLines &&
+      includeTax &&
+      !orderItems.some((item) => item.tax_lines?.length)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Can't compute order totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
+      )
+    }
+
+    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
+    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
+    // the total service to use the tax lines from the items and methods
+    if (!useExistingTaxLines && includeTax) {
+      const taxLinesMaps = await this.taxProviderService_
+        .withTransaction(manager)
+        .getTaxLinesMap(orderItems, calculationContext)
+
+      orderItems.forEach((item) => {
+        if (item.is_return) {
+          return
+        }
+        item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
+      })
+      orderShippingMethods.forEach((method) => {
+        method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
+      })
+
+      useExistingTaxLines = true
+    }
+
+    const itemsTotals = await newTotalsServiceTx.getLineItemsTotals(
+      orderItems,
+      {
+        taxRate: order.tax_rate,
+        includeTax,
+        calculationContext,
+        useExistingTaxLines,
+      }
+    )
+    const shippingTotals = await newTotalsServiceTx.getShippingMethodsTotals(
+      orderShippingMethods,
+      {
+        taxRate: order.tax_rate,
+        discounts: order.discounts,
+        includeTax,
+        calculationContext,
+        useExistingTaxLines,
+      }
+    )
+
+    order.subtotal = 0
+    order.discount_total = 0
+    order.shipping_total = 0
+    order.refunded_total = Math.round(
+      order.refunds?.reduce((acc, next) => acc + next.amount, 0)
+    )
+    order.paid_total = order.payments?.reduce(
+      (acc, next) => (acc += next.amount),
+      0
+    )
+    order.refundable_amount = order.paid_total - order.refunded_total
+    let item_tax_total = 0
+    let shipping_tax_total = 0
+
+    order.items = (order.items || []).map((item) => {
+      const refundable = newTotalsServiceTx.getLineItemRefund(
+        {
+          ...item,
+          quantity: item.quantity - (item.returned_quantity || 0),
+        },
+        {
+          calculationContext,
+          taxRate: order.tax_rate,
+        }
+      )
+
+      const itemWithTotals = {
+        ...item,
+        ...(itemsTotals[item.id] ?? {}),
+        refundable,
+      }
+
+      order.subtotal += itemWithTotals.subtotal ?? 0
+      order.discount_total += itemWithTotals.discount_total ?? 0
+      item_tax_total += itemWithTotals.tax_total ?? 0
+
+      return itemWithTotals as LineItem
+    })
+
+    order.shipping_methods = (order.shipping_methods || []).map(
+      (shippingMethod) => {
+        const methodWithTotals = Object.assign(
+          shippingMethod,
+          shippingTotals[shippingMethod.id] ?? {}
+        )
+
+        order.shipping_total += methodWithTotals.subtotal ?? 0
+        shipping_tax_total += methodWithTotals.tax_total ?? 0
+
+        return methodWithTotals
+      }
+    )
+
+    const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+      order.subtotal - order.discount_total,
+      {
+        region: order.region,
+        giftCards: order.gift_cards,
+      }
+    )
+    order.gift_card_total = giftCardTotal.total || 0
+    order.gift_card_tax_total = giftCardTotal.tax_total || 0
+
+    order.tax_total = item_tax_total + shipping_tax_total
+
+    for (const swap of order.swaps) {
+      swap.additional_items = swap.additional_items.map((item) => {
+        item.refundable = newTotalsServiceTx.getLineItemRefund(
+          {
+            ...item,
+            quantity: item.quantity - (item.returned_quantity || 0),
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
+    }
+
+    for (const claim of order.claims) {
+      claim.additional_items = claim.additional_items.map((item) => {
+        item.refundable = newTotalsServiceTx.getLineItemRefund(
+          {
+            ...item,
+            quantity: item.quantity - (item.returned_quantity || 0),
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
+    }
+
+    order.total =
+      order.subtotal +
+      order.shipping_total +
+      order.tax_total -
+      (order.gift_card_total + order.discount_total + order.gift_card_tax_total)
+
     return order
   }
 

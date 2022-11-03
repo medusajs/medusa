@@ -1,6 +1,6 @@
 import { MockManager } from "medusa-test-utils"
 import CartCompletionStrategy from "../cart-completion"
-import { TotalsNewServiceMock } from "../../services/__mocks__/totals-new"
+import { newTotalsServiceMock } from "../../services/__mocks__/new-totals"
 
 const IdempotencyKeyServiceMock = {
   withTransaction: function () {
@@ -190,9 +190,8 @@ describe("CartCompletionStrategy", () => {
           deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),
-          retrieveNew: jest.fn(() => Promise.resolve(cart)),
           retrieveWithTotals: jest.fn(() => Promise.resolve(cart)),
-          totalsNewService: TotalsNewServiceMock,
+          newTotalsService: newTotalsServiceMock,
         }
         const orderServiceMock = {
           withTransaction: function () {
@@ -201,7 +200,7 @@ describe("CartCompletionStrategy", () => {
           createFromCart: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve({})),
           retrieveWithTotals: jest.fn(() => Promise.resolve({})),
-          totalsNewService: TotalsNewServiceMock,
+          newTotalsService: newTotalsServiceMock,
         }
         const swapServiceMock = {
           withTransaction: function () {
