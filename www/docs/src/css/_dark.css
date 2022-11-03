@@ -1,0 +1,74 @@
+/* color mode button */
+.color-mode-tabs {
+  background-color: var(--mode-tabs-bg);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+.color-mode-tabs.mobile {
+  width: fit-content;
+}
+
+.pill-button {
+  border-radius: 6px;
+  box-shadow: none;
+  cursor: pointer;
+  box-sizing: content-box;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 24px;
+  height: calc(100% - 8px);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.pill-button:not(.active) {
+  color: var(--mode-button-text-color);
+  border: none;
+  background-color: transparent;
+}
+
+.pill-button.active {
+  color: var(--mode-button-active-text-color);
+  background-color: var(--mode-button-active-bg);
+  border: 1px solid var(--mode-button-active-border-color);
+}
+
+/* some style rules for dark mode */
+
+[data-theme="dark"] .breadcrumbs__item--active a {
+  background-color: var(--ifm-color-gray-800) !important;
+  color: var(--ifm-color-primary-lightest) !important;
+  font-weight: bold;
+}
+
+[data-theme="dark"] a:hover {
+  color: var(--ifm-menu-active);
+}
+
+@media screen and (min-width: 992px) {
+  .color-mode-tabs {
+    height: 32px;
+  }
+
+  .pill-button {
+    width: 64px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .color-mode-tabs {
+    max-width: 100%;
+  }
+
+  .pill-button {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

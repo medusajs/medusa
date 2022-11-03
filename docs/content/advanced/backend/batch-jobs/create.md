@@ -254,7 +254,7 @@ The first step is to create a batch job using the [Create Batch Job endpoint](ht
 
 For example, this creates a batch job of the type `publish-products`:
 
-<Tabs groupId="request-types">
+<Tabs groupId="request-types" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -314,7 +314,7 @@ Make sure to replace `<YOUR_SERVER>` with the server URL where applicable.
 
 You can retrieve the batch job afterward to get its status and view details about the process in the `result` property:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -367,7 +367,7 @@ Based on the batch job strategy implemented in this documentation, the `result` 
 
 To process the batch job, send a request to [confirm the batch job](https://docs.medusajs.com/api/admin/#tag/Batch-Job/operation/PostBatchJobsBatchJobConfirmProcessing):
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
