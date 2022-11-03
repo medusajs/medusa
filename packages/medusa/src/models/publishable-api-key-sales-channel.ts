@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn } from "typeorm"
 
 @Entity()
-class PublishableApiKeySalesChannel {
+export class PublishableApiKeySalesChannel {
   @PrimaryColumn()
   sales_channel_id: string
 

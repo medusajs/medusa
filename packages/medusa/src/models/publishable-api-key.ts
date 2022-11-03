@@ -1,11 +1,12 @@
-import { SoftDeletableEntity } from "../interfaces"
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+
+import { SoftDeletableEntity } from "../interfaces"
+import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
 import { User } from "./user"
-import { resolveDbType } from "../utils/db-aware-column"
 
 @Entity()
-class PublishableApiKey extends SoftDeletableEntity {
+export class PublishableApiKey extends SoftDeletableEntity {
   @Column({ nullable: true })
   created_by: string | null
 
@@ -17,8 +18,8 @@ class PublishableApiKey extends SoftDeletableEntity {
   revoked_by: string | null
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "created_by" })
-  revoked_by_user: User
+  @JoinColumn({ name: "revoked_by" })
+  revoked_by_user?: User
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   revoked_at?: Date
