@@ -61,3 +61,14 @@
     width: 64px;
   }
 }
+
+@media screen and (max-width: 991px) {
+  .color-mode-tabs {
+    max-width: 100%;
+  }
+
+  .pill-button {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

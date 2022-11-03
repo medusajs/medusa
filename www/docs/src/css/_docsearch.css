@@ -1,8 +1,24 @@
+.DocSearch {
+  --docsearch-searchbox-focus-background: var(--docsearch-searchbox-background);
+}
+
+html:not([data-theme="dark"]) .DocSearch {
+  --ifm-search-bar-border-color: #E5E7EB;
+  --docsearch-searchbox-background: #F9FAFB;
+}
+
+[data-theme="dark"] .DocSearch {
+  --ifm-search-bar-border-color: #2D2D2D;
+  --docsearch-searchbox-background: #222222;
+}
+
 .DocSearch-Button {
   width: 100%;
-  max-width: 175px;
   border-radius: 8px !important;
-  --docsearch-container-background: #f5f6f7;
+  border: 1px solid var(--ifm-search-bar-border-color) !important;
+  padding: 8px !important;
+
+  /* --docsearch-container-background: #f5f6f7; */
 }
 
 span.DocSearch-Button-Key {
@@ -11,4 +27,64 @@ span.DocSearch-Button-Key {
 
 .DocSearch-Container {
   z-index: 1001 !important;
+}
+
+html:not([data-theme="dark"]) .DocSearch-Button .DocSearch-Search-Icon {
+  --docsearch-text-color: #9CA3AF;
+}
+
+[data-theme="dark"] .DocSearch-Button .DocSearch-Search-Icon {
+  --docsearch-text-color: #737373;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+  width: 16px;
+  height: 16px;
+}
+
+.DocSearch-Button-Placeholder {
+  font-size: 13px !important;
+  color: var(--docsearch-placeholder-color);
+}
+
+.DocSearch-Button-Key {
+  box-shadow: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  line-height: 20px !important;
+  font-family: var(--ifm-font-family-base) !important;
+  vertical-align: middle;
+  padding: 2px !important;
+  height: 20px !important;
+  width: 20px !important;
+}
+
+.DocSearch-Button:active, .DocSearch-Button:focus, .DocSearch-Button:hover {
+  border-color: var(--docsearch-searchbox-border-color) !important;
+}
+
+@media screen and (min-width: 992px) {
+  .navbar__items [class*=searchBox] {
+    display: none;
+  }
+
+  .DocSearch-Button .DocSearch-Search-Icon {
+    margin-right: 8px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .DocSearch-Button-Keys, .DocSearch-Button-Placeholder {
+    display: none !important;
+  }
+
+  .DocSearch-Button {
+    border: none !important;
+    background-color: transparent !important;
+  }
+
+  .DocSearch-Button:focus, .DocSearch-Button:hover {
+    box-shadow: none !important;
+  }
 }

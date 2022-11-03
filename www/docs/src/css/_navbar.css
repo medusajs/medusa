@@ -64,16 +64,7 @@ html[data-theme="dark"] .navbar-github-link:before {
   font-weight: 600;
 }
 
-/* .nav-background {
-  filter: blur(20px);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: var(--ifm-navbar-background-color);
-  z-index: -1;
-} */
+
 
 @media screen and (min-width: 992px) {
   .navbar .right-divider {
