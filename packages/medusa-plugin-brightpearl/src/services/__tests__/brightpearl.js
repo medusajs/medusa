@@ -25,6 +25,7 @@ const order = {
     {
       name: "standard",
       price: 12399,
+      subtotal: 12399,
     },
   ],
   payment_method: {
@@ -66,6 +67,7 @@ const krwOrder = {
     {
       name: "standard",
       price: 12399,
+      subtotal: 12399,
     },
   ],
   payment_method: {
@@ -109,6 +111,7 @@ const roundingOrder = {
     {
       name: "standard",
       price: 0,
+      subtotal: 0,
     },
   ],
   discounts: [
@@ -159,6 +162,7 @@ const TotalsService = {
   getShippingMethodTotals: () => {
     return {
       price: 0,
+      subtotal: 0,
       discount_total: 0,
       tax_total: 0,
     }
