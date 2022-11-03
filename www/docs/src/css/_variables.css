@@ -3,10 +3,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
 :root {
+  /* Base Styles */
+  --ifm-global-radius: 8px;
+  --ifm-hr-background-color: #E5E7EB;
+  --ifm-base-margin-vertical: 32px;
+  --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
+  
   /* Colors */
   --ifm-color-primary: #111827;
   --ifm-medusa-gray: #f0f0f0;
-  --ifm-color-headers: #111827;
   --ifm-color-content: #6B7280;
 
   /* Fonts */
@@ -16,21 +21,23 @@
   --ifm-font-size-base: 14px;
   --ifm-line-height-base: 24px;
 
+  /* Headings */
+  --ifm-color-headers: #111827;
   --ifm-heading-font-weight: 600;
+  --ifm-heading-line-height: 24px;
   --ifm-h1-font-size: 30px;
   --ifm-h1-line-height: 48px;
   --ifm-h2-font-size: 24px;
   --ifm-h2-line-height: 36px;
+  --ifm-h4-font-size: 14px;
+
+  /* Links */
   --ifm-link-color: #4B5563;
   --ifm-link-weight: 600;
-  --ifm-h4-font-size: 14px;
-  --ifm-heading-line-height: 24px;
-
-  --ifm-global-radius: 8px;
-
 
   /* Sidebar */
   --doc-sidebar-width: 250px !important;
+  --ifm-menu-active: #111827;
 
   /* Docs Page */
   --ifm-docs-page-max-width: 850px;
@@ -39,7 +46,6 @@
   --ifm-toc-border-color: #f0f0f0;
   --ifm-toc-link-color: #6B7280;
   --ifm-toc-padding-horizontal: 9px;
-  --ifm-menu-active: #111827;
   --ifm-toc-link-active: #111827;
   --ifm-toc-divider-color: #E5E7EB;
   --ifm-toc-link-padding-left: 16px;
@@ -75,20 +81,16 @@
   --ifm-code-border-color: #E5E7EB;
   --ifm-code-background: #F9FAFB;
   --ifm-code-color: #4B5563;
-
-  --ifm-hr-background-color: #E5E7EB;
-
-  --ifm-base-margin-vertical: 32px;
-  --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
-
-  --ifm-tooltip-background-color: #fff;
-  --ifm-tooltip-border-color: #E5E7EB;
-  --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
-
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
 
+  /* Tooltip */
+  --ifm-tooltip-background-color: #fff;
+  --ifm-tooltip-border-color: #E5E7EB;
+  --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
+
+  /* Buttons */
   --ifm-primary-btn-background-color: #fff;
   --ifm-primary-btn-color: #111827;
   --ifm-primary-btn-border-color: #E5E7EB;
@@ -125,8 +127,10 @@
 }
 
 html[data-theme="dark"] {
-  --ifm-navbar-background-color: #161616;
-  /* --ifm-color-primary: #7C53FF; */
+  /* Base Styles */
+  --ifm-hr-background-color: #2D2D2D;
+
+  /* Colors */
   --ifm-color-primary-dark: #6231ff;
   --ifm-color-primary-darker: #5520ff;
   --ifm-color-primary-darkest: #3800ed;
@@ -136,22 +140,29 @@ html[data-theme="dark"] {
   --ifm-background-color: #161616;
   --ifm-background-surface-color: #161616;
   --ifm-medusa-gray: #292929;
-  --ifm-menu-color: #fff;
-  --ifm-toc-border-color: #333;
-  --ifm-menu-active: #fff;
+  --ifm-color-content: #8A8A8A;
+
+  /* Headings */
+  --ifm-color-headers: #F3F3F3;
+
+  /* Links */
+  --ifm-link-color: #8A8A8A;
+
+  /* Sidebar */
   --ifm-menu-color: rgba(255, 255, 255, 0.5);
-  --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
+  --ifm-menu-active: #fff;
+
+  /* Toc */
+  --ifm-toc-border-color: #333;
   --ifm-toc-link-active: #F3F3F3;
   --ifm-toc-link-color: #737373;
   --ifm-toc-divider-color: #393939;
 
+  /* Navbar */
+  --ifm-navbar-background-color: #161616;
+  --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
   --ifm-navbar-link-hover-color: #F3F3F3;
   --ifm-navbar-link-color: #8A8A8A;
-
-  --ifm-color-headers: #F3F3F3;
-  --ifm-color-content: #8A8A8A;
-
-  --ifm-link-color: #8A8A8A;
 
   /* Color Mode toggler */
   --mode-tabs-bg: #222222;
@@ -169,17 +180,15 @@ html[data-theme="dark"] {
   --ifm-code-border-color: #393939;
   --ifm-code-background: #222222;
   --ifm-code-color: #8A8A8A;
-
-  --ifm-hr-background-color: #2D2D2D;
-
   --ifm-code-tabs-active-bg: #222222;
   --ifm-code-tabs-active-color: #F3F3F3;
   --ifm-code-action-hover-bg: rgba(255, 255, 255, 0.05);
 
+  /* Tooltip */
   --ifm-tooltip-background-color: #222222;
   --ifm-tooltip-border-color: #393939;
 
-
+  /* Buttons */
   --ifm-primary-btn-background-color: #222222;
   --ifm-primary-btn-color: #F3F3F3;
   --ifm-primary-btn-border-color: #393939;
