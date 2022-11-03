@@ -1,11 +1,11 @@
 .searchQueryInput,
 .searchVersionInput {
   border-radius: var(--ifm-global-radius);
-  border: 2px solid var(--ifm-toc-border-color);
+  border: 1px solid var(--ifm-toc-border-color);
   font: var(--ifm-font-size-base) var(--ifm-font-family-base);
   padding: 0.8rem;
   width: 100%;
-  background: var(--docsearch-searchbox-focus-background);
+  background: var(--docsearch-searchbox-background);
   color: var(--docsearch-text-color);
   margin-bottom: 0.5rem;
   transition: border var(--ifm-transition-fast) ease;
@@ -13,8 +13,9 @@
 
 .searchQueryInput:focus,
 .searchVersionInput:focus {
-  border-color: var(--docsearch-primary-color);
+  border-color: var(--docsearch-searchbox-border-color);
   outline: none;
+  box-shadow: var(--docsearch-searchbox-shadow);
 }
 
 .searchQueryInput::placeholder {
