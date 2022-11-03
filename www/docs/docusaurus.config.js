@@ -168,18 +168,6 @@ const config = {
       ],
       copyright: `© ${new Date().getFullYear()} Medusa`,
     },
-    sidebarFooter: [
-      {
-        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-        label: 'Report an Issue',
-        className: 'alert-icon',
-      },
-      {
-        href: "https://medusajs.com/",
-        label: 'Go to medusajs.com',
-        className: 'topright-icon',
-      },
-    ],
     socialLinks: [
       {
         type: 'discord',

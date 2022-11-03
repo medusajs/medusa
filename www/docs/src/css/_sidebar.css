@@ -48,12 +48,9 @@ a.menu__link--sublist::after,
 .theme-doc-sidebar-item-link-level-1 .menu__link,
 .theme-doc-sidebar-item-category-level-1 .menu__link,
 .redocusaurus .menu-content label.-depth1,
-.navbar-sidebar__item .menu__link:not(.navbar-github-link) {
-  padding-left: 1.7em;
-}
-
+.navbar-sidebar__item .menu__link:not(.navbar-github-link),
 [class*=theme-doc-sidebar-item-link-level-]:not(.theme-doc-sidebar-item-link-level-1) .menu__link {
-  padding-left: 2em;
+  padding-left: 24px;
 }
 
 .redocusaurus .menu-content label {
@@ -94,27 +91,37 @@ a.menu__link--sublist + .menu__caret,
 a.menu__link--sublist::before,
 .redocusaurus .menu-content label[type=tag].-depth1::before {
   content: "";
-  height: 1.1em;
-  width: 1.1em;
-  background-image: url('/img/triangle-right.svg');
+  height: 16px;
+  width: 16px;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 6.8px;
   transition: transform var(--ifm-transition-fast) linear;
   position: absolute;
+}
+
+html:not([data-theme="dark"]) a.menu__link--sublist::before,
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right.png');
+}
+
+[data-theme="dark"] a.menu__link--sublist::before,
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right-dark.png');
 }
 
 html:not([data-theme="dark"]) a.menu__link--sublist:hover::before,
 html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
 html:not([data-theme="dark"]) a.menu__link--sublist.menu__link--active::before,
 html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1.active::before {
-  background-image: url('/img/triangle-right-hover.svg');
+  background-image: url('/img/triangle-right-hover.png');
 }
 
 [data-theme="dark"] a.menu__link--sublist:hover::before,
 [data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
 [data-theme="dark"] a.menu__link--sublist.menu__link--active::before,
 [data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1.active::before {
-  background-image: url('/img/triangle-right-hover-dark.svg');
+  background-image: url('/img/triangle-right-dark-hover.png');
 }
 
 .menu__list-item:not(.menu__list-item--collapsed) > .menu__list-item-collapsible > .menu__link--sublist:before {
@@ -123,9 +130,10 @@ html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth
 
 .menu__link:not(.menu__link--sublist):not(.navbar-github-link)::before {
   content: "";
-  height: 1.1em;
-  width: 1.1em;
-  background-image: url('/img/circle.svg');
+  height: 16px;
+  width: 16px;
+  background-size: 6px;
+  background-image: url('/img/circle.png');
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
@@ -133,12 +141,12 @@ html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth
 
 html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist):hover::before,
 html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist).menu__link--active::before {
-  background-image: url('/img/circle-hover.svg');
+  background-image: url('/img/circle-hover.png');
 }
 
 [data-theme="dark"] .menu__link:not(.menu__link--sublist):hover::before,
 [data-theme="dark"] .menu__link:not(.menu__link--sublist).menu__link--active::before {
-  background-image: url('/img/circle-hover-dark.svg');
+  background-image: url('/img/circle-dark-hover.png');
 }
 
 [class*=theme-doc-sidebar-item-link-level-]:not(.theme-doc-sidebar-item-link-level-1) .menu__link::before,
@@ -164,7 +172,7 @@ html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist).menu__link--
 a.menu__link--sublist::before,
 .theme-doc-sidebar-item-link-level-1 .menu__link::before,
 .menu__link:not(.menu__link--sublist)::before {
-  top: 28%;
+  top: 21%;
 }
 
 .menu__list-item > .menu__list-item-collapsible + .menu__list {

@@ -52,6 +52,9 @@ export default function NavbarContent() {
         <>
           <NavbarItems items={rightItems} />
           <NavbarColorModeToggle className={styles.colorModeToggle} />
+          <NavbarSearch>
+            <SearchBar />
+          </NavbarSearch>
         </>
       }
     />

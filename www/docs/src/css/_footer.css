@@ -10,7 +10,6 @@
 footer.footer {
   background-color: transparent !important;
   border-top: 1px solid var(--ifm-footer-border-color);
-  margin-top: calc(var(--ifm-base-margin-vertical) * 3);
   padding-top: calc(var(--ifm-base-margin-vertical) * 2);
   padding-bottom: calc(var(--ifm-base-margin-vertical) * 3);
 }
