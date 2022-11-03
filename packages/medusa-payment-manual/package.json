@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-manual",
-  "version": "1.0.17",
+  "version": "1.0.18-alpha.0",
   "description": "A dummy payment provider to be used for testing or manual payments",
   "main": "index.js",
   "repository": {
@@ -24,7 +24,7 @@
     "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.37"
+    "medusa-test-utils": "^1.1.38-alpha.0"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -33,7 +33,7 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.3.4-alpha.0"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [

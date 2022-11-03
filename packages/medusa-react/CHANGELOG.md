@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.0.1-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12), [`38d4a7db3`](https://github.com/medusajs/medusa/commit/38d4a7db3d762fc7f746825c64026d2711db5bd8), [`f8fc22415`](https://github.com/medusajs/medusa/commit/f8fc224155e073df86fe77a8052a7be6dfd48561)]:
+  - @medusajs/medusa@1.6.1-alpha.0
+  - @medusajs/medusa-js@1.3.3-alpha.0
+
 ## 3.0.0
 
 ### Patch Changes

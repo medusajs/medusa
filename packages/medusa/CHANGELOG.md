@@ -1,5 +1,21 @@
 # Change Log
 
+## 1.6.1-alpha.0
+
+### Patch Changes
+
+- [#2514](https://github.com/medusajs/medusa/pull/2514) [`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa): invalid medusa-config handling in loaders
+
+* [#2531](https://github.com/medusajs/medusa/pull/2531) [`38d4a7db3`](https://github.com/medusajs/medusa/commit/38d4a7db3d762fc7f746825c64026d2711db5bd8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(Medusa): Allow custom shipping price on draft orders
+
+- [`f8fc22415`](https://github.com/medusajs/medusa/commit/f8fc224155e073df86fe77a8052a7be6dfd48561) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Enable analytics feature flag by default
+
+- Updated dependencies [[`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12)]:
+  - medusa-core-utils@1.1.34-alpha.0
+  - @medusajs/medusa-cli@1.3.4-alpha.0
+  - medusa-interfaces@1.3.4-alpha.0
+  - medusa-test-utils@1.1.38-alpha.0
+
 ## 1.6.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.2.4-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12)]:
+  - medusa-core-utils@1.1.34-alpha.0
+  - medusa-interfaces@1.3.4-alpha.0
+  - medusa-test-utils@1.1.38-alpha.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,60 +16,31 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
 
-
-
-
-
 ## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.2.0...medusa-plugin-twilio-sms@1.2.2) (2022-06-19)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
-
-
-
-
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.2.0...medusa-plugin-twilio-sms@1.2.1) (2022-05-31)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
 
-
-
-
-
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.37...medusa-plugin-twilio-sms@1.2.0) (2022-05-01)
-
 
 ### Bug Fixes
 
-* **medusa-plugin-twilio-sms:** fix name in README ([#1457](https://github.com/medusajs/medusa/issues/1457)) ([56e79d3](https://github.com/medusajs/medusa/commit/56e79d334ecd2a67cad43c8ebd58e364f9e9fb59))
-
-
-
-
+- **medusa-plugin-twilio-sms:** fix name in README ([#1457](https://github.com/medusajs/medusa/issues/1457)) ([56e79d3](https://github.com/medusajs/medusa/commit/56e79d334ecd2a67cad43c8ebd58e364f9e9fb59))
 
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.36...medusa-plugin-twilio-sms@1.1.37) (2022-01-11)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
 
-
-
-
-
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.35...medusa-plugin-twilio-sms@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.34...medusa-plugin-twilio-sms@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-twilio-sms
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-twilio-sms@1.1.33...medusa-plugin-twilio-sms@1.1.34) (2021-12-08)
 
