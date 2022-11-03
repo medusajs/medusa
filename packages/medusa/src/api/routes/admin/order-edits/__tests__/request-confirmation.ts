@@ -19,6 +19,9 @@ describe("GET /admin/order-edits/:id", () => {
             },
           },
           flags: [OrderEditingFeatureFlag],
+          payload: {
+            description: "PayCol description",
+          },
         }
       )
     })
@@ -31,6 +34,7 @@ describe("GET /admin/order-edits/:id", () => {
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(
         orderEditId,
+        "PayCol description",
         { loggedInUserId: IdMap.getId("admin_user") }
       )
     })
