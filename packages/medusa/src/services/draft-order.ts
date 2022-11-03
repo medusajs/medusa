@@ -9,6 +9,7 @@ import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
+import CustomShippingOptionService from "./custom-shipping-option"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
@@ -24,6 +25,7 @@ type InjectedDependencies = {
   lineItemService: LineItemService
   productVariantService: ProductVariantService
   shippingOptionService: ShippingOptionService
+  customShippingOptionService: CustomShippingOptionService
 }
 
 /**
@@ -47,6 +49,7 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly customShippingOptionService_: CustomShippingOptionService
 
   constructor({
     manager,
@@ -58,6 +61,7 @@ class DraftOrderService extends TransactionBaseService {
     lineItemService,
     productVariantService,
     shippingOptionService,
+    customShippingOptionService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -70,6 +74,7 @@ class DraftOrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.productVariantService_ = productVariantService
     this.shippingOptionService_ = shippingOptionService
+    this.customShippingOptionService_ = customShippingOptionService
     this.eventBus_ = eventBusService
   }
 
@@ -327,6 +332,16 @@ class DraftOrderService extends TransactionBaseService {
         }
 
         for (const method of shipping_methods) {
+          if (typeof method.price !== "undefined") {
+            await this.customShippingOptionService_
+              .withTransaction(transactionManager)
+              .create({
+                shipping_option_id: method.option_id,
+                cart_id: createdCart.id,
+                price: method.price,
+              })
+          }
+
           await cartServiceTx.addShippingMethod(
             createdCart.id,
             method.option_id,

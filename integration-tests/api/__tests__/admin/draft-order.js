@@ -71,6 +71,52 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order with a custom shipping option price", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+            price: 500,
+          },
+        ],
+      }
+
+      const response = await api.post("/admin/draft-orders", payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+      expect(response.status).toEqual(200)
+
+      const draftOrderId = response.data.draft_order.id
+
+      const draftOrderResponse = await api.get(
+        `/admin/draft-orders/${draftOrderId}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+      expect(draftOrderResponse.status).toEqual(200)
+      expect(draftOrderResponse.data.draft_order.cart.shipping_total).toEqual(
+        500
+      )
+    })
+
     it("creates a draft order with a billing address that is an AddressPayload and a shipping address that is an ID", async () => {
       const api = useApi()
 
@@ -649,18 +695,19 @@ describe("/admin/draft-orders", () => {
       )
 
       expect(orderResponse.status).toEqual(200)
-      // expect newly created order to have id of draft order and system payment
+      // expect newly created order to have id of draft order
       expect(createdOrder.data.order.draft_order_id).toEqual("test-draft-order")
-      expect(createdOrder.data.order.payments).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ provider_id: "system" }),
-        ])
-      )
+      // expect system payment provider and the payment to be "captured"
+      expect(createdOrder.data.order.payments.length).toEqual(1)
+      expect(createdOrder.data.order.payments[0].provider_id).toEqual("system")
+      expect(createdOrder.data.order.payments[0].captured_at).not.toEqual(null)
+
       // expect draft order to be complete
       expect(updatedDraftOrder.data.draft_order.status).toEqual("completed")
       expect(updatedDraftOrder.data.draft_order.completed_at).not.toEqual(null)
     })
   })
+
   describe("GET /admin/draft-orders", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
