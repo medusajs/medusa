@@ -128,6 +128,10 @@ html:not([data-theme="dark"]) .doc-footer {
   z-index: var(--ifm-z-index-overlay);
 }
 
+.tabs-wrapper:not(.code-tabs) .tabs-container > div {
+  padding-top: var(--ifm-base-margin-vertical);
+}
+
 .medium-zoom-image--opened {
   z-index: var(--ifm-z-index-overlay);
 }
