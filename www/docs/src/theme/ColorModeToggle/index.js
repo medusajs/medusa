@@ -9,14 +9,13 @@ const allowedModes = [
   'auto'
 ]
 
-function ColorModeToggle({className, value, onChange}) {
+function ColorModeToggle({className, onChange}) {
   const isBrowser = useIsBrowser();
-  const {colorMode} = useColorMode();
-  const [storageColorMode, setStorageColorMode] = useState(colorMode)
+  const [storageColorMode, setStorageColorMode] = useState('light')
 
   useEffect(() => {
     if (isBrowser) {
-      const previousSelected = window.localStorage.getItem('selected-color-mode')
+      const previousSelected = window.localStorage.getItem('selected-color-mode') || window.localStorage.getItem('theme')
       if (previousSelected && allowedModes.includes(previousSelected)) {
         setStorageColorMode(previousSelected)
       }
@@ -63,7 +62,7 @@ function ColorModeToggle({className, value, onChange}) {
       <button
         className={clsx(
           'pill-button',
-          (colorMode === 'light' && storageColorMode === 'light') && 'active'
+          (storageColorMode === 'light') && 'active'
         )}
         onClick={() => handleColorModeChange('light')}
         disabled={!isBrowser}
@@ -74,7 +73,7 @@ function ColorModeToggle({className, value, onChange}) {
       <button
         className={clsx(
           'pill-button',
-          (colorMode === 'dark' && storageColorMode === 'dark') && 'active'
+          (storageColorMode === 'dark') && 'active'
         )}
         onClick={() => handleColorModeChange('dark')}
         disabled={!isBrowser}
