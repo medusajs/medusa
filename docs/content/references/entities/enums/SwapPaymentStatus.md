@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/swap.ts:35](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L35)
+[models/swap.ts:35](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L35)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:38](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L38)
+[models/swap.ts:38](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L38)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:36](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L36)
+[models/swap.ts:36](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L36)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:37](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L37)
+[models/swap.ts:37](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L37)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:39](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L39)
+[models/swap.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L39)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:34](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L34)
+[models/swap.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L34)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:40](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L40)
+[models/swap.ts:40](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L40)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:41](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L41)
+[models/swap.ts:41](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L41)
 
 ___
 
@@ -92,4 +92,4 @@ ___
 
 #### Defined in
 
-[models/swap.ts:42](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/swap.ts#L42)
+[models/swap.ts:42](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/swap.ts#L42)
