@@ -39,7 +39,7 @@ medusa/dist/api/routes/admin/sales-channels/index.d.ts:6
 
 ### AdminGetSalesChannelsParams\_base
 
-• `Const` **AdminGetSalesChannelsParams\_base**: [`"/Users/shahednasser/medusa/packages/medusa/dist/types/global"`](internal-15.__Users_shahednasser_medusa_packages_medusa_dist_types_global_.md)
+• `Const` **AdminGetSalesChannelsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
 
 #### Defined in
 

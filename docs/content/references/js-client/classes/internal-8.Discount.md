@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:113
+medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:191
