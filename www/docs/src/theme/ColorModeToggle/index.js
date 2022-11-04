@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import {useColorMode} from '@docusaurus/theme-common';
+import {useThemeConfig} from '@docusaurus/theme-common';
 
 const allowedModes = [
   'light',
@@ -11,13 +11,18 @@ const allowedModes = [
 
 function ColorModeToggle({className, onChange}) {
   const isBrowser = useIsBrowser();
-  const [storageColorMode, setStorageColorMode] = useState('light')
+  const { colorMode } = useThemeConfig();
+  const [storageColorMode, setStorageColorMode] = useState('');
 
   useEffect(() => {
     if (isBrowser) {
       const previousSelected = window.localStorage.getItem('selected-color-mode') || window.localStorage.getItem('theme')
       if (previousSelected && allowedModes.includes(previousSelected)) {
         setStorageColorMode(previousSelected)
+      } else if (colorMode.respectPrefersColorScheme) {
+        setStorageColorMode('auto')
+      } else {
+        setStorageColorMode(colorMode.defaultMode || 'light')
       }
     }
   }, [isBrowser])
