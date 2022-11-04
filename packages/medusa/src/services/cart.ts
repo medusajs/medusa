@@ -1755,7 +1755,7 @@ class CartService extends TransactionBaseService {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
-          select: ["subtotal"],
+          select: ["subtotal", "total"],
           relations: [
             "shipping_methods",
             "discounts",

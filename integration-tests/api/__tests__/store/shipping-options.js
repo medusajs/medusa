@@ -259,7 +259,7 @@ describe("/store/shipping-options", () => {
       await db.teardown()
     })
 
-    it("given a cart with total above min-threshold and subtotal below min-threshold shipping option with tax inclusive pricing is available", async () => {
+    it("given a cart with total above min-threshold and subtotal below min-threshold shipping option with tax inclusive pricing is available and can be applied", async () => {
       const api = useApi()
 
       // create line item
@@ -298,6 +298,23 @@ describe("/store/shipping-options", () => {
           }),
         ])
       )
+
+      const shippingOption = res.data.shipping_options.find(
+        (so) => !!so.requirements.find((r) => r.type === "min_subtotal")
+      )
+
+      const addShippingMethodRes = await api.post(
+        `/store/carts/test-cart/shipping-methods`,
+        {
+          option_id: shippingOption.id,
+        }
+      )
+
+      expect(addShippingMethodRes.status).toEqual(200)
+      expect(addShippingMethodRes.data.cart.shipping_methods.length).toEqual(1)
+      expect(
+        addShippingMethodRes.data.cart.shipping_methods[0].shipping_option_id
+      ).toEqual(shippingOption.id)
     })
 
     it("given a cart with total above max-threshold and subtotal below max-threshold shipping option with tax inclusive pricing is not available", async () => {
