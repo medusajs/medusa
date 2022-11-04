@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:10
+medusa/dist/models/order-edit.d.ts:8
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:6
+medusa/dist/models/order-edit.d.ts:4
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:9
+medusa/dist/models/order-edit.d.ts:7
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:7
+medusa/dist/models/order-edit.d.ts:5
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:8
+medusa/dist/models/order-edit.d.ts:6

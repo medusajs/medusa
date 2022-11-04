@@ -29,7 +29,7 @@ Authenticates a customer using email and password combination
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:16](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/auth.ts#L16)
+[medusa-js/src/resources/auth.ts:16](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/auth.ts#L16)
 
 ___
 
@@ -53,7 +53,7 @@ Removes authentication session
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:25](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/auth.ts#L25)
+[medusa-js/src/resources/auth.ts:25](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/auth.ts#L25)
 
 ___
 
@@ -78,7 +78,7 @@ Check if email exists
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:47](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/auth.ts#L47)
+[medusa-js/src/resources/auth.ts:47](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/auth.ts#L47)
 
 ___
 
@@ -103,4 +103,4 @@ Usually used to check if authenticated session is alive.
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:36](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/auth.ts#L36)
+[medusa-js/src/resources/auth.ts:36](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/auth.ts#L36)
