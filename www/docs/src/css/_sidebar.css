@@ -237,3 +237,7 @@ html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link.menu__l
 .navbar-github-link {
   overflow: visible;
 }
+
+.sidebar-desktop:not(.scrolling) nav::-webkit-scrollbar {
+  --ifm-scrollbar-size: 0px;
+}
