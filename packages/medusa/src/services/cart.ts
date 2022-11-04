@@ -251,27 +251,6 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     const totals: { [K in TotalField]?: number | null } = {}
 
-    if (totalsToSelect.some((field) => ["subtotal", "total"].includes(field))) {
-      const calculationContext =
-        await this.totalsService_.getCalculationContext(cart, {
-          exclude_shipping: true,
-        })
-      cart.items = await Promise.all(
-        (cart.items || []).map(async (item) => {
-          const itemTotals = await this.totalsService_.getLineItemTotals(
-            item,
-            cart,
-            {
-              include_tax: options.force_taxes ?? cart.region.automatic_taxes,
-              calculation_context: calculationContext,
-            }
-          )
-
-          return Object.assign(item, itemTotals)
-        })
-      )
-    }
-
     for (const key of totalsToSelect) {
       switch (key) {
         case "total": {
