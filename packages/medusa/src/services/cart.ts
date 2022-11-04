@@ -1362,7 +1362,7 @@ class CartService extends TransactionBaseService {
           freshCart.payment = await this.paymentProviderService_
             .withTransaction(transactionManager)
             .createPayment({
-              cartId: cart.id,
+              cart_id: cart.id,
               currency_code: cart.region.currency_code,
               amount: cart.total!,
               payment_session: freshCart.payment_session,
@@ -2150,12 +2150,12 @@ class CartService extends TransactionBaseService {
       useExistingTaxLines = true
     }
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemsTotals(cartItems, {
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(cartItems, {
       includeTax,
       calculationContext,
       useExistingTaxLines,
     })
-    const shippingTotals = await newTotalsServiceTx.getShippingMethodsTotals(
+    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
       cartShippingMethods,
       {
         discounts: cart.discounts,

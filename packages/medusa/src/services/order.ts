@@ -326,27 +326,24 @@ class OrderService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param orderIdOrSelector - id or selector of order to retrieve
+   * @param orderId - id or selector of order to retrieve
    * @param config - config of order to retrieve
    * @return the order document
    */
   async retrieve(
-    orderIdOrSelector: string | Selector<Order>,
+    orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
     const { totalsToSelect } = this.transformQueryForTotals(config)
 
     if (totalsToSelect?.length) {
-      return await this.retrieveLegacy(orderIdOrSelector, config)
+      return await this.retrieveLegacy(orderId, config)
     }
 
     const manager = this.manager_
     const cartRepo = manager.getCustomRepository(this.orderRepository_)
 
-    const selector = isString(orderIdOrSelector)
-      ? { id: orderIdOrSelector }
-      : orderIdOrSelector
-    const query = buildQuery(selector, config)
+    const query = buildQuery({ id: orderId }, config)
 
     if (!(config.select || []).length) {
       query.select = undefined
@@ -358,12 +355,9 @@ class OrderService extends TransactionBaseService {
     const raw = await cartRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with ${selectorConstraints} was not found`
+        `Order with id ${orderId} was not found`
       )
     }
 
@@ -413,26 +407,7 @@ class OrderService extends TransactionBaseService {
     options: FindConfig<Order> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Order> {
-    return await this.retrieveByWithTotals(
-      {
-        id: orderId,
-      },
-      options,
-      totalsConfig
-    )
-  }
-
-  async retrieveByWithTotals(
-    selector: Selector<Order>,
-    options: FindConfig<Order> = {},
-    totalsConfig: TotalsConfig = {}
-  ): Promise<Order> {
-    const relations = this.getTotalsRelations(options)
-
-    const order = await this.retrieve(selector, {
-      ...options,
-      relations,
-    })
+    const order = await this.retrieve(orderId, options)
 
     return await this.decorateTotals(order, totalsConfig)
   }
@@ -559,9 +534,12 @@ class OrderService extends TransactionBaseService {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const exists = !!(await this.retrieve({
-        cart_id: isString(cartOrId) ? cartOrId : cartOrId?.id,
-      }).catch(() => false))
+      const exists = !!(await this.retrieveByCartId(
+        isString(cartOrId) ? cartOrId : cartOrId?.id,
+        {
+          select: ["id"],
+        }
+      ))
 
       if (exists) {
         throw new MedusaError(
@@ -1680,16 +1658,13 @@ class OrderService extends TransactionBaseService {
       useExistingTaxLines = true
     }
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemsTotals(
-      orderItems,
-      {
-        taxRate: order.tax_rate,
-        includeTax,
-        calculationContext,
-        useExistingTaxLines,
-      }
-    )
-    const shippingTotals = await newTotalsServiceTx.getShippingMethodsTotals(
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
+      taxRate: order.tax_rate,
+      includeTax,
+      calculationContext,
+      useExistingTaxLines,
+    })
+    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
       orderShippingMethods,
       {
         taxRate: order.tax_rate,

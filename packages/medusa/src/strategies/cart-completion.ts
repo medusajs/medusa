@@ -235,6 +235,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
+    const orderServiceTx = this.orderService_.withTransaction(manager)
+
     const cart = await this.cartService_
       .withTransaction(manager)
       .retrieveWithTotals(
@@ -299,19 +301,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     let order: Order
     try {
-      order = await this.orderService_
-        .withTransaction(manager)
-        .createFromCart(cart)
+      order = await orderServiceTx.createFromCart(cart)
     } catch (error) {
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
-        order = await this.orderService_
-          .withTransaction(manager)
-          .retrieveByWithTotals(
-            { cart_id: id },
-            {
-              relations: ["shipping_address", "payments"],
-            }
-          )
+        order = await orderServiceTx.retrieveByCartId(id, {
+          relations: ["shipping_address", "payments"],
+        })
 
         return {
           response_code: 200,

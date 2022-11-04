@@ -375,7 +375,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createPayment(data: {
-    cartId: string
+    cart_id: string
     amount: number
     currency_code: string
     payment_session: PaymentSession
@@ -397,7 +397,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         amount,
         currency_code,
         data: paymentData,
-        cart_id: data.cartId,
+        cart_id: data.cart_id,
       })
 
       return await paymentRepo.save(created)

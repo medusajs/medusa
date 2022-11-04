@@ -80,8 +80,8 @@ export default class NewTotalsService extends TransactionBaseService {
    * @param taxRate
    * @param useExistingTaxLines Force to use the tax lines of the line item instead of fetching them
    */
-  async getLineItemsTotals(
-    items: LineItem[],
+  async getLineItemTotals(
+    items: LineItem | LineItem[],
     {
       includeTax,
       calculationContext,
@@ -94,6 +94,8 @@ export default class NewTotalsService extends TransactionBaseService {
       useExistingTaxLines?: boolean
     }
   ): Promise<{ [lineItemId: string]: LineItemTotals }> {
+    items = Array.isArray(items) ? items : [items]
+
     const manager = this.transactionManager_ ?? this.manager_
     let lineItemsTaxLinesMap: { [lineItemId: string]: LineItemTaxLine[] } = {}
 
@@ -112,7 +114,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
     const calculationMethod = taxRate
       ? this.getLineItemTotalsLegacy.bind(this)
-      : this.getLineItemTotals.bind(this)
+      : this.getLineItemTotals_.bind(this)
 
     const itemsTotals: { [lineItemId: string]: LineItemTotals } = {}
     for (const item of items) {
@@ -139,7 +141,7 @@ export default class NewTotalsService extends TransactionBaseService {
    * @param taxLines Only needed to force the usage of the specified tax lines, often in the case where the item does not hold the tax lines
    * @param calculationContext
    */
-  protected async getLineItemTotals(
+  protected async getLineItemTotals_(
     item: LineItem,
     {
       includeTax,
@@ -488,8 +490,8 @@ export default class NewTotalsService extends TransactionBaseService {
    * @param calculationContext
    * @param useExistingTaxLines Force to use the tax lines of the shipping method instead of fetching them
    */
-  async getShippingMethodsTotals(
-    shippingMethods: ShippingMethod[],
+  async getShippingMethodTotals(
+    shippingMethods: ShippingMethod | ShippingMethod[],
     {
       includeTax,
       discounts,
@@ -504,6 +506,10 @@ export default class NewTotalsService extends TransactionBaseService {
       useExistingTaxLines?: boolean
     }
   ): Promise<{ [lineItemId: string]: ShippingMethodTotals }> {
+    shippingMethods = Array.isArray(shippingMethods)
+      ? shippingMethods
+      : [shippingMethods]
+
     const manager = this.transactionManager_ ?? this.manager_
     let shippingMethodsTaxLinesMap: {
       [shippingMethodId: string]: ShippingMethodTaxLine[]
@@ -524,7 +530,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
     const calculationMethod = taxRate
       ? this.getShippingMethodTotalsLegacy.bind(this)
-      : this.getShippingMethodTotals.bind(this)
+      : this.getShippingMethodTotals_.bind(this)
 
     const shippingMethodsTotals: {
       [lineItemId: string]: ShippingMethodTotals
@@ -552,7 +558,7 @@ export default class NewTotalsService extends TransactionBaseService {
    * @param taxLines
    * @param discounts
    */
-  protected async getShippingMethodTotals(
+  protected async getShippingMethodTotals_(
     shippingMethod: ShippingMethod,
     {
       includeTax,
