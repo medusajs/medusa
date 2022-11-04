@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/payment-collection.ts:48](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L48)
+[models/payment-collection.ts:48](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L48)
 
 ___
 
@@ -38,7 +38,17 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:51](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L51)
+[models/payment-collection.ts:51](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L51)
+
+___
+
+### captured\_amount
+
+• **captured\_amount**: `number`
+
+#### Defined in
+
+[models/payment-collection.ts:54](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L54)
 
 ___
 
@@ -52,7 +62,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:104](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L104)
+[models/payment-collection.ts:107](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L107)
 
 ___
 
@@ -72,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:70](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L70)
+[models/payment-collection.ts:73](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L73)
 
 ___
 
@@ -82,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:66](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L66)
+[models/payment-collection.ts:69](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L69)
 
 ___
 
@@ -96,7 +106,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -106,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:45](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L45)
+[models/payment-collection.ts:45](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L45)
 
 ___
 
@@ -120,7 +130,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -130,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:101](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L101)
+[models/payment-collection.ts:104](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L104)
 
 ___
 
@@ -140,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:84](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L84)
+[models/payment-collection.ts:87](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L87)
 
 ___
 
@@ -150,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:98](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L98)
+[models/payment-collection.ts:101](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L101)
 
 ___
 
@@ -160,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:54](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L54)
+[models/payment-collection.ts:57](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L57)
 
 ___
 
@@ -170,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:62](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L62)
+[models/payment-collection.ts:65](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L65)
 
 ___
 
@@ -180,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:58](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L58)
+[models/payment-collection.ts:61](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L61)
 
 ___
 
@@ -190,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:42](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L42)
+[models/payment-collection.ts:42](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L42)
 
 ___
 
@@ -200,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:39](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L39)
+[models/payment-collection.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L39)
 
 ___
 
@@ -214,7 +224,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -228,4 +238,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/payment-collection.ts:106](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L106)
+[models/payment-collection.ts:109](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L109)

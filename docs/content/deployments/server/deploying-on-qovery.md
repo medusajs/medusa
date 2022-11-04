@@ -1,3 +1,7 @@
+---
+description: 'Learn step-by-step.'
+---
+
 # Deploy Your Medusa Server on Qovery
 
 In this document, you'll learn how to deploy your Medusa server on Qovery with the help of Terraform. 

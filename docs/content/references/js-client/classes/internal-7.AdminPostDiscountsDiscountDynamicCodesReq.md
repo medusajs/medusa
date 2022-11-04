@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:65
+medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:66
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:67
+medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:68
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:66
+medusa/dist/api/routes/admin/discounts/create-dynamic-code.d.ts:67
