@@ -19,10 +19,10 @@ function ColorModeToggle({className, onChange}) {
       const previousSelected = window.localStorage.getItem('selected-color-mode') || window.localStorage.getItem('theme')
       if (previousSelected && allowedModes.includes(previousSelected)) {
         setStorageColorMode(previousSelected)
-      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      } else if (colorMode.respectPrefersColorScheme) {
         setStorageColorMode('auto')
       } else {
-        setStorageColorMode(colorMode.defaultMode || 'auto')
+        setStorageColorMode(colorMode.defaultMode || 'light')
       }
     }
   }, [isBrowser])
