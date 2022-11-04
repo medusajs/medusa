@@ -15,13 +15,13 @@ export default async (req, res) => {
     "paymentCollectionService"
   )
 
-  const payments = await paymentCollectionService.refundAll(
+  const [refunds, failure] = await paymentCollectionService.refundAll(
     id,
     validated.reason,
     validated.note
   )
 
-  res.status(200).json({ payments })
+  res.status(200).json({ refunds, failure })
 }
 
 export class AdminPostPaymentCollectionRefundAllReq {

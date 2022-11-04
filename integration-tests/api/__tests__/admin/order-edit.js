@@ -897,6 +897,27 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       return await db.teardown()
     })
 
+    it.only("creates payment collection if difference_due > 0", async () => {
+      const api = useApi()
+
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request`,
+        {},
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+          payment_collection_id: expect.any(String),
+        })
+      )
+    })
+
     it("requests order edit", async () => {
       const api = useApi()
 

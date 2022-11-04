@@ -5,7 +5,7 @@ import {
   defaultStoreOrderEditFields,
   defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
-import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
+import { OrderEditStatus } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
 
 /**

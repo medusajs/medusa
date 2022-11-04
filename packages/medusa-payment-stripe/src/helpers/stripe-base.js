@@ -26,7 +26,7 @@ class StripeBase extends AbstractPaymentService {
       options
     )
     /** @private @const {string[]} */
-    this.paymentMethodTypes = paymentMethodTypes
+    this.paymentMethodTypes_ = paymentMethodTypes
 
     /**
      * Required Stripe options:
@@ -74,7 +74,7 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<Data[]>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([])
+    return []
   }
 
   /**
@@ -105,7 +105,7 @@ class StripeBase extends AbstractPaymentService {
    */
   async createPayment(cart) {
     const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
+      payment_method_types: this.paymentMethodTypes_,
       capture_method: "automatic",
     }
 
@@ -114,7 +114,7 @@ class StripeBase extends AbstractPaymentService {
 
   async createPaymentNew(paymentInput) {
     const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
+      payment_method_types: this.paymentMethodTypes_,
       capture_method: "automatic",
     }
 

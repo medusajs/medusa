@@ -41,20 +41,20 @@ export class PaymentCollection extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: PaymentCollectionStatus })
   status: PaymentCollectionStatus
 
-  @Column({ nullable: true })
-  description: string
+  @Column({ type: "varchar", nullable: true })
+  description: string | null
 
   @Column({ type: "int" })
   amount: number
 
   @Column({ type: "int", nullable: true })
-  authorized_amount: number
+  authorized_amount: number | null
 
   @Column({ type: "int", nullable: true })
-  captured_amount: number
+  captured_amount: number | null
 
   @Column({ type: "int", nullable: true })
-  refunded_amount: number
+  refunded_amount: number | null
 
   @Index()
   @Column()

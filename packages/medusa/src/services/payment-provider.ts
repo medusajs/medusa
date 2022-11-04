@@ -574,7 +574,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       if (refundable < amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Refund amount is higher that the refundable amount"
+          "Refund amount is greater that the refundable amount"
         )
       }
 
@@ -646,7 +646,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       if (refundable < amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Refund amount is higher that the refundable amount"
+          "Refund amount is greater that the refundable amount"
         )
       }
 

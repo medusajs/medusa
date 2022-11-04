@@ -360,7 +360,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         return sess
       })
 
-      if (session.payment_authorized_at) {
+      if (session.payment_authorized_at && payCol.authorized_amount) {
         payCol.authorized_amount -= session.amount
       }
 
@@ -457,7 +457,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
-  private async capturePayment(
+  protected async capturePayment(
     payCol: PaymentCollection,
     payment: Payment
   ): Promise<Payment> {
@@ -555,18 +555,15 @@ export default class PaymentCollectionService extends TransactionBaseService {
     const allPayments: Payment[] = []
     for (const payment of payCol.payments) {
       const captured = await this.capturePayment(payCol, payment).catch(
-        () => void 0
+        () => payment
       )
-
-      if (captured) {
-        allPayments.push(captured)
-      }
+      allPayments.push(captured)
     }
 
     return allPayments
   }
 
-  private async refundPayment(
+  protected async refundPayment(
     payCol: PaymentCollection,
     payment: Payment,
     amount: number,
@@ -665,12 +662,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     paymentCollectionId: string,
     reason: string,
     note?: string
-  ): Promise<Refund[]> {
+  ): Promise<[Refund[], Payment[]]> {
     const payCol = await this.retrieve(paymentCollectionId, {
       relations: ["payments"],
     })
 
     const allRefunds: Refund[] = []
+    const failed: Payment[] = []
     for (const payment of payCol.payments) {
       const refunded = await this.refundPayment(
         payCol,
@@ -682,9 +680,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       if (refunded) {
         allRefunds.push(refunded)
+      } else {
+        failed.push(payment)
       }
     }
 
-    return allRefunds
+    return [allRefunds, failed]
   }
 }
