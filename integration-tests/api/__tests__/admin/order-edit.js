@@ -22,7 +22,7 @@ const {
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
@@ -878,14 +878,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         created_by: "admin_user",
       })
 
-      await simpleLineItemFactory(dbConnection, {
-        order_id: order_id,
+      const lineItemAdded = await simpleLineItemFactory(dbConnection, {
+        order_id: null,
+        order_edit_id: id,
         variant_id: product1.variants[0].id,
+        unit_price: 200,
+        quantity: 1,
       })
 
       await simpleOrderItemChangeFactory(dbConnection, {
         order_edit_id: id,
-        type: "item_add",
+        type: OrderEditItemChangeType.ITEM_ADD,
+        line_item_id: lineItemAdded.id,
       })
 
       orderEditId = id
