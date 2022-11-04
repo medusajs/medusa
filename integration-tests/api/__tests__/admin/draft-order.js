@@ -6,6 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const draftOrderSeeder = require("../../helpers/draft-order-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const orderSeeder = require("../../helpers/order-seeder")
 
 jest.setTimeout(30000)
 
@@ -782,6 +783,40 @@ describe("/admin/draft-orders", () => {
 
       expect(response.data.draft_orders).toEqual([])
       expect(response.data.count).toEqual(0)
+    })
+  })
+
+  describe("GET /admin/draft-orders/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("retrieves a draft-order should include the items totals", async () => {
+      const api = useApi()
+
+      const order = await api.get("/admin/draft-orders/test-draft-order", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(order.status).toEqual(200)
+      expect(order.data.draft_order).toEqual(
+        expect.objectContaining({
+          id: "test-draft-order",
+        })
+      )
+
+      order.data.draft_order.cart.items.forEach((item) => {
+        expect(item.total).toBeDefined()
+        expect(item.subtotal).toBeDefined()
+      })
     })
   })
 
