@@ -73,10 +73,11 @@ export default async (req, res) => {
       })
   })
 
-  const orderEdit = await orderEditService.retrieve(id, {
+  let orderEdit = await orderEditService.retrieve(id, {
     relations: defaultOrderEditRelations,
     select: defaultOrderEditFields,
   })
+  orderEdit = await orderEditService.decorateTotals(orderEdit)
 
   res.status(200).send({
     order_edit: orderEdit,
