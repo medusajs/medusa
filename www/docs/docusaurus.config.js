@@ -36,6 +36,20 @@ const config = {
     require.resolve("docusaurus-plugin-image-zoom")
   ],
   themeConfig: {
+    metadata: [
+      {
+        name: 'og:image',
+        content: 'https://docs.medusajs.com/img/docs-banner.jpg'
+      },
+      {
+        name: 'og:image:width',
+        content: '1200'
+      },
+      {
+        name: 'og:image:height',
+        content: '630'
+      }
+    ],
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
