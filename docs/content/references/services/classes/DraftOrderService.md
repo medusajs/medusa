@@ -28,7 +28,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:51](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L51)
+[packages/medusa/src/services/draft-order.ts:51](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L51)
 
 ## Properties
 
@@ -42,7 +42,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -56,7 +56,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:46](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L46)
+[packages/medusa/src/services/draft-order.ts:46](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L46)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:42](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L42)
+[packages/medusa/src/services/draft-order.ts:42](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L42)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:45](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L45)
+[packages/medusa/src/services/draft-order.ts:45](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L45)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:47](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L47)
+[packages/medusa/src/services/draft-order.ts:47](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L47)
 
 ___
 
@@ -110,7 +110,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:39](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L39)
+[packages/medusa/src/services/draft-order.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L39)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:44](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L44)
+[packages/medusa/src/services/draft-order.ts:44](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L44)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:43](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L43)
+[packages/medusa/src/services/draft-order.ts:43](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L43)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:48](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L48)
+[packages/medusa/src/services/draft-order.ts:48](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L48)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:49](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L49)
+[packages/medusa/src/services/draft-order.ts:49](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L49)
 
 ___
 
@@ -164,7 +164,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:40](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L40)
+[packages/medusa/src/services/draft-order.ts:40](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L40)
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:34](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L34)
+[packages/medusa/src/services/draft-order.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L34)
 
 ## Methods
 
@@ -220,7 +220,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -234,7 +234,7 @@ Creates a draft order.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `AdminPostDraftOrdersReq` | data to create draft order from |
+| `data` | `DraftOrderCreateProps` | data to create draft order from |
 
 #### Returns
 
@@ -244,7 +244,7 @@ the created draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:235](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L235)
+[packages/medusa/src/services/draft-order.ts:236](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L236)
 
 ___
 
@@ -268,7 +268,7 @@ empty promise
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:134](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L134)
+[packages/medusa/src/services/draft-order.ts:135](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L135)
 
 ___
 
@@ -293,7 +293,7 @@ list of draft orders
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:212](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L212)
+[packages/medusa/src/services/draft-order.ts:213](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L213)
 
 ___
 
@@ -318,7 +318,7 @@ draft orders
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:158](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L158)
+[packages/medusa/src/services/draft-order.ts:159](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L159)
 
 ___
 
@@ -343,7 +343,7 @@ the created order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:347](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L347)
+[packages/medusa/src/services/draft-order.ts:348](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L348)
 
 ___
 
@@ -368,7 +368,7 @@ the draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:81](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L81)
+[packages/medusa/src/services/draft-order.ts:82](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L82)
 
 ___
 
@@ -393,7 +393,7 @@ the draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:108](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L108)
+[packages/medusa/src/services/draft-order.ts:109](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L109)
 
 ___
 
@@ -417,7 +417,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -443,7 +443,7 @@ the updated draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:376](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/draft-order.ts#L376)
+[packages/medusa/src/services/draft-order.ts:377](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/draft-order.ts#L377)
 
 ___
 
@@ -467,4 +467,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

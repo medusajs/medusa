@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:35](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L35)
+[packages/medusa/src/services/product-collection.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L34)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:30](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L30)
+[packages/medusa/src/services/product-collection.ts:29](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L29)
 
 ___
 
@@ -78,7 +78,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:27](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L27)
+[packages/medusa/src/services/product-collection.ts:26](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L26)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:32](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L32)
+[packages/medusa/src/services/product-collection.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L31)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:33](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L33)
+[packages/medusa/src/services/product-collection.ts:32](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L32)
 
 ___
 
@@ -112,7 +112,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:28](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L28)
+[packages/medusa/src/services/product-collection.ts:27](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L27)
 
 ## Methods
 
@@ -133,7 +133,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:179](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L179)
+[packages/medusa/src/services/product-collection.ts:174](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L174)
 
 ___
 
@@ -172,7 +172,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -196,7 +196,7 @@ created collection
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:108](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L108)
+[packages/medusa/src/services/product-collection.ts:107](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L107)
 
 ___
 
@@ -220,7 +220,7 @@ empty promise
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:161](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L161)
+[packages/medusa/src/services/product-collection.ts:156](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L156)
 
 ___
 
@@ -234,7 +234,7 @@ Lists product collections
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `selector` | `Object` | `{}` | the query object for find |
+| `selector` | `Selector`<`ProductCollection`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | `{}` | the query object for find |
 | `config` | `Object` | `undefined` | the config to be used for find |
 | `config.skip` | `number` | `0` | - |
 | `config.take` | `number` | `20` | - |
@@ -247,7 +247,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:221](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L221)
+[packages/medusa/src/services/product-collection.ts:212](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L212)
 
 ___
 
@@ -261,7 +261,7 @@ Lists product collections and add count.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `QuerySelector`<`ProductCollection`\> | the query object for find |
+| `selector` | `Selector`<`ProductCollection`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
 | `config` | `FindConfig`<`ProductCollection`\> | the config to be used for find |
 
 #### Returns
@@ -272,7 +272,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:239](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L239)
+[packages/medusa/src/services/product-collection.ts:229](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L229)
 
 ___
 
@@ -293,7 +293,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:200](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L200)
+[packages/medusa/src/services/product-collection.ts:191](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L191)
 
 ___
 
@@ -318,7 +318,7 @@ the collection.
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:55](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L55)
+[packages/medusa/src/services/product-collection.ts:54](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L54)
 
 ___
 
@@ -343,7 +343,7 @@ the collection.
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:82](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L82)
+[packages/medusa/src/services/product-collection.ts:81](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L81)
 
 ___
 
@@ -367,7 +367,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -392,7 +392,7 @@ update collection
 
 #### Defined in
 
-[packages/medusa/src/services/product-collection.ts:131](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/services/product-collection.ts#L131)
+[packages/medusa/src/services/product-collection.ts:126](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/product-collection.ts#L126)
 
 ___
 
@@ -416,4 +416,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/35df4962f/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

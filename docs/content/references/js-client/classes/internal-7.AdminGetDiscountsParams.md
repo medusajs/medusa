@@ -2,15 +2,39 @@
 
 [internal](../modules/internal-7.md).AdminGetDiscountsParams
 
+## Hierarchy
+
+- [`AdminGetDiscountsParams_base`](../modules/internal-7.md#admingetdiscountsparams_base)
+
+  ↳ **`AdminGetDiscountsParams`**
+
 ## Properties
 
 ### expand
 
 • `Optional` **expand**: `string`
 
+#### Inherited from
+
+AdminGetDiscountsParams\_base.expand
+
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:92
+medusa/dist/types/common.d.ts:117
+
+___
+
+### fields
+
+• `Optional` **fields**: `string`
+
+#### Inherited from
+
+AdminGetDiscountsParams\_base.fields
+
+#### Defined in
+
+medusa/dist/types/common.d.ts:118
 
 ___
 
@@ -20,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:89
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:91
 
 ___
 
@@ -30,27 +54,35 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:88
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:90
 
 ___
 
 ### limit
 
-• **limit**: `number`
+• `Optional` **limit**: `number`
+
+#### Inherited from
+
+AdminGetDiscountsParams\_base.limit
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:90
+medusa/dist/types/common.d.ts:122
 
 ___
 
 ### offset
 
-• **offset**: `number`
+• `Optional` **offset**: `number`
+
+#### Inherited from
+
+AdminGetDiscountsParams\_base.offset
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:91
+medusa/dist/types/common.d.ts:121
 
 ___
 
@@ -60,7 +92,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:87
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:89
 
 ___
 
@@ -70,4 +102,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:86
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:88
