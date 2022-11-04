@@ -33,6 +33,10 @@ class TestPayService extends AbstractPaymentService {
     return data
   }
 
+  async createPaymentNew(inputData) {
+    return inputData
+  }
+
   async retrievePayment(data) {
     return {}
   }
@@ -57,6 +61,10 @@ class TestPayService extends AbstractPaymentService {
 
   async updatePayment(sessionData, cart) {
     return {}
+  }
+
+  async updatePaymentNew(sessionData) {
+    return sessionData
   }
 
   async deletePayment(payment) {
