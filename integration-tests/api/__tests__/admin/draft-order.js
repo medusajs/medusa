@@ -6,7 +6,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const draftOrderSeeder = require("../../helpers/draft-order-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
-const orderSeeder = require("../../helpers/order-seeder")
 
 jest.setTimeout(30000)
 

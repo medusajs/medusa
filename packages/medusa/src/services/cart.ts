@@ -920,13 +920,6 @@ class CartService extends TransactionBaseService {
         }
 
         const cart = await this.retrieve(cartId, {
-          select: [
-            "subtotal",
-            "tax_total",
-            "shipping_total",
-            "discount_total",
-            "total",
-          ],
           relations,
         })
 
