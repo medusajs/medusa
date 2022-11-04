@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/types/customer-groups.d.ts:10
+medusa/dist/types/customer-groups.d.ts:11

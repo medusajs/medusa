@@ -46,6 +46,8 @@ Base abstract entity for all entities
 
   ↳↳ [`OrderItemChange`](internal.OrderItemChange.md)
 
+  ↳↳ [`PaymentCollection`](internal.PaymentCollection.md)
+
   ↳↳ [`ProductVariant`](internal.ProductVariant.md)
 
   ↳↳ [`MoneyAmount`](internal.MoneyAmount.md)
