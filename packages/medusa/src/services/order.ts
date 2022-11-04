@@ -109,26 +109,26 @@ class OrderService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
-    orderRepository,
-    customerService,
-    paymentProviderService,
-    shippingOptionService,
-    shippingProfileService,
-    discountService,
-    fulfillmentProviderService,
-    fulfillmentService,
-    lineItemService,
-    totalsService,
-    regionService,
-    cartService,
-    addressRepository,
-    giftCardService,
-    draftOrderService,
-    inventoryService,
-    eventBusService,
-    featureFlagRouter,
-  }: InjectedDependencies) {
+                manager,
+                orderRepository,
+                customerService,
+                paymentProviderService,
+                shippingOptionService,
+                shippingProfileService,
+                discountService,
+                fulfillmentProviderService,
+                fulfillmentService,
+                lineItemService,
+                totalsService,
+                regionService,
+                cartService,
+                addressRepository,
+                giftCardService,
+                draftOrderService,
+                inventoryService,
+                eventBusService,
+                featureFlagRouter,
+              }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -1412,10 +1412,7 @@ class OrderService extends TransactionBaseService {
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
-    if (
-      totalsFields.length &&
-      totalsFields.some((field) => ["subtotal", "totals"].includes(field))
-    ) {
+    if (totalsFields.some((field) => ["subtotal", "total"].includes(field))) {
       const calculationContext =
         await this.totalsService_.getCalculationContext(order, {
           exclude_shipping: true,
