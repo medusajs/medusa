@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- [`PriceSelectionParams`](internal-40.PriceSelectionParams.md)
+- [`PriceSelectionParams`](internal-30.PriceSelectionParams.md)
 
   ↳ **`StoreGetVariantsParams`**
 
@@ -16,7 +16,7 @@
 
 #### Inherited from
 
-[PriceSelectionParams](internal-40.PriceSelectionParams.md).[cart_id](internal-40.PriceSelectionParams.md#cart_id)
+[PriceSelectionParams](internal-30.PriceSelectionParams.md).[cart_id](internal-30.PriceSelectionParams.md#cart_id)
 
 #### Defined in
 
@@ -30,7 +30,7 @@ ___
 
 #### Inherited from
 
-[PriceSelectionParams](internal-40.PriceSelectionParams.md).[currency_code](internal-40.PriceSelectionParams.md#currency_code)
+[PriceSelectionParams](internal-30.PriceSelectionParams.md).[currency_code](internal-30.PriceSelectionParams.md#currency_code)
 
 #### Defined in
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:82
+medusa/dist/api/routes/store/variants/list-variants.d.ts:84
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:84
+medusa/dist/api/routes/store/variants/list-variants.d.ts:86
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:83
+medusa/dist/api/routes/store/variants/list-variants.d.ts:85
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:86
+medusa/dist/api/routes/store/variants/list-variants.d.ts:88
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:80
+medusa/dist/api/routes/store/variants/list-variants.d.ts:82
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:81
+medusa/dist/api/routes/store/variants/list-variants.d.ts:83
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Inherited from
 
-[PriceSelectionParams](internal-40.PriceSelectionParams.md).[region_id](internal-40.PriceSelectionParams.md#region_id)
+[PriceSelectionParams](internal-30.PriceSelectionParams.md).[region_id](internal-30.PriceSelectionParams.md#region_id)
 
 #### Defined in
 
@@ -118,4 +118,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/variants/list-variants.d.ts:85
+medusa/dist/api/routes/store/variants/list-variants.d.ts:87

@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:130
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:131
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:131
+medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:132

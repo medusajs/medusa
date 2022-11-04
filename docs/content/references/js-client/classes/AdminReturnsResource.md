@@ -31,7 +31,7 @@ the order for which the return was canceled
 
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:19](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/returns.ts#L19)
+[medusa-js/src/resources/admin/returns.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/returns.ts#L19)
 
 ___
 
@@ -58,7 +58,7 @@ a list of returns matching the query
 
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:49](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/returns.ts#L49)
+[medusa-js/src/resources/admin/returns.ts:49](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/returns.ts#L49)
 
 ___
 
@@ -86,4 +86,4 @@ the return
 
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:34](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/returns.ts#L34)
+[medusa-js/src/resources/admin/returns.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/returns.ts#L34)

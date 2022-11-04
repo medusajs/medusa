@@ -1,0 +1,112 @@
+.theme-doc-toc-desktop .table-of-contents {
+  border-left: none !important;
+  padding: 0;
+  font-size: 12px;
+  position: relative;
+  overflow-y: hidden;
+}
+
+html:not([data-theme="dark"]) .theme-doc-toc-desktop .table-of-contents::before {
+  background-image: url('/img/side-menu.svg');
+}
+
+[data-theme="dark"] .theme-doc-toc-desktop .table-of-contents::before {
+  background-image: url('/img/side-menu-dark.svg');
+}
+
+.theme-doc-toc-desktop .table-of-contents::before {
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position-x: -1px;
+  padding-left: 28px;
+  content: 'On this page';
+  font-size: 13px;
+  padding-bottom: 0;
+}
+
+.theme-doc-toc-desktop .table-of-contents .table-of-contents__link {
+  padding-left: var(--ifm-toc-link-padding-left);
+}
+
+.theme-doc-toc-desktop .table-of-contents > li:first-child {
+  margin-top: 16px;
+}
+
+.theme-doc-toc-desktop .table-of-contents::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 40px;
+  height: 100%;
+  width: 1px;
+  background-color: var(--ifm-toc-divider-color);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link {
+  position: relative;
+}
+
+.theme-doc-toc-desktop .table-of-contents__link:hover, 
+.theme-doc-toc-desktop .table-of-contents__link:hover code, 
+.theme-doc-toc-desktop .table-of-contents__link--active, 
+.theme-doc-toc-desktop .table-of-contents__link--active code {
+  color: var(--ifm-toc-link-active);
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background-color: var(--ifm-toc-link-active);
+  z-index: 1;
+}
+
+.theme-doc-toc-desktop .toc-wrapper {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.theme-doc-toc-desktop .markdown-row {
+  width: 100%;
+}
+
+.theme-doc-toc-desktop .table-of-contents li {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents > li:not(:first-child),
+.theme-doc-toc-desktop .table-of-contents ul li {
+  margin-top: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents li:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.theme-doc-toc-desktop .table-of-contents li:last-child {
+  margin-bottom: 0px;
+}
+
+.theme-doc-toc-desktop .table-of-contents, .table-of-contents ul {
+  padding-left: 0;
+}
+
+.table-of-contents ul .table-of-contents__link {
+  padding-left: calc(var(--ifm-toc-padding-horizontal) + var(--ifm-toc-link-padding-left)) !important;
+}
+
+@media screen and (min-width: 1441px) {
+  .col.toc-wrapper {
+    --ifm-col-width: calc(2 / 12 * 100%)
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .col.toc-wrapper {
+    --ifm-col-width: calc(3 / 12 * 100%)
+  }
+}

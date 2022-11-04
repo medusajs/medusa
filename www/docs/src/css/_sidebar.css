@@ -1,0 +1,239 @@
+.main-wrapper aside {
+  z-index: var(--ifm-z-index-fixed);
+}
+
+.sidebar-bg {
+  height: 100%;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.sidebar-bg img {
+  width: 100px;   
+}
+
+a.menu__link.menu__link--active.active {
+  padding-left: 16px;
+}
+
+a.menu__link--sublist::after,
+.menu__caret:before {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 2rem;
+}
+
+.menu__list-item > a {
+  font-weight: 450;
+}
+
+.react-toggle {
+  display: none;
+}
+
+.menu__link,
+.redocusaurus .menu-content label {
+  font-weight: 500 !important;
+  font-size: 12px;
+  line-height: 1.7em;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu__link {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.theme-doc-sidebar-item-link-level-1 .menu__link,
+.theme-doc-sidebar-item-category-level-1 .menu__link,
+.redocusaurus .menu-content label.-depth1,
+.navbar-sidebar__item .menu__link:not(.navbar-github-link),
+[class*=theme-doc-sidebar-item-link-level-]:not(.theme-doc-sidebar-item-link-level-1) .menu__link {
+  padding-left: 24px;
+}
+
+.redocusaurus .menu-content label {
+  color: var(--ifm-menu-color)
+}
+
+.menu__link:hover, 
+.menu__link--active, 
+.menu__list-item-collapsible:hover,
+.menu__list-item-collapsible--active,
+.redocusaurus .menu-content label:hover,
+.redocusaurus .menu-content label.active {
+  background-color: transparent !important;
+  color: var(--ifm-menu-active);
+}
+
+.menu__link--active, 
+.menu__list-item-collapsible--active,
+.redocusaurus .menu-content label.active {
+  font-weight: 600 !important;
+}
+
+/* .menu__list,
+.redocusaurus .menu-content ul {
+  padding-left: 1.7em;
+  padding-right: 1.7em;
+} */
+
+a.menu__link--sublist::after {
+  content: none;
+}
+
+a.menu__link--sublist + .menu__caret,
+.redocusaurus .menu-content label svg {
+  display: none;
+}
+
+a.menu__link--sublist::before,
+.redocusaurus .menu-content label[type=tag].-depth1::before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6.8px;
+  transition: transform var(--ifm-transition-fast) linear;
+  position: absolute;
+}
+
+html:not([data-theme="dark"]) a.menu__link--sublist::before,
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right.png');
+}
+
+[data-theme="dark"] a.menu__link--sublist::before,
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right-dark.png');
+}
+
+html:not([data-theme="dark"]) a.menu__link--sublist:hover::before,
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
+html:not([data-theme="dark"]) a.menu__link--sublist.menu__link--active::before,
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1.active::before {
+  background-image: url('/img/triangle-right-hover.png');
+}
+
+[data-theme="dark"] a.menu__link--sublist:hover::before,
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
+[data-theme="dark"] a.menu__link--sublist.menu__link--active::before,
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1.active::before {
+  background-image: url('/img/triangle-right-dark-hover.png');
+}
+
+.menu__list-item:not(.menu__list-item--collapsed) > .menu__list-item-collapsible > .menu__link--sublist:before {
+  transform: rotate(90deg);
+}
+
+.menu__link:not(.menu__link--sublist):not(.navbar-github-link)::before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  background-size: 6px;
+  background-image: url('/img/circle.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+}
+
+html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist):hover::before,
+html:not([data-theme="dark"]) .menu__link:not(.menu__link--sublist).menu__link--active::before {
+  background-image: url('/img/circle-hover.png');
+}
+
+[data-theme="dark"] .menu__link:not(.menu__link--sublist):hover::before,
+[data-theme="dark"] .menu__link:not(.menu__link--sublist).menu__link--active::before {
+  background-image: url('/img/circle-dark-hover.png');
+}
+
+[class*=theme-doc-sidebar-item-link-level-]:not(.theme-doc-sidebar-item-link-level-1) .menu__link::before,
+[class*=theme-doc-sidebar-item-link-level-]:not(.theme-doc-sidebar-item-link-level-1) a.menu__link--sublist::before,
+[class*=theme-doc-sidebar-item-category-level-]:not(.theme-doc-sidebar-item-category-level-1) .menu__link::before,
+[class*=theme-doc-sidebar-item-category-level-]:not(.theme-doc-sidebar-item-category-level-1) a.menu__link--sublist::before {
+  left: 5px;
+}
+
+.theme-doc-sidebar-item-link-level-1 .menu__link::before,
+.theme-doc-sidebar-item-link-level-1 a.menu__link--sublist::before,
+.theme-doc-sidebar-item-category-level-1 .menu__link::before,
+.theme-doc-sidebar-item-category-level-1 a.menu__link--sublist::before,
+.redocusaurus .menu-content label[type=tag].-depth1::before,
+.navbar-sidebar__item .menu__link::before  {
+  left: 0;
+}
+
+.redocusaurus .menu-content label::before {
+  top: 35%;
+}
+
+a.menu__link--sublist::before,
+.theme-doc-sidebar-item-link-level-1 .menu__link::before,
+.menu__link:not(.menu__link--sublist)::before {
+  top: 21%;
+}
+
+.menu__list-item > .menu__list-item-collapsible + .menu__list {
+  transition-property: opacity, height !important;
+  transition-duration: 350ms !important;
+  transition-timing-function: ease-in-out !important;
+  will-change: opacity, height !important;
+  opacity: 0;
+  display: block !important;
+  height: 0;
+  transition-delay: 100ms, 0s !important;
+}
+
+.menu__list-item:not(.menu__list-item--collapsed) > .menu__list-item-collapsible + .menu__list {
+  opacity: 1;
+  height: auto;
+}
+
+.menu__list-item.alert-icon .menu__link::before {
+  background-image: url('/img/alert.svg');
+  width: 20px;
+  height: 20px;
+  top: 19%;
+}
+
+html:not([data-theme="dark"]) .menu__list-item.alert-icon .menu__link:hover::before,
+html:not([data-theme="dark"]) .menu__list-item.alert-icon .menu__link.menu__link--active::before {
+  background-image: url('/img/alert-hover.svg');
+}
+
+[data-theme="dark"] .menu__list-item.alert-icon .menu__link:hover::before,
+[data-theme="dark"] .menu__list-item.alert-icon .menu__link.menu__link--active::before {
+  background-image: url('/img/alert-hover-dark.svg');
+}
+
+.menu__list-item.topright-icon .menu__link::before {
+  background-image: url('/img/arrow-top-right.svg');
+  width: 20px;
+  height: 20px;
+  top: 19%;
+}
+
+html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link:hover::before,
+html:not([data-theme="dark"]) .menu__list-item.topright-icon .menu__link.menu__link--active::before {
+  background-image: url('/img/arrow-top-right-hover.svg');
+}
+
+[data-theme="dark"] .menu__list-item.topright-icon .menu__link:hover::before,
+[data-theme="dark"] .menu__list-item.topright-icon .menu__link.menu__link--active::before {
+  background-image: url('/img/arrow-top-right-hover-dark.svg');
+}
+
+.menu__list-item.alert-icon [class*=iconExternalLink],
+.menu__list-item.topright-icon [class*=iconExternalLink] {
+  display: none;
+}
+
+.menu__list-item-collapsible {
+  padding-bottom: 6px;
+}
+
+.navbar-github-link {
+  overflow: visible;
+}

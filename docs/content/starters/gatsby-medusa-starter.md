@@ -8,7 +8,9 @@ This document guides you to install and set up the Gatsby Storefront for your Me
 
 Instead of manually following this guide to install then later deploy the Gatsby Storefront, you can deploy the Gatsby Storefront to Netlify with this button:
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa)
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa" class="img-url">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+</a>
 
 ## Prerequisites
 

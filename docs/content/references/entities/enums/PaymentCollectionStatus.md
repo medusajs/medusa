@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/payment-collection.ts:22](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L22)
+[models/payment-collection.ts:22](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L22)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:21](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L21)
+[models/payment-collection.ts:21](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L21)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:28](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L28)
+[models/payment-collection.ts:28](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L28)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:24](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L24)
+[models/payment-collection.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L24)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:20](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L20)
+[models/payment-collection.ts:20](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L20)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:23](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L23)
+[models/payment-collection.ts:23](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L23)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:25](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L25)
+[models/payment-collection.ts:25](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L25)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:27](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L27)
+[models/payment-collection.ts:27](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L27)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:26](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L26)
+[models/payment-collection.ts:26](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L26)
 
 ___
 
@@ -102,4 +102,4 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:29](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/payment-collection.ts#L29)
+[models/payment-collection.ts:29](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/payment-collection.ts#L29)

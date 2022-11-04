@@ -1,0 +1,220 @@
+/* You can override the default Infima variables here. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+:root {
+  /* Base Styles */
+  --ifm-global-radius: 8px;
+  --ifm-hr-background-color: #E5E7EB;
+  --ifm-base-margin-vertical: 32px;
+  --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
+  
+  /* Colors */
+  --ifm-color-primary: #111827;
+  --ifm-medusa-gray: #f0f0f0;
+  --ifm-color-content: #6B7280;
+
+  /* Fonts */
+  --ifm-code-font-size: 14px;
+  --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  --ifm-font-family-monospace: 'Roboto Mono',SFMono-Regular, Menlo, Monaco, Consolas,'Liberation Mono', 'Courier New', monospace;
+  --ifm-font-size-base: 14px;
+  --ifm-line-height-base: 24px;
+
+  /* Headings */
+  --ifm-color-headers: #111827;
+  --ifm-heading-font-weight: 600;
+  --ifm-heading-line-height: 24px;
+  --ifm-h1-font-size: 30px;
+  --ifm-h1-line-height: 48px;
+  --ifm-h2-font-size: 24px;
+  --ifm-h2-line-height: 36px;
+  --ifm-h4-font-size: 14px;
+
+  /* Links */
+  --ifm-link-color: #4B5563;
+  --ifm-link-weight: 600;
+
+  /* Sidebar */
+  --doc-sidebar-width: 250px !important;
+  --ifm-menu-active: #111827;
+
+  /* Docs Page */
+  --ifm-docs-page-max-width: 850px;
+
+  /* Toc */
+  --ifm-toc-border-color: #f0f0f0;
+  --ifm-toc-link-color: #6B7280;
+  --ifm-toc-padding-horizontal: 9px;
+  --ifm-toc-link-active: #111827;
+  --ifm-toc-divider-color: #E5E7EB;
+  --ifm-toc-link-padding-left: 16px;
+
+  /* Navbar */
+  --ifm-navbar-shadow: 0px 1px 0px 0px #E5E7EB;
+  --ifm-navbar-padding-top: 16px;
+  --ifm-navbar-padding-bottom: 17px;
+  --ifm-navbar-padding-vertical: 16px;
+  --ifm-navbar-padding-horizontal: 24px;
+  --ifm-navbar-height: 57px;
+  --ifm-navbar-link-hover-color: #111827;
+  --ifm-navbar-link-color: #6B7280;
+
+  /* Color Mode toggler */
+  --mode-tabs-bg: #F3F4F6;
+  --mode-button-text-color: #6B7280;
+  --mode-button-active-bg: #FFFFFF;
+  --mode-button-active-border-color: #E5E7EB;
+  --mode-button-active-text-color: #111827;
+
+  /* Screen Width */
+  --ifm-container-width-xl: 960px;
+
+  /* Notes */
+  --ifm-note-background: #F9FAFB;
+  --ifm-note-border-color: #E5E7EB;
+  --ifm-note-text-color: #4B5563;
+
+  /* Code */
+  --ifm-code-border-radius: 8px;
+  --ifm-code-padding-horizontal: 8px;
+  --ifm-code-border-color: #E5E7EB;
+  --ifm-code-background: #F9FAFB;
+  --ifm-code-color: #4B5563;
+  --ifm-code-tabs-active-bg: transparent;
+  --ifm-code-tabs-active-color: #F4F4F4;
+  --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+
+  /* Tooltip */
+  --ifm-tooltip-background-color: #fff;
+  --ifm-tooltip-border-color: #E5E7EB;
+  --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
+
+  /* Buttons */
+  --ifm-primary-btn-background-color: #fff;
+  --ifm-primary-btn-color: #111827;
+  --ifm-primary-btn-border-color: #E5E7EB;
+
+  /* Footer */
+  --ifm-footer-border-color: #E5E7EB;
+  --ifm-footer-logo-max-width: 24px;
+  --ifm-footer-title-color: #111827;
+  --ifm-footer-link-color: var(--ifm-color-content);
+
+  /* Search */
+  --docsearch-searchbox-background: #F9FAFB !important;
+  --docsearch-modal-background: #fff !important;
+  --docsearch-modal-shadow: none !important;
+  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+  --docsearch-container-background: rgba(17, 24, 39, 0.4) !important;
+  --docsearch-key-gradient: #E5E7EB !important;
+  --docsearch-muted-color: #6B7280 !important;
+  --docsearch-placeholder-color: #9CA3AF;
+  --docsearch-searchbox-shadow: 0px 0px 0px 4px rgba(124, 58, 237, 0.1) !important;
+  --docsearch-searchbox-border-color: #7C3AED;
+  --docsearch-primary-color: var(--docsearch-searchbox-border-color);
+  --docsearch-searchbox-height: 40px !important;
+  --docsearch-spacing: 16px !important;
+  --docsearch-highlight-color: #6B7280 !important;
+  --docsearch-text-color: #111827 !important;
+  --docsearch-hit-background: #FFFFFF !important;
+  --docsearch-hit-height: auto !important;
+  --docsearch-hit-active-color: var(--docsearch-text-color) !important;
+  --docsearch-hit-active-bg: #F9FAFB;
+  --docsearch-hit-icon-color: #9CA3AF;
+  --docsearch-hit-border-color: #E5E7EB;
+  --docsearch-hit-title-color: #000000;
+}
+
+html[data-theme="dark"] {
+  /* Base Styles */
+  --ifm-hr-background-color: #2D2D2D;
+
+  /* Colors */
+  --ifm-color-primary-dark: #6231ff;
+  --ifm-color-primary-darker: #5520ff;
+  --ifm-color-primary-darkest: #3800ed;
+  --ifm-color-primary: #9675ff;
+  --ifm-color-primary-lighter: #a386ff;
+  --ifm-color-primary-lightest: #c9b8ff;
+  --ifm-background-color: #161616;
+  --ifm-background-surface-color: #161616;
+  --ifm-medusa-gray: #292929;
+  --ifm-color-content: #8A8A8A;
+
+  /* Headings */
+  --ifm-color-headers: #F3F3F3;
+
+  /* Links */
+  --ifm-link-color: #8A8A8A;
+
+  /* Sidebar */
+  --ifm-menu-color: rgba(255, 255, 255, 0.5);
+  --ifm-menu-active: #fff;
+
+  /* Toc */
+  --ifm-toc-border-color: #333;
+  --ifm-toc-link-active: #F3F3F3;
+  --ifm-toc-link-color: #737373;
+  --ifm-toc-divider-color: #393939;
+
+  /* Navbar */
+  --ifm-navbar-background-color: #161616;
+  --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
+  --ifm-navbar-link-hover-color: #F3F3F3;
+  --ifm-navbar-link-color: #8A8A8A;
+
+  /* Color Mode toggler */
+  --mode-tabs-bg: #222222;
+  --mode-button-text-color: #8A8A8A;
+  --mode-button-active-bg: #161616;
+  --mode-button-active-border-color: #393939;
+  --mode-button-active-text-color: #F3F3F3;
+
+  /* Notes */
+  --ifm-note-background: #222222;
+  --ifm-note-border-color: #393939;
+  --ifm-note-text-color: #8A8A8A;
+
+  /* Code */
+  --ifm-code-border-color: #393939;
+  --ifm-code-background: #222222;
+  --ifm-code-color: #8A8A8A;
+  --ifm-code-tabs-active-bg: #222222;
+  --ifm-code-tabs-active-color: #F3F3F3;
+  --ifm-code-action-hover-bg: rgba(255, 255, 255, 0.05);
+
+  /* Tooltip */
+  --ifm-tooltip-background-color: #222222;
+  --ifm-tooltip-border-color: #393939;
+
+  /* Buttons */
+  --ifm-primary-btn-background-color: #222222;
+  --ifm-primary-btn-color: #F3F3F3;
+  --ifm-primary-btn-border-color: #393939;
+
+  /* Footer */
+  --ifm-footer-border-color: #3E3F41;
+  --ifm-footer-title-color: #F3F3F3;
+  --ifm-footer-link-color: var(--ifm-color-content);
+
+  /* Search */
+  --docsearch-searchbox-background: #222222 !important;
+  --docsearch-searchbox-focus-background: var(--docsearch-searchbox-background) !important;
+  --docsearch-modal-background: #222222 !important;
+  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(34, 34, 34, 0) 0%, #222222 100%);
+  --docsearch-container-background: rgba(22, 22, 22, 0.7) !important;
+  --docsearch-key-gradient: #393939 !important;
+  --docsearch-muted-color: #8A8A8A !important;
+  --docsearch-placeholder-color: #686868;
+  --docsearch-searchbox-shadow: 0px 0px 0px 4px rgba(139, 92, 246, 0.2) !important;
+  --docsearch-searchbox-border-color: #8B5CF6;
+  --docsearch-highlight-color: #8A8A8A !important;
+  --docsearch-text-color: #F3F3F3 !important;
+  --docsearch-hit-background: #222222 !important;
+  --docsearch-hit-active-color: var(--docsearch-text-color) !important;
+  --docsearch-hit-active-bg: #2D2D2D;
+  --docsearch-hit-icon-color: #737373;
+  --docsearch-hit-border-color: #393939;
+  --docsearch-hit-title-color: #F3F3F3;
+}
