@@ -109,26 +109,26 @@ class OrderService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-                manager,
-                orderRepository,
-                customerService,
-                paymentProviderService,
-                shippingOptionService,
-                shippingProfileService,
-                discountService,
-                fulfillmentProviderService,
-                fulfillmentService,
-                lineItemService,
-                totalsService,
-                regionService,
-                cartService,
-                addressRepository,
-                giftCardService,
-                draftOrderService,
-                inventoryService,
-                eventBusService,
-                featureFlagRouter,
-              }: InjectedDependencies) {
+    manager,
+    orderRepository,
+    customerService,
+    paymentProviderService,
+    shippingOptionService,
+    shippingProfileService,
+    discountService,
+    fulfillmentProviderService,
+    fulfillmentService,
+    lineItemService,
+    totalsService,
+    regionService,
+    cartService,
+    addressRepository,
+    giftCardService,
+    draftOrderService,
+    inventoryService,
+    eventBusService,
+    featureFlagRouter,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
