@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
+
 import PublishableAPIKeysFeatureFlag from "../loaders/feature-flags/publishable-api-keys"
 
 export const featureFlag = PublishableAPIKeysFeatureFlag.key
