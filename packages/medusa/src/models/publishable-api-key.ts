@@ -1,11 +1,13 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, JoinColumn, ManyToOne } from "typeorm"
 
 import { SoftDeletableEntity } from "../interfaces"
 import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
 import { User } from "./user"
+import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
+import PublishableAPIKeysFeatureFlag from "../loaders/feature-flags/publishable-api-keys"
 
-@Entity()
+@FeatureFlagEntity(PublishableAPIKeysFeatureFlag.key)
 export class PublishableApiKey extends SoftDeletableEntity {
   @Column({ nullable: true })
   created_by: string | null
