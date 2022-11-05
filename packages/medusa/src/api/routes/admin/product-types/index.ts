@@ -38,7 +38,7 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./delete-product-type").default)
   )
-  typeRouter.post(
+  typeRouter.put(
     "/",
     transformBody(AdminPostProductTypeReq),
     middlewares.wrap(require("./update-product-type").default)
@@ -50,6 +50,7 @@ export default (app) => {
 export const defaultAdminProductTypeFields = [
   "id",
   "value",
+  "metadata",
   "created_at",
   "updated_at",
 ]
