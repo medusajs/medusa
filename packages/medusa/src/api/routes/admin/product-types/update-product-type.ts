@@ -1,24 +1,24 @@
-import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
+import { IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import ProductTypeService from "../../../../services/product-type"
 
 /**
- * @oas [post] /product-types
+ * @oas [post] /product-types/{id}
  * operationId: "PostProductTypes"
- * summary: "Create a Product Type"
- * description: "Creates a Product Type."
+ * summary: "Update a Product Type"
+ * description: "Updates a Product Type."
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Product Type.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - value
  *         properties:
  *           value:
  *             type: string
- *             description:  The value to identify the type by.
+ *             description:  The value to identify the Product Type by.
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -29,8 +29,8 @@ import ProductTypeService from "../../../../services/product-type"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productTypes.create({
- *         value: 'New Type'
+ *       medusa.admin.productTypes.update(product_type_id, {
+ *         value: 'New Product Type'
  *       })
  *       .then(({ product_type }) => {
  *         console.log(product_type.id);
@@ -38,11 +38,11 @@ import ProductTypeService from "../../../../services/product-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/product-types' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/product-types/{id}' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "title": "New Collection"
+ *           "value": "New Product Type"
  *       }'
  * security:
  *   - api_token: []
@@ -72,27 +72,30 @@ import ProductTypeService from "../../../../services/product-type"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const { validatedBody } = req as { validatedBody: AdminPostProductTypesReq }
+  const { id } = req.params
+  const { validatedBody } = req as {
+    validatedBody: AdminPostProductTypeReq
+  }
 
-  const typeService: ProductTypeService =
+  const productTypeService: ProductTypeService =
     req.scope.resolve("productTypeService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const created = await manager.transaction(async (transactionManager) => {
-    return await typeService
+  const updated = await manager.transaction(async (transactionManager) => {
+    return await productTypeService
       .withTransaction(transactionManager)
-      .create(validatedBody)
+      .update(id, validatedBody)
   })
 
-  const type = await typeService.retrieve(created.id)
+  const product_type = await productTypeService.retrieve(updated.id)
 
-  res.status(200).json({ product_type: type })
+  res.status(200).json({ product_type })
 }
 
-export class AdminPostProductTypesReq {
+export class AdminPostProductTypeReq {
   @IsString()
-  @IsNotEmpty()
-  value: string
+  @IsOptional()
+  value?: string
 
   @IsObject()
   @IsOptional()

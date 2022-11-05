@@ -4,8 +4,8 @@ import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isString } from "../utils"
-import { CreateProductType } from "../types/product-type"
+import { buildQuery, isString, setMetadata } from "../utils"
+import { CreateProductType, UpdateProductType } from "../types/product-type"
 
 class ProductTypeService extends TransactionBaseService {
   protected readonly typeRepository_: typeof ProductTypeRepository
@@ -117,6 +117,51 @@ class ProductTypeService extends TransactionBaseService {
     }
 
     return await typeRepo.findAndCount(query)
+  }
+
+  /**
+   * Deletes a product type idempotently
+   * @param productTypeId - id of product type to delete
+   * @return empty promise
+   */
+  async delete(productTypeId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+      const productType = await this.retrieve(productTypeId)
+
+      if (!productType) {
+        return Promise.resolve()
+      }
+
+      await typeRepo.softRemove(productType)
+      return Promise.resolve()
+    })
+  }
+
+  /**
+   * Updates a product type
+   * @param productTypeId - id of product type to update
+   * @param update - update object
+   * @return update product type
+   */
+  async update(
+    productTypeId: string,
+    update: UpdateProductType
+  ): Promise<ProductType> {
+    return await this.atomicPhase_(async (manager) => {
+      const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+      const productType = await this.retrieve(productTypeId)
+
+      const { metadata, ...rest } = update
+      if (metadata) {
+        productType.metadata = setMetadata(productType, metadata)
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        productType[key] = value
+      }
+      return typeRepo.save(productType)
+    })
   }
 }
 
