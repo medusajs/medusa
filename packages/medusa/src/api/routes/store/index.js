@@ -20,6 +20,7 @@ import returnRoutes from "./returns"
 import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
+import productOptionRoutes from "./product-options"
 
 const route = Router()
 
@@ -56,6 +57,7 @@ export default (app, container, config) => {
   returnReasonRoutes(route)
   paymentCollectionRoutes(route)
   productCategoryRoutes(route)
+  productOptionRoutes(route)
 
   return app
 }
