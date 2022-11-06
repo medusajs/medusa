@@ -1,6 +1,6 @@
-# Namespace: "/Users/shahednasser/medusa/packages/medusa/dist/types/global"
+# Namespace: "/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"
 
-[internal](internal-15.md)."/Users/shahednasser/medusa/packages/medusa/dist/types/global"
+[internal](internal-7.md)."/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"
 
 ## Type Aliases
 
@@ -76,7 +76,7 @@ ___
 
 ### MedusaContainer
 
-Ƭ **MedusaContainer**: `AwilixContainer` & { `registerAdd`: <T\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](internal-15.__Users_shahednasser_medusa_packages_medusa_dist_types_global_.md#medusacontainer)  }
+Ƭ **MedusaContainer**: `AwilixContainer` & { `registerAdd`: <T\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md#medusacontainer)  }
 
 #### Defined in
 

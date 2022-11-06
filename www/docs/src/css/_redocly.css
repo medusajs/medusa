@@ -1,0 +1,29 @@
+html[data-theme="dark"] .redocusaurus .expanded + tr > td > div {
+  background-color: var(--ifm-medusa-gray);
+}
+
+.redocusaurus a {
+  color: var(--ifm-link-color) !important;
+}
+
+.redocusaurus [data-section-id] > div:nth-child(2) pre {
+  background-color: transparent !important;
+  margin-top: 10px;
+}
+
+html[data-theme="dark"] .redocusaurus h5 + svg {
+  fill: #fff;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  padding: 8px 9.6px;
+}
+
+html[data-theme="dark"] .redocusaurus h2 + div + div > div + div {
+  background-color: #11171a;
+}
+
+html[data-theme="dark"] .redocusaurus .menu-content,
+html[data-theme="dark"] .redocusaurus .menu-content label {
+  background-color: var(--ifm-background-color) !important;
+}

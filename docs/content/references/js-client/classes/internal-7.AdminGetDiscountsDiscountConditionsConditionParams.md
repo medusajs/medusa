@@ -2,15 +2,25 @@
 
 [internal](../modules/internal-7.md).AdminGetDiscountsDiscountConditionsConditionParams
 
+## Hierarchy
+
+- [`FindParams`](internal-5.FindParams.md)
+
+  ↳ **`AdminGetDiscountsDiscountConditionsConditionParams`**
+
 ## Properties
 
 ### expand
 
 • `Optional` **expand**: `string`
 
+#### Inherited from
+
+[FindParams](internal-5.FindParams.md).[expand](internal-5.FindParams.md#expand)
+
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/get-condition.d.ts:58
+medusa/dist/types/common.d.ts:117
 
 ___
 
@@ -18,6 +28,10 @@ ___
 
 • `Optional` **fields**: `string`
 
+#### Inherited from
+
+[FindParams](internal-5.FindParams.md).[fields](internal-5.FindParams.md#fields)
+
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/get-condition.d.ts:59
+medusa/dist/types/common.d.ts:118

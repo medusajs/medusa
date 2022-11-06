@@ -9,29 +9,33 @@ import clsx from 'clsx';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
+import ThemedImage from '@theme/ThemedImage';
 
-function CardContainer({href, children}) {
+function CardContainer({href, children, className}) {
   return (
     <Link
       href={href}
-      className={clsx('card padding--lg', styles.cardContainer)}>
+      className={clsx('card', styles.cardContainer, className)}>
       {children}
     </Link>
   );
 }
-function CardLayout({href, icon, title, description}) {
+function CardLayout({href, icon, title, description, containerClassName}) {
   return (
-    <CardContainer href={href}>
-      <h2 className={clsx('text--truncate', styles.cardTitle)} title={title}>
-        {icon} {title}
-      </h2>
-      {description && (
-        <p
-          className={clsx('text--truncate', styles.cardDescription)}
-          title={description}>
-          {description}
-        </p>
-      )}
+    <CardContainer href={href} className={containerClassName}>
+      {icon}
+      <div className={clsx(styles.contentContainer)}>
+        <h2 className={clsx(styles.cardTitle)} title={title}>
+          {title}
+        </h2>
+        {description && (
+          <p
+            className={clsx(styles.cardDescription)}
+            title={description}>
+            {description}
+          </p>
+        )}
+      </div>
     </CardContainer>
   );
 }
@@ -55,25 +59,45 @@ function CardCategory({item}) {
         },
         {count: item.items.length},
       )}
+      containerClassName={item.customProps?.className}
     />
   );
 }
 function CardLink({item}) {
   let icon;
-  if (item.customProps && item.customProps.image) {
-    icon = <img src={item.customProps.image} alt={item.label} width={24} height={24} />;
+  if (item.customProps && item.customProps.themedImage) {
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        <ThemedImage alt={item.label} sources={{
+          light: item.customProps.themedImage.light,
+          dark: item.customProps.themedImage.dark
+        }} />
+      </div>
+    )
+  } else if (item.customProps && item.customProps.image) {
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        <img src={item.customProps.image} alt={item.label} />
+      </div>
+    );
   } else if (item.customProps && item.customProps.icon) {
     icon = item.customProps.icon;
   } else {
-    icon = isInternalUrl(item.href) ? '📄️' : '🔗';
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        {isInternalUrl(item.href) ? '📄️' : '🔗'}
+      </div>
+    );
   }
   const doc = useDocById(item.docId ?? undefined);
+
   return (
     <CardLayout
       href={item.href}
       icon={icon}
       title={item.label}
-      description={doc?.description}
+      description={item.customProps?.description || doc?.description}
+      containerClassName={item.customProps?.className}
     />
   );
 }
