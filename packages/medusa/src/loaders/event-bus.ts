@@ -1,8 +1,7 @@
 import { asValue } from "awilix"
 import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
-import { ConfigModule, MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer
@@ -10,7 +9,7 @@ type Options = {
   logger: Logger
 }
 
-async function redisLoader({
+async function eventBusLoader({
   container,
   configModule,
   logger,
@@ -43,4 +42,4 @@ async function redisLoader({
   }
 }
 
-export default redisLoader
+export default eventBusLoader

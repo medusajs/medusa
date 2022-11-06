@@ -1,9 +1,9 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
-import { ConfigModule, Logger } from "../types/global"
-import { StagedJobRepository } from "../repositories/staged-job"
 import { StagedJob } from "../models"
+import { StagedJobRepository } from "../repositories/staged-job"
+import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
@@ -16,6 +16,11 @@ type InjectedDependencies = {
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 
+type RedisCreateConnectionOptions = {
+  client: Redis.Redis
+  subscriber: Redis.Redis
+}
+
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -25,11 +30,12 @@ export default class EventBusService {
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
-  protected readonly observers_: Map<string | symbol, Subscriber[]>
-  protected readonly cronHandlers_: Map<string | symbol, Subscriber[]>
-  protected readonly redisClient_: Redis.Redis
-  protected readonly redisSubscriber_: Redis.Redis
-  protected readonly cronQueue_: Bull
+
+  protected observers_: Map<string | symbol, Subscriber[]>
+  protected cronHandlers_: Map<string | symbol, Subscriber[]>
+  protected redisClient_: Redis.Redis
+  protected redisSubscriber_: Redis.Redis
+  protected cronQueue_: Bull
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
@@ -46,42 +52,60 @@ export default class EventBusService {
     config: ConfigModule,
     singleton = true
   ) {
-    const opts = {
-      createClient: (type: string): Redis.Redis => {
-        switch (type) {
-          case "client":
-            return redisClient
-          case "subscriber":
-            return redisSubscriber
-          default:
-            if (config.projectConfig.redis_url) {
-              return new Redis(config.projectConfig.redis_url)
-            }
-            return redisClient
-        }
-      },
-    }
-
     this.config_ = config
     this.manager_ = manager
     this.logger_ = logger
     this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {
-      this.observers_ = new Map()
-      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
-      this.cronHandlers_ = new Map()
-      this.redisClient_ = redisClient
-      this.redisSubscriber_ = redisSubscriber
-      this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
-      // Register our worker to handle emit calls
-      this.queue_.process(this.worker_)
-      // Register cron worker
-      this.cronQueue_.process(this.cronWorker_)
+      this.connect({ client: redisClient, subscriber: redisSubscriber })
+    }
+  }
 
-      if (process.env.NODE_ENV !== "test") {
-        this.startEnqueuer()
-      }
+  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
+  private reuseConnections(
+    client: Redis.Redis,
+    subscriber: Redis.Redis
+  ): { createClient: (type: string) => Redis.Redis } {
+    return {
+      createClient: (type: string): Redis.Redis => {
+        switch (type) {
+          case "client":
+            return client
+          case "subscriber":
+            return subscriber
+          default:
+            if (this.config_.projectConfig.redis_url) {
+              return new Redis(this.config_.projectConfig.redis_url)
+            }
+            return client
+        }
+      },
+    }
+  }
+
+  connect(options: RedisCreateConnectionOptions): void {
+    const { client, subscriber } = options
+
+    this.observers_ = new Map()
+    this.queue_ = new Bull(
+      `${this.constructor.name}:queue`,
+      this.reuseConnections(client, subscriber)
+    )
+    this.cronHandlers_ = new Map()
+    this.redisClient_ = client
+    this.redisSubscriber_ = subscriber
+    this.cronQueue_ = new Bull(
+      `cron-jobs:queue`,
+      this.reuseConnections(client, subscriber)
+    )
+    // Register our worker to handle emit calls
+    this.queue_.process(this.worker_)
+    // Register cron worker
+    this.cronQueue_.process(this.cronWorker_)
+
+    if (process.env.NODE_ENV !== "test") {
+      this.startEnqueuer()
     }
   }
 
@@ -189,7 +213,8 @@ export default class EventBusService {
       const stagedJobInstance = stagedJobRepository.create({
         event_name: eventName,
         data,
-      })
+      } as StagedJob)
+
       return await stagedJobRepository.save(stagedJobInstance)
     } else {
       const opts: { removeOnComplete: boolean; delay?: number } = {
