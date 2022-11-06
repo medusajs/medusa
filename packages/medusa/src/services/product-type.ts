@@ -52,9 +52,26 @@ class ProductTypeService extends TransactionBaseService {
   async create(productType: CreateProductType): Promise<ProductType> {
     return await this.atomicPhase_(async (manager) => {
       const typeRepository = manager.getCustomRepository(this.typeRepository_)
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
-      const result = typeRepository.create(productType)
-      return await typeRepository.save(result)
+      const { images, ...rest } = productType
+      if (!rest.thumbnail && images && images.length) {
+        rest.thumbnail = images[0]
+      }
+
+      try {
+        const result = typeRepository.create(rest)
+
+        if (images?.length) {
+          result.images = await imageRepo.upsertImages(images)
+        }
+
+        await typeRepository.save(result)
+
+        return await this.retrieve(result.id)
+      } catch (error) {
+        throw formatException(error)
+      }
     })
   }
 
@@ -150,9 +167,21 @@ class ProductTypeService extends TransactionBaseService {
   ): Promise<ProductType> {
     return await this.atomicPhase_(async (manager) => {
       const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
-      const productType = await this.retrieve(productTypeId)
+      const imageRepo = this.manager_.getCustomRepository(this.imageRepository_)
 
-      const { metadata, ...rest } = update
+      const productType = await this.retrieve(productTypeId, {
+        relations: ["images"],
+      })
+
+      const { metadata, images, ...rest } = update
+      if (!productType.thumbnail && !update.thumbnail && images?.length) {
+        productType.thumbnail = images[0]
+      }
+
+      if (images) {
+        productType.images = await imageRepo.upsertImages(images)
+      }
+
       if (metadata) {
         productType.metadata = setMetadata(productType, metadata)
       }

@@ -50,12 +50,11 @@ export default (app) => {
 export const defaultAdminProductTypeFields = [
   "id",
   "value",
+  "thumbnail",
   "metadata",
-  "created_at",
-  "updated_at",
 ]
 
-export const defaultAdminProductTypeRelations = []
+export const defaultAdminProductTypeRelations = ["images"]
 
 /**
  * @schema AdminProductTypesListRes

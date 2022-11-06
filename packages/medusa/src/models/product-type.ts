@@ -1,13 +1,31 @@
-import { BeforeInsert, Column, Entity } from "typeorm"
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany } from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Image } from "./image"
 
 @Entity()
 export class ProductType extends SoftDeletableEntity {
   @Column()
   value: string
+
+  @ManyToMany(() => Image, { cascade: ["insert"] })
+  @JoinTable({
+    name: "product_type_images",
+    joinColumn: {
+      name: "product_type_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "image_id",
+      referencedColumnName: "id",
+    },
+  })
+  images: Image[]
+
+  @Column({ type: "text", nullable: true })
+  thumbnail: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
@@ -39,6 +57,14 @@ export class ProductType extends SoftDeletableEntity {
  *     description: The value that the Product Type represents.
  *     type: string
  *     example: Clothing
+ *   images:
+ *     description: "Images of the Product Type."
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/image"
+ *   thumbnail:
+ *     description: "A URL to an image file that can be used to identify the Product Type."
+ *     type: string
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

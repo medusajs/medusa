@@ -1,4 +1,4 @@
-import { IsObject, IsOptional, IsString } from "class-validator"
+import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import ProductTypeService from "../../../../services/product-type"
@@ -19,6 +19,14 @@ import ProductTypeService from "../../../../services/product-type"
  *           value:
  *             type: string
  *             description:  The value to identify the Product Type by.
+ *           images:
+ *             description: Images of the Product Type.
+ *             type: array
+ *             items:
+ *               type: string
+ *           thumbnail:
+ *             description: The thumbnail to use for the Product Type.
+ *             type: string
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
@@ -96,6 +104,14 @@ export class AdminPostProductTypeReq {
   @IsString()
   @IsOptional()
   value?: string
+
+  @IsArray()
+  @IsOptional()
+  images?: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 
   @IsObject()
   @IsOptional()
