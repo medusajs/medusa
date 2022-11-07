@@ -375,7 +375,7 @@ describe("/admin/swaps", () => {
       medusaProcess.kill()
     })
 
-    describe("Complete swap flow", () => {
+    describe("Complete swap flow with discount", () => {
       beforeEach(async () => {
         try {
           await adminSeeder(dbConnection)
