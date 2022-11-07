@@ -239,6 +239,7 @@ export default class EventBusService {
 
       return await stagedJobRepository.save(stagedJobInstance)
     } else {
+      // should be replaced by a generic event bus
       const opts: { removeOnComplete: boolean; delay?: number } = {
         removeOnComplete: true,
       }

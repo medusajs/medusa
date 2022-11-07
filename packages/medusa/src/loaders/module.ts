@@ -1,12 +1,18 @@
-import { asValue, asFunction } from "awilix"
-import { ConfigModule, MedusaContainer } from "../types/global"
+import { asValue } from "awilix"
+
+import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer
   configModule: ConfigModule
+  logger: Logger
 }
 
-export default async ({ container, configModule }: Options): Promise<void> => {
+export default async ({
+  container,
+  configModule,
+  logger,
+}: Options): Promise<void> => {
   const moduleResolutions = configModule?.moduleResolutions ?? {}
   for (const [_, resolution] of Object.entries(moduleResolutions)) {
     if (resolution.shouldResolve) {
@@ -17,7 +23,7 @@ export default async ({ container, configModule }: Options): Promise<void> => {
           await Promise.all(
             moduleLoaders.map(
               async (loader: (opts: Options) => Promise<void>) => {
-                return loader({ container, configModule })
+                return loader({ container, configModule, logger })
               }
             )
           )

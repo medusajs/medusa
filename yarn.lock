@@ -4315,6 +4315,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/event-bus-redis@workspace:packages/event-bus-redis":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/event-bus-redis@workspace:packages/event-bus-redis"
+  dependencies:
+    "@medusajs/medusa": ^1.4.1
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.45
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.x.x
+    medusa-interfaces: 1.x.x
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"

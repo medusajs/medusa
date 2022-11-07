@@ -1,9 +1,10 @@
+import { ConfigModule, Logger, MedusaContainer, StagedJob } from "@medusajs/medusa"
+import { StagedJobRepository } from "@medusajs/medusa/dist/repositories/staged-job"
+import { asValue } from "awilix"
 import Bull from "bull"
 import Redis from "ioredis"
+import FakeRedis from "ioredis-mock"
 import { EntityManager } from "typeorm"
-import { StagedJob } from "../models"
-import { StagedJobRepository } from "../repositories/staged-job"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
@@ -12,7 +13,6 @@ type InjectedDependencies = {
   stagedJobRepository: typeof StagedJobRepository
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
-  eventBusStrategy: IEventBusStrategy
 }
 
 type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -20,11 +20,6 @@ type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
 type RedisCreateConnectionOptions = {
   client: Redis.Redis
   subscriber: Redis.Redis
-}
-
-interface IEventBusStrategy {
-  publish<T>(eventName: string, data: T, options: Record<string, unknown>): void
-  subscribe<T>(eventName: string, handler: (data: T) => void): void
 }
 
 /**
@@ -37,12 +32,13 @@ export default class EventBusService {
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
-  protected readonly eventBusStrategy_: IEventBusStrategy
 
   protected observers_: Map<string | symbol, EventHandler[]>
   protected cronHandlers_: Map<string | symbol, EventHandler[]>
-  //   protected cronQueue_: Bull
-  //   protected queue_: Bull
+  protected redisClient_: Redis.Redis
+  protected redisSubscriber_: Redis.Redis
+  protected cronQueue_: Bull
+  protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
   protected enqueue_: Promise<void>
@@ -56,8 +52,56 @@ export default class EventBusService {
     this.config_ = config
     this.manager_ = container.manager
     this.logger_ = container.logger
-    this.eventBusStrategy_ = container.eventBusStrategy
     this.stagedJobRepository_ = container.stagedJobRepository
+
+    if (singleton) {
+      this.connect({
+        client: container.redisClient,
+        subscriber: container.redisSubscriber,
+      })
+    }
+  }
+
+  public createRedis() {
+    if (this.config_.projectConfig.redis_url) {
+      const client = new Redis(this.config_.projectConfig.redis_url)
+      const subscriber = new Redis(this.config_.projectConfig.redis_url)
+
+      this.container_.register({
+        redisClient: asValue(client),
+        redisSubscriber: asValue(subscriber),
+      })
+    } else {
+      const client = new FakeRedis()
+
+      this.container_.register({
+        redisClient: asValue(client),
+        redisSubscriber: asValue(client),
+      })
+    }
+  }
+
+  // To be economical about the use of Redis connections, we reuse existing connection whenever possible
+  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
+  private reuseConnections(
+    client: Redis.Redis,
+    subscriber: Redis.Redis
+  ): { createClient: (type: string) => Redis.Redis } {
+    return {
+      createClient: (type: string): Redis.Redis => {
+        switch (type) {
+          case "client":
+            return client
+          case "subscriber":
+            return subscriber
+          default:
+            if (this.config_.projectConfig.redis_url) {
+              return new Redis(this.config_.projectConfig.redis_url)
+            }
+            return client
+        }
+      },
+    }
   }
 
   connect(options: RedisCreateConnectionOptions): void {

@@ -16,7 +16,6 @@ import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
-import eventBusLoader from "./event-bus"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
@@ -90,9 +89,9 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  await moduleLoader({ container, configModule })
+  await moduleLoader({ container, configModule, logger: Logger })
 
-  await eventBusLoader({ container, configModule, logger: Logger })
+  // await eventBusLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
