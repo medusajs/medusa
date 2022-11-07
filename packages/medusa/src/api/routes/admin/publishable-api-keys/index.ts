@@ -2,7 +2,7 @@ import { Router } from "express"
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import middlewares, { transformBody } from "../../../middlewares"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -15,7 +15,11 @@ export default (app) => {
 
   route.post(
     "/",
-    transformBody(class {}),
     middlewares.wrap(require("./create-publishable-api-key").default)
+  )
+
+  route.post(
+    "/:id/confirm",
+    middlewares.wrap(require("./revoke-publishable-api-key").default)
   )
 }

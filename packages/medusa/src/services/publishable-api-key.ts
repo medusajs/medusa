@@ -117,8 +117,14 @@ class PublishableApiKeyService extends TransactionBaseService {
    * Revoke a PublishableApiKey
    *
    * @param publishableApiKeyId - id of the key
+   * @param context - key revocation context object
    */
-  async revoke(publishableApiKeyId: string): Promise<void | never> {
+  async revoke(
+    publishableApiKeyId: string,
+    context: {
+      loggedInUserId: string
+    }
+  ): Promise<void | never> {
     return await this.atomicPhase_(async (manager) => {
       const repo = manager.getCustomRepository(
         this.publishableApiKeyRepository_
@@ -134,6 +140,8 @@ class PublishableApiKeyService extends TransactionBaseService {
       }
 
       pubKey.revoked_at = new Date()
+      pubKey.revoked_by = context.loggedInUserId
+
       await repo.save(pubKey)
 
       await this.eventBusService_

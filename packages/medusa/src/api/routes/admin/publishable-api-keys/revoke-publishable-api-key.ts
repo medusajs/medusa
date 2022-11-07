@@ -4,10 +4,10 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys
- * operationId: "PostPublishableApiKeys"
- * summary: "Create a PublishableApiKey"
- * description: "Creates a PublishableApiKey."
+ * @oas [post] /publishable-api-keys/{id}/revoke
+ * operationId: "PostPublishableApiKeysPublishableApiKeyRevoke"
+ * summary: "Revoke a PublishableApiKey"
+ * description: "Revokes a PublishableApiKey."
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -16,16 +16,16 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.create()
+ *       medusa.admin.publishableApiKey.revoke()
  *         .then(({ publishable_api_key }) => {
  *           console.log(publishable_api_key.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys/pubkey_123/revoke' \
  *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "created_by": "user_123" }'
+ *       -d '{ "created_by": "user_123", "revoked_by": "user_123" }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -54,6 +54,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
+  const { id } = req.params
+
   const publishableApiKeyService = req.scope.resolve(
     "publishableApiKeyService"
   ) as PublishableApiKeyService
@@ -63,9 +65,11 @@ export default async (req: Request, res: Response) => {
   const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
 
   const pubKey = await manager.transaction(async (transactionManager) => {
-    return await publishableApiKeyService
-      .withTransaction(transactionManager)
-      .create({ loggedInUserId })
+    const publishableApiKeyServiceTx =
+      publishableApiKeyService.withTransaction(transactionManager)
+
+    await publishableApiKeyServiceTx.revoke(id, { loggedInUserId })
+    return await publishableApiKeyServiceTx.retrieve(id)
   })
 
   return res.json({ publishable_api_key: pubKey })
