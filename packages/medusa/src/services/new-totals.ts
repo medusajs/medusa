@@ -104,7 +104,7 @@ export default class NewTotalsService extends TransactionBaseService {
         items.forEach((item) => {
           lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
         })
-      } else if (items.length) {
+      } else {
         const { lineItemsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
           .getTaxLinesMap(items, calculationContext)
