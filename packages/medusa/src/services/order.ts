@@ -1423,7 +1423,7 @@ class OrderService extends TransactionBaseService {
             item,
             order,
             {
-              include_tax: order.region?.automatic_taxes,
+              include_tax: true,
               calculation_context: calculationContext,
             }
           )
