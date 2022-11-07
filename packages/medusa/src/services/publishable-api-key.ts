@@ -172,6 +172,16 @@ class PublishableApiKeyService extends TransactionBaseService {
         })
     })
   }
+
+  /**
+   * Check whether the key is active (i.e. haven't been revoked or deleted yet)
+   *
+   * @param publishableApiKeyId - id of the key
+   */
+  async isValid(publishableApiKeyId: string): Promise<boolean> {
+    const pubKey = await this.retrieve(publishableApiKeyId)
+    return pubKey.revoked_by === null
+  }
 }
 
 export default PublishableApiKeyService
