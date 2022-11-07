@@ -12,7 +12,7 @@ For that reason, when the `start` and `build` scripts in `www/docs` are used, th
 
 If you receive the following error when you run the `build` command in `www/docs`:
 
-```bash
+```bash noHeader
 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
 ```
 
