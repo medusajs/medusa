@@ -530,7 +530,6 @@ describe("PaymentCollectionService", () => {
         IdMap.getId("payCol_session1"),
         {
           customer_id: "customer1",
-          amount: 100,
           provider_id: IdMap.getId("region1_provider1"),
         }
       )
@@ -544,19 +543,20 @@ describe("PaymentCollectionService", () => {
       )
     })
 
-    it("should fail to refresh a payment session if the amount is different", async () => {
+    it("should throw to refresh a payment session that doesn't exist", async () => {
       const sess = paymentCollectionService.refreshPaymentSession(
         IdMap.getId("payment-collection-session"),
-        IdMap.getId("payCol_session1"),
+        IdMap.getId("payCol_session-not-found"),
         {
           customer_id: "customer1",
-          amount: 80,
           provider_id: IdMap.getId("region1_provider1"),
         }
       )
 
       expect(sess).rejects.toThrow(
-        "The amount has to be the same as the existing payment session"
+        `Session with id ${IdMap.getId(
+          "payCol_session-not-found"
+        )} was not found`
       )
       expect(PaymentProviderServiceMock.refreshSessionNew).toBeCalledTimes(0)
       expect(DefaultProviderMock.deletePayment).toBeCalledTimes(0)

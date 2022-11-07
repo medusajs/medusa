@@ -70,7 +70,7 @@ export default async (req, res) => {
     })
   }
 
-  async function autorizePaymentCollection(req, id, paymentIntentId) {
+  async function autorizePaymentCollection(req, id, orderId) {
     const manager = req.scope.resolve("manager")
     const paymentCollectionService = req.scope.resolve(
       "paymentCollectonService"
@@ -97,8 +97,8 @@ export default async (req, res) => {
     }
 
     if (isPaymentCollection(customId)) {
-      const paymentIntentId = order.id
-      await autorizePaymentCollection(req, customId, paymentIntentId)
+      const orderId = order.id
+      await autorizePaymentCollection(req, customId, orderId)
     } else {
       await autorizeCart(req, customId)
     }

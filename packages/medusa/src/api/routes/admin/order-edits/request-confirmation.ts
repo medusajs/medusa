@@ -68,7 +68,9 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .requestConfirmation(id, validatedBody.description, {
+      .requestConfirmation(id, {
+        paymentCollectionDescription:
+          validatedBody.payment_collection_description,
         loggedInUserId: loggedInUser,
       })
   })
@@ -87,5 +89,5 @@ export default async (req, res) => {
 export class AdminPostOrderEditsRequestConfirmationReq {
   @IsString()
   @IsOptional()
-  description?: string | undefined
+  payment_collection_description?: string | undefined
 }

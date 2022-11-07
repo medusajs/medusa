@@ -7,7 +7,7 @@ export default async (req, res) => {
     "paymentCollectionService"
   )
 
-  const payment_collection = await paymentCollectionService.delete(id)
+  await paymentCollectionService.delete(id)
 
-  res.status(200).json({ payment_collection })
+  res.status(200).json({ id, deleted: true, object: "payment_collection" })
 }

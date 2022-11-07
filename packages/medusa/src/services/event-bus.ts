@@ -238,7 +238,8 @@ export default class EventBusService {
         })
       )
 
-      await sleep(3000)
+      // await sleep(3000)
+      break
     }
   }
 

@@ -662,8 +662,8 @@ export default class OrderEditService extends TransactionBaseService {
 
   async requestConfirmation(
     orderEditId: string,
-    description?: string,
     context: {
+      paymentCollectionDescription?: string
       loggedInUserId?: string
     } = {}
   ): Promise<OrderEdit> {
@@ -701,7 +701,7 @@ export default class OrderEditService extends TransactionBaseService {
             amount: total.difference_due,
             currency_code: orderEdit.order.currency_code,
             region_id: orderEdit.order.region_id,
-            description: description,
+            description: context.paymentCollectionDescription,
             created_by: context.loggedInUserId as string,
           })
 

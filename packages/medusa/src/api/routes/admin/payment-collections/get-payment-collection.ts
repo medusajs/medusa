@@ -9,12 +9,12 @@ export default async (req, res) => {
     "paymentCollectionService"
   )
 
-  const payment_collection = await paymentCollectionService.retrieve(
+  const paymentCollection = await paymentCollectionService.retrieve(
     id,
     retrieveConfig
   )
 
-  res.status(200).json({ payment_collection })
+  res.status(200).json({ payment_collection: paymentCollection })
 }
 
 export class GetPaymentCollectionsParams extends FindParams {}

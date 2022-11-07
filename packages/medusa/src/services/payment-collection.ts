@@ -298,7 +298,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
   async refreshPaymentSession(
     paymentCollectionId: string,
     sessionId: string,
-    sessionInput: PaymentCollectionSessionInput
+    sessionInput: Omit<PaymentCollectionSessionInput, "amount">
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
@@ -328,10 +328,10 @@ export default class PaymentCollectionService extends TransactionBaseService {
         (sess) => sessionId === sess?.id
       )
 
-      if (session?.amount !== sessionInput.amount) {
+      if (!session) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "The amount has to be the same as the existing payment session"
+          `Session with id ${sessionId} was not found`
         )
       }
 

@@ -12,7 +12,7 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const payment_collection = await manager.transaction(
+  const paymentCollection = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
@@ -20,7 +20,7 @@ export default async (req, res) => {
     }
   )
 
-  res.status(200).json({ payment_collection })
+  res.status(200).json({ payment_collection: paymentCollection })
 }
 
 export class AdminRefreshPaymentCollectionSessionRequest {
@@ -29,8 +29,4 @@ export class AdminRefreshPaymentCollectionSessionRequest {
 
   @IsString()
   customer_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  amount: number
 }
