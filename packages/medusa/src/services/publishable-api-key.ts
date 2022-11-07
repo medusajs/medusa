@@ -135,6 +135,25 @@ class PublishableApiKeyService extends TransactionBaseService {
   }
 
   /**
+   * Delete Publishable API key.
+   *
+   * @param publishableApiKeyId - id of the key being deleted
+   */
+  async delete(publishableApiKeyId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const repo = manager.getCustomRepository(
+        this.publishableApiKeyRepository_
+      )
+
+      const publishableApiKey = await this.retrieve(publishableApiKeyId).catch()
+
+      if (publishableApiKey) {
+        await repo.remove(publishableApiKey)
+      }
+    })
+  }
+
+  /**
    * Revoke a PublishableApiKey
    *
    * @param publishableApiKeyId - id of the key
