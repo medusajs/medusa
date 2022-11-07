@@ -1,12 +1,12 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { PublishableApiKey } from "../models/publishable-api-key"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
-import { PublishableApiKey } from "../models/publishable-api-key"
-import { FindConfig, Selector } from "../types/common"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -35,7 +35,6 @@ class PublishableApiKeyService extends TransactionBaseService {
     eventBusService,
     publishableApiKeyRepository,
   }: InjectedDependencies) {
-    // @ts-ignore
     super(arguments[0])
 
     this.manager_ = manager
@@ -111,6 +110,28 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
 
     return publishableApiKey
+  }
+
+  /**
+   * Lists publishable API keys based on the provided parameters.
+   *
+   * @return an array containing publishable API keys and a total count of records that matches the query
+   */
+  async listAndCount(
+    selector: QuerySelector<PublishableApiKey>,
+    config: FindConfig<PublishableApiKey> = {
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<[PublishableApiKey[], number]> {
+    const manager = this.manager_
+    const pubKeyRepo = manager.getCustomRepository(
+      this.publishableApiKeyRepository_
+    )
+
+    const query = buildQuery(selector, config)
+
+    return await pubKeyRepo.findAndCount(query)
   }
 
   /**
