@@ -600,7 +600,7 @@ class SwapService extends TransactionBaseService {
         order?.discounts?.filter(({ rule }) => rule.type !== "free_shipping") ||
         undefined
 
-      const cart = await this.cartService_.withTransaction(manager).create({
+      let cart = await this.cartService_.withTransaction(manager).create({
         discounts,
         email: order.email,
         billing_address_id: order.billing_address_id,
@@ -613,6 +613,7 @@ class SwapService extends TransactionBaseService {
           parent_order_id: order.id,
         },
       })
+      cart = await this.cartService_.withTransaction(manager).retrieve(cart.id)
 
       const customShippingOptionServiceTx =
         this.customShippingOptionService_.withTransaction(manager)
