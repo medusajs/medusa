@@ -435,7 +435,7 @@ Object {
         "discount_total": 0,
         "fulfilled_quantity": 2,
         "has_shipping": null,
-        "id":Any<String>,
+        "id": Any<String>,
         "is_giftcard": false,
         "is_return": false,
         "metadata": null,
