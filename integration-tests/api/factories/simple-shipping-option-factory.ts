@@ -1,6 +1,7 @@
 import {
   ShippingOption,
   ShippingOptionPriceType,
+  ShippingOptionRequirement,
   ShippingProfile,
   ShippingProfileType,
 } from "@medusajs/medusa"
@@ -17,6 +18,12 @@ export type ShippingOptionFactoryData = {
   price_type?: ShippingOptionPriceType
   includes_tax?: boolean
   data?: object
+  requirements: ShippingOptionRequirementData[]
+}
+
+type ShippingOptionRequirementData = {
+  type: 'min_subtotal' | 'max_subtotal'
+  amount: number
 }
 
 export const simpleShippingOptionFactory = async (
@@ -46,6 +53,7 @@ export const simpleShippingOptionFactory = async (
     profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
     price_type: data.price_type ?? ShippingOptionPriceType.FLAT_RATE,
     data: data.data ?? {},
+    requirements: (data.requirements || []) as ShippingOptionRequirement[],
     amount: typeof data.price !== "undefined" ? data.price : 500,
   }
 

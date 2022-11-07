@@ -1,3 +1,7 @@
+---
+description: 'Learn step-by-step.'
+---
+
 # Deploy Your Medusa Server to DigitalOcean Apps
 
 In this document, you'll learn how to deploy your Medusa server to a DigitalOcean App.
