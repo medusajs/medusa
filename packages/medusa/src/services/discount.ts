@@ -589,7 +589,6 @@ class DiscountService extends TransactionBaseService {
         ) &&
         lineItem.includes_tax
       ) {
-        cart.items = []
         const lineItemTotals = await this.totalsService_.getLineItemTotals(
           lineItem,
           cart,
