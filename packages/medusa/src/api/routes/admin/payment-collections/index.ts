@@ -49,11 +49,6 @@ export default (app, container) => {
   )
 
   route.post(
-    ":id/payments/capture",
-    middlewares.wrap(require("./capture-all-payment-collection").default)
-  )
-
-  route.post(
     "/payments/:payment_id/capture",
     middlewares.wrap(require("./capture-payment").default)
   )
