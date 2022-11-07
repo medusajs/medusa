@@ -86,6 +86,8 @@
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+  --ifm-pre-padding: 16px;
+  --docusaurus-highlighted-code-line-bg: #393939;
 
   /* Tooltip */
   --ifm-tooltip-background-color: #fff;
@@ -143,12 +145,7 @@ html[data-theme="dark"] {
   --ifm-hr-background-color: #2D2D2D;
 
   /* Colors */
-  --ifm-color-primary-dark: #6231ff;
-  --ifm-color-primary-darker: #5520ff;
-  --ifm-color-primary-darkest: #3800ed;
-  --ifm-color-primary: #9675ff;
-  --ifm-color-primary-lighter: #a386ff;
-  --ifm-color-primary-lightest: #c9b8ff;
+  --ifm-color-primary: #F3F3F3;
   --ifm-background-color: #161616;
   --ifm-background-surface-color: #161616;
   --ifm-medusa-gray: #292929;
@@ -237,4 +234,7 @@ html[data-theme="dark"] {
   --ifm-announcement-bar-icon-bg: #393939;
   --ifm-announcement-bar-icon-border-color: #393939;
   --ifm-announcement-bar-text-color: #737373;
+
+  /* Tabs */
+  --ifm-tabs-color-active: #F3F3F3;
 }

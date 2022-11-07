@@ -180,7 +180,7 @@ You’ll have to follow five steps for the initialization:
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 
-```bash
+```bash noHeader
 ? What would you like to do? 
   ⇄  Connect this directory to an existing Netlify site 
 ❯ +  Create & configure a new site
@@ -198,7 +198,7 @@ You’ll be asked to optionally enter a site name.
 
 At this point, the website is created on Netlify. However, Netlify needs to configure Webhooks and deployment keys. You’ll be asked to either authorize GitHub through Netlify’s website or through a personal access token. You’re free to choose either:
 
-```bash
+```bash noHeader
 ? Netlify CLI needs access to your GitHub account to configure Webhooks and Depl
 oy Keys. What would you like to do? (Use arrow keys)
 ❯ Authorize with GitHub through app.netlify.com 
