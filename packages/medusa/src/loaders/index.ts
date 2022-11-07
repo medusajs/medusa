@@ -3,7 +3,7 @@ import {
   asValue,
   AwilixContainer,
   createContainer,
-  Resolver
+  Resolver,
 } from "awilix"
 import { ClassOrFunctionReturning } from "awilix/lib/container"
 import { Express, NextFunction, Request, Response } from "express"
@@ -16,7 +16,6 @@ import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
-import eventBusLoader from "./event-bus"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
@@ -96,7 +95,7 @@ export default async ({
   const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
-  await eventBusLoader({ container, configModule, logger: Logger })
+  // await eventBusLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
