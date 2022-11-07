@@ -628,11 +628,14 @@ class SwapService extends TransactionBaseService {
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
 
-      for (const item of swap.additional_items) {
-        await lineItemServiceTx.update(item.id, {
-          cart_id: cart.id,
-        })
-      }
+      await Promise.all(
+        swap.additional_items.map(
+          async (item) =>
+            await lineItemServiceTx.update(item.id, {
+              cart_id: cart.id,
+            })
+        )
+      )
 
       cart = await this.cartService_
         .withTransaction(manager)
@@ -640,13 +643,15 @@ class SwapService extends TransactionBaseService {
           relations: ["items", "region", "discounts", "discounts.rule"],
         })
 
-      for (const item of cart.items) {
-        // we generate adjustments in case the cart has any discounts that should be applied to the additional items
-        await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
-          cart,
-          item
-        )
-      }
+      await Promise.all(
+        cart.items.map(async (item) => {
+          // we generate adjustments in case the cart has any discounts that should be applied to the additional items
+          await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
+            cart,
+            item
+          )
+        })
+      )
 
       // If the swap has a return shipping method the price has to be added to
       // the cart.
