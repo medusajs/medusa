@@ -16,7 +16,17 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:137
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:139
+
+___
+
+### discount\_condition\_id
+
+• `Optional` **discount\_condition\_id**: `string`
+
+#### Defined in
+
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:142
 
 ___
 
@@ -26,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:134
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:136
 
 ___
 
@@ -40,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:130
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:132
 
 ___
 
@@ -54,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:131
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:133
 
 ___
 
@@ -64,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:139
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:141
 
 ___
 
@@ -74,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:135
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:137
 
 ___
 
@@ -84,7 +94,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:138
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:140
 
 ___
 
@@ -94,4 +104,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:136
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:138

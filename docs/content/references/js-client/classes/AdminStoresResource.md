@@ -31,7 +31,7 @@ updated store.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:31](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L31)
+[medusa-js/src/resources/admin/store.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L31)
 
 ___
 
@@ -58,7 +58,7 @@ updated store
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:45](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L45)
+[medusa-js/src/resources/admin/store.ts:45](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L45)
 
 ___
 
@@ -84,7 +84,7 @@ a list of payment providers configured on the store
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:68](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L68)
+[medusa-js/src/resources/admin/store.ts:68](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L68)
 
 ___
 
@@ -110,7 +110,7 @@ a list of payment providers configured on the store
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:79](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L79)
+[medusa-js/src/resources/admin/store.ts:79](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L79)
 
 ___
 
@@ -136,7 +136,7 @@ a medusa store
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:57](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L57)
+[medusa-js/src/resources/admin/store.ts:57](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L57)
 
 ___
 
@@ -163,4 +163,4 @@ the updated store.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/store.ts:17](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/store.ts#L17)
+[medusa-js/src/resources/admin/store.ts:17](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/store.ts#L17)

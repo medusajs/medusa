@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.34
+
+### Patch Changes
+
+- [#2514](https://github.com/medusajs/medusa/pull/2514) [`ea3d73882`](https://github.com/medusajs/medusa/commit/ea3d7388234f23c4a5bc7ceb55c493a097b76c12) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa): invalid medusa-config handling in loaders
+
 ## 1.1.33
 
 ### Patch Changes

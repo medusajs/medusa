@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/refund.ts:19](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L19)
+[models/refund.ts:23](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L23)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:16](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L16)
+[models/refund.ts:20](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L20)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:20](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L20)
+[models/refund.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L24)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/refund.ts:17](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L17)
+[models/refund.ts:21](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L21)
 
 ___
 
@@ -52,4 +52,4 @@ ___
 
 #### Defined in
 
-[models/refund.ts:18](https://github.com/medusajs/medusa/blob/c4c83c971/packages/medusa/src/models/refund.ts#L18)
+[models/refund.ts:22](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/refund.ts#L22)

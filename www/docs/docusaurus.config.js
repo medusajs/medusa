@@ -52,23 +52,17 @@ const config = {
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
-      theme: require("prism-react-renderer/themes/vsDark"),
-      darkTheme: require("prism-react-renderer/themes/vsDark"),
+      theme: require("./src/themes/medusaDocs"),
     },
     zoom: {
-      selector: '.markdown img',
-      background: {
-        light: 'rgb(255, 255, 255)',
-        dark: 'rgb(50, 50, 50)'
-      }
+      selector: '.markdown :not(.no-zoom-img) > img:not(.no-zoom-img)'
     },
     navbar: {
-      hideOnScroll: true,
+      hideOnScroll: false,
       logo: {
         alt: "Medusa",
-        src: "img/logo.svg",
-        srcDark: "img/logo-dark.svg",
-        width: 100
+        src: "img/logo.png",
+        srcDark: "img/logo-dark.png"
       },
       items: [
         {
@@ -82,42 +76,82 @@ const config = {
           label: "User Guide"
         },
         {
-          type: 'dropdown',
-          label: 'REST API Reference',
-          items: [
-            {
-              type: 'html',
-              value: `
-              <a href="/api/store" target="_blank" rel="noopener noreferrer" class="dropdown__link">Store
-                <svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_node_modules-@docusaurus-theme-classic-lib-theme-Icon-ExternalLink-styles-module">
-                  <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path>
-                </svg>
-              </a>`
-            },
-            {
-              type: 'html',
-              value: `
-              <a href="/api/admin" target="_blank" rel="noopener noreferrer" class="dropdown__link">Admin
-                <svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_node_modules-@docusaurus-theme-classic-lib-theme-Icon-ExternalLink-styles-module">
-                  <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path>
-                </svg>
-              </a>`
-            },
-          ],
+          href: "/api/store",
+          label: "Store API",
+          prependBaseUrlToHref: true,
+          target: '_blank'
         },
         {
-          href: "https://github.com/medusajs/medusa",
-          className: "navbar-github-link",
-          position: "right",
+          href: "/api/admin",
+          label: "Admin API",
+          prependBaseUrlToHref: true,
+          target: '_blank'
         },
         {
-          type: "search",
+          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
           position: "right",
+          label: "Report an Issue",
+          className: "right-divider"
         },
       ],
     },
     footer: {
+      logo: {
+        alt: "Medusa",
+        src: "img/logo.png",
+        srcDark: "img/logo-dark.png"
+      },
       links: [
+        {
+          title: 'Product',
+          items: [
+            {
+              label: 'Get started',
+              to: '/quickstart/quick-start'
+            },
+            {
+              label: 'Docs',
+              to: '/'
+            },
+            {
+              label: 'Store API',
+              to: '/api/store'
+            },
+            {
+              label: 'Admin API',
+              to: '/api/admin'
+            }
+          ]
+        },
+        {
+          title: 'Company',
+          items: [
+            {
+              label: 'Careers',
+              href: 'https://medusajs.notion.site/Careers-at-Medusa-f986a1d41eb146d888f9590a360547d1'
+            },
+            {
+              label: 'Pricing',
+              href: 'https://medusajs.com/pricing/'
+            },
+            {
+              label: 'Press Kit',
+              href: 'https://medusajs.notion.site/Media-Kit-9d885bb679674b458bca316f841322b6'
+            },
+            {
+              label: 'About',
+              href: 'https://medusajs.notion.site/'
+            },
+            {
+              label: 'Blog',
+              href: 'https://medusajs.com/blog'
+            },
+            {
+              label: 'Contact',
+              href: 'https://medusajs.com/contact-us/'
+            }
+          ]
+        },
         {
           title: "Community",
           items: [
@@ -126,51 +160,33 @@ const config = {
               href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
             },
             {
+              label: "Discussions",
+              href: "https://github.com/medusajs/medusa/discussions",
+            },
+            {
               label: "Discord",
               href: "https://discord.gg/medusajs",
-            },
-            {
-              label: "Twitter",
-              href: "https://twitter.com/medusajs",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "Medusa Home",
-              href: "https://medusajs.com",
-            },
-            {
-              label: "Contact",
-              href: "https://ky5eo2x1u81.typeform.com/get-in-touch",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/medusajs/medusa",
-            },
-            {
-              label: "Integrations",
-              href: "https://medusajs.notion.site/1a0ada9903874e0185d0b8ce0591b359?v=0631285851ba4021aa07c3b48dd4801a",
             },
           ],
         },
       ],
       copyright: `© ${new Date().getFullYear()} Medusa`,
     },
-    sidebarFooter: [
+    socialLinks: [
       {
-        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-        label: 'Report an Issue',
-        className: 'alert-icon',
+        type: 'discord',
+        href: 'https://discord.gg/medusajs'
       },
       {
-        href: "https://medusajs.com/",
-        label: 'Go to medusajs.com',
-        className: 'topright-icon',
+        type: 'twitter',
+        href: 'https://twitter.com/medusajs'
+      },
+      {
+        type: 'github',
+        href: 'https://github.com/medusajs/medusa'
       },
     ],
+    reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml'
   },
   presets: [
     [
@@ -184,7 +200,8 @@ const config = {
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
           ],
-          showLastUpdateTime: true
+          showLastUpdateTime: true,
+          breadcrumbs: false,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
