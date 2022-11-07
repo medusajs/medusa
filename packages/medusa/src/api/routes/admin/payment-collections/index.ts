@@ -4,7 +4,6 @@ import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminCreatePaymentCollectionRequest } from "./create-payment-collection"
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
@@ -29,12 +28,6 @@ export default (app, container) => {
       isList: false,
     }),
     middlewares.wrap(require("./get-payment-collection").default)
-  )
-
-  route.post(
-    "/",
-    transformBody(AdminCreatePaymentCollectionRequest),
-    middlewares.wrap(require("./create-payment-collection").default)
   )
 
   route.post(
@@ -84,6 +77,5 @@ export const defaulPaymentCollectionRelations = [
 ]
 
 export * from "./get-payment-collection"
-export * from "./create-payment-collection"
 export * from "./update-payment-collection"
-export * from "./create-payment-collection"
+export * from "./refund-payment"
