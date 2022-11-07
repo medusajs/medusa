@@ -78,8 +78,8 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async retrieve(
     publishableApiKeyId: string,
-    config: FindConfig<PublishableApiKey | never>
-  ): Promise<PublishableApiKey> {
+    config: FindConfig<PublishableApiKey> = {}
+  ): Promise<PublishableApiKey | never> {
     return await this.retrieve_({ id: publishableApiKeyId }, config)
   }
 
@@ -92,10 +92,11 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected async retrieve_(
     selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {}
-  ): Promise<PublishableApiKey> {
+  ): Promise<PublishableApiKey | never> {
     const repo = this.manager_.getCustomRepository(
       this.publishableApiKeyRepository_
     )
+
     const { relations, ...query } = buildQuery(selector, config)
     const publishableApiKey = await repo.findOneWithRelations(
       relations as (keyof PublishableApiKey)[],
@@ -110,6 +111,37 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
 
     return publishableApiKey
+  }
+
+  /**
+   * Revoke a PublishableApiKey
+   *
+   * @param publishableApiKeyId - id of the key
+   */
+  async revoke(publishableApiKeyId: string): Promise<void | never> {
+    return await this.atomicPhase_(async (manager) => {
+      const repo = manager.getCustomRepository(
+        this.publishableApiKeyRepository_
+      )
+
+      const pubKey = await this.retrieve(publishableApiKeyId)
+
+      if (pubKey.revoked_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `PublishableApiKey has already been revoked.`
+        )
+      }
+
+      pubKey.revoked_at = new Date()
+      await repo.save(pubKey)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(PublishableApiKeyService.Events.REVOKED, {
+          id: pubKey.id,
+        })
+    })
   }
 }
 
