@@ -6,7 +6,7 @@ import { PaymentCollectionService } from "../../../../services"
 
 export default async (req, res) => {
   const { id } = req.params
-  const data = req.validatedBody as CreatePaymentCollectionInput
+  const data = req.validatedBody as AdminUpdatePaymentCollectionRequest
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"

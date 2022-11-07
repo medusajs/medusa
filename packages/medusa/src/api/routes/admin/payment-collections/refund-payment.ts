@@ -6,23 +6,20 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { payment_id } = req.params
 
-  const validated = (await validator(
-    AdminPostPaymentCollectionRefundsReq,
-    req.body
-  )) as AdminPostPaymentCollectionRefundsReq
+  const data = req.validatedBody as AdminPostPaymentCollectionRefundsReq
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
 
-  const payments = await paymentCollectionService.refund(
+  const refund = await paymentCollectionService.refund(
     payment_id,
-    validated.amount,
-    validated.reason,
-    validated.note
+    data.amount,
+    data.reason,
+    data.note
   )
 
-  res.status(200).json({ payments })
+  res.status(200).json({ refund })
 }
 
 export class AdminPostPaymentCollectionRefundsReq {
