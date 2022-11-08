@@ -2,7 +2,8 @@ import { Router } from "express"
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 
 const route = Router()
 
@@ -27,4 +28,14 @@ export default (app) => {
     "/:id/confirm",
     middlewares.wrap(require("./revoke-publishable-api-key").default)
   )
+
+  route.get(
+    "/",
+    transformQuery(GetPublishableApiKeysParams, {
+      isList: true,
+    }),
+    middlewares.wrap(require("/list-publishable-api-keys").default)
+  )
 }
+
+export * from "./list-publishable-api-keys"
