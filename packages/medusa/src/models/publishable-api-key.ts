@@ -1,13 +1,13 @@
 import { BeforeInsert, Column } from "typeorm"
 
-import { SoftDeletableEntity } from "../interfaces"
+import { BaseEntity } from "../interfaces"
 import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import PublishableAPIKeysFeatureFlag from "../loaders/feature-flags/publishable-api-keys"
 
 @FeatureFlagEntity(PublishableAPIKeysFeatureFlag.key)
-export class PublishableApiKey extends SoftDeletableEntity {
+export class PublishableApiKey extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   created_by: string | null
 
@@ -58,9 +58,5 @@ export class PublishableApiKey extends SoftDeletableEntity {
  *   updated_at:
  *     type: string
  *     description: "The date with timezone at which the resource was updated."
- *     format: date-time
- *   deleted_at:
- *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  */
