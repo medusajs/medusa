@@ -2106,14 +2106,10 @@ class CartService extends TransactionBaseService {
       cart
     )
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
-    const cartItems = [...cart.items]
-    const cartShippingMethods = [...cart.shipping_methods]
+    const cartItems = [...(cart.items ?? [])]
+    const cartShippingMethods = [...(cart.shipping_methods ?? [])]
 
-    const useExistingTaxLines = cartItems.some(
-      (item) => !!item.tax_lines?.length
-    )
-
-    if (!useExistingTaxLines && includeTax) {
+    if (includeTax) {
       const taxLinesMaps = await this.taxProviderService_
         .withTransaction(manager)
         .getTaxLinesMap(cartItems, calculationContext)

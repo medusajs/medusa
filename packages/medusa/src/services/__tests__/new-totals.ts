@@ -4,7 +4,7 @@ import {
   giftCards,
   lineItems,
   shippingMethods,
-} from "./fixtures/new-totals"
+} from "./__fixtures__/new-totals"
 import { NewTotalsService } from "../index"
 import { TaxCalculationContext } from "../../interfaces"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
@@ -19,228 +19,28 @@ import { FlagRouter } from "../../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 describe("New totals service", () => {
-  describe("getLineItemTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
+  describe("Without [MEDUSA_FF_TAX_INCLUSIVE_PRICING]", () => {
+    describe("getLineItemTotals", () => {
+      let container
+      let newTotalsService: NewTotalsService
 
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register(
-        "taxProviderService",
-        asValue({
-          ...taxProviderServiceMock,
-          getTaxLinesMap: jest
-            .fn()
-            .mockImplementation(async (items: LineItem[]) => {
-              const result = {
-                lineItemsTaxLines: {},
-              }
-
-              for (const item of items) {
-                result.lineItemsTaxLines[item.id] = [
-                  {
-                    item_id: item.id,
-                    name: "default",
-                    code: "default",
-                    rate: 30,
-                  },
-                ]
-              }
-
-              return result
-            }),
-        })
-      )
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should use the items tax lines to compute the totals", async () => {
-      const testItem = lineItems[0]
-
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: true,
-          calculationContext,
-        }
-      )
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 1000,
-          total: 1200,
-          original_total: 1200,
-          discount_total: 0,
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining(testItem.tax_lines),
-        })
-      )
-    })
-
-    it("should fetch the items tax lines to compute the totals", async () => {
-      const testItem = { ...lineItems[0] } as LineItem
-      testItem.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: true,
-          calculationContext,
-        }
-      )
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
-        [testItem],
-        calculationContext
-      )
-
-      // unit_price: 1000, taxes 30%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 1000,
-          total: 1300,
-          original_total: 1300,
-          discount_total: 0,
-          original_tax_total: 300,
-          tax_total: 300,
-          tax_lines: expect.arrayContaining([
-            expect.objectContaining({
-              name: "default",
-              code: "default",
-              rate: 30,
-            }),
-          ]),
-        })
-      )
-    })
-
-    it("should not use tax lines when includeTax is not true to compute the totals", async () => {
-      const testItem = { ...lineItems[0] } as LineItem
-      testItem.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: false,
-          calculationContext,
-        }
-      )
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 1000,
-          total: 1000,
-          original_total: 1000,
-          discount_total: 0,
-          original_tax_total: 0,
-          tax_total: 0,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-
-    it("should use the provided tax rate to compute the totals", async () => {
-      const testItem = lineItems[0]
-
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          taxRate: 20,
-          calculationContext,
-        }
-      )
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 1000,
-          total: 1200,
-          original_total: 1200,
-          discount_total: 0,
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-  })
-
-  describe("getShippingMethodTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register(
-        "taxProviderService",
-        asValue({
-          ...taxProviderServiceMock,
-          getTaxLinesMap: jest
-            .fn()
-            .mockImplementation(
-              async (
-                items: LineItem[],
-                calculationContext: TaxCalculationContext
-              ) => {
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register(
+          "taxProviderService",
+          asValue({
+            ...taxProviderServiceMock,
+            getTaxLinesMap: jest
+              .fn()
+              .mockImplementation(async (items: LineItem[]) => {
                 const result = {
-                  shippingMethodsTaxLines: {},
+                  lineItemsTaxLines: {},
                 }
 
-                for (const method of calculationContext.shipping_methods) {
-                  result.shippingMethodsTaxLines[method.id] = [
+                for (const item of items) {
+                  result.lineItemsTaxLines[item.id] = [
                     {
-                      shipping_method_id: method.id,
+                      item_id: item.id,
                       name: "default",
                       code: "default",
                       rate: 30,
@@ -249,606 +49,604 @@ describe("New totals service", () => {
                 }
 
                 return result
-              }
-            ),
-        })
-      )
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should use the shipping method tax lines to compute the totals", async () => {
-      const testShippingMethod = shippingMethods[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // price: 1000, taxes: 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1200,
-          original_total: 1200,
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
-        })
-      )
-    })
-
-    it("should fetch the shipping method tax lines to compute the totals", async () => {
-      const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
-      testShippingMethod.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
-        [],
-        calculationContext
-      )
-
-      // price: 1000, taxes 30%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1300,
-          original_total: 1300,
-          original_tax_total: 300,
-          tax_total: 300,
-          tax_lines: expect.arrayContaining([
-            expect.objectContaining({
-              name: "default",
-              code: "default",
-              rate: 30,
-            }),
-          ]),
-        })
-      )
-    })
-
-    it("should not use tax lines when includeTax is not true to compute the totals", async () => {
-      const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
-      testShippingMethod.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: false,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // price: 1000
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1000,
-          original_total: 1000,
-          original_tax_total: 0,
-          tax_total: 0,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-
-    it("should use the provided tax rate to compute the totals", async () => {
-      const testShippingMethod = shippingMethods[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          taxRate: 20,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1000, // Legacy does not include the taxes
-          original_total: 1000, // Legacy does not include the taxes
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-
-    it("should compute a total to 0 if a free shipping discount is present", async () => {
-      const testShippingMethod = shippingMethods[0]
-
-      const discounts = [
-        {
-          rule: {
-            type: DiscountRuleType.FREE_SHIPPING,
-          },
-        },
-      ] as Discount[]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
-          calculationContext,
-          discounts,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 0,
-          total: 0,
-          original_total: 1200,
-          original_tax_total: 200,
-          tax_total: 0,
-          tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
-        })
-      )
-    })
-  })
-
-  describe("getLineItemRefund", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should compute the line item refundable amount", () => {
-      const testItem = lineItems[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const refundAmount = newTotalsService.getLineItemRefund(testItem, {
-        calculationContext,
-      })
-
-      // unit_price: 1000, taxes: 20%
-      expect(refundAmount).toEqual(1200)
-    })
-
-    it("should compute the line item refundable amount using the taxRate", () => {
-      const testItem = lineItems[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const refundAmount = newTotalsService.getLineItemRefund(testItem, {
-        taxRate: 30,
-        calculationContext,
-      })
-
-      // unit_price: 1000, taxes: 30%
-      expect(refundAmount).toEqual(1300)
-    })
-  })
-
-  describe("getGiftCardTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should compute the gift cards totals amount in non taxable region", async () => {
-      const maxAmount = 1000
-
-      const testGiftCard = giftCards[0]
-
-      const region = {
-        gift_cards_taxable: false,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCards: [testGiftCard],
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 0,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in a taxable region", async () => {
-      const maxAmount = 1000
-
-      const testGiftCard = giftCards[0]
-
-      const region = {
-        gift_cards_taxable: true,
-        tax_rate: 20,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCards: [testGiftCard],
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 200,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in non taxable region using gift card transactions", async () => {
-      const maxAmount = 1000
-
-      const giftCardTransactions = [
-        {
-          tax_rate: 20,
-          is_taxable: false,
-          amount: 1000,
-        },
-      ]
-
-      const region = {
-        gift_cards_taxable: false,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCardTransactions: giftCardTransactions,
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 200,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in a taxable region using gift card transactions", async () => {
-      const maxAmount = 1000
-
-      const giftCardTransactions = [
-        {
-          tax_rate: 20,
-          is_taxable: null,
-          amount: 1000,
-        },
-      ]
-
-      const region = {
-        gift_cards_taxable: true,
-        tax_rate: 30,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCardTransactions: giftCardTransactions,
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 300,
-        })
-      )
-    })
-  })
-})
-
-describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] New totals service", () => {
-  describe("getLineItemTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register(
-        "featureFlagRouter",
-        asValue(
-          new FlagRouter({
-            [TaxInclusivePricingFeatureFlag.key]: true,
+              }),
           })
         )
-      )
-      container.register(
-        "taxProviderService",
-        asValue({
-          ...taxProviderServiceMock,
-          getTaxLinesMap: jest
-            .fn()
-            .mockImplementation(async (items: LineItem[]) => {
-              const result = {
-                lineItemsTaxLines: {},
-              }
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
 
-              for (const item of items) {
-                result.lineItemsTaxLines[item.id] = [
-                  {
-                    item_id: item.id,
-                    name: "default",
-                    code: "default",
-                    rate: 30,
-                  },
-                ]
-              }
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
 
-              return result
-            }),
-        })
-      )
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
+      it("should use the items tax lines to compute the totals", async () => {
+        const testItem = lineItems[0]
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: true,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000, taxes 20%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 1000,
+            total: 1200,
+            original_total: 1200,
+            discount_total: 0,
+            original_tax_total: 200,
+            tax_total: 200,
+            tax_lines: expect.arrayContaining(testItem.tax_lines),
+          })
+        )
+      })
+
+      it("should fetch the items tax lines to compute the totals", async () => {
+        const testItem = { ...lineItems[0] } as LineItem
+        testItem.tax_lines = []
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: true,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
+          [testItem],
+          calculationContext
+        )
+
+        // unit_price: 1000, taxes 30%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 1000,
+            total: 1300,
+            original_total: 1300,
+            discount_total: 0,
+            original_tax_total: 300,
+            tax_total: 300,
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                name: "default",
+                code: "default",
+                rate: 30,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should not use tax lines when includeTax is not true to compute the totals", async () => {
+        const testItem = { ...lineItems[0] } as LineItem
+        testItem.tax_lines = []
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: false,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 1000,
+            total: 1000,
+            original_total: 1000,
+            discount_total: 0,
+            original_tax_total: 0,
+            tax_total: 0,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+
+      it("should use the provided tax rate to compute the totals", async () => {
+        const testItem = lineItems[0]
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            taxRate: 20,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000, taxes 20%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 1000,
+            total: 1200,
+            original_total: 1200,
+            discount_total: 0,
+            original_tax_total: 200,
+            tax_total: 200,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
     })
 
-    afterEach(() => {
-      jest.clearAllMocks()
+    describe("getShippingMethodTotals", () => {
+      let container
+      let newTotalsService: NewTotalsService
+
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register(
+          "taxProviderService",
+          asValue({
+            ...taxProviderServiceMock,
+            getTaxLinesMap: jest
+              .fn()
+              .mockImplementation(
+                async (
+                  items: LineItem[],
+                  calculationContext: TaxCalculationContext
+                ) => {
+                  const result = {
+                    shippingMethodsTaxLines: {},
+                  }
+
+                  for (const method of calculationContext.shipping_methods) {
+                    result.shippingMethodsTaxLines[method.id] = [
+                      {
+                        shipping_method_id: method.id,
+                        name: "default",
+                        code: "default",
+                        rate: 30,
+                      },
+                    ]
+                  }
+
+                  return result
+                }
+              ),
+          })
+        )
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
+
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("should use the shipping method tax lines to compute the totals", async () => {
+        const testShippingMethod = shippingMethods[0]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // price: 1000, taxes: 20%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 1000,
+            total: 1200,
+            original_total: 1200,
+            original_tax_total: 200,
+            tax_total: 200,
+            tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
+          })
+        )
+      })
+
+      it("should fetch the shipping method tax lines to compute the totals", async () => {
+        const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
+        testShippingMethod.tax_lines = []
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
+          [],
+          calculationContext
+        )
+
+        // price: 1000, taxes 30%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 1000,
+            total: 1300,
+            original_total: 1300,
+            original_tax_total: 300,
+            tax_total: 300,
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                name: "default",
+                code: "default",
+                rate: 30,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should not use tax lines when includeTax is not true to compute the totals", async () => {
+        const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
+        testShippingMethod.tax_lines = []
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: false,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // price: 1000
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 1000,
+            total: 1000,
+            original_total: 1000,
+            original_tax_total: 0,
+            tax_total: 0,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+
+      it("should use the provided tax rate to compute the totals", async () => {
+        const testShippingMethod = shippingMethods[0]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            taxRate: 20,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000, taxes 20%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 1000,
+            total: 1000, // Legacy does not include the taxes
+            original_total: 1000, // Legacy does not include the taxes
+            original_tax_total: 200,
+            tax_total: 200,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+
+      it("should compute a total to 0 if a free shipping discount is present", async () => {
+        const testShippingMethod = shippingMethods[0]
+
+        const discounts = [
+          {
+            rule: {
+              type: DiscountRuleType.FREE_SHIPPING,
+            },
+          },
+        ] as Discount[]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+            discounts,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000, taxes 20%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 0,
+            total: 0,
+            original_total: 1200,
+            original_tax_total: 200,
+            tax_total: 0,
+            tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
+          })
+        )
+      })
     })
 
-    it("should use the items tax lines to compute the totals", async () => {
-      const testItem = { ...lineItems[0] } as LineItem
-      testItem.includes_tax = true
+    describe("getLineItemRefund", () => {
+      let container
+      let newTotalsService: NewTotalsService
 
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
 
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: true,
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("should compute the line item refundable amount", () => {
+        const testItem = lineItems[0]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const refundAmount = newTotalsService.getLineItemRefund(testItem, {
           calculationContext,
-        }
-      )
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 833,
-          total: 1000,
-          original_total: 1000,
-          discount_total: 0,
-          original_tax_total: 167,
-          tax_total: 167,
-          tax_lines: expect.arrayContaining(testItem.tax_lines),
         })
-      )
+
+        // unit_price: 1000, taxes: 20%
+        expect(refundAmount).toEqual(1200)
+      })
+
+      it("should compute the line item refundable amount using the taxRate", () => {
+        const testItem = lineItems[0]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const refundAmount = newTotalsService.getLineItemRefund(testItem, {
+          taxRate: 30,
+          calculationContext,
+        })
+
+        // unit_price: 1000, taxes: 30%
+        expect(refundAmount).toEqual(1300)
+      })
     })
 
-    it("should fetch the tax lines to compute the totals", async () => {
-      const testItem = { ...lineItems[0] } as LineItem
-      testItem.tax_lines = []
-      testItem.includes_tax = true
+    describe("getGiftCardTotals", () => {
+      let container
+      let newTotalsService: NewTotalsService
 
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
 
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: true,
-          calculationContext,
-        }
-      )
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
 
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
-        [testItem],
-        calculationContext
-      )
+      it("should compute the gift cards totals amount in non taxable region", async () => {
+        const maxAmount = 1000
 
-      // unit_price: 1000, taxes 30%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 769,
-          total: 1000,
-          original_total: 1000,
-          discount_total: 0,
-          original_tax_total: 231,
-          tax_total: 231,
-          tax_lines: expect.arrayContaining([
-            expect.objectContaining({
-              name: "default",
-              code: "default",
-              rate: 30,
-            }),
-          ]),
-        })
-      )
-    })
+        const testGiftCard = giftCards[0]
 
-    it("should not use tax lines when includeTax is not true to compute the totals", async () => {
-      const testItem = { ...lineItems[0] } as LineItem
-      testItem.includes_tax = true
+        const region = {
+          gift_cards_taxable: false,
+        } as Region
 
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
+        const gitCardTotals = await newTotalsService.getGiftCardTotals(
+          maxAmount,
+          {
+            giftCards: [testGiftCard],
+            region,
+          }
+        )
 
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          includeTax: false,
-          calculationContext,
-        }
-      )
+        expect(gitCardTotals).toEqual(
+          expect.objectContaining({
+            total: 1000,
+            tax_total: 0,
+          })
+        )
+      })
 
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+      it("should compute the gift cards totals amount in a taxable region", async () => {
+        const maxAmount = 1000
 
-      // unit_price: 1000
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 833,
-          total: 1000,
-          original_total: 1000,
-          discount_total: 0,
-          original_tax_total: 167,
-          tax_total: 167,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
+        const testGiftCard = giftCards[0]
 
-    it("should use the provided tax rate to compute the totals", async () => {
-      const testItem = lineItems[0]
+        const region = {
+          gift_cards_taxable: true,
+          tax_rate: 20,
+        } as Region
 
-      const calculationContext = {
-        allocation_map: {
-          [testItem.id]: {},
-        },
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
+        const gitCardTotals = await newTotalsService.getGiftCardTotals(
+          maxAmount,
+          {
+            giftCards: [testGiftCard],
+            region,
+          }
+        )
 
-      const itemsTotalsMap = await newTotalsService.getLineItemTotals(
-        [testItem],
-        {
-          taxRate: 20,
-          calculationContext,
-        }
-      )
+        expect(gitCardTotals).toEqual(
+          expect.objectContaining({
+            total: 1000,
+            tax_total: 200,
+          })
+        )
+      })
 
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+      it("should compute the gift cards totals amount in non taxable region using gift card transactions", async () => {
+        const maxAmount = 1000
 
-      // unit_price: 1000, taxes 20%
-      expect(itemsTotalsMap[testItem.id]).toEqual(
-        expect.objectContaining({
-          unit_price: 1000,
-          subtotal: 1000,
-          total: 1200,
-          original_total: 1200,
-          discount_total: 0,
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
+        const giftCardTransactions = [
+          {
+            tax_rate: 20,
+            is_taxable: false,
+            amount: 1000,
+          },
+        ]
+
+        const region = {
+          gift_cards_taxable: false,
+        } as Region
+
+        const gitCardTotals = await newTotalsService.getGiftCardTotals(
+          maxAmount,
+          {
+            giftCardTransactions: giftCardTransactions,
+            region,
+          }
+        )
+
+        expect(gitCardTotals).toEqual(
+          expect.objectContaining({
+            total: 1000,
+            tax_total: 200,
+          })
+        )
+      })
+
+      it("should compute the gift cards totals amount in a taxable region using gift card transactions", async () => {
+        const maxAmount = 1000
+
+        const giftCardTransactions = [
+          {
+            tax_rate: 20,
+            is_taxable: null,
+            amount: 1000,
+          },
+        ]
+
+        const region = {
+          gift_cards_taxable: true,
+          tax_rate: 30,
+        } as Region
+
+        const gitCardTotals = await newTotalsService.getGiftCardTotals(
+          maxAmount,
+          {
+            giftCardTransactions: giftCardTransactions,
+            region,
+          }
+        )
+
+        expect(gitCardTotals).toEqual(
+          expect.objectContaining({
+            total: 1000,
+            tax_total: 300,
+          })
+        )
+      })
     })
   })
 
-  describe("getShippingMethodTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
+  describe("With [MEDUSA_FF_TAX_INCLUSIVE_PRICING]", () => {
+    describe("getLineItemTotals", () => {
+      let container
+      let newTotalsService: NewTotalsService
 
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register(
-        "taxProviderService",
-        asValue({
-          ...taxProviderServiceMock,
-          getTaxLinesMap: jest
-            .fn()
-            .mockImplementation(
-              async (
-                items: LineItem[],
-                calculationContext: TaxCalculationContext
-              ) => {
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register(
+          "featureFlagRouter",
+          asValue(
+            new FlagRouter({
+              [TaxInclusivePricingFeatureFlag.key]: true,
+            })
+          )
+        )
+        container.register(
+          "taxProviderService",
+          asValue({
+            ...taxProviderServiceMock,
+            getTaxLinesMap: jest
+              .fn()
+              .mockImplementation(async (items: LineItem[]) => {
                 const result = {
-                  shippingMethodsTaxLines: {},
+                  lineItemsTaxLines: {},
                 }
 
-                for (const method of calculationContext.shipping_methods) {
-                  result.shippingMethodsTaxLines[method.id] = [
+                for (const item of items) {
+                  result.lineItemsTaxLines[item.id] = [
                     {
-                      shipping_method_id: method.id,
+                      item_id: item.id,
                       name: "default",
                       code: "default",
                       rate: 30,
@@ -857,369 +655,439 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] New totals service", () => {
                 }
 
                 return result
-              }
-            ),
-        })
-      )
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
+              }),
+          })
+        )
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
 
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
 
-    it("should use the shipping method tax lines to compute the totals", async () => {
-      const testShippingMethod = shippingMethods[0]
+      it("should use the items tax lines to compute the totals", async () => {
+        const testItem = { ...lineItems[0] } as LineItem
+        testItem.includes_tax = true
 
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // price: 1000, taxes: 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1200,
-          original_total: 1200,
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
-        })
-      )
-    })
-
-    it("should fetch shipping method tax lines to compute the totals", async () => {
-      const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
-      testShippingMethod.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
-      expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
-        [],
-        calculationContext
-      )
-
-      // price: 1000, taxes 30%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1300,
-          original_total: 1300,
-          original_tax_total: 300,
-          tax_total: 300,
-          tax_lines: expect.arrayContaining([
-            expect.objectContaining({
-              name: "default",
-              code: "default",
-              rate: 30,
-            }),
-          ]),
-        })
-      )
-    })
-
-    it("should not use tax lines when includeTax is not true to compute the totals", async () => {
-      const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
-      testShippingMethod.tax_lines = []
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: false,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // price: 1000
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1000,
-          original_total: 1000,
-          original_tax_total: 0,
-          tax_total: 0,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-
-    it("should use the provided tax rate to compute the totals", async () => {
-      const testShippingMethod = shippingMethods[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
-
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          taxRate: 20,
-          calculationContext,
-        })
-
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 1000,
-          total: 1000, // Legacy does not include the taxes
-          original_total: 1000, // Legacy does not include the taxes
-          original_tax_total: 200,
-          tax_total: 200,
-          tax_lines: expect.arrayContaining([]),
-        })
-      )
-    })
-
-    it("should compute a total to 0 if a free shipping discount is present", async () => {
-      const testShippingMethod = shippingMethods[0]
-
-      const discounts = [
-        {
-          rule: {
-            type: DiscountRuleType.FREE_SHIPPING,
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
           },
-        },
-      ] as Discount[]
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
 
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [testShippingMethod],
-      } as unknown as TaxCalculationContext
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: true,
+            calculationContext,
+          }
+        )
 
-      const shippingMethodTotalsMap =
-        await newTotalsService.getShippingMethodTotals([testShippingMethod], {
-          includeTax: true,
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000 including taxes, taxes 20%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 833,
+            total: 1000,
+            original_total: 1000,
+            discount_total: 0,
+            original_tax_total: 167,
+            tax_total: 167,
+            tax_lines: expect.arrayContaining(testItem.tax_lines),
+          })
+        )
+      })
+
+      it("should fetch the tax lines to compute the totals", async () => {
+        const testItem = { ...lineItems[0] } as LineItem
+        testItem.tax_lines = []
+        testItem.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: true,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
+          [testItem],
+          calculationContext
+        )
+
+        // unit_price: 1000 including taxes, taxes 30%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 769,
+            total: 1000,
+            original_total: 1000,
+            discount_total: 0,
+            original_tax_total: 231,
+            tax_total: 231,
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                name: "default",
+                code: "default",
+                rate: 30,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should not use tax lines when includeTax is not true to compute the totals", async () => {
+        const testItem = { ...lineItems[0] } as LineItem
+        testItem.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            includeTax: false,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000 including taxes
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 833,
+            total: 1000,
+            original_total: 1000,
+            discount_total: 0,
+            original_tax_total: 167,
+            tax_total: 167,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+
+      it("should use the provided tax rate to compute the totals", async () => {
+        const testItem = lineItems[0]
+        testItem.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {
+            [testItem.id]: {},
+          },
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const itemsTotalsMap = await newTotalsService.getLineItemTotals(
+          [testItem],
+          {
+            taxRate: 20,
+            calculationContext,
+          }
+        )
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000 including taxes, taxes 20%
+        expect(itemsTotalsMap[testItem.id]).toEqual(
+          expect.objectContaining({
+            unit_price: 1000,
+            subtotal: 833,
+            total: 1000,
+            original_total: 1000,
+            discount_total: 0,
+            original_tax_total: 167,
+            tax_total: 167,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+    })
+
+    describe("getShippingMethodTotals", () => {
+      let container
+      let newTotalsService: NewTotalsService
+
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register(
+          "featureFlagRouter",
+          asValue(
+            new FlagRouter({
+              [TaxInclusivePricingFeatureFlag.key]: true,
+            })
+          )
+        )
+        container.register(
+          "taxProviderService",
+          asValue({
+            ...taxProviderServiceMock,
+            getTaxLinesMap: jest
+              .fn()
+              .mockImplementation(
+                async (
+                  items: LineItem[],
+                  calculationContext: TaxCalculationContext
+                ) => {
+                  const result = {
+                    shippingMethodsTaxLines: {},
+                  }
+
+                  for (const method of calculationContext.shipping_methods) {
+                    result.shippingMethodsTaxLines[method.id] = [
+                      {
+                        shipping_method_id: method.id,
+                        name: "default",
+                        code: "default",
+                        rate: 30,
+                      },
+                    ]
+                  }
+
+                  return result
+                }
+              ),
+          })
+        )
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
+
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("should use the shipping method tax lines to compute the totals", async () => {
+        const testShippingMethod = shippingMethods[0]
+        testShippingMethod.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // price: 1000 including taxes, taxes: 20%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 833,
+            total: 1000,
+            original_total: 1000,
+            original_tax_total: 167,
+            tax_total: 167,
+            tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
+          })
+        )
+      })
+
+      it("should fetch shipping method tax lines to compute the totals", async () => {
+        const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
+        testShippingMethod.tax_lines = []
+        testShippingMethod.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledTimes(1)
+        expect(taxProviderService.getTaxLinesMap).toHaveBeenCalledWith(
+          [],
+          calculationContext
+        )
+
+        // price: 1000 including taxes, taxes 30%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 769,
+            total: 1000,
+            original_total: 1000,
+            original_tax_total: 231,
+            tax_total: 231,
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                name: "default",
+                code: "default",
+                rate: 30,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should not use tax lines when includeTax is not true to compute the totals", async () => {
+        const testShippingMethod = { ...shippingMethods[0] } as ShippingMethod
+        testShippingMethod.tax_lines = []
+        testShippingMethod.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: false,
+            calculationContext,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // price: 1000 including taxes
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 1000,
+            total: 1000,
+            original_total: 1000,
+            original_tax_total: 0,
+            tax_total: 0,
+            tax_lines: expect.arrayContaining([]),
+          })
+        )
+      })
+
+      // Not applicable to legacy shipping method totals calculation
+      /*it("should use the provided tax rate to compute the totals", async () => {})*/
+
+      it("should compute a total to 0 if a free shipping discount is present", async () => {
+        const testShippingMethod = shippingMethods[0]
+        testShippingMethod.includes_tax = true
+
+        const discounts = [
+          {
+            rule: {
+              type: DiscountRuleType.FREE_SHIPPING,
+            },
+          },
+        ] as Discount[]
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [testShippingMethod],
+        } as unknown as TaxCalculationContext
+
+        const shippingMethodTotalsMap =
+          await newTotalsService.getShippingMethodTotals([testShippingMethod], {
+            includeTax: true,
+            calculationContext,
+            discounts,
+          })
+
+        const taxProviderService = container.resolve("taxProviderService")
+        expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
+
+        // unit_price: 1000 including taxes, taxes 20%
+        expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
+          expect.objectContaining({
+            price: 1000,
+            subtotal: 0,
+            total: 0,
+            original_total: 1000,
+            original_tax_total: 167,
+            tax_total: 0,
+            tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
+          })
+        )
+      })
+    })
+
+    describe("getLineItemRefund", () => {
+      let container
+      let newTotalsService: NewTotalsService
+
+      beforeEach(() => {
+        container = createContainer({}, defaultContainerMock)
+        container.register(
+          "featureFlagRouter",
+          asValue(
+            new FlagRouter({
+              [TaxInclusivePricingFeatureFlag.key]: true,
+            })
+          )
+        )
+        container.register("newTotalsService", asClass(NewTotalsService))
+        newTotalsService = container.resolve("newTotalsService")
+      })
+
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
+      it("should compute the line item refundable amount", () => {
+        const testItem = lineItems[0]
+        testItem.includes_tax = true
+
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
+
+        const refundAmount = newTotalsService.getLineItemRefund(testItem, {
           calculationContext,
-          discounts,
         })
 
-      const taxProviderService = container.resolve("taxProviderService")
-      expect(taxProviderService.getTaxLinesMap).not.toHaveBeenCalled()
-
-      // unit_price: 1000, taxes 20%
-      expect(shippingMethodTotalsMap[testShippingMethod.id]).toEqual(
-        expect.objectContaining({
-          price: 1000,
-          subtotal: 0,
-          total: 0,
-          original_total: 1200,
-          original_tax_total: 200,
-          tax_total: 0,
-          tax_lines: expect.arrayContaining(testShippingMethod.tax_lines),
-        })
-      )
-    })
-  })
-
-  describe("getLineItemRefund", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should compute the line item refundable amount", () => {
-      const testItem = lineItems[0]
-
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
-
-      const refundAmount = newTotalsService.getLineItemRefund(testItem, {
-        calculationContext,
+        // unit_price: 1000 including taxes, taxes: 20%
+        expect(refundAmount).toEqual(1000)
       })
 
-      // unit_price: 1000, taxes: 20%
-      expect(refundAmount).toEqual(1200)
-    })
+      it("should compute the line item refundable amount using the taxRate", () => {
+        const testItem = lineItems[0]
+        testItem.includes_tax = true
 
-    it("should compute the line item refundable amount using the taxRate", () => {
-      const testItem = lineItems[0]
+        const calculationContext = {
+          allocation_map: {},
+          shipping_methods: [],
+        } as unknown as TaxCalculationContext
 
-      const calculationContext = {
-        allocation_map: {},
-        shipping_methods: [],
-      } as unknown as TaxCalculationContext
+        const refundAmount = newTotalsService.getLineItemRefund(testItem, {
+          taxRate: 30,
+          calculationContext,
+        })
 
-      const refundAmount = newTotalsService.getLineItemRefund(testItem, {
-        taxRate: 30,
-        calculationContext,
+        // unit_price: 1000  including taxes, taxes: 30%
+        expect(refundAmount).toEqual(1000)
       })
-
-      // unit_price: 1000, taxes: 30%
-      expect(refundAmount).toEqual(1300)
-    })
-  })
-
-  describe("getGiftCardTotals", () => {
-    let container
-    let newTotalsService: NewTotalsService
-
-    beforeEach(() => {
-      container = createContainer({}, defaultContainerMock)
-      container.register("newTotalsService", asClass(NewTotalsService))
-      newTotalsService = container.resolve("newTotalsService")
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should compute the gift cards totals amount in non taxable region", async () => {
-      const maxAmount = 1000
-
-      const testGiftCard = giftCards[0]
-
-      const region = {
-        gift_cards_taxable: false,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCards: [testGiftCard],
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 0,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in a taxable region", async () => {
-      const maxAmount = 1000
-
-      const testGiftCard = giftCards[0]
-
-      const region = {
-        gift_cards_taxable: true,
-        tax_rate: 20,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCards: [testGiftCard],
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 200,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in non taxable region using gift card transactions", async () => {
-      const maxAmount = 1000
-
-      const giftCardTransactions = [
-        {
-          tax_rate: 20,
-          is_taxable: false,
-          amount: 1000,
-        },
-      ]
-
-      const region = {
-        gift_cards_taxable: false,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCardTransactions: giftCardTransactions,
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000,
-          tax_total: 200,
-        })
-      )
-    })
-
-    it("should compute the gift cards totals amount in a taxable region using gift card transactions", async () => {
-      const maxAmount = 1000
-
-      const giftCardTransactions = [
-        {
-          tax_rate: 20,
-          is_taxable: null,
-          amount: 1000,
-        },
-      ]
-
-      const region = {
-        gift_cards_taxable: true,
-        tax_rate: 30,
-      } as Region
-
-      const gitCardTotals = await newTotalsService.getGiftCardTotals(
-        maxAmount,
-        {
-          giftCardTransactions: giftCardTransactions,
-          region,
-        }
-      )
-
-      expect(gitCardTotals).toEqual(
-        expect.objectContaining({
-          total: 1000, // Legacy does not include taxes
-          tax_total: 300,
-        })
-      )
     })
   })
 })

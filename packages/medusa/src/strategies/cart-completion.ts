@@ -140,7 +140,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           try {
             await this.orderService_
               .withTransaction(transactionManager)
-              .retrieveByCartId(id, { excludeTotals: true })
+              .retrieveByCartId(id)
           } catch (error) {
             await this.cartService_
               .withTransaction(transactionManager)
@@ -300,7 +300,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
         order = await orderServiceTx.retrieveByCartId(id, {
           relations: ["shipping_address", "payments"],
-          excludeTotals: true,
         })
 
         return {

@@ -3,6 +3,7 @@ import OrderService from "../order"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 describe("OrderService", () => {
   const totalsService = {
@@ -1238,6 +1239,7 @@ describe("OrderService", () => {
       eventBusService: eventBusService,
       shippingOptionService: optionService,
       totalsService,
+      taxProviderService: taxProviderServiceMock,
       newTotalsService: newTotalsServiceMock,
     })
 
@@ -1259,8 +1261,14 @@ describe("OrderService", () => {
         { some: "data" },
         {
           order: {
+            discount_total: 0,
+            gift_card_tax_total: 0,
+            gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            paid_total: 0,
+            refundable_amount: 0,
+            refunded_total: 0,
             shipping_methods: [
               {
                 shipping_option: {
@@ -1268,7 +1276,10 @@ describe("OrderService", () => {
                 },
               },
             ],
+            shipping_total: 0,
             subtotal: 0,
+            tax_total: 0,
+            total: 0,
           },
         }
       )
@@ -1289,8 +1300,14 @@ describe("OrderService", () => {
         { some: "data" },
         {
           order: {
+            discount_total: 0,
+            gift_card_tax_total: 0,
+            gift_card_total: 0,
             id: IdMap.getId("order"),
             items: [],
+            paid_total: 0,
+            refundable_amount: 0,
+            refunded_total: 0,
             shipping_methods: [
               {
                 shipping_option: {
@@ -1298,7 +1315,10 @@ describe("OrderService", () => {
                 },
               },
             ],
+            shipping_total: 0,
             subtotal: 0,
+            tax_total: 0,
+            total: 0,
           },
         }
       )

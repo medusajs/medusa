@@ -297,13 +297,20 @@ export default class NewTotalsService extends TransactionBaseService {
             includesTax,
           })
         )
-    totals.subtotal = (item.unit_price - taxIncludedInPrice) * item.quantity
+    totals.subtotal = Math.round(
+      (item.unit_price - taxIncludedInPrice) * item.quantity
+    )
     totals.total = totals.subtotal
 
-    totals.original_tax_total = totals.subtotal * taxRate
-    totals.tax_total = (totals.subtotal - discount_total) * taxRate
+    totals.original_tax_total = Math.round(totals.subtotal * taxRate)
+    totals.tax_total = Math.round((totals.subtotal - discount_total) * taxRate)
 
     totals.total += totals.tax_total
+
+    if (includesTax) {
+      totals.original_total += totals.subtotal
+    }
+
     totals.original_total += totals.original_tax_total
 
     return totals
