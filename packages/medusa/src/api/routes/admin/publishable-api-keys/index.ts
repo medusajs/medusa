@@ -24,8 +24,13 @@ export default (app) => {
     middlewares.wrap(require("./get-publishable-api-key").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-publishable-api-key").default)
+  )
+
   route.post(
-    "/:id/confirm",
+    "/:id/revoke",
     middlewares.wrap(require("./revoke-publishable-api-key").default)
   )
 

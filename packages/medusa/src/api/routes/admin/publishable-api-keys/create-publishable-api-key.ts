@@ -68,5 +68,5 @@ export default async (req: Request, res: Response) => {
       .create({ loggedInUserId })
   })
 
-  return res.json({ publishable_api_key: pubKey })
+  return res.status(201).json({ publishable_api_key: pubKey })
 }
