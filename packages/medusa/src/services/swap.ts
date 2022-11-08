@@ -719,15 +719,9 @@ class SwapService extends TransactionBaseService {
 
       const cart = await this.cartService_
         .withTransaction(manager)
-        .retrieveWithTotals(
-          swap.cart_id,
-          {
-            relations: ["payment"],
-          },
-          {
-            useExistingTaxLines: true,
-          }
-        )
+        .retrieveWithTotals(swap.cart_id, {
+          relations: ["payment"],
+        })
 
       const { payment } = cart
 

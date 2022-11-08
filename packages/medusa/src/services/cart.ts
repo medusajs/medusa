@@ -80,7 +80,6 @@ type InjectedDependencies = {
 
 type TotalsConfig = {
   force_taxes?: boolean
-  useExistingTaxLines?: boolean
 }
 
 /* Provides layer to manipulate carts.
@@ -1318,15 +1317,9 @@ class CartService extends TransactionBaseService {
           this.cartRepository_
         )
 
-        const cart = await this.retrieveWithTotals(
-          cartId,
-          {
-            relations: ["payment_sessions"],
-          },
-          {
-            useExistingTaxLines: !!context.useExistingTaxLines,
-          }
-        )
+        const cart = await this.retrieveWithTotals(cartId, {
+          relations: ["payment_sessions"],
+        })
 
         // If cart total is 0, we don't perform anything payment related
         if (cart.total! <= 0) {
@@ -2115,23 +2108,11 @@ class CartService extends TransactionBaseService {
     const includeTax = totalsConfig?.force_taxes || cart.region?.automatic_taxes
     const cartItems = [...cart.items]
     const cartShippingMethods = [...cart.shipping_methods]
-    let useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    // If we are forced to use the existing tax lines then at least one item must have a tax line
-    if (
-      useExistingTaxLines &&
-      includeTax &&
-      !cartItems.some((item) => item.tax_lines?.length)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Can't compute cart totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
-      )
-    }
+    const useExistingTaxLines = cartItems.some(
+      (item) => !!item.tax_lines?.length
+    )
 
-    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
-    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
-    // the total service to use the tax lines from the items and methods
     if (!useExistingTaxLines && includeTax) {
       const taxLinesMaps = await this.taxProviderService_
         .withTransaction(manager)
@@ -2146,14 +2127,11 @@ class CartService extends TransactionBaseService {
       cartShippingMethods.forEach((method) => {
         method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
       })
-
-      useExistingTaxLines = true
     }
 
     const itemsTotals = await newTotalsServiceTx.getLineItemTotals(cartItems, {
       includeTax,
       calculationContext,
-      useExistingTaxLines,
     })
     const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
       cartShippingMethods,
@@ -2161,7 +2139,6 @@ class CartService extends TransactionBaseService {
         discounts: cart.discounts,
         includeTax,
         calculationContext,
-        useExistingTaxLines,
       }
     )
 

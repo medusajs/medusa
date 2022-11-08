@@ -140,7 +140,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           try {
             await this.orderService_
               .withTransaction(transactionManager)
-              .retrieveByCartId(id)
+              .retrieveByCartId(id, { excludeTotals: true })
           } catch (error) {
             await this.cartService_
               .withTransaction(transactionManager)
@@ -239,15 +239,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     const cart = await this.cartService_
       .withTransaction(manager)
-      .retrieveWithTotals(
-        id,
-        {
-          relations: ["region", "payment", "payment_sessions"],
-        },
-        {
-          useExistingTaxLines: true,
-        }
-      )
+      .retrieveWithTotals(id, {
+        relations: ["region", "payment", "payment_sessions"],
+      })
 
     // If cart is part of swap, we register swap as complete
     if (cart.type === "swap") {
@@ -306,6 +300,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
         order = await orderServiceTx.retrieveByCartId(id, {
           relations: ["shipping_address", "payments"],
+          excludeTotals: true,
         })
 
         return {

@@ -74,7 +74,6 @@ type InjectedDependencies = {
 
 type TotalsConfig = {
   force_taxes?: boolean
-  useExistingTaxLines?: boolean
 }
 
 class OrderService extends TransactionBaseService {
@@ -242,7 +241,7 @@ class OrderService extends TransactionBaseService {
       this.transformQueryForTotals(config)
 
     query.select = select
-    const rels = relations
+    const rels = this.getTotalsRelations({ relations })
 
     delete query.relations
 
@@ -407,7 +406,8 @@ class OrderService extends TransactionBaseService {
     options: FindConfig<Order> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Order> {
-    const order = await this.retrieve(orderId, options)
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieve(orderId, { ...options, relations })
 
     return await this.decorateTotals(order, totalsConfig)
   }
@@ -420,9 +420,12 @@ class OrderService extends TransactionBaseService {
    */
   async retrieveByCartId(
     cartId: string,
-    config: FindConfig<Order> = {}
+    config: FindConfig<Order> & { excludeTotals?: boolean } = {}
   ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+
+    const excludeTotals = config.excludeTotals
+    delete config.excludeTotals
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -431,9 +434,12 @@ class OrderService extends TransactionBaseService {
       where: { cart_id: cartId },
     } as FindConfig<Order>
 
-    if (relations && relations.length > 0) {
+    if (!excludeTotals && relations && relations.length > 0) {
       query.relations = relations
     }
+    query.relations = excludeTotals
+      ? query.relations
+      : this.getTotalsRelations({ relations })
 
     query.select = select?.length ? select : undefined
 
@@ -444,6 +450,10 @@ class OrderService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `Order with cart id: ${cartId} was not found`
       )
+    }
+
+    if (excludeTotals) {
+      return raw
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
@@ -471,6 +481,7 @@ class OrderService extends TransactionBaseService {
     if (relations && relations.length > 0) {
       query.relations = relations
     }
+    query.relations = this.getTotalsRelations({ relations: query.relations })
 
     query.select = select?.length ? select : undefined
 
@@ -485,16 +496,6 @@ class OrderService extends TransactionBaseService {
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
-  }
-
-  /**
-   * Checks the existence of an order by cart id.
-   * @param cartId - cart id to find order
-   * @return the order document
-   */
-  async existsByCartId(cartId: string): Promise<boolean> {
-    const order = await this.retrieveByCartId(cartId).catch(() => undefined)
-    return !!order
   }
 
   /**
@@ -538,8 +539,9 @@ class OrderService extends TransactionBaseService {
         isString(cartOrId) ? cartOrId : cartOrId?.id,
         {
           select: ["id"],
+          excludeTotals: true,
         }
-      ))
+      ).catch(() => void 0))
 
       if (exists) {
         throw new MedusaError(
@@ -549,15 +551,9 @@ class OrderService extends TransactionBaseService {
       }
 
       const cart = isString(cartOrId)
-        ? await cartServiceTx.retrieveWithTotals(
-            cartOrId,
-            {
-              relations: ["region", "payment"],
-            },
-            {
-              useExistingTaxLines: true,
-            }
-          )
+        ? await cartServiceTx.retrieveWithTotals(cartOrId, {
+            relations: ["region", "payment"],
+          })
         : cartOrId
 
       if (cart.items.length === 0) {
@@ -1623,23 +1619,11 @@ class OrderService extends TransactionBaseService {
     const includeTax = totalsConfig?.force_taxes || order.region.automatic_taxes
     const orderItems = [...order.items]
     const orderShippingMethods = [...order.shipping_methods]
-    let useExistingTaxLines = totalsConfig.useExistingTaxLines
 
-    // If we are forced to use the existing tax lines then at least one item must have a tax line
-    if (
-      useExistingTaxLines &&
-      includeTax &&
-      !orderItems.some((item) => item.tax_lines?.length)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "Can't compute order totals with totals config useExistingTaxLines set to true but none of the order items contains any tax lines"
-      )
-    }
+    const useExistingTaxLines = orderItems.some(
+      (item) => !!item.tax_lines?.length
+    )
 
-    // If we are not forced to use the existing tax lines then fetch the tax lines once and then associate them
-    // to the items and methods copy to avoid fetching them later multiple times and then set useExistingTaxLines to force
-    // the total service to use the tax lines from the items and methods
     if (!useExistingTaxLines && includeTax) {
       const taxLinesMaps = await this.taxProviderService_
         .withTransaction(manager)
@@ -1654,15 +1638,12 @@ class OrderService extends TransactionBaseService {
       orderShippingMethods.forEach((method) => {
         method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
       })
-
-      useExistingTaxLines = true
     }
 
     const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
       taxRate: order.tax_rate,
       includeTax,
       calculationContext,
-      useExistingTaxLines,
     })
     const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
       orderShippingMethods,
@@ -1671,7 +1652,6 @@ class OrderService extends TransactionBaseService {
         discounts: order.discounts,
         includeTax,
         calculationContext,
-        useExistingTaxLines,
       }
     )
 
