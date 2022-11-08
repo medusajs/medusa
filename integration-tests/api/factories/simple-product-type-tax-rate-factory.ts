@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import { ProductTypeTaxRate, TaxRate } from "@medusajs/medusa"
 
@@ -15,7 +15,7 @@ export type ProductTypeTaxRateFactoryData = {
 }
 
 export const simpleProductTypeTaxRateFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ProductTypeTaxRateFactoryData,
   seed?: number
 ): Promise<ProductTypeTaxRate> => {
@@ -23,7 +23,7 @@ export const simpleProductTypeTaxRateFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let rateId: string
   if (typeof data.rate === "string") {

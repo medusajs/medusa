@@ -1,16 +1,11 @@
 import { flatten, groupBy, merge } from "lodash"
-import {
-  Brackets,
-  EntityRepository,
-  FindManyOptions,
-  Repository,
-} from "typeorm"
+import { Brackets, FindManyOptions, In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { GiftCard } from "../models/gift-card"
 import { ExtendedFindConfig, QuerySelector, Writable } from "../types/common"
 
-@EntityRepository(GiftCard)
-export class GiftCardRepository extends Repository<GiftCard> {
-  public async findWithRelations(
+export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
+  async findWithRelations(
     relations: (keyof GiftCard | string)[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<GiftCard>, "relations">
@@ -19,7 +14,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
     let entities: GiftCard[] = []
     let count = 0
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      entities = await this.findBy({
+        id: In(idsOrOptionsWithoutRelations),
+      })
       count = idsOrOptionsWithoutRelations.length
     } else {
       const [results, resultCount] = await this.findAndCount(
@@ -42,7 +39,10 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: {
+            id: In(entitiesIds),
+          },
           select: ["id"],
           relations: rels as string[],
         })
@@ -55,9 +55,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
       Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v)),
       count,
     ]
-  }
+  },
 
-  protected async queryGiftCards(
+  async queryGiftCards(
     q: string,
     where: Partial<Writable<QuerySelector<GiftCard>>>,
     rels: (keyof GiftCard | string)[],
@@ -91,9 +91,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
     )
 
     return [results, count]
-  }
+  },
 
-  public async listGiftCardsAndCount(
+  async listGiftCardsAndCount(
     inputQuery: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
     rels: (keyof GiftCard | string)[] = [],
     q?: string
@@ -107,9 +107,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
       return await this.queryGiftCards(q, where, rels, true)
     }
     return await this.findWithRelations(rels, query)
-  }
+  },
 
-  public async listGiftCards(
+  async listGiftCards(
     query: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
     rels: (keyof GiftCard | string)[] = [],
     q?: string
@@ -124,9 +124,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
     const [results] = await this.findWithRelations(rels, query)
     return results
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: Array<keyof GiftCard> = [],
     optionsWithoutRelations: Omit<FindManyOptions<GiftCard>, "relations"> = {}
   ): Promise<GiftCard> {
@@ -138,5 +138,6 @@ export class GiftCardRepository extends Repository<GiftCard> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+export default GiftCardRepository

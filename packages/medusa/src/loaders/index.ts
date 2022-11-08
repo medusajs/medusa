@@ -10,7 +10,7 @@ import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection, getManager } from "typeorm"
+import { DataSource } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
@@ -41,7 +41,7 @@ export default async ({
   isTest,
 }: Options): Promise<{
   container: MedusaContainer
-  dbConnection: Connection
+  dbDataSource: DataSource
   app: Express
 }> => {
   const configModule = loadConfig(rootDirectory)
@@ -107,22 +107,22 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity("Initializing repositories")
-  track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container })
-  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
-  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
-
   const dbActivity = Logger.activity("Initializing database")
   track("DATABASE_INIT_STARTED")
-  const dbConnection = await databaseLoader({
+  const dbDataSource = await databaseLoader({
     container,
     configModule,
   })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
-  container.register({ manager: asValue(dbConnection.manager) })
+  container.register({ manager: asValue(dbDataSource.manager) })
+
+  const repoActivity = Logger.activity("Initializing repositories")
+  track("REPOSITORIES_INIT_STARTED")
+  repositoriesLoader({ container })
+  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
+  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
   const stratActivity = Logger.activity("Initializing strategies")
   track("STRATEGIES_INIT_STARTED")
@@ -145,7 +145,7 @@ export default async ({
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) })
+    container.register({ manager: asValue(dbDataSource.manager) })
     ;(req as any).scope = container.createScope()
     next()
   })
@@ -187,7 +187,7 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp }
+  return { container, dbDataSource, app: expressApp }
 }
 
 function asArray(

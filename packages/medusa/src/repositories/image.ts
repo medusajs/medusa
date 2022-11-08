@@ -1,9 +1,9 @@
-import { EntityRepository, In, Repository } from "typeorm"
+import { In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { Image } from "../models/image"
 
-@EntityRepository(Image)
-export class ImageRepository extends Repository<Image> {
-  public async upsertImages(imageUrls: string[]) {
+export const ImageRepository = dataSource.getRepository(Image).extend({
+  async upsertImages(imageUrls: string[]) {
     const existingImages = await this.find({
       where: {
         url: In(imageUrls),
@@ -27,5 +27,7 @@ export class ImageRepository extends Repository<Image> {
     }
 
     return upsertedImgs
-  }
-}
+  },
+})
+
+export default ImageRepository

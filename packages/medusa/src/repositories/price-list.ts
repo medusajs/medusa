@@ -4,8 +4,10 @@ import {
   EntityRepository,
   FindManyOptions,
   FindOperator,
+  In,
   Repository,
 } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 import { FilterablePriceListProps } from "../types/price-list"
@@ -15,9 +17,8 @@ export type PriceListFindOptions = CustomFindOptions<
   "status" | "type"
 >
 
-@EntityRepository(PriceList)
-export class PriceListRepository extends Repository<PriceList> {
-  public async getFreeTextSearchResultsAndCount(
+export const PriceListRepository = dataSource.getRepository(PriceList).extend({
+  async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
     groups: FindOperator<string[]>,
@@ -51,9 +52,9 @@ export class PriceListRepository extends Repository<PriceList> {
     )
 
     return [price_lists, count]
-  }
+  },
 
-  public async findWithRelations(
+  async findWithRelations(
     relations: string[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<PriceList>, "relations">
@@ -77,7 +78,10 @@ export class PriceListRepository extends Repository<PriceList> {
     const entitiesIds = entities.map(({ id }) => id)
     const entitiesIdsWithRelations = await Promise.all(
       Object.values(groupedRelations).map(async (relations: string[]) => {
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: {
+            id: In(entitiesIds),
+          },
           select: ["id"],
           relations: relations as string[],
         })
@@ -89,16 +93,16 @@ export class PriceListRepository extends Repository<PriceList> {
     return map(entitiesAndRelationsById, (entityAndRelations) =>
       this.merge(this.create(), ...entityAndRelations)
     )
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: (keyof PriceList)[] = [],
     options: Omit<FindManyOptions<PriceList>, "relations"> = {}
   ): Promise<PriceList | undefined> {
     options.take = 1
 
     return (await this.findWithRelations(relations, options))?.pop()
-  }
+  },
 
   async listAndCount(
     query: ExtendedFindConfig<FilterablePriceListProps>,
@@ -123,5 +127,7 @@ export class PriceListRepository extends Repository<PriceList> {
     }
 
     return await qb.getManyAndCount()
-  }
-}
+  },
+})
+
+export default PriceListRepository

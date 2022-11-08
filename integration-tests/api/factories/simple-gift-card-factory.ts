@@ -1,6 +1,6 @@
 import { GiftCard } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 export type GiftCardFactoryData = {
   id?: string
@@ -11,7 +11,7 @@ export type GiftCardFactoryData = {
 }
 
 export const simpleGiftCardFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: GiftCardFactoryData,
   seed?: number
 ): Promise<GiftCard> => {
@@ -19,7 +19,7 @@ export const simpleGiftCardFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const toSave = manager.create(GiftCard, {
     id: data.id,

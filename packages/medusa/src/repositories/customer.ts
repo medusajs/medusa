@@ -1,9 +1,9 @@
 import { Brackets, EntityRepository, ILike, Repository } from "typeorm"
 import { Customer } from "../models/customer"
 import { ExtendedFindConfig, Selector } from "../types/common"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(Customer)
-export class CustomerRepository extends Repository<Customer> {
+export const CustomerRepository = dataSource.getRepository(Customer).extend({
   async listAndCount(
     query: ExtendedFindConfig<Customer, Selector<Customer>>,
     q: string | undefined = undefined
@@ -45,5 +45,6 @@ export class CustomerRepository extends Repository<Customer> {
     }
 
     return await qb.getManyAndCount()
-  }
-}
+  },
+})
+export default CustomerRepository

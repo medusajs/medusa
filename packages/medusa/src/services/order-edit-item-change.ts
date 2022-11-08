@@ -26,6 +26,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
+  // eslint-disable-next-line max-len
   protected readonly orderItemChangeRepository_: typeof OrderItemChangeRepository
   protected readonly eventBus_: EventBusService
   protected readonly lineItemService_: LineItemService
@@ -53,7 +54,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange | never> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderItemChangeRepo = manager.getCustomRepository(
+    const orderItemChangeRepo = manager.withRepository(
       this.orderItemChangeRepository_
     )
 
@@ -75,7 +76,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange[]> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderItemChangeRepo = manager.getCustomRepository(
+    const orderItemChangeRepo = manager.withRepository(
       this.orderItemChangeRepository_
     )
 
@@ -85,7 +86,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
   async create(data: CreateOrderEditItemChangeInput): Promise<OrderItemChange> {
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.getCustomRepository(
+      const orderItemChangeRepo = manager.withRepository(
         this.orderItemChangeRepository_
       )
       const changeEntity = orderItemChangeRepo.create(data)
@@ -105,7 +106,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
       : [itemChangeIds]
 
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.getCustomRepository(
+      const orderItemChangeRepo = manager.withRepository(
         this.orderItemChangeRepository_
       )
 

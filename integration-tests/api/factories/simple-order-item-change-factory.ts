@@ -3,7 +3,7 @@ import {
   OrderEditItemChangeType,
   OrderItemChange,
 } from "@medusajs/medusa"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 type OrderItemChangeData = {
   id: string
@@ -14,10 +14,10 @@ type OrderItemChangeData = {
 }
 
 export const simpleOrderItemChangeFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: OrderItemChangeData
 ) => {
-  const manager = connection.manager
+  const manager = dataSource.manager
   const change = manager.create<OrderItemChange>(OrderItemChange, {
     id: data.id,
     type: data.type,

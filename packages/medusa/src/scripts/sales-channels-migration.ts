@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { createConnection } from "typeorm"
+import { DataSource } from "typeorm"
 import Logger from "../loaders/logger"
 import { Product } from "../models/product"
 import { Store } from "../models/store"
@@ -18,11 +18,12 @@ const typeormConfig = {
 }
 
 const migrate = async function ({ typeormConfig }): Promise<void> {
-  const connection = await createConnection(typeormConfig)
+  const dataSource = new DataSource(typeormConfig)
+  await dataSource.initialize()
 
   const BATCH_SIZE = 1000
 
-  await connection.transaction(async (manager) => {
+  await dataSource.transaction(async (manager) => {
     const store: Store | undefined = await manager
       .createQueryBuilder()
       .from(Store, "store")

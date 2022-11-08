@@ -17,7 +17,7 @@ export default async function ({ port, directory }) {
 
     const app = express()
 
-    const { dbConnection } = await loaders({ directory, expressApp: app })
+    const { dbDataSource } = await loaders({ directory, expressApp: app })
     const serverActivity = Logger.activity(`Creating server`)
     const server = app.listen(port, (err) => {
       if (err) {
@@ -31,8 +31,8 @@ export default async function ({ port, directory }) {
       track("PING")
     })
 
-    return { dbConnection, server }
+    return { dbDataSource, server }
   }
 
-  const { dbConnection, server } = await start()
+  const { dbDataSource, server } = await start()
 }

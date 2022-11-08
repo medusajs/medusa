@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { StagedJob } from "../models/staged-job"
+import { StagedJob } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(StagedJob)
-export class StagedJobRepository extends Repository<StagedJob> {}
+export const StagedJobRepository = dataSource.getRepository(StagedJob)
+export default StagedJobRepository

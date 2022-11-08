@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { createConnection, SelectQueryBuilder } from "typeorm"
+import { DataSource, SelectQueryBuilder } from "typeorm"
 import Logger from "../loaders/logger"
 import { LineItem } from "../models/line-item"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
@@ -17,11 +17,12 @@ const typeormConfig = {
 }
 
 const migrate = async function({ typeormConfig }) {
-  const connection = await createConnection(typeormConfig)
+  const dataSource = new DataSource(typeormConfig);
+  await dataSource.initialize()
 
   const BATCH_SIZE = 1000
 
-  await connection.transaction(async (manager) => {
+  await dataSource.transaction(async (manager) => {
     const getDiscountableLineItems = (qb: SelectQueryBuilder<any>) => {
       return qb
         .from(LineItem, "li")

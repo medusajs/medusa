@@ -31,7 +31,7 @@ class ProductTypeService extends TransactionBaseService {
     id: string,
     config: FindConfig<ProductType> = {}
   ): Promise<ProductType> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+    const typeRepo = this.manager_.withRepository(this.typeRepository_)
 
     const query = buildQuery({ id }, config)
     const type = await typeRepo.findOne(query)
@@ -76,7 +76,7 @@ class ProductTypeService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<[ProductType[], number]> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+    const typeRepo = this.manager_.withRepository(this.typeRepository_)
 
     let q
     if (isString(selector.q)) {
@@ -90,9 +90,10 @@ class ProductTypeService extends TransactionBaseService {
       query.where.value = ILike(`%${q}%`)
     }
 
-    if (query.where.discount_condition_id) {
-      const discountConditionId = query.where.discount_condition_id as string
-      delete query.where.discount_condition_id
+    if ((query.where as any).discount_condition_id) {
+      const discountConditionId = (query.where as any)
+        .discount_condition_id as string
+      delete (query.where as any).discount_condition_id
       return await typeRepo.findAndCountByDiscountConditionId(
         discountConditionId,
         query

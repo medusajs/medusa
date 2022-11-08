@@ -1,10 +1,10 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { FindManyOptions, Repository, In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { Cart } from "../models/cart"
 
-@EntityRepository(Cart)
-export class CartRepository extends Repository<Cart> {
-  public async findWithRelations(
+export const CartRepository = dataSource.getRepository(Cart).extend({
+  async findWithRelations(
     relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart[]> {
@@ -23,7 +23,8 @@ export class CartRepository extends Repository<Cart> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels as string[],
         })
@@ -35,9 +36,9 @@ export class CartRepository extends Repository<Cart> {
     return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart> {
@@ -49,5 +50,6 @@ export class CartRepository extends Repository<Cart> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+export default CartRepository

@@ -89,7 +89,7 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     config: FindConfig<PriceList> = {}
   ): Promise<PriceList> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    const priceListRepo = this.manager_.withRepository(this.priceListRepo_)
 
     const query = buildQuery({ id: priceListId }, config)
     const priceList = await priceListRepo.findOne(query)
@@ -113,8 +113,8 @@ class PriceListService extends TransactionBaseService {
     priceListObject: CreatePriceListInput
   ): Promise<PriceList | never> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const priceListRepo = manager.withRepository(this.priceListRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const { prices, customer_groups, includes_tax, ...rest } = priceListObject
 
@@ -159,8 +159,8 @@ class PriceListService extends TransactionBaseService {
    */
   async update(id: string, update: UpdatePriceListInput): Promise<PriceList> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const priceListRepo = manager.withRepository(this.priceListRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
@@ -214,7 +214,7 @@ class PriceListService extends TransactionBaseService {
     replace = false
   ): Promise<PriceList> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
@@ -235,7 +235,7 @@ class PriceListService extends TransactionBaseService {
    */
   async deletePrices(id: string, priceIds: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
@@ -250,7 +250,7 @@ class PriceListService extends TransactionBaseService {
    */
   async clearPrices(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
       const priceList = await this.retrieve(id, { select: ["id"] })
       await moneyAmountRepo.delete({ price_list_id: priceList.id })
     })
@@ -264,7 +264,7 @@ class PriceListService extends TransactionBaseService {
    */
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+      const priceListRepo = manager.withRepository(this.priceListRepo_)
 
       const priceList = await priceListRepo.findOne({ where: { id: id } })
 
@@ -287,7 +287,7 @@ class PriceListService extends TransactionBaseService {
     config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
     const manager = this.manager_
-    const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+    const priceListRepo = manager.withRepository(this.priceListRepo_)
 
     const { q, ...priceListSelector } = selector
     const query = buildQuery(priceListSelector, config)
@@ -314,7 +314,7 @@ class PriceListService extends TransactionBaseService {
     }
   ): Promise<[PriceList[], number]> {
     const manager = this.manager_
-    const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+    const priceListRepo = manager.withRepository(this.priceListRepo_)
     const { q, ...priceListSelector } = selector
     const { relations, ...query } = buildQuery<
       FilterablePriceListProps,
@@ -339,7 +339,7 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     customerGroups: { id: string }[]
   ): Promise<void> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    const priceListRepo = this.manager_.withRepository(this.priceListRepo_)
     const priceList = await this.retrieve(priceListId, { select: ["id"] })
 
     const groups: CustomerGroup[] = []
@@ -365,14 +365,14 @@ class PriceListService extends TransactionBaseService {
     requiresPriceList = false
   ): Promise<[Product[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const productVariantRepo = manager.getCustomRepository(
+      const productVariantRepo = manager.withRepository(
         this.productVariantRepo_
       )
       const [products, count] = await this.productService_
         .withTransaction(manager)
         .listAndCount(selector, config)
 
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const productsWithPrices = await Promise.all(
         products.map(async (p) => {
@@ -417,7 +417,7 @@ class PriceListService extends TransactionBaseService {
         .withTransaction(manager)
         .listAndCount(selector, config)
 
-      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
       const variantsWithPrices = await Promise.all(
         variants.map(async (variant) => {

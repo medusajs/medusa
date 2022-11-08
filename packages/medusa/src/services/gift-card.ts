@@ -87,7 +87,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<[GiftCard[], number]> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -116,7 +116,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<GiftCard[]> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -139,7 +139,7 @@ class GiftCardService extends TransactionBaseService {
     data: CreateGiftCardTransactionInput
   ): Promise<string> {
     const manager = this.manager_
-    const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
+    const gctRepo = manager.withRepository(this.giftCardTransactionRepo_)
     const created = gctRepo.create(data)
     const saved = await gctRepo.save(created)
     return saved.id
@@ -152,7 +152,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async create(giftCard: CreateGiftCardInput): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       // Will throw if region does not exist
       const region = await this.regionService_
@@ -185,7 +185,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     const { relations, ...query } = buildQuery(selector, config)
 
@@ -239,7 +239,7 @@ class GiftCardService extends TransactionBaseService {
     update: UpdateGiftCardInput
   ): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       const giftCard = await this.retrieve(giftCardId)
 
@@ -282,7 +282,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async delete(giftCardId: string): Promise<GiftCard | void> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 

@@ -136,7 +136,7 @@ class FulfillmentService extends TransactionBaseService {
     quantity: number
   ): LineItem | null {
     const manager = this.transactionManager_ ?? this.manager_
-    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+    const lineItemRepo = manager.withRepository(this.lineItemRepository_)
 
     if (!item) {
       // This will in most cases be called by a webhook so to ensure that
@@ -168,7 +168,7 @@ class FulfillmentService extends TransactionBaseService {
     config: FindConfig<Fulfillment> = {}
   ): Promise<Fulfillment> {
     const manager = this.manager_
-    const fulfillmentRepository = manager.getCustomRepository(
+    const fulfillmentRepository = manager.withRepository(
       this.fulfillmentRepository_
     )
 
@@ -201,7 +201,7 @@ class FulfillmentService extends TransactionBaseService {
     custom: Partial<Fulfillment> = {}
   ): Promise<Fulfillment[]> {
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentRepository = manager.getCustomRepository(
+      const fulfillmentRepository = manager.withRepository(
         this.fulfillmentRepository_
       )
 
@@ -284,7 +284,7 @@ class FulfillmentService extends TransactionBaseService {
         })
       }
 
-      const fulfillmentRepo = manager.getCustomRepository(
+      const fulfillmentRepo = manager.withRepository(
         this.fulfillmentRepository_
       )
       const canceled = await fulfillmentRepo.save(fulfillment)
@@ -311,10 +311,10 @@ class FulfillmentService extends TransactionBaseService {
     const { metadata, no_notification } = config
 
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentRepository = manager.getCustomRepository(
+      const fulfillmentRepository = manager.withRepository(
         this.fulfillmentRepository_
       )
-      const trackingLinkRepo = manager.getCustomRepository(
+      const trackingLinkRepo = manager.withRepository(
         this.trackingLinkRepository_
       )
 

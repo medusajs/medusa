@@ -183,7 +183,7 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Order[], number]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     let q
     if (selector.q) {
@@ -206,7 +206,7 @@ class OrderService extends TransactionBaseService {
         },
       }
 
-      query.where = (qb): void => {
+      query.where = ((qb): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -218,7 +218,7 @@ class OrderService extends TransactionBaseService {
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
           })
         )
-      }
+      }) as any
     }
 
     const { select, relations, totalsToSelect } =
@@ -317,7 +317,7 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -355,7 +355,7 @@ class OrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -392,7 +392,7 @@ class OrderService extends TransactionBaseService {
     externalId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.manager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -452,7 +452,7 @@ class OrderService extends TransactionBaseService {
 
       order.status = OrderStatus.COMPLETED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return orderRepo.save(order)
     })
   }
@@ -537,7 +537,7 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       const toCreate = {
         payment_status: "awaiting",
@@ -714,7 +714,7 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -739,7 +739,7 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.manager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
@@ -779,7 +779,7 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.manager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
@@ -940,7 +940,7 @@ class OrderService extends TransactionBaseService {
         order[key] = value
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1020,7 +1020,7 @@ class OrderService extends TransactionBaseService {
       order.payment_status = PaymentStatus.CANCELED
       order.canceled_at = new Date()
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1040,7 +1040,7 @@ class OrderService extends TransactionBaseService {
    */
   async capturePayment(orderId: string): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
       if (order.status === "canceled") {
@@ -1243,7 +1243,7 @@ class OrderService extends TransactionBaseService {
           }
         }
       }
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       order.fulfillments = [...order.fulfillments, ...fulfillments]
 
@@ -1287,7 +1287,7 @@ class OrderService extends TransactionBaseService {
 
       order.fulfillment_status = FulfillmentStatus.CANCELED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const updated = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1345,7 +1345,7 @@ class OrderService extends TransactionBaseService {
       }
 
       order.status = OrderStatus.ARCHIVED
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return await orderRepo.save(order)
     })
   }
@@ -1556,7 +1556,7 @@ class OrderService extends TransactionBaseService {
 
       const refundAmount = customRefundAmount || receivedReturn.refund_amount
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       if (refundAmount > order.refundable_amount) {
         order.fulfillment_status = FulfillmentStatus.REQUIRES_ACTION

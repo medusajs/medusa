@@ -76,7 +76,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     config: FindConfig<PaymentCollection> = {}
   ): Promise<PaymentCollection> {
     const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
+    const paymentCollectionRepository = manager.withRepository(
       this.paymentCollectionRepository_
     )
 
@@ -96,7 +96,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -128,7 +128,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     data: DeepPartial<PaymentCollection>
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepo = manager.getCustomRepository(
+      const paymentCollectionRepo = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -156,7 +156,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     paymentCollectionId: string
   ): Promise<PaymentCollection | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepo = manager.getCustomRepository(
+      const paymentCollectionRepo = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -205,7 +205,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     let sessionsInput = Array.isArray(sessions) ? sessions : [sessions]
 
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -301,7 +301,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     sessionInput: PaymentCollectionSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -375,7 +375,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     context: Record<string, unknown> = {}
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -491,7 +491,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         payCol.status = PaymentCollectionStatus.PARTIALLY_CAPTURED
       }
 
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -521,7 +521,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async capture(paymentId: string): Promise<Payment> {
     const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
+    const paymentCollectionRepository = manager.withRepository(
       this.paymentCollectionRepository_
     )
 
@@ -601,7 +601,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         payCol.status = PaymentCollectionStatus.PARTIALLY_REFUNDED
       }
 
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -636,7 +636,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     note?: string
   ): Promise<Refund> {
     const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
+    const paymentCollectionRepository = manager.withRepository(
       this.paymentCollectionRepository_
     )
 

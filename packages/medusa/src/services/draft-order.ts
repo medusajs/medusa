@@ -89,9 +89,7 @@ class DraftOrderService extends TransactionBaseService {
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ id }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -116,9 +114,7 @@ class DraftOrderService extends TransactionBaseService {
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ cart_id: cartId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -140,7 +136,7 @@ class DraftOrderService extends TransactionBaseService {
   async delete(draftOrderId: string): Promise<DraftOrder | undefined> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await draftOrderRepo.findOne({
@@ -170,7 +166,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<[DraftOrder[], number]> {
     const manager = this.manager_
-    const draftOrderRepository = manager.getCustomRepository(
+    const draftOrderRepository = manager.withRepository(
       this.draftOrderRepository_
     )
 
@@ -191,7 +187,7 @@ class DraftOrderService extends TransactionBaseService {
         },
       }
 
-      query.where = (qb): void => {
+      query.where = ((qb): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -203,7 +199,7 @@ class DraftOrderService extends TransactionBaseService {
             })
           })
         )
-      }
+      }) as any
     }
 
     return await draftOrderRepository.findAndCount(query)
@@ -224,9 +220,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<DraftOrder[]> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -241,7 +235,7 @@ class DraftOrderService extends TransactionBaseService {
   async create(data: DraftOrderCreateProps): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
 
@@ -366,7 +360,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<UpdateResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         return await draftOrderRepo.update(
@@ -395,7 +389,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await this.retrieve(id)

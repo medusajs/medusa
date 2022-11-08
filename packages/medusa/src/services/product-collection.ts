@@ -55,7 +55,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionId: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -82,7 +82,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionHandle: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -108,7 +108,7 @@ class ProductCollectionService extends TransactionBaseService {
     collection: CreateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -128,7 +128,7 @@ class ProductCollectionService extends TransactionBaseService {
     update: UpdateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -155,7 +155,7 @@ class ProductCollectionService extends TransactionBaseService {
    */
   async delete(collectionId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCollectionRepo = manager.getCustomRepository(
+      const productCollectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -176,7 +176,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -193,7 +193,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -233,7 +233,7 @@ class ProductCollectionService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
-    const productCollectionRepo = this.manager_.getCustomRepository(
+    const productCollectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -253,7 +253,7 @@ class ProductCollectionService extends TransactionBaseService {
       delete where.created_at
       delete where.updated_at
 
-      query.where = (qb): void => {
+      query.where = ((qb): void => {
         qb.where(where)
 
         qb.andWhere(
@@ -263,12 +263,13 @@ class ProductCollectionService extends TransactionBaseService {
             })
           })
         )
-      }
+      }) as any
     }
 
-    if (query.where.discount_condition_id) {
-      const discountConditionId = query.where.discount_condition_id as string
-      delete query.where.discount_condition_id
+    if ((query.where as any).discount_condition_id) {
+      const discountConditionId = (query.where as any)
+        .discount_condition_id as string
+      delete (query.where as any).discount_condition_id
       return await productCollectionRepo.findAndCountByDiscountConditionId(
         discountConditionId,
         query

@@ -108,7 +108,7 @@ describe("CartService", () => {
       )
 
       expect(cartRepository.findOne).toBeCalledTimes(1)
-      expect(cartRepository.findOne).toBeCalledWith(id)
+      expect(cartRepository.findOne).toBeCalledWith({ where: { id } })
 
       expect(cartRepository.save).toBeCalledTimes(1)
       expect(cartRepository.save).toBeCalledWith({

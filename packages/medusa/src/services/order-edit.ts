@@ -92,7 +92,7 @@ export default class OrderEditService extends TransactionBaseService {
     config: FindConfig<OrderEdit> = {}
   ): Promise<OrderEdit> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.getCustomRepository(
+    const orderEditRepository = manager.withRepository(
       this.orderEditRepository_
     )
 
@@ -114,7 +114,7 @@ export default class OrderEditService extends TransactionBaseService {
     config?: FindConfig<OrderEdit>
   ): Promise<[OrderEdit[], number]> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.getCustomRepository(
+    const orderEditRepository = manager.withRepository(
       this.orderEditRepository_
     )
 
@@ -217,7 +217,7 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      const orderEditRepository = transactionManager.getCustomRepository(
+      const orderEditRepository = transactionManager.withRepository(
         this.orderEditRepository_
       )
 
@@ -258,9 +258,7 @@ export default class OrderEditService extends TransactionBaseService {
     data: DeepPartial<OrderEdit>
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.getCustomRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -284,9 +282,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.getCustomRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const edit = await this.retrieve(id).catch(() => void 0)
 
@@ -314,9 +310,7 @@ export default class OrderEditService extends TransactionBaseService {
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.getCustomRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const { loggedInUserId, declinedReason } = context
 
@@ -655,9 +649,7 @@ export default class OrderEditService extends TransactionBaseService {
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.getCustomRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       let orderEdit = await this.retrieve(orderEditId, {
         relations: ["changes"],
@@ -693,7 +685,7 @@ export default class OrderEditService extends TransactionBaseService {
     context: { loggedInUserId?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepository = manager.getCustomRepository(
+      const orderEditRepository = manager.withRepository(
         this.orderEditRepository_
       )
 
@@ -732,7 +724,7 @@ export default class OrderEditService extends TransactionBaseService {
     context: { loggedInUserId?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepository = manager.getCustomRepository(
+      const orderEditRepository = manager.withRepository(
         this.orderEditRepository_
       )
 
@@ -782,9 +774,9 @@ export default class OrderEditService extends TransactionBaseService {
   protected async retrieveActive(
     orderId: string,
     config: FindConfig<OrderEdit> = {}
-  ): Promise<OrderEdit | undefined> {
+  ): Promise<OrderEdit | null> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.getCustomRepository(
+    const orderEditRepository = manager.withRepository(
       this.orderEditRepository_
     )
 

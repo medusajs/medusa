@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
 import { AnalyticsConfig } from "../models/analytics-config"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(AnalyticsConfig)
-export class AnalyticsConfigRepository extends Repository<AnalyticsConfig> {}
+export const AnalyticsConfigRepository =
+  dataSource.getRepository(AnalyticsConfig)
+export default AnalyticsConfigRepository

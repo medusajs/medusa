@@ -1,10 +1,10 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { FindManyOptions, In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { Order } from "../models"
 
-@EntityRepository(Order)
-export class OrderRepository extends Repository<Order> {
-  public async findWithRelations(
+export const OrderRepository = dataSource.getRepository(Order).extend({
+  async findWithRelations(
     relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
@@ -23,7 +23,10 @@ export class OrderRepository extends Repository<Order> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: {
+            id: In(entitiesIds),
+          },
           select: ["id"],
           relations: rels as string[],
         })
@@ -35,9 +38,9 @@ export class OrderRepository extends Repository<Order> {
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
     return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
@@ -49,5 +52,7 @@ export class OrderRepository extends Repository<Order> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+
+export default OrderRepository

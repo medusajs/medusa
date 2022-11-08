@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import {
   CustomShippingOption,
@@ -13,7 +13,7 @@ export type CustomShippingOptionFactoryData = {
 }
 
 export const simpleCustomShippingOptionFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: CustomShippingOptionFactoryData,
   seed?: number
 ): Promise<CustomShippingOption> => {
@@ -21,7 +21,7 @@ export const simpleCustomShippingOptionFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const customShippingOptionData = {
     id: data.id ?? `custon-simple-so-${Math.random() * 1000}`,

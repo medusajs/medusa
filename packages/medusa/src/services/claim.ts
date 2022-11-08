@@ -125,7 +125,7 @@ export default class ClaimService extends TransactionBaseService {
   async update(id: string, data: UpdateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claim = await this.retrieve(id, {
@@ -213,7 +213,7 @@ export default class ClaimService extends TransactionBaseService {
   async create(data: CreateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
 
@@ -253,7 +253,7 @@ export default class ClaimService extends TransactionBaseService {
 
         let addressId = shipping_address_id || order.shipping_address_id
         if (shipping_address) {
-          const addressRepo = transactionManager.getCustomRepository(
+          const addressRepo = transactionManager.withRepository(
             this.addressRepository_
           )
           const created = addressRepo.create(shipping_address)
@@ -586,7 +586,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -624,7 +624,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         return claimRepo.save(claim)
@@ -661,7 +661,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.payment_status = ClaimPaymentStatus.REFUNDED
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -740,7 +740,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -792,7 +792,7 @@ export default class ClaimService extends TransactionBaseService {
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
         claim.canceled_at = new Date()
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -823,7 +823,7 @@ export default class ClaimService extends TransactionBaseService {
     }
   ): Promise<ClaimOrder[]> {
     const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = manager.withRepository(this.claimRepository_)
     const query = buildQuery(selector, config)
     return await claimRepo.find(query)
   }
@@ -839,7 +839,7 @@ export default class ClaimService extends TransactionBaseService {
     config: FindConfig<ClaimOrder> = {}
   ): Promise<ClaimOrder> {
     const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = manager.withRepository(this.claimRepository_)
 
     const query = buildQuery({ id }, config)
     const claim = await claimRepo.findOne(query)
