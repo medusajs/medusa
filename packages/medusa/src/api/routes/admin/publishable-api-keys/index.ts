@@ -34,7 +34,7 @@ export default (app) => {
     transformQuery(GetPublishableApiKeysParams, {
       isList: true,
     }),
-    middlewares.wrap(require("/list-publishable-api-keys").default)
+    middlewares.wrap(require("./list-publishable-api-keys").default)
   )
 }
 

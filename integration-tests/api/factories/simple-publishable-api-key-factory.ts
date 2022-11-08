@@ -2,6 +2,7 @@ import { Connection } from "typeorm"
 import { PublishableApiKey } from "@medusajs/medusa"
 
 export type PublishableApiKeyData = {
+  id?: string
   revoked_at?: Date
   revoked_by?: string
   created_by?: string

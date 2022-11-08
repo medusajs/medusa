@@ -3,7 +3,7 @@ import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
-import { PublishableApiKey } from "../models/publishable-api-key"
+import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"

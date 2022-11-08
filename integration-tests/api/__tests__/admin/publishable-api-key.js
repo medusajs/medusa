@@ -1,10 +1,14 @@
 const path = require("path")
+const { IdMap } = require("medusa-test-utils")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  simplePublishableApiKeyFactory,
+} = require("../../factories/simple-publishable-api-key-factory")
 
 jest.setTimeout(50000)
 
@@ -24,7 +28,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS]", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PUBLISHABLE_API_KEYS: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -38,8 +42,14 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS]", () => {
   })
 
   describe("GET /admin/publishable-api-keys/:id", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id")
     beforeEach(async () => {
       await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        created_by: adminUserId,
+      })
     })
 
     afterEach(async () => {
@@ -50,12 +60,21 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS]", () => {
     it("retrieve a publishable key by id ", async () => {
       const api = useApi()
 
-      const response = await api
-        .get(
-          `/admin/publishable-api-keys`,
-          adminHeaders
-        )(response.data.publishable_api_key)
-        .toHaveLength(1)
+      const response = await api.get(
+        `/admin/publishable-api-keys/${pubKeyId}`,
+        adminHeaders
+      )
+
+      expect(response.status).toBe(200)
+
+      expect(response.data.publishable_api_key).toMatchObject({
+        id: pubKeyId,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        created_by: adminUserId,
+        revoked_by: null,
+        revoked_at: null,
+      })
     })
   })
 
