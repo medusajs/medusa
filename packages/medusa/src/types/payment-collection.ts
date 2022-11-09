@@ -3,7 +3,6 @@ import {
   Customer,
   PaymentCollection,
   PaymentCollectionType,
-  PaymentSession,
 } from "../models"
 
 export type CreatePaymentCollectionInput = {
@@ -46,7 +45,6 @@ export const defaultPaymentCollectionFields: (keyof PaymentCollection)[] = [
   "description",
   "amount",
   "authorized_amount",
-  "refunded_amount",
   "currency_code",
   "metadata",
   "region",

@@ -87,11 +87,6 @@ export default async (req, res) => {
       const paymentCollectionServiceTx =
         paymentCollectionService.withTransaction(transactionManager)
 
-      const orderEditRepo: OrderEditRepository =
-        transactionManager.getCustomRepository(
-          req.scope.resolve("orderEditRepository")
-        )
-
       const paymentCollection = await paymentCollectionServiceTx.create({
         type: PaymentCollectionType.ORDER_EDIT,
         amount: total.difference_due,
@@ -102,7 +97,10 @@ export default async (req, res) => {
       })
 
       orderEdit.payment_collection_id = paymentCollection.id
-      await orderEditRepo.save(orderEdit)
+
+      await orderEditServiceTx.update(orderEdit.id, {
+        payment_collection_id: paymentCollection.id,
+      })
     }
   })
 

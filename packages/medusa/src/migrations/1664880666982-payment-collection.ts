@@ -12,8 +12,8 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         CREATE TYPE "PAYMENT_COLLECTION_TYPE_ENUM" AS ENUM ('order_edit');
 
         CREATE TYPE "PAYMENT_COLLECTION_STATUS_ENUM" AS ENUM (
-            'not_paid', 'awaiting', 'authorized', 'partially_authorized', 'captured',
-            'partially_captured', 'refunded', 'partially_refunded', 'canceled', 'requires_action'
+            'not_paid', 'awaiting', 'authorized',
+            'partially_authorized', 'canceled'
         );
 
         CREATE TABLE IF NOT EXISTS payment_collection
@@ -27,8 +27,6 @@ export class paymentCollection1664880666982 implements MigrationInterface {
             description text NULL,
             amount integer NOT NULL,
             authorized_amount integer NULL,
-            captured_amount integer NULL,
-            refunded_amount integer NULL,
             region_id character varying NOT NULL,
             currency_code character varying NOT NULL,
             metadata jsonb NULL,

@@ -21,12 +21,7 @@ export enum PaymentCollectionStatus {
   AWAITING = "awaiting",
   AUTHORIZED = "authorized",
   PARTIALLY_AUTHORIZED = "partially_authorized",
-  CAPTURED = "captured",
-  PARTIALLY_CAPTURED = "partially_captured",
-  REFUNDED = "refunded",
-  PARTIALLY_REFUNDED = "partially_refunded",
   CANCELED = "canceled",
-  REQUIRES_ACTION = "requires_action",
 }
 
 export enum PaymentCollectionType {
@@ -49,12 +44,6 @@ export class PaymentCollection extends SoftDeletableEntity {
 
   @Column({ type: "int", nullable: true })
   authorized_amount: number | null
-
-  @Column({ type: "int", nullable: true })
-  captured_amount: number | null
-
-  @Column({ type: "int", nullable: true })
-  refunded_amount: number | null
 
   @Index()
   @Column()

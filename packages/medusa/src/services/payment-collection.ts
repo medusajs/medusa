@@ -6,12 +6,10 @@ import { buildQuery, isDefined, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import {
   Customer,
-  Payment,
   PaymentCollection,
   PaymentCollectionStatus,
   PaymentSession,
   PaymentSessionStatus,
-  Refund,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -31,7 +29,6 @@ type InjectedDependencies = {
   manager: EntityManager
   paymentCollectionRepository: typeof PaymentCollectionRepository
   paymentProviderService: PaymentProviderService
-  paymentService: PaymentService
   eventBusService: EventBusService
   customerService: CustomerService
 }
@@ -48,7 +45,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
-  protected readonly paymentService_: PaymentService
   protected readonly customerService_: CustomerService
   // eslint-disable-next-line max-len
   protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
@@ -57,7 +53,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     manager,
     paymentCollectionRepository,
     paymentProviderService,
-    paymentService,
     customerService,
     eventBusService,
   }: InjectedDependencies) {
@@ -67,7 +62,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     this.manager_ = manager
     this.paymentCollectionRepository_ = paymentCollectionRepository
     this.paymentProviderService_ = paymentProviderService
-    this.paymentService_ = paymentService
     this.eventBusService_ = eventBusService
     this.customerService_ = customerService
   }
@@ -456,177 +450,5 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       return payCol
     })
-  }
-
-  protected async capturePayment(
-    payCol: PaymentCollection,
-    payment: Payment
-  ): Promise<Payment> {
-    if (payment?.captured_at) {
-      return payment
-    }
-
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const allowedStatuses = [
-        PaymentCollectionStatus.AUTHORIZED,
-        PaymentCollectionStatus.PARTIALLY_CAPTURED,
-        PaymentCollectionStatus.REQUIRES_ACTION,
-      ]
-
-      if (!allowedStatuses.includes(payCol.status)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `A Payment Collection with status ${payCol.status} cannot capture payment`
-        )
-      }
-
-      const capturedPayment = await this.paymentService_
-        .withTransaction(manager)
-        .capture(payment)
-
-      payCol.captured_amount = payCol.captured_amount ?? 0
-      if (capturedPayment) {
-        payCol.captured_amount += payment.amount
-      }
-
-      if (payCol.captured_amount === 0) {
-        payCol.status = PaymentCollectionStatus.REQUIRES_ACTION
-      } else if (payCol.captured_amount === payCol.amount) {
-        payCol.status = PaymentCollectionStatus.CAPTURED
-      } else {
-        payCol.status = PaymentCollectionStatus.PARTIALLY_CAPTURED
-      }
-
-      const paymentCollectionRepository = manager.getCustomRepository(
-        this.paymentCollectionRepository_
-      )
-
-      await paymentCollectionRepository.save(payCol)
-
-      return capturedPayment
-    })
-  }
-
-  async capture(paymentId: string): Promise<Payment> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
-      this.paymentCollectionRepository_
-    )
-
-    const payCol =
-      await paymentCollectionRepository.getPaymentCollectionIdByPaymentId(
-        paymentId,
-        {
-          relations: ["payments"],
-        }
-      )
-
-    const payment = payCol.payments.find((payment) => paymentId === payment?.id)
-
-    return await this.capturePayment(payCol, payment!)
-  }
-
-  async captureAll(paymentCollectionId: string): Promise<Payment[]> {
-    const payCol = await this.retrieve(paymentCollectionId, {
-      relations: ["payments"],
-    })
-
-    const allPayments: Payment[] = []
-    for (const payment of payCol.payments) {
-      const captured = await this.capturePayment(payCol, payment).catch(
-        () => payment
-      )
-      allPayments.push(captured)
-    }
-
-    return allPayments
-  }
-
-  protected async refundPayment(
-    payCol: PaymentCollection,
-    payment: Payment,
-    amount: number,
-    reason: string,
-    note?: string
-  ): Promise<Refund> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const refund = await this.paymentService_
-        .withTransaction(manager)
-        .refund(payment, amount, reason, note)
-
-      payCol.refunded_amount = payCol.refunded_amount ?? 0
-      if (refund) {
-        payCol.refunded_amount += refund.amount
-      }
-
-      if (payCol.refunded_amount === 0) {
-        payCol.status = PaymentCollectionStatus.REQUIRES_ACTION
-      } else if (payCol.refunded_amount === payCol.amount) {
-        payCol.status = PaymentCollectionStatus.REFUNDED
-      } else {
-        payCol.status = PaymentCollectionStatus.PARTIALLY_REFUNDED
-      }
-
-      const paymentCollectionRepository = manager.getCustomRepository(
-        this.paymentCollectionRepository_
-      )
-
-      await paymentCollectionRepository.save(payCol)
-
-      return refund
-    })
-  }
-
-  async refund(
-    paymentId: string,
-    amount: number,
-    reason: string,
-    note?: string
-  ): Promise<Refund> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
-      this.paymentCollectionRepository_
-    )
-
-    const payCol =
-      await paymentCollectionRepository.getPaymentCollectionIdByPaymentId(
-        paymentId
-      )
-
-    const payment = await this.paymentProviderService_.retrievePayment(
-      paymentId
-    )
-
-    return await this.refundPayment(payCol, payment, amount, reason, note)
-  }
-
-  async refundAll(
-    paymentCollectionId: string,
-    reason: string,
-    note?: string
-  ): Promise<[Refund[], Payment[]]> {
-    const payCol = await this.retrieve(paymentCollectionId, {
-      relations: ["payments"],
-    })
-
-    const allRefunds: Refund[] = []
-    const failed: Payment[] = []
-    for (const payment of payCol.payments) {
-      const refunded = await this.refundPayment(
-        payCol,
-        payment,
-        payment.amount,
-        reason,
-        note
-      ).catch(() => void 0)
-
-      if (refunded) {
-        allRefunds.push(refunded)
-      } else {
-        failed.push(payment)
-      }
-    }
-
-    return [allRefunds, failed]
   }
 }

@@ -9,7 +9,6 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { AdminUpdatePaymentCollectionRequest } from "./update-payment-collection"
-import { AdminPostPaymentCollectionRefundsReq } from "./refund-payment"
 
 const route = Router()
 
@@ -41,17 +40,6 @@ export default (app, container) => {
     middlewares.wrap(require("./delete-payment-collection").default)
   )
 
-  route.post(
-    "/payments/:payment_id/capture",
-    middlewares.wrap(require("./capture-payment").default)
-  )
-
-  route.post(
-    "/payments/:payment_id/refund",
-    transformBody(AdminPostPaymentCollectionRefundsReq),
-    middlewares.wrap(require("./refund-payment").default)
-  )
-
   return app
 }
 
@@ -62,8 +50,6 @@ export const defaultPaymentCollectionFields = [
   "description",
   "amount",
   "authorized_amount",
-  "captured_amount",
-  "refunded_amount",
   "region",
   "currency_code",
   "currency",
@@ -78,4 +64,3 @@ export const defaulPaymentCollectionRelations = [
 
 export * from "./get-payment-collection"
 export * from "./update-payment-collection"
-export * from "./refund-payment"

@@ -672,7 +672,7 @@ export default class OrderEditService extends TransactionBaseService {
       )
 
       let orderEdit = await this.retrieve(orderEditId, {
-        relations: ["changes", "order"],
+        relations: ["changes"],
         select: ["id", "requested_at"],
       })
 
@@ -748,9 +748,7 @@ export default class OrderEditService extends TransactionBaseService {
         this.orderEditRepository_
       )
 
-      let orderEdit = await this.retrieve(orderEditId, {
-        relations: ["payment_collection", "payment_collection.payments"],
-      })
+      let orderEdit = await this.retrieve(orderEditId)
 
       if (
         [OrderEditStatus.CANCELED, OrderEditStatus.DECLINED].includes(
