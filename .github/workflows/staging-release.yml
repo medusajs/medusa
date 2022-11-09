@@ -1,9 +1,6 @@
 name: Staging Release and Publish
 
-on:
-  push:
-    branches:
-      - develop
+on: 
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
