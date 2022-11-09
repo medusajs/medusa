@@ -89,14 +89,14 @@ import ProductTypeService from "../../../../services/product-type"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productTypes.list()
+ *       medusa.store.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-types' \
+ *       curl --location --request GET 'https://medusa-url.com/store/product-types' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -155,7 +155,7 @@ export default async (req, res) => {
 }
 
 // eslint-disable-next-line max-len
-export class AdminGetProductTypesParams extends FindPaginationParams {
+export class StoreGetProductTypesParams extends FindPaginationParams {
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator

@@ -6,7 +6,6 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const {
   DiscountRuleType,
@@ -18,13 +17,7 @@ const { simpleDiscountFactory } = require("../../factories")
 
 jest.setTimeout(50000)
 
-const adminReqConfig = {
-  headers: {
-    Authorization: "Bearer test_token",
-  },
-}
-
-describe("/admin/product-types", () => {
+describe("/store/product-types", () => {
   let medusaProcess
   let dbConnection
 
@@ -41,10 +34,9 @@ describe("/admin/product-types", () => {
     medusaProcess.kill()
   })
 
-  describe("GET /admin/product-types", () => {
+  describe("GET /store/product-types", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
-      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -55,7 +47,7 @@ describe("/admin/product-types", () => {
     it("returns a list of product types", async () => {
       const api = useApi()
 
-      const res = await api.get("/admin/product-types", adminReqConfig)
+      const res = await api.get("/store/product-types")
 
       expect(res.status).toEqual(200)
 
@@ -70,10 +62,7 @@ describe("/admin/product-types", () => {
     it("returns a list of product types matching free text search param", async () => {
       const api = useApi()
 
-      const res = await api.get(
-        "/admin/product-types?q=test-type-new",
-        adminReqConfig
-      )
+      const res = await api.get("/store/product-types?q=test-type-new")
 
       expect(res.status).toEqual(200)
 
@@ -94,7 +83,7 @@ describe("/admin/product-types", () => {
     it("returns a list of product type filtered by discount condition id", async () => {
       const api = useApi()
 
-      const resTypes = await api.get("/admin/product-types", adminReqConfig)
+      const resTypes = await api.get("/store/product-types")
 
       const type1 = resTypes.data.product_types[0]
       const type2 = resTypes.data.product_types[1]
@@ -131,8 +120,7 @@ describe("/admin/product-types", () => {
       )
 
       let res = await api.get(
-        `/admin/product-types?discount_condition_id=${discountConditionId}`,
-        adminReqConfig
+        `/store/product-types?discount_condition_id=${discountConditionId}`
       )
 
       expect(res.status).toEqual(200)
@@ -142,8 +130,7 @@ describe("/admin/product-types", () => {
       )
 
       res = await api.get(
-        `/admin/product-types?discount_condition_id=${discountConditionId2}`,
-        adminReqConfig
+        `/store/product-types?discount_condition_id=${discountConditionId2}`
       )
 
       expect(res.status).toEqual(200)
@@ -152,7 +139,7 @@ describe("/admin/product-types", () => {
         expect.arrayContaining([expect.objectContaining({ id: type2.id })])
       )
 
-      res = await api.get(`/admin/product-types`, adminReqConfig)
+      res = await api.get(`/store/product-types`)
 
       expect(res.status).toEqual(200)
       expect(res.data.product_types).toHaveLength(2)
