@@ -8,6 +8,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * operationId: "PostPublishableApiKeysPublishableApiKeyRevoke"
  * summary: "Revoke a PublishableApiKey"
  * description: "Revokes a PublishableApiKey."
+ * parameters:
+ *   - (path) id=* {string} The ID of the PublishableApiKey.
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
