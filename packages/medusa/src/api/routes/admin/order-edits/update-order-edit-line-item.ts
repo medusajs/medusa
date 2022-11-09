@@ -16,6 +16,16 @@ import {
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to update.
  *   - (path) item_id=* {string} The ID of the order edit item to update.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - quantity
+ *         properties:
+ *           quantity:
+ *             description: The quantity to update
+ *             type: number
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,7 +33,9 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
+ *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id, {
+ *           quantity: 5
+ *         })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -31,8 +43,9 @@ import {
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "quantity": 5 }'
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{ "quantity": 5 }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

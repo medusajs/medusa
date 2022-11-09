@@ -141,11 +141,11 @@ export class OrderEdit extends BaseEntity {
  *     description: The ID of the order that is edited
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
- *     description: Order object
+ *     description: Available if the relation `order` is expanded.
  *     $ref: "#/components/schemas/order"
  *   changes:
  *     type: array
- *     description: Line item changes array.
+ *     description: Available if the relation `changes` is expanded.
  *     items:
  *       $ref: "#/components/schemas/order_item_change"
  *   internal_note:
@@ -211,9 +211,33 @@ export class OrderEdit extends BaseEntity {
  *     type: integer
  *     description: The difference between the total amount of the order and total amount of edited order.
  *     example: 8200
+ *   status:
+ *     type: string
+ *     description: The status of the order edit.
+ *     enum:
+ *       - confirmed
+ *       - declined
+ *       - requested
+ *       - created
+ *       - canceled
  *   items:
  *     type: array
- *     description: Computed line items from the changes.
+ *     description: Available if the relation `items` is expanded.
  *     items:
  *       $ref: "#/components/schemas/line_item"
+ *   payment_collection_id:
+ *     type: string
+ *     description: The ID of the payment collection
+ *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
+ *   payment_collection:
+ *     description: Available if the relation `payment_collection` is expanded.
+ *     $ref: "#/components/schemas/payment_collection"
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was updated."
+ *     format: date-time
  */

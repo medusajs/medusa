@@ -21,6 +21,28 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *           includes_tax:
  *             type: boolean
  *             description: "[EXPERIMENTAL] Tax included in prices of currency."
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.currencies.update(code, {
+ *         includes_tax: true
+ *       })
+ *       .then(({ currency }) => {
+ *         console.log(currency.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/currencies/{code}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "includes_tax": true
+ *       }'
  * tags:
  *   - Currency
  * responses:
