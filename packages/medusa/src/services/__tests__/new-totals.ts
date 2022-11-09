@@ -4,7 +4,7 @@ import {
   giftCards,
   lineItems,
   shippingMethods,
-} from "./__fixtures__/new-totals"
+} from "../__fixtures__/new-totals"
 import { NewTotalsService } from "../index"
 import { TaxCalculationContext } from "../../interfaces"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"

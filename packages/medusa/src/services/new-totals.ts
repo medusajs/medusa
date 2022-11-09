@@ -446,7 +446,7 @@ export default class NewTotalsService extends TransactionBaseService {
     }: {
       region: Region
       giftCardTransactions?: {
-        tax_rate: number
+        tax_rate: number | null
         is_taxable: boolean | null
         amount: number
       }[]
@@ -483,7 +483,7 @@ export default class NewTotalsService extends TransactionBaseService {
     result.total = Math.min(giftCardableAmount, giftAmount)
 
     if (region?.gift_cards_taxable) {
-      result.tax_total = Math.round((result.total * region.tax_rate) / 100)
+      result.tax_total = Math.round(result.total * (region.tax_rate / 100))
       return result
     }
 
@@ -500,7 +500,7 @@ export default class NewTotalsService extends TransactionBaseService {
     region,
   }: {
     giftCardTransactions: {
-      tax_rate: number
+      tax_rate: number | null
       is_taxable: boolean | null
       amount: number
     }[]
@@ -573,9 +573,13 @@ export default class NewTotalsService extends TransactionBaseService {
           shippingMethodsTaxLinesMap[sm.id] = sm.tax_lines ?? []
         })
       } else {
+        const calculationContextWithGivenMethod = {
+          ...calculationContext,
+          shippingMethods,
+        }
         const { shippingMethodsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
-          .getTaxLinesMap([], calculationContext)
+          .getTaxLinesMap([], calculationContextWithGivenMethod)
         shippingMethodsTaxLinesMap = shippingMethodsTaxLines
       }
     }

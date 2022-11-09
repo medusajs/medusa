@@ -323,11 +323,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       }
     }
 
-    order = await this.orderService_
-      .withTransaction(manager)
-      .retrieveWithTotals(order.id, {
-        relations: ["shipping_address", "items", "payments"],
-      })
+    order = await orderServiceTx.retrieveWithTotals(order.id, {
+      relations: ["shipping_address", "items", "payments"],
+    })
 
     return {
       response_code: 200,

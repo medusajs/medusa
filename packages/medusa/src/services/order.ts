@@ -340,7 +340,7 @@ class OrderService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.orderRepository_)
+    const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
     const query = buildQuery({ id: orderId }, config)
 
@@ -351,7 +351,7 @@ class OrderService extends TransactionBaseService {
     const queryRelations = query.relations
     query.relations = undefined
 
-    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
       throw new MedusaError(
@@ -638,14 +638,14 @@ class OrderService extends TransactionBaseService {
         toCreate.no_notification = draft.no_notification_order
       }
 
-      const o = orderRepo.create(toCreate)
-      const result = await orderRepo.save(o)
+      const rawOrder = orderRepo.create(toCreate)
+      const order = await orderRepo.save(rawOrder)
 
       if (total !== 0 && payment) {
         await this.paymentProviderService_
           .withTransaction(manager)
           .updatePayment(payment.id, {
-            order_id: result.id,
+            order_id: order.id,
           })
       }
 
@@ -657,7 +657,36 @@ class OrderService extends TransactionBaseService {
       }
 
       // gift cardable amount
-      let gcBalance = cart.subtotal! - cart.discount_total!
+      /* const calculationContext = await this.totalsService_.getCalculationContext(
+         cart,
+         {
+           exclude_gift_cards: true
+         }
+       )
+       const totals = await this.newTotalsService_.getLineItemTotals(cart.items, {
+         includeTax: true,
+         calculationContext
+       })
+ 
+       let gcBalance = 0
+       if (cart.region?.gift_cards_taxable) {
+         const [subtotal, discountTotal] = Object.values(totals).reduce((acc, total) => {
+           acc[0] += total.total
+           acc[1] += total.discount_total
+           return acc
+         }, [0, 0])
+ 
+         gcBalance = subtotal - discountTotal
+       } else {
+         gcBalance = Object.values(totals).reduce((acc, total) => {
+           acc += total.total
+           return acc
+         }, 0)
+       }*/
+      let gcBalance =
+        (cart.region?.gift_cards_taxable
+          ? cart.subtotal! - cart.discount_total!
+          : cart.total! + cart.gift_card_total!) || 0
       const gcService = this.giftCardService_.withTransaction(manager)
 
       for (const g of cart.gift_cards) {
@@ -670,7 +699,7 @@ class OrderService extends TransactionBaseService {
 
         await gcService.createTransaction({
           gift_card_id: g.id,
-          order_id: result.id,
+          order_id: order.id,
           amount: usage,
           is_taxable: cart.region.gift_cards_taxable,
           tax_rate: cart.region.gift_cards_taxable
@@ -689,7 +718,7 @@ class OrderService extends TransactionBaseService {
         [
           cart.items.map((item) => {
             return [
-              lineItemServiceTx.update(item.id, { order_id: result.id }),
+              lineItemServiceTx.update(item.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
                 item.variant_id,
                 -item.quantity
@@ -702,7 +731,7 @@ class OrderService extends TransactionBaseService {
             // We normally should only pass what is needed?
             ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
-              order_id: result.id,
+              order_id: order.id,
             })
           }),
         ].flat(Infinity)
@@ -711,13 +740,13 @@ class OrderService extends TransactionBaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
-          id: result.id,
-          no_notification: result.no_notification,
+          id: order.id,
+          no_notification: order.no_notification,
         })
 
       await cartServiceTx.update(cart.id, { completed_at: new Date() })
 
-      return result
+      return order
     })
   }
 
@@ -1708,12 +1737,14 @@ class OrderService extends TransactionBaseService {
       {
         region: order.region,
         giftCards: order.gift_cards,
+        giftCardTransactions: order.gift_card_transactions ?? [],
       }
     )
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-    order.tax_total = item_tax_total + shipping_tax_total
+    order.tax_total =
+      item_tax_total + shipping_tax_total - order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
