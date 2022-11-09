@@ -1,6 +1,6 @@
 # Class: StoreGetShippingOptionsParams
 
-[internal](../modules/internal-45.md).StoreGetShippingOptionsParams
+[internal](../modules/internal-46.md).StoreGetShippingOptionsParams
 
 ## Properties
 
