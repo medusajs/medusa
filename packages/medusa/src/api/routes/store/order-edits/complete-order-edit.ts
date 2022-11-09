@@ -1,11 +1,15 @@
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { OrderEditService } from "../../../../services"
+import {
+  OrderEditService,
+  OrderService,
+  PaymentProviderService,
+} from "../../../../services"
 import {
   defaultStoreOrderEditFields,
   defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
-import { OrderEditStatus } from "../../../../models"
+import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
 
 /**
@@ -55,12 +59,22 @@ export default async (req: Request, res: Response) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
+  const orderService: OrderService = req.scope.resolve("orderService")
+
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    "paymentProviderService"
+  )
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const userId = req.user?.customer_id ?? req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (manager) => {
     const orderEditServiceTx = orderEditService.withTransaction(manager)
+    const orderServiceTx = orderService.withTransaction(manager)
+    const paymentProviderServiceTx =
+      paymentProviderService.withTransaction(manager)
+
     const orderEdit = await orderEditServiceTx.retrieve(id)
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {
@@ -74,9 +88,40 @@ export default async (req: Request, res: Response) => {
       )
     }
 
-    return await orderEditServiceTx.confirm(id, {
+    if (orderEdit.payment_collection) {
+      if (
+        orderEdit.payment_collection.status !==
+        PaymentCollectionStatus.AUTHORIZED
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Unable to complete an order edit if the payment is not authorized"
+        )
+      }
+    }
+
+    const returned = await orderEditServiceTx.confirm(id, {
       loggedInUserId: userId,
     })
+
+    if (orderEdit.payment_collection) {
+      for (const payment of orderEdit.payment_collection.payments) {
+        await paymentProviderServiceTx.updatePayment(payment.id, {
+          order_id: orderEdit.order_id,
+        })
+      }
+    } else {
+      const total = await orderEditService.getTotals(orderEdit.id)
+      if (total.difference_due < 0) {
+        await orderServiceTx.createRefund(
+          orderEdit.order_id,
+          total.difference_due * -1,
+          "Order Edit Difference"
+        )
+      }
+    }
+
+    return returned
   })
 
   let orderEdit = await orderEditService.retrieve(id, {

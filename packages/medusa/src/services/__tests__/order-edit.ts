@@ -344,7 +344,6 @@ describe("OrderEditService", () => {
 
         result = await orderEditService.requestConfirmation(orderEditId, {
           loggedInUserId: userId,
-          paymentCollectionDescription: "payment collection description",
         })
       })
 
@@ -360,7 +359,6 @@ describe("OrderEditService", () => {
           ...orderEditWithChanges,
           requested_at: expect.any(Date),
           requested_by: userId,
-          payment_collection_id: IdMap.getId("paycol_1"),
         })
 
         expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
@@ -378,7 +376,6 @@ describe("OrderEditService", () => {
       beforeEach(async () => {
         result = await orderEditService.requestConfirmation(orderEditId, {
           loggedInUserId: userId,
-          paymentCollectionDescription: "payment description text",
         })
       })
 

@@ -1,10 +1,15 @@
+import { OrderEditRepository } from "./../../../../repositories/order-edit"
 import { EntityManager } from "typeorm"
 import { IsOptional, IsString, IsObject } from "class-validator"
-import { OrderEditService } from "../../../../services"
+import {
+  OrderEditService,
+  PaymentCollectionService,
+} from "../../../../services"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
+import { PaymentCollectionType } from "../../../../models"
 
 /**
  * @oas [post] /order-edits/{id}/request
@@ -61,18 +66,44 @@ export default async (req, res) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
+  const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
+    "paymentCollectionService"
+  )
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const loggedInUser = (req.user?.id ?? req.user?.userId) as string
 
   await manager.transaction(async (transactionManager) => {
-    await orderEditService
-      .withTransaction(transactionManager)
-      .requestConfirmation(id, {
-        paymentCollectionDescription:
-          validatedBody.payment_collection_description,
-        loggedInUserId: loggedInUser,
+    const orderEditServiceTx =
+      orderEditService.withTransaction(transactionManager)
+
+    await orderEditServiceTx.requestConfirmation(id, {
+      loggedInUserId: loggedInUser,
+    })
+    const total = await orderEditServiceTx.getTotals(orderEdit.id)
+
+    if (total.difference_due > 0) {
+      const paymentCollectionServiceTx =
+        paymentCollectionService.withTransaction(transactionManager)
+
+      const orderEditRepo: OrderEditRepository =
+        transactionManager.getCustomRepository(
+          req.scope.resolve("orderEditRepository")
+        )
+
+      const paymentCollection = await paymentCollectionServiceTx.create({
+        type: PaymentCollectionType.ORDER_EDIT,
+        amount: total.difference_due,
+        currency_code: orderEdit.order.currency_code,
+        region_id: orderEdit.order.region_id,
+        description: validatedBody.payment_collection_description,
+        created_by: loggedInUser,
       })
+
+      orderEdit.payment_collection_id = paymentCollection.id
+      await orderEditRepo.save(orderEdit)
+    }
   })
 
   let orderEdit = await orderEditService.retrieve(id, {

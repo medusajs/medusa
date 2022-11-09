@@ -115,7 +115,9 @@ export const orderEditServiceMock = {
     })
   }),
   getTotals: jest.fn().mockImplementation(() => {
-    return Promise.resolve({})
+    return Promise.resolve({
+      difference_due: 1000,
+    })
   }),
   delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()

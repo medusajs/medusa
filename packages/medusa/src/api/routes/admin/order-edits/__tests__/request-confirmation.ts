@@ -1,6 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
+import { PaymentCollectionServiceMock } from "../../../../../services/__mocks__/payment-collection"
 import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("GET /admin/order-edits/:id", () => {
@@ -20,7 +21,7 @@ describe("GET /admin/order-edits/:id", () => {
           },
           flags: [OrderEditingFeatureFlag],
           payload: {
-            description: "PayCol description",
+            payment_collection_description: "PayCol description",
           },
         }
       )
@@ -34,7 +35,6 @@ describe("GET /admin/order-edits/:id", () => {
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(
         orderEditId,
-        "PayCol description",
         { loggedInUserId: IdMap.getId("admin_user") }
       )
     })

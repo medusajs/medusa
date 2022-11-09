@@ -663,7 +663,6 @@ export default class OrderEditService extends TransactionBaseService {
   async requestConfirmation(
     orderEditId: string,
     context: {
-      paymentCollectionDescription?: string
       loggedInUserId?: string
     } = {}
   ): Promise<OrderEdit> {
@@ -690,23 +689,6 @@ export default class OrderEditService extends TransactionBaseService {
 
       orderEdit.requested_at = new Date()
       orderEdit.requested_by = context.loggedInUserId
-
-      const total = await this.getTotals(orderEdit.id)
-
-      if (total.difference_due > 0) {
-        const paymentCollection = await this.paymentCollectionService_
-          .withTransaction(manager)
-          .create({
-            type: PaymentCollectionType.ORDER_EDIT,
-            amount: total.difference_due,
-            currency_code: orderEdit.order.currency_code,
-            region_id: orderEdit.order.region_id,
-            description: context.paymentCollectionDescription,
-            created_by: context.loggedInUserId as string,
-          })
-
-        orderEdit.payment_collection_id = paymentCollection.id
-      }
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -800,35 +782,6 @@ export default class OrderEditService extends TransactionBaseService {
 
       orderEdit.confirmed_at = new Date()
       orderEdit.confirmed_by = context.loggedInUserId
-
-      if (orderEdit.payment_collection) {
-        if (
-          orderEdit.payment_collection.status !==
-          PaymentCollectionStatus.AUTHORIZED
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Unable to complete an order edit if the payment is not authorized"
-          )
-        }
-
-        for (const payment of orderEdit.payment_collection.payments) {
-          await this.paymentProviderService_.updatePayment(payment.id, {
-            order_id: orderEdit.order_id,
-          })
-        }
-      } else {
-        const total = await this.getTotals(orderEdit.id)
-        if (total.difference_due < 0) {
-          await this.orderService_
-            .withTransaction(manager)
-            .createRefund(
-              orderEdit.order_id,
-              total.difference_due * -1,
-              "Order Edit Difference"
-            )
-        }
-      }
 
       orderEdit = await orderEditRepository.save(orderEdit)
 
