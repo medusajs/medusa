@@ -7,6 +7,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * operationId: "GetPublishableApiKeysPublishableApiKey"
  * summary: "Get a Publishable API Key"
  * description: "Retrieve the Publishable Api Key."
+ * parameters:
+ *   - (path) id=* {string} The ID of the PublishableApiKey.
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
