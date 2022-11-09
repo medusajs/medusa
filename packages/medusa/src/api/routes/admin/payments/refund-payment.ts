@@ -7,19 +7,17 @@ import {
 } from "class-validator"
 import { RefundReason } from "../../../../models"
 
-import { PaymentCollectionService } from "../../../../services"
+import { PaymentService } from "../../../../services"
 
 export default async (req, res) => {
-  const { payment_id } = req.params
+  const { id } = req.params
 
-  const data = req.validatedBody as AdminPostPaymentCollectionRefundsReq
+  const data = req.validatedBody as AdminPostPaymentRefundsReq
 
-  const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
-    "paymentCollectionService"
-  )
+  const paymentService: PaymentService = req.scope.resolve("paymentService")
 
-  const refund = await paymentCollectionService.refund(
-    payment_id,
+  const refund = await paymentService.refund(
+    id,
     data.amount,
     data.reason,
     data.note
@@ -28,7 +26,7 @@ export default async (req, res) => {
   res.status(200).json({ refund })
 }
 
-export class AdminPostPaymentCollectionRefundsReq {
+export class AdminPostPaymentRefundsReq {
   @IsInt()
   @IsNotEmpty()
   amount: number

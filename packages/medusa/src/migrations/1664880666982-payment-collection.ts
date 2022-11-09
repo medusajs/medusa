@@ -78,6 +78,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE refund ADD COLUMN payment_id character varying NULL;
         CREATE INDEX "IDX_refund_payment_id" ON "refund" ("payment_id");
         ALTER TABLE "refund" ADD CONSTRAINT "FK_refund_payment_id" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+        ALTER TABLE refund ALTER COLUMN order_id DROP NOT NULL;
     `)
 
     // Add missing indexes
@@ -97,6 +98,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
 
         DROP INDEX "IDX_refund_payment_id";
         ALTER TABLE refund DROP CONSTRAINT "FK_refund_payment_id";
+        ALTER TABLE refund ALTER COLUMN order_id SET NOT NULL;
 
         ALTER TABLE payment_collection DROP CONSTRAINT "FK_payment_collection_region_id";
         ALTER TABLE payment_collection_sessions DROP CONSTRAINT "FK_payment_collection_sessions_payment_collection_id";

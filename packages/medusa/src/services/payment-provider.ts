@@ -19,6 +19,7 @@ import {
 import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
+import PaymentService from "./payment"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -27,6 +28,7 @@ type InjectedDependencies = {
   paymentProviderRepository: typeof PaymentProviderRepository
   paymentRepository: typeof PaymentRepository
   refundRepository: typeof RefundRepository
+  paymentService: PaymentService
   featureFlagRouter: FlagRouter
 } & {
   [key in `${PaymentProviderKey}`]:
@@ -46,6 +48,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor(container: InjectedDependencies) {
@@ -412,18 +415,13 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .getPaymentData(payment_session)
 
-      const paymentRepo = transactionManager.getCustomRepository(
-        this.paymentRepository_
-      )
-
-      const created = paymentRepo.create({
+      const paymentService = this.container_.paymentService
+      return await paymentService.withTransaction(transactionManager).create({
         provider_id,
         amount,
         currency_code,
         data: paymentData,
       })
-
-      return await paymentRepo.save(created)
     })
   }
 
@@ -432,20 +430,10 @@ export default class PaymentProviderService extends TransactionBaseService {
     data: { order_id?: string; swap_id?: string }
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const payment = await this.retrievePayment(paymentId)
-
-      if (data?.order_id) {
-        payment.order_id = data.order_id
-      }
-
-      if (data?.swap_id) {
-        payment.swap_id = data.swap_id
-      }
-
-      const payRepo = transactionManager.getCustomRepository(
-        this.paymentRepository_
-      )
-      return await payRepo.save(payment)
+      const paymentService = this.container_.paymentService
+      return await paymentService
+        .withTransaction(transactionManager)
+        .update(paymentId, data)
     })
   }
 

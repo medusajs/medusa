@@ -18,6 +18,7 @@ import {
   CustomerService,
   EventBusService,
   PaymentProviderService,
+  PaymentService,
 } from "./index"
 
 import {
@@ -30,6 +31,7 @@ type InjectedDependencies = {
   manager: EntityManager
   paymentCollectionRepository: typeof PaymentCollectionRepository
   paymentProviderService: PaymentProviderService
+  paymentService: PaymentService
   eventBusService: EventBusService
   customerService: CustomerService
 }
@@ -40,16 +42,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     UPDATED: "payment-collection.updated",
     DELETED: "payment-collection.deleted",
     PAYMENT_AUTHORIZED: "payment-collection.payment_authorized",
-    PAYMENT_CAPTURED: "payment-collection.payment_captured",
-    PAYMENT_CAPTURE_FAILED: "payment-collection.payment_capture_failed",
-    REFUND_CREATED: "payment-collection.payment_refund_created",
-    REFUND_FAILED: "payment-collection.payment_refund_failed",
   }
 
   protected readonly manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
+  protected readonly paymentService_: PaymentService
   protected readonly customerService_: CustomerService
   // eslint-disable-next-line max-len
   protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
@@ -58,6 +57,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     manager,
     paymentCollectionRepository,
     paymentProviderService,
+    paymentService,
     customerService,
     eventBusService,
   }: InjectedDependencies) {
@@ -67,6 +67,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     this.manager_ = manager
     this.paymentCollectionRepository_ = paymentCollectionRepository
     this.paymentProviderService_ = paymentProviderService
+    this.paymentService_ = paymentService
     this.eventBusService_ = eventBusService
     this.customerService_ = customerService
   }
@@ -479,13 +480,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      let captureError: Error | null = null
-      const capturedPayment = await this.paymentProviderService_
+      const capturedPayment = await this.paymentService_
         .withTransaction(manager)
-        .capturePayment(payment)
-        .catch((err) => {
-          captureError = err
-        })
+        .capture(payment)
 
       payCol.captured_amount = payCol.captured_amount ?? 0
       if (capturedPayment) {
@@ -505,24 +502,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
       )
 
       await paymentCollectionRepository.save(payCol)
-
-      if (!capturedPayment) {
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(PaymentCollectionService.Events.PAYMENT_CAPTURE_FAILED, {
-            ...payment,
-            error: captureError,
-          })
-
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          `Failed to capture Payment ${payment.id}`
-        )
-      }
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(PaymentCollectionService.Events.PAYMENT_CAPTURED, capturedPayment)
 
       return capturedPayment
     })
@@ -571,28 +550,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
     note?: string
   ): Promise<Refund> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      if (!payment.captured_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Payment ${payment.id} is not captured`
-        )
-      }
-
-      const refundable = payment.amount - payment.amount_refunded
-      if (amount > refundable) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Only ${refundable} can be refunded from Payment ${payment.id}`
-        )
-      }
-
-      let refundError: Error | null = null
-      const refund = await this.paymentProviderService_
+      const refund = await this.paymentService_
         .withTransaction(manager)
-        .refundFromPayment(payment, amount, reason, note)
-        .catch((err) => {
-          refundError = err
-        })
+        .refund(payment, amount, reason, note)
 
       payCol.refunded_amount = payCol.refunded_amount ?? 0
       if (refund) {
@@ -612,24 +572,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
       )
 
       await paymentCollectionRepository.save(payCol)
-
-      if (!refund) {
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(PaymentCollectionService.Events.REFUND_FAILED, {
-            ...payment,
-            error: refundError,
-          })
-
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          `Failed to refund Payment ${payment.id}`
-        )
-      }
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(PaymentCollectionService.Events.REFUND_CREATED, refund)
 
       return refund
     })

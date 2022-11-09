@@ -1,4 +1,3 @@
-import { CreatePaymentCollectionInput } from "../../../../types/payment-collection"
 import { IsObject, IsOptional, IsString } from "class-validator"
 
 import { EntityManager } from "typeorm"
@@ -13,7 +12,7 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const payment_collection = await manager.transaction(
+  const paymentCollection = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
@@ -21,7 +20,7 @@ export default async (req, res) => {
     }
   )
 
-  res.status(200).json({ payment_collection })
+  res.status(200).json({ payment_collection: paymentCollection })
 }
 
 export class AdminUpdatePaymentCollectionRequest {
