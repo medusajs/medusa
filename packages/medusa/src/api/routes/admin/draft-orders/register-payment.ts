@@ -111,6 +111,8 @@ export default async (req, res) => {
     await draftOrderService
       .withTransaction(manager)
       .registerCartCompletion(draftOrder.id, result.id)
+
+    await orderService.withTransaction(manager).capturePayment(result.id)
   })
 
   const order = await orderService.retrieve(result.id, {

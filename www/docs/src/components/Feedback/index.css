@@ -1,3 +1,9 @@
+
+.feedback-container {
+  padding-top: var(--ifm-base-margin-vertical);
+  border-top: 1px solid var(--ifm-doc-footer-border-color);
+}
+
 .inline-feedback {
   display: flex;
   flex-direction: row;
@@ -8,11 +14,6 @@
 .feedback-message {
   display: flex;
   flex-direction: column;
-}
-
-.inline-feedback span,
-.inline-question span {
-  font-weight: bold;
 }
 
 .inline-feedback span {
@@ -28,22 +29,19 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
-  padding: 12px 16px;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 6px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  background-color: transparent;
-  border: 1px solid #E5E7EB;
-  color: var(--ifm-font-color-base);
+  background-color: var(--ifm-primary-btn-background-color);
+  border: 1px solid var(--ifm-primary-btn-border-color);
+  color: var(--ifm-primary-btn-color);
 }
 
 .feedback-btn:focus {
   box-shadow: 0px 0px 0px 4px rgba(124, 58, 237, 0.1);
-}
-
-html:not([data-theme="dark"]) .feedback-btn:hover {
-  background: #F3F4F6;
 }
 
 html:not([data-theme="dark"]) .feedback-btn:active,

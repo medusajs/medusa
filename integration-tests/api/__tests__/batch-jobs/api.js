@@ -232,7 +232,7 @@ describe("/admin/batch-jobs", () => {
 
       const jobId = "job_4"
 
-      api
+      await api
         .post(`/admin/batch-jobs/${jobId}/confirm`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
@@ -286,7 +286,7 @@ describe("/admin/batch-jobs", () => {
 
       const jobId = "job_4"
 
-      api
+      await api
         .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)

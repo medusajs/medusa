@@ -8,10 +8,14 @@ import {
   Validate,
   ValidateNested,
 } from "class-validator"
-import { DiscountConditionOperator } from "../models/discount-condition"
-import { AllocationType, DiscountRuleType } from "../models/discount-rule"
+import {
+  AllocationType,
+  DiscountConditionOperator,
+  DiscountConditionType,
+  DiscountRuleType,
+  Region,
+} from "../models"
 import { ExactlyOne } from "./validators/exactly-one"
-import { Region } from "../models"
 
 export type QuerySelector = {
   q?: string
@@ -105,15 +109,23 @@ export class AdminUpsertConditionsReq {
   customer_groups?: string[]
 }
 
-export type UpsertDiscountConditionInput = {
+export const DiscountConditionMapTypeToProperty = {
+  [DiscountConditionType.PRODUCTS]: "products",
+  [DiscountConditionType.PRODUCT_TYPES]: "product_types",
+  [DiscountConditionType.PRODUCT_COLLECTIONS]: "product_collections",
+  [DiscountConditionType.PRODUCT_TAGS]: "product_tags",
+  [DiscountConditionType.CUSTOMER_GROUPS]: "customer_groups",
+}
+
+export type DiscountConditionInput = {
   rule_id?: string
   id?: string
   operator?: DiscountConditionOperator
-  products?: string[]
-  product_collections?: string[]
-  product_types?: string[]
-  product_tags?: string[]
-  customer_groups?: string[]
+  products?: (string | { id: string })[]
+  product_collections?: (string | { id: string })[]
+  product_types?: (string | { id: string })[]
+  product_tags?: (string | { id: string })[]
+  customer_groups?: (string | { id: string })[]
 }
 
 export type CreateDiscountRuleInput = {
@@ -121,7 +133,7 @@ export type CreateDiscountRuleInput = {
   type: DiscountRuleType
   value: number
   allocation: AllocationType
-  conditions?: UpsertDiscountConditionInput[]
+  conditions?: DiscountConditionInput[]
 }
 
 export type CreateDiscountInput = {
@@ -142,7 +154,7 @@ export type UpdateDiscountRuleInput = {
   description?: string
   value?: number
   allocation?: AllocationType
-  conditions?: UpsertDiscountConditionInput[]
+  conditions?: DiscountConditionInput[]
 }
 
 export type UpdateDiscountInput = {

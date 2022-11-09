@@ -1,15 +1,6 @@
-import { IsOptional, IsString } from "class-validator"
-import {
-  defaultAdminDiscountConditionFields,
-  defaultAdminDiscountConditionRelations,
-} from "."
-
-import { DiscountCondition } from "../../../../models"
+import { Request, Response } from "express"
 import DiscountConditionService from "../../../../services/discount-condition"
-import { DiscountService } from "../../../../services"
-import { MedusaError } from "medusa-core-utils"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /discounts/{discount_id}/conditions/{condition_id}
@@ -66,37 +57,8 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 
-export default async (req, res) => {
-  const { discount_id, condition_id } = req.params
-
-  const validatedParams = await validator(
-    AdminGetDiscountsDiscountConditionsConditionParams,
-    req.query
-  )
-
-  const discountService: DiscountService = req.scope.resolve("discountService")
-
-  const discount = await discountService.retrieve(discount_id, {
-    relations: ["rule", "rule.conditions"],
-  })
-
-  const existsOnDiscount = discount.rule.conditions.some(
-    (c) => c.id === condition_id
-  )
-
-  if (!existsOnDiscount) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Condition with id ${condition_id} does not belong to Discount with id ${discount_id}`
-    )
-  }
-
-  const config = getRetrieveConfig<DiscountCondition>(
-    defaultAdminDiscountConditionFields,
-    defaultAdminDiscountConditionRelations,
-    validatedParams?.fields?.split(",") as (keyof DiscountCondition)[],
-    validatedParams?.expand?.split(",")
-  )
+export default async (req: Request, res: Response) => {
+  const { condition_id } = req.params
 
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
@@ -104,18 +66,10 @@ export default async (req, res) => {
 
   const discountCondition = await conditionService.retrieve(
     condition_id,
-    config
+    req.retrieveConfig
   )
 
   res.status(200).json({ discount_condition: discountCondition })
 }
 
-export class AdminGetDiscountsDiscountConditionsConditionParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
+export class AdminGetDiscountsDiscountConditionsConditionParams extends FindParams {}

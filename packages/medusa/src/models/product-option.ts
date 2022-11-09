@@ -18,7 +18,9 @@ export class ProductOption extends SoftDeletableEntity {
   @Column()
   title: string
 
-  @OneToMany(() => ProductOptionValue, (value) => value.option)
+  @OneToMany(() => ProductOptionValue, (value) => value.option, {
+    cascade: ["soft-remove", "remove"],
+  })
   values: ProductOptionValue[]
 
   @Column()

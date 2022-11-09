@@ -28,7 +28,7 @@ export enum PaymentSessionStatus {
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()
-  @Column()
+  @Column({ nullable: true })
   cart_id: string
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
@@ -50,6 +50,11 @@ export class PaymentSession extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    Column({ type: "integer", nullable: true }),
+  ])
+  amount: number
 
   @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
     Column({ type: resolveDbType("timestamptz"), nullable: true }),
