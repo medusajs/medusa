@@ -1,9 +1,6 @@
-name: Staging Release
+name: Staging Release and publish
 
-on:
-  push:
-    branches:
-      - develop
+on: 
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -26,6 +23,7 @@ jobs:
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with: 
-          version: yarn version:staging
+          version: yarn version:staging-snap
+          release: yarn release:staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
