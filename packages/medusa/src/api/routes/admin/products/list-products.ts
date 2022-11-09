@@ -14,6 +14,7 @@ import { FilterableProductProps } from "../../../../types/product"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the product.
  *   - in: query
  *     name: id
  *     style: form
@@ -73,11 +74,19 @@ import { FilterableProductProps } from "../../../../types/product"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  *   - (query) title {string} title to search for.
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
  *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} type ID to search for.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting products were created.

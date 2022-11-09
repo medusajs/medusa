@@ -5,19 +5,22 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from "class-validator"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import { Product, ProductOptionValue, ProductStatus } from "../models"
+import {
+  PriceList,
+  Product,
+  ProductOptionValue,
+  ProductStatus,
+  SalesChannel,
+} from "../models"
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import {
-  DateComparisonOperator,
-  FindConfig,
-  StringComparisonOperator
-} from "./common"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import { PriceListLoadConfig } from "./price-list"
+import { FindOperator } from "typeorm"
 
 /**
  * API Level DTOs + Validation rules
@@ -64,15 +67,16 @@ export class FilterableProductProps {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
+  @IsArray()
+  @IsOptional()
+  type_id?: string[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
+  sales_channel_id?: string[]
+
   @IsString()
   @IsOptional()
-  type?: string
-
-  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
-    IsOptional(),
-    IsArray(),
-  ])
-  sales_channel_id?: string[]
+  discount_condition_id?: string
 
   @IsOptional()
   @ValidateNested()
@@ -90,49 +94,14 @@ export class FilterableProductProps {
   deleted_at?: DateComparisonOperator
 }
 
-export class FilterableProductTagProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
-
-export class FilterableProductTypeProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
+export type ProductSelector =
+  | FilterableProductProps
+  | (Selector<Product> & {
+      q?: string
+      discount_condition_id?: string
+      price_list_id?: string[] | FindOperator<PriceList>
+      sales_channel_id?: string[] | FindOperator<SalesChannel>
+    })
 
 /**
  * Service Level DTOs

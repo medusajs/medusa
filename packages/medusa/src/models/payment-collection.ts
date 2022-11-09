@@ -51,6 +51,9 @@ export class PaymentCollection extends SoftDeletableEntity {
   authorized_amount: number
 
   @Column({ type: "int", nullable: true })
+  captured_amount: number
+
+  @Column({ type: "int", nullable: true })
   refunded_amount: number
 
   @Index()

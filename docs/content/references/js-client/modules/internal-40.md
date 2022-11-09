@@ -2,7 +2,6 @@
 
 ## Classes
 
-- [PriceSelectionParams](../classes/internal-40.PriceSelectionParams.md)
 - [StoreGetVariantsParams](../classes/internal-40.StoreGetVariantsParams.md)
 
 ## Type Aliases

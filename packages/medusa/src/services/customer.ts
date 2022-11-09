@@ -10,7 +10,6 @@ import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, isDefined, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -19,6 +18,7 @@ type InjectedDependencies = {
   customerRepository: typeof CustomerRepository
   addressRepository: typeof AddressRepository
 }
+
 /**
  * Provides layer to manipulate customers.
  */
@@ -301,57 +301,53 @@ class CustomerService extends TransactionBaseService {
     customerId: string,
     update: UpdateCustomerInput
   ): Promise<Customer> {
-    return await this.atomicPhase_(
-      async (manager) => {
-        const customerRepository = manager.getCustomRepository(
-          this.customerRepository_
-        )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepository = manager.getCustomRepository(
+        this.customerRepository_
+      )
 
-        const customer = await this.retrieve(customerId)
+      const customer = await this.retrieve(customerId)
 
-        const {
-          password,
-          metadata,
-          billing_address,
-          billing_address_id,
-          groups,
-          ...rest
-        } = update
+      const {
+        password,
+        metadata,
+        billing_address,
+        billing_address_id,
+        groups,
+        ...rest
+      } = update
 
-        if (metadata) {
-          customer.metadata = setMetadata(customer, metadata)
-        }
-
-        if ("billing_address_id" in update || "billing_address" in update) {
-          const address = billing_address_id || billing_address
-          if (isDefined(address)) {
-            await this.updateBillingAddress_(customer, address)
-          }
-        }
-
-        for (const [key, value] of Object.entries(rest)) {
-          customer[key] = value
-        }
-
-        if (password) {
-          customer.password_hash = await this.hashPassword_(password)
-        }
-
-        if (groups) {
-          customer.groups = groups as CustomerGroup[]
-        }
-
-        const updated = await customerRepository.save(customer)
-
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.UPDATED, updated)
-        return updated
-      },
-      async (error) => {
-        throw formatException(error)
+      if (metadata) {
+        customer.metadata = setMetadata(customer, metadata)
       }
-    )
+
+      if ("billing_address_id" in update || "billing_address" in update) {
+        const address = billing_address_id || billing_address
+        if (isDefined(address)) {
+          await this.updateBillingAddress_(customer, address)
+        }
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        customer[key] = value
+      }
+
+      if (password) {
+        customer.password_hash = await this.hashPassword_(password)
+      }
+
+      if (groups) {
+        customer.groups = groups as CustomerGroup[]
+      }
+
+      const updated = await customerRepository.save(customer)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(CustomerService.Events.UPDATED, updated)
+
+      return updated
+    })
   }
 
   /**

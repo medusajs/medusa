@@ -13,20 +13,22 @@ const IdempotencyKeyServiceMock = {
 
       if (recovery_point) {
         return {
-          key: { idempotency_key: key, recovery_point },
+          idempotency_key: key,
+          recovery_point,
         }
       } else {
         return {
-          key: {
-            recovery_point: "finished",
-            response_body,
-            response_code,
-          },
+          recovery_point: "finished",
+          response_body,
+          response_code,
         }
       }
     } catch (err) {
       return { error: err }
     }
+  }),
+  update: jest.fn().mockImplementation((key, data) => {
+    return data
   }),
 }
 

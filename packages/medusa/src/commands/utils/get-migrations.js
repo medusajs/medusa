@@ -4,6 +4,8 @@ import fs from "fs"
 import { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
 import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import { handleConfigError } from "../../loaders/config"
+import logger from "../../loaders/logger"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -88,7 +90,12 @@ function resolvePlugin(pluginName) {
 }
 
 export default async (directory, featureFlagRouter) => {
-  const { configModule } = getConfigFile(directory, `medusa-config`)
+  const { configModule, error } = getConfigFile(directory, `medusa-config`)
+
+  if (error) {
+    handleConfigError(error)
+  }
+
   const { plugins } = configModule
 
   const resolved = plugins.map((plugin) => {
