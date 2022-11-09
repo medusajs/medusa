@@ -1412,6 +1412,27 @@ class OrderService extends TransactionBaseService {
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
+    if (totalsFields.some((field) => ["subtotal", "total"].includes(field))) {
+      const calculationContext =
+        await this.totalsService_.getCalculationContext(order, {
+          exclude_shipping: true,
+        })
+      order.items = await Promise.all(
+        (order.items || []).map(async (item) => {
+          const itemTotals = await this.totalsService_.getLineItemTotals(
+            item,
+            order,
+            {
+              include_tax: true,
+              calculation_context: calculationContext,
+            }
+          )
+
+          return Object.assign(item, itemTotals)
+        })
+      )
+    }
+
     for (const totalField of totalsFields) {
       switch (totalField) {
         case "shipping_total": {
