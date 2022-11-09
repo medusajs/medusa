@@ -5,22 +5,94 @@ get:
   x-authenticated: true
   parameters:
     - in: query
-      name: q
-      description: Query used for searching variants.
+      name: id
+      description: A Product Variant id to filter by.
+      schema:
+        type: string
+    - in: query
+      name: ids
+      description: A comma separated list of Product Variant ids to filter by.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: A comma separated list of Product Variant relations to load.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: A comma separated list of Product Variant fields to include.
       schema:
         type: string
     - in: query
       name: offset
-      description: How many variants to skip in the result.
+      description: How many product variants to skip in the result.
       schema:
-        type: integer
-        default: 0
+        type: number
+        default: '0'
     - in: query
       name: limit
-      description: Limit the number of variants returned.
+      description: Maximum number of Product Variants to return.
       schema:
-        type: integer
-        default: 20
+        type: number
+        default: '100'
+    - in: query
+      name: cart_id
+      description: The id of the cart to use for price selection.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: The id of the region to use for price selection.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: The currency code to use for price selection.
+      schema:
+        type: string
+    - in: query
+      name: customer_id
+      description: The id of the customer to use for price selection.
+      schema:
+        type: string
+    - in: query
+      name: title
+      style: form
+      explode: false
+      description: product variant title to search for.
+      schema:
+        oneOf:
+          - type: string
+            description: a single title to search by
+          - type: array
+            description: multiple titles to search by
+            items:
+              type: string
+    - in: query
+      name: inventory_quantity
+      description: Filter by available inventory quantity
+      schema:
+        oneOf:
+          - type: number
+            description: a specific number to search by.
+          - type: object
+            description: search using less and greater than comparisons.
+            properties:
+              lt:
+                type: number
+                description: filter by inventory quantity less than this number
+              gt:
+                type: number
+                description: filter by inventory quantity greater than this number
+              lte:
+                type: number
+                description: filter by inventory quantity less than or equal to this number
+              gte:
+                type: number
+                description: >-
+                  filter by inventory quantity greater than or equal to this
+                  number
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
