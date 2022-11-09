@@ -1782,7 +1782,7 @@ class OrderService extends TransactionBaseService {
       order.subtotal +
       order.shipping_total +
       order.tax_total -
-      (order.gift_card_total + order.discount_total + order.gift_card_tax_total)
+      (order.gift_card_total + order.discount_total)
 
     return order
   }
