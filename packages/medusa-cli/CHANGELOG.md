@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`cfb24d72f`](https://github.com/medusajs/medusa/commit/cfb24d72fa303a6755e8579c46d3c7f36278b120)]:
+  - medusa-telemetry@0.0.14
+
 ## 1.3.3
 
 ### Patch Changes
