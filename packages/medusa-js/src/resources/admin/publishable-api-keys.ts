@@ -4,8 +4,8 @@ import {
   AdminPublishableApiKeyDeleteRes,
   AdminPublishableApiKeysRes,
   GetPublishableApiKeysParams,
+  AdminPublishableApiKeysListRes,
 } from "@medusajs/medusa"
-import { AdminPublishableApiKeysListRes } from "@medusajs/medusa/src/api/routes/admin/publishable-api-keys"
 
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
