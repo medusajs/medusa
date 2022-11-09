@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.6.2-alpha.0
+
+### Patch Changes
+
+- [`5ea4b728e`](https://github.com/medusajs/medusa/commit/5ea4b728e728a7e6d4d6fe7255ea80395ab75bd3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Order/cart decorate totals should assign items totals, shipping option requirements should be tax-inclusive if shipping option is, ensure swaps can be created on orders with discounts
+
 ## 1.6.1
 
 ### Patch Changes
