@@ -4,6 +4,8 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
+import { PublishableApiKey } from "../../../../models"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -42,5 +44,13 @@ export default (app) => {
     middlewares.wrap(require("./list-publishable-api-keys").default)
   )
 }
+
+export type AdminPublishableApiKeysRes = {
+  publishable_api_key: PublishableApiKey
+}
+export type AdminPublishableApiKeysListRes = PaginatedResponse & {
+  publishable_api_keys: PublishableApiKey[]
+}
+export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 
 export * from "./list-publishable-api-keys"
