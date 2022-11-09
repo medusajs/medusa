@@ -80,11 +80,11 @@ Try sending a `POST` request to `/mailchimp/subscribe` with the following JSON b
 
 If the subscription is successful, a `200` response code will be returned with `OK` message.
 
-![Postman](https://i.imgur.com/tpr7uCF.png)
+![Postman](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000185/Medusa%20Docs/Mailchimp/tpr7uCF_g4rymn.png)
 
 If you check your Mailchimp dashboard, you should find the email added to your Audience list.
 
-![Email Added](https://i.imgur.com/ALz6WUq.png)
+![Email Added](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000199/Medusa%20Docs/Mailchimp/ALz6WUq_e4mkcs.png)
 
 ### With Additional Data
 
@@ -173,7 +173,7 @@ export default function NewsletterForm() {
 
 This will result in a subscription form similar to the following:
 
-![Subscription Form](https://i.imgur.com/JHIFEwe.png)
+![Subscription Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000210/Medusa%20Docs/Mailchimp/JHIFEwe_fu4rkv.png)
 
 If you try entering an email and clicking Subscribe, the email will be subscribed to your Mailchimp newsletter successfully.
 

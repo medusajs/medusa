@@ -34,27 +34,27 @@ The first step is to create an Algolia app for your Medusa server. To create one
 
 On the Applications page, click on the New application button at the top right.
 
-![Click on New application button at the top right](https://i.imgur.com/WxckgS2.png)
+![Click on New application button at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1667999820/Medusa%20Docs/Algolia/WxckgS2_eygl8l.png)
 
 In the new page that opens, optionally enter a name for the application and choose a subscription plan. You can choose the Free plan for now, but it’s recommended to switch to the Pay-as-you-go plan as your business grows.
 
-![Optionally enter a name for the application and choose a subscription plan](https://i.imgur.com/jpM2EBU.png)
+![Optionally enter a name for the application and choose a subscription plan](https://res.cloudinary.com/dza7lstvk/image/upload/v1667999980/Medusa%20Docs/Algolia/jpM2EBU_fui1lg.png)
 
 Once you’re done, click on the Next Step button. If you picked Pay as you go service, you’ll need to enter billing details before you proceed.
 
 Then, you’ll be asked to pick a region for your application. Once you’re done, click on Review Application Details.
 
-![Select a region then click on Review Application Details at the bottom right](https://i.imgur.com/fahf2J2.png)
+![Select a region then click on Review Application Details at the bottom right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000005/Medusa%20Docs/Algolia/fahf2J2_qgm7sa.png)
 
 In the last step, you’ll see a summary of your order. If all looks good, check the checkboxes at the end of the form to indicate that you agree to the terms and conditions. Then, click on the Create Application button.
 
-![Summary of your application's order with the terms and agreement checkboxes checked](https://i.imgur.com/PTI2Swq.png)
+![Summary of your application's order with the terms and agreement checkboxes checked](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000019/Medusa%20Docs/Algolia/PTI2Swq_a1qbi5.png)
 
 ## Retrieve API Keys
 
 To retrieve the API keys that you’ll use in the next sections, go to Settings, then choose API Keys in the Team and Access section.
 
-![Click on API Keys in the Team and Access section of your settings](https://i.imgur.com/gnORibC.png)
+![Click on API Keys in the Team and Access section of your settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000028/Medusa%20Docs/Algolia/gnORibC_msuur5.png)
 
 On this page, you’ll find the Application ID, Search-Only API Key, and Admin API Key. You’ll need the Application ID and Admin API Key for the Medusa server. As for the storefront, you’ll need the Application ID and Search-Only API Key.
 
@@ -64,7 +64,7 @@ If you have more than one application in your Algolia account, make sure you’r
 
 :::
 
-![Application ID, Search-Only API Key, and Admin API Key can be found in the API Keys page](https://i.imgur.com/i50Irki.png)
+![Application ID, Search-Only API Key, and Admin API Key can be found in the API Keys page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000037/Medusa%20Docs/Algolia/i50Irki_jmtyk6.png)
 
 ## Install the Algolia Plugin
 
@@ -128,7 +128,7 @@ npm run start
 
 The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
 
-![Postman request send to the search endpoint that retrieves products using Algolia](https://i.imgur.com/IHeTsi7.png)
+![Postman request send to the search endpoint that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
 
 You can also check that the products are properly indexed by opening your Algolia dashboard and choosing Search from the left sidebar. You’ll find your products that are on your Medusa server added there.
 
@@ -138,7 +138,7 @@ If you have more than one application on your Algolia account, make sure you’r
 
 :::
 
-![Products from the Medusa server can be seen on the Algolia dashboard](https://i.imgur.com/wkXzUH0.png)
+![Products from the Medusa server can be seen on the Algolia dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000071/Medusa%20Docs/Algolia/wkXzUH0_dowyxj.png)
 
 ### Add or Update Products
 
@@ -211,7 +211,7 @@ To make sure the Next.js storefront properly displays the products in the search
 
 :::
 
-![Search pop up in the Next.js storefront](https://i.imgur.com/1f9qqK6.png)
+![Search pop up in the Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
 
 ## Add to Gatsby and React-Based Storefronts
 
@@ -325,7 +325,7 @@ And add the `Search` component in the returned JSX before `RegionPopover`:
 
 If you run your Gatsby storefront while the Medusa server is running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
 
-![Search bar in the Gatsby storefront](https://i.imgur.com/INtlcIo.png)
+![Search bar in the Gatsby storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000097/Medusa%20Docs/Algolia/INtlcIo_jlh16x.png)
 
 ## What’s Next
 

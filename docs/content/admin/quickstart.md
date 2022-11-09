@@ -57,7 +57,7 @@ npm run start
 
 By default, the admin runs on port 7000. So, in your browser, go to `localhost:7000` to view your admin.
 
-![Admin Log In](https://i.imgur.com/XYqMCo9.png)
+![Admin Log In](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001604/Medusa%20Docs/Screenshots/XYqMCo9_hq1fsv.png)
 
 Use your Medusa admin’s user credentials to log in.
 
