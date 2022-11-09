@@ -28,7 +28,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PUBLISHABLE_API_KEYS: true },
-      verbose: true,
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
