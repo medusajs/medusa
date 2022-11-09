@@ -575,7 +575,7 @@ export default class NewTotalsService extends TransactionBaseService {
       } else {
         const calculationContextWithGivenMethod = {
           ...calculationContext,
-          shippingMethods,
+          shipping_methods: shippingMethods,
         }
         const { shippingMethodsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
