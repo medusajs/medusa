@@ -76,6 +76,11 @@ get:
       schema:
         type: string
     - in: query
+      name: discount_condition_id
+      description: The discount condition id on which to filter the customer groups.
+      schema:
+        type: string
+    - in: query
       name: id
       style: form
       explode: false
