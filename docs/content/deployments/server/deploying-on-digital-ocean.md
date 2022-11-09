@@ -74,11 +74,11 @@ Before you can deploy your Medusa server you need to create a GitHub repository 
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
-![Click plus then choose new repository from dropdown](https://i.imgur.com/0YlxBRi.png)
+![Click plus then choose new repository from dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001782/Medusa%20Docs/Netlify/0YlxBRi_aiywpo.png)
 
 You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
 
-![New repository form](https://i.imgur.com/YPYXAF2.png)
+![New repository form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001800/Medusa%20Docs/Netlify/YPYXAF2_lypjne.png)
 
 ### Push Code to GitHub Repository
 
@@ -86,7 +86,7 @@ The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
 
-![GitHub repository's URL](https://i.imgur.com/pHfSTuT.png)
+![GitHub repository's URL](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
 Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
 
@@ -111,13 +111,13 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 After logging into your account, click on the Create button at the top right, then choose App.
 
-![Click Create button then choose Apps](https://i.imgur.com/PQgPZ0q.png)
+![Click Create button then choose Apps](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002030/Medusa%20Docs/Digital%20Ocean/PQgPZ0q_xntr2i.png)
 
 ### Choose Repository
 
 In the Create App page, choose GitHub from the Service Provider list.
 
-![Choose GitHub from list of providers](https://i.imgur.com/nBY9wGE.png)
+![Choose GitHub from list of providers](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002043/Medusa%20Docs/Digital%20Ocean/nBY9wGE_zyy1e6.png)
 
 If you haven’t given DigitalOcean access before, click on Manage Access under Source Code. You’ll then be redirected to GitHub to give DigitalOcean access.
 
@@ -125,7 +125,7 @@ Once DigitalOcean have access to your GitHub account, you should see a Repositor
 
 Additional inputs will show up to choose the Branch, Source Directory, and Autodeploy options.
 
-![Enter master for Branch input, backslash for Source Directory, and check Autodeploy](https://i.imgur.com/kjk9E2B.png)
+![Enter master for Branch input, backslash for Source Directory, and check Autodeploy](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002055/Medusa%20Docs/Digital%20Ocean/kjk9E2B_qpwrx4.png)
 
 If you host your Medusa server in a monorepo, you should change the Source Directory to the directory the server is available in the repository. Otherwise, it can be left as is.
 
@@ -135,7 +135,7 @@ Once you’re done, click Next to move on to the next step.
 
 In the next step, you’ll see the resources to create.
 
-![List of resources showing a docker resource and web service resource](https://i.imgur.com/6TlpWB9.png)
+![List of resources showing a docker resource and web service resource](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002067/Medusa%20Docs/Digital%20Ocean/6TlpWB9_wfppc7.png)
 
 If you have a Dockerfile available in the server’s codebase (which is available by default), you’ll have two resources showing. You can remove it by clicking on the trash icon at the right of the resource.
 
@@ -143,7 +143,7 @@ By default, DigitalOcean hosts the web service in a sub-path of the domain name 
 
 Then, scroll to HTTP Request Routes and expand it by clicking on Edit at its right. Change the value of the Routes input to `/`.
 
-![Enter backslash for Routes](https://i.imgur.com/ta0jHh4.png)
+![Enter backslash for Routes](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002076/Medusa%20Docs/Digital%20Ocean/ta0jHh4_ddcz3r.png)
 
 Once you’re done click Save. You’ll be taken back to the Resources page.
 
@@ -151,15 +151,15 @@ Once you’re done click Save. You’ll be taken back to the Resources page.
 
 On the same page, expand the Add Resources section, choose Database, then click Add.
 
-![Choose Database](https://i.imgur.com/MfK9E8o.png)
+![Choose Database](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002090/Medusa%20Docs/Digital%20Ocean/MfK9E8o_ensfu0.png)
 
 In the new page, you’ll be shown a PostgreSQL database to be created. Notice that it’s important to choose a name that you’ll remember as you’ll need the name in next steps. You can leave the name as is if it’s not necessary to change it.
 
-![Enter db for Choose Name input](https://i.imgur.com/jYxENhr.png)
+![Enter db for Choose Name input](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002099/Medusa%20Docs/Digital%20Ocean/jYxENhr_wxkspz.png)
 
 Once you’re done, click Create and Attach. You’ll be redirected back to the previous page with the database added to the resources.
 
-![Database showing in the list of resources with web service](https://i.imgur.com/jNZ7rxg.png)
+![Database showing in the list of resources with web service](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002109/Medusa%20Docs/Digital%20Ocean/jNZ7rxg_msmgbz.png)
 
 Once you’re done, click Next to move on to the next step.
 
@@ -169,7 +169,7 @@ In this section, you’ll add environment variables that are essential to your M
 
 You should see two ways to add environment variables: Global or specific to the Web Service.
 
-![Global environment variables and web service environment variables](https://i.imgur.com/VOYykPT.png)
+![Global environment variables and web service environment variables](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002118/Medusa%20Docs/Digital%20Ocean/VOYykPT_qoili6.png)
 
 Click Edit on the second row to add environment variables specific to the Web Service. Add the following environment variables:
 
@@ -202,7 +202,7 @@ Once you’re done click Save.
 
 In the next section, you’ll be shown the app info and the region it will be deployed to. You can leave it all as is or make changes if you find it necessary.
 
-![App info and region details](https://i.imgur.com/XVS0yej.png)
+![App info and region details](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002128/Medusa%20Docs/Digital%20Ocean/XVS0yej_kwmaim.png)
 
 Once you’re done, click Next to go to the next step.
 
@@ -214,15 +214,15 @@ While the server is being deployed, you can create the Redis resource.
 
 Click the Create button at the top right and choose Database from the dropdown.
 
-![Click Create then choose Databases](https://i.imgur.com/8BzUzuO.png)
+![Click Create then choose Databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002138/Medusa%20Docs/Digital%20Ocean/8BzUzuO_bhwcpd.png)
 
 In the new page under Choose a database engine, choose Redis.
 
-![For the Choose a database engine input choose Redis](https://i.imgur.com/lninWzJ.png)
+![For the Choose a database engine input choose Redis](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002149/Medusa%20Docs/Digital%20Ocean/lninWzJ_joycrd.png)
 
 Then, scroll down to the “Choose a name” input. Since you used the name `redis` in the `REDIS_URL` environment variables, change the value to `redis` here.
 
-![For the choose a name input set the value to redis](https://i.imgur.com/E81Qc4l.png)
+![For the choose a name input set the value to redis](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002158/Medusa%20Docs/Digital%20Ocean/E81Qc4l_gid9qa.png)
 
 Once you’re done, click on Create Database Cluster.
 
@@ -232,11 +232,11 @@ Once the Redis database is created go back to the App you created earlier by cho
 
 Click at the white Create button at the top right and choose Create/Attach Database.
 
-![Click at the create button and choose create/attach database](https://i.imgur.com/jdh702G.png)
+![Click at the create button and choose create/attach database](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002168/Medusa%20Docs/Digital%20Ocean/jdh702G_fjssat.png)
 
 In the new page, click on the Previously Created DigitalOcean Database radio button. Then, under Database Cluster select the Redis database you just created.
 
-![Choose Previously Created DigitalOcean Database then under Database Cluster choose redis](https://i.imgur.com/aBJ2z0B.png)
+![Choose Previously Created DigitalOcean Database then under Database Cluster choose redis](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002177/Medusa%20Docs/Digital%20Ocean/aBJ2z0B_yzwpym.png)
 
 Once you’re done click Attach Database. This will add the Redis database to the list of resources of your App and will trigger a redeploy of the App.
 
@@ -244,11 +244,11 @@ Once you’re done click Attach Database. This will add the Redis database to th
 
 Once the redeployment is complete, copy the URL of the App which can be found under the App’s name.
 
-![Copy URL under the app name](https://i.imgur.com/i3ws777.png)
+![Copy URL under the app name](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002186/Medusa%20Docs/Digital%20Ocean/i3ws777_ooknst.png)
 
 Then, go to `<YOUR_APP_URL>/store/products`. If the deployment was successful, you should receive a JSON response.
 
-![JSON response with list of products](https://i.imgur.com/5xTdMbY.png)
+![JSON response with list of products](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002196/Medusa%20Docs/Digital%20Ocean/5xTdMbY_pqwyzy.png)
 
 ## Run Commands on Your Server
 
@@ -263,7 +263,7 @@ medusa user --email <EMAIL> --password <PASSWORD>
 
 Make sure to replace `<EMAIL>` and `<PASSWORD>` with the credentials you want to give the user.
 
-![Console in the DigitalOcean App](https://i.imgur.com/9RMfD4C.png)
+![Console in the DigitalOcean App](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002204/Medusa%20Docs/Digital%20Ocean/9RMfD4C_u0mdqs.png)
 
 ## Add Environment Variables
 
@@ -271,11 +271,11 @@ You’ll likely need to add environment variables later such as Admin Cross-Orig
 
 To add environment variables, on the App’s page click on Settings and choose the Web Service component.
 
-![Choose the Settings tab then choose the web service container](https://i.imgur.com/qLPARaV.png)
+![Choose the Settings tab then choose the web service container](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002217/Medusa%20Docs/Digital%20Ocean/qLPARaV_ocit6w.png)
 
 Then, scroll down and find Environment Variables. You can expand the environment variables by clicking Edit on the right. Here, you can edit, add, and remove environment variables.
 
-![Expand the Environment Variables section by clicking edit](https://i.imgur.com/4x6JGjX.png)
+![Expand the Environment Variables section by clicking edit](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002227/Medusa%20Docs/Digital%20Ocean/4x6JGjX_wzltiq.png)
 
 Once you click Save, the environment variables will be saved and a redeployment will be triggered.
 

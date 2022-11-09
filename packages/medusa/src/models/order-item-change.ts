@@ -73,7 +73,7 @@ export class OrderItemChange extends SoftDeletableEntity {
  *     example: oic_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   type:
  *     type: string
- *     description: The order's status
+ *     description: The order item change's status
  *     enum:
  *       - item_add
  *       - item_remove
@@ -83,20 +83,36 @@ export class OrderItemChange extends SoftDeletableEntity {
  *     description: The ID of the order edit
  *     example: oe_01G2SG30J8C85S4A5CHM2S1NS2
  *   order_edit:
- *     description: Order edit object
+ *     description: Available if the relation `order_edit` is expanded.
  *     $ref: "#/components/schemas/order_edit"
  *   original_line_item_id:
  *      type: string
  *      description: The ID of the original line item in the order
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   original_line_item:
- *      description: Original line item object.
+ *      description: Available if the relation `original_line_item` is expanded.
  *      $ref: "#/components/schemas/line_item"
  *   line_item_id:
  *      type: string
  *      description: The ID of the cloned line item.
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   line_item:
- *      description: Line item object.
+ *      description: Available if the relation `line_item` is expanded.
  *      $ref: "#/components/schemas/line_item"
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was updated."
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

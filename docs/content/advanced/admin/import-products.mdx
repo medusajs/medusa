@@ -223,14 +223,14 @@ If the batch job has been pre-processed, the status of the batch job will be `pr
 
 Here’s an example of the `result` property:
 
-```jsx
+```json noHeader
 "result": {
     "count": 5, // Total number of products to be created or updated
     "stat_descriptors": [ //details about the products to be created/updated
         {
             "key": "product-import-count",
             "name": "Products/variants to import",
-            "message": "There will be 2 products created (0  updated).\n             3 variants will be created and 0 updated"
+            "message": "There will be 2 products created (0  updated).\n 3 variants will be created and 0 updated"
         }
     ],
     "advancement_count": 0 //number of products processed so far. Will be 0 before the import is confirmed.

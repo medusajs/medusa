@@ -56,6 +56,16 @@ get:
       description: The ID of the OrderEdit.
       schema:
         type: string
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -103,6 +113,14 @@ post:
       description: The ID of the OrderEdit.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            internal_note:
+              description: An optional note to create or update for the order edit.
+              type: string
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

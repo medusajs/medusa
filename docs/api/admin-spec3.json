@@ -1328,6 +1328,13 @@ paths:
           schema:
             type: string
         - in: query
+          name: discount_condition_id
+          description: >-
+            The discount condition id on which to filter the product
+            collections.
+          schema:
+            type: string
+        - in: query
           name: created_at
           description: Date comparison for when resulting collections were created.
           schema:
@@ -1691,19 +1698,44 @@ paths:
             type: boolean
         - in: query
           name: order
-          description: to retrieve products in.
+          description: order to retrieve products in.
           schema:
             type: string
         - in: query
           name: offset
           description: How many products to skip in the result.
           schema:
-            type: string
+            type: number
+            default: '0'
         - in: query
           name: limit
           description: Limit the number of products returned.
           schema:
-            type: string
+            type: number
+            default: '20'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.list()
+
+            .then(({ currencies, count, offset, limit }) => {
+              console.log(currencies.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies' \
+
+            --header 'Authorization: Bearer {api_token}'
       tags:
         - Currency
       responses:
@@ -1713,19 +1745,19 @@ paths:
             application/json:
               schema:
                 properties:
-                  count:
-                    description: The number of Currency.
-                    type: integer
-                  offset:
-                    description: The offset of the Currency query.
-                    type: integer
-                  limit:
-                    description: The limit of the currency query.
-                    type: integer
                   currencies:
                     type: array
                     items:
                       $ref: '#/components/schemas/currency'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/currencies/{code}':
     post:
       operationId: PostCurrenciesCurrency
@@ -1747,6 +1779,37 @@ paths:
                 includes_tax:
                   type: boolean
                   description: '[EXPERIMENTAL] Tax included in prices of currency.'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.update(code, {
+              includes_tax: true
+            })
+
+            .then(({ currency }) => {
+              console.log(currency.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies/{code}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "includes_tax": true
+            }'
       tags:
         - Currency
       responses:
@@ -2047,6 +2110,11 @@ paths:
         - in: query
           name: order
           description: the field used to order the customer groups.
+          schema:
+            type: string
+        - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the customer groups.
           schema:
             type: string
         - in: query
@@ -2998,6 +3066,223 @@ paths:
         - cookie_auth: []
       tags:
         - Discount
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  discount:
+                    $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/discounts/{discount_id}/conditions/{condition_id}/batch':
+    post:
+      operationId: PostDiscountsDiscountConditionsConditionBatch
+      summary: Add a batch of resources to a discount condition
+      description: Add a batch of resources to a discount condition.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: discount_id
+          required: true
+          description: The ID of the Product.
+          schema:
+            type: string
+        - in: path
+          name: condition_id
+          required: true
+          description: The ID of the condition on which to add the item.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which relations should be expanded in each
+            discount of the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each discount
+            of the result.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - resources
+              properties:
+                resources:
+                  description: The resources to be added to the discount condition
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of the item
+                        type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.discounts.addConditionResourceBatch(discount_id,
+            condition_id, {
+              resources: [{ id: item_id }]
+            })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "resources": [{ "id": "item_id" }]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Discount Condition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  discount:
+                    $ref: '#/components/schemas/discount'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteDiscountsDiscountConditionsConditionBatch
+      summary: Delete a batch of resources from a discount condition
+      description: Delete a batch of resources from a discount condition.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: discount_id
+          required: true
+          description: The ID of the Product.
+          schema:
+            type: string
+        - in: path
+          name: condition_id
+          required: true
+          description: The ID of the condition on which to add the item.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which relations should be expanded in each
+            discount of the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each discount
+            of the result.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - resources
+              properties:
+                resources:
+                  description: The resources to be deleted from the discount condition
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of the item
+                        type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.discounts.deleteConditionResourceBatch(discount_id,
+            condition_id, {
+              resources: [{ id: item_id }]
+            })
+
+            .then(({ discount }) => {
+              console.log(discount.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "resources": [{ "id": "item_id" }]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Discount Condition
       responses:
         '200':
           description: OK
@@ -4421,10 +4706,14 @@ paths:
                   format: email
                 billing_address:
                   description: The Address to be used for billing purposes.
-                  $ref: '#/components/schemas/address_fields'
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
                 shipping_address:
                   description: The Address to be used for shipping.
-                  $ref: '#/components/schemas/address_fields'
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
                 items:
                   description: The Line Items that have been received.
                   type: array
@@ -5151,10 +5440,14 @@ paths:
                   format: email
                 billing_address:
                   description: The Address to be used for billing purposes.
-                  $ref: '#/components/schemas/address_fields'
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
                 shipping_address:
                   description: The Address to be used for shipping.
-                  $ref: '#/components/schemas/address_fields'
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
                 discounts:
                   description: An array of Discount codes to add to the Draft Order.
                   type: array
@@ -6585,6 +6878,25 @@ paths:
           description: The ID of the Order Edit.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  description: The ID of the variant ID to add
+                  type: string
+                quantity:
+                  description: The quantity to add
+                  type: number
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
       x-authenticated: true
       x-codeSamples:
         - lang: JavaScript
@@ -6597,20 +6909,26 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdit.addLineItem(order_edit_id, { variant_id,
-            quantity })
-             .then(({ order_edit }) => {
-                console.log(order_edit.id)
-             })
+            medusa.admin.orderEdits.addLineItem(order_edit_id, {
+              variant_id, 
+              quantity 
+            })
+
+            .then(({ order_edit }) => {
+               console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
             'https://medusa-url.com/admin/order-edits/{id}/items' \
 
-            --header 'Authorization: Bearer {api_token}'
+            --header 'Authorization: Bearer {api_token}' \
 
-            -d '{ "variant_id": "some_variant_id", "quantity": 3 }'
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "variant_id": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6",
+            "quantity": 3 }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -6661,7 +6979,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdit.cancel(orderEditId)
+            medusa.admin.orderEdits.cancel(order_edit_id)
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -6669,7 +6987,7 @@ paths:
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/:id/cancel' \
+            'https://medusa-url.com/admin/order-edits/{id}/cancel' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
@@ -6718,7 +7036,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdit.confirm(orderEditId)
+            medusa.admin.orderEdits.confirm(order_edit_id)
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -6726,7 +7044,7 @@ paths:
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/:id/confirm' \
+            'https://medusa-url.com/admin/order-edits/{id}/confirm' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
@@ -6756,6 +7074,19 @@ paths:
       operationId: PostOrderEdits
       summary: Create an OrderEdit
       description: Creates an OrderEdit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - order_id
+              properties:
+                order_id:
+                  description: The ID of the order to create the edit for.
+                  type: string
+                internal_note:
+                  description: An optional note to create for the order edit.
+                  type: string
       x-authenticated: true
       x-codeSamples:
         - lang: JavaScript
@@ -6768,7 +7099,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdit.create({ order_id, internal_note })
+            medusa.admin.orderEdits.create({ order_id })
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -6778,10 +7109,12 @@ paths:
             curl --location --request POST
             'https://medusa-url.com/admin/order-edits' \
 
-            --header 'Authorization: Bearer {api_token}'
+            --header 'Authorization: Bearer {api_token}' \
 
-            -d '{ "order_id": "my_order_id", "internal_note": "my_optional_note"
-            }'
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "order_id": "my_order_id", "internal_note":
+            "my_optional_note" }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -6796,6 +7129,102 @@ paths:
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetOrderEdits
+      summary: List an OrderEdit
+      description: List a OrderEdit.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching order edit internal note.
+          schema:
+            type: string
+        - in: query
+          name: order_id
+          description: List order edits by order id.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: The number of items in the response
+          schema:
+            type: number
+            default: '20'
+        - in: query
+          name: offset
+          description: The offset of items in response
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.list()
+              .then(({ order_edits, count, limit, offset }) => {
+                console.log(order_edits.length)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/order-edits' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order_edits:
+                    type: array
+                    $ref: '#/components/schemas/order_edit'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -6893,6 +7322,16 @@ paths:
           description: The ID of the order edit item to update.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - quantity
+              properties:
+                quantity:
+                  description: The quantity to update
+                  type: number
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6904,7 +7343,10 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
+            medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id,
+            {
+                quantity: 5
+              })
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -6914,9 +7356,11 @@ paths:
             curl --location --request POST
             'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
 
-            --header 'Authorization: Bearer {api_token}'
+            --header 'Authorization: Bearer {api_token}' \
 
-            -d '{ "quantity": 5 }'
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "quantity": 5 }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -6973,8 +7417,8 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdits.deleteItemChange(item_change_id,
-            order_edit_id)
+            medusa.admin.orderEdits.deleteItemChange(order_edit_id,
+            item_change_id)
               .then(({ id, object, deleted }) => {
                 console.log(id)
               })
@@ -7035,7 +7479,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdits.delete(edit_id)
+            medusa.admin.orderEdits.delete(order_edit_id)
               .then(({ id, object, deleted }) => {
                 console.log(id)
               })
@@ -7083,6 +7527,16 @@ paths:
           description: The ID of the OrderEdit.
           schema:
             type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7094,7 +7548,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdit.retrieve(orderEditId)
+            medusa.admin.orderEdits.retrieve(orderEditId)
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -7143,6 +7597,14 @@ paths:
           description: The ID of the OrderEdit.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                internal_note:
+                  description: An optional note to create or update for the order edit.
+                  type: string
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7154,9 +7616,9 @@ paths:
 
             // must be previously logged in or use api token
 
-            const params = {internal_note: "internal reason XY"}
-
-            medusa.admin.orderEdit.update(orderEditId, params)
+            medusa.admin.orderEdits.update(order_edit_id, {
+              internal_note: "internal reason XY"
+            })
               .then(({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -7166,7 +7628,7 @@ paths:
             curl --location --request POST
             'https://medusa-url.com/admin/order-edits/{id}' \
 
-            --header 'Authorization: Bearer {api_token}'
+            --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
@@ -7223,7 +7685,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orderEdits.requestConfirmation(edit_id)
+            medusa.admin.orderEdits.requestConfirmation(order_edit_id)
               .then({ order_edit }) => {
                 console.log(order_edit.id)
               })
@@ -11163,6 +11625,11 @@ paths:
           schema:
             type: string
         - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the tags.
+          schema:
+            type: string
+        - in: query
           name: value
           style: form
           explode: false
@@ -11309,6 +11776,11 @@ paths:
         - in: query
           name: order
           description: The field to sort items by.
+          schema:
+            type: string
+        - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the product types.
           schema:
             type: string
         - in: query
@@ -11838,6 +12310,11 @@ paths:
           schema:
             type: string
         - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the product.
+          schema:
+            type: string
+        - in: query
           name: id
           style: form
           explode: false
@@ -11901,6 +12378,15 @@ paths:
             items:
               type: string
         - in: query
+          name: type_id
+          style: form
+          explode: false
+          description: Type IDs to filter products by
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
           name: title
           description: title to search for.
           schema:
@@ -11920,11 +12406,6 @@ paths:
           description: Search for giftcards using is_giftcard=true.
           schema:
             type: boolean
-        - in: query
-          name: type
-          description: type ID to search for.
-          schema:
-            type: string
         - in: query
           name: created_at
           description: Date comparison for when resulting products were created.
@@ -15050,8 +15531,8 @@ paths:
               ]
             })
 
-            .then(({ return }) => {
-              console.log(return.id);
+            .then((data) => {
+              console.log(data.return.id);
             });
         - lang: Shell
           label: cURL
@@ -18294,6 +18775,85 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /uploads/protected:
+    post:
+      operationId: PostUploadsProtected
+      summary: Upload files with acl or in a non-public bucket
+      description: >-
+        Uploads at least one file to the specific fileservice that is installed
+        in Medusa.
+      x-authenticated: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: string
+                  format: binary
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.uploads.createProtected(file)
+
+            .then(({ uploads }) => {
+              console.log(uploads.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/uploads/protected' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: image/jpeg' \
+
+            --form 'files=@"<FILE_PATH_1>"' \
+
+            --form 'files=@"<FILE_PATH_1>"'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Upload
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  uploads:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: The URL of the uploaded file.
+                          format: uri
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /uploads:
     post:
       operationId: PostUploads
@@ -18912,22 +19472,96 @@ paths:
       x-authenticated: true
       parameters:
         - in: query
-          name: q
-          description: Query used for searching variants.
+          name: id
+          description: A Product Variant id to filter by.
+          schema:
+            type: string
+        - in: query
+          name: ids
+          description: A comma separated list of Product Variant ids to filter by.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: A comma separated list of Product Variant relations to load.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: A comma separated list of Product Variant fields to include.
           schema:
             type: string
         - in: query
           name: offset
-          description: How many variants to skip in the result.
+          description: How many product variants to skip in the result.
           schema:
-            type: integer
-            default: 0
+            type: number
+            default: '0'
         - in: query
           name: limit
-          description: Limit the number of variants returned.
+          description: Maximum number of Product Variants to return.
           schema:
-            type: integer
-            default: 20
+            type: number
+            default: '100'
+        - in: query
+          name: cart_id
+          description: The id of the cart to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: The id of the region to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: currency_code
+          description: The currency code to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: customer_id
+          description: The id of the customer to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: title
+          style: form
+          explode: false
+          description: product variant title to search for.
+          schema:
+            oneOf:
+              - type: string
+                description: a single title to search by
+              - type: array
+                description: multiple titles to search by
+                items:
+                  type: string
+        - in: query
+          name: inventory_quantity
+          description: Filter by available inventory quantity
+          schema:
+            oneOf:
+              - type: number
+                description: a specific number to search by.
+              - type: object
+                description: search using less and greater than comparisons.
+                properties:
+                  lt:
+                    type: number
+                    description: filter by inventory quantity less than this number
+                  gt:
+                    type: number
+                    description: filter by inventory quantity greater than this number
+                  lte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity less than or equal to this
+                      number
+                  gte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity greater than or equal to this
+                      number
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -21818,11 +22452,11 @@ components:
           description: The ID of the order that is edited
           example: order_01G2SG30J8C85S4A5CHM2S1NS2
         order:
-          description: Order object
+          description: Available if the relation `order` is expanded.
           $ref: '#/components/schemas/order'
         changes:
           type: array
-          description: Line item changes array.
+          description: Available if the relation `changes` is expanded.
           items:
             $ref: '#/components/schemas/order_item_change'
         internal_note:
@@ -21898,11 +22532,35 @@ components:
             The difference between the total amount of the order and total
             amount of edited order.
           example: 8200
+        status:
+          type: string
+          description: The status of the order edit.
+          enum:
+            - confirmed
+            - declined
+            - requested
+            - created
+            - canceled
         items:
           type: array
-          description: Computed line items from the changes.
+          description: Available if the relation `items` is expanded.
           items:
             $ref: '#/components/schemas/line_item'
+        payment_collection_id:
+          type: string
+          description: The ID of the payment collection
+          example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
+        payment_collection:
+          description: Available if the relation `payment_collection` is expanded.
+          $ref: '#/components/schemas/payment_collection'
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
     order_item_change:
       title: Order Item Change
       description: Represents an order edit item change
@@ -21917,7 +22575,7 @@ components:
           example: oic_01G8TJSYT9M6AVS5N4EMNFS1EK
         type:
           type: string
-          description: The order's status
+          description: The order item change's status
           enum:
             - item_add
             - item_remove
@@ -21927,22 +22585,39 @@ components:
           description: The ID of the order edit
           example: oe_01G2SG30J8C85S4A5CHM2S1NS2
         order_edit:
-          description: Order edit object
+          description: Available if the relation `order_edit` is expanded.
           $ref: '#/components/schemas/order_edit'
         original_line_item_id:
           type: string
           description: The ID of the original line item in the order
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         original_line_item:
-          description: Original line item object.
+          description: Available if the relation `original_line_item` is expanded.
           $ref: '#/components/schemas/line_item'
         line_item_id:
           type: string
           description: The ID of the cloned line item.
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         line_item:
-          description: Line item object.
+          description: Available if the relation `line_item` is expanded.
           $ref: '#/components/schemas/line_item'
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     order:
       title: Order
       description: Represents an order
@@ -22221,6 +22896,103 @@ components:
           type: integer
           description: The total of gift cards with taxes
           example: 0
+    payment_collection:
+      title: Payment Collection
+      description: Payment Collection
+      x-resourceId: payment_collection
+      required:
+        - type
+        - status
+        - amount
+        - region_id
+        - currency_code
+        - created_by
+      properties:
+        id:
+          type: string
+          description: The payment collection's ID
+          example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
+        type:
+          type: string
+          description: The type of the payment collection
+          enum:
+            - order_edit
+        status:
+          type: string
+          description: The type of the payment collection
+          enum:
+            - not_paid
+            - awaiting
+            - authorized
+            - partially_authorized
+            - captured
+            - partially_captured
+            - refunded
+            - partially_refunded
+            - canceled
+            - requires_action
+        description:
+          type: string
+          description: Description of the payment collection
+        amount:
+          type: number
+          description: Amount of the payment collection.
+        authorized_amount:
+          type: number
+          description: Authorized amount of the payment collection.
+        captured_amount:
+          type: number
+          description: Captured amount of the payment collection.
+        refunded_amount:
+          type: number
+          description: Refunded amount of the payment collection.
+        region_id:
+          type: string
+          description: The region's ID
+          example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
+        region:
+          description: Available if the relation `region` is expanded.
+          $ref: '#/components/schemas/region'
+        currency_code:
+          description: The 3 character ISO code for the currency.
+          type: string
+          example: usd
+          externalDocs:
+            url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+            description: See a list of codes.
+        currency:
+          description: Available if the relation `currency` is expanded.
+          $ref: '#/components/schemas/currency'
+        payment_sessions:
+          type: array
+          description: Available if the relation `payment_sessions` is expanded.
+          items:
+            $ref: '#/components/schemas/payment_session'
+        payments:
+          type: array
+          description: Available if the relation `payments` is expanded.
+          items:
+            $ref: '#/components/schemas/payment'
+        created_by:
+          type: string
+          description: The ID of the user that created the payment collection.
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     payment_provider:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
@@ -23259,7 +24031,7 @@ components:
       properties:
         id:
           type: string
-          description: The cart's ID
+          description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         name:
           description: >-

@@ -131,7 +131,7 @@ Make sure to replace `<YOUR_PUBLISHABLE_KEY>` with your Stripe Publishable Key.
 
 Now, if you run your Medusa server and your storefront, on checkout you’ll be able to use Stripe.
 
-![Next.js Stripe Form](https://i.imgur.com/h5mWdJT.png)
+![Next.js Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001145/Medusa%20Docs/Stripe/h5mWdJT_n1bktt.png)
 
 ### Add to Gatsby Storefront
 
@@ -151,7 +151,7 @@ You might find this environment variable already available so you can just repla
 
 Now, if you run your Medusa server and your storefront, on checkout you’ll be able to use Stripe.
 
-![Gatsby Stripe Form](https://i.imgur.com/1XvW776.png)
+![Gatsby Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001172/Medusa%20Docs/Stripe/1XvW776_omosuz.png)
 
 ### Add to Custom Storefront
 
@@ -344,13 +344,13 @@ Once the promise resolves you can handle the errors, if there are any. If not, y
 
 If you run your server and storefront now, you’ll see the Stripe UI element and you’ll be able to make orders.
 
-![Stripe Form](https://i.imgur.com/NOi8THw.png)
+![Stripe Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001190/Medusa%20Docs/Stripe/NOi8THw_xv3zsx.png)
 
 ## Capture Payments
 
 After the customer places an order, you’ll be able to see the order on the admin panel. In the payment information under the “Payment” section, you should see a “Capture” button.
 
-![Capture Payment](https://i.imgur.com/Iz55PVZ.png)
+![Capture Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001205/Medusa%20Docs/Stripe/Iz55PVZ_p6hiz6.png)
 
 Clicking this button allows you to capture the payment for an order. You can also refund payments if an order has captured payments.
 
