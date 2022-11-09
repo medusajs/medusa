@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/analytics-config.ts:17](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L17)
+[models/analytics-config.ts:17](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/analytics-config.ts#L17)
 
 ___
 
@@ -42,7 +42,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -56,7 +56,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -70,7 +70,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/analytics-config.ts:14](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L14)
+[models/analytics-config.ts:14](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/analytics-config.ts#L14)
 
 ___
 
@@ -94,7 +94,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[models/analytics-config.ts:11](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L11)
+[models/analytics-config.ts:11](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/analytics-config.ts#L11)
 
 ## Methods
 
@@ -118,4 +118,4 @@ ___
 
 #### Defined in
 
-[models/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/analytics-config.ts#L19)
+[models/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/analytics-config.ts#L19)
