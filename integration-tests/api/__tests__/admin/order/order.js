@@ -2284,6 +2284,28 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("retrieves an order should include the items totals", async () => {
+      const api = useApi()
+
+      const order = await api.get("/admin/orders/test-order", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+        })
+      )
+
+      order.data.order.items.forEach((item) => {
+        expect(item.total).toBeDefined()
+        expect(item.subtotal).toBeDefined()
+      })
+    })
+
     it("throws on invalid relation", async () => {
       const api = useApi()
 
