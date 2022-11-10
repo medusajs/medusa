@@ -8,9 +8,9 @@
 
   ↳ [`AdminPriceSelectionParams`](internal-30.AdminPriceSelectionParams.md)
 
-  ↳ [`StoreGetVariantsParams`](internal-40.StoreGetVariantsParams.md)
+  ↳ [`StoreGetVariantsParams`](internal-41.StoreGetVariantsParams.md)
 
-  ↳ [`StoreGetProductsPaginationParams`](internal-41.StoreGetProductsPaginationParams.md)
+  ↳ [`StoreGetProductsPaginationParams`](internal-42.StoreGetProductsPaginationParams.md)
 
 ## Properties
 

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:59
+medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:80
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:58
+medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:79
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:57
+medusa/dist/api/routes/admin/order-edits/add-line-item.d.ts:78

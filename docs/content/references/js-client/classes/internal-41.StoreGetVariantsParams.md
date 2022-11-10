@@ -1,6 +1,6 @@
 # Class: StoreGetVariantsParams
 
-[internal](../modules/internal-40.md).StoreGetVariantsParams
+[internal](../modules/internal-41.md).StoreGetVariantsParams
 
 ## Hierarchy
 

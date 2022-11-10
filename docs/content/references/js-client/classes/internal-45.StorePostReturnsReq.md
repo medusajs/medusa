@@ -1,12 +1,12 @@
 # Class: StorePostReturnsReq
 
-[internal](../modules/internal-44.md).StorePostReturnsReq
+[internal](../modules/internal-45.md).StorePostReturnsReq
 
 ## Properties
 
 ### items
 
-• **items**: [`Item`](internal-44.Item.md)[]
+• **items**: [`Item`](internal-45.Item.md)[]
 
 #### Defined in
 
@@ -26,7 +26,7 @@ ___
 
 ### return\_shipping
 
-• `Optional` **return\_shipping**: [`ReturnShipping`](internal-44.ReturnShipping.md)
+• `Optional` **return\_shipping**: [`ReturnShipping`](internal-45.ReturnShipping.md)
 
 #### Defined in
 

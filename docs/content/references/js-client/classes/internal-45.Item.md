@@ -1,6 +1,6 @@
 # Class: Item
 
-[internal](../modules/internal-44.md).Item
+[internal](../modules/internal-45.md).Item
 
 ## Properties
 
