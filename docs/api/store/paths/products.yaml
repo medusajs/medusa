@@ -22,10 +22,28 @@ get:
             items:
               type: string
     - in: query
+      name: sales_channel_id
+      style: form
+      explode: false
+      description: an array of sales channel IDs to filter the retrieved products by.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
       name: collection_id
       style: form
       explode: false
       description: Collection IDs to search for
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: type_id
+      style: form
+      explode: false
+      description: Type IDs to search for
       schema:
         type: array
         items:
@@ -59,11 +77,6 @@ get:
       description: Search for giftcards using is_giftcard=true.
       schema:
         type: boolean
-    - in: query
-      name: type
-      description: type to search for.
-      schema:
-        type: string
     - in: query
       name: created_at
       description: Date comparison for when resulting products were created.

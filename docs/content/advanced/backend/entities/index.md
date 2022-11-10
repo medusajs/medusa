@@ -75,7 +75,7 @@ Be careful with your file names as it can cause unclear errors in Typeorm. Make 
 
 Before trying this step make sure that you’ve created and run your migrations. You also need to re-build your code using:
 
-```bash npm2yarn
+```bash npm2yarn noHeader
 npm run build
 ```
 
