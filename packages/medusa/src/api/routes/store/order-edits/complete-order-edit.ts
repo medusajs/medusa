@@ -75,7 +75,9 @@ export default async (req: Request, res: Response) => {
     const paymentProviderServiceTx =
       paymentProviderService.withTransaction(manager)
 
-    const orderEdit = await orderEditServiceTx.retrieve(id)
+    const orderEdit = await orderEditServiceTx.retrieve(id, {
+      relations: ["payment_collection"],
+    })
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {
       return orderEdit
@@ -109,15 +111,6 @@ export default async (req: Request, res: Response) => {
         await paymentProviderServiceTx.updatePayment(payment.id, {
           order_id: orderEdit.order_id,
         })
-      }
-    } else {
-      const total = await orderEditService.getTotals(orderEdit.id)
-      if (total.difference_due < 0) {
-        await orderServiceTx.createRefund(
-          orderEdit.order_id,
-          total.difference_due * -1,
-          "Order Edit Difference"
-        )
       }
     }
 
