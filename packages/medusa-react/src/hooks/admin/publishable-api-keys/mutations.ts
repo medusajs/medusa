@@ -45,7 +45,7 @@ export const useAdminDeletePublishableApiKey = (
   )
 }
 
-export const useAdminConfirmPublishableApiKey = (
+export const useAdminRevokePublishableApiKey = (
   id: string,
   options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error>
 ) => {
