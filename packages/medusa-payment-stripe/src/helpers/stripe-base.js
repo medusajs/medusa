@@ -59,12 +59,22 @@ class StripeBase extends AbstractPaymentService {
   }
 
   getPaymentIntentOptions() {
-    return {
-      setup_future_usage:
-        this?.paymentIntentOptions?.setup_future_usage ?? "on_session",
-      payment_method_types: this?.paymentIntentOptions
-        ?.payment_method_types || ["cart"],
+    const options = {}
+
+    if (this?.paymentIntentOptions?.capture_method) {
+      options.capture_method = this.paymentIntentOptions.capture_method
     }
+
+    if (this?.paymentIntentOptions?.setup_future_usage) {
+      options.setup_future_usage = this.paymentIntentOptions.setup_future_usage
+    }
+
+    if (this?.paymentIntentOptions?.payment_method_types) {
+      options.payment_method_types =
+        this.paymentIntentOptions.payment_method_types
+    }
+
+    return options
   }
 
   /**
