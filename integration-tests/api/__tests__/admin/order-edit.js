@@ -928,7 +928,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         order_id: null,
         order_edit_id: id,
         variant_id: product1.variants[0].id,
-        unit_price: 200,
+        unit_price: 2000,
         quantity: 1,
       })
 
@@ -986,9 +986,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           requested_by: "admin_user",
           status: "requested",
           payment_collection_id: expect.any(String),
-          payment_collection: expect.objectContaining({
-            amount: 200,
-          }),
         })
       )
     })
