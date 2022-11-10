@@ -1,10 +1,10 @@
-import { MockRepository, MockManager } from "medusa-test-utils"
+import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import DraftOrderService from "../draft-order"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -37,7 +37,7 @@ describe("DraftOrderService", () => {
     const regionService = {
       retrieve: () =>
         Promise.resolve({ id: "test-region", countries: [{ iso_2: "dk" }] }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -50,7 +50,7 @@ describe("DraftOrderService", () => {
           },
         })
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -63,7 +63,7 @@ describe("DraftOrderService", () => {
         })
       ),
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -76,7 +76,7 @@ describe("DraftOrderService", () => {
             profile_id: "test-profile",
           },
         }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -88,8 +88,14 @@ describe("DraftOrderService", () => {
           ...data,
         })
       ),
+      retrieve: jest.fn().mockImplementation((data) =>
+        Promise.resolve({
+          id: "test-cart",
+          ...data,
+        })
+      ),
       addShippingMethod: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
