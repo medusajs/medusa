@@ -279,7 +279,16 @@ class DraftOrderService extends TransactionBaseService {
           ...rawCart,
         })
         createdCart = await cartServiceTx.retrieve(createdCart.id, {
-          relations: ["region", "items"],
+          relations: [
+            "billing_address",
+            "customer",
+            "discounts",
+            "discounts.rule",
+            "gift_cards",
+            "items",
+            "region",
+            "shipping_address",
+          ],
         })
 
         const draftOrder = draftOrderRepo.create({
