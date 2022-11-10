@@ -10,8 +10,6 @@ import {
   OrderEdit,
   OrderEditItemChangeType,
   OrderEditStatus,
-  PaymentCollectionStatus,
-  PaymentCollectionType,
 } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -20,8 +18,6 @@ import {
   LineItemService,
   OrderEditItemChangeService,
   OrderService,
-  PaymentCollectionService,
-  PaymentProviderService,
   TaxProviderService,
   TotalsService,
 } from "./index"
@@ -41,8 +37,6 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
-  paymentCollectionService: PaymentCollectionService
-  paymentProviderService: PaymentProviderService
 }
 
 export default class OrderEditService extends TransactionBaseService {
@@ -67,8 +61,6 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
-  protected readonly paymentCollectionService_: PaymentCollectionService
-  protected readonly paymentProviderService_: PaymentProviderService
 
   constructor({
     manager,
@@ -80,8 +72,6 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
-    paymentCollectionService,
-    paymentProviderService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -95,8 +85,6 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
-    this.paymentCollectionService_ = paymentCollectionService
-    this.paymentProviderService_ = paymentProviderService
   }
 
   async retrieve(
