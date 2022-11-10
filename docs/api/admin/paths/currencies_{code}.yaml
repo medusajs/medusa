@@ -18,6 +18,15 @@ post:
             includes_tax:
               type: boolean
               description: '[EXPERIMENTAL] Tax included in prices of currency.'
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/currencies_{code}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/currencies_{code}/postundefined
   tags:
     - Currency
   responses:

@@ -54,7 +54,7 @@ If the batch job fails at any point in this flow, its status is changed to `fail
 
 :::
 
-![Flowchart summarizing the batch job's flow from creation to completion](https://i.imgur.com/Qja0kAz.png)
+![Flowchart summarizing the batch job's flow from creation to completion](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001632/Medusa%20Docs/Diagrams/Qja0kAz_ns4vm8.png)
 
 ## What’s Next
 

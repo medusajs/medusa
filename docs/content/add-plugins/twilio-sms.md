@@ -120,7 +120,7 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 :::
 
-![Twilio Dashboard](https://i.imgur.com/MXtQMiL.png)
+![Twilio Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001219/Medusa%20Docs/Stripe/MXtQMiL_kb7kxe.png)
 
 ## What’s Next
 

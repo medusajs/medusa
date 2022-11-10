@@ -32,19 +32,19 @@ minio server ~/minio --console-address :9090 --address :9001
 
 After installing MinIO and logging into the Console, click on “Create Bucket” to create a new bucket that will store the files of your Medusa server.
 
-![Create Bucket](https://i.imgur.com/PwLldKt.png)
+![Create Bucket](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000345/Medusa%20Docs/MinIO/PwLldKt_vm4r6d.png)
 
 Then, in the form, enter a name for the bucket and click on Create Bucket. By MinIO’s requirement, the name can only consist of lower case characters, numbers, dots (`.`), and hyphens (`-`).
 
-![Bucket Info](https://i.imgur.com/UB477rl.png)
+![Bucket Info](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000356/Medusa%20Docs/MinIO/UB477rl_opdmzj.png)
 
 After creating the bucket, click on the cog icon at the top right to configure the bucket.
 
-![Configure Bucket](https://i.imgur.com/0pB8RIM.png)
+![Configure Bucket](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000369/Medusa%20Docs/MinIO/0pB8RIM_bxo20d.png)
 
 Then, click on the edit icon next to Access Policy. This will open a pop-up.
 
-![Access Policy](https://i.imgur.com/qo3QQz4.png)
+![Access Policy](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000379/Medusa%20Docs/MinIO/qo3QQz4_asdtgb.png)
 
 In the pop-up, change the selected value to “public” and click Set.
 
@@ -58,15 +58,15 @@ Changing the Access Policy to public will allow anyone to access your bucket. Av
 
 From the sidebar of your MinIO console, click on Identity then Service Accounts.
 
-![Service Accounts Sidebar](https://i.imgur.com/CkTbrEc.png)
+![Service Accounts Sidebar](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000392/Medusa%20Docs/MinIO/CkTbrEc_ni2hlz.png)
 
 Then, click on Create Service Account.
 
-![Create Service Account](https://i.imgur.com/a000HQf.png)
+![Create Service Account](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000403/Medusa%20Docs/MinIO/a000HQf_noszz2.png)
 
 This will generate a random Access Key and Secret Key for you.
 
-![Generated Keys](https://i.imgur.com/my4c7zU.png)
+![Generated Keys](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000415/Medusa%20Docs/MinIO/my4c7zU_yyw6fw.png)
 
 Click on Create. A pop-up will then show the value for your Access Key and Secret Key. Copy them to use in the next section.
 
@@ -119,7 +119,7 @@ If you have multiple storage plugins configured, the last plugin declared in the
 
 Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.md) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in a MinIO server.
 
-![Image Uploaded on Admin](https://i.imgur.com/alabX2i.png)
+![Image Uploaded on Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000429/Medusa%20Docs/MinIO/alabX2i_dzg2mh.png)
 
 ## Private Buckets
 

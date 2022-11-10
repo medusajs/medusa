@@ -48,11 +48,11 @@ Before you can deploy your Medusa server you need to create a GitHub repository 
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
-![Click plus icon at the top right](https://i.imgur.com/0YlxBRi.png)
+![Click plus icon at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001782/Medusa%20Docs/Netlify/0YlxBRi_aiywpo.png)
 
 You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
 
-![An image of the Create Repository form](https://i.imgur.com/YPYXAF2.png)
+![An image of the Create Repository form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001800/Medusa%20Docs/Netlify/YPYXAF2_lypjne.png)
 
 ### Push Code to GitHub Repository
 
@@ -60,7 +60,7 @@ The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
 
-![An image of the GitHub URL in a new repository](https://i.imgur.com/pHfSTuT.png)
+![An image of the GitHub URL in a new repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
 Copy the link. Then, open your terminal in the directory that holds your Medusa server codebase and run the following commands:
 
@@ -477,7 +477,7 @@ If you run into any errors while running this command, you can just re-run it af
 
 Once the command finishes and the deployment is successful, you can access your server in the [Qovery Console](https://console.qovery.com/). Go to the project, environment, then the app that you created using Terraform and Qovery. In the app, click the Open button at the top right to open your website in a new tab.
 
-![open button at the top right](https://i.imgur.com/Ji59ZSJ.png)
+![open button at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002245/Medusa%20Docs/Qovery/Ji59ZSJ_nrkpvb.png)
 
 You can access any of the endpoints on your server using the server URL. For example, you can get the list of products using the endpoint `/store/products`.
 
@@ -504,7 +504,7 @@ You’ll likely need to add environment variables later such as Admin Cross-Orig
 
 To add environment variables, in your [Qovery Console](https://console.qovery.com/) go to the Medusa app and choose Environment Variables from the sidebar. You can add environment variables here at any point later on.
 
-![Environment Variables in the sidebar](https://i.imgur.com/aQl7zdz.png)
+![Environment Variables in the sidebar](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002258/Medusa%20Docs/Qovery/aQl7zdz_tjs0eb.png)
 
 ## What’s Next
 

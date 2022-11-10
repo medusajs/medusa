@@ -93,6 +93,33 @@ If the admonition does not match any of the mentioned criteria, always default t
 
 If you are adding images to a documentation page, you can host the image on [Imgur](https://imgur.com) for free.
 
+## Code Block Types
+
+In the Medusa documentation, there are two code block types: code blocks with headers and code blocks without headers.
+
+Code blocks without headers should be used when:
+
+- The code block is used inside an Admonition.
+- The content of the code block can't be reported (for example, if the code block contains only a text of the expected output).
+
+In all other cases, code blocks with headers should be used.
+
+### Code Blocks with Headers
+
+By default, all code blocks have headers and no additional actions are required to add the header.
+
+### Code Blocks without Headers
+
+To add a code block without a header, simply add `noHeader` after the beginning backticks of the code block. For example:
+
+~~~md
+```bash noHeader
+this code block does not have a header
+```
+~~~
+
+`noHeader` should be added after the language of the code block (which is `bash` in the above example). If you used `npm2yarn` as well, `noHeader` should be after it.
+
 ## NPM and Yarn Code Blocks
 
 If you’re adding code blocks that use NPM and Yarn, you must use the [npm2yarn syntax](https://docusaurus.io/docs/markdown-features/code-blocks#npm2yarn-remark-plugin).

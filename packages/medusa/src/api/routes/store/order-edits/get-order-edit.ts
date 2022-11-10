@@ -14,7 +14,7 @@ import { OrderEditService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.retrieve(orderEditId)
+ *       medusa.orderEdits.retrieve(order_edit_id)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       });

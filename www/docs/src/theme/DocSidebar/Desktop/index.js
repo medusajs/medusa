@@ -8,6 +8,7 @@ import styles from './styles.module.css';
 import DocSidebarItem from '@theme/DocSidebarItem';
 import SearchBar from '../../SearchBar';
 import useIsBrowser from '@docusaurus/useIsBrowser';
+import AnnouncementBar from '@theme/AnnouncementBar';
 
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   const {
@@ -21,18 +22,12 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   const sidebarRef = useRef(null)
 
   useEffect(() => {
-    console.log("here1", isBrowser, sidebarRef.current)
     if (isBrowser && sidebarRef.current) {
-      console.log("here2")
       function handleScroll () {
-        console.log("handlescroll")
         if (!sidebarRef.current.classList.contains('scrolling')) {
-          console.log("scrolling")
           sidebarRef.current.classList.add('scrolling');
           const intervalId = setInterval(() => {
-            console.log("interval")
             if (!sidebarRef.current.matches(':hover')) {
-              console.log("remove class")
               sidebarRef.current.classList.remove('scrolling');
               clearInterval(intervalId);
             }
@@ -62,6 +57,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
       <div className={styles.sidebarSearchContainer}>
         <SearchBar />
       </div>
+      <AnnouncementBar />
       <Content path={path} sidebar={sidebar} />
       {sidebarFooter.length > 0 && (
         <ul className={
