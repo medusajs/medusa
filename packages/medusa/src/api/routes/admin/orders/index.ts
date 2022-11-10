@@ -247,7 +247,6 @@ export const defaultAdminOrdersRelations = [
   "fulfillments",
   "fulfillments.tracking_links",
   "fulfillments.items",
-  "region",
   "returns",
   "returns.shipping_method",
   "returns.shipping_method.tax_lines",

@@ -11,7 +11,7 @@ export class OrderRepository extends Repository<Order> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations = {}
+    const groupedRelations: { [topLevel: string]: string[] } = {}
     for (const rel of relations) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
@@ -25,7 +25,8 @@ export class OrderRepository extends Repository<Order> {
       Object.entries(groupedRelations).map(async ([_, rels]) => {
         return this.findByIds(entitiesIds, {
           select: ["id"],
-          relations: rels as string[],
+          relations: rels,
+          withDeleted: rels.includes("region"),
         })
       })
     ).then(flatten)
@@ -44,10 +45,9 @@ export class OrderRepository extends Repository<Order> {
     // Limit 1
     optionsWithoutRelations.take = 1
 
-    const result = await this.findWithRelations(
-      relations,
-      optionsWithoutRelations
-    )
+    const result = await this.findWithRelations(relations, {
+      ...optionsWithoutRelations,
+    })
     return result[0]
   }
 }
