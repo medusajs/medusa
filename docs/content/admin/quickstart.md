@@ -16,7 +16,9 @@ If you’re not very familiar with Medusa’s architecture, you can learn more a
 
 Instead of manually following this guide to install then later deploy the Medusa Admin, you can deploy the Medusa Admin to Netlify with this button:
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin)
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin" class="img-url">
+  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+</a>
 
 ## Install the Admin
 
@@ -41,7 +43,7 @@ Before running your Medusa admin, make sure that your Medusa server is running.
 
 To run your Medusa server, go to the directory holding the server and run:
 
-```bash npm2yarn
+```bash npm2yarn noHeader
 npm run start
 ```
 
@@ -55,7 +57,7 @@ npm run start
 
 By default, the admin runs on port 7000. So, in your browser, go to `localhost:7000` to view your admin.
 
-![Admin Log In](https://i.imgur.com/XYqMCo9.png)
+![Admin Log In](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001604/Medusa%20Docs/Screenshots/XYqMCo9_hq1fsv.png)
 
 Use your Medusa admin’s user credentials to log in.
 
@@ -63,7 +65,7 @@ Use your Medusa admin’s user credentials to log in.
 
 If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
 
-```bash npm2yarn
+```bash npm2yarn noHeader
 npm run seed
 ```
 

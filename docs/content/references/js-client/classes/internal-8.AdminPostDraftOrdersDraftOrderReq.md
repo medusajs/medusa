@@ -6,11 +6,11 @@
 
 ### billing\_address
 
-• `Optional` **billing\_address**: [`AddressPayload`](internal.AddressPayload.md)
+• `Optional` **billing\_address**: `string` \| [`AddressPayload`](internal.AddressPayload.md)
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:106
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:110
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:104
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:108
 
 ___
 
@@ -30,17 +30,17 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:109
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:113
 
 ___
 
 ### discounts
 
-• `Optional` **discounts**: [`Discount`](internal-8.Discount.md)[]
+• `Optional` **discounts**: [`Discount`](internal-8.Discount-1.md)[]
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:108
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:112
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:105
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:109
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:110
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:114
 
 ___
 
@@ -70,14 +70,14 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:103
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:107
 
 ___
 
 ### shipping\_address
 
-• `Optional` **shipping\_address**: [`AddressPayload`](internal.AddressPayload.md)
+• `Optional` **shipping\_address**: `string` \| [`AddressPayload`](internal.AddressPayload.md)
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:107
+medusa/dist/api/routes/admin/draft-orders/update-draft-order.d.ts:111

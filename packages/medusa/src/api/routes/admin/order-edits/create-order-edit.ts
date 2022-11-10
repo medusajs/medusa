@@ -12,6 +12,19 @@ import {
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
  * description: "Creates an OrderEdit."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - order_id
+ *         properties:
+ *           order_id:
+ *             description: The ID of the order to create the edit for.
+ *             type: string
+ *           internal_note:
+ *             description: An optional note to create for the order edit.
+ *             type: string
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -20,7 +33,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.create({ order_id, internal_note })
+ *       medusa.admin.orderEdits.create({ order_id })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -28,8 +41,9 @@ import {
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/order-edits' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

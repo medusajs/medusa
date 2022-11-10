@@ -16,7 +16,7 @@ import { OrderEditService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.delete(edit_id)
+ *       medusa.admin.orderEdits.delete(order_edit_id)
  *         .then(({ id, object, deleted }) => {
  *           console.log(id)
  *         })

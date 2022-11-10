@@ -58,7 +58,7 @@ The `ShippingMethod` entity also has the `includes_tax` attribute. Its value is 
 
 When a price is tax-inclusive, the tax amount is calculated using the following formula:
 
-```jsx
+```jsx noHeader
 const taxAmount = (taxRate * taxInclusivePrice) / (1 + taxRate)
 ```
 
@@ -110,7 +110,7 @@ Price lists include a list of prices that can be used to override the original p
 
 Each variant’s price in the price list is compared to the variant’s original price using the following condition:
 
-```jsx
+```jsx noHeader
 amount < (1 + taxRate) * calculatedPrice
 ```
 
@@ -120,7 +120,7 @@ Where `amount` is the amount of the variant’s price in the price list, `taxRat
 
 Here is an example of these fields when tax inclusivity is enabled for both the currency and the price list:
 
-```jsx
+```jsx noHeader
 {
   original_price: 110,
   calculated_price: 100,

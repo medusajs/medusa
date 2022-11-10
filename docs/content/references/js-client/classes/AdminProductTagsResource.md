@@ -24,4 +24,4 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/53e34d33d/packages/medusa-js/src/resources/admin/product-tags.ts#L10)
+[medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/product-tags.ts#L10)

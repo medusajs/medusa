@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:224
+medusa/dist/models/cart.d.ts:226
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:225
+medusa/dist/models/cart.d.ts:227
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:223
+medusa/dist/models/cart.d.ts:225
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:222
+medusa/dist/models/cart.d.ts:224
 
 ___
 
@@ -205,6 +205,16 @@ ___
 #### Defined in
 
 medusa/dist/models/cart.d.ts:210
+
+___
+
+### item\_tax\_total
+
+• `Optional` **item\_tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/cart.d.ts:217
 
 ___
 
@@ -294,7 +304,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:221
+medusa/dist/models/cart.d.ts:223
 
 ___
 
@@ -304,7 +314,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:218
+medusa/dist/models/cart.d.ts:220
 
 ___
 
@@ -378,6 +388,16 @@ medusa/dist/models/cart.d.ts:206
 
 ___
 
+### shipping\_tax\_total
+
+• `Optional` **shipping\_tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+medusa/dist/models/cart.d.ts:218
+
+___
+
 ### shipping\_total
 
 • `Optional` **shipping\_total**: `number`
@@ -394,7 +414,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:220
+medusa/dist/models/cart.d.ts:222
 
 ___
 
@@ -404,7 +424,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:217
+medusa/dist/models/cart.d.ts:219
 
 ___
 
@@ -414,7 +434,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/cart.d.ts:219
+medusa/dist/models/cart.d.ts:221
 
 ___
 

@@ -1,0 +1,95 @@
+:root {
+  --docusaurus-announcement-bar-height: auto !important;
+}
+
+.announcementBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--docusaurus-announcement-bar-height);
+  background-color: var(--ifm-announcement-bar-bg);
+  padding: 12px 20px 12px 12px;
+  border: 1px solid var(--ifm-announcement-bar-border-color);
+  border-radius: var(--ifm-global-radius);
+  margin: 0 16px 16px 16px;
+}
+
+.announcementBar:after {
+  content: '';
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  background: var(--ifm-primary-gradient);
+}
+
+.announcementBar:hover {
+  background-color: var(--ifm-announcement-bar-hover-bg);
+}
+
+html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
+  display: none;
+}
+
+.announcementBarContent {
+  flex: 1;
+}
+
+.announcementBarClose {
+  z-index: 101;
+  text-align: right;
+  color: var(--ifm-announcement-bar-text-color) !important;
+}
+
+.announcementBarClose svg {
+  /* color: var(--ifm-announcement-bar-close-icon-color); */
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.announcementBarClose svg g {
+  stroke-width: 1.9px !important;
+}
+
+.announcementBarIconWrapper {
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--ifm-announcement-bar-icon-bg);
+  border: 1px solid var(--ifm-announcement-bar-icon-border-color);
+  border-radius: var(--ifm-global-radius);
+  margin-right: 12px;
+}
+
+.announcementBarIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.announcementBarLink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+@media print {
+  .announcementBar {
+    display: none;
+  }
+}
+
+@media (min-width: 997px) {
+  :root {
+    --docusaurus-announcement-bar-height: 30px;
+  }
+
+  .announcementBarPlaceholder,
+  .announcementBarClose {
+    flex-basis: 50px;
+  }
+}

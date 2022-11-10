@@ -267,11 +267,11 @@ You must be authenticated as an admin user before sending this request. You can 
 
 :::
 
-![List Notifications Request](https://i.imgur.com/iF1rZX1.png)
+![List Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001650/Medusa%20Docs/Screenshots/iF1rZX1_msps2t.png)
 
 Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
 
-![Resend Notifications Request](https://i.imgur.com/0zFfPed.png)
+![Resend Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001659/Medusa%20Docs/Screenshots/0zFfPed_og7one.png)
 
 This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 

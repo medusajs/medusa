@@ -20,7 +20,7 @@ class ProductTypeService extends TransactionBaseService {
   }
 
   /**
-   * Gets a product by id.
+   * Gets a product type by id.
    * Throws in case of DB Error and if product was not found.
    * @param id - id of the product to get.
    * @param config - object that defines what should be included in the
@@ -39,7 +39,7 @@ class ProductTypeService extends TransactionBaseService {
     if (!type) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product with id: ${id} was not found`
+        `Product type with id: ${id} was not found`
       )
     }
 
@@ -64,7 +64,7 @@ class ProductTypeService extends TransactionBaseService {
   }
 
   /**
-   * Lists product tags and adds count.
+   * Lists product types and adds count.
    * @param selector - the query object for find
    * @param config - the config to be used for find
    * @return the result of the find operation

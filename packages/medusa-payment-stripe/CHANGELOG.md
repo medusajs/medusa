@@ -1,5 +1,23 @@
 # Change Log
 
+## 1.1.47
+
+### Patch Changes
+
+- [#2581](https://github.com/medusajs/medusa/pull/2581) [`04e894ec3`](https://github.com/medusajs/medusa/commit/04e894ec39e1008be893a6cf313c3822a085579c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support provider specific intent options
+
+## 1.1.46
+
+### Patch Changes
+
+- [`715bdf6b1`](https://github.com/medusajs/medusa/commit/715bdf6b159d6eb291d3c489ab32a80f9eadcfb9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Patch bump Stripe plugin
+
+## 1.1.45
+
+### Patch Changes
+
+- [`a014e3623`](https://github.com/medusajs/medusa/commit/a014e3623c64f747e7496abccb8d0c7c01093d8b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support automatic payment methods
+
 ## 1.1.44
 
 ### Patch Changes

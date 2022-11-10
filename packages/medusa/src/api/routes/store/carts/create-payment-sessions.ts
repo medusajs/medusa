@@ -72,67 +72,66 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  try {
-    let inProgress = true
-    let err: unknown = false
+  let inProgress = true
+  let err: unknown = false
 
-    while (inProgress) {
-      switch (idempotencyKey.recovery_point) {
-        case "started": {
-          await manager
-            .transaction("SERIALIZABLE", async (transactionManager) => {
-              idempotencyKey = await idempotencyKeyService
-                .withTransaction(transactionManager)
-                .workStage(
-                  idempotencyKey.idempotency_key,
-                  async (stageManager) => {
-                    await cartService
-                      .withTransaction(stageManager)
-                      .setPaymentSessions(id)
-
-                    const cart = await cartService
-                      .withTransaction(stageManager)
-                      .retrieveWithTotals(id, {
-                        select: defaultStoreCartFields,
-                        relations: defaultStoreCartRelations,
-                      })
-
-                    return {
-                      response_code: 200,
-                      response_body: { cart },
-                    }
-                  }
-                )
-            })
-            .catch((e) => {
-              inProgress = false
-              err = e
-            })
-          break
-        }
-
-        case "finished": {
-          inProgress = false
-          break
-        }
-
-        default:
-          await manager.transaction(async (transactionManager) => {
+  while (inProgress) {
+    switch (idempotencyKey.recovery_point) {
+      case "started": {
+        await manager
+          .transaction("SERIALIZABLE", async (transactionManager) => {
             idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
-              .update(idempotencyKey.idempotency_key, {
-                recovery_point: "finished",
-                response_code: 500,
-                response_body: { message: "Unknown recovery point" },
-              })
-          })
-          break
-      }
-    }
+              .workStage(
+                idempotencyKey.idempotency_key,
+                async (stageManager) => {
+                  await cartService
+                    .withTransaction(stageManager)
+                    .setPaymentSessions(id)
 
-    res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
-  } catch (e) {
-    console.log(e)
-    throw e
+                  const cart = await cartService
+                    .withTransaction(stageManager)
+                    .retrieveWithTotals(id, {
+                      select: defaultStoreCartFields,
+                      relations: defaultStoreCartRelations,
+                    })
+
+                  return {
+                    response_code: 200,
+                    response_body: { cart },
+                  }
+                }
+              )
+          })
+          .catch((e) => {
+            inProgress = false
+            err = e
+          })
+        break
+      }
+
+      case "finished": {
+        inProgress = false
+        break
+      }
+
+      default:
+        await manager.transaction(async (transactionManager) => {
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(transactionManager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: "finished",
+              response_code: 500,
+              response_body: { message: "Unknown recovery point" },
+            })
+        })
+        break
+    }
   }
+
+  if (err) {
+    throw err
+  }
+
+  res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }

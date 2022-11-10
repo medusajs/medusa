@@ -24,7 +24,7 @@ A customer group is stored in the database as a [CustomerGroup](../../../refere
 
 Similar to all entities in Medusa, you can use the `metadata` object attribute to store any custom data you want. For example, you can add some flag or tag to the customer group for a custom use case:
 
-```jsx
+```jsx noHeader
 metadata: {
 	is_seller: true
 }

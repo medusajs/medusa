@@ -40,11 +40,9 @@ async function main () {
 
     //add new announcement
     announcement = {
-      id: `release-${version.replace(/\./g, '-')}`,
-      content: `New Release! Version ${version} of Medusa is out now! Read all about it <a href='${response.data.html_url}'>here</a>.`,
-      backgroundColor: '#7C53FF',
-      textColor: '#fff',
-      isCloseable: false,
+      id: response.data.html_url,
+      content: `${version} is out`,
+      isCloseable: true,
     }
   }
 

@@ -2,7 +2,6 @@
 
 ## Classes
 
-- [AdminGetProductTypesPaginationParams](../classes/internal-17.AdminGetProductTypesPaginationParams.md)
 - [AdminGetProductTypesParams](../classes/internal-17.AdminGetProductTypesParams.md)
 
 ## Type Aliases
