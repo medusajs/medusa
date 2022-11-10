@@ -201,6 +201,52 @@ class PublishableApiKeyService extends TransactionBaseService {
     const pubKey = await this.retrieve(publishableApiKeyId)
     return pubKey.revoked_by === null
   }
+
+  /**
+   * Associate provided sales channels with the publishable api key.
+   *
+   * @param publishableApiKeyId
+   * @param salesChannelIds
+   */
+  async addSalesChannels(
+    publishableApiKeyId: string,
+    salesChannelIds: string[]
+  ): Promise<void | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const publishableApiKeyRepository =
+        transactionManager.getCustomRepository(
+          this.publishableApiKeyRepository_
+        )
+
+      await publishableApiKeyRepository.addSalesChannels(
+        publishableApiKeyId,
+        salesChannelIds
+      )
+    })
+  }
+
+  /**
+   * Remove provided sales channels from the publishable api key scope.
+   *
+   * @param publishableApiKeyId
+   * @param salesChannelIds
+   */
+  async removeSalesChannels(
+    publishableApiKeyId: string,
+    salesChannelIds: string[]
+  ): Promise<void | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const publishableApiKeyRepository =
+        transactionManager.getCustomRepository(
+          this.publishableApiKeyRepository_
+        )
+
+      await publishableApiKeyRepository.removeSalesChannels(
+        publishableApiKeyId,
+        salesChannelIds
+      )
+    })
+  }
 }
 
 export default PublishableApiKeyService
