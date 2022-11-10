@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.46
+
+### Patch Changes
+
+- [`715bdf6b1`](https://github.com/medusajs/medusa/commit/715bdf6b159d6eb291d3c489ab32a80f9eadcfb9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Patch bump Stripe plugin
+
 ## 1.1.45
 
 ### Patch Changes

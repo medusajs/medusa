@@ -6,7 +6,7 @@ title: Architecture Overview
 
 Medusa is composed of three components: The headless backend, the admin dashboard, and the storefront.
 
-![Medusa's Architecture](https://i.imgur.com/ZHvM2bu.png)
+![Medusa's Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1667999772/Medusa%20Docs/Diagrams/ZHvM2bu_td4rnx.png)
 
 ## Headless Backend
 

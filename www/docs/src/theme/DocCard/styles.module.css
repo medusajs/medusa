@@ -1,6 +1,4 @@
 .cardContainer {
-  --ifm-link-color: var(--ifm-color-emphasis-800);
-  --ifm-link-hover-color: var(--ifm-color-emphasis-700);
   --ifm-link-hover-decoration: none;
   --ifm-background-color: #fff;
   --ifm-background-color-hover: #F9FAFB;
