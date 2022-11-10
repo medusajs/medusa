@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-45.md#storeshippingoptionslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-46.md#storeshippingoptionslistres)\>
 
 **`Description`**
 
@@ -20,22 +20,22 @@ Lists shiping options available
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`StoreGetShippingOptionsParams`](internal-45.StoreGetShippingOptionsParams.md) |
+| `query?` | [`StoreGetShippingOptionsParams`](internal-46.StoreGetShippingOptionsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-45.md#storeshippingoptionslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-46.md#storeshippingoptionslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/shipping-options.ts:27](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/shipping-options.ts#L27)
+[medusa-js/src/resources/shipping-options.ts:27](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/shipping-options.ts#L27)
 
 ___
 
 ### listCartOptions
 
-▸ **listCartOptions**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-45.md#storeshippingoptionslistres)\>
+▸ **listCartOptions**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-46.md#storeshippingoptionslistres)\>
 
 **`Description`**
 
@@ -50,8 +50,8 @@ Lists shiping options available for a cart
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-45.md#storeshippingoptionslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal-46.md#storeshippingoptionslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/shipping-options.ts:16](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/shipping-options.ts#L16)
+[medusa-js/src/resources/shipping-options.ts:16](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/shipping-options.ts#L16)

@@ -1,9 +1,9 @@
-import Stripe from "stripe"
 import {
   AbstractPaymentService,
   PaymentSessionData,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
+import Stripe from "stripe"
 
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
@@ -89,7 +89,7 @@ class StripeProviderService extends AbstractPaymentService {
   /**
    * Fetches a Stripe customer
    * @param {string} customerId - Stripe customer id
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async retrieveCustomer(customerId) {
     if (!customerId) {
@@ -101,7 +101,7 @@ class StripeProviderService extends AbstractPaymentService {
   /**
    * Creates a Stripe customer using a Medusa customer.
    * @param {object} customer - Customer data from Medusa
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async createCustomer(customer) {
     try {
@@ -144,7 +144,6 @@ class StripeProviderService extends AbstractPaymentService {
       amount: Math.round(amount),
       currency: currency_code,
       metadata: { cart_id: `${cart.id}` },
-      setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -183,14 +182,13 @@ class StripeProviderService extends AbstractPaymentService {
     const { customer, currency_code, amount, resource_id, cart } = paymentInput
     const { id: customer_id, email } = customer
 
-    let intentRequest = {
+    const intentRequest = {
       description:
         cart?.context?.payment_description ??
         this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
       metadata: { resource_id },
-      setup_future_usage: "on_session",
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -333,7 +331,7 @@ class StripeProviderService extends AbstractPaymentService {
    * Updates customer of Stripe payment intent.
    * @param {string} paymentIntentId - id of payment intent to update
    * @param {string} customerId - id of new Stripe customer
-   * @returns {object} Stripe payment intent
+   * @return {object} Stripe payment intent
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
     try {
@@ -408,7 +406,7 @@ class StripeProviderService extends AbstractPaymentService {
    * @param {object} data - the data of the webhook request: req.body
    * @param {object} signature - the Stripe signature on the event, that
    *    ensures integrity of the webhook event
-   * @returns {object} Stripe Webhook event
+   * @return {object} Stripe Webhook event
    */
   constructWebhookEvent(data, signature) {
     return this.stripe_.webhooks.constructEvent(

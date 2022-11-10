@@ -1,6 +1,6 @@
 # Class: StorePostSearchReq
 
-[internal](../modules/internal-41.md).StorePostSearchReq
+[internal](../modules/internal-42.md).StorePostSearchReq
 
 ## Properties
 

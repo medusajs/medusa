@@ -1,23 +1,33 @@
 # Namespace: internal
 
-## Classes
-
-- [Item](../classes/internal-44.Item.md)
-- [ReturnShipping](../classes/internal-44.ReturnShipping.md)
-- [StorePostReturnsReq](../classes/internal-44.StorePostReturnsReq.md)
-
 ## Type Aliases
 
-### StoreReturnsRes
+### StoreReturnReasonsListRes
 
-Ƭ **StoreReturnsRes**: `Object`
+Ƭ **StoreReturnReasonsListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return` | [`Return`](../classes/internal.Return.md) |
+| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/index.d.ts:4
+medusa/dist/api/routes/store/return-reasons/index.d.ts:6
+
+___
+
+### StoreReturnReasonsRes
+
+Ƭ **StoreReturnReasonsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/store/return-reasons/index.d.ts:9

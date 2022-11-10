@@ -29,7 +29,7 @@ Creates an authenticated session
 
 #### Defined in
 
-[medusa-js/src/resources/admin/auth.ts:37](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/auth.ts#L37)
+[medusa-js/src/resources/admin/auth.ts:37](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/auth.ts#L37)
 
 ___
 
@@ -53,7 +53,7 @@ destroys an authenticated session
 
 #### Defined in
 
-[medusa-js/src/resources/admin/auth.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/auth.ts#L24)
+[medusa-js/src/resources/admin/auth.ts:24](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/auth.ts#L24)
 
 ___
 
@@ -78,4 +78,4 @@ Usually used to check if authenticated session is alive.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/auth.ts:12](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/auth.ts#L12)
+[medusa-js/src/resources/admin/auth.ts:12](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/auth.ts#L12)

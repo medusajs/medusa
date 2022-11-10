@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.47
+
+### Patch Changes
+
+- [#2581](https://github.com/medusajs/medusa/pull/2581) [`04e894ec3`](https://github.com/medusajs/medusa/commit/04e894ec39e1008be893a6cf313c3822a085579c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support provider specific intent options
+
 ## 1.1.46
 
 ### Patch Changes
