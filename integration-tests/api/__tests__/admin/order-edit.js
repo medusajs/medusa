@@ -870,8 +870,22 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       const product1 = await simpleProductFactory(dbConnection)
 
-      const { id, order_id } = await simpleOrderEditFactory(dbConnection, {
+      const order = await simpleOrderFactory(dbConnection, {
+        id: IdMap.getId("order-test-2"),
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 0,
+        },
+      })
+
+      const { id } = await simpleOrderEditFactory(dbConnection, {
         created_by: "admin_user",
+        order_id: order.id,
       })
 
       const noChangesEdit = await simpleOrderEditFactory(dbConnection, {
@@ -901,12 +915,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it("requests order edit", async () => {
+    it.only("requests order edit", async () => {
       const api = useApi()
 
       const result = await api.post(
         `/admin/order-edits/${orderEditId}/request`,
-        {},
+        {
+          payment_collection_description: "Payment collection description",
+        },
         adminHeaders
       )
 
@@ -962,6 +978,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         )
       }
     })
+
     it("requests order edit", async () => {
       const api = useApi()
 
