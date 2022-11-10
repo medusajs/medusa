@@ -22,11 +22,11 @@ export class OrderRepository extends Repository<Order> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([_, rels]) => {
+      Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
         return this.findByIds(entitiesIds, {
           select: ["id"],
           relations: rels,
-          withDeleted: rels.includes("region"),
+          withDeleted: topLevel === "region",
         })
       })
     ).then(flatten)
