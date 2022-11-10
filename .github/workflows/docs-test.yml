@@ -29,11 +29,15 @@ jobs:
         with:
           extension: docs
 
+      - name: Install Docusaurus dependencies
+        working-directory: www/docs
+        run: yarn install
       - name: Build Docusaurus website
-        run: |
-          cd www/docs
-          yarn install
-          yarn build
+        working-directory: www/docs
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        run: yarn build
+        
   lint:
     runs-on: ubuntu-latest
     steps:
