@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
@@ -118,7 +118,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    * @return an array containing publishable API keys and a total count of records that matches the query
    */
   async listAndCount(
-    selector: QuerySelector<PublishableApiKey>,
+    selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {
       skip: 0,
       take: 20,

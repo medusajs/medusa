@@ -84,8 +84,4 @@ export default async (req: Request, res: Response) => {
 export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  publishable_api_key_id?: string
-}
+}) {}
