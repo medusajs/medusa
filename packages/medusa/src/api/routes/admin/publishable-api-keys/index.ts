@@ -2,10 +2,15 @@ import { Router } from "express"
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 import { PublishableApiKey } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"
+import { AdminPostPublishableApiKeySalesChannelsBatchReq } from "./add-channels-batch"
 
 const route = Router()
 
@@ -43,6 +48,18 @@ export default (app) => {
     }),
     middlewares.wrap(require("./list-publishable-api-keys").default)
   )
+
+  route.post(
+    "/:id/sales-channels/batch",
+    transformBody(AdminPostPublishableApiKeySalesChannelsBatchReq),
+    middlewares.wrap(require("./add-channels-batch").default)
+  )
+
+  route.delete(
+    "/:id/sales-channels/batch",
+    transformBody(AdminDeletePublishableApiKeySalesChannelsBatchReq),
+    middlewares.wrap(require("./delete-channels-batch").default)
+  )
 }
 
 export type AdminPublishableApiKeysRes = {
@@ -53,4 +70,6 @@ export type AdminPublishableApiKeysListRes = PaginatedResponse & {
 }
 export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 
+export * from "./add-channels-batch"
+export * from "./delete-channels-batch"
 export * from "./list-publishable-api-keys"
