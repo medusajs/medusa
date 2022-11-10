@@ -703,7 +703,7 @@ class TotalsService extends TransactionBaseService {
     cartOrOrder: Cart | Order,
     discount: Discount
   ): LineDiscountAmount[] {
-    let merged: LineItem[] = [...cartOrOrder.items]
+    let merged: LineItem[] = cartOrOrder.items ? [...cartOrOrder.items] : []
 
     // merge items from order with items from order swaps
     if ("swaps" in cartOrOrder && cartOrOrder.swaps.length) {

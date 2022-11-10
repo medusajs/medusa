@@ -120,7 +120,7 @@ describe("TotalsService", () => {
 
   const container = {
     taxProviderService: {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       getTaxLines: getTaxLinesMock,
@@ -350,6 +350,114 @@ describe("TotalsService", () => {
       })
 
       expect(res).toEqual(0)
+    })
+  })
+
+  describe("getLineDiscounts", () => {
+    let res
+    const totalsService = new TotalsService(container)
+
+    const mockCart = {
+      swaps: [],
+      claims: [],
+      items: [],
+    }
+    let cart
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+      cart = { ...mockCart }
+    })
+
+    it("returns [] if items is empty in cart", async () => {
+      res = totalsService.getLineDiscounts(cart, discounts.total10Fixed)
+
+      expect(res).toEqual([])
+    })
+
+    it("returns [] if items is undefined in cart", async () => {
+      cart.items = undefined
+      res = totalsService.getLineDiscounts(cart, discounts.total10Fixed)
+
+      expect(res).toEqual([])
+    })
+
+    it("returns flat list of discount amounts for a cart with multiple items, swaps, claims for a given discount", async () => {
+      const discountId = discounts.total10Fixed.id
+      const discountValue = discounts.total10Fixed.rule.value
+      const item1 = {
+        allow_discounts: true,
+        unit_price: 18,
+        adjustments: [
+          {
+            discount_id: discountId,
+            amount: discountValue,
+          },
+        ],
+      }
+      const item2 = { ...item1, unit_price: 19 }
+      const item3 = { ...item1, unit_price: 20 }
+      const item4 = { ...item1, unit_price: 21 }
+      const item5 = { ...item1, unit_price: 22 }
+      const item6 = { ...item1, unit_price: 23 }
+      const item7 = { ...item1, unit_price: 24 }
+      const item8 = { ...item1, unit_price: 25 }
+
+      const swap1 = {
+        additional_items: [item3, item4],
+      }
+      const swap2 = {
+        additional_items: [item5],
+      }
+      const claim1 = {
+        additional_items: [item6, item7],
+      }
+      const claim2 = {
+        additional_items: [item8],
+      }
+
+      cart.items = [item1, item2]
+      cart.swaps = [swap1, swap2]
+      cart.claims = [claim1, claim2]
+
+      res = totalsService.getLineDiscounts(cart, discounts.total10Fixed)
+
+      expect(res).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: discountValue,
+            item: item1,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item2,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item3,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item4,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item5,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item6,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item7,
+          }),
+          expect.objectContaining({
+            amount: discountValue,
+            item: item8,
+          }),
+        ])
+      )
     })
   })
 
@@ -718,7 +826,7 @@ describe("TotalsService", () => {
     const totalsService = new TotalsService({
       ...container,
       taxProviderService: {
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
         getTaxLines: getTaxLinesMock,
@@ -763,7 +871,7 @@ describe("TotalsService", () => {
 
     const cradle = {
       taxProviderService: {
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
         getTaxLines: getTaxLinesMock,
