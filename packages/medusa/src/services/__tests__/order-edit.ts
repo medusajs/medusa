@@ -5,13 +5,10 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
-  PaymentCollectionService,
-  PaymentProviderService,
   TaxProviderService,
   TotalsService,
 } from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
-import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
 import { OrderServiceMock } from "../__mocks__/order"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
@@ -20,7 +17,6 @@ import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-cha
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import LineItemAdjustmentService from "../line-item-adjustment"
-import { PaymentCollectionServiceMock } from "../__mocks__/payment-collection"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -198,10 +194,6 @@ describe("OrderEditService", () => {
     lineItemAdjustmentService:
       LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
-    paymentCollectionService:
-      PaymentCollectionServiceMock as unknown as PaymentCollectionService,
-    paymentProviderService:
-      PaymentProviderServiceMock as unknown as PaymentProviderService,
   })
 
   it("should retrieve an order edit and call the repository with the right arguments", async () => {
