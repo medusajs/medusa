@@ -25,10 +25,10 @@ class IdealProviderService extends StripeBase {
     )
   }
 
-  getSupportedIntentOptions() {
+  get paymentIntentOptions() {
     return {
       payment_method_types: ["ideal"],
-      capture_method: "automatic",
+      setup_future_usage: "off_session",
     }
   }
 }

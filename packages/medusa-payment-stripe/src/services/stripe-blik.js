@@ -25,10 +25,10 @@ class BlikProviderService extends StripeBase {
     )
   }
 
-  getSupportedIntentOptions() {
+  get paymentIntentOptions() {
     return {
       payment_method_types: ["blik"],
-      capture_method: "automatic",
+      setup_future_usage: "off_session",
     }
   }
 }

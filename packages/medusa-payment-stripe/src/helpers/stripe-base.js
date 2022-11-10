@@ -58,15 +58,12 @@ class StripeBase extends AbstractPaymentService {
     this.manager_ = manager
   }
 
-  createIntentRequest_() {
-    if (this.getSupportedIntentOptions) {
-      return this.getSupportedIntentOptions()
-    }
-
+  getPaymentIntentOptions() {
     return {
-      payment_method_types: this.paymentMethodTypes,
-      capture_method: "automatic",
-      setup_future_usage: "on_session",
+      setup_future_usage:
+        this?.paymentIntentOptions?.setup_future_usage ?? "on_session",
+      payment_method_types: this?.paymentIntentOptions
+        ?.payment_method_types || ["cart"],
     }
   }
 
@@ -116,13 +113,13 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
-    const intentRequest = this.createIntentRequest_()
+    const intentRequest = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_.createPayment(cart, intentRequest)
   }
 
   async createPaymentNew(paymentInput) {
-    const intentRequest = this.createIntentRequest_()
+    const intentRequest = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_.createPaymentNew(
       paymentInput,

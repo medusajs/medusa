@@ -25,10 +25,10 @@ class GiropayProviderService extends StripeBase {
     )
   }
 
-  getSupportedIntentOptions() {
+  get paymentIntentOptions() {
     return {
       payment_method_types: ["giropay"],
-      capture_method: "automatic",
+      setup_future_usage: "off_session",
     }
   }
 }

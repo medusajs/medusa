@@ -25,10 +25,10 @@ class BancontactProviderService extends StripeBase {
     )
   }
 
-  getSupportedIntentOptions() {
+  get paymentIntentOptions() {
     return {
       payment_method_types: ["bancontact"],
-      capture_method: "automatic",
+      setup_future_usage: "off_session",
     }
   }
 }

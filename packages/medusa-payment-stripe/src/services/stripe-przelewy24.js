@@ -25,10 +25,10 @@ class Przelewy24ProviderService extends StripeBase {
     )
   }
 
-  getSupportedIntentOptions() {
+  get paymentIntentOptions() {
     return {
       payment_method_types: ["p24"],
-      capture_method: "automatic",
+      setup_future_usage: "off_session",
     }
   }
 }
