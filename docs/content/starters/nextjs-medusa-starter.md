@@ -2,7 +2,7 @@
 
 This document guides you to install and set up the Next.js Storefront for your Medusa Server.
 
-![Next.js Storefront Demo](https://i.imgur.com/koJl8uR.gif)
+![Next.js Storefront Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003177/Medusa%20Docs/Screenshots/koJl8uR_n3gvii.gif)
 
 ## Instant Deployment to Netlify
 
@@ -98,7 +98,7 @@ To make sure the Next.js storefront properly displays the products in the search
 
 :::
 
-![Search Result on Next.js storefront](https://i.imgur.com/gQVWvH2.png)
+![Search Result on Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003191/Medusa%20Docs/Screenshots/gQVWvH2_h1ljig.png)
 
 ### Algolia Integration
 
@@ -133,7 +133,7 @@ export const SEARCH_INDEX_NAME =
 
 Then, restart the Next.js server. You’ll be able to search through available products by clicking the search icon in the navigation bar.
 
-![Search Pop-up in Next.js Storefront](https://i.imgur.com/ZLgX5Ad.png)
+![Search Pop-up in Next.js Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003205/Medusa%20Docs/Screenshots/ZLgX5Ad_po6a4n.png)
 
 ### Stripe Payment Integration
 
@@ -149,7 +149,7 @@ Make sure to replace `<YOUR_PUBLISHABLE_KEY>` with your Stripe publishable key. 
 
 If you restart your Next.js server you should be able to pay with Stripe on checkout.
 
-![Pay with Stripe on Checkout](https://i.imgur.com/h5mWdJT.png)
+![Pay with Stripe on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003250/Medusa%20Docs/Screenshots/h5mWdJT_yjogcq.png)
 
 ### PayPal Payment Integration
 
@@ -165,7 +165,7 @@ Make sure to replace `<YOUR_CLIENT_ID>` with your PayPal client ID. You can retr
 
 If you restart your Next.js server you should be able to pay with PayPal on checkout.
 
-![Pay with PayPal on Checkout](https://i.imgur.com/F8OvsOJ.png)
+![Pay with PayPal on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003264/Medusa%20Docs/Screenshots/F8OvsOJ_mlx0le.png)
 
 ### Customization
 
@@ -204,15 +204,15 @@ You can learn more about development with Next.js through [their documentation](
 
 - View all products and manage your cart.
 
-![All Products Page](https://i.imgur.com/1vLAYbH.png)
+![All Products Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003278/Medusa%20Docs/Screenshots/1vLAYbH_sulxrr.png)
 
 - Customer authentication and profiles.
 
-![Customer Profile](https://i.imgur.com/etW3b3L.png)
+![Customer Profile](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003287/Medusa%20Docs/Screenshots/etW3b3L_wccrez.png)
 
 - Full checkout workflow.
 
-![Checkout Page](https://i.imgur.com/VC8SYfb.png)
+![Checkout Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003296/Medusa%20Docs/Screenshots/VC8SYfb_eowjno.png)
 
 ## What’s Next
 

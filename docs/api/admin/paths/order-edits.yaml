@@ -2,6 +2,19 @@ post:
   operationId: PostOrderEdits
   summary: Create an OrderEdit
   description: Creates an OrderEdit.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - order_id
+          properties:
+            order_id:
+              description: The ID of the order to create the edit for.
+              type: string
+            internal_note:
+              description: An optional note to create for the order edit.
+              type: string
   x-authenticated: true
   x-codeSamples:
     - lang: JavaScript
@@ -26,6 +39,89 @@ post:
             properties:
               order_edit:
                 $ref: ../components/schemas/order_edit.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+get:
+  operationId: GetOrderEdits
+  summary: List an OrderEdit
+  description: List a OrderEdit.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: q
+      description: Query used for searching order edit internal note.
+      schema:
+        type: string
+    - in: query
+      name: order_id
+      description: List order edits by order id.
+      schema:
+        type: string
+    - in: query
+      name: limit
+      description: The number of items in the response
+      schema:
+        type: number
+        default: '20'
+    - in: query
+      name: offset
+      description: The offset of items in response
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: expand
+      description: Comma separated list of relations to include in the results.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma separated list of fields to include in the results.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/order-edits/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/order-edits/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - OrderEdit
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              order_edits:
+                type: array
+                $ref: ../components/schemas/order_edit.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

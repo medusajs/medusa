@@ -36,7 +36,7 @@ This creates the Strapi project in the directory `strapi-medusa`.
 
 Once the installation is finished, the Strapi development server will run on `localhost:1337`. A new page will also open in your default browser to create a new admin user and log in.
 
-![Create User Form in Strapi](https://i.imgur.com/9pFE1Ij.png)
+![Create User Form in Strapi](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001083/Medusa%20Docs/Strapi/9pFE1Ij_h2dicv.png)
 
 Once you log in, you can access the Strapi dashboard.
 
@@ -44,11 +44,11 @@ Once you log in, you can access the Strapi dashboard.
 
 The Strapi plugin in Medusa requires the credentials of a Strapi user. To create a new user, go to Content Manager, then choose User under Collection Types.
 
-![Showing the users under Content Manager](https://i.imgur.com/YyGJPUf.png)
+![Showing the users under Content Manager](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001096/Medusa%20Docs/Strapi/YyGJPUf_mr5sx7.png)
 
 Click on the Create new entry button at the top right. This opens a new form to enter the user’s details.
 
-![Create User Form on Strapi](https://i.imgur.com/mdMhSlV.png)
+![Create User Form on Strapi](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001105/Medusa%20Docs/Strapi/mdMhSlV_vy7ygv.png)
 
 Enter the user’s username, email, and password. Once you’re done, click on the Save button at the top right.
 
@@ -58,7 +58,7 @@ By default, created users have the “Authenticated” role. Before you start us
 
 On your Strapi dashboard, go to Settings → Roles → Authenticated. Then, under the Permissions section, expand the accordion of each content model type and check the Select All checkbox.
 
-![An example of modifying permissions on the Product content type](https://i.imgur.com/QgckXqS.png)
+![An example of modifying permissions on the Product content type](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001116/Medusa%20Docs/Strapi/QgckXqS_wlyxe8.png)
 
 Once you’re done, click the Save button at the top right.
 

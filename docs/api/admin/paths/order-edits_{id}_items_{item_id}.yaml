@@ -70,6 +70,16 @@ post:
       description: The ID of the order edit item to update.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - quantity
+          properties:
+            quantity:
+              description: The quantity to update
+              type: number
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

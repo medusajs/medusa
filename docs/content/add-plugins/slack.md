@@ -41,7 +41,7 @@ The first step is to create a Slack app. This app will be connected to your work
 
 Go to [Slack API](https://api.slack.com/) and click Create app. This will take you to a new page with a pop-up. In the pop-up, choose From scratch.
 
-![Create Slack App](https://i.imgur.com/liVfwF8.png)
+![Create Slack App](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000844/Medusa%20Docs/Slack/liVfwF8_ryzly3.png)
 
 You’ll then need to enter some info like the App name and the workspace it will be connected to. Once you’re done, the app will be created.
 
@@ -49,17 +49,17 @@ You’ll then need to enter some info like the App name and the workspace it wil
 
 To activate Incoming Webhooks, choose Features > Incoming Webhooks from the sidebar. At first, it will be disabled so make sure to enable it by switching the toggle.
 
-![Incoming Webhooks](https://i.imgur.com/5Y0nv4p.png)
+![Incoming Webhooks](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000856/Medusa%20Docs/Slack/5Y0nv4p_mugzkb.png)
 
 ### Add New Webhook
 
 After activating Incoming Webhooks, on the same page scroll down and click on the Add New Webhook to Workspace button.
 
-![Add New Webhook](https://i.imgur.com/sejdIqH.png)
+![Add New Webhook](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000867/Medusa%20Docs/Slack/sejdIqH_wyqgs5.png)
 
 After that, choose the channel to send the notifications to. You can also choose a DM to send the notifications to. Once you’re done click Allow.
 
-![Choose channel or DM](https://i.imgur.com/Zw3f5uF.png)
+![Choose channel or DM](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000882/Medusa%20Docs/Slack/Zw3f5uF_hljfpr.png)
 
 This will create a new Webhook with a URL which you can see in the table at the end of the Incoming Webhooks page. Copy the URL as you’ll use it in the next section.
 

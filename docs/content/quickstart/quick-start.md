@@ -6,7 +6,7 @@ This document will guide you through setting up your Medusa server in a few minu
 
 Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
 
-```bash
+```bash noHeader
 node -v
 ```
 
@@ -16,7 +16,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ### 1. Install Medusa CLI
 
-   ```bash npm2yarn
+   ```bash npm2yarn noHeader
    npm install @medusajs/medusa-cli -g
    ```
 
@@ -28,13 +28,13 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 
 ### 2. Create a new Medusa project
 
-   ```bash
+   ```bash noHeader
    medusa new my-medusa-store --seed
    ```
 
 ### 3. Start your Medusa server
 
-   ```bash
+   ```bash noHeader
    cd my-medusa-store
    medusa develop
    ```
@@ -43,7 +43,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 
 After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
 
-```bash
+```bash noHeader
 curl localhost:9000/store/products | python -m json.tool
 ```
 
@@ -51,7 +51,7 @@ curl localhost:9000/store/products | python -m json.tool
 
 This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
 
-```bash
+```bash noHeader
 curl localhost:9000/store/products
 ```
 

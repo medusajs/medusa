@@ -290,6 +290,11 @@ get:
       schema:
         type: string
     - in: query
+      name: discount_condition_id
+      description: The discount condition id on which to filter the product.
+      schema:
+        type: string
+    - in: query
       name: id
       style: form
       explode: false
@@ -353,6 +358,15 @@ get:
         items:
           type: string
     - in: query
+      name: type_id
+      style: form
+      explode: false
+      description: Type IDs to filter products by
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
       name: title
       description: title to search for.
       schema:
@@ -372,11 +386,6 @@ get:
       description: Search for giftcards using is_giftcard=true.
       schema:
         type: boolean
-    - in: query
-      name: type
-      description: type ID to search for.
-      schema:
-        type: string
     - in: query
       name: created_at
       description: Date comparison for when resulting products were created.

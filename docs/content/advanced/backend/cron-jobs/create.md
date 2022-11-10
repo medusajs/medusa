@@ -111,7 +111,7 @@ Once it is time to run your cron job based on the cron job expression pattern, t
 
 For example, the above cron job will run at 12 AM and, when it runs, you can see the following logged on your Medusa server:
 
-```bash
+```bash noHeader
 info:    Processing cron job: publish-products
 ```
 

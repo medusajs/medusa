@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 
 import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
@@ -600,7 +600,7 @@ class SwapService extends TransactionBaseService {
         order?.discounts?.filter(({ rule }) => rule.type !== "free_shipping") ||
         undefined
 
-      const cart = await this.cartService_.withTransaction(manager).create({
+      let cart = await this.cartService_.withTransaction(manager).create({
         discounts,
         email: order.email,
         billing_address_id: order.billing_address_id,
@@ -627,16 +627,31 @@ class SwapService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
-      for (const item of swap.additional_items) {
-        await lineItemServiceTx.update(item.id, {
-          cart_id: cart.id,
-        })
-        // we generate adjustments in case the cart has any discounts that should be applied to the additional items
-        await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
-          cart,
-          item
+
+      await Promise.all(
+        swap.additional_items.map(
+          async (item) =>
+            await lineItemServiceTx.update(item.id, {
+              cart_id: cart.id,
+            })
         )
-      }
+      )
+
+      cart = await this.cartService_
+        .withTransaction(manager)
+        .retrieve(cart.id, {
+          relations: ["items", "region", "discounts", "discounts.rule"],
+        })
+
+      await Promise.all(
+        cart.items.map(async (item) => {
+          // we generate adjustments in case the cart has any discounts that should be applied to the additional items
+          await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
+            cart,
+            item
+          )
+        })
+      )
 
       // If the swap has a return shipping method the price has to be added to
       // the cart.

@@ -13,6 +13,8 @@
   --ifm-color-primary: #111827;
   --ifm-medusa-gray: #f0f0f0;
   --ifm-color-content: #6B7280;
+  --ifm-primary-gradient: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
+  #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
 
   /* Fonts */
   --ifm-code-font-size: 14px;
@@ -84,6 +86,8 @@
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+  --ifm-pre-padding: 16px;
+  --docusaurus-highlighted-code-line-bg: #393939;
 
   /* Tooltip */
   --ifm-tooltip-background-color: #fff;
@@ -124,6 +128,16 @@
   --docsearch-hit-icon-color: #9CA3AF;
   --docsearch-hit-border-color: #E5E7EB;
   --docsearch-hit-title-color: #000000;
+
+  /* Announcement Bar */
+  --ifm-announcement-bar-bg: #FFFFFF;
+  --ifm-announcement-bar-border-color: #E5E7EB;
+  --ifm-announcement-bar-hover-bg: #F9FAFB;
+  --ifm-announcement-bar-icon-bg: #F3F4F6;
+  --ifm-announcement-bar-icon-border-color: var(--ifm-announcement-bar-border-color);
+  --ifm-announcement-bar-title-color: var(--ifm-color-headers);
+  --ifm-announcement-bar-text-color: var(--ifm-color-content);
+  --ifm-announcement-bar-close-icon-color: #9CA3AF;
 }
 
 html[data-theme="dark"] {
@@ -131,12 +145,7 @@ html[data-theme="dark"] {
   --ifm-hr-background-color: #2D2D2D;
 
   /* Colors */
-  --ifm-color-primary-dark: #6231ff;
-  --ifm-color-primary-darker: #5520ff;
-  --ifm-color-primary-darkest: #3800ed;
-  --ifm-color-primary: #9675ff;
-  --ifm-color-primary-lighter: #a386ff;
-  --ifm-color-primary-lightest: #c9b8ff;
+  --ifm-color-primary: #F3F3F3;
   --ifm-background-color: #161616;
   --ifm-background-surface-color: #161616;
   --ifm-medusa-gray: #292929;
@@ -217,4 +226,15 @@ html[data-theme="dark"] {
   --docsearch-hit-icon-color: #737373;
   --docsearch-hit-border-color: #393939;
   --docsearch-hit-title-color: #F3F3F3;
+
+  /* Announcement Bar */
+  --ifm-announcement-bar-bg: #222222;
+  --ifm-announcement-bar-border-color: #2D2D2D;
+  --ifm-announcement-bar-hover-bg: #2D2D2D;
+  --ifm-announcement-bar-icon-bg: #393939;
+  --ifm-announcement-bar-icon-border-color: #393939;
+  --ifm-announcement-bar-text-color: #737373;
+
+  /* Tabs */
+  --ifm-tabs-color-active: #F3F3F3;
 }
