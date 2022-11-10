@@ -1,12 +1,12 @@
-# Class: AdminGetProductTypesParams
+# Class: StoreGetProductTypesParams
 
-[internal](../modules/internal-17.md).AdminGetProductTypesParams
+[internal](../modules/internal-40.md).StoreGetProductTypesParams
 
 ## Hierarchy
 
 - [`FindPaginationParams`](internal-4.FindPaginationParams.md)
 
-  ↳ **`AdminGetProductTypesParams`**
+  ↳ **`StoreGetProductTypesParams`**
 
 ## Properties
 
@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:134
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:134
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:137
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:137
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:131
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:131
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:136
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:136
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:132
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:132
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:135
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:135
 
 ___
 
@@ -104,4 +104,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/list-product-types.d.ts:133
+medusa/dist/api/routes/store/product-types/list-product-types.d.ts:133
