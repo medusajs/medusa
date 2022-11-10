@@ -45,9 +45,10 @@ export class OrderRepository extends Repository<Order> {
     // Limit 1
     optionsWithoutRelations.take = 1
 
-    const result = await this.findWithRelations(relations, {
-      ...optionsWithoutRelations,
-    })
+    const result = await this.findWithRelations(
+      relations,
+      optionsWithoutRelations
+    )
     return result[0]
   }
 }
