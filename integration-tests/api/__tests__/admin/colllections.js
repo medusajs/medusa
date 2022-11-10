@@ -273,14 +273,14 @@ describe("/admin/collections", () => {
             },
             {
               collection_id: "test-collection",
-              id: "test-product1",
+              id: "test-product_filtering_1",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               profile_id: expect.stringMatching(/^sp_*/),
             },
             {
               collection_id: "test-collection",
-              id: "test-product_filtering_1",
+              id: "test-product1",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               profile_id: expect.stringMatching(/^sp_*/),
