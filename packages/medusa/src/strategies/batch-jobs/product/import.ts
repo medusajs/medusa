@@ -6,6 +6,7 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -58,6 +59,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
+  protected readonly productCollectionService_: ProductCollectionService
   protected readonly batchJobService_: BatchJobService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
@@ -72,6 +74,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   constructor({
     batchJobService,
     productService,
+    productCollectionService,
     salesChannelService,
     productVariantService,
     shippingProfileService,
@@ -102,6 +105,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService_ = productService
+    this.productCollectionService_ = productCollectionService
     this.salesChannelService_ = salesChannelService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
@@ -391,6 +395,30 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       const productData = transformProductData(
         productOp
       ) as unknown as CreateProductInput
+
+      var collectionId: string;
+
+      try {
+        const collectionHandle = await this.productCollectionService_
+          .withTransaction(transactionManager)
+          .retrieveByHandle(productOp["product.collection.handle"] as string);
+        collectionId = collectionHandle.id;
+      } catch (error) {
+        console.log("Not found ", productOp["product.collection.handle"], " due to ", error);
+      }
+
+      // if this attribute it's not deleted ProductRepo will not associate the product to its collection
+      delete productData.collection;
+
+      if (collectionId === undefined) {
+        console.log(
+          "Unable to find the collection id for ",
+          productOp["product.collection.handle"],
+          productOp["product.collection.title"]
+        );
+      } else {
+        productData.collection_id = collectionId;
+      }
 
       try {
         if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
