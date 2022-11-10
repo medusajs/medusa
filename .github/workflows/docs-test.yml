@@ -7,6 +7,8 @@ on:
 jobs:
   docs-test:
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTION: "--max-old-space-size=8192"
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
