@@ -869,6 +869,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       await adminSeeder(dbConnection)
 
       const product1 = await simpleProductFactory(dbConnection)
+      const product2 = await simpleProductFactory(dbConnection)
 
       const order = await simpleOrderFactory(dbConnection, {
         id: IdMap.getId("order-test-2"),
@@ -881,6 +882,37 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           name: "Test region",
           tax_rate: 0,
         },
+        line_items: [
+          {
+            id: "lineItemId1",
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code1",
+                name: "code1",
+              },
+            ],
+          },
+        ],
+        shipping_methods: [
+          {
+            shipping_option: {
+              name: "random",
+              region_id: "test-region",
+            },
+            price: 10,
+            tax_lines: [
+              {
+                rate: 0,
+              },
+            ],
+          },
+        ],
       })
 
       const { id } = await simpleOrderEditFactory(dbConnection, {
@@ -915,7 +947,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it.only("requests order edit", async () => {
+    it("requests order edit", async () => {
       const api = useApi()
 
       const result = await api.post(

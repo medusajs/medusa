@@ -93,17 +93,16 @@ export default async (req, res) => {
           select: ["currency_code", "region_id"],
         })
 
-      const paymentCollectionServiceTx =
-        paymentCollectionService.withTransaction(transactionManager)
-
-      const paymentCollection = await paymentCollectionServiceTx.create({
-        type: PaymentCollectionType.ORDER_EDIT,
-        amount: total.difference_due,
-        currency_code: order.currency_code,
-        region_id: order.region_id,
-        description: validatedBody.payment_collection_description,
-        created_by: loggedInUser,
-      })
+      const paymentCollection = await paymentCollectionService
+        .withTransaction(transactionManager)
+        .create({
+          type: PaymentCollectionType.ORDER_EDIT,
+          amount: total.difference_due,
+          currency_code: order.currency_code,
+          region_id: order.region_id,
+          description: validatedBody.payment_collection_description,
+          created_by: loggedInUser,
+        })
 
       orderEdit.payment_collection_id = paymentCollection.id
 
