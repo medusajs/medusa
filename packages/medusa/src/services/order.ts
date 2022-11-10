@@ -1651,21 +1651,6 @@ class OrderService extends TransactionBaseService {
     const orderItems = [...(order.items ?? [])]
     const orderShippingMethods = [...(order.shipping_methods ?? [])]
 
-    // An order of any type is supposed to always have the tax lines with the items and shipping methods. So no need to re fetch them here
-    /*const taxLinesMaps = await this.taxProviderService_
-      .withTransaction(manager)
-      .getTaxLinesMap(orderItems, calculationContext)
-
-    orderItems.forEach((item) => {
-      if (item.is_return) {
-        return
-      }
-      item.tax_lines = taxLinesMaps.lineItemsTaxLines[item.id] ?? []
-    })
-    orderShippingMethods.forEach((method) => {
-      method.tax_lines = taxLinesMaps.shippingMethodsTaxLines[method.id] ?? []
-    })
-*/
     const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
       taxRate: order.tax_rate,
       includeTax: true,
