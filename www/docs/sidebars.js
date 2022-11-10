@@ -22,7 +22,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "introduction"
+          id: "introduction",
+          label: "Introduction",
         },
         {
           type: "doc",
