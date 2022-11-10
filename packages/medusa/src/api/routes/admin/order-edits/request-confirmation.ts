@@ -3,6 +3,7 @@ import { EntityManager } from "typeorm"
 import { IsOptional, IsString, IsObject } from "class-validator"
 import {
   OrderEditService,
+  OrderService,
   PaymentCollectionService,
 } from "../../../../services"
 import {
@@ -66,6 +67,8 @@ export default async (req, res) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
+  const orderService: OrderService = req.scope.resolve("orderService")
+
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
@@ -78,20 +81,27 @@ export default async (req, res) => {
     const orderEditServiceTx =
       orderEditService.withTransaction(transactionManager)
 
-    await orderEditServiceTx.requestConfirmation(id, {
+    const orderEdit = await orderEditServiceTx.requestConfirmation(id, {
       loggedInUserId: loggedInUser,
     })
+
     const total = await orderEditServiceTx.getTotals(orderEdit.id)
 
     if (total.difference_due > 0) {
+      const order = await orderService
+        .withTransaction(transactionManager)
+        .retrieve(orderEdit.order_id, {
+          select: ["currency_code", "region_id"],
+        })
+
       const paymentCollectionServiceTx =
         paymentCollectionService.withTransaction(transactionManager)
 
       const paymentCollection = await paymentCollectionServiceTx.create({
         type: PaymentCollectionType.ORDER_EDIT,
         amount: total.difference_due,
-        currency_code: orderEdit.order.currency_code,
-        region_id: orderEdit.order.region_id,
+        currency_code: order.currency_code,
+        region_id: order.region_id,
         description: validatedBody.payment_collection_description,
         created_by: loggedInUser,
       })
