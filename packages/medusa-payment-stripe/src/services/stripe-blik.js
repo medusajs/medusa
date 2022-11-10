@@ -21,9 +21,15 @@ class BlikProviderService extends StripeBase {
         regionService,
         manager,
       },
-      options,
-      ["blik"]
+      options
     )
+  }
+
+  getSupportedIntentOptions() {
+    return {
+      payment_method_types: ["blik"],
+      capture_method: "automatic",
+    }
   }
 }
 

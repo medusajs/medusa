@@ -21,9 +21,15 @@ class BancontactProviderService extends StripeBase {
         regionService,
         manager,
       },
-      options,
-      ["bancontact"]
+      options
     )
+  }
+
+  getSupportedIntentOptions() {
+    return {
+      payment_method_types: ["bancontact"],
+      capture_method: "automatic",
+    }
   }
 }
 

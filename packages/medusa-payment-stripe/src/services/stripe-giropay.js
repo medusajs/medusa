@@ -21,9 +21,15 @@ class GiropayProviderService extends StripeBase {
         regionService,
         manager,
       },
-      options,
-      ["giropay"]
+      options
     )
+  }
+
+  getSupportedIntentOptions() {
+    return {
+      payment_method_types: ["giropay"],
+      capture_method: "automatic",
+    }
   }
 }
 
