@@ -9,6 +9,7 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
 } = require("../../factories/simple-publishable-api-key-factory")
+const { simpleSalesChannelFactory } = require("../../factories")
 
 jest.setTimeout(50000)
 
@@ -27,8 +28,11 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_PUBLISHABLE_API_KEYS: true },
-      verbose: false,
+      env: {
+        MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
+        MEDUSA_FF_SALES_CHANNELS: true,
+      },
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -209,6 +213,155 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       } catch (e) {
         expect(e.response.status).toBe(404)
       }
+    })
+  })
+
+  describe("POST /admin/publishable-api-keys/:id/sales-channels/batch", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id-batch")
+    let salesChannel1
+    let salesChannel2
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+      })
+
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 2",
+        description: "test description 2",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("add sales channels to the publishable api key scope", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: salesChannel1.id },
+            { id: salesChannel2.id },
+          ],
+        },
+        adminHeaders
+      )
+
+      const mappings = await dbConnection.manager.query(
+        `SELECT *
+         FROM publishable_api_key_sales_channel
+         WHERE publishable_key_id = '${pubKeyId}'`
+      )
+
+      expect(response.status).toBe(200)
+
+      expect(mappings).toEqual([
+        {
+          sales_channel_id: salesChannel1.id,
+          publishable_key_id: pubKeyId,
+        },
+        {
+          sales_channel_id: salesChannel2.id,
+          publishable_key_id: pubKeyId,
+        },
+      ])
+
+      expect(response.data.publishable_api_key).toMatchObject({
+        id: pubKeyId,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
+  describe("DELETE /admin/publishable-api-keys/:id/sales-channels/batch", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id-batch")
+    let salesChannel1
+    let salesChannel2
+    let salesChannel3
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+      })
+
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 2",
+        description: "test description 2",
+      })
+
+      salesChannel3 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 3",
+        description: "test description 3",
+      })
+
+      await dbConnection.manager.query(
+        `INSERT INTO 
+            publishable_api_key_sales_channel 
+         VALUES
+             ('${pubKeyId}', '${salesChannel1.id}'),
+             ('${pubKeyId}', '${salesChannel2.id}'),
+             ('${pubKeyId}', '${salesChannel3.id}');`
+      )
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("remove sales channels from the publishable api key scope", async () => {
+      const api = useApi()
+
+      const response = await api.delete(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: salesChannel1.id },
+            { id: salesChannel2.id },
+          ],
+        },
+        adminHeaders
+      )
+
+      const mappings = await dbConnection.manager.query(
+        `SELECT *
+         FROM publishable_api_key_sales_channel
+         WHERE publishable_key_id = '${pubKeyId}'`
+      )
+
+      expect(response.status).toBe(200)
+
+      expect(mappings).toEqual([
+        {
+          sales_channel_id: salesChannel3.id,
+          publishable_key_id: pubKeyId,
+        },
+      ])
+
+      expect(response.data.publishable_api_key).toMatchObject({
+        id: pubKeyId,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
     })
   })
 })
