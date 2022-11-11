@@ -14,7 +14,7 @@
 </h4>
 
 <p align="center">
-An open-source composable commerce engine built for developers.
+An open source composable commerce engine built for developers.
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
@@ -37,34 +37,11 @@ An open-source composable commerce engine built for developers.
 
 ## Getting Started
 
-You can install Medusa by either following our [Quickstart guide](https://docs.medusajs.com/quickstart/quick-start) or the following steps:
-
-1. **Install Medusa CLI**
-
-    ```bash
-    npm install @medusajs/medusa-cli -g
-    ```
-
-2. **Create a new Medusa project**
-
-    ```bash
-    medusa new my-medusa-store --seed
-    ```
-
-3. **Start your Medusa engine**
-
-    ```bash
-    cd my-medusa-store
-    medusa develop
-    ```
+Follow our [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to learn how to set up a Medusa server.
 
 ### Requirements
 
-- Node v14.0 or higher.
-- SQLite or PostgreSQL (SQLite is only for getting started; PostgreSQL is recommended)
-- Redis
-
-You can check out [this documentation for more details about setting up your environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
+You can check out [this documentation for details about setting up your environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
 
 ## What is Medusa
 
@@ -74,18 +51,11 @@ You can learn more about [Medusa’s architecture in our documentation](https://
 
 ### Features
 
-- **Orders, Exchanges, and Returns APIs:** Aside from the standard order management that comes with ecommerce platforms, Medusa also provides an easy and automated way to manage swaps, returns, and claims.
-- **Products and Collections APIs:** Add products with extensive customization settings and sort them into collections.
-- **Region API:** Configure and manage multiple regions and currencies all from one platform.
-- **Plugin API:** Easily integrate fulfillment providers, payment providers, notification services, and many other custom tools and third-party services.
-- ****PriceList and Promotions APIs:**** Advanced pricing for products with conditions based on its amount in the cart or promotions and discounts.
-- **Tax API:** Advanced tax configurations specific to multiple regions, with capability of specifying taxes for specific products.
-
-See more of the [ecommerce features on our documentation](https://docs.medusajs.com/#features).
+You can learn about all of the ecommerce features that Medusa provides [in our documentation](https://docs.medusajs.com/#features).
 
 ## Roadmap
 
-Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) prior to starting the implementation process.
+Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
 
 ### **2022**
 
@@ -97,24 +67,24 @@ Write-ups for all features will be made available in [Github discussions](https
 - [x]  Promotions API
 - [x]  Price Lists API
 - [x]  Price Selection Strategy
-- [ ]  Import / Export API
-- [ ]  Sales Channel API
+- [x]  Import / Export API
+- [x]  Sales Channel API
+- [ ]  Extended Order API (managing placed orders)
+- [ ]  PaymentCollection API (collecting payments separate from carts and draft orders)
+- [ ]  Multi-warehouse API
 - [ ]  Extended Product API (custom fields, publishing control, and more)
-- [ ]  Extended Order API (managing placed orders, improved inventory control, and more)
-- [ ]  Multi-warehouse support
-- [ ]  GraphQL API
 
 ## Plugins
-
-As a headless and extendible solution, Medusa allows you to integrate third-party services or add custom features into Medusa by installing Plugins.
 
 Check out [our available plugins](https://github.com/medusajs/medusa/tree/master/packages) that you can install and use instantly on your Medusa server.
 
 ## Contributions
 
-Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market.
+Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for details about how to contribute to both our codebase and our documentation.
 
-Whether it is fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
+## Upgrade Guides
+
+Follow our [upgrade guides](https://docs.medusajs.com/advanced/backend/upgrade-guides/) on the documentation to keep your Medusa project up-to-date.
 
 ## Community & Support
 
@@ -126,10 +96,6 @@ Use these channels to be part of the community, ask for help while using Medusa,
 - [Medusa Blog](https://medusajs.com/blog/): find diverse tutorials and company news.
 - [Twitter](https://twitter.com/medusajs)
 - [LinkedIn](https://www.linkedin.com/company/medusajs)
-
-## Upgrade Guides
-
-Follow our [upgrade guides](https://docs.medusajs.com/advanced/backend/upgrade-guides/) on the documentation to keep your Medusa project up-to-date.
 
 ## License
 

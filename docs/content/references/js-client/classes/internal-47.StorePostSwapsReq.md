@@ -1,12 +1,12 @@
 # Class: StorePostSwapsReq
 
-[internal](../modules/internal-46.md).StorePostSwapsReq
+[internal](../modules/internal-47.md).StorePostSwapsReq
 
 ## Properties
 
 ### additional\_items
 
-• **additional\_items**: [`AdditionalItem`](internal-46.AdditionalItem.md)[]
+• **additional\_items**: [`AdditionalItem`](internal-47.AdditionalItem.md)[]
 
 #### Defined in
 
@@ -26,7 +26,7 @@ ___
 
 ### return\_items
 
-• **return\_items**: [`Item`](internal-46.Item.md)[]
+• **return\_items**: [`Item`](internal-47.Item.md)[]
 
 #### Defined in
 
