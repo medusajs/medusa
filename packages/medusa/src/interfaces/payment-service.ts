@@ -111,7 +111,7 @@ export abstract class AbstractPaymentService
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
-    return Promise.resolve([])
+    return []
   }
 
   public abstract getStatus(data: Data): Promise<PaymentSessionStatus>

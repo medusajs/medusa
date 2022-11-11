@@ -12,17 +12,16 @@ function replacePath(requirePath, package, concatPackage = true) {
   const idx = requirePath.indexOf(package)
   const packPath = requirePath.substring(idx + package.length)
 
-  let newPath = path.resolve(
+  let newPath =
     medusaCore +
-      "/" +
-      (concatPackage ? package + "/" : "") +
-      packPath.replace("/dist", "/src").replace(".js", "")
-  )
+    "/" +
+    (concatPackage ? package + "/" : "") +
+    packPath.replace("/dist", "/src").replace(".js", "")
 
   if (!newPath.includes("/src")) {
     newPath += "/src"
   }
-  return newPath
+  return path.resolve(newPath)
 }
 
 Module.prototype.require = function (...args) {
