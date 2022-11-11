@@ -26,7 +26,7 @@ class StripeBase extends AbstractPaymentService {
       options
     )
     /** @private @const {string[]} */
-    this.paymentMethodTypes = paymentMethodTypes
+    this.paymentMethodTypes_ = paymentMethodTypes
 
     /**
      * Required Stripe options:
@@ -93,7 +93,7 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<Data[]>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([])
+    return []
   }
 
   /**
