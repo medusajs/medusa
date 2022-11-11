@@ -25,9 +25,7 @@ npm install medusa-payment-stripe
 
 However, to also show them as part of your checkout flow you need to add them to your regions.
 
-In the Medusa Admin go to Settings > Regions and for each region scroll down to the Payment Provider input and choose the payment provider you want to use in that region:
-
-![Enable Payment Provider](https://i.imgur.com/FH5vgWh.png)
+In the Medusa Admin go to Settings > Regions and for each region scroll down to the Payment Provider input and choose the payment provider you want to use in that region.
 
 ## Additional Resources
 

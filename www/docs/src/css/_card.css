@@ -29,8 +29,7 @@
   position:absolute;
   bottom: -1px;
   left: 0;
-  background: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
-    #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
+  background: var(--ifm-primary-gradient);
 }
 
 html:not([data-theme=dark]) .card {

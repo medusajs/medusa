@@ -29,7 +29,7 @@ Creates a gift card
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:17](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/gift-cards.ts#L17)
+[medusa-js/src/resources/admin/gift-cards.ts:17](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/gift-cards.ts#L17)
 
 ___
 
@@ -54,7 +54,7 @@ Deletes a gift card
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:40](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/gift-cards.ts#L40)
+[medusa-js/src/resources/admin/gift-cards.ts:40](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/gift-cards.ts#L40)
 
 ___
 
@@ -79,7 +79,7 @@ Lists gift cards
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:62](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/gift-cards.ts#L62)
+[medusa-js/src/resources/admin/gift-cards.ts:62](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/gift-cards.ts#L62)
 
 ___
 
@@ -104,7 +104,7 @@ Deletes a gift card
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:51](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/gift-cards.ts#L51)
+[medusa-js/src/resources/admin/gift-cards.ts:51](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/gift-cards.ts#L51)
 
 ___
 
@@ -130,4 +130,4 @@ Updates a gift card
 
 #### Defined in
 
-[medusa-js/src/resources/admin/gift-cards.ts:28](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/gift-cards.ts#L28)
+[medusa-js/src/resources/admin/gift-cards.ts:28](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/gift-cards.ts#L28)

@@ -137,6 +137,10 @@ html:not([data-theme="dark"]) .doc-footer {
   z-index: var(--ifm-z-index-overlay);
 }
 
+details > div {
+  --docusaurus-details-decoration-color: transparent !important;
+}
+
 @media (min-width: 1440px) {
   .markdown-doc-wrapper {
     max-width: var(--ifm-container-width-xl) !important;

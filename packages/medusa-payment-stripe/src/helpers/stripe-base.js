@@ -1,5 +1,5 @@
-import Stripe from "stripe"
 import { AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
+import Stripe from "stripe"
 
 class StripeBase extends AbstractPaymentService {
   static identifier = null
@@ -58,6 +58,25 @@ class StripeBase extends AbstractPaymentService {
     this.manager_ = manager
   }
 
+  getPaymentIntentOptions() {
+    const options = {}
+
+    if (this?.paymentIntentOptions?.capture_method) {
+      options.capture_method = this.paymentIntentOptions.capture_method
+    }
+
+    if (this?.paymentIntentOptions?.setup_future_usage) {
+      options.setup_future_usage = this.paymentIntentOptions.setup_future_usage
+    }
+
+    if (this?.paymentIntentOptions?.payment_method_types) {
+      options.payment_method_types =
+        this.paymentIntentOptions.payment_method_types
+    }
+
+    return options
+  }
+
   /**
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
@@ -104,19 +123,13 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
-    const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
-      capture_method: "automatic",
-    }
+    const intentRequest = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_.createPayment(cart, intentRequest)
   }
 
   async createPaymentNew(paymentInput) {
-    const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
-      capture_method: "automatic",
-    }
+    const intentRequest = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_.createPaymentNew(
       paymentInput,

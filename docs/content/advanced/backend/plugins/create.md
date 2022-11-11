@@ -161,7 +161,7 @@ If files and directories aren't placed in the root of your plugin, the Medusa se
 
 An example of a plugin's directory before testing or publishing:
 
-```
+```bash noHeader
 medusa-plugin-custom
 |
 |_ _ _ api

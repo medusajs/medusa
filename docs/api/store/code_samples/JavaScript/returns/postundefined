@@ -9,6 +9,6 @@ medusa.returns.create({
     }
   ]
 })
-.then(({ return }) => {
-  console.log(return.id);
+.then((data) => {
+  console.log(data.return.id);
 });

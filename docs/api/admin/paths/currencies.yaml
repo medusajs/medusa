@@ -16,19 +16,30 @@ get:
         type: boolean
     - in: query
       name: order
-      description: to retrieve products in.
+      description: order to retrieve products in.
       schema:
         type: string
     - in: query
       name: offset
       description: How many products to skip in the result.
       schema:
-        type: string
+        type: number
+        default: '0'
     - in: query
       name: limit
       description: Limit the number of products returned.
       schema:
-        type: string
+        type: number
+        default: '20'
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/currencies/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/currencies/getundefined
   tags:
     - Currency
   responses:
@@ -38,16 +49,16 @@ get:
         application/json:
           schema:
             properties:
-              count:
-                description: The number of Currency.
-                type: integer
-              offset:
-                description: The offset of the Currency query.
-                type: integer
-              limit:
-                description: The limit of the currency query.
-                type: integer
               currencies:
                 type: array
                 items:
                   $ref: ../components/schemas/currency.yaml
+              count:
+                type: integer
+                description: The total number of items available
+              offset:
+                type: integer
+                description: The number of items skipped before these items
+              limit:
+                type: integer
+                description: The number of items per page

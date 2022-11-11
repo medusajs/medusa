@@ -2306,6 +2306,33 @@ describe("/admin/orders", () => {
       })
     })
 
+    it("retrieves an order should include a deleted region", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE region
+         set deleted_at = NOW()
+         WHERE id = 'test-region';`
+      )
+
+      const order = await api.get("/admin/orders/test-order", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          region: expect.objectContaining({
+            id: "test-region",
+            deleted_at: expect.any(String),
+          }),
+        })
+      )
+    })
+
     it("throws on invalid relation", async () => {
       const api = useApi()
 

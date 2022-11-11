@@ -55,11 +55,7 @@ describe("/admin/product-types", () => {
     it("returns a list of product types", async () => {
       const api = useApi()
 
-      const res = await api
-        .get("/admin/product-types", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const res = await api.get("/admin/product-types", adminReqConfig)
 
       expect(res.status).toEqual(200)
 
@@ -74,11 +70,10 @@ describe("/admin/product-types", () => {
     it("returns a list of product types matching free text search param", async () => {
       const api = useApi()
 
-      const res = await api
-        .get("/admin/product-types?q=test-type-new", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
-        })
+      const res = await api.get(
+        "/admin/product-types?q=test-type-new",
+        adminReqConfig
+      )
 
       expect(res.status).toEqual(200)
 

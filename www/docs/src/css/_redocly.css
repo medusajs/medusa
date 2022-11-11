@@ -27,3 +27,7 @@ html[data-theme="dark"] .redocusaurus .menu-content,
 html[data-theme="dark"] .redocusaurus .menu-content label {
   background-color: var(--ifm-background-color) !important;
 }
+
+.redoc-json code {
+  border: none !important;
+}
