@@ -1,5 +1,4 @@
-import { ConfigModule, Logger, MedusaContainer, StagedJob } from "@medusajs/medusa"
-import { StagedJobRepository } from "@medusajs/medusa/dist/repositories/staged-job"
+import { ConfigModule, EventHandler, IEventBusService, Logger, MedusaContainer, StagedJob, StagedJobRepository } from "@medusajs/medusa"
 import { asValue } from "awilix"
 import Bull from "bull"
 import Redis from "ioredis"
@@ -15,8 +14,6 @@ type InjectedDependencies = {
   redisSubscriber: Redis.Redis
 }
 
-type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
-
 type RedisCreateConnectionOptions = {
   client: Redis.Redis
   subscriber: Redis.Redis
@@ -26,7 +23,7 @@ type RedisCreateConnectionOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class EventBusService {
+export default class EventBusService implements IEventBusService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager

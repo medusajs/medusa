@@ -1,19 +1,8 @@
-import { asValue } from "awilix"
-import Bull from "bull"
-import Redis from "ioredis"
-import FakeRedis from "ioredis-mock"
-import { EntityManager } from "typeorm"
-import { StagedJob } from "../models"
-import { StagedJobRepository } from "../repositories/staged-job"
+import { IEventBusService } from "../interfaces"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
-import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
-  manager: EntityManager
   logger: Logger
-  stagedJobRepository: typeof StagedJobRepository
-  redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
 }
 
 type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -27,138 +16,36 @@ type EmitOptions = {
   }
 }
 
-type RedisCreateConnectionOptions = {
-  client: Redis.Redis
-  subscriber: Redis.Redis
-}
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class EventBusService {
+export default class DefaultEventBusService implements IEventBusService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly config_: ConfigModule
-  protected readonly manager_: EntityManager
   protected readonly logger_: Logger
-  protected readonly stagedJobRepository_: typeof StagedJobRepository
-
-  protected observers_: Map<string | symbol, EventHandler[]>
-  protected cronHandlers_: Map<string | symbol, EventHandler[]>
-  protected redisClient_: Redis.Redis
-  protected redisSubscriber_: Redis.Redis
-  protected cronQueue_: Bull
-  protected queue_: Bull
-  protected shouldEnqueuerRun: boolean
-  protected transactionManager_: EntityManager | undefined
-  protected enqueue_: Promise<void>
 
   constructor(
     container: MedusaContainer & InjectedDependencies,
-    config: ConfigModule,
-    singleton = true
+    config: ConfigModule
   ) {
     this.container_ = container
     this.config_ = config
-    this.manager_ = container.manager
     this.logger_ = container.logger
-    this.stagedJobRepository_ = container.stagedJobRepository
-
-    if (singleton) {
-      this.connect({
-        client: container.redisClient,
-        subscriber: container.redisSubscriber,
-      })
-    }
   }
 
-  public createRedis() {
-    if (this.config_.projectConfig.redis_url) {
-      const client = new Redis(this.config_.projectConfig.redis_url)
-      const subscriber = new Redis(this.config_.projectConfig.redis_url)
-
-      this.container_.register({
-        redisClient: asValue(client),
-        redisSubscriber: asValue(subscriber),
-      })
-    } else {
-      const client = new FakeRedis()
-
-      this.container_.register({
-        redisClient: asValue(client),
-        redisSubscriber: asValue(client),
-      })
-    }
-  }
-
-  // To be economical about the use of Redis connections, we reuse existing connection whenever possible
-  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
-  private reuseConnections(
-    client: Redis.Redis,
-    subscriber: Redis.Redis
-  ): { createClient: (type: string) => Redis.Redis } {
-    return {
-      createClient: (type: string): Redis.Redis => {
-        switch (type) {
-          case "client":
-            return client
-          case "subscriber":
-            return subscriber
-          default:
-            if (this.config_.projectConfig.redis_url) {
-              return new Redis(this.config_.projectConfig.redis_url)
-            }
-            return client
-        }
-      },
-    }
-  }
-
-  connect(options: RedisCreateConnectionOptions): void {
-    const { client, subscriber } = options
-
-    this.observers_ = new Map()
-    this.queue_ = new Bull(
-      `${this.constructor.name}:queue`,
-      this.reuseConnections(client, subscriber)
-    )
-    this.cronHandlers_ = new Map()
-    this.redisClient_ = client
-    this.redisSubscriber_ = subscriber
-    this.cronQueue_ = new Bull(
-      `cron-jobs:queue`,
-      this.reuseConnections(client, subscriber)
-    )
-    // Register our worker to handle emit calls
-    this.queue_.process(this.worker_)
-    // Register cron worker
-    this.cronQueue_.process(this.cronWorker_)
-
-    if (process.env.NODE_ENV !== "test") {
-      this.startEnqueuer()
-    }
-  }
-
-  withTransaction(transactionManager): this | EventBusService {
+  withTransaction(transactionManager): this | DefaultEventBusService {
     if (!transactionManager) {
       return this
     }
 
-    const cloned = new EventBusService(
+    const cloned = new DefaultEventBusService(
       {
         ...this.container_,
-        manager: transactionManager,
-        stagedJobRepository: this.stagedJobRepository_,
         logger: this.logger_,
-        redisClient: this.redisClient_,
-        redisSubscriber: this.redisSubscriber_,
       },
-      this.config_,
-      false
+      this.config_
     )
-
-    cloned.transactionManager_ = transactionManager
-    cloned.queue_ = this.queue_
 
     return cloned
   }
@@ -171,12 +58,7 @@ export default class EventBusService {
    * @return this
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
-    if (typeof handler !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, handler])
+    this.logger_.info(`Subscribing to ${String(event)}`)
 
     return this
   }
@@ -189,17 +71,7 @@ export default class EventBusService {
    * @return this
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    if (this.observers_.get(event)?.length) {
-      const index = this.observers_.get(event)?.indexOf(subscriber)
-      if (index !== -1) {
-        this.observers_.get(event)?.splice(index as number, 1)
-      }
-    }
-
+    this.logger_.info(`Unsubscribing from ${String(event)}`)
     return this
   }
 
@@ -214,13 +86,7 @@ export default class EventBusService {
     event: string | symbol,
     subscriber: EventHandler
   ): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Handler must be a function")
-    }
-
-    const cronHandlers = this.cronHandlers_.get(event) ?? []
-    this.cronHandlers_.set(event, [...cronHandlers, subscriber])
-
+    this.logger_.info(`Registering cron handler ${String(event)}`)
     return this
   }
 
@@ -235,128 +101,8 @@ export default class EventBusService {
     eventName: string,
     data: T,
     options: EmitOptions = {}
-  ): Promise<StagedJob | void> {
-    if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-
-      const stagedJobInstance = stagedJobRepository.create({
-        event_name: eventName,
-        data,
-      } as StagedJob)
-
-      return await stagedJobRepository.save(stagedJobInstance)
-    } else {
-      const opts: { removeOnComplete: boolean } & EmitOptions = {
-        removeOnComplete: true,
-      }
-      if (typeof options.attempts === "number") {
-        opts.attempts = options.attempts
-        if (typeof options.backoff !== "undefined") {
-          opts.backoff = options.backoff
-        }
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
-      this.queue_.add({ eventName, data }, opts)
-    }
-  }
-
-  startEnqueuer(): void {
-    this.shouldEnqueuerRun = true
-    this.enqueue_ = this.enqueuer_()
-  }
-
-  async stopEnqueuer(): Promise<void> {
-    this.shouldEnqueuerRun = false
-    await this.enqueue_
-  }
-
-  async enqueuer_(): Promise<void> {
-    while (this.shouldEnqueuerRun) {
-      const listConfig = {
-        relations: [],
-        skip: 0,
-        take: 1000,
-      }
-
-      const stagedJobRepo = this.manager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-      const jobs = await stagedJobRepo.find(listConfig)
-
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { removeOnComplete: true }
-            )
-            .then(async () => {
-              await stagedJobRepo.remove(job)
-            })
-        })
-      )
-
-      await sleep(3000)
-    }
-  }
-
-  /**
-   * Handles incoming jobs.
-   * @param job The job object
-   * @return resolves to the results of the subscriber calls.
-   */
-  worker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
-    const { eventName, data } = job.data
-    const eventObservers = this.observers_.get(eventName) || []
-    const wildcardObservers = this.observers_.get("*") || []
-
-    const observers = eventObservers.concat(wildcardObservers)
-
-    this.logger_.info(
-      `Processing ${eventName} which has ${eventObservers.length} subscribers`
-    )
-
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occurred while processing ${eventName}: ${err}`
-          )
-          console.error(err)
-          return err
-        })
-      })
-    )
-  }
-
-  /**
-   * Handles incoming jobs.
-   * @param job The job object
-   * @return resolves to the results of the subscriber calls.
-   */
-  cronWorker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
-    const { eventName, data } = job.data
-    const observers = this.cronHandlers_.get(eventName) || []
-    this.logger_.info(`Processing cron job: ${eventName}`)
-
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occured while processing ${eventName}: ${err}`
-          )
-          return err
-        })
-      })
-    )
+  ): Promise<void> {
+    this.logger_.info(`Emitting ${eventName}`)
   }
 
   /**
@@ -374,13 +120,5 @@ export default class EventBusService {
     handler: EventHandler
   ): void {
     this.logger_.info(`Registering ${eventName}`)
-    this.registerCronHandler_(eventName, handler)
-    return this.cronQueue_.add(
-      {
-        eventName,
-        data,
-      },
-      { repeat: { cron } }
-    )
   }
 }
