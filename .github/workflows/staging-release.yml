@@ -38,7 +38,7 @@ jobs:
         run: yarn build
 
       - name: version staging packages
-        run: yarn version:staging-snapshot
+        run: yarn version:staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
