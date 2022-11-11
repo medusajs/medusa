@@ -74,11 +74,7 @@
     "generate:announcement": "node ./scripts/doc-change-release.js",
     "develop": "NODE_ENV=development ts-node --transpile-only ./integration-tests/development/server.js",
     "develop:create:db": "NODE_ENV=development ts-node --transpile-only ./integration-tests/development/create-database.js",
-<<<<<<< HEAD
     "release:staging": "changeset publish --no-git-tags --snapshot --tag staging",
-=======
-    "release:staging": "changeset publish --no-git-tags --tag staging",
->>>>>>> 0232e4af6 (working config)
     "version:staging": "changeset version --snapshot staging",
     "check:freshness": "node ./scripts/freshness-check.js"
   },
