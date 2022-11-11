@@ -27,7 +27,7 @@ describe("/admin/store", () => {
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     })
 
     afterEach(async () => {
@@ -65,7 +65,7 @@ describe("/admin/store", () => {
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
 
       const manager = dbConnection.manager
       const store = await manager.findOne(Store, { name: "Medusa Store" })

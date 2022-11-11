@@ -34,7 +34,7 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process

@@ -28,10 +28,10 @@ describe("tax inclusive prices", () => {
     const [process, conn] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = conn // await initDb({ cwd })
-    medusaProcess = process // await setupServer({ cwd })
+    medusaProcess = process // await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {

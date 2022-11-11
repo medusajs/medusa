@@ -24,7 +24,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process

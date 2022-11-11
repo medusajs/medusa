@@ -24,7 +24,7 @@ describe("/admin/orders", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -165,7 +165,9 @@ describe("/admin/orders", () => {
      * shipping method will have 12.5 rate 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(75)
-    expect(response.data.order.returns[0].shipping_method.tax_lines).toHaveLength(1)
+    expect(
+      response.data.order.returns[0].shipping_method.tax_lines
+    ).toHaveLength(1)
     expect(response.data.order.returns[0].shipping_method.tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

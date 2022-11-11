@@ -32,7 +32,7 @@ describe("/admin/swaps", () => {
     beforeAll(async () => {
       const cwd = path.resolve(path.join(__dirname, "..", ".."))
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     })
 
     afterAll(async () => {
@@ -363,7 +363,7 @@ describe("/admin/swaps", () => {
       const [process, connection] = await startServerWithEnvironment({
         cwd,
         env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-        verbose: false,
+        verbose: true,
       })
       dbConnection = connection
       medusaProcess = process

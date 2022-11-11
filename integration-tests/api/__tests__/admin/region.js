@@ -2,11 +2,12 @@ const path = require("path")
 const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
-const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
-const { simpleRegionFactory } = require("../../factories");
+const { simpleRegionFactory } = require("../../factories")
 
 const adminReqConfig = {
   headers: {
@@ -23,7 +24,7 @@ describe("/admin/regions", () => {
 
   beforeAll(async () => {
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -304,7 +305,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -364,7 +365,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
           name: "region-including-taxes",
         })
       )
-    });
+    })
 
     it("should allow to update a region that includes tax", async function () {
       const api = useApi()
@@ -376,17 +377,19 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
 
       expect(response.data.region.includes_tax).toBe(false)
 
-      response = await api.post(
-        `/admin/regions/${region1TaxInclusiveId}`,
-        {
-          includes_tax: true,
-        },
-        adminReqConfig,
-      ).catch((err) => {
-        console.log(err)
-      })
+      response = await api
+        .post(
+          `/admin/regions/${region1TaxInclusiveId}`,
+          {
+            includes_tax: true,
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err)
+        })
 
       expect(response.data.region.includes_tax).toBe(true)
-    });
+    })
   })
 })

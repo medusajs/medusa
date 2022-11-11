@@ -24,6 +24,7 @@ describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ANALYTICS: true },
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
