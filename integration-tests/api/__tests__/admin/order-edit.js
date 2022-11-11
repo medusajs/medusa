@@ -930,7 +930,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         order_id: null,
         order_edit_id: id,
         variant_id: product1.variants[0].id,
-        unit_price: 200,
+        unit_price: 2000,
         quantity: 1,
         tax_lines: [
           {
@@ -978,19 +978,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       )
     })
 
-    /*
-    it.only("creates payment collection if difference_due > 0", async () => {
+    it("creates payment collection if difference_due > 0", async () => {
       const api = useApi()
 
-      let result = {}
-
-      try {
-        result = await api.post(
-          `/admin/order-edits/${orderEditId}/request`,
-          {},
-          adminHeaders
-        )
-      } catch {}
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request`,
+        {},
+        adminHeaders
+      )
 
       expect(result.status).toEqual(200)
       expect(result.data.order_edit).toEqual(
@@ -1003,7 +998,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         })
       )
     })
-    */
 
     it("fails to request an order edit with no changes", async () => {
       expect.assertions(2)
