@@ -4,18 +4,18 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  ValidateNested,
+  ValidateNested
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import {
-  EventBusService,
   OrderService,
-  ReturnService,
+  ReturnService
 } from "../../../../services"
 
 import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { IEventBusService } from "../../../../interfaces"
 import { Order, Return } from "../../../../models"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { isDefined } from "../../../../utils"
@@ -167,7 +167,7 @@ export default async (req, res) => {
   try {
     const orderService: OrderService = req.scope.resolve("orderService")
     const returnService: ReturnService = req.scope.resolve("returnService")
-    const eventBus: EventBusService = req.scope.resolve("eventBusService")
+    const eventBus: IEventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err = false

@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -15,14 +15,14 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink,
+  TrackingLink
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType,
+  FulFillmentItemType
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -32,7 +32,6 @@ import CartService from "./cart"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
 import DraftOrderService from "./draft-order"
-import EventBusService from "./event-bus"
 import FulfillmentService from "./fulfillment"
 import FulfillmentProviderService from "./fulfillment-provider"
 import GiftCardService from "./gift-card"
@@ -62,7 +61,7 @@ type InjectedDependencies = {
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
   inventoryService: InventoryService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
 }
 
@@ -105,7 +104,7 @@ class OrderService extends TransactionBaseService {
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
   protected readonly inventoryService_: InventoryService
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({

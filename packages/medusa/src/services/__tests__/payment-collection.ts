@@ -1,23 +1,21 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import {
-  CustomerService,
-  EventBusService,
-  PaymentCollectionService,
-  PaymentProviderService,
-  PaymentService,
-} from "../index"
-import {
-  PaymentCollectionStatus,
-  PaymentCollectionType,
-  PaymentCollection,
+    PaymentCollection, PaymentCollectionStatus,
+    PaymentCollectionType
 } from "../../models"
+import { PaymentCollectionSessionInput } from "../../types/payment-collection"
+import {
+    CustomerService,
+    IEventBusService,
+    PaymentCollectionService,
+    PaymentProviderService
+} from "../index"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import {
-  DefaultProviderMock,
-  PaymentProviderServiceMock,
+    DefaultProviderMock,
+    PaymentProviderServiceMock
 } from "../__mocks__/payment-provider"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import { PaymentCollectionSessionInput } from "../../types/payment-collection"
 
 describe("PaymentCollectionService", () => {
   afterEach(() => {
@@ -226,7 +224,7 @@ describe("PaymentCollectionService", () => {
   const paymentCollectionService = new PaymentCollectionService({
     manager: MockManager,
     paymentCollectionRepository,
-    eventBusService: EventBusServiceMock as unknown as EventBusService,
+    eventBusService: EventBusServiceMock as unknown as IEventBusService,
     paymentProviderService:
       PaymentProviderServiceMock as unknown as PaymentProviderService,
     customerService: CustomerServiceMock as unknown as CustomerService,

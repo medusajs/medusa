@@ -1,7 +1,7 @@
 import { isEmpty, isEqual } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
-import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
+import { IEventBusService, IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -13,7 +13,7 @@ import {
   LineItem,
   PaymentSession,
   SalesChannel,
-  ShippingMethod,
+  ShippingMethod
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -24,7 +24,7 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  LineItemUpdate,
+  LineItemUpdate
 } from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, isDefined, setMetadata } from "../utils"
@@ -33,7 +33,6 @@ import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
-import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
 import { SalesChannelService } from "./index"
 import InventoryService from "./inventory"
@@ -55,7 +54,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   lineItemRepository: typeof LineItemRepository
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
   paymentProviderService: PaymentProviderService
@@ -98,7 +97,7 @@ class CartService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
   protected readonly storeService_: StoreService

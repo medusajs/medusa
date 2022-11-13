@@ -1,9 +1,7 @@
-import { FlagRouter } from "../utils/flag-router"
-
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
@@ -11,12 +9,12 @@ import {
   ProductTag,
   ProductType,
   ProductVariant,
-  SalesChannel,
+  SalesChannel
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
-  ProductRepository,
+  ProductRepository
 } from "../repositories/product"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
@@ -29,10 +27,10 @@ import {
   FindProductConfig,
   ProductOptionInput,
   ProductSelector,
-  UpdateProductInput,
+  UpdateProductInput
 } from "../types/product"
 import { buildQuery, isDefined, setMetadata } from "../utils"
-import EventBusService from "./event-bus"
+import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -44,7 +42,7 @@ type InjectedDependencies = {
   imageRepository: typeof ImageRepository
   productVariantService: ProductVariantService
   searchService: SearchService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
 }
 
@@ -60,7 +58,7 @@ class ProductService extends TransactionBaseService {
   protected readonly imageRepository_: typeof ImageRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   static readonly IndexName = `products`

@@ -1,25 +1,9 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
-import { TransactionBaseService } from "../interfaces"
 
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { FindConfig, Selector } from "../types/common"
-import { SwapRepository } from "../repositories/swap"
-import CartService from "./cart"
-import {
-  CustomShippingOptionService,
-  EventBusService,
-  FulfillmentService,
-  InventoryService,
-  LineItemService,
-  OrderService,
-  PaymentProviderService,
-  ReturnService,
-  ShippingOptionService,
-  TotalsService,
-} from "./index"
 import {
   Cart,
   CartType,
@@ -31,10 +15,23 @@ import {
   ReturnStatus,
   Swap,
   SwapFulfillmentStatus,
-  SwapPaymentStatus,
+  SwapPaymentStatus
 } from "../models"
+import { SwapRepository } from "../repositories/swap"
+import { FindConfig, Selector } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
+import CartService from "./cart"
+import {
+  CustomShippingOptionService, FulfillmentService, InventoryService,
+  LineItemService,
+  OrderService,
+  PaymentProviderService,
+  ReturnService,
+  ShippingOptionService,
+  TotalsService
+} from "./index"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -42,11 +39,11 @@ type InjectedProps = {
   swapRepository: typeof SwapRepository
 
   cartService: CartService
-  eventBus: EventBusService
+  eventBus: IEventBusService
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   lineItemService: LineItemService
   inventoryService: InventoryService
   fulfillmentService: FulfillmentService
@@ -78,7 +75,7 @@ class SwapService extends TransactionBaseService {
   protected readonly swapRepository_: typeof SwapRepository
 
   protected readonly cartService_: CartService
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly orderService_: OrderService
   protected readonly returnService_: ReturnService
   protected readonly totalsService_: TotalsService

@@ -2,7 +2,7 @@ import { DeepPartial, EntityManager } from "typeorm"
 
 import { MedusaError } from "medusa-core-utils"
 
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Country, Currency, Region } from "../models"
 import { CountryRepository } from "../repositories/country"
@@ -16,7 +16,6 @@ import { CreateRegionInput, UpdateRegionInput } from "../types/region"
 import { buildQuery, setMetadata } from "../utils"
 import { countries } from "../utils/countries"
 import { FlagRouter } from "../utils/flag-router"
-import EventBusService from "./event-bus"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { PaymentProviderService } from "./index"
 import StoreService from "./store"
@@ -24,7 +23,7 @@ import StoreService from "./store"
 type InjectedDependencies = {
   manager: EntityManager
   storeService: StoreService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   paymentProviderService: PaymentProviderService
   fulfillmentProviderService: FulfillmentProviderService
   featureFlagRouter: FlagRouter
@@ -51,7 +50,7 @@ class RegionService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
   protected featureFlagRouter_: FlagRouter
 
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly storeService_: StoreService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService

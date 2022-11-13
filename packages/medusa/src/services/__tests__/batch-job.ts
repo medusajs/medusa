@@ -1,15 +1,15 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import BatchJobService from "../batch-job"
-import { EventBusService } from "../index"
-import { BatchJobStatus } from "../../types/batch-job"
 import { BatchJob } from "../../models"
+import { BatchJobStatus } from "../../types/batch-job"
+import BatchJobService from "../batch-job"
+import { IEventBusService } from "../index"
 
 const eventBusServiceMock = {
   emit: jest.fn(),
   withTransaction: function() {
     return this
   },
-} as unknown as EventBusService
+} as unknown as IEventBusService
 const batchJobRepositoryMock = MockRepository({
   create: jest.fn().mockImplementation((data) => {
     return Object.assign(new BatchJob(), data)

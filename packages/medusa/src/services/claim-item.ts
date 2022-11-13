@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
 import { ClaimItemRepository } from "../repositories/claim-item"
@@ -8,7 +8,6 @@ import { ClaimTagRepository } from "../repositories/claim-tag"
 import { CreateClaimItemInput } from "../types/claim"
 import { FindConfig, Selector } from "../types/common"
 import { buildQuery, setMetadata } from "../utils"
-import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
 class ClaimItemService extends TransactionBaseService {
@@ -19,7 +18,7 @@ class ClaimItemService extends TransactionBaseService {
   }
 
   protected readonly lineItemService_: LineItemService
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly claimItemRepository_: typeof ClaimItemRepository
   protected readonly claimTagRepository_: typeof ClaimTagRepository
   protected readonly claimImageRepository_: typeof ClaimImageRepository

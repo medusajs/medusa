@@ -1,20 +1,19 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
 import { FindConfig, Selector } from "../types/common"
 import {
   CreateProductCollection,
-  UpdateProductCollection,
+  UpdateProductCollection
 } from "../types/product-collection"
 import { buildQuery, isString, setMetadata } from "../utils"
-import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   productRepository: typeof ProductRepository
   productCollectionRepository: typeof ProductCollectionRepository
 }
@@ -26,7 +25,7 @@ class ProductCollectionService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: typeof ProductRepository

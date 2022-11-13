@@ -1,9 +1,9 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import SalesChannelService from "../sales-channel"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService, StoreService } from "../index"
 import { FindConditions, FindManyOptions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
+import { IEventBusService, StoreService } from "../index"
+import SalesChannelService from "../sales-channel"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { store, StoreServiceMock } from "../__mocks__/store"
 
 describe("SalesChannelService", () => {
@@ -93,7 +93,7 @@ describe("SalesChannelService", () => {
   describe("create default", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })
@@ -116,7 +116,7 @@ describe("SalesChannelService", () => {
     it("should return the default sales channel if it already exists", async () => {
       const localSalesChannelService = new SalesChannelService({
         manager: MockManager,
-        eventBusService: EventBusServiceMock as unknown as EventBusService,
+        eventBusService: EventBusServiceMock as unknown as IEventBusService,
         salesChannelRepository: salesChannelRepositoryMock,
         storeService: {
           ...StoreServiceMock,
@@ -147,7 +147,7 @@ describe("SalesChannelService", () => {
   describe("retrieve", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })
@@ -178,7 +178,7 @@ describe("SalesChannelService", () => {
   describe("update", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })
@@ -213,7 +213,7 @@ describe("SalesChannelService", () => {
   describe("list", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })
@@ -282,7 +282,7 @@ describe("SalesChannelService", () => {
   describe("delete", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: {
         ...StoreServiceMock,
@@ -337,7 +337,7 @@ describe("SalesChannelService", () => {
   describe("Remove products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })
@@ -368,7 +368,7 @@ describe("SalesChannelService", () => {
   describe("Add products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      eventBusService: EventBusServiceMock as unknown as IEventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
     })

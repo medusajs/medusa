@@ -1,11 +1,15 @@
-import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
-import { EntityManager, In } from "typeorm"
 import Redis from "ioredis"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
 
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
-import { TaxProviderRepository } from "../repositories/tax-provider"
+import {
+  IEventBusService,
+  ITaxService,
+  ItemTaxCalculationLine,
+  TaxCalculationContext,
+  TransactionBaseService
+} from "../interfaces"
 import {
   Cart,
   LineItem,
@@ -13,20 +17,16 @@ import {
   Region,
   ShippingMethod,
   ShippingMethodTaxLine,
-  TaxProvider,
+  TaxProvider
 } from "../models"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
-import {
-  ITaxService,
-  ItemTaxCalculationLine,
-  TaxCalculationContext,
-  TransactionBaseService,
-} from "../interfaces"
 
 import { TaxServiceRate } from "../types/tax-service"
 
 import TaxRateService from "./tax-rate"
-import EventBusService from "./event-bus"
 
 const CACHE_TIME = 30 // seconds
 
@@ -48,7 +48,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
   protected readonly redis_: Redis.Redis
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
 
   constructor(container: AwilixContainer) {
     super(container)

@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
@@ -10,7 +10,6 @@ import { DraftOrderCreateProps } from "../types/draft-orders"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
-import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
@@ -20,7 +19,7 @@ type InjectedDependencies = {
   draftOrderRepository: typeof DraftOrderRepository
   paymentRepository: typeof PaymentRepository
   orderRepository: typeof OrderRepository
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   cartService: CartService
   lineItemService: LineItemService
   productVariantService: ProductVariantService
@@ -44,7 +43,7 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly draftOrderRepository_: typeof DraftOrderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly orderRepository_: typeof OrderRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly cartService_: CartService
   protected readonly lineItemService_: LineItemService
   protected readonly productVariantService_: ProductVariantService

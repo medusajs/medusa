@@ -14,7 +14,16 @@ type ModuleDefinition = {
   canOverride: boolean
 }
 
-export const MODULE_DEFINITION: Record<string, ModuleDefinition> = {}
+export const MODULE_DEFINITION: Record<string, ModuleDefinition> = {
+  eventBus: {
+    registration: "eventBusService",
+    defaultPackage: "@medusajs/event-bus-default",
+    label: "IEventBusService",
+    validation: (proto: any) => true,
+    required: false,
+    canOverride: true,
+  },
+}
 
 const errorHandler = isProduction
   ? (msg: string): never => {

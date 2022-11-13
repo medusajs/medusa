@@ -1,21 +1,20 @@
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateSalesChannelInput,
-  UpdateSalesChannelInput,
+  UpdateSalesChannelInput
 } from "../types/sales-channels"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
 
-import { EntityManager } from "typeorm"
-import EventBusService from "./event-bus"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
-import StoreService from "./store"
-import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
+import StoreService from "./store"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
   storeService: StoreService
 }
@@ -31,7 +30,7 @@ class SalesChannelService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly storeService_: StoreService
 
   constructor({

@@ -1,24 +1,21 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
+import { Order, Swap } from "../../models"
+import { SwapRepository } from "../../repositories/swap"
+import CartService from "../cart"
+import {
+    CustomShippingOptionService, FulfillmentService, IEventBusService, InventoryService,
+    LineItemService,
+    OrderService,
+    PaymentProviderService,
+    ReturnService,
+    ShippingOptionService,
+    TotalsService
+} from "../index"
+import LineItemAdjustmentService from "../line-item-adjustment"
 import SwapService from "../swap"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import {
-  CustomShippingOptionService,
-  EventBusService,
-  FulfillmentService,
-  InventoryService,
-  LineItemService,
-  OrderService,
-  PaymentProviderService,
-  ReturnService,
-  ShippingOptionService,
-  TotalsService,
-} from "../index"
-import CartService from "../cart"
-import { Order, ReturnItem, Swap } from "../../models"
-import { SwapRepository } from "../../repositories/swap"
-import LineItemAdjustmentService from "../line-item-adjustment"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
@@ -36,7 +33,7 @@ const eventBusService = {
   withTransaction: function () {
     return this
   },
-} as unknown as EventBusService
+} as unknown as IEventBusService
 
 const cartService = {
   create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),

@@ -1,30 +1,29 @@
-import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 
-import { FindConfig, Selector } from "../types/common"
-import { buildQuery, isDefined, isString } from "../utils"
-import { OrderEditRepository } from "../repositories/order-edit"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Order,
   OrderEdit,
   OrderEditItemChangeType,
-  OrderEditStatus,
+  OrderEditStatus
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
+import { OrderEditRepository } from "../repositories/order-edit"
+import { FindConfig, Selector } from "../types/common"
 import {
-  EventBusService,
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput
+} from "../types/order-edit"
+import { buildQuery, isDefined, isString } from "../utils"
+import {
   LineItemAdjustmentService,
   LineItemService,
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
-  TotalsService,
+  TotalsService
 } from "./index"
-import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -33,7 +32,7 @@ type InjectedDependencies = {
   orderService: OrderService
   totalsService: TotalsService
   lineItemService: LineItemService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
@@ -57,7 +56,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly orderService_: OrderService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService

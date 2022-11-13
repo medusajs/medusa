@@ -1,17 +1,16 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import { NoteRepository } from "../repositories/note"
-import EventBusService from "./event-bus"
-import { FindConfig, Selector } from "../types/common"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { Note } from "../models"
-import { buildQuery } from "../utils"
+import { NoteRepository } from "../repositories/note"
+import { FindConfig, Selector } from "../types/common"
 import { CreateNoteInput } from "../types/note"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
   noteRepository: typeof NoteRepository
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
 }
 
 class NoteService extends TransactionBaseService {
@@ -24,7 +23,7 @@ class NoteService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly noteRepository_: typeof NoteRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
 
   constructor({
     manager,

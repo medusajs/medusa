@@ -1,4 +1,7 @@
+import { Request } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
@@ -7,18 +10,15 @@ import {
   BatchJobStatus,
   BatchJobUpdateProps,
   CreateBatchJobInput,
-  FilterableBatchJobProps,
+  FilterableBatchJobProps
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
-import { EventBusService, StrategyResolverService } from "./index"
-import { Request } from "express"
+import { StrategyResolverService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   batchJobRepository: typeof BatchJobRepository
   strategyResolverService: StrategyResolverService
 }
@@ -39,7 +39,7 @@ class BatchJobService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly batchJobRepository_: typeof BatchJobRepository
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly strategyResolver_: StrategyResolverService
 
   protected batchJobStatusMapToProps = new Map<

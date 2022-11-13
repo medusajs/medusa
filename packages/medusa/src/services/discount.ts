@@ -6,21 +6,20 @@ import {
   DeepPartial,
   EntityManager,
   ILike,
-  SelectQueryBuilder,
+  SelectQueryBuilder
 } from "typeorm"
 import {
-  EventBusService,
   ProductService,
   RegionService,
-  TotalsService,
+  TotalsService
 } from "."
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
   AllocationType as DiscountAllocation,
   DiscountRule,
-  DiscountRuleType,
+  DiscountRuleType
 } from "../models/discount-rule"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
@@ -33,7 +32,7 @@ import {
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
   UpdateDiscountInput,
-  UpdateDiscountRuleInput,
+  UpdateDiscountRuleInput
 } from "../types/discount"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
@@ -59,7 +58,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly totalsService_: TotalsService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
-  protected readonly eventBus_: EventBusService
+  protected readonly eventBus_: IEventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({

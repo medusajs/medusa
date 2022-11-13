@@ -1,22 +1,22 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import {
-  EventBusService,
-  LineItemService,
-  OrderEditItemChangeService,
-  OrderEditService,
-  OrderService,
-  TaxProviderService,
-  TotalsService,
-} from "../index"
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
-import { OrderServiceMock } from "../__mocks__/order"
+import {
+    IEventBusService,
+    LineItemService,
+    OrderEditItemChangeService,
+    OrderEditService,
+    OrderService,
+    TaxProviderService,
+    TotalsService
+} from "../index"
+import LineItemAdjustmentService from "../line-item-adjustment"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
-import { TotalsServiceMock } from "../__mocks__/totals"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { OrderServiceMock } from "../__mocks__/order"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import LineItemAdjustmentService from "../line-item-adjustment"
+import { TotalsServiceMock } from "../__mocks__/totals"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -186,7 +186,7 @@ describe("OrderEditService", () => {
     manager: MockManager,
     orderEditRepository,
     orderService: OrderServiceMock as unknown as OrderService,
-    eventBusService: EventBusServiceMock as unknown as EventBusService,
+    eventBusService: EventBusServiceMock as unknown as IEventBusService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:

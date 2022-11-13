@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
@@ -8,12 +8,11 @@ import { FindConfig, Selector } from "../types/common"
 import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
   currencyRepository: typeof CurrencyRepository
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
 }
 
@@ -26,7 +25,7 @@ export default class CurrencyService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly currencyRepository_: typeof CurrencyRepository
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({

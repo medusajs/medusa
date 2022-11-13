@@ -6,10 +6,12 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { Cart } from "./cart"
 import { Fulfillment } from "./fulfillment"
@@ -18,8 +20,6 @@ import { Order } from "./order"
 import { Payment } from "./payment"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum SwapFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",

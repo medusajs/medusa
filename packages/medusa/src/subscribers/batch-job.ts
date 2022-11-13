@@ -1,17 +1,17 @@
-import BatchJobService from "../services/batch-job"
-import EventBusService from "../services/event-bus"
-import { StrategyResolverService } from "../services"
 import { EntityManager } from "typeorm"
+import { IEventBusService } from "../interfaces"
+import { StrategyResolverService } from "../services"
+import BatchJobService from "../services/batch-job"
 
 type InjectedDependencies = {
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   batchJobService: BatchJobService
   strategyResolverService: StrategyResolverService
   manager: EntityManager
 }
 
 class BatchJobSubscriber {
-  private readonly eventBusService_: EventBusService
+  private readonly eventBusService_: IEventBusService
   private readonly batchJobService_: BatchJobService
   private readonly strategyResolver_: StrategyResolverService
   private readonly manager_: EntityManager
