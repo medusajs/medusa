@@ -21,9 +21,15 @@ class Przelewy24ProviderService extends StripeBase {
         regionService,
         manager,
       },
-      options,
-      ["p24"]
+      options
     )
+  }
+
+  get paymentIntentOptions() {
+    return {
+      payment_method_types: ["p24"],
+      capture_method: "automatic",
+    }
   }
 }
 

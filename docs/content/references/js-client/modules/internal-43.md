@@ -2,32 +2,32 @@
 
 ## Type Aliases
 
-### StoreReturnReasonsListRes
+### StoreRegionsListRes
 
-Ƭ **StoreReturnReasonsListRes**: `Object`
+Ƭ **StoreRegionsListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
+| `regions` | [`Region`](../classes/internal.Region.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/return-reasons/index.d.ts:6
+medusa/dist/api/routes/store/regions/index.d.ts:4
 
 ___
 
-### StoreReturnReasonsRes
+### StoreRegionsRes
 
-Ƭ **StoreReturnReasonsRes**: `Object`
+Ƭ **StoreRegionsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
+| `region` | [`Region`](../classes/internal.Region.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/return-reasons/index.d.ts:9
+medusa/dist/api/routes/store/regions/index.d.ts:7

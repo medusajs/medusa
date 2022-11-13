@@ -1,6 +1,6 @@
 # Class: StoreGetProductsPaginationParams
 
-[internal](../modules/internal-41.md).StoreGetProductsPaginationParams
+[internal](../modules/internal-42.md).StoreGetProductsPaginationParams
 
 ## Hierarchy
 
@@ -8,7 +8,7 @@
 
   ↳ **`StoreGetProductsPaginationParams`**
 
-  ↳↳ [`StoreGetProductsParams`](internal-41.StoreGetProductsParams.md)
+  ↳↳ [`StoreGetProductsParams`](internal-42.StoreGetProductsParams.md)
 
 ## Properties
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/list-products.d.ts:160
+medusa/dist/api/routes/store/products/list-products.d.ts:169
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/list-products.d.ts:159
+medusa/dist/api/routes/store/products/list-products.d.ts:168
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/list-products.d.ts:162
+medusa/dist/api/routes/store/products/list-products.d.ts:171
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/list-products.d.ts:161
+medusa/dist/api/routes/store/products/list-products.d.ts:170
 
 ___
 

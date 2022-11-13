@@ -16,7 +16,9 @@ If you receive the following error when you run the `build` command in `www/docs
 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
 ```
 
-Then, run the `build` command with the `NODE_OPTIONS` environment variable set:
+This is because of an [ongoing issue in Docusaurus that occurs in large documentation websites](https://github.com/facebook/docusaurus/issues/4765). As it is still not resolved, the workaround would be to change the memory limit for Node.js while running the `build` command.
+
+To do that, run the `build` command with the `NODE_OPTIONS` environment variable set:
 
 ```bash npm2yarn
 NODE_OPTIONS="--max-old-space-size=8192" npm run build

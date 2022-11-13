@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:15](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L15)
+[medusa-js/src/resources/carts.ts:15](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L15)
 
 ## Methods
 
@@ -38,7 +38,7 @@ Adds a shipping method to cart
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L24)
+[medusa-js/src/resources/carts.ts:24](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L24)
 
 ___
 
@@ -65,7 +65,7 @@ If not provuided, we will generate one for the request.
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:43](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L43)
+[medusa-js/src/resources/carts.ts:43](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L43)
 
 ___
 
@@ -88,7 +88,7 @@ Creates a cart
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:58](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L58)
+[medusa-js/src/resources/carts.ts:58](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L58)
 
 ___
 
@@ -113,7 +113,7 @@ This is usually called when a customer proceeds to checkout.
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:74](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L74)
+[medusa-js/src/resources/carts.ts:74](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L74)
 
 ___
 
@@ -137,7 +137,7 @@ Removes a discount from cart.
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:89](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L89)
+[medusa-js/src/resources/carts.ts:89](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L89)
 
 ___
 
@@ -162,7 +162,7 @@ Can be useful in case a payment has failed
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:106](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L106)
+[medusa-js/src/resources/carts.ts:106](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L106)
 
 ___
 
@@ -186,7 +186,7 @@ Refreshes a payment session.
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:122](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L122)
+[medusa-js/src/resources/carts.ts:122](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L122)
 
 ___
 
@@ -209,7 +209,7 @@ Retrieves a cart
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:137](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L137)
+[medusa-js/src/resources/carts.ts:137](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L137)
 
 ___
 
@@ -233,7 +233,7 @@ Refreshes a payment session.
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:152](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L152)
+[medusa-js/src/resources/carts.ts:152](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L152)
 
 ___
 
@@ -257,7 +257,7 @@ Updates a cart
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:168](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L168)
+[medusa-js/src/resources/carts.ts:168](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L168)
 
 ___
 
@@ -282,4 +282,4 @@ Updates the payment method
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:185](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/carts.ts#L185)
+[medusa-js/src/resources/carts.ts:185](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/carts.ts#L185)

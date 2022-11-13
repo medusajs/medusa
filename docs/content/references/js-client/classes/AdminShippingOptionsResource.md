@@ -31,7 +31,7 @@ created shipping option.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-options.ts:20](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/shipping-options.ts#L20)
+[medusa-js/src/resources/admin/shipping-options.ts:20](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/shipping-options.ts#L20)
 
 ___
 
@@ -58,7 +58,7 @@ deleted response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-options.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/shipping-options.ts#L50)
+[medusa-js/src/resources/admin/shipping-options.ts:50](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/shipping-options.ts#L50)
 
 ___
 
@@ -85,7 +85,7 @@ a list of shipping options matching the query.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-options.ts:78](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/shipping-options.ts#L78)
+[medusa-js/src/resources/admin/shipping-options.ts:78](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/shipping-options.ts#L78)
 
 ___
 
@@ -112,7 +112,7 @@ the shipping option with the given id
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-options.ts:64](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/shipping-options.ts#L64)
+[medusa-js/src/resources/admin/shipping-options.ts:64](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/shipping-options.ts#L64)
 
 ___
 
@@ -140,4 +140,4 @@ the updated shipping option.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-options.ts:35](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/shipping-options.ts#L35)
+[medusa-js/src/resources/admin/shipping-options.ts:35](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/shipping-options.ts#L35)

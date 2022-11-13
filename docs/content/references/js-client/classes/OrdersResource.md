@@ -29,7 +29,7 @@ Look up an order using order details
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:41](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/orders.ts#L41)
+[medusa-js/src/resources/orders.ts:41](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/orders.ts#L41)
 
 ___
 
@@ -54,7 +54,7 @@ Retrieves an order
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/orders.ts#L13)
+[medusa-js/src/resources/orders.ts:13](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/orders.ts#L13)
 
 ___
 
@@ -79,4 +79,4 @@ Retrieves an order by cart id
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:27](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/orders.ts#L27)
+[medusa-js/src/resources/orders.ts:27](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/orders.ts#L27)
