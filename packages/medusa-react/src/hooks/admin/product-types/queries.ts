@@ -1,6 +1,7 @@
 import {
   AdminGetProductTypesParams,
   AdminProductTypesListRes,
+  AdminProductTypesRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
@@ -28,6 +29,23 @@ export const useAdminProductTypes = (
   const { data, ...rest } = useQuery(
     adminProductTypeKeys.list(query),
     () => client.admin.productTypes.list(query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminProductType = (
+  id: string,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminProductTypesRes>,
+    Error,
+    ReturnType<ProductTypesQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminProductTypeKeys.detail(id),
+    () => client.admin.productTypes.retrieve(id),
     options
   )
   return { ...data, ...rest } as const
