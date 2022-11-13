@@ -27,9 +27,15 @@ class BatchJobSubscriber {
     this.strategyResolver_ = strategyResolverService
     this.manager_ = manager
 
-    this.eventBusService_
-      .subscribe(BatchJobService.Events.CREATED, this.preProcessBatchJob)
-      .subscribe(BatchJobService.Events.CONFIRMED, this.processBatchJob)
+    this.eventBusService_.subscribe(
+      BatchJobService.Events.CREATED,
+      this.preProcessBatchJob
+    ) as IEventBusService
+
+    this.eventBusService_.subscribe(
+      BatchJobService.Events.CONFIRMED,
+      this.processBatchJob
+    ) as IEventBusService
   }
 
   preProcessBatchJob = async (data): Promise<void> => {

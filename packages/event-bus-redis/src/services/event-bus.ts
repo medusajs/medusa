@@ -5,7 +5,8 @@ import {
   Logger,
   MedusaContainer,
   StagedJob,
-  StagedJobService
+  StagedJobService,
+  TransactionBaseService
 } from "@medusajs/medusa"
 import { asValue } from "awilix"
 import Bull from "bull"
@@ -31,7 +32,7 @@ type RedisCreateConnectionOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class EventBusService implements IEventBusService {
+export default class EventBusService extends TransactionBaseService implements IEventBusService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
@@ -53,6 +54,9 @@ export default class EventBusService implements IEventBusService {
     config: ConfigModule,
     singleton = true
   ) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+    
     this.container_ = container
     this.config_ = config
     this.manager_ = container.manager
@@ -132,30 +136,6 @@ export default class EventBusService implements IEventBusService {
     if (process.env.NODE_ENV !== "test") {
       this.startEnqueuer()
     }
-  }
-
-  withTransaction(transactionManager): this | EventBusService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new EventBusService(
-      {
-        ...this.container_,
-        manager: transactionManager,
-        stagedJobService: this.stagedJobService_,
-        logger: this.logger_,
-        eventBusRedisClient: this.redisClient_,
-        eventBusRedisSubscriber: this.redisSubscriber_,
-      },
-      this.config_,
-      false
-    )
-
-    cloned.transactionManager_ = transactionManager
-    cloned.queue_ = this.queue_
-
-    return cloned
   }
 
   /**

@@ -6,6 +6,13 @@ export type EventHandler<T = unknown> = (
 ) => Promise<void>
 
 export interface IEventBusService extends TransactionBaseService {
-  emit<T>(eventName: string, data: T, options?: Record<string, unknown>): Promise<void>
-  subscribe<T>(eventName: string, handler: EventHandler): this
+  emit<T>(
+    eventName: string,
+    data: T,
+    options?: Record<string, unknown>
+  ): Promise<void | unknown>
+  subscribe<T>(
+    eventName: string,
+    handler: EventHandler
+  ): this | Promise<void | unknown>
 }
