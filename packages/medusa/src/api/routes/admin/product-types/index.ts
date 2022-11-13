@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { ProductType } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -10,9 +10,8 @@ import { AdminGetProductTypesParams } from "./list-product-types"
 import { AdminPostProductTypesReq } from "./create-product-type"
 import { AdminPostProductTypeReq } from "./update-product-type"
 
-const route = Router()
-
 export default (app) => {
+  const route = Router()
   app.use("/product-types", route)
 
   route.get(
@@ -38,7 +37,7 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./delete-product-type").default)
   )
-  typeRouter.put(
+  typeRouter.post(
     "/",
     transformBody(AdminPostProductTypeReq),
     middlewares.wrap(require("./update-product-type").default)
@@ -54,7 +53,8 @@ export const defaultAdminProductTypeFields = [
   "metadata",
 ]
 
-export const defaultAdminProductTypeRelations = ["images"]
+export const defaultAdminProductTypeRelations = []
+export const includeAdminProductTypeRelations = ["images"]
 
 /**
  * @schema AdminProductTypesListRes
@@ -82,6 +82,8 @@ export const defaultAdminProductTypeRelations = ["images"]
 export type AdminProductTypesListRes = PaginatedResponse & {
   product_types: ProductType[]
 }
+
+export type AdminProductTypesDeleteRes = DeleteResponse
 
 export type AdminProductTypesRes = {
   product_type: ProductType
