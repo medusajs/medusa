@@ -32,7 +32,7 @@ type RedisCreateConnectionOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class EventBusService extends TransactionBaseService implements IEventBusService {
+export default class RedisEventBusService extends TransactionBaseService implements IEventBusService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager

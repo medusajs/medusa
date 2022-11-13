@@ -90,13 +90,13 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
+  await redisLoader({ container, configModule, logger: Logger })
+
   const modulesActivity = Logger.activity("Resolving modules")
   track("MODULES_INIT_STARTED")
   await moduleLoader({ container, configModule, logger: Logger })
   const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
-
-  await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
@@ -139,7 +139,7 @@ export default async ({
 
   const servicesActivity = Logger.activity("Initializing services")
   track("SERVICES_INIT_STARTED")
-  await servicesLoader({ container, configModule, isTest })
+  servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 

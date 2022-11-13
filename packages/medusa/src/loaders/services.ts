@@ -1,9 +1,9 @@
+import { asFunction, asValue } from "awilix"
 import glob from "glob"
 import path from "path"
-import { asFunction } from "awilix"
-import formatRegistrationName from "../utils/format-registration-name"
 import { ConfigModule, MedusaContainer } from "../types/global"
 import { isDefined } from "../utils"
+import formatRegistrationName from "../utils/format-registration-name"
 
 type Options = {
   container: MedusaContainer
@@ -14,7 +14,11 @@ type Options = {
 /**
  * Registers all services in the services directory
  */
-export default ({ container, configModule, isTest }: Options): void => {
+export default async ({
+  container,
+  configModule,
+  isTest,
+}: Options): Promise<void> => {
   const useMock = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock ? "../services/__mocks__/*.js" : "../services/*.js"
@@ -32,4 +36,29 @@ export default ({ container, configModule, isTest }: Options): void => {
       })
     }
   })
+
+  const moduleResolutions = configModule?.moduleResolutions ?? {}
+  for (const [_, resolution] of Object.entries(moduleResolutions)) {
+    if (resolution.shouldResolve) {
+      try {
+        const loadedModule = await import(resolution.resolutionPath!)
+        const loadedService = loadedModule.service
+        console.log(resolution.settings)
+        container.register({
+          [resolution.settings.registration]: asFunction(
+            (cradle) => new loadedService(cradle, configModule)
+          ).singleton(),
+        })
+      } catch (err) {
+        console.log("Couldn't resolve", resolution.resolutionPath)
+        container.register({
+          [resolution.settings.registration]: asValue(false),
+        })
+      }
+    } else {
+      container.register({
+        [resolution.settings.registration]: asValue(false),
+      })
+    }
+  }
 }

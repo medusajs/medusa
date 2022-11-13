@@ -18,7 +18,7 @@ export const MODULE_DEFINITION: Record<string, ModuleDefinition> = {
   eventBus: {
     registration: "eventBusService",
     defaultPackage: "@medusajs/event-bus-default",
-    label: "IEventBusService",
+    label: "EventBusService",
     validation: (proto: any) => true,
     required: false,
     canOverride: true,
