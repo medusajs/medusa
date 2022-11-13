@@ -43,7 +43,7 @@ export default async ({
       try {
         const loadedModule = await import(resolution.resolutionPath!)
         const loadedService = loadedModule.service
-        console.log(resolution.settings)
+
         container.register({
           [resolution.settings.registration]: asFunction(
             (cradle) => new loadedService(cradle, configModule)
