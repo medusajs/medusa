@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _stripe = _interopRequireDefault(require("stripe"));
-
 var _medusa = require("@medusajs/medusa");
+
+var _stripe = _interopRequireDefault(require("stripe"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -66,7 +66,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     }, options);
     /** @private @const {string[]} */
 
-    _this.paymentMethodTypes = paymentMethodTypes;
+    _this.paymentMethodTypes_ = paymentMethodTypes;
     /**
      * Required Stripe options:
      *  {
@@ -98,15 +98,36 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     _this.manager_ = manager;
     return _this;
   }
-  /**
-   * Fetches Stripe payment intent. Check its status and returns the
-   * corresponding Medusa status.
-   * @param {PaymentSessionData} paymentSessionData - payment method data from cart
-   * @return {Promise<PaymentSessionStatus>} the status of the payment intent
-   */
-
 
   _createClass(StripeBase, [{
+    key: "getPaymentIntentOptions",
+    value: function getPaymentIntentOptions() {
+      var _this$paymentIntentOp, _this$paymentIntentOp2, _this$paymentIntentOp3;
+
+      var options = {};
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp = this.paymentIntentOptions) !== null && _this$paymentIntentOp !== void 0 && _this$paymentIntentOp.capture_method) {
+        options.capture_method = this.paymentIntentOptions.capture_method;
+      }
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp2 = this.paymentIntentOptions) !== null && _this$paymentIntentOp2 !== void 0 && _this$paymentIntentOp2.setup_future_usage) {
+        options.setup_future_usage = this.paymentIntentOptions.setup_future_usage;
+      }
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp3 = this.paymentIntentOptions) !== null && _this$paymentIntentOp3 !== void 0 && _this$paymentIntentOp3.payment_method_types) {
+        options.payment_method_types = this.paymentIntentOptions.payment_method_types;
+      }
+
+      return options;
+    }
+    /**
+     * Fetches Stripe payment intent. Check its status and returns the
+     * corresponding Medusa status.
+     * @param {PaymentSessionData} paymentSessionData - payment method data from cart
+     * @return {Promise<PaymentSessionStatus>} the status of the payment intent
+     */
+
+  }, {
     key: "getStatus",
     value: function () {
       var _getStatus = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(paymentSessionData) {
@@ -148,7 +169,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", Promise.resolve([]));
+                return _context2.abrupt("return", []);
 
               case 1:
               case "end":
@@ -248,10 +269,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                intentRequest = {
-                  payment_method_types: this.paymentMethodTypes,
-                  capture_method: "automatic"
-                };
+                intentRequest = this.getPaymentIntentOptions();
                 _context5.next = 3;
                 return this.stripeProviderService_.createPayment(cart, intentRequest);
 
@@ -281,10 +299,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                intentRequest = {
-                  payment_method_types: this.paymentMethodTypes,
-                  capture_method: "automatic"
-                };
+                intentRequest = this.getPaymentIntentOptions();
                 _context6.next = 3;
                 return this.stripeProviderService_.createPaymentNew(paymentInput, intentRequest);
 

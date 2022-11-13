@@ -4346,22 +4346,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory@workspace:packages/inventory":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/inventory@workspace:packages/inventory"
-  dependencies:
-    "@medusajs/medusa": ^1.4.1
-    cross-env: ^5.2.1
-    jest: ^25.5.2
-    ts-jest: ^25.5.1
-    typeorm: ^0.2.45
-    typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": 1.x.x
-    medusa-interfaces: 1.x.x
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/medusa-cli@^1.3.4, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
@@ -4490,22 +4474,6 @@ __metadata:
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/stock-locations@workspace:packages/stock-locations":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/stock-locations@workspace:packages/stock-locations"
-  dependencies:
-    "@medusajs/medusa": ^1.4.1
-    cross-env: ^5.2.1
-    jest: ^25.5.2
-    ts-jest: ^25.5.1
-    typescript: ^4.4.4
-  peerDependencies:
-    "@medusajs/medusa": 1.x.x
-    medusa-interfaces: 1.x.x
-    typeorm: 0.2.x
   languageName: unknown
   linkType: soft
 
