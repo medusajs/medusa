@@ -1,11 +1,9 @@
-import { ConfigModule, IEventBusService, Logger, MedusaContainer, TransactionBaseService } from "@medusajs/medusa"
+import { ConfigModule, EventHandler, IEventBusService, Logger, MedusaContainer, TransactionBaseService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   logger: Logger
 }
-
-type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
 
 /**
  * Can keep track of multiple subscribers to different events and run the
@@ -33,10 +31,6 @@ export default class DefaultEventBusService extends TransactionBaseService imple
   }
 
   /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
    * @return this
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
@@ -47,10 +41,6 @@ export default class DefaultEventBusService extends TransactionBaseService imple
   }
 
   /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
    * @return this
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
@@ -61,10 +51,6 @@ export default class DefaultEventBusService extends TransactionBaseService imple
   }
 
   /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
    * @return this
    */
   protected registerCronHandler_(
@@ -78,11 +64,7 @@ export default class DefaultEventBusService extends TransactionBaseService imple
   }
 
   /**
-   * Calls all subscribers when an event occurs.
-   * @param {string} eventName - the name of the event to be process.
-   * @param data - the data to send to the subscriber.
-   * @param options - options to add the job with
-   * @return the job from our queue
+   * @return void
    */
   async emit<T>(
     eventName: string,
@@ -95,11 +77,6 @@ export default class DefaultEventBusService extends TransactionBaseService imple
   }
 
   /**
-   * Registers a cron job.
-   * @param eventName - the name of the event
-   * @param data - the data to be sent with the event
-   * @param cron - the cron pattern
-   * @param handler - the handler to call on each cron job
    * @return void
    */
   createCronJob<T>(
