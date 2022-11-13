@@ -43,7 +43,8 @@ export const defaultStoreProductTypeFields = [
   "updated_at",
 ]
 
-export const defaultStoreProductTypeRelations = ["images"]
+export const defaultStoreProductTypeRelations = []
+export const includeStoreProductTypeRelations = ["images"]
 
 /**
  * @schema StoreProductTypesListRes

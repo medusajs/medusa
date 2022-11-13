@@ -1,7 +1,7 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductTypeServiceMock } from "../../../../../services/__mocks__/product-type"
-import { defaultAdminProductTypeRelations } from "../index"
+import { includeAdminProductTypeRelations } from "../index"
 
 describe("GET /admin/product-types/:id", () => {
   describe("get product type by id successfully", () => {
@@ -28,7 +28,7 @@ describe("GET /admin/product-types/:id", () => {
       expect(ProductTypeServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductTypeServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("col"),
-        { relations: defaultAdminProductTypeRelations }
+        { relations: includeAdminProductTypeRelations }
       )
     })
 

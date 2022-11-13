@@ -1,5 +1,5 @@
 import ProductTypeService from "../../../../services/product-type"
-import { defaultAdminProductTypeRelations } from "./index"
+import { includeStoreProductTypeRelations } from "../../store/product-types"
 
 /**
  * @oas [get] /product-types/{id}
@@ -52,7 +52,7 @@ export default async (req, res) => {
     req.scope.resolve("productTypeService")
 
   const type = await typeService.retrieve(id, {
-    relations: defaultAdminProductTypeRelations,
+    relations: includeStoreProductTypeRelations,
   })
   res.status(200).json({ product_type: type })
 }
