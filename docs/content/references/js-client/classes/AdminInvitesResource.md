@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/invites.ts:10](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/invites.ts#L10)
+[medusa-js/src/resources/admin/invites.ts:10](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/invites.ts#L10)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/invites.ts:18](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/invites.ts#L18)
+[medusa-js/src/resources/admin/invites.ts:18](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/invites.ts#L18)
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/invites.ts:26](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/invites.ts#L26)
+[medusa-js/src/resources/admin/invites.ts:26](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/invites.ts#L26)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/invites.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/invites.ts#L34)
+[medusa-js/src/resources/admin/invites.ts:34](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/invites.ts#L34)
 
 ___
 
@@ -108,4 +108,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/invites.ts:41](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/invites.ts#L41)
+[medusa-js/src/resources/admin/invites.ts:41](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/invites.ts#L41)

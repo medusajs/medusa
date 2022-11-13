@@ -1,5 +1,15 @@
 # Change Log
 
+## 3.0.1
+
+### Patch Changes
+
+- [#2552](https://github.com/medusajs/medusa/pull/2552) [`7b0ceeffb`](https://github.com/medusajs/medusa/commit/7b0ceeffb4616c3f4e0cf51aba2ab381c61ea5d7) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(medusa, medusa-js, medusa-react): /store api product types
+
+- Updated dependencies [[`2d095a0ce`](https://github.com/medusajs/medusa/commit/2d095a0ce14ab7f24b4e6856cb4850cea18af21c), [`8069ed5e9`](https://github.com/medusajs/medusa/commit/8069ed5e99dc53a912df9bb860114d2258044108), [`7b0ceeffb`](https://github.com/medusajs/medusa/commit/7b0ceeffb4616c3f4e0cf51aba2ab381c61ea5d7), [`5ea4b728e`](https://github.com/medusajs/medusa/commit/5ea4b728e728a7e6d4d6fe7255ea80395ab75bd3)]:
+  - @medusajs/medusa@1.6.2
+  - @medusajs/medusa-js@1.3.3
+
 ## 3.0.0
 
 ### Patch Changes

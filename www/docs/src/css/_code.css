@@ -97,8 +97,12 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   font-size: 13px;
 }
 
-.theme-code-block {
+.theme-code-block:not(.no-header-block) {
   border-radius: 0 0 var(--ifm-code-border-radius) var(--ifm-code-border-radius) !important;
+}
+
+.theme-code-block.no-header-block {
+  border-radius: var(--ifm-code-border-radius);
 }
 
 .code-action {
@@ -128,8 +132,13 @@ a.code-action {
   width: 20px;
 }
 
-.theme-code-block [class*=buttonGroup] {
+.theme-code-block:not(.no-header-block) [class*=buttonGroup] {
   display: none;
+}
+
+.theme-code-block.no-header-block [class*=buttonGroup] button {
+  opacity: 1 !important;
+  border: none;
 }
 
 .copy-action {
@@ -145,8 +154,19 @@ a.code-action {
   border-bottom: none;
 }
 
-[data-theme="dark"] .theme-code-block {
-  border-top: none;
+html:not([data-theme="dark"]) .theme-code-block:not(.no-header-block) {
+  --ifm-code-border-color: #393939;
+
+  border-top: 1px solid var(--ifm-code-border-color);
+}
+
+.theme-code-block.no-header-block code:not(.thin-code),
+.theme-code-block:not(.no-header-block) code {
+  padding: var(--ifm-pre-padding);
+}
+
+.theme-code-block.no-header-block .thin-code {
+  padding: calc(var(--ifm-pre-padding) / 2);
 }
 
 @media screen and (min-width: 568px) {

@@ -50,13 +50,43 @@ export default async (req, res) => {
     res.sendStatus(200)
   }
 
+  async function handlePaymentCollection(event, req, res, id, paymentIntentId) {
+    const manager = req.scope.resolve("manager")
+    const paymentCollectionService = req.scope.resolve(
+      "paymentCollectionService"
+    )
+
+    const paycol = await paymentCollectionService
+      .retrieve(id, { relations: ["payments"] })
+      .catch(() => undefined)
+
+    if (paycol?.payments?.length) {
+      if (event.type === "payment_intent.succeeded") {
+        const payment = paycol.payments.find(
+          (pay) => pay.data.id === paymentIntentId
+        )
+        if (payment && !payment.captured_at) {
+          await manager.transaction(async (manager) => {
+            await paymentCollectionService
+              .withTransaction(manager)
+              .capture(payment.id)
+          })
+        }
+
+        res.sendStatus(200)
+        return
+      }
+    }
+    res.sendStatus(204)
+  }
+
   const paymentIntent = event.data.object
-  const cartId = paymentIntent.metadata.cart_id
+  const cartId = paymentIntent.metadata.cart_id // Backward compatibility
   const resourceId = paymentIntent.metadata.resource_id
 
   if (isPaymentCollection(resourceId)) {
-    // TODO: handle payment collection
+    await handlePaymentCollection(event, req, res, resourceId, paymentIntentId)
   } else {
-    await handleCartPayments(event, req, res, resourceId ?? cartId)
+    await handleCartPayments(event, req, res, cartId ?? resourceId)
   }
 }

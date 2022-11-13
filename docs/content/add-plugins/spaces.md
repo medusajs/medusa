@@ -28,15 +28,15 @@ You need to [create a DigitalOcean account](https://cloud.digitalocean.com/regi
 
 In your DigitalOcean account, click on the Create button at the top right, then choose Spaces from the dropdown.
 
-![Click on the green Create button at the top right, then choose Spaces in the dropdown](https://i.imgur.com/AQqMRoJ.png)
+![Click on the green Create button at the top right, then choose Spaces in the dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000907/Medusa%20Docs/Spaces/AQqMRoJ_uhkywh.png)
 
 In the Create a Space form, you can choose any of the regions listed. You can alternatively leave all settings as they are and scroll down to the Finalize and Create section.
 
-![The Space form can be left as is and move towards the Finalize and Create section](https://i.imgur.com/ipsIqoA.png)
+![The Space form can be left as is and move towards the Finalize and Create section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000929/Medusa%20Docs/Spaces/ipsIqoA_zeyfkf.png)
 
 In the Finalize and Create section, enter a name for the field “Choose a unique name”. You’ll use this name later in the integration with Medusa. Also, select the project you want to add the new Space to.
 
-![Enter a name for the Space in the Choose a unique name field](https://i.imgur.com/NhlRX0h.png)
+![Enter a name for the Space in the Choose a unique name field](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000949/Medusa%20Docs/Spaces/NhlRX0h_ptdhpk.png)
 
 Once you’re done, click on the Create a Space button. This creates the Space and redirects you to the Space’s page.
 
@@ -44,15 +44,15 @@ Once you’re done, click on the Create a Space button. This creates the Space a
 
 Choose API from the bottom of the sidebar.
 
-![Choose API from the bottom of the sidebar.](https://i.imgur.com/6zNoDOW.png)
+![Choose API from the bottom of the sidebar.](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000964/Medusa%20Docs/Spaces/6zNoDOW_tqbeqv.png)
 
 This opens the Application & API page. Scroll down to Spaces Access Keys and click the Generate New Key button.
 
-![In the Spaces access keys section, click the Generate New Key button](https://i.imgur.com/NUocdgh.png)
+![In the Spaces access keys section, click the Generate New Key button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000977/Medusa%20Docs/Spaces/NUocdgh_doi0dq.png)
 
 This shows a table with the Name field editable. Enter a name for the Access Keys and click on the checkmark button to save and generate the Spaces access keys.
 
-![Enter a name for the Space access key in the field under the Name column](https://i.imgur.com/ihJBx0T.png)
+![Enter a name for the Space access key in the field under the Name column](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000987/Medusa%20Docs/Spaces/ihJBx0T_xfe4rh.png)
 
 Then, two keys will be available under the Key column of the table. The first one is the Access Key ID and the second is the Secret Access Key. Copy both as you’ll use them later.
 
@@ -84,12 +84,12 @@ Where:
 
 1. `<YOUR_SPACE_URL>` is the URL of your Space which you can find on the Space’s page below the Space’s name.
 
-![The URL is available under the Space's name on the Space's page](https://i.imgur.com/cA3vkvh.png)
+![The URL is available under the Space's name on the Space's page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001004/Medusa%20Docs/Spaces/cA3vkvh_maixr0.png)
 
 2. `<YOUR_SPACE_NAME>` is the name of your Space.
 3. `<YOUR_SPACE_ENDPOINT>` is your Space’s endpoint which can be found by going to your Space’s page, clicking on the Settings tab, and scrolling to the Endpoint section.
 
-![Endpoint can be found on the Settings tab in the Space's page](https://i.imgur.com/CnvLr6R.png)
+![Endpoint can be found on the Settings tab in the Space's page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001017/Medusa%20Docs/Spaces/CnvLr6R_tudlhu.png)
 
 4. `<YOUR_ACCESS_KEY_ID>` and `<YOUR_SECRET_ACCESS_KEY>` are the keys you created in the previous section.
 
@@ -129,11 +129,11 @@ Then, you can either test the plugin using the [REST APIs](https://docs.medusaj
 
 On the Medusa Admin, create a new product and, in the Images section, upload an image then click Save. If the integration was successful, the product image will be uploaded successfully.
 
-![Image successfully uploaded on Medusa's admin](https://i.imgur.com/oTi4jIw.png)
+![Image successfully uploaded on Medusa's admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001039/Medusa%20Docs/Spaces/oTi4jIw_c6vefa.png)
 
 You can also check that the image was uploaded on the Space’s page.
 
-![Image can be seen on the Space's page on DigitalOcean](https://i.imgur.com/BexmRkg.png)
+![Image can be seen on the Space's page on DigitalOcean](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001050/Medusa%20Docs/Spaces/BexmRkg_gimk1d.png)
 
 ## Next.js Storefront Configuration
 

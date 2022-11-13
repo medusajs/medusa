@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.14
+
+### Patch Changes
+
+- [#2574](https://github.com/medusajs/medusa/pull/2574) [`cfb24d72f`](https://github.com/medusajs/medusa/commit/cfb24d72fa303a6755e8579c46d3c7f36278b120) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Fix incorrect import
+
 ## 0.0.13
 
 ### Patch Changes

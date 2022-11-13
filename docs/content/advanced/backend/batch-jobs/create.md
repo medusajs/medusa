@@ -349,7 +349,7 @@ curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
 
-```jsx
+```json noHeader
 "result": {
     "count": 1,
     "stat_descriptors": [

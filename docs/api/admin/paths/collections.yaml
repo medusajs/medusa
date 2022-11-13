@@ -92,6 +92,11 @@ get:
       schema:
         type: string
     - in: query
+      name: discount_condition_id
+      description: The discount condition id on which to filter the product collections.
+      schema:
+        type: string
+    - in: query
       name: created_at
       description: Date comparison for when resulting collections were created.
       schema:

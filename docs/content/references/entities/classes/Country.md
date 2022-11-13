@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/country.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L31)
+[models/country.ts:31](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L31)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:15](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L15)
+[models/country.ts:15](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L15)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L19)
+[models/country.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L19)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:22](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L22)
+[models/country.ts:22](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L22)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:28](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L28)
+[models/country.ts:28](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L28)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:25](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L25)
+[models/country.ts:25](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L25)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/country.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L39)
+[models/country.ts:39](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L39)
 
 ___
 
@@ -88,4 +88,4 @@ ___
 
 #### Defined in
 
-[models/country.ts:35](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/models/country.ts#L35)
+[models/country.ts:35](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/country.ts#L35)
