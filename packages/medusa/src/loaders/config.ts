@@ -1,8 +1,20 @@
+import { getConfigFile } from "medusa-core-utils"
+import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
-import { getConfigFile } from "medusa-core-utils/dist"
 import logger from "./logger"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
+
+type ModuleDefinition = {
+  registration: string
+  defaultPackage: string
+  label: string
+  validation: (proto: any) => boolean
+  required: boolean
+  canOverride: boolean
+}
+
+export const MODULE_DEFINITION: Record<string, ModuleDefinition> = {}
 
 const errorHandler = isProduction
   ? (msg: string): never => {
@@ -67,12 +79,34 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
+  const moduleResolutions = {}
+  const projectModules = configModule.modules ?? {}
+  for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
+    let resolutionPath = settings.defaultPackage
+    let resolve = true
+    if (settings.canOverride && moduleKey in projectModules) {
+      if (projectModules[moduleKey]) {
+        resolutionPath = resolveCwd(projectModules[moduleKey])
+      } else {
+        resolve = false
+      }
+    }
+
+    moduleResolutions[moduleKey] = {
+      shouldResolve: resolve,
+      resolutionPath,
+      settings,
+    }
+  }
+
   return {
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
+    modules: configModule.modules ?? {},
+    moduleResolutions,
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],
   }

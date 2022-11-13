@@ -20,6 +20,7 @@ import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
 import modelsLoader from "./models"
+import moduleLoader from "./module"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
@@ -89,6 +90,12 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
+  const modulesActivity = Logger.activity("Resolving modules")
+  track("MODULES_INIT_STARTED")
+  await moduleLoader({ container, configModule, logger: Logger })
+  const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
   await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
@@ -132,7 +139,7 @@ export default async ({
 
   const servicesActivity = Logger.activity("Initializing services")
   track("SERVICES_INIT_STARTED")
-  servicesLoader({ container, configModule, isTest })
+  await servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
