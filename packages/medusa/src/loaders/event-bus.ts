@@ -9,7 +9,7 @@ type Options = {
   logger: Logger
 }
 
-async function eventBusLoader({
+async function redisLoader({
   container,
   configModule,
   logger,
@@ -42,4 +42,4 @@ async function eventBusLoader({
   }
 }
 
-export default eventBusLoader
+export default redisLoader

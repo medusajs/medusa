@@ -3,7 +3,7 @@ import {
   asValue,
   AwilixContainer,
   createContainer,
-  Resolver
+  Resolver,
 } from "awilix"
 import { ClassOrFunctionReturning } from "awilix/lib/container"
 import { Express, NextFunction, Request, Response } from "express"
@@ -16,6 +16,7 @@ import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
+import redisLoader from "./event-bus"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
@@ -90,8 +91,7 @@ export default async ({
   })
 
   await moduleLoader({ container, configModule, logger: Logger })
-
-  // await eventBusLoader({ container, configModule, logger: Logger })
+  await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
@@ -132,9 +132,9 @@ export default async ({
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  const servicesActivity = Logger.activity("Initializing services")
+  const servicesActivity = Logger.activity("Initializing services\n")
   track("SERVICES_INIT_STARTED")
-  servicesLoader({ container, configModule, isTest })
+  await servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
@@ -164,7 +164,7 @@ export default async ({
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
-  const subActivity = Logger.activity("Initializing subscribers")
+  const subActivity = Logger.activity("Initializing subscribers\n")
   track("SUBSCRIBERS_INIT_STARTED")
   subscribersLoader({ container })
   const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
@@ -176,13 +176,15 @@ export default async ({
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
-  const defaultsActivity = Logger.activity("Initializing defaults")
+  const defaultsActivity = Logger.activity("Initializing defaults\n")
   track("DEFAULTS_INIT_STARTED")
   await defaultsLoader({ container })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
-  const searchActivity = Logger.activity("Initializing search engine indexing")
+  const searchActivity = Logger.activity(
+    "Initializing search engine indexing\n"
+  )
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
   const searchAct =

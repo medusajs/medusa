@@ -48,8 +48,9 @@ export default class DefaultEventBusService implements IEventBusService {
    * @return this
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
-    this.logger_.info(`Subscribing to ${String(event)}`)
-
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Subscribe is unavailable.`
+    )
     return this
   }
 
@@ -61,7 +62,9 @@ export default class DefaultEventBusService implements IEventBusService {
    * @return this
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
-    this.logger_.info(`Unsubscribing from ${String(event)}`)
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Unsubscribe is unavailable.`
+    )
     return this
   }
 
@@ -76,7 +79,9 @@ export default class DefaultEventBusService implements IEventBusService {
     event: string | symbol,
     subscriber: EventHandler
   ): this {
-    this.logger_.info(`Registering cron handler ${String(event)}`)
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Cron jobs are unavailable.`
+    )
     return this
   }
 
@@ -92,7 +97,9 @@ export default class DefaultEventBusService implements IEventBusService {
     data: T,
     options: { delay?: number } = {}
   ): Promise<StagedJob | void> {
-    this.logger_.info(`Emitting ${eventName}`)
+    this.logger_.info(
+      `[${eventName}] No event bus installed. Emitting events has no effect.`
+    )
   }
 
   /**
@@ -109,6 +116,8 @@ export default class DefaultEventBusService implements IEventBusService {
     cron: string,
     handler: EventHandler
   ): void {
-    this.logger_.info(`Registering ${eventName}`)
+    this.logger_.info(
+      `[${eventName}] No event bus installed. Cron jobs are unavailable.`
+    )
   }
 }

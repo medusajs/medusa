@@ -4,6 +4,6 @@ export type EventHandler<T = unknown> = (
 ) => Promise<void>
 
 export interface IEventBusService {
-  emit<T>(eventName: string, data: T, options: Record<string, unknown>): void
+  emit<T>(eventName: string, data: T, options?: Record<string, unknown>): void
   subscribe<T>(eventName: string, handler: EventHandler): void
 }

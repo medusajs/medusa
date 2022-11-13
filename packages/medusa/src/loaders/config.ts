@@ -1,6 +1,6 @@
+import { getConfigFile } from "medusa-core-utils/dist"
 import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
-import { getConfigFile } from "medusa-core-utils/dist"
 import logger from "./logger"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
@@ -12,20 +12,10 @@ const errorHandler = isProduction
   : console.log
 
 export const MODULE_DEFINITION = {
-  stockLocation: {
-    registration: "stockLocationService",
-    defaultPackage: "@medusajs/stock-locations",
-    label: "StockLocationService",
-    validation: (proto: any): boolean => {
-      return true
-    },
-    required: false,
-    canOverride: true,
-  },
-  inventory: {
-    registration: "inventoryService",
-    defaultPackage: "@medusajs/inventory",
-    label: "InventoryService",
+  eventBus: {
+    registration: "eventBusService",
+    defaultPackage: "@medusajs/event-bus-redis",
+    label: "EventBusService",
     validation: (proto: any): boolean => {
       return true
     },

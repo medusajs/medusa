@@ -1,4 +1,12 @@
-import { ConfigModule, EventHandler, IEventBusService, Logger, MedusaContainer, StagedJob, StagedJobRepository } from "@medusajs/medusa"
+import {
+  ConfigModule,
+  EventHandler,
+  IEventBusService,
+  Logger,
+  MedusaContainer,
+  StagedJob,
+  StagedJobService
+} from "@medusajs/medusa"
 import { asValue } from "awilix"
 import Bull from "bull"
 import Redis from "ioredis"
@@ -9,9 +17,9 @@ import { sleep } from "../utils/sleep"
 type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
-  stagedJobRepository: typeof StagedJobRepository
-  redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
+  stagedJobService: StagedJobService
+  eventBusRedisClient: Redis.Redis
+  eventBusRedisSubscriber: Redis.Redis
 }
 
 type RedisCreateConnectionOptions = {
@@ -28,7 +36,7 @@ export default class EventBusService implements IEventBusService {
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
-  protected readonly stagedJobRepository_: typeof StagedJobRepository
+  protected readonly stagedJobService_: StagedJobService
 
   protected observers_: Map<string | symbol, EventHandler[]>
   protected cronHandlers_: Map<string | symbol, EventHandler[]>
@@ -49,12 +57,12 @@ export default class EventBusService implements IEventBusService {
     this.config_ = config
     this.manager_ = container.manager
     this.logger_ = container.logger
-    this.stagedJobRepository_ = container.stagedJobRepository
+    this.stagedJobService_ = container.stagedJobService
 
     if (singleton) {
       this.connect({
-        client: container.redisClient,
-        subscriber: container.redisSubscriber,
+        client: container.eventBusRedisClient,
+        subscriber: container.eventBusRedisSubscriber,
       })
     }
   }
@@ -65,15 +73,15 @@ export default class EventBusService implements IEventBusService {
       const subscriber = new Redis(this.config_.projectConfig.redis_url)
 
       this.container_.register({
-        redisClient: asValue(client),
-        redisSubscriber: asValue(subscriber),
+        eventBusRedisClient: asValue(client),
+        eventBusRedisSubscriber: asValue(subscriber),
       })
     } else {
       const client = new FakeRedis()
 
       this.container_.register({
-        redisClient: asValue(client),
-        redisSubscriber: asValue(client),
+        eventBusRedisClient: asValue(client),
+        eventBusRedisSubscriber: asValue(client),
       })
     }
   }
@@ -135,10 +143,10 @@ export default class EventBusService implements IEventBusService {
       {
         ...this.container_,
         manager: transactionManager,
-        stagedJobRepository: this.stagedJobRepository_,
+        stagedJobService: this.stagedJobService_,
         logger: this.logger_,
-        redisClient: this.redisClient_,
-        redisSubscriber: this.redisSubscriber_,
+        eventBusRedisClient: this.redisClient_,
+        eventBusRedisSubscriber: this.redisSubscriber_,
       },
       this.config_,
       false
@@ -224,16 +232,12 @@ export default class EventBusService implements IEventBusService {
     options: { delay?: number } = {}
   ): Promise<StagedJob | void> {
     if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-
-      const stagedJobInstance = stagedJobRepository.create({
-        event_name: eventName,
-        data,
-      } as StagedJob)
-
-      return await stagedJobRepository.save(stagedJobInstance)
+      return await this.stagedJobService_
+        .withTransaction(this.transactionManager_)
+        .create({
+          event_name: eventName,
+          data,
+        } as StagedJob)
     } else {
       // should be replaced by a generic event bus
       const opts: { removeOnComplete: boolean; delay?: number } = {
@@ -264,10 +268,7 @@ export default class EventBusService implements IEventBusService {
         take: 1000,
       }
 
-      const stagedJobRepo = this.manager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-      const jobs = await stagedJobRepo.find(listConfig)
+      const jobs = await this.stagedJobService_.list(listConfig)
 
       await Promise.all(
         jobs.map((job) => {
@@ -277,7 +278,7 @@ export default class EventBusService implements IEventBusService {
               { removeOnComplete: true }
             )
             .then(async () => {
-              await stagedJobRepo.remove(job)
+              await this.stagedJobService_.remove(job)
             })
         })
       )

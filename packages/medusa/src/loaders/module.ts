@@ -1,5 +1,4 @@
 import { asValue } from "awilix"
-
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
@@ -18,6 +17,7 @@ export default async ({
     if (resolution.shouldResolve) {
       try {
         const loadedModule = await import(resolution.resolutionPath!)
+        console.log(resolution)
         const moduleLoaders = loadedModule.loaders
         if (moduleLoaders) {
           await Promise.all(
@@ -29,6 +29,7 @@ export default async ({
           )
         }
       } catch (err) {
+        console.log(err)
         console.log("Couldn't resolve loaders", resolution.settings.label)
       }
     } else {
