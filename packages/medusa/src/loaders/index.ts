@@ -136,7 +136,7 @@ export default async ({
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  const servicesActivity = Logger.activity("Initializing services")
+  const servicesActivity = Logger.activity("Initializing services\n")
   track("SERVICES_INIT_STARTED")
   await servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
@@ -168,7 +168,7 @@ export default async ({
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
-  const subActivity = Logger.activity("Initializing subscribers")
+  const subActivity = Logger.activity("Initializing subscribers\n")
   track("SUBSCRIBERS_INIT_STARTED")
   subscribersLoader({ container })
   const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
@@ -180,13 +180,15 @@ export default async ({
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
-  const defaultsActivity = Logger.activity("Initializing defaults")
+  const defaultsActivity = Logger.activity("Initializing defaults\n")
   track("DEFAULTS_INIT_STARTED")
   await defaultsLoader({ container })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
-  const searchActivity = Logger.activity("Initializing search engine indexing")
+  const searchActivity = Logger.activity(
+    "Initializing search engine indexing\n"
+  )
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
   const searchAct =

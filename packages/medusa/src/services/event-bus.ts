@@ -7,15 +7,6 @@ type InjectedDependencies = {
 
 type EventHandler<T = unknown> = (data: T, eventName: string) => Promise<void>
 
-type EmitOptions = {
-  delay?: number
-  attempts?: number
-  backoff?: {
-    type: "fixed" | "exponential"
-    delay: number
-  }
-}
-
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -58,8 +49,9 @@ export default class DefaultEventBusService implements IEventBusService {
    * @return this
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
-    this.logger_.info(`Subscribing to ${String(event)}`)
-
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Subscribe is unavailable.`
+    )
     return this
   }
 
@@ -71,7 +63,9 @@ export default class DefaultEventBusService implements IEventBusService {
    * @return this
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
-    this.logger_.info(`Unsubscribing from ${String(event)}`)
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Unsubscribe is unavailable.`
+    )
     return this
   }
 
@@ -86,7 +80,9 @@ export default class DefaultEventBusService implements IEventBusService {
     event: string | symbol,
     subscriber: EventHandler
   ): this {
-    this.logger_.info(`Registering cron handler ${String(event)}`)
+    this.logger_.info(
+      `[${String(event)}] No event bus installed. Cron jobs are unavailable.`
+    )
     return this
   }
 
@@ -100,9 +96,11 @@ export default class DefaultEventBusService implements IEventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = {}
+    options: { delay?: number } = {}
   ): Promise<void> {
-    this.logger_.info(`Emitting ${eventName}`)
+    this.logger_.info(
+      `[${eventName}] No event bus installed. Emitting events has no effect.`
+    )
   }
 
   /**
@@ -119,6 +117,8 @@ export default class DefaultEventBusService implements IEventBusService {
     cron: string,
     handler: EventHandler
   ): void {
-    this.logger_.info(`Registering ${eventName}`)
+    this.logger_.info(
+      `[${eventName}] No event bus installed. Cron jobs are unavailable.`
+    )
   }
 }

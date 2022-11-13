@@ -1,4 +1,4 @@
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile } from "medusa-core-utils/dist"
 import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
 import logger from "./logger"
