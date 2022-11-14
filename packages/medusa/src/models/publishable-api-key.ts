@@ -33,7 +33,7 @@ export class PublishableApiKey extends BaseEntity {
  *     type: string
  *     description: The key's ID
  *     example: pak_01G1G5V27GYX4QXNARRQCW1N8T
- *  created_by:
+ *   created_by:
  *    type: string
  *    description: "The unique identifier of the user that created the key."
  *    example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V

@@ -1,6 +1,7 @@
 import { MockManager, MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
+import { FlagRouter } from "../../utils/flag-router"
 
 describe("PaymentProviderService", () => {
   describe("retrieveProvider", () => {
@@ -106,6 +107,10 @@ describe("PaymentProviderService", () => {
 })
 
 describe(`PaymentProviderService`, () => {
+  const featureFlagRouter = new FlagRouter({
+    order_editing: false,
+  })
+
   const container = {
     manager: MockManager,
     paymentSessionRepository: MockRepository({
@@ -128,19 +133,22 @@ describe(`PaymentProviderService`, () => {
           },
         }),
       find: () =>
-        Promise.resolve([{
-          id: "pay_jadazdjk",
-          provider_id: "default_provider",
-          data: {
-            id: "1234",
+        Promise.resolve([
+          {
+            id: "pay_jadazdjk",
+            provider_id: "default_provider",
+            data: {
+              id: "1234",
+            },
+            captured_at: new Date(),
+            amount: 100,
+            amount_refunded: 0,
           },
-          captured_at: new Date(),
-          amount: 100,
-          amount_refunded: 0
-        }]),
+        ]),
     }),
     refundRepository: MockRepository(),
     pp_default_provider: testPayServiceMock,
+    featureFlagRouter,
   }
   const providerService = new PaymentProviderService(container)
 
@@ -206,29 +214,25 @@ describe(`PaymentProviderService`, () => {
   })
 
   it("successfully delete session", async () => {
-    await providerService.deleteSession(
-      {
-        id: "session",
-        provider_id: "default_provider",
-        data: {
-          id: "1234",
-        },
-      }
-    )
+    await providerService.deleteSession({
+      id: "session",
+      provider_id: "default_provider",
+      data: {
+        id: "1234",
+      },
+    })
 
     expect(testPayServiceMock.deletePayment).toBeCalledTimes(1)
   })
 
   it("successfully delete session", async () => {
-    await providerService.deleteSession(
-      {
-        id: "session",
-        provider_id: "default_provider",
-        data: {
-          id: "1234",
-        },
-      }
-    )
+    await providerService.deleteSession({
+      id: "session",
+      provider_id: "default_provider",
+      data: {
+        id: "1234",
+      },
+    })
 
     expect(testPayServiceMock.deletePayment).toBeCalledTimes(1)
   })
@@ -265,22 +269,27 @@ describe(`PaymentProviderService`, () => {
 
   it("successfully cancel payment", async () => {
     await providerService.cancelPayment({
-      id: "pay_jadazdjk"
+      id: "pay_jadazdjk",
     })
     expect(testPayServiceMock.cancelPayment).toBeCalledTimes(1)
   })
 
   it("successfully capture payment", async () => {
     await providerService.capturePayment({
-      id: "pay_jadazdjk"
+      id: "pay_jadazdjk",
     })
     expect(testPayServiceMock.capturePayment).toBeCalledTimes(1)
   })
 
   it("successfully refund payment", async () => {
-    await providerService.refundPayment([{
-      id: "pay_jadazdjk"
-    }], 50)
+    await providerService.refundPayment(
+      [
+        {
+          id: "pay_jadazdjk",
+        },
+      ],
+      50
+    )
     expect(testPayServiceMock.refundPayment).toBeCalledTimes(1)
   })
 })

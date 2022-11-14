@@ -83,7 +83,7 @@ class StripeProviderService extends AbstractPaymentService {
       return methods.data
     }
 
-    return Promise.resolve([])
+    return []
   }
 
   /**
@@ -222,7 +222,7 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async retrievePayment(data) {
     try {
-      return this.stripe_.paymentIntents.retrieve(data.id)
+      return await this.stripe_.paymentIntents.retrieve(data.id)
     } catch (error) {
       throw error
     }
@@ -235,7 +235,7 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async getPaymentData(paymentSession) {
     try {
-      return this.stripe_.paymentIntents.retrieve(paymentSession.data.id)
+      return await this.stripe_.paymentIntents.retrieve(paymentSession.data.id)
     } catch (error) {
       throw error
     }
@@ -259,7 +259,7 @@ class StripeProviderService extends AbstractPaymentService {
 
   async updatePaymentData(sessionData, update) {
     try {
-      return this.stripe_.paymentIntents.update(sessionData.id, {
+      return await this.stripe_.paymentIntents.update(sessionData.id, {
         ...update.data,
       })
     } catch (error) {
@@ -284,7 +284,7 @@ class StripeProviderService extends AbstractPaymentService {
           return sessionData
         }
 
-        return this.stripe_.paymentIntents.update(sessionData.id, {
+        return await this.stripe_.paymentIntents.update(sessionData.id, {
           amount: Math.round(cart.total),
         })
       }
@@ -304,7 +304,7 @@ class StripeProviderService extends AbstractPaymentService {
           return sessionData
         }
 
-        return this.stripe_.paymentIntents.update(paymentSessionData.id, {
+        return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
           amount: Math.round(paymentInput.amount),
         })
       }
@@ -335,7 +335,7 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
     try {
-      return this.stripe_.paymentIntents.update(paymentIntentId, {
+      return await this.stripe_.paymentIntents.update(paymentIntentId, {
         customer: customerId,
       })
     } catch (error) {

@@ -245,7 +245,7 @@ class KlarnaProviderService extends PaymentService {
     }
   }
 
-  replaceStringWithPropertyValue(string, obj) {
+  static replaceStringWithPropertyValue(string, obj) {
     const keys = Object.keys(obj)
     for (const key of keys) {
       if (string.includes(`{${key}}`)) {
@@ -263,46 +263,44 @@ class KlarnaProviderService extends PaymentService {
 
     this.validateKlarnaOrderUrls("payment_collection_urls")
 
-    let order = {
+    const { currency_code, amount, resource_id } = paymentInput
+
+    const order = {
       // Custom id is stored, such that we can use it for hooks
-      merchant_data: paymentInput.resource_id,
+      merchant_data: resource_id,
       locale: "en-US",
-    }
+      order_lines: [
+        {
+          name: "Payment Collection",
+          quantity: 1,
+          unit_price: amount,
+          tax_rate: 0,
+          total_amount: amount,
+          total_tax_amount: 0,
+        },
+      ],
+      // Defaults to Sweden
+      purchase_country: "SE",
 
-    const { currency_code, amount } = paymentInput
+      order_amount: amount,
+      order_tax_amount: 0,
+      purchase_currency: currency_code.toUpperCase(),
 
-    order.order_lines = [
-      {
-        name: "Payment Collection",
-        quantity: 1,
-        unit_price: amount,
-        tax_rate: 0,
-        total_amount: amount,
-        total_tax_amount: 0,
+      merchant_urls: {
+        terms: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.terms,
+          paymentInput
+        ),
+        checkout: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.checkout,
+          paymentInput
+        ),
+        confirmation: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.confirmation,
+          paymentInput
+        ),
+        push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
       },
-    ]
-
-    // Defaults to Sweden
-    order.purchase_country = "SE"
-
-    order.order_amount = amount
-    order.order_tax_amount = 0
-    order.purchase_currency = currency_code.toUpperCase()
-
-    order.merchant_urls = {
-      terms: this.replaceStringWithPropertyValue(
-        this.options_.payment_collection_urls.terms,
-        paymentInput
-      ),
-      checkout: this.replaceStringWithPropertyValue(
-        this.options_.payment_collection_urls.checkout,
-        paymentInput
-      ),
-      confirmation: this.replaceStringWithPropertyValue(
-        this.options_.payment_collection_urls.confirmation,
-        paymentInput
-      ),
-      push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
     }
 
     return order

@@ -42,6 +42,7 @@ export const orders = {
       },
     ],
     regionid: IdMap.getId("testRegion"),
+    currency_code: "USD",
     customerid: IdMap.getId("testCustomer"),
     payment_method: {
       providerid: "default_provider",
@@ -96,6 +97,7 @@ export const orders = {
       },
     ],
     regionid: IdMap.getId("region-france"),
+    currency_code: "EUR",
     customerid: IdMap.getId("test-customer"),
     payment_method: {
       providerid: "default_provider",
