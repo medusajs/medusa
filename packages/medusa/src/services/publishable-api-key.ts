@@ -247,6 +247,26 @@ class PublishableApiKeyService extends TransactionBaseService {
       )
     })
   }
+
+  /**
+   * Get a map of resources ids that are withing the key's scope.
+   *
+   * @param publishableApiKeyId
+   */
+  async getResourceScopes(
+    publishableApiKeyId: string
+  ): Promise<{ sales_channels: string[] }> {
+    const manager = this.manager_
+    const pubKeyRepo = manager.getCustomRepository(
+      this.publishableApiKeyRepository_
+    )
+
+    return {
+      sales_channels: await pubKeyRepo.retrieveAssociatedSalesChannels(
+        publishableApiKeyId
+      ),
+    }
+  }
 }
 
 export default PublishableApiKeyService
