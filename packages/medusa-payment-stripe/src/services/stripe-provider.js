@@ -272,14 +272,15 @@ class StripeProviderService extends AbstractPaymentService {
    * Updates Stripe payment intent.
    * @param {PaymentSessionData} paymentSessionData - payment session data.
    * @param {Cart} cart
+   * @param intentRequestData
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async updatePayment(paymentSessionData, cart) {
+  async updatePayment(paymentSessionData, cart, intentRequestData) {
     try {
       const stripeId = cart.customer?.metadata?.stripe_id || undefined
 
       if (stripeId !== paymentSessionData.customer) {
-        return await this.createPayment(cart)
+        return await this.createPayment(cart, intentRequestData)
       } else {
         if (
           cart.total &&
@@ -297,12 +298,12 @@ class StripeProviderService extends AbstractPaymentService {
     }
   }
 
-  async updatePaymentNew(paymentSessionData, paymentInput) {
+  async updatePaymentNew(paymentSessionData, paymentInput, intentRequestData) {
     try {
       const stripeId = paymentInput.customer?.metadata?.stripe_id
 
       if (stripeId !== paymentInput.customer_id) {
-        return await this.createPaymentNew(paymentInput)
+        return await this.createPaymentNew(paymentInput, intentRequestData)
       } else {
         if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
           return paymentSessionData

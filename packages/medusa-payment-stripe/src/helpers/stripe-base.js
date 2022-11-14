@@ -120,19 +120,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
-    const intentRequest = this.getPaymentIntentOptions()
+    const intentRequestData = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_
       .withTransaction(this.manager_)
-      .createPayment(cart, intentRequest)
+      .createPayment(cart, intentRequestData)
   }
 
   async createPaymentNew(paymentInput) {
-    const intentRequest = this.getPaymentIntentOptions()
+    const intentRequestData = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_
       .withTransaction(this.manager_)
-      .createPaymentNew(paymentInput, intentRequest)
+      .createPaymentNew(paymentInput, intentRequestData)
   }
 
   /**
@@ -181,15 +181,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
+    const intentRequestData = this.getPaymentIntentOptions()
+
     return await this.stripeProviderService_
       .withTransaction(this.manager_)
-      .updatePayment(paymentSessionData, cart)
+      .updatePayment(paymentSessionData, cart, intentRequestData)
   }
 
   async updatePaymentNew(paymentSessionData, paymentInput) {
+    const intentRequestData = this.getPaymentIntentOptions()
+
     return await this.stripeProviderService_
       .withTransaction(this.manager_)
-      .updatePaymentNew(paymentSessionData, paymentInput)
+      .updatePaymentNew(paymentSessionData, paymentInput, intentRequestData)
   }
 
   async deletePayment(paymentSession) {
