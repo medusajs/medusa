@@ -181,17 +181,15 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
-    return await this.stripeProviderService_.updatePayment(
-      paymentSessionData,
-      cart
-    )
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePayment(paymentSessionData, cart)
   }
 
   async updatePaymentNew(paymentSessionData, paymentInput) {
-    return await this.stripeProviderService_.updatePaymentNew(
-      paymentSessionData,
-      paymentInput
-    )
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePaymentNew(paymentSessionData, paymentInput)
   }
 
   async deletePayment(paymentSession) {
