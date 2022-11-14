@@ -43,7 +43,19 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id",
     transformQuery(FindParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields,
+      defaultFields: defaultAdminOrdersFields.filter((field) => {
+        return ![
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ].includes(field)
+      }),
       allowedFields: allowedAdminOrdersFields,
       allowedRelations: allowedAdminOrdersRelations,
       isList: false,

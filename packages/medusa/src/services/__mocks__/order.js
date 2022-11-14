@@ -170,6 +170,15 @@ export const OrderServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  retrieveWithTotals: jest.fn().mockImplementation((orderId) => {
+    if (orderId === IdMap.getId("test-order")) {
+      return Promise.resolve(orders.testOrder)
+    }
+    if (orderId === IdMap.getId("processed-order")) {
+      return Promise.resolve(orders.processedOrder)
+    }
+    return Promise.resolve(undefined)
+  }),
   retrieveByCartId: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve({ id: IdMap.getId("test-order") })
   }),
