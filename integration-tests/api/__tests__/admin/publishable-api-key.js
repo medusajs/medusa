@@ -286,7 +286,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
   })
 
   describe("DELETE /admin/publishable-api-keys/:id/sales-channels/batch", () => {
-    const pubKeyId = IdMap.getId("pubkey-get-id-batch")
+    const pubKeyId = IdMap.getId("pubkey-get-id-batch-v2")
     let salesChannel1
     let salesChannel2
     let salesChannel3
@@ -316,6 +316,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       await dbConnection.manager.query(
         `INSERT INTO 
             publishable_api_key_sales_channel 
+            (publishable_key_id, sales_channel_id)
          VALUES
              ('${pubKeyId}', '${salesChannel1.id}'),
              ('${pubKeyId}', '${salesChannel2.id}'),
@@ -334,12 +335,14 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       const response = await api.delete(
         `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
         {
-          sales_channel_ids: [
-            { id: salesChannel1.id },
-            { id: salesChannel2.id },
-          ],
-        },
-        adminHeaders
+          data: {
+            sales_channel_ids: [
+              { id: salesChannel1.id },
+              { id: salesChannel2.id },
+            ],
+          },
+          ...adminHeaders,
+        }
       )
 
       const mappings = await dbConnection.manager.query(
