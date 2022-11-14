@@ -13,6 +13,12 @@ const {
 
 jest.setTimeout(30000)
 
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 describe("/admin/draft-orders", () => {
   let medusaProcess
   let dbConnection
@@ -69,11 +75,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -100,22 +106,18 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
 
       const draftOrderId = response.data.draft_order.id
 
       const draftOrderResponse = await api.get(
         `/admin/draft-orders/${draftOrderId}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(draftOrderResponse.status).toEqual(200)
       expect(draftOrderResponse.data.draft_order.cart.shipping_total).toEqual(
@@ -153,11 +155,7 @@ describe("/admin/draft-orders", () => {
       const {
         status,
         data: { draft_order },
-      } = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      } = await api.post("/admin/draft-orders", payload, adminReqConfig)
 
       expect(status).toEqual(200)
       expect(draft_order.cart.billing_address_id).not.toBeNull()
@@ -165,11 +163,7 @@ describe("/admin/draft-orders", () => {
 
       const afterCreate = await api.get(
         `/admin/draft-orders/${draft_order.id}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(afterCreate.data.draft_order.cart.shipping_address).toEqual(
@@ -221,11 +215,7 @@ describe("/admin/draft-orders", () => {
       const {
         status,
         data: { draft_order },
-      } = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      } = await api.post("/admin/draft-orders", payload, adminReqConfig)
 
       expect(status).toEqual(200)
       expect(draft_order.cart.billing_address_id).not.toBeNull()
@@ -233,11 +223,7 @@ describe("/admin/draft-orders", () => {
 
       const afterCreate = await api.get(
         `/admin/draft-orders/${draft_order.id}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(afterCreate.data.draft_order.cart.billing_address).toEqual(
@@ -281,11 +267,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
 
@@ -318,11 +304,7 @@ describe("/admin/draft-orders", () => {
       }
 
       const response = await api
-        .post("/admin/draft-orders", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/draft-orders", payload, adminReqConfig)
         .catch((err) => {
           return err.response
         })
@@ -356,11 +338,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -391,11 +373,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -428,19 +410,15 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
 
       const created = await api.get(
         `/admin/draft-orders/${response.data.draft_order.id}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -486,11 +464,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
 
       const draftOrder = response.data.draft_order
       const lineItemId = draftOrder.cart.items[0].id
@@ -538,19 +516,15 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
 
       const created = await api.get(
         `/admin/draft-orders/${response.data.draft_order.id}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const draftOrder = created.data.draft_order
@@ -622,11 +596,11 @@ describe("/admin/draft-orders", () => {
         ],
       }
 
-      const response = await api.post("/admin/draft-orders", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -637,29 +611,17 @@ describe("/admin/draft-orders", () => {
       const orderResponse = await api.post(
         `/admin/draft-orders/test-draft-order/pay`,
         {},
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const createdOrder = await api.get(
         `/admin/orders/${orderResponse.data.order.id}`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const updatedDraftOrder = await api.get(
         `/admin/draft-orders/test-draft-order`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(orderResponse.status).toEqual(200)
@@ -690,11 +652,7 @@ describe("/admin/draft-orders", () => {
     it("lists draft orders", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/draft-orders", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get("/admin/draft-orders", adminReqConfig)
 
       expect(response.status).toEqual(200)
 
@@ -708,11 +666,10 @@ describe("/admin/draft-orders", () => {
     it("lists draft orders with query", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/draft-orders?q=oli@test", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get(
+        "/admin/draft-orders?q=oli@test",
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
 
@@ -728,11 +685,10 @@ describe("/admin/draft-orders", () => {
     it("lists no draft orders on query for non-existing email", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/draft-orders?q=heyo@heyo.dk", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get(
+        "/admin/draft-orders?q=heyo@heyo.dk",
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
 
@@ -755,11 +711,10 @@ describe("/admin/draft-orders", () => {
     it("retrieves a draft-order should include the items totals", async () => {
       const api = useApi()
 
-      const order = await api.get("/admin/draft-orders/test-draft-order", {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      })
+      const order = await api.get(
+        "/admin/draft-orders/test-draft-order",
+        adminReqConfig
+      )
 
       expect(order.status).toEqual(200)
       expect(order.data.draft_order).toEqual(
@@ -791,11 +746,7 @@ describe("/admin/draft-orders", () => {
 
       const response = await api.delete(
         "/admin/draft-orders/test-draft-order",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -828,22 +779,14 @@ describe("/admin/draft-orders", () => {
           title: "Update title",
           unit_price: 1000,
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
 
       const updatedDraftOrder = await api.get(
         `/admin/draft-orders/test-draft-order`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const item = updatedDraftOrder.data.draft_order.cart.items[0]
@@ -861,22 +804,14 @@ describe("/admin/draft-orders", () => {
           title: "Update title",
           quantity: 0,
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
 
       const updatedDraftOrder = await api.get(
         `/admin/draft-orders/test-draft-order`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const items = updatedDraftOrder.data.draft_order.cart.items
@@ -921,22 +856,14 @@ describe("/admin/draft-orders", () => {
           },
           discounts: [{ code: "TEST" }],
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
 
       const updatedDraftOrder = await api.get(
         `/admin/draft-orders/test-draft-order`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const dorder = updatedDraftOrder.data.draft_order
