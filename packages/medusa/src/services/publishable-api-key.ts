@@ -255,14 +255,14 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async getResourceScopes(
     publishableApiKeyId: string
-  ): Promise<{ sales_channels: string[] }> {
+  ): Promise<{ sales_channel: string[] }> {
     const manager = this.manager_
     const pubKeyRepo = manager.getCustomRepository(
       this.publishableApiKeyRepository_
     )
 
     return {
-      sales_channels: await pubKeyRepo.retrieveAssociatedSalesChannels(
+      sales_channel: await pubKeyRepo.retrieveAssociatedSalesChannels(
         publishableApiKeyId
       ),
     }

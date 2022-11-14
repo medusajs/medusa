@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express"
 import PublishableApiKeyService from "../../../services/publishable-api-key"
 
 export type PublishableApiKeyScopes = {
-  sales_channels: string[]
+  sales_channel: string[]
 }
 
 /**

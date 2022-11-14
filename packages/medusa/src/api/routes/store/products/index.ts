@@ -1,13 +1,21 @@
 import { Router } from "express"
 import "reflect-metadata"
+
 import { Product } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { PaginatedResponse } from "../../../../types/common"
+import { validateKeyScopes } from "../../../middlewares/publishable-api-key/validate-key-scopes"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 const route = Router()
 
-export default (app) => {
-  app.use("/products", route)
+export default (app, featureFlagRouter: FlagRouter) => {
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    app.use("/products", validateKeyScopes, route)
+  } else {
+    app.use("/products", route)
+  }
 
   route.get("/", middlewares.wrap(require("./list-products").default))
   route.post("/search", middlewares.wrap(require("./search").default))
