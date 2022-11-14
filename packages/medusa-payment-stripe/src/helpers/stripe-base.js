@@ -12,8 +12,7 @@ class StripeBase extends AbstractPaymentService {
       regionService,
       manager,
     },
-    options,
-    paymentMethodTypes
+    options
   ) {
     super(
       {
@@ -25,8 +24,6 @@ class StripeBase extends AbstractPaymentService {
       },
       options
     )
-    /** @private @const {string[]} */
-    this.paymentMethodTypes_ = paymentMethodTypes
 
     /**
      * Required Stripe options:
@@ -123,18 +120,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
-    const intentRequest = this.getPaymentIntentOptions()
+    const intentRequestData = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPayment(cart, intentRequest)
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPayment(cart, intentRequestData)
   }
 
   async createPaymentNew(paymentInput) {
-    const intentRequest = this.getPaymentIntentOptions()
+    const intentRequestData = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPaymentNew(
-      paymentInput,
-      intentRequest
-    )
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPaymentNew(paymentInput, intentRequestData)
   }
 
   /**
@@ -183,17 +181,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
-    return await this.stripeProviderService_.updatePayment(
-      paymentSessionData,
-      cart
-    )
+    const intentRequestData = this.getPaymentIntentOptions()
+
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePayment(paymentSessionData, cart, intentRequestData)
   }
 
   async updatePaymentNew(paymentSessionData, paymentInput) {
-    return await this.stripeProviderService_.updatePaymentNew(
-      paymentSessionData,
-      paymentInput
-    )
+    const intentRequestData = this.getPaymentIntentOptions()
+
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePaymentNew(paymentSessionData, paymentInput, intentRequestData)
   }
 
   async deletePayment(paymentSession) {
