@@ -44,7 +44,7 @@ import { PaymentService } from "../../../../services"
  *       medusa.admin.payments.refundPayment(payment_id, {
  *         amount: 1000,
  *         reason: 'return',
- * *       note: 'Do not like it',
+ *         note: 'Do not like it',
  *       })
  *       .then(({ payment }) => {
  *         console.log(payment.id);

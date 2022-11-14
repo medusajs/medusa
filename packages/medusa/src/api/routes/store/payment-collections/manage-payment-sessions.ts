@@ -20,7 +20,7 @@ import { PaymentCollectionService } from "../../../../services"
  *           sessions:
  *             description: "An array or a single entry of payment sessions related to the Payment Collection. If the session_id is not provided the existing sessions not present will be deleted and the provided ones will be created."
  *             type: array
- *             sessions:
+ *             items:
  *               required:
  *                 - provider_id
  *                 - customer_id
