@@ -828,15 +828,14 @@ class CartService extends TransactionBaseService {
           relations,
         })
 
+        const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
           await this.updateCustomerId_(cart, data.customer_id)
-        } else {
-          if (isDefined(data.email)) {
-            const customer = await this.createOrFetchUserFromEmail_(data.email)
-            cart.customer = customer
-            cart.customer_id = customer.id
-            cart.email = customer.email
-          }
+        } else if (isDefined(data.email)) {
+          const customer = await this.createOrFetchUserFromEmail_(data.email)
+          cart.customer = customer
+          cart.customer_id = customer.id
+          cart.email = customer.email
         }
 
         if (isDefined(data.customer_id) || isDefined(data.region_id)) {
@@ -942,7 +941,10 @@ class CartService extends TransactionBaseService {
 
         const updatedCart = await cartRepo.save(cart)
 
-        if ("email" in data || "customer_id" in data) {
+        if (
+          (data.email && data.email !== originalCartCustomer.email) ||
+          (data.customer_id && data.customer_id !== originalCartCustomer.id)
+        ) {
           await this.eventBus_
             .withTransaction(transactionManager)
             .emit(CartService.Events.CUSTOMER_UPDATED, updatedCart.id)
