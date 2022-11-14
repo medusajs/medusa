@@ -78,7 +78,6 @@ export default class NewTotalsService extends TransactionBaseService {
    * @param includeTax
    * @param calculationContext
    * @param taxRate
-   * @param useExistingTaxLines Force to use the tax lines of the line item instead of fetching them
    */
   async getLineItemTotals(
     items: LineItem | LineItem[],
@@ -695,7 +694,7 @@ export default class NewTotalsService extends TransactionBaseService {
    * Calculate and return the shipping method totals legacy using teh tax rate
    * @param shippingMethod
    * @param calculationContext
-   * @param taxLines
+   * @param taxRate
    * @param discounts
    */
   protected async getShippingMethodTotalsLegacy(

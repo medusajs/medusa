@@ -656,33 +656,6 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      // gift cardable amount
-      /* const calculationContext = await this.totalsService_.getCalculationContext(
-         cart,
-         {
-           exclude_gift_cards: true
-         }
-       )
-       const totals = await this.newTotalsService_.getLineItemTotals(cart.items, {
-         includeTax: true,
-         calculationContext
-       })
- 
-       let gcBalance = 0
-       if (cart.region?.gift_cards_taxable) {
-         const [subtotal, discountTotal] = Object.values(totals).reduce((acc, total) => {
-           acc[0] += total.total
-           acc[1] += total.discount_total
-           return acc
-         }, [0, 0])
- 
-         gcBalance = subtotal - discountTotal
-       } else {
-         gcBalance = Object.values(totals).reduce((acc, total) => {
-           acc += total.total
-           return acc
-         }, 0)
-       }*/
       let gcBalance =
         (cart.region?.gift_cards_taxable
           ? cart.subtotal! - cart.discount_total!
