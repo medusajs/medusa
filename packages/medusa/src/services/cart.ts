@@ -219,7 +219,7 @@ class CartService extends TransactionBaseService {
 
     const query = buildQuery({ id: cartId }, options)
 
-    if ((options.select || []).length <= 0) {
+    if ((options.select || []).length === 0) {
       query.select = undefined
     }
 
@@ -238,6 +238,13 @@ class CartService extends TransactionBaseService {
     return raw
   }
 
+  /**
+   * @deprecated
+   * @param cartId
+   * @param options
+   * @param totalsConfig
+   * @protected
+   */
   protected async retrieveLegacy(
     cartId: string,
     options: FindConfig<Cart> = {},
@@ -1308,7 +1315,6 @@ class CartService extends TransactionBaseService {
     cartId: string,
     context: Record<string, unknown> & {
       cart_id: string
-      useExistingTaxLine?: boolean
     } = { cart_id: "" }
   ): Promise<Cart> {
     return await this.atomicPhase_(

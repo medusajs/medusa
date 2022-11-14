@@ -14,7 +14,6 @@ import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
-import { isDefined } from "../utils"
 
 type InjectedDependencies = {
   idempotencyKeyService: IdempotencyKeyService
@@ -205,7 +204,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         ...context,
         cart_id: id,
         idempotency_key: idempotencyKey,
-        useExistingTaxLine: true,
       })
 
     if (cart.payment_session) {
@@ -277,16 +275,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       }
     }
 
-    if (!isDefined(cart.total)) {
-      return {
-        response_code: 500,
-        response_body: {
-          message: "Unexpected state",
-        },
-      }
-    }
-
-    if (!cart.payment && cart.total > 0) {
+    if (!cart.payment && cart.total! > 0) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cart payment not authorized`
