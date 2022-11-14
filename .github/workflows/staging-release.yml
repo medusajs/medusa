@@ -1,4 +1,4 @@
-name: Staging Release and publish
+name: Staging Release and Publish
 
 on:
   push:
@@ -34,13 +34,16 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Install Dependencies build
+      - name: Build all packages
         run: yarn build
 
-      - name: version staging packages
+      - name: Version staging packages
         run: yarn version:staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: publish staging packages
+      - name: Install Dependencies
+        run: yarn
+        
+      - name: Publish staging packages
         run: yarn release:staging
