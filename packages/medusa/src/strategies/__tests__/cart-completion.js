@@ -71,7 +71,6 @@ const toTest = [
               idempotency_key: "ikey",
               recovery_point: "tax_lines_created",
             },
-            useExistingTaxLine: true,
           }
         )
 
