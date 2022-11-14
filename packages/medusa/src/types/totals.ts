@@ -1,4 +1,4 @@
-import { LineItem } from "../models/line-item"
+import { LineItem } from "../models"
 
 /** The amount of a gift card allocated to a line item */
 export type GiftCardAllocation = {
