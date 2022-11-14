@@ -127,6 +127,7 @@ class StripeProviderService extends AbstractPaymentService {
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
    * @param {Cart} cart - cart to create a payment for
+   * @param intentRequestData
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart, intentRequestData = {}) {
@@ -273,18 +274,21 @@ class StripeProviderService extends AbstractPaymentService {
    * @param {Cart} cart
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async updatePayment(sessionData, cart) {
+  async updatePayment(paymentSessionData, cart) {
     try {
       const stripeId = cart.customer?.metadata?.stripe_id || undefined
 
-      if (stripeId !== sessionData.customer) {
+      if (stripeId !== paymentSessionData.customer) {
         return await this.createPayment(cart)
       } else {
-        if (cart.total && sessionData.amount === Math.round(cart.total)) {
-          return sessionData
+        if (
+          cart.total &&
+          paymentSessionData.amount === Math.round(cart.total)
+        ) {
+          return paymentSessionData
         }
 
-        return await this.stripe_.paymentIntents.update(sessionData.id, {
+        return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
           amount: Math.round(cart.total),
         })
       }
@@ -301,7 +305,7 @@ class StripeProviderService extends AbstractPaymentService {
         return await this.createPaymentNew(paymentInput)
       } else {
         if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
-          return sessionData
+          return paymentSessionData
         }
 
         return await this.stripe_.paymentIntents.update(paymentSessionData.id, {

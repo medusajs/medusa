@@ -12,8 +12,7 @@ class StripeBase extends AbstractPaymentService {
       regionService,
       manager,
     },
-    options,
-    paymentMethodTypes
+    options
   ) {
     super(
       {
@@ -25,8 +24,6 @@ class StripeBase extends AbstractPaymentService {
       },
       options
     )
-    /** @private @const {string[]} */
-    this.paymentMethodTypes_ = paymentMethodTypes
 
     /**
      * Required Stripe options:
@@ -125,16 +122,17 @@ class StripeBase extends AbstractPaymentService {
   async createPayment(cart) {
     const intentRequest = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPayment(cart, intentRequest)
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPayment(cart, intentRequest)
   }
 
   async createPaymentNew(paymentInput) {
     const intentRequest = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPaymentNew(
-      paymentInput,
-      intentRequest
-    )
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPaymentNew(paymentInput, intentRequest)
   }
 
   /**

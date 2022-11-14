@@ -27,7 +27,12 @@ import {
   isCart,
   LineItemUpdate,
 } from "../types/cart"
-import { AddressPayload, FindConfig, TotalField } from "../types/common"
+import {
+  AddressPayload,
+  FindConfig,
+  TotalField,
+  WithRequiredProperty,
+} from "../types/common"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
@@ -281,7 +286,7 @@ class CartService extends TransactionBaseService {
     cartId: string,
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
-  ): Promise<Cart> {
+  ): Promise<WithRequiredProperty<Cart, "total">> {
     const relations = this.getTotalsRelations(options)
 
     const cart = await this.retrieve(cartId, {
@@ -1486,13 +1491,6 @@ class CartService extends TransactionBaseService {
 
         const { total, region } = cart
 
-        if (typeof total === "undefined") {
-          throw new MedusaError(
-            MedusaError.Types.UNEXPECTED_STATE,
-            "cart.total must be defined"
-          )
-        }
-
         // If there are existing payment sessions ensure that these are up to date
         const seen: string[] = []
         if (cart.payment_sessions?.length) {
@@ -2104,7 +2102,7 @@ class CartService extends TransactionBaseService {
   async decorateTotals(
     cart: Cart,
     totalsConfig: TotalsConfig = {}
-  ): Promise<Cart> {
+  ): Promise<WithRequiredProperty<Cart, "total">> {
     const manager = this.transactionManager_ ?? this.manager_
     const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
 
@@ -2192,7 +2190,7 @@ class CartService extends TransactionBaseService {
       cart.tax_total -
       (cart.gift_card_total + cart.discount_total + cart.gift_card_tax_total)
 
-    return cart
+    return cart as Cart & { total: number }
   }
 
   protected async refreshAdjustments_(cart: Cart): Promise<void> {
