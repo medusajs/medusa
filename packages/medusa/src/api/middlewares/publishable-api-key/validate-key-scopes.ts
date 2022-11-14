@@ -1,4 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
 import { NextFunction, Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../services/publishable-api-key"
@@ -21,7 +20,6 @@ async function validateKeyScopes(
   res: Response,
   next: NextFunction
 ) {
-  const id = req.params.id
   const pubKey = req.get("x-publishable-api-key")
 
   const publishableKeyService: PublishableApiKeyService = req.scope.resolve(
@@ -29,13 +27,6 @@ async function validateKeyScopes(
   )
 
   if (pubKey) {
-    // return next(
-    //   new MedusaError(
-    //     MedusaError.Types.NOT_ALLOWED,
-    //     "Requested resource is not within the scope of the api key passed in the request header."
-    //   )
-    // )
-
     req.publishableApiKeyScopes = await publishableKeyService.getResourceScopes(
       pubKey
     )
