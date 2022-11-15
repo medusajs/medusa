@@ -1,5 +1,3 @@
-import { PostgresError } from "@medusajs/medusa"
-
 export default async (req, res) => {
   const signature = req.headers["stripe-signature"]
 
@@ -12,14 +10,14 @@ export default async (req, res) => {
     return
   }
 
+  const paymentProviderService = req.scope.resolve("paymentProviderService")
+
   function isPaymentCollection(id) {
     return id && id.startsWith("paycol")
   }
 
   async function handleCartPayments(event, req, res, cartId) {
     const manager = req.scope.resolve("manager")
-    const logger = req.scope.resolve("logger")
-    const cartService = req.scope.resolve("cartService")
     const orderService = req.scope.resolve("orderService")
 
     const order = await orderService
@@ -36,35 +34,20 @@ export default async (req, res) => {
         }
         break
       case "payment_intent.amount_capturable_updated":
-        if (!order) {
-          const err = await manager
-            .transaction(async (manager) => {
-              const cartServiceTx = cartService.withTransaction(manager)
-              await cartServiceTx.setPaymentSession(cartId, "stripe")
-              await cartServiceTx.authorizePayment(cartId)
-              await orderService.withTransaction(manager).createFromCart(cartId)
-            })
-            .catch((e) => {
-              return e
-            })
+        const { statusCode } = await manager.transaction(async (manager) => {
+          return await paymentProviderService
+            .withTransaction(manager)
+            .handleWebHookEvent(
+              event.type,
+              paymentIntentAmountCapturableEventHandler({
+                order,
+                cartId,
+                container: req.scope,
+              })
+            )
+        })
 
-          if (err) {
-            let message = `Stripe webhook ${event.type} handling failed\n${
-              err?.detail ?? err?.message
-            }`
-            if (err.code === PostgresError.SERIALIZATION_FAILURE) {
-              message = `Stripe webhook ${
-                event.type
-              } handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
-                err?.detail ?? err?.message
-              }`
-            }
-            logger.warning(message)
-            res.sendStatus(400).send(message)
-            return
-          }
-        }
-        break
+        return res.sendStatus(statusCode)
       default:
         res.sendStatus(204)
         return
@@ -111,5 +94,25 @@ export default async (req, res) => {
     await handlePaymentCollection(event, req, res, resourceId, paymentIntentId)
   } else {
     await handleCartPayments(event, req, res, cartId ?? resourceId)
+  }
+}
+
+function paymentIntentAmountCapturableEventHandler({
+  order,
+  cartId,
+  container,
+}) {
+  return async function ({ transactionManager }) {
+    if (!order) {
+      const cartService = container.resolve("cartService")
+      const orderService = container.resolve("orderService")
+
+      const cartServiceTx = cartService.withTransaction(transactionManager)
+      await cartServiceTx.setPaymentSession(cartId, "stripe")
+      await cartServiceTx.authorizePayment(cartId)
+      await orderService
+        .withTransaction(transactionManager)
+        .createFromCart(cartId)
+    }
   }
 }

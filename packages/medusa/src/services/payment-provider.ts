@@ -6,7 +6,7 @@ import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
 import { RefundRepository } from "../repositories/refund"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
-import { buildQuery } from "../utils"
+import { buildQuery, PostgresError } from "../utils"
 import { FindConfig, Selector } from "../types/common"
 import {
   Cart,
@@ -20,6 +20,8 @@ import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
+import { Logger } from "../types/global"
+import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -30,6 +32,7 @@ type InjectedDependencies = {
   refundRepository: typeof RefundRepository
   paymentService: PaymentService
   featureFlagRouter: FlagRouter
+  logger: Logger
 } & {
   [key in `${PaymentProviderKey}`]:
     | AbstractPaymentService
@@ -48,6 +51,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly logger_: Logger
 
   protected readonly featureFlagRouter_: FlagRouter
 
@@ -61,6 +65,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
     this.featureFlagRouter_ = container.featureFlagRouter
+    this.logger_ = container.logger
   }
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
@@ -681,5 +686,32 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
 
     return refund
+  }
+
+  async handleWebHookEvent(
+    event: string,
+    handler: ({ transactionManager: EntityManager }) => Promise<void>,
+    isolationLevel?: IsolationLevel,
+    errorHandler?: (err: unknown) => Promise<void>
+  ): Promise<{ statusCode: number }> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        await handler({ transactionManager })
+        return { statusCode: 200 }
+      },
+      isolationLevel,
+      errorHandler ||
+        (async (err: any) => {
+          let message = `Stripe webhook ${event} handling failed\n${
+            err?.detail ?? err?.message
+          }`
+          if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
+            message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+              err?.detail ?? err?.message
+            }`
+          }
+          this.logger_.warn(message)
+        })
+    ).catch(() => ({ statusCode: 409 }))
   }
 }
