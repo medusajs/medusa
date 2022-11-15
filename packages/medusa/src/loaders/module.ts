@@ -22,23 +22,19 @@ export default async ({
     try {
       const loadedModule = await import(resolution.resolutionPath!)
 
-      const moduleLoaders = loadedModule.loaders
-      if (moduleLoaders) {
-        for (const loader of moduleLoaders) {
-          await loader({ container, configModule, logger })
-        }
+      const moduleLoaders = loadedModule?.loaders || []
+      for (const loader of moduleLoaders) {
+        await loader({ container, configModule, logger })
       }
 
-      const moduleServices = loadedModule.services
+      const moduleServices = loadedModule?.services || []
 
-      if (moduleServices) {
-        for (const service of moduleServices) {
-          container.register({
-            [resolution.definition.registrationName]: asFunction(
-              (cradle) => new service(cradle, configModule)
-            ).singleton(),
-          })
-        }
+      for (const service of moduleServices) {
+        container.register({
+          [resolution.definition.registrationName]: asFunction(
+            (cradle) => new service(cradle, configModule)
+          ).singleton(),
+        })
       }
 
       const installation = {

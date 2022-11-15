@@ -4,9 +4,9 @@ import resolveCwd from "resolve-cwd"
 
 import { ModuleDefinition, ModuleResolution } from "../../types/global"
 
-export default (configModule) => {
+export default ({ modules }: { modules: Record<string, string> }) => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
-  const projectModules = (configModule.modules as Record<string, string>) ?? {}
+  const projectModules = modules ?? {}
 
   const definitionsDir = path.join(__dirname, "*.{j,t}s")
   const definitions = glob.sync(definitionsDir, {
