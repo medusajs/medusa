@@ -71,8 +71,7 @@ import { PaymentCollectionService } from "../../../../services"
  *           customer_id: "cus_123",
  *           amount: 10000,
  *           session_id: "ps_123456"
- *         }
- *       )
+ *       })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
