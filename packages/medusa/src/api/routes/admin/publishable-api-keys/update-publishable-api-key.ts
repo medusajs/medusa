@@ -40,7 +40,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "internal_note": "internal reason XY"
+ *           "title": "updated title"
  *       }'
  * security:
  *   - api_token: []
