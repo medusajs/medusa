@@ -2,7 +2,7 @@ import { PaymentService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /payment
+ * @oas [get] /payments/{id}
  * operationId: "GetPaymentsPayment"
  * summary: "Get Payment details"
  * description: "Retrieves the Payment details"
