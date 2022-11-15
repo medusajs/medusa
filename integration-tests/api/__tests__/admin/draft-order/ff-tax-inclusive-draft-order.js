@@ -14,6 +14,12 @@ const { useApi } = require("../../../../helpers/use-api")
 
 jest.setTimeout(30000)
 
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/draft-orders", () => {
   let medusaProcess
   let dbConnection
@@ -52,23 +58,25 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/draft-orders", () => {
       const api = useApi()
 
       await simpleRegionFactory(dbConnection, {
-        id: "tip-region",
+        id: "taxincl-region",
         includes_tax: true,
         currency_code: "usd",
       })
 
       await dbConnection.manager.query(
-        `update currency set includes_tax = true where code = 'usd'`
+        `update currency
+         set includes_tax = true
+         where code = 'usd'`
       )
 
       await simpleDiscountFactory(dbConnection, {
         code: "testytest",
-        regions: ["tip-region"],
+        regions: ["taxincl-region"],
       })
       await simpleShippingOptionFactory(dbConnection, {
-        id: "tip-option",
+        id: "taxincl-option",
         price: 100,
-        region_id: "tip-region",
+        region_id: "taxincl-region",
       })
 
       const payload = {
@@ -82,25 +90,96 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/draft-orders", () => {
             metadata: {},
           },
         ],
-        region_id: "tip-region",
+        region_id: "taxincl-region",
         customer_id: "oli-test",
         shipping_methods: [
           {
-            option_id: "tip-option",
+            option_id: "taxincl-option",
           },
         ],
       }
 
-      const response = await api
-        .post("/admin/draft-orders", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
       expect(response.status).toEqual(200)
+    })
+
+    it("creates a draft order with discount and line item", async () => {
+      const api = useApi()
+
+      await simpleRegionFactory(dbConnection, {
+        id: "taxincl-region",
+        includes_tax: true,
+        currency_code: "usd",
+      })
+
+      await dbConnection.manager.query(
+        `update currency
+         set includes_tax = true
+         where code = 'usd'`
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "disc_testytest",
+        code: "testytest",
+        regions: ["taxincl-region"],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "taxincl-option",
+        price: 100,
+        region_id: "taxincl-region",
+      })
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        discounts: [{ code: "testytest" }],
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "taxincl-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "taxincl-option",
+          },
+        ],
+      }
+
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
+
+      const draftOrder = response.data.draft_order
+      const lineItemId = draftOrder.cart.items[0].id
+
+      expect(response.status).toEqual(200)
+      expect(draftOrder.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            unit_price: 8000,
+            quantity: 2,
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: lineItemId,
+                amount: 1600,
+                description: "discount",
+                discount_id: "disc_testytest",
+              }),
+            ]),
+          }),
+        ])
+      )
     })
   })
 })

@@ -257,6 +257,9 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
         const lineItem = lineItemRepo.create(rawLineItem)
+        // LineItem.variant must be populated in order for adjustments to be calculated properly,
+        // since TaxProvider.getTaxLines expects LineItem.variant to exists.
+        lineItem.variant = variant
 
         if (context.cart) {
           const adjustments = await this.lineItemAdjustmentService_
