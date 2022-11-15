@@ -7,6 +7,7 @@ import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
+import { CreatePublishableApiKeyInput } from "../types/publishable-api-key"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -45,17 +46,22 @@ class PublishableApiKeyService extends TransactionBaseService {
   /**
    * Create a PublishableApiKey record.
    *
-   * @params context - key creation context object
+   * @param data - partial data for creating the entity
+   * @param context - key creation context object
    */
-  async create(context: {
-    loggedInUserId: string
-  }): Promise<PublishableApiKey | never> {
+  async create(
+    data: CreatePublishableApiKeyInput,
+    context: {
+      loggedInUserId: string
+    }
+  ): Promise<PublishableApiKey | never> {
     return await this.atomicPhase_(async (manager) => {
       const publishableApiKeyRepo = manager.getCustomRepository(
         this.publishableApiKeyRepository_
       )
 
       const publishableApiKey = publishableApiKeyRepo.create({
+        ...data,
         created_by: context.loggedInUserId,
       })
 

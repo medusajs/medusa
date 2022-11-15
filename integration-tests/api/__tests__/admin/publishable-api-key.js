@@ -28,7 +28,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PUBLISHABLE_API_KEYS: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -122,7 +122,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.post(
         `/admin/publishable-api-keys`,
-        {},
+        { title: "Store api key" },
         adminHeaders
       )
 
@@ -130,6 +130,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.data.publishable_api_key).toMatchObject({
         created_by: "admin_user",
         id: expect.any(String),
+        title: "Store api key",
         revoked_by: null,
         revoked_at: null,
         created_at: expect.any(String),

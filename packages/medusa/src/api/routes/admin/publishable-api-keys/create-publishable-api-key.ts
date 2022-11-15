@@ -2,12 +2,24 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
+import { IsOptional, IsString } from "class-validator"
 
 /**
  * @oas [post] /publishable-api-keys
  * operationId: "PostPublishableApiKeys"
  * summary: "Create a PublishableApiKey"
  * description: "Creates a PublishableApiKey."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - title
+ *         properties:
+ *           order_id:
+ *           title:
+ *             description: A title for the publishable api key
+ *             type: string
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -59,14 +71,20 @@ export default async (req: Request, res: Response) => {
   ) as PublishableApiKeyService
 
   const manager = req.scope.resolve("manager") as EntityManager
+  const data = req.validatedBody as AdminPostPublishableApiKeysReq
 
   const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
 
   const pubKey = await manager.transaction(async (transactionManager) => {
     return await publishableApiKeyService
       .withTransaction(transactionManager)
-      .create({ loggedInUserId })
+      .create(data, { loggedInUserId })
   })
 
   return res.status(200).json({ publishable_api_key: pubKey })
+}
+
+export class AdminPostPublishableApiKeysReq {
+  @IsString()
+  title: string
 }
