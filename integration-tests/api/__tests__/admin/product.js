@@ -1866,25 +1866,28 @@ describe("/admin/products", () => {
 
       expect(res.status).toEqual(200)
 
-      expect(insertedVariant.prices).toEqual([
-        expect.objectContaining({
-          currency_code: "usd",
-          amount: 100,
-          min_quantity: null,
-          max_quantity: null,
-          variant_id: insertedVariant.id,
-          region_id: null,
-        }),
-        expect.objectContaining({
-          currency_code: "usd",
-          amount: 200,
-          min_quantity: null,
-          max_quantity: null,
-          price_list_id: null,
-          variant_id: insertedVariant.id,
-          region_id: "test-region",
-        }),
-      ])
+      expect(insertedVariant.prices).toHaveLength(2)
+      expect(insertedVariant.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            currency_code: "usd",
+            amount: 100,
+            min_quantity: null,
+            max_quantity: null,
+            variant_id: insertedVariant.id,
+            region_id: null,
+          }),
+          expect.objectContaining({
+            currency_code: "usd",
+            amount: 200,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: null,
+            variant_id: insertedVariant.id,
+            region_id: "test-region",
+          }),
+        ])
+      )
     })
   })
 

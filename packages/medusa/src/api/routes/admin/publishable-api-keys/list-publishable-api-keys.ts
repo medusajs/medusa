@@ -1,17 +1,17 @@
 import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { IsOptional, IsString } from "class-validator"
 
+import { extendedFindParamsMixin } from "../../../../types/common"
+import PublishableApiKeyService from "../../../../services/publishable-api-key"
+
 /**
- * @oas [get] /order-edits
- * operationId: "GetOrderEdits"
- * summary: "List OrderEdits"
- * description: "List OrderEdits."
+ * @oas [get] /publishable-api-keys
+ * operationId: "GetPublishableApiKeys"
+ * summary: "List PublishableApiKeys"
+ * description: "List PublishableApiKeys."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching order edit internal note.
- *   - (query) order_id {string} List order edits by order id.
+ *   - (query) order_id {string} List publishable keys by id.
  *   - (query) limit=20 {number} The number of items in the response
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
@@ -23,20 +23,20 @@ import { IsOptional, IsString } from "class-validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.list()
- *         .then(({ order_edits, count, limit, offset }) => {
- *           console.log(order_edits.length)
+ *       medusa.admin.publishableApiKeys.list()
+ *         .then(({ publishable_api_keys }) => {
+ *           console.log(publishable_api_keys)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/order-edits' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - OrderEdit
+ *   - PublishableApiKeys
  * responses:
  *   200:
  *     description: OK
@@ -44,18 +44,9 @@ import { IsOptional, IsString } from "class-validator"
  *       application/json:
  *         schema:
  *           properties:
- *             order_edits:
+ *             publishable_api_keys:
  *               type: array
- *               $ref: "#/components/schemas/order_edit"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *               $ref: "#/components/schemas/publishable_api_key"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -70,38 +61,27 @@ import { IsOptional, IsString } from "class-validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const orderEditService: OrderEditService =
-    req.scope.resolve("orderEditService")
+  const publishableApiKeyService: PublishableApiKeyService = req.scope.resolve(
+    "publishableApiKeyService"
+  )
 
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  const [orderEdits, orderEditCount] = await orderEditService.listAndCount(
+  const [pubKeys, count] = await publishableApiKeyService.listAndCount(
     filterableFields,
     listConfig
   )
 
-  for (let orderEdit of orderEdits) {
-    orderEdit = await orderEditService.decorateTotals(orderEdit)
-  }
-
   return res.json({
-    order_edits: orderEdits,
-    count: orderEditCount,
+    publishable_api_keys: pubKeys,
+    count,
     limit: take,
     offset: skip,
   })
 }
 
-export class GetOrderEditsParams extends extendedFindParamsMixin({
+export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsString()
-  @IsOptional()
-  order_id?: string
-}
+}) {}

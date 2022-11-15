@@ -20,6 +20,7 @@ import orderRoutes from "./orders"
 import priceListRoutes from "./price-lists"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
+import publishableApiKeyRoutes from "./publishable-api-keys"
 import productRoutes from "./products"
 import regionRoutes from "./regions"
 import returnReasonRoutes from "./return-reasons"
@@ -89,6 +90,7 @@ export default (app, container, config) => {
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
+  publishableApiKeyRoutes(route)
   regionRoutes(route, featureFlagRouter)
   returnReasonRoutes(route)
   returnRoutes(route)
