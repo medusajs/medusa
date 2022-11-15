@@ -48,8 +48,8 @@ import { PaymentCollectionService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/payment_collection"
+ *             payment_session:
+ *               $ref: "#/components/schemas/payment_session"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -62,7 +62,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as AdminRefreshPaymentCollectionSessionRequest
+  const data = req.validatedBody as StoreRefreshPaymentCollectionSessionRequest
   const { id, session_id } = req.params
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
@@ -70,7 +70,7 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const paymentCollection = await manager.transaction(
+  const paymentSession = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
@@ -78,10 +78,10 @@ export default async (req, res) => {
     }
   )
 
-  res.status(200).json({ payment_collection: paymentCollection })
+  res.status(200).json({ payment_session: paymentSession })
 }
 
-export class AdminRefreshPaymentCollectionSessionRequest {
+export class StoreRefreshPaymentCollectionSessionRequest {
   @IsString()
   provider_id: string
 

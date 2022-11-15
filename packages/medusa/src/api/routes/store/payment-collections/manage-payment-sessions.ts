@@ -82,7 +82,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as AdminManagePaymentCollectionSessionRequest
+  const data = req.validatedBody as StoreManagePaymentCollectionSessionRequest
   const { id } = req.params
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
@@ -117,7 +117,7 @@ export class PaymentCollectionSessionInputRequest {
   session_id?: string
 }
 
-export class AdminManagePaymentCollectionSessionRequest {
+export class StoreManagePaymentCollectionSessionRequest {
   @IsType([
     PaymentCollectionSessionInputRequest,
     [PaymentCollectionSessionInputRequest],
