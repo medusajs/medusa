@@ -15,7 +15,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.delete(payment_collection_id)
+ *       medusa.admin.paymentCollections.delete(payment_collection_id)
  *         .then(({ id, object, deleted }) => {
  *           console.log(id)
  *         })

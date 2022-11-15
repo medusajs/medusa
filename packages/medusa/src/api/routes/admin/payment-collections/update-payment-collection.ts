@@ -29,11 +29,11 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.update(order_edit_id, {
+ *       medusa.admin.paymentCollections.update(payment_collection_id, {
  *         description: "Description of payCol"
  *       })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
+ *         .then(({ payment_collection }) => {
+ *           console.log(payment_collection.id)
  *         })
  *   - lang: Shell
  *     label: cURL
@@ -56,8 +56,8 @@ import { PaymentCollectionService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *             payment_collection:
+ *               $ref: "#/components/schemas/payment_collection"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
