@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
@@ -6,7 +6,7 @@ import { FindConfig, Selector } from "../types/common"
 import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
-import { buildQuery, isDefined } from "../utils"
+import { buildQuery, isDefined, isString } from "../utils"
 import {
   CreatePublishableApiKeyInput,
   UpdatePublishableApiKeyInput,
@@ -131,7 +131,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    * @return an array containing publishable API keys and a total count of records that matches the query
    */
   async listAndCount(
-    selector: Selector<PublishableApiKey>,
+    selector: Selector<PublishableApiKey> & { q?: string },
     config: FindConfig<PublishableApiKey> = {
       skip: 0,
       take: 20,
@@ -142,7 +142,17 @@ class PublishableApiKeyService extends TransactionBaseService {
       this.publishableApiKeyRepository_
     )
 
+    let q
+    if (isString(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
+
+    if (q) {
+      query.where.title = ILike(`%${q}%`)
+    }
 
     return await pubKeyRepo.findAndCount(query)
   }
