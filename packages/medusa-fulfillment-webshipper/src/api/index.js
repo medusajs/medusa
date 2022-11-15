@@ -3,6 +3,7 @@ import bodyParser from "body-parser"
 import crypto from "crypto"
 import cors from "cors"
 import { getConfigFile } from "medusa-core-utils"
+import { parseCorsOrigins } from "@medusajs/medusa"
 
 export default (rootDirectory) => {
   const app = Router()
@@ -11,7 +12,7 @@ export default (rootDirectory) => {
   const { projectConfig } = configModule
 
   const corsOptions = {
-    origin: projectConfig.store_cors.split(","),
+    origin: parseCorsOrigins(projectConfig.store_cors),
     credentials: true,
   }
 

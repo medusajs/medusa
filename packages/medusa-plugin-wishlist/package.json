@@ -31,7 +31,8 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.x",
+    "@medusajs/medusa": "1.x"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

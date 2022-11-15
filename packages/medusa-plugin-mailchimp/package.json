@@ -31,7 +31,8 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "1.x",
+    "@medusajs/medusa": "1.x"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
