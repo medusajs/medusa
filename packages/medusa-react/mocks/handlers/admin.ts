@@ -980,6 +980,18 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/publishable-api-keys/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        publishable_api_key: {
+          ...fixtures.get("publishable_api_key"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
   rest.post("/admin/publishable-api-keys/", (req, res, ctx) => {
     return res(
       ctx.status(200),

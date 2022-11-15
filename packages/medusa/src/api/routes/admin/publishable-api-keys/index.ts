@@ -67,3 +67,4 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 
 export * from "./list-publishable-api-keys"
 export * from "./create-publishable-api-key"
+export * from "./update-publishable-api-key"

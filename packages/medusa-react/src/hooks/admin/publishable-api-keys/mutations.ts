@@ -4,6 +4,8 @@ import { Response } from "@medusajs/medusa-js"
 import {
   AdminPublishableApiKeyDeleteRes,
   AdminPublishableApiKeysRes,
+  AdminPostPublishableApiKeysPublishableApiKeyReq,
+  AdminPostPublishableApiKeysReq,
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -11,13 +13,44 @@ import { useMedusa } from "../../../contexts"
 import { adminPublishableApiKeysKeys } from "."
 
 export const useAdminCreatePublishableApiKey = (
-  options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error, {}>
+  options?: UseMutationOptions<
+    Response<AdminPublishableApiKeysRes>,
+    Error,
+    AdminPostPublishableApiKeysReq
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: {}) => client.admin.publishableApiKeys.create(payload),
+    (payload: AdminPostPublishableApiKeysReq) =>
+      client.admin.publishableApiKeys.create(payload),
     buildOptions(queryClient, [adminPublishableApiKeysKeys.lists()], options)
+  )
+}
+
+export const useAdminUpdatePublishableApiKey = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminPublishableApiKeysRes>,
+    Error,
+    AdminPostPublishableApiKeysPublishableApiKeyReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminPostPublishableApiKeysPublishableApiKeyReq) =>
+      client.admin.publishableApiKeys.update(id, payload),
+    buildOptions(
+      queryClient,
+      [
+        adminPublishableApiKeysKeys.lists(),
+        adminPublishableApiKeysKeys.detail(id),
+        adminPublishableApiKeysKeys.details(),
+      ],
+      options
+    )
   )
 }
 
