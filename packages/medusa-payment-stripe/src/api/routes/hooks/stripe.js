@@ -49,11 +49,13 @@ export default async (req, res) => {
             })
 
           if (err) {
-            let message = `Stripe webhook payment_intent.amount_capturable_updated handling failed\n${
+            let message = `Stripe webhook ${event.type} handling failed\n${
               err?.detail ?? err?.message
             }`
             if (err.code === PostgresError.SERIALIZATION_FAILURE) {
-              message = `Stripe webhook payment_intent.amount_capturable_updated handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+              message = `Stripe webhook ${
+                event.type
+              } handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
                 err?.detail ?? err?.message
               }`
             }
