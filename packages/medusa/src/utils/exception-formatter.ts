@@ -3,7 +3,9 @@ import { MedusaError } from "medusa-core-utils"
 export enum PostgresError {
   DUPLICATE_ERROR = "23505",
   FOREIGN_KEY_ERROR = "23503",
+  SERIALIZATION_FAILURE = "40001",
 }
+
 export const formatException = (err): MedusaError => {
   switch (err.code) {
     case PostgresError.DUPLICATE_ERROR:

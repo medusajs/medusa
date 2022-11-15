@@ -1,3 +1,5 @@
+import { PostgresError } from "@medusajs/medusa"
+
 export default async (req, res) => {
   const signature = req.headers["stripe-signature"]
 
@@ -16,6 +18,7 @@ export default async (req, res) => {
 
   async function handleCartPayments(event, req, res, cartId) {
     const manager = req.scope.resolve("manager")
+    const logger = req.scope.resolve("logger")
     const cartService = req.scope.resolve("cartService")
     const orderService = req.scope.resolve("orderService")
 
@@ -34,12 +37,30 @@ export default async (req, res) => {
         break
       case "payment_intent.amount_capturable_updated":
         if (!order) {
-          await manager.transaction(async (manager) => {
-            const cartServiceTx = cartService.withTransaction(manager)
-            await cartServiceTx.setPaymentSession(cartId, "stripe")
-            await cartServiceTx.authorizePayment(cartId)
-            await orderService.withTransaction(manager).createFromCart(cartId)
-          })
+          const err = await manager
+            .transaction(async (manager) => {
+              const cartServiceTx = cartService.withTransaction(manager)
+              await cartServiceTx.setPaymentSession(cartId, "stripe")
+              await cartServiceTx.authorizePayment(cartId)
+              await orderService.withTransaction(manager).createFromCart(cartId)
+            })
+            .catch((e) => {
+              return e
+            })
+
+          if (err) {
+            let message = `Stripe webhook payment_intent.amount_capturable_updated handling failed\n${
+              err?.detail ?? err?.message
+            }`
+            if (err.code === PostgresError.SERIALIZATION_FAILURE) {
+              message = `Stripe webhook payment_intent.amount_capturable_updated handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+                err?.detail ?? err?.message
+              }`
+            }
+            logger.warning(message)
+            res.sendStatus(400).send(message)
+            return
+          }
         }
         break
       default:
