@@ -8,7 +8,7 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 import qs from "qs"
 
-class PaymentCollectionsResource extends BaseResource {
+class AdminPaymentCollectionsResource extends BaseResource {
   retrieve(
     id: string,
     query?: GetPaymentCollectionsParams,
@@ -42,4 +42,4 @@ class PaymentCollectionsResource extends BaseResource {
   }
 }
 
-export default PaymentCollectionsResource
+export default AdminPaymentCollectionsResource

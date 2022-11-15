@@ -9,7 +9,7 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 import qs from "qs"
 
-class AdminPaymentCollectionsResource extends BaseResource {
+class PaymentCollectionsResource extends BaseResource {
   retrieve(
     id: string,
     query?: GetPaymentCollectionsParams,
@@ -33,7 +33,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
-  sessions(
+  manageSessions(
     id: string,
     payload: StoreManagePaymentCollectionSessionRequest,
     customHeaders: Record<string, any> = {}
@@ -53,4 +53,4 @@ class AdminPaymentCollectionsResource extends BaseResource {
   }
 }
 
-export default AdminPaymentCollectionsResource
+export default PaymentCollectionsResource
