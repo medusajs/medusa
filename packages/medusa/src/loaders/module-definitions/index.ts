@@ -2,9 +2,13 @@ import glob from "glob"
 import path from "path"
 import resolveCwd from "resolve-cwd"
 
-import { ModuleDefinition, ModuleResolution } from "../../types/global"
+import {
+  ConfigModule,
+  ModuleDefinition,
+  ModuleResolution,
+} from "../../types/global"
 
-export default ({ modules }: { modules: Record<string, string> }) => {
+export default ({ modules }: ConfigModule) => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 
