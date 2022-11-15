@@ -333,7 +333,7 @@ describe(`PaymentProviderService`, () => {
       expect(statusCode).toBe(409)
       expect(loggerMock.warn).toHaveBeenCalledTimes(1)
       expect(loggerMock.warn).toHaveBeenCalledWith(
-        `Stripe webhook ${event} handling failed\n`
+        `Payment webhook ${event} handling failed\n`
       )
     })
 
@@ -353,7 +353,7 @@ describe(`PaymentProviderService`, () => {
       expect(statusCode).toBe(409)
       expect(loggerMock.warn).toHaveBeenCalledTimes(1)
       expect(loggerMock.warn).toHaveBeenCalledWith(
-        `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\nfailed`
+        `Payment webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\nfailed`
       )
     })
   })

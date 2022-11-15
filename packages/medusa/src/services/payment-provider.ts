@@ -702,11 +702,11 @@ export default class PaymentProviderService extends TransactionBaseService {
       isolationLevel,
       errorHandler ||
         (async (err: any) => {
-          let message = `Stripe webhook ${event} handling failed\n${
+          let message = `Payment webhook ${event} handling failed\n${
             err?.detail ?? err?.message
           }`
           if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
-            message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+            message = `Payment webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
               err?.detail ?? err?.message
             }`
           }
