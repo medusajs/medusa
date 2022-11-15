@@ -962,6 +962,60 @@ export const adminHandlers = [
     }
   ),
 
+  rest.get("/admin/publishable-api-keys/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        publishable_api_keys: fixtures.list("publishable_api_key"),
+      })
+    )
+  }),
+
+  rest.get("/admin/publishable-api-keys/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        publishable_api_key: fixtures.get("publishable_api_key"),
+      })
+    )
+  }),
+
+  rest.post("/admin/publishable-api-keys/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        publishable_api_key: {
+          ...fixtures.get("publishable_api_key"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/publishable-api-keys/:id/revoke", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        publishable_api_key: {
+          ...fixtures.get("publishable_api_key"),
+          revoked_at: "2022-11-10 11:17:46.666Z",
+          revoked_by: "admin_user",
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/publishable-api-keys/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: fixtures.get("publishable_api_key").id,
+        object: "publishable_api_key",
+        deleted: true,
+      })
+    )
+  }),
+
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(
       ctx.status(200),

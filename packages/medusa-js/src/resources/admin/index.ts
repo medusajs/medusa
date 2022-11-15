@@ -17,6 +17,7 @@ import AdminPriceListResource from "./price-lists"
 import AdminProductTagsResource from "./product-tags"
 import AdminProductTypesResource from "./product-types"
 import AdminProductsResource from "./products"
+import AdminPublishableApiKeyResource from "./publishable-api-keys"
 import AdminRegionsResource from "./regions"
 import AdminReturnReasonsResource from "./return-reasons"
 import AdminReturnsResource from "./returns"
@@ -50,6 +51,7 @@ class Admin extends BaseResource {
   public returns = new AdminReturnsResource(this.client)
   public orders = new AdminOrdersResource(this.client)
   public orderEdits = new AdminOrderEditsResource(this.client)
+  public publishableApiKeys = new AdminPublishableApiKeyResource(this.client)
   public returnReasons = new AdminReturnReasonsResource(this.client)
   public variants = new AdminVariantsResource(this.client)
   public salesChannels = new AdminSalesChannelsResource(this.client)

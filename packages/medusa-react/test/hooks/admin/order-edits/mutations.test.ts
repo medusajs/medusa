@@ -8,7 +8,6 @@ import {
   useAdminOrderEditUpdateLineItem,
   useAdminRequestOrderEditConfirmation,
   useAdminOrderEditAddLineItem,
-  useAdminCancelOrderEdit,
   useAdminUpdateOrderEdit,
   useAdminOrderEditDeleteLineItem,
 } from "../../../../src/"
@@ -68,7 +67,7 @@ describe("useAdminDeleteOrderEditItemChange hook", () => {
   })
 })
 
-describe("useAdminDelete hook", () => {
+describe("useAdminDeleteOrderEdit hook", () => {
   test("Deletes an order edit", async () => {
     const id = "oe_1"
     const { result, waitFor } = renderHook(() => useAdminDeleteOrderEdit(id), {
