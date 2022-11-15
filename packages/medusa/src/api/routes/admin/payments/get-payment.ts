@@ -7,6 +7,8 @@ import { FindParams } from "../../../../types/common"
  * summary: "Get Payment details"
  * description: "Retrieves the Payment details"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Payment.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
