@@ -16,7 +16,6 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *         required:
  *           - title
  *         properties:
- *           order_id:
  *           title:
  *             description: A title for the publishable api key
  *             type: string
