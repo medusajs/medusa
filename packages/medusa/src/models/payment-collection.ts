@@ -101,7 +101,6 @@ export class PaymentCollection extends SoftDeletableEntity {
   }
 }
 
-
 /**
  * @schema payment_collection
  * title: "Payment Collection"
@@ -132,12 +131,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *       - awaiting
  *       - authorized
  *       - partially_authorized
- *       - captured
- *       - partially_captured
- *       - refunded
- *       - partially_refunded
  *       - canceled
- *       - requires_action
  *   description:
  *     type: string
  *     description: Description of the payment collection
@@ -147,12 +141,6 @@ export class PaymentCollection extends SoftDeletableEntity {
  *   authorized_amount:
  *     type: number
  *     description: Authorized amount of the payment collection.
- *   captured_amount:
- *     type: number
- *     description: Captured amount of the payment collection.
- *   refunded_amount:
- *     type: number
- *     description: Refunded amount of the payment collection.
  *   region_id:
  *     type: string
  *     description: The region's ID
