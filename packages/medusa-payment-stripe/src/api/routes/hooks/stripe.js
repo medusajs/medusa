@@ -34,18 +34,16 @@ export default async (req, res) => {
         }
         break
       case "payment_intent.amount_capturable_updated":
-        const { statusCode } = await manager.transaction(async (manager) => {
-          return await paymentProviderService
-            .withTransaction(manager)
-            .handleWebHookEvent(
-              event.type,
-              paymentIntentAmountCapturableEventHandler({
-                order,
-                cartId,
-                container: req.scope,
-              })
-            )
-        })
+        const { statusCode } = await paymentProviderService
+          .withTransaction(manager)
+          .handleWebHookEvent(
+            event.type,
+            paymentIntentAmountCapturableEventHandler({
+              order,
+              cartId,
+              container: req.scope,
+            })
+          )
 
         return res.sendStatus(statusCode)
       default:
