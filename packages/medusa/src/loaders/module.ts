@@ -1,4 +1,4 @@
-import { asValue } from "awilix"
+import { asFunction } from "awilix"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
@@ -13,29 +13,31 @@ export default async ({
   logger,
 }: Options): Promise<void> => {
   const moduleResolutions = configModule?.moduleResolutions ?? {}
-  for (const [_, resolution] of Object.entries(moduleResolutions)) {
-    if (resolution.shouldResolve) {
-      try {
-        const loadedModule = await import(resolution.resolutionPath!)
-        console.log(resolution)
-        const moduleLoaders = loadedModule.loaders
-        if (moduleLoaders) {
-          await Promise.all(
-            moduleLoaders.map(
-              async (loader: (opts: Options) => Promise<void>) => {
-                return loader({ container, configModule, logger })
-              }
-            )
-          )
+
+  for (const resolution of Object.values(moduleResolutions)) {
+    try {
+      const loadedModule = await import(resolution.resolutionPath!)
+
+      const moduleLoaders = loadedModule.loaders
+      if (moduleLoaders) {
+        for (const loader of moduleLoaders) {
+          await loader({ container, configModule, logger })
         }
-      } catch (err) {
-        console.log(err)
-        console.log("Couldn't resolve loaders", resolution.settings.label)
       }
-    } else {
-      container.register({
-        [resolution.settings.registration]: asValue(false),
-      })
+
+      const moduleServices = loadedModule.services
+
+      if (moduleServices) {
+        for (const service of moduleServices) {
+          container.register({
+            [resolution.definition.registrationName]: asFunction(
+              (cradle) => new service(cradle, configModule)
+            ).singleton(),
+          })
+        }
+      }
+    } catch (err) {
+      console.log("Couldn't resolve module: ", resolution.definition.label)
     }
   }
 }

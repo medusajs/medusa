@@ -1,4 +1,4 @@
-import { asFunction, asValue } from "awilix"
+import { asFunction } from "awilix"
 import glob from "glob"
 import path from "path"
 import { ConfigModule, MedusaContainer } from "../types/global"
@@ -36,29 +36,4 @@ export default async ({
       })
     }
   })
-
-  const moduleResolutions = configModule?.moduleResolutions ?? {}
-  for (const [_, resolution] of Object.entries(moduleResolutions)) {
-    if (resolution.shouldResolve) {
-      try {
-        const loadedModule = await import(resolution.resolutionPath!)
-        const loadedService = loadedModule.service
-
-        container.register({
-          [resolution.settings.registration]: asFunction(
-            (cradle) => new loadedService(cradle, configModule)
-          ).singleton(),
-        })
-      } catch (err) {
-        console.log("Couldn't resolve", resolution.resolutionPath)
-        container.register({
-          [resolution.settings.registration]: asValue(false),
-        })
-      }
-    } else {
-      container.register({
-        [resolution.settings.registration]: asValue(false),
-      })
-    }
-  }
 }

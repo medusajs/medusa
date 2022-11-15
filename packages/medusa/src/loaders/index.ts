@@ -90,12 +90,6 @@ export default async ({
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
-  const modulesActivity = Logger.activity("Resolving modules")
-  track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
-  const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
-
   await redisLoader({ container, configModule, logger: Logger })
 
   const modelsActivity = Logger.activity("Initializing models")
@@ -181,7 +175,7 @@ export default async ({
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
-  const defaultsActivity = Logger.activity("Initializing defaults")
+  const defaultsActivity = Logger.activity("Initializing defaults\n")
   track("DEFAULTS_INIT_STARTED")
   await defaultsLoader({ container })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
@@ -193,6 +187,12 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
+
+  const modulesActivity = Logger.activity("Resolving modules\n")
+  track("MODULES_INIT_STARTED")
+  await moduleLoader({ container, configModule, logger: Logger })
+  const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   return { container, dbConnection, app: expressApp }
 }
