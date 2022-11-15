@@ -66,7 +66,9 @@ describe("/store/carts", () => {
         tax_rate: 0,
       })
       await manager.query(
-        `UPDATE "country" SET region_id='region' WHERE iso_2 = 'us'`
+        `UPDATE "country"
+         SET region_id='region'
+         WHERE iso_2 = 'us'`
       )
     })
 
@@ -88,9 +90,12 @@ describe("/store/carts", () => {
       const api = useApi()
 
       await dbConnection.manager.query(
-        `UPDATE "country" SET region_id=null WHERE iso_2 = 'us'`
+        `UPDATE "country"
+         SET region_id=null
+         WHERE iso_2 = 'us'`
       )
-      await dbConnection.manager.query(`DELETE from region`)
+      await dbConnection.manager.query(`DELETE
+                                        from region`)
 
       try {
         await api.post("/store/carts")
@@ -1679,7 +1684,9 @@ describe("/store/carts", () => {
       const manager = dbConnection.manager
       const api = useApi()
       await manager.query(
-        `UPDATE "cart" SET completed_at=current_timestamp WHERE id = 'test-cart-2'`
+        `UPDATE "cart"
+         SET completed_at=current_timestamp
+         WHERE id = 'test-cart-2'`
       )
       try {
         await api.post(`/store/carts/test-cart-2/complete-cart`)
@@ -1982,7 +1989,8 @@ describe("/store/carts", () => {
       try {
         await cartSeeder(dbConnection)
         await dbConnection.manager.query(
-          `INSERT INTO "cart_discounts" (cart_id, discount_id) VALUES ('test-cart', 'free-shipping')`
+          `INSERT INTO "cart_discounts" (cart_id, discount_id)
+           VALUES ('test-cart', 'free-shipping')`
         )
       } catch (err) {
         console.log(err)

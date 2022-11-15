@@ -374,11 +374,14 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   }
 
-  async createPayment(
-    cart: Cart & { payment_session: PaymentSession }
-  ): Promise<Payment> {
+  async createPayment(data: {
+    cart_id: string
+    amount: number
+    currency_code: string
+    payment_session: PaymentSession
+  }): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session: paymentSession, region, total } = cart
+      const { payment_session: paymentSession, currency_code, amount } = data
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider
@@ -391,10 +394,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
-        amount: total,
-        currency_code: region.currency_code,
+        amount,
+        currency_code,
         data: paymentData,
-        cart_id: cart.id,
+        cart_id: data.cart_id,
       })
 
       return await paymentRepo.save(created)
