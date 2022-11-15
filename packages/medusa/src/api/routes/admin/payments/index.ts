@@ -9,6 +9,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 import { GetPaymentsParams } from "./get-payment"
 import { AdminPostPaymentRefundsReq } from "./refund-payment"
+import { Payment, Refund } from "../../../../models"
 
 const route = Router()
 
@@ -52,6 +53,14 @@ export const defaultPaymentFields = [
   "canceled_at",
   "metadata",
 ]
+
+export type AdminPaymentRes = {
+  payment: Payment
+}
+
+export type AdminRefundRes = {
+  refund: Refund
+}
 
 export * from "./get-payment"
 export * from "./refund-payment"
