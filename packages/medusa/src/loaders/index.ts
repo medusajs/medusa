@@ -92,13 +92,13 @@ export default async ({
 
   await redisLoader({ container, configModule, logger: Logger })
 
-  const modelsActivity = Logger.activity("Initializing models")
+  const modelsActivity = Logger.activity("Initializing models\n")
   track("MODELS_INIT_STARTED")
   modelsLoader({ container })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
-  const pmActivity = Logger.activity("Initializing plugin models")
+  const pmActivity = Logger.activity("Initializing plugin models\n")
   track("PLUGIN_MODELS_INIT_STARTED")
   await registerPluginModels({
     rootDirectory,
@@ -108,13 +108,13 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity("Initializing repositories")
+  const repoActivity = Logger.activity("Initializing repositories\n")
   track("REPOSITORIES_INIT_STARTED")
   repositoriesLoader({ container })
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  const dbActivity = Logger.activity("Initializing database")
+  const dbActivity = Logger.activity("Initializing database\n")
   track("DATABASE_INIT_STARTED")
   const dbConnection = await databaseLoader({
     container,
@@ -125,19 +125,19 @@ export default async ({
 
   container.register({ manager: asValue(dbConnection.manager) })
 
-  const stratActivity = Logger.activity("Initializing strategies")
+  const stratActivity = Logger.activity("Initializing strategies\n")
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  const servicesActivity = Logger.activity("Initializing services")
+  const servicesActivity = Logger.activity("Initializing services\n")
   track("SERVICES_INIT_STARTED")
   await servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
-  const expActivity = Logger.activity("Initializing express")
+  const expActivity = Logger.activity("Initializing express\n")
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
   await passportLoader({ app: expressApp, container, configModule })
@@ -151,7 +151,7 @@ export default async ({
     next()
   })
 
-  const pluginsActivity = Logger.activity("Initializing plugins")
+  const pluginsActivity = Logger.activity("Initializing plugins\n")
   track("PLUGINS_INIT_STARTED")
   await pluginsLoader({
     container,
@@ -163,7 +163,7 @@ export default async ({
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
-  const subActivity = Logger.activity("Initializing subscribers")
+  const subActivity = Logger.activity("Initializing subscribers\n")
   track("SUBSCRIBERS_INIT_STARTED")
   subscribersLoader({ container })
   const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
@@ -181,7 +181,9 @@ export default async ({
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
-  const searchActivity = Logger.activity("Initializing search engine indexing")
+  const searchActivity = Logger.activity(
+    "Initializing search engine indexing\n"
+  )
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
   const searchAct =

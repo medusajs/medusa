@@ -1,11 +1,15 @@
-import { asFunction } from "awilix"
+import { asFunction, asValue } from "awilix"
+import { trackInstallation } from "medusa-telemetry"
 import { ConfigModule, Logger, MedusaContainer } from "../types/global"
+import { ModulesHelper } from "../utils/module-helper"
 
 type Options = {
   container: MedusaContainer
   configModule: ConfigModule
   logger: Logger
 }
+
+const ModuleHelper = new ModulesHelper()
 
 export default async ({
   container,
@@ -36,8 +40,21 @@ export default async ({
           })
         }
       }
+
+      const installation = {
+        module: resolution.definition.key,
+        resolution: resolution.resolutionPath,
+      }
+
+      trackInstallation(installation, "module")
     } catch (err) {
       console.log("Couldn't resolve module: ", resolution.definition.label)
     }
   }
+
+  ModuleHelper.setModules(moduleResolutions)
+
+  container.register({
+    modulesHelper: asValue(ModuleHelper),
+  })
 }
