@@ -10,6 +10,7 @@ import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 import { PublishableApiKey } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
+import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 
 const route = Router()
 
@@ -29,6 +30,12 @@ export default (app) => {
   route.get(
     "/:id",
     middlewares.wrap(require("./get-publishable-api-key").default)
+  )
+
+  route.post(
+    "/:id",
+    transformBody(AdminPostPublishableApiKeysPublishableApiKeyReq),
+    middlewares.wrap(require("./update-publishable-api-key").default)
   )
 
   route.delete(

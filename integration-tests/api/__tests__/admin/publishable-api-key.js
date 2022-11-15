@@ -139,6 +139,44 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     })
   })
 
+  describe("POST /admin/publishable-api-keys/:id", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id-update")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        title: "Initial key title",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("update a publishable key", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}`,
+        { title: "Changed title" },
+        adminHeaders
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.publishable_api_key).toMatchObject({
+        id: pubKeyId,
+        title: "Changed title",
+        revoked_by: null,
+        revoked_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
   describe("POST /admin/publishable-api-keys/:id/revoke", () => {
     const pubKeyId = IdMap.getId("pubkey-get-id")
     beforeEach(async () => {

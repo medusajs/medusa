@@ -6,8 +6,11 @@ import { FindConfig, Selector } from "../types/common"
 import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
-import { buildQuery } from "../utils"
-import { CreatePublishableApiKeyInput } from "../types/publishable-api-key"
+import { buildQuery, isDefined } from "../utils"
+import {
+  CreatePublishableApiKeyInput,
+  UpdatePublishableApiKeyInput,
+} from "../types/publishable-api-key"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -142,6 +145,29 @@ class PublishableApiKeyService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     return await pubKeyRepo.findAndCount(query)
+  }
+
+  async update(
+    publishableApiKeyId: string,
+    data: UpdatePublishableApiKeyInput
+  ): Promise<PublishableApiKey> {
+    {
+      return await this.atomicPhase_(async (manager) => {
+        const publishableApiKeyRepository = manager.getCustomRepository(
+          this.publishableApiKeyRepository_
+        )
+
+        const pubKey = await this.retrieve(publishableApiKeyId)
+
+        for (const key of Object.keys(data)) {
+          if (isDefined(data[key])) {
+            pubKey[key] = data[key]
+          }
+        }
+
+        return await publishableApiKeyRepository.save(pubKey)
+      })
+    }
   }
 
   /**
