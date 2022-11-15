@@ -49,6 +49,7 @@
 - [internal](modules/internal-44.md)
 - [internal](modules/internal-45.md)
 - [internal](modules/internal-46.md)
+- [internal](modules/internal-47.md)
 
 ## Classes
 
@@ -93,6 +94,7 @@
 - [OrderEditsResource](classes/OrderEditsResource.md)
 - [OrdersResource](classes/OrdersResource.md)
 - [PaymentMethodsResource](classes/PaymentMethodsResource.md)
+- [ProductTypesResource](classes/ProductTypesResource.md)
 - [ProductVariantsResource](classes/ProductVariantsResource.md)
 - [ProductsResource](classes/ProductsResource.md)
 - [RegionsResource](classes/RegionsResource.md)

@@ -15,6 +15,23 @@ import {
  * description: "Create an OrderEdit LineItem."
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - variant_id
+ *           - quantity
+ *         properties:
+ *           variant_id:
+ *             description: The ID of the variant ID to add
+ *             type: string
+ *           quantity:
+ *             description: The quantity to add
+ *             type: number
+ *           metadata:
+ *             description: An optional set of key-value pairs to hold additional information.
+ *             type: object
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -23,16 +40,20 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.addLineItem(order_edit_id, { variant_id, quantity })
- *        .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *        })
+ *       medusa.admin.orderEdits.addLineItem(order_edit_id, {
+ *         variant_id, 
+ *         quantity 
+ *       })
+ *       .then(({ order_edit }) => {
+ *          console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "variant_id": "some_variant_id", "quantity": 3 }'
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{ "variant_id": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6", "quantity": 3 }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

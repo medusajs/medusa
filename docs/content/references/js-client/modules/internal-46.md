@@ -2,22 +2,20 @@
 
 ## Classes
 
-- [AdditionalItem](../classes/internal-46.AdditionalItem.md)
-- [Item](../classes/internal-46.Item.md)
-- [StorePostSwapsReq](../classes/internal-46.StorePostSwapsReq.md)
+- [StoreGetShippingOptionsParams](../classes/internal-46.StoreGetShippingOptionsParams.md)
 
 ## Type Aliases
 
-### StoreSwapsRes
+### StoreShippingOptionsListRes
 
-Ƭ **StoreSwapsRes**: `Object`
+Ƭ **StoreShippingOptionsListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `shipping_options` | [`ShippingOption`](../classes/internal.ShippingOption.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/swaps/index.d.ts:7
+medusa/dist/api/routes/store/shipping-options/index.d.ts:4

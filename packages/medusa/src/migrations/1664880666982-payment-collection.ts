@@ -12,8 +12,8 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         CREATE TYPE "PAYMENT_COLLECTION_TYPE_ENUM" AS ENUM ('order_edit');
 
         CREATE TYPE "PAYMENT_COLLECTION_STATUS_ENUM" AS ENUM (
-            'not_paid', 'awaiting', 'authorized', 'partially_authorized', 'captured',
-            'partially_captured', 'refunded', 'partially_refunded', 'canceled', 'requires_action'
+            'not_paid', 'awaiting', 'authorized',
+            'partially_authorized', 'canceled'
         );
 
         CREATE TABLE IF NOT EXISTS payment_collection
@@ -27,8 +27,6 @@ export class paymentCollection1664880666982 implements MigrationInterface {
             description text NULL,
             amount integer NOT NULL,
             authorized_amount integer NULL,
-            captured_amount integer NULL,
-            refunded_amount integer NULL,
             region_id character varying NOT NULL,
             currency_code character varying NOT NULL,
             metadata jsonb NULL,
@@ -78,6 +76,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
         ALTER TABLE refund ADD COLUMN payment_id character varying NULL;
         CREATE INDEX "IDX_refund_payment_id" ON "refund" ("payment_id");
         ALTER TABLE "refund" ADD CONSTRAINT "FK_refund_payment_id" FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+        ALTER TABLE refund ALTER COLUMN order_id DROP NOT NULL;
     `)
 
     // Add missing indexes
@@ -97,6 +96,7 @@ export class paymentCollection1664880666982 implements MigrationInterface {
 
         DROP INDEX "IDX_refund_payment_id";
         ALTER TABLE refund DROP CONSTRAINT "FK_refund_payment_id";
+        ALTER TABLE refund ALTER COLUMN order_id SET NOT NULL;
 
         ALTER TABLE payment_collection DROP CONSTRAINT "FK_payment_collection_region_id";
         ALTER TABLE payment_collection_sessions DROP CONSTRAINT "FK_payment_collection_sessions_payment_collection_id";

@@ -8,6 +8,10 @@
 
   ↳ [`AdminGetCurrenciesParams`](internal-4.AdminGetCurrenciesParams.md)
 
+  ↳ [`AdminGetProductTypesParams`](internal-17.AdminGetProductTypesParams.md)
+
+  ↳ [`StoreGetProductTypesParams`](internal-40.StoreGetProductTypesParams.md)
+
 ## Properties
 
 ### limit

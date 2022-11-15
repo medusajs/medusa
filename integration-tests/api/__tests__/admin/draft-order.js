@@ -785,6 +785,40 @@ describe("/admin/draft-orders", () => {
     })
   })
 
+  describe("GET /admin/draft-orders/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await draftOrderSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("retrieves a draft-order should include the items totals", async () => {
+      const api = useApi()
+
+      const order = await api.get("/admin/draft-orders/test-draft-order", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(order.status).toEqual(200)
+      expect(order.data.draft_order).toEqual(
+        expect.objectContaining({
+          id: "test-draft-order",
+        })
+      )
+
+      order.data.draft_order.cart.items.forEach((item) => {
+        expect(item.total).toBeDefined()
+        expect(item.subtotal).toBeDefined()
+      })
+    })
+  })
+
   describe("DELETE /admin/draft-orders/:id", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)

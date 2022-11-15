@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:152](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L152)
+[medusa-js/src/resources/admin/orders.ts:152](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L152)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:161](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L161)
+[medusa-js/src/resources/admin/orders.ts:161](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L161)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:144](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L144)
+[medusa-js/src/resources/admin/orders.ts:144](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L144)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:225](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L225)
+[medusa-js/src/resources/admin/orders.ts:225](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L225)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:116](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L116)
+[medusa-js/src/resources/admin/orders.ts:116](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L116)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:97](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L97)
+[medusa-js/src/resources/admin/orders.ts:97](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L97)
 
 ___
 
@@ -157,7 +157,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:178](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L178)
+[medusa-js/src/resources/admin/orders.ts:178](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L178)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:106](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L106)
+[medusa-js/src/resources/admin/orders.ts:106](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L106)
 
 ___
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:71](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L71)
+[medusa-js/src/resources/admin/orders.ts:71](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L71)
 
 ___
 
@@ -222,7 +222,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:63](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L63)
+[medusa-js/src/resources/admin/orders.ts:63](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L63)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:216](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L216)
+[medusa-js/src/resources/admin/orders.ts:216](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L216)
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:254](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L254)
+[medusa-js/src/resources/admin/orders.ts:254](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L254)
 
 ___
 
@@ -289,7 +289,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:88](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L88)
+[medusa-js/src/resources/admin/orders.ts:88](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L88)
 
 ___
 
@@ -311,7 +311,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:126](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L126)
+[medusa-js/src/resources/admin/orders.ts:126](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L126)
 
 ___
 
@@ -333,7 +333,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:169](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L169)
+[medusa-js/src/resources/admin/orders.ts:169](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L169)
 
 ___
 
@@ -356,7 +356,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:197](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L197)
+[medusa-js/src/resources/admin/orders.ts:197](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L197)
 
 ___
 
@@ -379,7 +379,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:244](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L244)
+[medusa-js/src/resources/admin/orders.ts:244](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L244)
 
 ___
 
@@ -402,7 +402,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:187](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L187)
+[medusa-js/src/resources/admin/orders.ts:187](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L187)
 
 ___
 
@@ -423,7 +423,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:49](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L49)
+[medusa-js/src/resources/admin/orders.ts:49](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L49)
 
 ___
 
@@ -445,7 +445,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:207](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L207)
+[medusa-js/src/resources/admin/orders.ts:207](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L207)
 
 ___
 
@@ -467,7 +467,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:79](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L79)
+[medusa-js/src/resources/admin/orders.ts:79](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L79)
 
 ___
 
@@ -489,7 +489,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:135](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L135)
+[medusa-js/src/resources/admin/orders.ts:135](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L135)
 
 ___
 
@@ -511,7 +511,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:34](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L34)
+[medusa-js/src/resources/admin/orders.ts:34](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L34)
 
 ___
 
@@ -533,7 +533,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:25](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L25)
+[medusa-js/src/resources/admin/orders.ts:25](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L25)
 
 ___
 
@@ -556,4 +556,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/orders.ts:234](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/orders.ts#L234)
+[medusa-js/src/resources/admin/orders.ts:234](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/orders.ts#L234)

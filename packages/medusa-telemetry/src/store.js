@@ -1,16 +1,16 @@
-import path from "path"
 import Configstore from "configstore"
+import path from "path"
 
-import InMemConfig from "./util/in-memory-config"
-import OutboxStore from "./util/outbox-store"
+import { InMemoryConfigStore } from "./util/in-memory-config"
 import isTruthy from "./util/is-truthy"
+import OutboxStore from "./util/outbox-store"
 
 class Store {
   constructor() {
     try {
       this.config_ = new Configstore(`medusa`, {}, { globalConfigPath: true })
     } catch (e) {
-      this.config_ = new InMemConfig()
+      this.config_ = new InMemoryConfigStore()
     }
 
     const baseDir = path.dirname(this.config_.path)
@@ -37,11 +37,11 @@ class Store {
   }
 
   async flushEvents(handler) {
-    return await this.outbox_.startFlushEvents(async eventData => {
+    return await this.outbox_.startFlushEvents(async (eventData) => {
       const events = eventData
         .split(`\n`)
-        .filter(e => e && e.length > 2)
-        .map(e => JSON.parse(e))
+        .filter((e) => e && e.length > 2)
+        .map((e) => JSON.parse(e))
 
       return await handler(events)
     })

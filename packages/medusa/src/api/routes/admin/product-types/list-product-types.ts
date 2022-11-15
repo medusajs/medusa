@@ -1,12 +1,12 @@
 import {
   DateComparisonOperator,
+  FindPaginationParams,
   StringComparisonOperator,
 } from "../../../../types/common"
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 
 import { IsType } from "../../../../utils/validators/is-type"
 import ProductTypeService from "../../../../services/product-type"
-import { Type } from "class-transformer"
 
 /**
  * @oas [get] /product-types
@@ -15,7 +15,7 @@ import { Type } from "class-transformer"
  * description: "Retrieve a list of Product Types."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=10 {integer} The number of types to return.
+ *   - (query) limit=20 {integer} The number of types to return.
  *   - (query) offset=0 {integer} The number of items to skip before the results.
  *   - (query) order {string} The field to sort items by.
  *   - (query) discount_condition_id {string} The discount condition id on which to filter the product types.
@@ -154,20 +154,8 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetProductTypesPaginationParams {
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit? = 10
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset? = 0
-}
-
 // eslint-disable-next-line max-len
-export class AdminGetProductTypesParams extends AdminGetProductTypesPaginationParams {
+export class AdminGetProductTypesParams extends FindPaginationParams {
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator

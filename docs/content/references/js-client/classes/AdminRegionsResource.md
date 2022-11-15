@@ -32,7 +32,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:103](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L103)
+[medusa-js/src/resources/admin/regions.ts:103](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L103)
 
 ___
 
@@ -60,7 +60,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:135](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L135)
+[medusa-js/src/resources/admin/regions.ts:135](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L135)
 
 ___
 
@@ -88,7 +88,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:181](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L181)
+[medusa-js/src/resources/admin/regions.ts:181](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L181)
 
 ___
 
@@ -115,7 +115,7 @@ created region.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L24)
+[medusa-js/src/resources/admin/regions.ts:24](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L24)
 
 ___
 
@@ -142,7 +142,7 @@ Deleted response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:54](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L54)
+[medusa-js/src/resources/admin/regions.ts:54](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L54)
 
 ___
 
@@ -170,7 +170,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:119](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L119)
+[medusa-js/src/resources/admin/regions.ts:119](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L119)
 
 ___
 
@@ -198,7 +198,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:151](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L151)
+[medusa-js/src/resources/admin/regions.ts:151](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L151)
 
 ___
 
@@ -226,7 +226,7 @@ updated region
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:197](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L197)
+[medusa-js/src/resources/admin/regions.ts:197](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L197)
 
 ___
 
@@ -253,7 +253,7 @@ a list of regions matching the query.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:82](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L82)
+[medusa-js/src/resources/admin/regions.ts:82](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L82)
 
 ___
 
@@ -280,7 +280,7 @@ the region with the given id
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:68](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L68)
+[medusa-js/src/resources/admin/regions.ts:68](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L68)
 
 ___
 
@@ -307,7 +307,7 @@ list of fulfillment options
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:166](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L166)
+[medusa-js/src/resources/admin/regions.ts:166](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L166)
 
 ___
 
@@ -335,4 +335,4 @@ the updated region.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:39](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/regions.ts#L39)
+[medusa-js/src/resources/admin/regions.ts:39](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/regions.ts#L39)

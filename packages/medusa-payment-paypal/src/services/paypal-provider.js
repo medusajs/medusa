@@ -77,7 +77,7 @@ class PayPalProviderService extends PaymentService {
    * Not supported
    */
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([])
+    return []
   }
 
   /**

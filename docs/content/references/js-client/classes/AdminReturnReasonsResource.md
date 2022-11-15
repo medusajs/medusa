@@ -31,7 +31,7 @@ Created return reason.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
+[medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
 
 ___
 
@@ -58,7 +58,7 @@ Deleted response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
+[medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
 
 ___
 
@@ -84,7 +84,7 @@ a list of return reasons matching the query.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
+[medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
 
 ___
 
@@ -111,7 +111,7 @@ the return reason with the given id
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
+[medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
 
 ___
 
@@ -139,4 +139,4 @@ the updated return reason.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)
+[medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)

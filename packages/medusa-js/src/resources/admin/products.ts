@@ -67,6 +67,9 @@ class AdminProductsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
+  /**
+   * @deprecated Use {@link AdminProductTypesResource.list} instead.
+   */
   listTypes(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsListTypesRes> {

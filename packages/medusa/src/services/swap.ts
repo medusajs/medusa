@@ -600,7 +600,7 @@ class SwapService extends TransactionBaseService {
         order?.discounts?.filter(({ rule }) => rule.type !== "free_shipping") ||
         undefined
 
-      const cart = await this.cartService_.withTransaction(manager).create({
+      let cart = await this.cartService_.withTransaction(manager).create({
         discounts,
         email: order.email,
         billing_address_id: order.billing_address_id,
@@ -627,16 +627,31 @@ class SwapService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
       const lineItemAdjustmentServiceTx =
         this.lineItemAdjustmentService_.withTransaction(manager)
-      for (const item of swap.additional_items) {
-        await lineItemServiceTx.update(item.id, {
-          cart_id: cart.id,
-        })
-        // we generate adjustments in case the cart has any discounts that should be applied to the additional items
-        await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
-          cart,
-          item
+
+      await Promise.all(
+        swap.additional_items.map(
+          async (item) =>
+            await lineItemServiceTx.update(item.id, {
+              cart_id: cart.id,
+            })
         )
-      }
+      )
+
+      cart = await this.cartService_
+        .withTransaction(manager)
+        .retrieve(cart.id, {
+          relations: ["items", "region", "discounts", "discounts.rule"],
+        })
+
+      await Promise.all(
+        cart.items.map(async (item) => {
+          // we generate adjustments in case the cart has any discounts that should be applied to the additional items
+          await lineItemAdjustmentServiceTx.createAdjustmentForLineItem(
+            cart,
+            item
+          )
+        })
+      )
 
       // If the swap has a return shipping method the price has to be added to
       // the cart.
@@ -704,14 +719,8 @@ class SwapService extends TransactionBaseService {
 
       const cart = await this.cartService_
         .withTransaction(manager)
-        .retrieve(swap.cart_id, {
-          select: ["total"],
-          relations: [
-            "payment",
-            "shipping_methods",
-            "items",
-            "items.adjustments",
-          ],
+        .retrieveWithTotals(swap.cart_id, {
+          relations: ["payment"],
         })
 
       const { payment } = cart
@@ -787,7 +796,13 @@ class SwapService extends TransactionBaseService {
 
       swap.difference_due = total
       swap.shipping_address_id = cart.shipping_address_id
-      swap.shipping_methods = cart.shipping_methods
+      // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+      // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+      // We normally should only pass what is needed?
+      swap.shipping_methods = cart.shipping_methods.map((method) => {
+        ;(method.tax_lines as any) = undefined
+        return method
+      })
       swap.confirmed_at = new Date()
       swap.payment_status =
         total === 0 ? SwapPaymentStatus.CONFIRMED : SwapPaymentStatus.AWAITING

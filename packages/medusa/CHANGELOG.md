@@ -1,5 +1,26 @@
 # Change Log
 
+## 1.6.3
+
+### Patch Changes
+
+- [#2583](https://github.com/medusajs/medusa/pull/2583) [`699bb1d57`](https://github.com/medusajs/medusa/commit/699bb1d57bfe532a6bcff1aea7a75bc793c135cd) Thanks [@adrien2p](https://github.com/adrien2p)! - Retrieve deleted regions on orders
+
+## 1.6.2
+
+### Patch Changes
+
+- [#2568](https://github.com/medusajs/medusa/pull/2568) [`2d095a0ce`](https://github.com/medusajs/medusa/commit/2d095a0ce14ab7f24b4e6856cb4850cea18af21c) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): fix missing throw in the store cart create-payment-sessions
+
+* [#2566](https://github.com/medusajs/medusa/pull/2566) [`8069ed5e9`](https://github.com/medusajs/medusa/commit/8069ed5e99dc53a912df9bb860114d2258044108) Thanks [@srindom](https://github.com/srindom)! - fix(medusa): add support for retrying failed event bus jobs
+
+- [#2552](https://github.com/medusajs/medusa/pull/2552) [`7b0ceeffb`](https://github.com/medusajs/medusa/commit/7b0ceeffb4616c3f4e0cf51aba2ab381c61ea5d7) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(medusa, medusa-js, medusa-react): /store api product types
+
+* [#2460](https://github.com/medusajs/medusa/pull/2460) [`5ea4b728e`](https://github.com/medusajs/medusa/commit/5ea4b728e728a7e6d4d6fe7255ea80395ab75bd3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Order/cart decorate totals should assign items totals, shipping option requirements should be tax-inclusive if shipping option is, ensure swaps can be created on orders with discounts
+
+* Updated dependencies []:
+  - @medusajs/medusa-cli@1.3.4
+
 ## 1.6.1
 
 ### Patch Changes

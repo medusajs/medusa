@@ -127,7 +127,7 @@ Make sure to replace `<YOUR_CLIENT_ID>` with your PayPal Client ID.
 
 Now, if you run your Medusa server and your storefront, on checkout you’ll be able to use PayPal].
 
-![PayPal Button](https://i.imgur.com/F8OvsOJ.png)
+![PayPal Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000463/Medusa%20Docs/PayPal/F8OvsOJ_v3ctol.png)
 
 You can test out the payment with PayPal using your sandbox account.
 
@@ -276,7 +276,7 @@ That’s all you need to integrate PayPal into the Gatsby storefront.
 
 Now, start the Medusa server and the Gatsby storefront server. Try adding an item into the cart and proceeding to checkout. When you reach the payment step, you should see the PayPal button.
 
-![PayPal Button](https://i.imgur.com/SMLrptP.png)
+![PayPal Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000477/Medusa%20Docs/PayPal/SMLrptP_g6b22m.png)
 
 You can test out the payment with PayPal using your sandbox account.
 
@@ -382,13 +382,13 @@ You can then import this component where you want to show it in your storefront.
 
 If you run the Medusa server and the storefront server, you should see the PayPal button on checkout.
 
-![PayPal Button](https://i.imgur.com/PsibgPY.png)
+![PayPal Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000492/Medusa%20Docs/PayPal/PsibgPY_xtqdli.png)
 
 ## Capture Payments
 
 After the customer places an order, you can see the order on the admin panel. In the payment information under the “Payment” section, you should see a “Capture” button.
 
-![Capture Payment](https://i.imgur.com/Mx357yY.png)
+![Capture Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000502/Medusa%20Docs/PayPal/Mx357yY_xsandw.png)
 
 Clicking this button lets you capture the payment for an order. You can also refund payments if an order has captured payments.
 
