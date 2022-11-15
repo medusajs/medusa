@@ -71,24 +71,22 @@ class InventoryService extends TransactionBaseService {
       return true
     }
 
-    return await this.atomicPhase_(async (manager) => {
-      const variant = await this.productVariantService_
-        .withTransaction(manager)
-        .retrieve(variantId)
-      const { inventory_quantity, allow_backorder, manage_inventory } = variant
-      const isCovered =
-        !manage_inventory || allow_backorder || inventory_quantity >= quantity
+    const variant = await this.productVariantService_
+      .withTransaction(this.manager_)
+      .retrieve(variantId)
+    const { inventory_quantity, allow_backorder, manage_inventory } = variant
+    const isCovered =
+      !manage_inventory || allow_backorder || inventory_quantity >= quantity
 
-      if (!isCovered) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Variant with id: ${variant.id} does not have the required inventory`,
-          MedusaError.Codes.INSUFFICIENT_INVENTORY
-        )
-      }
+    if (!isCovered) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Variant with id: ${variant.id} does not have the required inventory`,
+        MedusaError.Codes.INSUFFICIENT_INVENTORY
+      )
+    }
 
-      return isCovered
-    })
+    return isCovered
   }
 }
 
