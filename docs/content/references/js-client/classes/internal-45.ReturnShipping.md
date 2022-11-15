@@ -1,6 +1,6 @@
 # Class: ReturnShipping
 
-[internal](../modules/internal-44.md).ReturnShipping
+[internal](../modules/internal-45.md).ReturnShipping
 
 ## Properties
 

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[medusa-js/src/typings.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/typings.ts#L13)
+[medusa-js/src/typings.ts:13](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L13)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:10](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/typings.ts#L10)
+[medusa-js/src/typings.ts:10](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L10)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:14](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/typings.ts#L14)
+[medusa-js/src/typings.ts:14](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L14)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:8](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/typings.ts#L8)
+[medusa-js/src/typings.ts:8](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L8)
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:9](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/typings.ts#L9)
+[medusa-js/src/typings.ts:9](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L9)

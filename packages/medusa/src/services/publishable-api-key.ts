@@ -103,9 +103,13 @@ class PublishableApiKeyService extends TransactionBaseService {
     )
 
     if (!publishableApiKey) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `PublishableApiKey was not found`
+        `Publishable key with ${selectorConstraints} was not found`
       )
     }
 

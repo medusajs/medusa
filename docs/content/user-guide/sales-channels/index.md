@@ -8,7 +8,7 @@ In this document, you’ll get an overview of sales channels in Medusa and learn
 
 :::note
 
-Sales Channels are currently in beta mode and need to be [manually enabled in your store using feature flags](https://medusajs.com/blog/medusa-1-3-5-introducing-sales-channel-api#how-to-enable-sales-channels). If you’re unsure how that works, please contact your technical team.
+Sales Channels are currently in beta mode and need to be [manually enabled in your store using feature flags](../../advanced/backend/feature-flags/toggle.md). If you’re unsure how that works, please contact your technical team.
 
 :::
 

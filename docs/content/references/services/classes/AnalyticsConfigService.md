@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:24](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L24)
+[packages/medusa/src/services/analytics-config.ts:24](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L24)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:21](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L21)
+[packages/medusa/src/services/analytics-config.ts:21](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L21)
 
 ___
 
@@ -76,7 +76,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:18](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L18)
+[packages/medusa/src/services/analytics-config.ts:18](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L18)
 
 ___
 
@@ -90,7 +90,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L19)
+[packages/medusa/src/services/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L19)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:22](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L22)
+[packages/medusa/src/services/analytics-config.ts:22](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L22)
 
 ## Methods
 
@@ -139,7 +139,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -162,7 +162,7 @@ Creates an analytics config.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:56](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L56)
+[packages/medusa/src/services/analytics-config.ts:56](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L56)
 
 ___
 
@@ -184,7 +184,7 @@ Deletes an analytics config.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:103](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L103)
+[packages/medusa/src/services/analytics-config.ts:103](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L103)
 
 ___
 
@@ -204,7 +204,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:32](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L32)
+[packages/medusa/src/services/analytics-config.ts:32](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L32)
 
 ___
 
@@ -228,7 +228,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -251,7 +251,7 @@ Updates an analytics config. If the config does not exist, it will be created in
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:72](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/services/analytics-config.ts#L72)
+[packages/medusa/src/services/analytics-config.ts:72](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/analytics-config.ts#L72)
 
 ___
 
@@ -275,4 +275,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

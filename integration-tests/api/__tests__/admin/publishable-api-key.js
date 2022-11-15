@@ -130,7 +130,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         adminHeaders
       )
 
-      expect(response.status).toBe(201)
+      expect(response.status).toBe(200)
       expect(response.data.publishable_api_key).toMatchObject({
         created_by: "admin_user",
         id: expect.any(String),

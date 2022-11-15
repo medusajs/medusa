@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.6.3
+
+### Patch Changes
+
+- [#2583](https://github.com/medusajs/medusa/pull/2583) [`699bb1d57`](https://github.com/medusajs/medusa/commit/699bb1d57bfe532a6bcff1aea7a75bc793c135cd) Thanks [@adrien2p](https://github.com/adrien2p)! - Retrieve deleted regions on orders
+
 ## 1.6.2
 
 ### Patch Changes
