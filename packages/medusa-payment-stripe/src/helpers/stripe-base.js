@@ -1,5 +1,5 @@
-import Stripe from "stripe"
 import { AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
+import Stripe from "stripe"
 
 class StripeBase extends AbstractPaymentService {
   static identifier = null
@@ -12,8 +12,7 @@ class StripeBase extends AbstractPaymentService {
       regionService,
       manager,
     },
-    options,
-    paymentMethodTypes
+    options
   ) {
     super(
       {
@@ -25,8 +24,6 @@ class StripeBase extends AbstractPaymentService {
       },
       options
     )
-    /** @private @const {string[]} */
-    this.paymentMethodTypes = paymentMethodTypes
 
     /**
      * Required Stripe options:
@@ -58,6 +55,25 @@ class StripeBase extends AbstractPaymentService {
     this.manager_ = manager
   }
 
+  getPaymentIntentOptions() {
+    const options = {}
+
+    if (this?.paymentIntentOptions?.capture_method) {
+      options.capture_method = this.paymentIntentOptions.capture_method
+    }
+
+    if (this?.paymentIntentOptions?.setup_future_usage) {
+      options.setup_future_usage = this.paymentIntentOptions.setup_future_usage
+    }
+
+    if (this?.paymentIntentOptions?.payment_method_types) {
+      options.payment_method_types =
+        this.paymentIntentOptions.payment_method_types
+    }
+
+    return options
+  }
+
   /**
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
@@ -74,7 +90,7 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<Data[]>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([])
+    return []
   }
 
   /**
@@ -104,24 +120,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
-    const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
-      capture_method: "automatic",
-    }
+    const intentRequestData = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPayment(cart, intentRequest)
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPayment(cart, intentRequestData)
   }
 
   async createPaymentNew(paymentInput) {
-    const intentRequest = {
-      payment_method_types: this.paymentMethodTypes,
-      capture_method: "automatic",
-    }
+    const intentRequestData = this.getPaymentIntentOptions()
 
-    return await this.stripeProviderService_.createPaymentNew(
-      paymentInput,
-      intentRequest
-    )
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .createPaymentNew(paymentInput, intentRequestData)
   }
 
   /**
@@ -170,17 +181,19 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
-    return await this.stripeProviderService_.updatePayment(
-      paymentSessionData,
-      cart
-    )
+    const intentRequestData = this.getPaymentIntentOptions()
+
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePayment(paymentSessionData, cart, intentRequestData)
   }
 
   async updatePaymentNew(paymentSessionData, paymentInput) {
-    return await this.stripeProviderService_.updatePaymentNew(
-      paymentSessionData,
-      paymentInput
-    )
+    const intentRequestData = this.getPaymentIntentOptions()
+
+    return await this.stripeProviderService_
+      .withTransaction(this.manager_)
+      .updatePaymentNew(paymentSessionData, paymentInput, intentRequestData)
   }
 
   async deletePayment(paymentSession) {

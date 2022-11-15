@@ -32,5 +32,5 @@ In the list, you can see group details such as the group’s title and the numbe
 
 ## Learn More About Customers
 
-- [Manage and View a Customer’s Details](./manage.md)
+- [Manage and View a Customer’s Details](./manage.mdx)
 - [Manage and View a Customer Group](./groups.mdx)

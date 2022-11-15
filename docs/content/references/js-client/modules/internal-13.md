@@ -61,4 +61,4 @@ medusa/dist/api/routes/admin/order-edits/index.d.ts:5
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:61
+medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:70

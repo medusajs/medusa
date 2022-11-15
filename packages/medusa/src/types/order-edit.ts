@@ -26,6 +26,7 @@ export const defaultOrderEditRelations: string[] = [
   "items",
   "items.adjustments",
   "items.tax_lines",
+  "payment_collection",
 ]
 
 export const defaultOrderEditFields: (keyof OrderEdit)[] = [
@@ -45,6 +46,7 @@ export const defaultOrderEditFields: (keyof OrderEdit)[] = [
   "canceled_by",
   "canceled_at",
   "internal_note",
+  "payment_collection_id",
 ]
 
 export const storeOrderEditNotAllowedFieldsAndRelations = [

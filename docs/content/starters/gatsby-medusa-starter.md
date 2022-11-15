@@ -2,7 +2,7 @@
 
 This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
 
-![Gatsby Storefront Quick Look](https://i.imgur.com/LcAsi8r.gif)
+![Gatsby Storefront Quick Look](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003111/Medusa%20Docs/Screenshots/LcAsi8r_yivcro.gif)
 
 ## Instant Deployment to Netlify
 
@@ -98,16 +98,16 @@ The Gatsby storefront comes with a lot of features out of the box including:
 
 - View all products and manage your cart.
 
-    ![Products Page](https://i.imgur.com/P0Mpvxh.png)
+    ![Products Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003126/Medusa%20Docs/Screenshots/P0Mpvxh_qznct6.png)
 - Customer authentication.
 
-    ![Sign In Page](https://i.imgur.com/0sVcZeS.png)
+    ![Sign In Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003139/Medusa%20Docs/Screenshots/0sVcZeS_z6cftp.png)
 - Full checkout workflow.
 
-    ![One-Page Checkout](https://i.imgur.com/5wSs3yZ.png)
+    ![One-Page Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003152/Medusa%20Docs/Screenshots/5wSs3yZ_iivxrh.png)
 - Request swaps and returns using a customer’s order ID and Email.
 
-    ![Request Return for Order](https://i.imgur.com/mAChp3f.png)
+    ![Request Return for Order](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003162/Medusa%20Docs/Screenshots/mAChp3f_ubd89n.png)
 
 ## What’s Next
 

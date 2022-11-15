@@ -4,6 +4,7 @@ import {
   EventBusService,
   PaymentCollectionService,
   PaymentProviderService,
+  PaymentService,
 } from "../index"
 import {
   PaymentCollectionStatus,
@@ -118,7 +119,6 @@ describe("PaymentCollectionService", () => {
       {
         id: IdMap.getId("payment-123"),
         amount: 35000,
-        captured_amount: 0,
       },
     ],
     status: PaymentCollectionStatus.AUTHORIZED,
@@ -288,7 +288,6 @@ describe("PaymentCollectionService", () => {
   it("should update a payment collection with the right arguments", async () => {
     const submittedChanges = {
       description: "updated description",
-      status: PaymentCollectionStatus.CAPTURED,
       metadata: {
         extra: 123,
         arr: ["a", "b", "c"],
@@ -323,7 +322,6 @@ describe("PaymentCollectionService", () => {
   it("should throw error to update a non-existing payment collection", async () => {
     const submittedChanges = {
       description: "updated description",
-      status: PaymentCollectionStatus.CAPTURED,
       metadata: {
         extra: 123,
         arr: ["a", "b", "c"],
@@ -530,7 +528,6 @@ describe("PaymentCollectionService", () => {
         IdMap.getId("payCol_session1"),
         {
           customer_id: "customer1",
-          amount: 100,
           provider_id: IdMap.getId("region1_provider1"),
         }
       )
@@ -544,19 +541,20 @@ describe("PaymentCollectionService", () => {
       )
     })
 
-    it("should fail to refresh a payment session if the amount is different", async () => {
+    it("should throw to refresh a payment session that doesn't exist", async () => {
       const sess = paymentCollectionService.refreshPaymentSession(
         IdMap.getId("payment-collection-session"),
-        IdMap.getId("payCol_session1"),
+        IdMap.getId("payCol_session-not-found"),
         {
           customer_id: "customer1",
-          amount: 80,
           provider_id: IdMap.getId("region1_provider1"),
         }
       )
 
       expect(sess).rejects.toThrow(
-        "The amount has to be the same as the existing payment session"
+        `Session with id ${IdMap.getId(
+          "payCol_session-not-found"
+        )} was not found`
       )
       expect(PaymentProviderServiceMock.refreshSessionNew).toBeCalledTimes(0)
       expect(DefaultProviderMock.deletePayment).toBeCalledTimes(0)
@@ -631,58 +629,6 @@ describe("PaymentCollectionService", () => {
         0
       )
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)
-    })
-  })
-
-  describe("Capture Payments", () => {
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should throw error if the status is not authorized", async () => {
-      paymentCollectionRepository.getPaymentCollectionIdByPaymentId = jest
-        .fn()
-        .mockReturnValue(Promise.resolve(notAuthorizedSample))
-
-      PaymentProviderServiceMock.capturePayment = jest
-        .fn()
-        .mockReturnValue(Promise.resolve())
-
-      const ret = paymentCollectionService.capture(
-        IdMap.getId("payment-collection-not-authorized")
-      )
-
-      expect(ret).rejects.toThrowError(
-        new Error(
-          `A Payment Collection with status ${PaymentCollectionStatus.PARTIALLY_AUTHORIZED} cannot capture payment`
-        )
-      )
-
-      expect(PaymentProviderServiceMock.capturePayment).toBeCalledTimes(0)
-    })
-
-    it("should emit PAYMENT_CAPTURE_FAILED if payment capture has failed", async () => {
-      paymentCollectionRepository.getPaymentCollectionIdByPaymentId = jest
-        .fn()
-        .mockReturnValue(Promise.resolve(fullyAuthorizedSample))
-
-      PaymentProviderServiceMock.retrievePayment = jest.fn().mockReturnValue(
-        Promise.resolve({
-          id: IdMap.getId("payment-123"),
-          amount: 35000,
-          captured_amount: 0,
-        })
-      )
-
-      PaymentProviderServiceMock.capturePayment = jest
-        .fn()
-        .mockRejectedValue("capture failed")
-
-      const ret = paymentCollectionService.capture(IdMap.getId("payment-123"))
-
-      expect(ret).rejects.toThrowError(
-        new Error(`Failed to capture Payment ${IdMap.getId("payment-123")}`)
-      )
     })
   })
 })

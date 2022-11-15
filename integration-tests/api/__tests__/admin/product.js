@@ -1866,6 +1866,7 @@ describe("/admin/products", () => {
 
       expect(res.status).toEqual(200)
 
+      expect(insertedVariant.prices).toHaveLength(2)
       expect(insertedVariant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

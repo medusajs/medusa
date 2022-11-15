@@ -36,6 +36,7 @@ const config = {
     require.resolve("docusaurus-plugin-image-zoom")
   ],
   themeConfig: {
+    image: 'img/docs-banner.jpg',
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
@@ -155,6 +156,10 @@ const config = {
         {
           title: "Community",
           items: [
+            {
+              label: "User Trials",
+              href: "https://ky5eo2x1u81.typeform.com/to/bFCQpY59",
+            },
             {
               label: "Stack Overflow",
               href: "https://stackoverflow.com/questions/tagged/medusa-commerce",
