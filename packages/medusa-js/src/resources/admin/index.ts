@@ -30,6 +30,8 @@ import AdminTaxRatesResource from "./tax-rates"
 import AdminUploadsResource from "./uploads"
 import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
+import AdminPaymentCollectionsResource from "./payment-collections"
+import AdminPaymentsResource from "./payments"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -63,6 +65,8 @@ class Admin extends BaseResource {
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)
+  public paymentCollections = new AdminPaymentCollectionsResource(this.client)
+  public payments = new AdminPaymentsResource(this.client)
 }
 
 export default Admin
