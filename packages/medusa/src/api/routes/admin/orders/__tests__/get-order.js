@@ -26,11 +26,23 @@ describe("GET /admin/orders", () => {
     })
 
     it("calls orderService retrieve", () => {
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.retrieve).toHaveBeenCalledWith(
+      expect(OrderServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
+      expect(OrderServiceMock.retrieveWithTotals).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         {
-          select: defaultAdminOrdersFields,
+          select: defaultAdminOrdersFields.filter((field) => {
+            return ![
+              "shipping_total",
+              "discount_total",
+              "tax_total",
+              "refunded_total",
+              "total",
+              "subtotal",
+              "refundable_amount",
+              "gift_card_total",
+              "gift_card_tax_total",
+            ].includes(field)
+          }),
           relations: defaultAdminOrdersRelations,
         }
       )
