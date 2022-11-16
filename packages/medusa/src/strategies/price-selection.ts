@@ -11,17 +11,27 @@ import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
 import { isDefined } from "../utils/is-defined"
+import { Redis } from "ioredis"
+
+const CACHE_TIME = 60 * 60 // seconds
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
+  private redis_: Redis
   private featureFlagRouter_: FlagRouter
   private manager_: EntityManager
 
-  constructor({ manager, featureFlagRouter, moneyAmountRepository }) {
+  constructor({
+    manager,
+    featureFlagRouter,
+    moneyAmountRepository,
+    redisClient,
+  }) {
     super()
     this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
     this.featureFlagRouter_ = featureFlagRouter
+    this.redis_ = redisClient
   }
 
   withTransaction(manager: EntityManager): IPriceSelectionStrategy {
@@ -33,7 +43,44 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       manager: manager,
       moneyAmountRepository: this.moneyAmountRepository_,
       featureFlagRouter: this.featureFlagRouter_,
+      redisClient: this.redis_,
     })
+  }
+
+  private getCacheKey(
+    variantId: string,
+    context: PriceSelectionContext
+  ): string {
+    const taxRate =
+      context.tax_rates?.reduce(
+        (accRate: number, nextTaxRate: TaxServiceRate) => {
+          return accRate + (nextTaxRate.rate || 0) / 100
+        },
+        0
+      ) || 0
+
+    return `ps:${variantId}:${context.region_id}:${context.currency_code}:${context.customer_id}:${context.quantity}:${context.include_discount_prices}:${taxRate}`
+  }
+
+  private async setCache(
+    cacheKey: string,
+    result: PriceSelectionResult
+  ): Promise<void> {
+    await this.redis_.set(cacheKey, JSON.stringify(result), "EX", CACHE_TIME)
+  }
+
+  private async getCacheEntry(
+    cacheKey: string
+  ): Promise<PriceSelectionResult | null> {
+    try {
+      const cached = await this.redis_.get(cacheKey)
+      if (cached) {
+        return JSON.parse(cached)
+      }
+    } catch (err) {
+      await this.redis_.del(cacheKey)
+    }
+    return null
   }
 
   async calculateVariantPrice(
@@ -54,6 +101,17 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
+    let cacheKey: string | undefined
+    try {
+      cacheKey = this.getCacheKey(variant_id, context)
+      const cached = await this.getCacheEntry(cacheKey)
+      if (cached) {
+        return cached
+      }
+    } catch (err) {
+      // noop
+    }
+
     const moneyRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
     )
@@ -134,6 +192,10 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         result.calculatedPriceType = ma.price_list?.type || PriceType.DEFAULT
         result.calculatedPriceIncludesTax = isTaxInclusive
       }
+    }
+
+    if (cacheKey) {
+      await this.setCache(cacheKey, result)
     }
 
     return result
