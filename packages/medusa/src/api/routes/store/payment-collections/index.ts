@@ -8,9 +8,10 @@ import middlewares, {
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
-import { AdminManagePaymentCollectionSessionRequest } from "./manage-payment-sessions"
-import { AdminRefreshPaymentCollectionSessionRequest } from "./refresh-payment-session"
+import { StoreManagePaymentCollectionSessionRequest } from "./manage-payment-sessions"
+import { StoreRefreshPaymentCollectionSessionRequest } from "./refresh-payment-session"
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { PaymentCollection, PaymentSession } from "../../../../models"
 
 const route = Router()
 
@@ -38,13 +39,13 @@ export default (app, container) => {
 
   route.post(
     "/:id/sessions",
-    transformBody(AdminManagePaymentCollectionSessionRequest),
+    transformBody(StoreManagePaymentCollectionSessionRequest),
     middlewares.wrap(require("./manage-payment-sessions").default)
   )
 
   route.post(
     "/:id/sessions/:session_id/refresh",
-    transformBody(AdminRefreshPaymentCollectionSessionRequest),
+    transformBody(StoreRefreshPaymentCollectionSessionRequest),
     middlewares.wrap(require("./refresh-payment-session").default)
   )
 
@@ -64,6 +65,14 @@ export const defaultPaymentCollectionFields = [
 ]
 
 export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
+
+export type StorePaymentCollectionRes = {
+  payment_collection: PaymentCollection
+}
+
+export type StorePaymentCollectionSessionRes = {
+  payment_session: PaymentSession
+}
 
 export * from "./get-payment-collection"
 export * from "./manage-payment-sessions"

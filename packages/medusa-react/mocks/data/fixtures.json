@@ -1151,6 +1151,14 @@
       "updated_at": "2021-03-17 12:09:59.156058+01",
       "metadata": null
     },
+    "publishable_api_key": {
+      "id": "pubkey_1234",
+      "created_by": "admin_user",
+      "created_at":  "2021-11-08 11:58:56.975971+01",
+      "updated_at":  "2021-11-08 11:58:56.975971+01",
+      "revoked_by": null,
+      "revoked_at": null
+    },
     "draft_order": {
       "id": "dorder_01FGKMYKMJ4E8HP3RGEW28E7CZ",
       "status": "open",
