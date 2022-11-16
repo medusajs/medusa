@@ -2,10 +2,15 @@ import { Router } from "express"
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 import { PublishableApiKey } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
+import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 
 const route = Router()
 
@@ -18,12 +23,19 @@ export default (app) => {
 
   route.post(
     "/",
+    transformBody(AdminPostPublishableApiKeysReq),
     middlewares.wrap(require("./create-publishable-api-key").default)
   )
 
   route.get(
     "/:id",
     middlewares.wrap(require("./get-publishable-api-key").default)
+  )
+
+  route.post(
+    "/:id",
+    transformBody(AdminPostPublishableApiKeysPublishableApiKeyReq),
+    middlewares.wrap(require("./update-publishable-api-key").default)
   )
 
   route.delete(
@@ -54,3 +66,5 @@ export type AdminPublishableApiKeysListRes = PaginatedResponse & {
 export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 
 export * from "./list-publishable-api-keys"
+export * from "./create-publishable-api-key"
+export * from "./update-publishable-api-key"

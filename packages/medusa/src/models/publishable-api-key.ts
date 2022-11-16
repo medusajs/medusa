@@ -17,9 +17,12 @@ export class PublishableApiKey extends BaseEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   revoked_at?: Date
 
+  @Column()
+  title: string
+
   @BeforeInsert()
   private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "pubkey")
+    this.id = generateEntityId(this.id, "pk")
   }
 }
 
@@ -32,7 +35,7 @@ export class PublishableApiKey extends BaseEntity {
  *   id:
  *     type: string
  *     description: The key's ID
- *     example: pak_01G1G5V27GYX4QXNARRQCW1N8T
+ *     example: pk_01G1G5V27GYX4QXNARRQCW1N8T
  *   created_by:
  *    type: string
  *    description: "The unique identifier of the user that created the key."
