@@ -12,6 +12,7 @@ import {
   Discount,
   DiscountRuleType,
   LineItem,
+  ProductVariant,
   Region,
   ShippingMethod,
 } from "../../models"
@@ -98,6 +99,7 @@ describe("New totals service", () => {
 
       it("should fetch the items tax lines to compute the totals", async () => {
         const testItem = { ...lineItems[0] } as LineItem
+        testItem.variant = new ProductVariant()
         testItem.tax_lines = []
 
         const calculationContext = {
@@ -706,6 +708,7 @@ describe("New totals service", () => {
       it("should fetch the tax lines to compute the totals", async () => {
         const testItem = { ...lineItems[0] } as LineItem
         testItem.tax_lines = []
+        testItem.variant = new ProductVariant()
         testItem.includes_tax = true
 
         const calculationContext = {
