@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.0-perf-test-20221116141959
+
+### Patch Changes
+
+- [#2603](https://github.com/medusajs/medusa/pull/2603) [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): missing transaction on create payment
+
 ## 1.6.3
 
 ### Patch Changes
