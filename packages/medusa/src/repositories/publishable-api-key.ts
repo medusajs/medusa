@@ -1,8 +1,7 @@
 import { flatten, groupBy, merge } from "lodash"
 import { EntityRepository, FindManyOptions, In, Repository } from "typeorm"
 
-import { PublishableApiKey } from "../models/publishable-api-key"
-import { PublishableApiKeySalesChannel } from "../models"
+import { PublishableApiKey } from "../models"
 
 @EntityRepository(PublishableApiKey)
 export class PublishableApiKeyRepository extends Repository<PublishableApiKey> {
@@ -68,49 +67,5 @@ export class PublishableApiKeyRepository extends Repository<PublishableApiKey> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-
-  public async addSalesChannels(
-    publishableApiKeyId: string,
-    salesChannelIds: string[]
-  ): Promise<void> {
-    await this.createQueryBuilder()
-      .insert()
-      .into("publishable_api_key_sales_channel")
-      .values(
-        salesChannelIds.map((id) => ({
-          sales_channel_id: id,
-          publishable_key_id: publishableApiKeyId,
-        }))
-      )
-      .orIgnore()
-      .execute()
-  }
-
-  public async removeSalesChannels(
-    publishableApiKeyId: string,
-    salesChannelIds: string[]
-  ): Promise<void> {
-    await this.createQueryBuilder()
-      .delete()
-      .from("publishable_api_key_sales_channel")
-      .where({
-        sales_channel_id: In(salesChannelIds),
-        publishable_key_id: publishableApiKeyId,
-      })
-      .execute()
-  }
-
-  public async retrieveAssociatedSalesChannels(
-    publishableApiKeyId: string
-  ): Promise<string[]> {
-    return await this.createQueryBuilder()
-      .select()
-      .from(PublishableApiKeySalesChannel, "publishable_api_key_sales_channel")
-      .where({
-        publishable_key_id: publishableApiKeyId,
-      })
-      .getMany()
-      .then((records) => records.map((r) => r.sales_channel_id))
   }
 }

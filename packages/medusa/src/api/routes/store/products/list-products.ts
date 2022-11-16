@@ -198,12 +198,15 @@ export default async (req, res) => {
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    req.query.sales_channel_id =
-      req.query.sales_channel_id || req.publishableApiKeyScopes.sales_channel_id
-  }
-
   const validated = await validator(StoreGetProductsParams, req.query)
+
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (req.publishableApiKeyScopes?.sales_channel_id.length) {
+      validated.sales_channel_id =
+        validated.sales_channel_id ||
+        req.publishableApiKeyScopes.sales_channel_id
+    }
+  }
 
   const filterableFields: StoreGetProductsParams = omit(validated, [
     "fields",

@@ -11,12 +11,14 @@ import {
   CreatePublishableApiKeyInput,
   UpdatePublishableApiKeyInput,
 } from "../types/publishable-api-key"
+import { PublishableApiKeySalesChannelRepository } from "../repositories/publishable-api-key-sales-channel"
 
 type InjectedDependencies = {
   manager: EntityManager
 
   eventBusService: EventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
+  publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
 }
 
 /**
@@ -33,17 +35,21 @@ class PublishableApiKeyService extends TransactionBaseService {
 
   protected readonly eventBusService_: EventBusService
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
+  protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
 
   constructor({
     manager,
     eventBusService,
     publishableApiKeyRepository,
+    publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
     super(arguments[0])
 
     this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.publishableApiKeyRepository_ = publishableApiKeyRepository
+    this.publishableApiKeySalesChannelRepository_ =
+      publishableApiKeySalesChannelRepository
   }
 
   /**
@@ -259,12 +265,11 @@ class PublishableApiKeyService extends TransactionBaseService {
     salesChannelIds: string[]
   ): Promise<void | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const publishableApiKeyRepository =
-        transactionManager.getCustomRepository(
-          this.publishableApiKeyRepository_
-        )
+      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+        this.publishableApiKeySalesChannelRepository_
+      )
 
-      await publishableApiKeyRepository.addSalesChannels(
+      await pubKeySalesChannelRepo.addSalesChannels(
         publishableApiKeyId,
         salesChannelIds
       )
@@ -282,12 +287,11 @@ class PublishableApiKeyService extends TransactionBaseService {
     salesChannelIds: string[]
   ): Promise<void | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const publishableApiKeyRepository =
-        transactionManager.getCustomRepository(
-          this.publishableApiKeyRepository_
-        )
+      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+        this.publishableApiKeySalesChannelRepository_
+      )
 
-      await publishableApiKeyRepository.removeSalesChannels(
+      await pubKeySalesChannelRepo.removeSalesChannels(
         publishableApiKeyId,
         salesChannelIds
       )
@@ -301,15 +305,20 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async getResourceScopes(
     publishableApiKeyId: string
-  ): Promise<{ sales_channel: string[] }> {
+  ): Promise<{ sales_channel_id: string[] }> {
     const manager = this.manager_
-    const pubKeyRepo = manager.getCustomRepository(
-      this.publishableApiKeyRepository_
+    const pubKeySalesChannelRepo = manager.getCustomRepository(
+      this.publishableApiKeySalesChannelRepository_
     )
 
+    const salesChannels = await pubKeySalesChannelRepo.find({
+      select: ["sales_channel_id"],
+      where: { publishable_key_id: publishableApiKeyId },
+    })
+
     return {
-      sales_channel: await pubKeyRepo.retrieveAssociatedSalesChannels(
-        publishableApiKeyId
+      sales_channel_id: salesChannels.map(
+        ({ sales_channel_id }) => sales_channel_id
       ),
     }
   }

@@ -9,7 +9,10 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
 } = require("../../factories/simple-publishable-api-key-factory")
-const { simpleSalesChannelFactory } = require("../../factories")
+const {
+  simpleSalesChannelFactory,
+  simpleProductFactory,
+} = require("../../factories")
 
 jest.setTimeout(50000)
 
@@ -434,6 +437,182 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
+    })
+  })
+
+  describe("GET /store/products", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id")
+
+    let salesChannel1
+    let salesChannel2
+    let product1
+    let product2
+    let product3
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel1",
+        description: "salesChannel1",
+      })
+
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel2",
+        description: "salesChannel2",
+      })
+
+      product1 = await simpleProductFactory(dbConnection, {
+        title: "prod 1",
+        status: "published",
+        sales_channels: [salesChannel1],
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        title: "prod 2",
+        status: "published",
+        sales_channels: [salesChannel2],
+      })
+
+      product3 = await simpleProductFactory(dbConnection, {
+        title: "prod 3",
+        status: "published",
+      })
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        created_by: adminUserId,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("returns products from a specific channel associated with a publishable key", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api.get(`/store/products`, {
+        headers: {
+          Authorization: "Bearer test_token",
+          "x-publishable-api-key": pubKeyId,
+        },
+      })
+
+      expect(response.data.products.length).toBe(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: product1.id,
+          }),
+        ])
+      )
+    })
+
+    it("returns products from multiples sales channels associated with a publishable key", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: salesChannel1.id },
+            { id: salesChannel2.id },
+          ],
+        },
+        adminHeaders
+      )
+
+      const response = await api.get(`/store/products`, {
+        headers: {
+          Authorization: "Bearer test_token",
+          "x-publishable-api-key": pubKeyId,
+        },
+      })
+
+      expect(response.data.products.length).toBe(2)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: product1.id,
+          }),
+          expect.objectContaining({
+            id: product2.id,
+          }),
+        ])
+      )
+    })
+
+    it("returns all products if PK is not passed", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: salesChannel1.id },
+            { id: salesChannel2.id },
+          ],
+        },
+        adminHeaders
+      )
+
+      const response = await api.get(`/store/products`, {
+        headers: {
+          Authorization: "Bearer test_token",
+          // "x-publishable-api-key": pubKeyId,
+        },
+      })
+
+      expect(response.data.products.length).toBe(3)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: product1.id,
+          }),
+          expect.objectContaining({
+            id: product2.id,
+          }),
+          expect.objectContaining({
+            id: product3.id,
+          }),
+        ])
+      )
+    })
+
+    it("returns all products if passed PK doesn't have associated channels", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/products`, {
+        headers: {
+          Authorization: "Bearer test_token",
+          "x-publishable-api-key": pubKeyId,
+        },
+      })
+
+      expect(response.data.products.length).toBe(3)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: product1.id,
+          }),
+          expect.objectContaining({
+            id: product2.id,
+          }),
+          expect.objectContaining({
+            id: product3.id,
+          }),
+        ])
+      )
     })
   })
 })

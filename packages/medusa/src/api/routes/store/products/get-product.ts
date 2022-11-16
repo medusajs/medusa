@@ -8,7 +8,6 @@ import {
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 import { FlagRouter } from "../../../../utils/flag-router"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [get] /products/{id}
@@ -76,14 +75,6 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  */
 export default async (req, res) => {
   const { id } = req.params
-
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-
-  // TODO
-  // if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-  //   req.query.sales_channel_id =
-  //     req.query.sales_channel_id || req.publishableApiKeyScopes.sales_channel_id
-  // }
 
   const validated = await validator(PriceSelectionParams, req.query)
 
