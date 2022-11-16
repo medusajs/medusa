@@ -66,5 +66,6 @@ class Medusa {
 }
 
 export default Medusa
+export { default as KeyManager } from "./key-manager"
 
 export * from "./typings"
