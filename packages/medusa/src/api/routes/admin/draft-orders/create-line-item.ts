@@ -159,7 +159,7 @@ export default async (req, res) => {
 
   // Reset all the other items has_shipping to false
   await entityManager.transaction(async (m) => {
-    await lineItemService.update(
+    await lineItemService.withTransaction(m).update(
       {
         id: In(draftOrder.cart.items.map((item) => item.id)),
       },

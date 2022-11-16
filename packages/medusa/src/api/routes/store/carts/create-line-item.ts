@@ -100,7 +100,7 @@ export default async (req, res) => {
 
   // Reset all the other items has_shipping to false
   await manager.transaction(async (m) => {
-    await lineItemService.update(
+    await lineItemService.withTransaction(m).update(
       {
         id: In(cart.items.map((item) => item.id)),
       },
