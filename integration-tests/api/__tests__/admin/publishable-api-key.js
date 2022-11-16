@@ -12,6 +12,7 @@ const {
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 
 jest.setTimeout(50000)
@@ -20,6 +21,13 @@ const adminHeaders = {
   headers: {
     Authorization: "Bearer test_token",
   },
+}
+
+const customerData = {
+  email: "medusa@test.hr",
+  password: "medusatest",
+  first_name: "medusa",
+  last_name: "medusa",
 }
 
 describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
@@ -612,6 +620,94 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
             id: product3.id,
           }),
         ])
+      )
+    })
+  })
+
+  describe("POST /store/carts/:id", () => {
+    let product
+    const pubKeyId = IdMap.getId("pubkey-get-id")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleRegionFactory(dbConnection, {
+        id: "test-region",
+      })
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        created_by: adminUserId,
+      })
+
+      product = await simpleProductFactory(dbConnection, {
+        sales_channels: [
+          {
+            id: "sales-channel",
+            name: "Sales channel",
+            description: "Sales channel",
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("should assign sales channel to order on cart completion if PK is present in the header", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: "sales-channel" }],
+        },
+        adminHeaders
+      )
+
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
+
+      const createCartRes = await api.post(
+        "/store/carts",
+        {
+          region_id: "test-region",
+          items: [
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        }
+      )
+
+      const cart = createCartRes.data.cart
+
+      await api.post(`/store/carts/${cart.id}`, {
+        customer_id: customerRes.data.customer.id,
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
+
+      expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.status).toEqual(200)
+      expect(createdOrder.data.data).toEqual(
+        expect.objectContaining({
+          sales_channel_id: "sales-channel",
+        })
       )
     })
   })
