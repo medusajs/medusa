@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { RequestHandler, Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
@@ -11,13 +11,18 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
+  app.use("/products", route)
+
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    app.use("/products", validateKeyScopes, route)
+    route.get(
+      "/",
+      validateKeyScopes as unknown as RequestHandler,
+      middlewares.wrap(require("./list-products").default)
+    )
   } else {
-    app.use("/products", route)
+    route.get("/", middlewares.wrap(require("./list-products").default))
   }
 
-  route.get("/", middlewares.wrap(require("./list-products").default))
   route.post("/search", middlewares.wrap(require("./search").default))
   route.get("/:id", middlewares.wrap(require("./get-product").default))
 

@@ -1,5 +1,6 @@
-import { Router } from "express"
 import "reflect-metadata"
+import { RequestHandler, Router } from "express"
+
 import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse, FindParams } from "../../../../types/common"
 import middlewares, {
@@ -8,6 +9,9 @@ import middlewares, {
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
+import { validateKeyScopes } from "../../../middlewares/publishable-api-key/validate-key-scopes"
 
 const route = Router()
 
@@ -17,7 +21,7 @@ export default (app, container) => {
 
   app.use("/carts", route)
 
-  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
     defaultStoreCartRelations.push("sales_channel")
   }
 
@@ -37,12 +41,22 @@ export default (app, container) => {
     middlewares.wrap(require("./get-cart").default)
   )
 
-  route.post(
-    "/",
-    middlewareService.usePreCartCreation(),
-    transformBody(StorePostCartReq),
-    middlewares.wrap(require("./create-cart").default)
-  )
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    route.post(
+      "/",
+      middlewareService.usePreCartCreation(),
+      transformBody(StorePostCartReq),
+      validateKeyScopes as unknown as RequestHandler,
+      middlewares.wrap(require("./create-cart").default)
+    )
+  } else {
+    route.post(
+      "/",
+      middlewareService.usePreCartCreation(),
+      transformBody(StorePostCartReq),
+      middlewares.wrap(require("./create-cart").default)
+    )
+  }
 
   route.post(
     "/:id",
