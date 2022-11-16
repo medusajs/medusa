@@ -113,7 +113,12 @@ const calculateAdjustment = (cart, lineItem, discount) => {
 }
 
 describe("TotalsService", () => {
-  const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
+  const getTaxLinesMock = jest.fn((items) => {
+    const taxLines = items.some((item) => item.id === "line1")
+      ? [{ id: "line1" }]
+      : []
+    return Promise.resolve(taxLines)
+  })
   const featureFlagRouter = new FlagRouter({
     [TaxInclusivePricingFeatureFlag.key]: false,
   })
@@ -865,7 +870,12 @@ describe("TotalsService", () => {
     let res
     let totalsService
 
-    const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
+    const getTaxLinesMock = jest.fn((items) => {
+      const taxLines = items.some((item) => item.id === "line1")
+        ? [{ id: "line1" }]
+        : []
+      return Promise.resolve(taxLines)
+    })
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
     const getAllocationMapMock = jest.fn(() => ({}))
 
@@ -962,6 +972,7 @@ describe("TotalsService", () => {
         },
         items: [
           {
+            id: "line1",
             unit_price: 20,
             quantity: 2,
           },
@@ -993,7 +1004,7 @@ describe("TotalsService", () => {
       expect(getTaxLinesMock).toHaveBeenCalledTimes(2)
       expect(getTaxLinesMock).toHaveBeenNthCalledWith(
         2,
-        [{ quantity: 2, unit_price: 20 }],
+        [{ id: "line1", quantity: 2, unit_price: 20 }],
         {
           shipping_address: order.shipping_address,
           shipping_methods: order.shipping_methods,
@@ -1004,7 +1015,7 @@ describe("TotalsService", () => {
         }
       )
 
-      expect(calculateMock).toHaveBeenCalledTimes(1)
+      expect(calculateMock).toHaveBeenCalledTimes(3)
       expect(calculateMock).toHaveBeenCalledWith(
         order.items,
         [{ id: "line1" }],

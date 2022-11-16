@@ -165,16 +165,7 @@ describe("DraftOrderService", () => {
 
       expect(cartService.retrieve).toHaveBeenCalledTimes(1)
       expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
-        relations: [
-          "billing_address",
-          "customer",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "items",
-          "region",
-          "shipping_address",
-        ],
+        relations: ["discounts", "discounts.rule", "items", "region"],
       })
 
       expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)

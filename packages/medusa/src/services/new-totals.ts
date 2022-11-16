@@ -104,6 +104,13 @@ export default class NewTotalsService extends TransactionBaseService {
           lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
         })
       } else {
+        if (items.some((item) => !item.variant)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Unable to fetch tax lines to compute line item totals as one of the item variant is missing but required for the tax lines to be computed. Might be due to a missing relation items.variant"
+          )
+        }
+
         const { lineItemsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
           .getTaxLinesMap(items, calculationContext)
@@ -124,7 +131,9 @@ export default class NewTotalsService extends TransactionBaseService {
         taxRate,
         includeTax,
         lineItemAllocation,
-        taxLines: lineItemsTaxLinesMap[item.id],
+        taxLines: items.length
+          ? lineItemsTaxLinesMap[item.id]
+          : Object.values(lineItemsTaxLinesMap)?.[0],
         calculationContext,
       })
     }
@@ -596,7 +605,9 @@ export default class NewTotalsService extends TransactionBaseService {
         {
           includeTax,
           calculationContext,
-          taxLines: shippingMethodsTaxLinesMap[shippingMethod.id],
+          taxLines: shippingMethods.length
+            ? shippingMethodsTaxLinesMap[shippingMethod.id]
+            : Object.values(shippingMethodsTaxLinesMap)?.[0],
           discounts,
           taxRate,
         }
