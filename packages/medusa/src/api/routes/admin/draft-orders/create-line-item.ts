@@ -10,7 +10,7 @@ import {
   defaultAdminDraftOrdersFields,
 } from "."
 
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
 
@@ -109,7 +109,7 @@ export default async (req, res) => {
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  await entityManager.transaction(async (manager) => {
+  const draftOrder = await entityManager.transaction(async (manager) => {
     const draftOrder = await draftOrderService
       .withTransaction(manager)
       .retrieve(id, {
@@ -149,15 +149,30 @@ export default async (req, res) => {
       })
     }
 
-    draftOrder.cart = await cartService
-      .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
-        relations: defaultAdminDraftOrdersCartRelations,
-        select: defaultAdminDraftOrdersCartFields,
-      })
-
-    res.status(200).json({ draft_order: draftOrder })
+    return draftOrder
   })
+
+  draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+    relations: defaultAdminDraftOrdersCartRelations,
+    select: defaultAdminDraftOrdersCartFields,
+  })
+
+  // Reset all the other items has_shipping to false
+  await entityManager.transaction(async (m) => {
+    await lineItemService.update(
+      {
+        id: In(draftOrder.cart.items.map((item) => item.id)),
+      },
+      {
+        has_shipping: false,
+      }
+    )
+
+    // Avoid to re fetch the cart
+    draftOrder.cart.items.forEach((item) => (item.has_shipping = false))
+  })
+
+  res.status(200).json({ draft_order: draftOrder })
 }
 
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {

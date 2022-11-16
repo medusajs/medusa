@@ -1,5 +1,5 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -72,9 +72,10 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
+  const cart = await cartService.retrieve(id)
+
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
-    const cart = await txCartService.retrieve(id)
 
     const line = await lineItemService
       .withTransaction(m)
@@ -95,6 +96,18 @@ export default async (req, res) => {
     if (updated.payment_sessions?.length) {
       await txCartService.setPaymentSessions(id)
     }
+  })
+
+  // Reset all the other items has_shipping to false
+  await manager.transaction(async (m) => {
+    await lineItemService.update(
+      {
+        id: In(cart.items.map((item) => item.id)),
+      },
+      {
+        has_shipping: false,
+      }
+    )
   })
 
   const data = await cartService.retrieveWithTotals(id, {
