@@ -703,7 +703,7 @@ class TotalsService extends TransactionBaseService {
     cartOrOrder: Cart | Order,
     discount: Discount
   ): LineDiscountAmount[] {
-    let merged: LineItem[] = [...cartOrOrder.items]
+    let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
     // merge items from order with items from order swaps
     if ("swaps" in cartOrOrder && cartOrOrder.swaps.length) {
@@ -842,16 +842,9 @@ class TotalsService extends TransactionBaseService {
             }
             taxLines = lineItem.tax_lines
           } else {
-            const orderLines = await this.taxProviderService_
+            taxLines = (await this.taxProviderService_
               .withTransaction(this.manager_)
-              .getTaxLines(cartOrOrder.items, calculationContext)
-
-            taxLines = orderLines.filter((ol) => {
-              if ("item_id" in ol) {
-                return ol.item_id === lineItem.id
-              }
-              return false
-            }) as LineItemTaxLine[]
+              .getTaxLines([lineItem], calculationContext)) as LineItemTaxLine[]
           }
         }
 

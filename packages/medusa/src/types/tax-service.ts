@@ -1,3 +1,12 @@
+import { LineItemTaxLine, ShippingMethodTaxLine } from "../models"
+
+export type TaxLinesMaps = {
+  lineItemsTaxLines: { [lineItemId: string]: LineItemTaxLine[] }
+  shippingMethodsTaxLines: {
+    [shippingMethodId: string]: ShippingMethodTaxLine[]
+  }
+}
+
 /**
  * The tax rate object as configured in Medusa. These may have an unspecified
  * numerical rate as they may be used for lookup purposes in the tax provider

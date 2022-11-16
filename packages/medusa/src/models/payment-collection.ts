@@ -21,12 +21,7 @@ export enum PaymentCollectionStatus {
   AWAITING = "awaiting",
   AUTHORIZED = "authorized",
   PARTIALLY_AUTHORIZED = "partially_authorized",
-  CAPTURED = "captured",
-  PARTIALLY_CAPTURED = "partially_captured",
-  REFUNDED = "refunded",
-  PARTIALLY_REFUNDED = "partially_refunded",
   CANCELED = "canceled",
-  REQUIRES_ACTION = "requires_action",
 }
 
 export enum PaymentCollectionType {
@@ -41,20 +36,14 @@ export class PaymentCollection extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: PaymentCollectionStatus })
   status: PaymentCollectionStatus
 
-  @Column({ nullable: true })
-  description: string
+  @Column({ type: "varchar", nullable: true })
+  description: string | null
 
   @Column({ type: "int" })
   amount: number
 
   @Column({ type: "int", nullable: true })
-  authorized_amount: number
-
-  @Column({ type: "int", nullable: true })
-  captured_amount: number
-
-  @Column({ type: "int", nullable: true })
-  refunded_amount: number
+  authorized_amount: number | null
 
   @Index()
   @Column()
@@ -112,7 +101,6 @@ export class PaymentCollection extends SoftDeletableEntity {
   }
 }
 
-
 /**
  * @schema payment_collection
  * title: "Payment Collection"
@@ -143,12 +131,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *       - awaiting
  *       - authorized
  *       - partially_authorized
- *       - captured
- *       - partially_captured
- *       - refunded
- *       - partially_refunded
  *       - canceled
- *       - requires_action
  *   description:
  *     type: string
  *     description: Description of the payment collection
@@ -158,12 +141,6 @@ export class PaymentCollection extends SoftDeletableEntity {
  *   authorized_amount:
  *     type: number
  *     description: Authorized amount of the payment collection.
- *   captured_amount:
- *     type: number
- *     description: Captured amount of the payment collection.
- *   refunded_amount:
- *     type: number
- *     description: Refunded amount of the payment collection.
  *   region_id:
  *     type: string
  *     description: The region's ID
