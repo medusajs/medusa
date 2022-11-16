@@ -72,7 +72,9 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const cart = await cartService.retrieve(id)
+  const cart = await cartService.retrieve(id, {
+    relations: ["items", "payment_sessions"],
+  })
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -89,11 +91,7 @@ export default async (req, res) => {
         featureFlagRouter.isFeatureEnabled("sales_channels"),
     })
 
-    const updated = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
-    })
-
-    if (updated.payment_sessions?.length) {
+    if (cart.payment_sessions?.length) {
       await txCartService.setPaymentSessions(id)
     }
   })
