@@ -131,9 +131,7 @@ export default class NewTotalsService extends TransactionBaseService {
         taxRate,
         includeTax,
         lineItemAllocation,
-        taxLines: items.length
-          ? lineItemsTaxLinesMap[item.id]
-          : Object.values(lineItemsTaxLinesMap)?.[0],
+        taxLines: lineItemsTaxLinesMap[item.id],
         calculationContext,
       })
     }
@@ -605,9 +603,7 @@ export default class NewTotalsService extends TransactionBaseService {
         {
           includeTax,
           calculationContext,
-          taxLines: shippingMethods.length
-            ? shippingMethodsTaxLinesMap[shippingMethod.id]
-            : Object.values(shippingMethodsTaxLinesMap)?.[0],
+          taxLines: shippingMethodsTaxLinesMap[shippingMethod.id],
           discounts,
           taxRate,
         }
