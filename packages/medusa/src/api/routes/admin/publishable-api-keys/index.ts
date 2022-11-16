@@ -9,6 +9,8 @@ import middlewares, {
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
 import { PublishableApiKey } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
+import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"
 import { AdminPostPublishableApiKeySalesChannelsBatchReq } from "./add-channels-batch"
 
@@ -23,12 +25,19 @@ export default (app) => {
 
   route.post(
     "/",
+    transformBody(AdminPostPublishableApiKeysReq),
     middlewares.wrap(require("./create-publishable-api-key").default)
   )
 
   route.get(
     "/:id",
     middlewares.wrap(require("./get-publishable-api-key").default)
+  )
+
+  route.post(
+    "/:id",
+    transformBody(AdminPostPublishableApiKeysPublishableApiKeyReq),
+    middlewares.wrap(require("./update-publishable-api-key").default)
   )
 
   route.delete(
@@ -73,3 +82,5 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 export * from "./add-channels-batch"
 export * from "./delete-channels-batch"
 export * from "./list-publishable-api-keys"
+export * from "./create-publishable-api-key"
+export * from "./update-publishable-api-key"

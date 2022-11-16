@@ -9,6 +9,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { AdminUpdatePaymentCollectionRequest } from "./update-payment-collection"
+import { PaymentCollection } from "../../../../models"
 
 const route = Router()
 
@@ -61,6 +62,15 @@ export const defaulPaymentCollectionRelations = [
   "payment_sessions",
   "payments",
 ]
+
+export type AdminPaymentCollectionRes = {
+  payment_collection: PaymentCollection
+}
+export type AdminPaymentCollectionDeleteRes = {
+  id: string
+  object: "payment_collection"
+  deleted: boolean
+}
 
 export * from "./get-payment-collection"
 export * from "./update-payment-collection"

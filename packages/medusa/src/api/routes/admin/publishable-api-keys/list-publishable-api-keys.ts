@@ -11,7 +11,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * description: "List PublishableApiKeys."
  * x-authenticated: true
  * parameters:
- *   - (query) order_id {string} List publishable keys by id.
+ *   - (query) q {string} Query used for searching publishable api keys by title.
  *   - (query) limit=20 {number} The number of items in the response
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
@@ -84,4 +84,8 @@ export default async (req: Request, res: Response) => {
 export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
-}) {}
+}) {
+  @IsString()
+  @IsOptional()
+  q?: string
+}
