@@ -114,7 +114,7 @@ export default async (req, res) => {
       .withTransaction(manager)
       .retrieve(id, {
         select: defaultAdminDraftOrdersFields,
-        relations: ["cart"],
+        relations: ["cart", "cart.items", "cart.items.variant"],
       })
 
     if (draftOrder.status === "completed") {
@@ -136,7 +136,7 @@ export default async (req, res) => {
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
+        .addLineItem(draftOrder.cart, line, { validateSalesChannels: false })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({

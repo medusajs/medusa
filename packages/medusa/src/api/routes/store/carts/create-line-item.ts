@@ -72,8 +72,8 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const cart = await cartService.retrieve(id, {
-    relations: ["items", "payment_sessions"],
+  let cart = await cartService.retrieve(id, {
+    relations: ["items", "items.variant", "payment_sessions"],
   })
 
   await manager.transaction(async (m) => {
@@ -86,7 +86,7 @@ export default async (req, res) => {
         metadata: validated.metadata,
       })
 
-    await txCartService.addLineItem(id, line, {
+    await txCartService.addLineItem(cart, line, {
       validateSalesChannels:
         featureFlagRouter.isFeatureEnabled("sales_channels"),
     })
@@ -98,6 +98,9 @@ export default async (req, res) => {
 
   // Reset all the other items has_shipping to false
   await manager.transaction(async (m) => {
+    const cart = await cartService.withTransaction(m).retrieve(id, {
+      relations: ["items"],
+    })
     await lineItemService.withTransaction(m).update(
       {
         id: In(cart.items.map((item) => item.id)),
@@ -108,12 +111,12 @@ export default async (req, res) => {
     )
   })
 
-  const data = await cartService.retrieveWithTotals(id, {
+  cart = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart })
 }
 
 export class StorePostCartsCartLineItemsReq {

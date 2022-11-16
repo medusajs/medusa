@@ -33,7 +33,7 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, isDefined, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -577,7 +577,7 @@ class CartService extends TransactionBaseService {
 
   /**
    * Adds a line item to the cart.
-   * @param cartId - the id of the cart that we will add to
+   * @param cartOrId - the id of the cart that we will add to
    * @param lineItem - the line item to add.
    * @param config
    *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
@@ -585,24 +585,17 @@ class CartService extends TransactionBaseService {
    * @return the result of the update operation
    */
   async addLineItem(
-    cartId: string,
+    cartOrId: Cart | string,
     lineItem: LineItem,
     config = { validateSalesChannels: true }
-  ): Promise<Cart> {
+  ): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
-          relations: [
-            "shipping_methods",
-            "items",
-            "items.adjustments",
-            "payment_sessions",
-            "items.variant",
-            "items.variant.product",
-            "discounts",
-            "discounts.rule",
-          ],
-        })
+        const cart = isString(cartOrId)
+          ? await this.retrieve(cartOrId, {
+              relations: ["items", "items.variant"],
+            })
+          : cartOrId
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -648,11 +641,11 @@ class CartService extends TransactionBaseService {
             .create({
               ...lineItem,
               has_shipping: false,
-              cart_id: cartId,
+              cart_id: cart.id,
             })
         }
 
-        const result = await this.retrieve(cartId, {
+        const result = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
@@ -661,8 +654,6 @@ class CartService extends TransactionBaseService {
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, result)
-
-        return result
       }
     )
   }
