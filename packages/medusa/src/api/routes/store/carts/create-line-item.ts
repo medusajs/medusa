@@ -72,7 +72,7 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  await manager.transaction(async (m) => {
+  await manager.transaction("SERIALIZABLE", async (m) => {
     const txCartService = cartService.withTransaction(m)
     const cart = await txCartService.retrieve(id)
 

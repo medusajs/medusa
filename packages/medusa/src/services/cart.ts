@@ -17,7 +17,6 @@ import {
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
@@ -60,7 +59,6 @@ type InjectedDependencies = {
   shippingMethodRepository: typeof ShippingMethodRepository
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
-  lineItemRepository: typeof LineItemRepository
   eventBusService: EventBusService
   salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
@@ -104,7 +102,6 @@ class CartService extends TransactionBaseService {
   protected readonly cartRepository_: typeof CartRepository
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
-  protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
@@ -130,7 +127,6 @@ class CartService extends TransactionBaseService {
     manager,
     cartRepository,
     shippingMethodRepository,
-    lineItemRepository,
     eventBusService,
     paymentProviderService,
     productService,
@@ -160,7 +156,6 @@ class CartService extends TransactionBaseService {
     this.manager_ = manager
     this.shippingMethodRepository_ = shippingMethodRepository
     this.cartRepository_ = cartRepository
-    this.lineItemRepository_ = lineItemRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
     this.productService_ = productService
@@ -468,7 +463,10 @@ class CartService extends TransactionBaseService {
           ],
         })
 
-        const lineItem = cart.items.find((item) => item.id === lineItemId)
+        const [lineItem] = await this.lineItemService_.list({
+          id: lineItemId,
+          cart_id: cartId,
+        })
         if (!lineItem) {
           return cart
         }
@@ -480,21 +478,14 @@ class CartService extends TransactionBaseService {
             .deleteShippingMethods(cart.shipping_methods)
         }
 
-        const lineItemRepository = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-        await lineItemRepository.update(
-          {
-            id: In(cart.items.map((item) => item.id)),
-          },
-          {
-            has_shipping: false,
-          }
-        )
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
 
-        await this.lineItemService_
-          .withTransaction(transactionManager)
-          .delete(lineItem.id)
+        await lineItemServiceTx.delete(lineItemId)
+        await lineItemServiceTx.update(
+          { cart_id: cartId },
+          { has_shipping: false }
+        )
 
         const result = await this.retrieve(cartId, {
           relations: ["items", "discounts", "discounts.rule", "region"],
@@ -591,17 +582,14 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
+        const toSelect: (keyof Cart)[] = ["id"]
+
+        if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
+          toSelect.push("sales_channel_id")
+        }
+
         const cart = await this.retrieve(cartId, {
-          relations: [
-            "shipping_methods",
-            "items",
-            "items.adjustments",
-            "payment_sessions",
-            "items.variant",
-            "items.variant.product",
-            "discounts",
-            "discounts.rule",
-          ],
+          select: toSelect,
         })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
@@ -617,12 +605,22 @@ class CartService extends TransactionBaseService {
 
         let currentItem: LineItem | undefined
         if (lineItem.should_merge) {
-          currentItem = cart.items.find((item) => {
-            if (item.should_merge && item.variant_id === lineItem.variant_id) {
-              return isEqual(item.metadata, lineItem.metadata)
-            }
-            return false
-          })
+          const [existingItem] = await this.lineItemService_
+            .withTransaction(transactionManager)
+            .list(
+              {
+                cart_id: cart.id,
+                variant_id: lineItem.variant_id,
+                should_merge: true,
+              },
+              { take: 1, select: ["id", "metadata", "quantity"] }
+            )
+          if (
+            existingItem &&
+            isEqual(existingItem.metadata, lineItem.metadata)
+          ) {
+            currentItem = existingItem
+          }
         }
 
         // If content matches one of the line items currently in the cart we can
@@ -652,17 +650,13 @@ class CartService extends TransactionBaseService {
             })
         }
 
-        const lineItemRepository = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-        await lineItemRepository.update(
-          {
-            id: In(cart.items.map((item) => item.id)),
-          },
-          {
-            has_shipping: false,
-          }
-        )
+        await this.lineItemService_
+          .withTransaction(transactionManager)
+          .update(
+            { cart_id: cartId, has_shipping: true },
+            { has_shipping: false }
+          )
+          .catch(() => void 0)
 
         const result = await this.retrieve(cartId, {
           relations: ["items", "discounts", "discounts.rule", "region"],
@@ -672,7 +666,9 @@ class CartService extends TransactionBaseService {
 
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, result)
+          .emit(CartService.Events.UPDATED, {
+            id: cart.id,
+          })
 
         return result
       }
