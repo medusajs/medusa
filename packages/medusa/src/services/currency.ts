@@ -9,12 +9,14 @@ import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
+import { DbTransactionService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
   currencyRepository: typeof CurrencyRepository
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  dbTransactionService: DbTransactionService
 }
 
 export default class CurrencyService extends TransactionBaseService {
@@ -28,18 +30,21 @@ export default class CurrencyService extends TransactionBaseService {
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBusService_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly dbTransactionService_: DbTransactionService
 
   constructor({
     manager,
     currencyRepository,
     eventBusService,
     featureFlagRouter,
+    dbTransactionService,
   }: InjectedDependencies) {
     super(arguments[0])
     this.manager_ = manager
     this.currencyRepository_ = currencyRepository
     this.eventBusService_ = eventBusService
     this.featureFlagRouter_ = featureFlagRouter
+    this.dbTransactionService_ = dbTransactionService
   }
 
   /**
@@ -98,35 +103,42 @@ export default class CurrencyService extends TransactionBaseService {
    * Update a currency
    * @param code - The code of the currency to update
    * @param data - The data that must be updated on the currency
+   * @param context
    * @return The updated currency
    */
   async update(
     code: string,
-    data: UpdateCurrencyInput
+    data: UpdateCurrencyInput,
+    context: { transactionManager: EntityManager }
   ): Promise<Currency | undefined | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const currency = await this.retrieveByCode(code)
+    return await this.dbTransactionService_.run(
+      async ({ transactionManager }) => {
+        const currency = await this.retrieveByCode(code)
 
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        )
-      ) {
-        if (typeof data.includes_tax !== "undefined") {
-          currency.includes_tax = data.includes_tax
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          if (typeof data.includes_tax !== "undefined") {
+            currency.includes_tax = data.includes_tax
+          }
         }
+
+        const currencyRepo = transactionManager.getCustomRepository(
+          this.currencyRepository_
+        )
+        await currencyRepo.save(currency)
+
+        await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
+          code,
+        })
+
+        return currency
+      },
+      {
+        transactionManager: context.transactionManager,
       }
-
-      const currencyRepo = transactionManager.getCustomRepository(
-        this.currencyRepository_
-      )
-      await currencyRepo.save(currency)
-
-      await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
-        code,
-      })
-
-      return currency
-    })
+    )
   }
 }

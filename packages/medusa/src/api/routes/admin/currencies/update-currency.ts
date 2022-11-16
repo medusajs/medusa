@@ -1,7 +1,7 @@
 import { IsBoolean, IsOptional } from "class-validator"
 import { Currency } from "../../../../models"
 import { ExtendedRequest } from "../../../../types/global"
-import { CurrencyService } from "../../../../services"
+import { CurrencyService, DbTransactionService } from "../../../../services"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
@@ -61,8 +61,17 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string
   const data = req.validatedBody as AdminPostCurrenciesCurrencyReq
   const currencyService: CurrencyService = req.scope.resolve("currencyService")
+  const dbTransactionService: DbTransactionService = req.scope.resolve(
+    DbTransactionService.RESOLUTION_KEY
+  )
 
-  const currency = await currencyService.update(code, data)
+  const currency = await dbTransactionService.run(
+    async ({ transactionManager }) => {
+      return await currencyService.update(code, data, {
+        transactionManager,
+      })
+    }
+  )
 
   res.json({ currency })
 }
