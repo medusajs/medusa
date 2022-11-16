@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 
 import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
@@ -719,14 +719,8 @@ class SwapService extends TransactionBaseService {
 
       const cart = await this.cartService_
         .withTransaction(manager)
-        .retrieve(swap.cart_id, {
-          select: ["total"],
-          relations: [
-            "payment",
-            "shipping_methods",
-            "items",
-            "items.adjustments",
-          ],
+        .retrieveWithTotals(swap.cart_id, {
+          relations: ["payment"],
         })
 
       const { payment } = cart
@@ -802,7 +796,13 @@ class SwapService extends TransactionBaseService {
 
       swap.difference_due = total
       swap.shipping_address_id = cart.shipping_address_id
-      swap.shipping_methods = cart.shipping_methods
+      // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+      // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+      // We normally should only pass what is needed?
+      swap.shipping_methods = cart.shipping_methods.map((method) => {
+        ;(method.tax_lines as any) = undefined
+        return method
+      })
       swap.confirmed_at = new Date()
       swap.payment_status =
         total === 0 ? SwapPaymentStatus.CONFIRMED : SwapPaymentStatus.AWAITING
