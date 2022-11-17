@@ -64,7 +64,7 @@ export default (app, container) => {
   // Line items
   route.post(
     "/:id/line-items",
-    middlewares.wrap(require("./create-line-items/create-line-item").default)
+    middlewares.wrap(require("./create-line-items").default)
   )
   route.post(
     "/:id/line-items/:line_id",
@@ -162,7 +162,7 @@ export type StoreCartsDeleteRes = DeleteResponse
 
 export * from "./add-shipping-method"
 export * from "./create-cart"
-export * from "./create-line-items/create-line-item"
+export * from "./create-line-items"
 export * from "./create-payment-sessions"
 export * from "./set-payment-session"
 export * from "./update-cart"
