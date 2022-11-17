@@ -1,18 +1,15 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { EntityManager, In } from "typeorm"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, LineItemService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { FlagRouter } from "../../../../utils/flag-router"
-import IdempotencyKeyService from "../../../../services/idempotency-key"
-import { AwilixContainer } from "awilix"
-import { Cart } from "../../../../models"
-
-const steps = {
-  STARTED: "started",
-  RESET_LINE_ITEMS_HAS_SHIPPING: "reset_line_items_has_shipping",
-  FINISHED: "finished",
-}
+import {
+  CreateLineItemSteps,
+  handleAddOrUpdateLineItem,
+  handleResetLineItemsHasShipping,
+  initializeIdempotencyRequest,
+  runStep,
+} from "./create-line-items/handler-steps"
+import { IdempotencyKey } from "../../../../models"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -78,26 +75,13 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
-    "idempotencyKeyService"
-  )
-
-  const headerKey = req.get("Idempotency-Key") || ""
-
-  let idempotencyKey
+  let idempotencyKey!: IdempotencyKey
   try {
-    await manager.transaction(async (transactionManager) => {
-      idempotencyKey = await idempotencyKeyService
-        .withTransaction(transactionManager)
-        .initializeRequest(headerKey, req.method, req.params, req.path)
-    })
-  } catch (error) {
+    idempotencyKey = await initializeIdempotencyRequest(req, res)
+  } catch {
     res.status(409).send("Failed to create idempotency key")
     return
   }
-
-  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
-  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   let inProgress = true
   let err: unknown = false
@@ -106,28 +90,15 @@ export default async (req, res) => {
     relations: ["items", "items.variant", "payment_sessions"],
   })
 
-  const runStep = async (
-    handler: ({ manager: EntityManager }) => Promise<{
-      recovery_point?: string | undefined
-      response_code?: number | undefined
-      response_body?: Record<string, unknown> | undefined
-    }>
-  ) => {
-    return await manager.transaction(
-      "SERIALIZABLE",
-      async (transactionManager) => {
-        idempotencyKey = await idempotencyKeyService
-          .withTransaction(transactionManager)
-          .workStage(idempotencyKey.idempotency_key, async (stageManager) => {
-            return await handler({ manager: stageManager })
-          })
-      }
-    )
+  const stepOptions = {
+    manager,
+    idempotencyKey,
+    container: req.scope,
   }
 
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
-      case steps.STARTED: {
+      case CreateLineItemSteps.STARTED: {
         await runStep(async ({ manager }) => {
           return await handleAddOrUpdateLineItem(
             cart,
@@ -142,27 +113,27 @@ export default async (req, res) => {
               container: req.scope,
             }
           )
-        }).catch((e) => {
+        }, stepOptions).catch((e) => {
           inProgress = false
           err = e
         })
         break
       }
 
-      case steps.RESET_LINE_ITEMS_HAS_SHIPPING: {
+      case CreateLineItemSteps.RESET_LINE_ITEMS_HAS_SHIPPING: {
         await runStep(async ({ manager }) => {
           return await handleResetLineItemsHasShipping(id, {
             manager,
             container: req.scope,
           })
-        }).catch((e) => {
+        }, stepOptions).catch((e) => {
           inProgress = false
           err = e
         })
         break
       }
 
-      case steps.FINISHED: {
+      case CreateLineItemSteps.FINISHED: {
         inProgress = false
         break
       }
@@ -174,79 +145,6 @@ export default async (req, res) => {
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
-}
-
-async function handleAddOrUpdateLineItem(
-  cart: Cart,
-  data: {
-    metadata?: Record<string, unknown>
-    customer_id?: string
-    variant_id: string
-    quantity: number
-  },
-  { container, manager }: { container: AwilixContainer; manager: EntityManager }
-): Promise<{ recovery_point: string }> {
-  const cartService: CartService = container.resolve("cartService")
-  const lineItemService: LineItemService = container.resolve("lineItemService")
-  const featureFlagRouter: FlagRouter = container.resolve("featureFlagRouter")
-
-  const txCartService = cartService.withTransaction(manager)
-
-  const line = await lineItemService
-    .withTransaction(manager)
-    .generate(data.variant_id, cart.region_id, data.quantity, {
-      customer_id: data.customer_id || cart.customer_id,
-      metadata: data.metadata,
-    })
-
-  await txCartService.addLineItem(cart, line, {
-    validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
-  })
-
-  if (cart.payment_sessions?.length) {
-    await txCartService.setPaymentSessions(cart.id)
-  }
-
-  return {
-    recovery_point: steps.RESET_LINE_ITEMS_HAS_SHIPPING,
-  }
-}
-
-async function handleResetLineItemsHasShipping(
-  cartId: string,
-  {
-    container,
-    manager,
-  }: {
-    container: AwilixContainer
-    manager: EntityManager
-  }
-) {
-  const cartService: CartService = container.resolve("cartService")
-  const lineItemService: LineItemService = container.resolve("lineItemService")
-
-  let cart = await cartService.withTransaction(manager).retrieve(cartId, {
-    relations: ["items"],
-  })
-
-  await lineItemService.withTransaction(manager).update(
-    {
-      id: In(cart.items.map((item) => item.id)),
-    },
-    {
-      has_shipping: false,
-    }
-  )
-
-  cart = await cartService.retrieveWithTotals(cartId, {
-    select: defaultStoreCartFields,
-    relations: defaultStoreCartRelations,
-  })
-
-  return {
-    response_code: 200,
-    response_body: { cart },
-  }
 }
 
 export class StorePostCartsCartLineItemsReq {
