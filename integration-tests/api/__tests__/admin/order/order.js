@@ -22,6 +22,7 @@ const {
   callGet,
   partial,
 } = require("../../../helpers/call-helpers")
+const { simpleShippingOptionFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -1760,6 +1761,12 @@ describe("/admin/orders", () => {
     it("creates a swap", async () => {
       const api = useApi()
 
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "testytest",
+        is_return: true,
+        region_id: "test-region",
+      })
+
       const response = await api.post(
         "/admin/orders/test-order/swaps",
         {
@@ -1770,6 +1777,10 @@ describe("/admin/orders", () => {
             },
           ],
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+          return_shipping: {
+            option_id: "testytest",
+            price: 400,
+          },
         },
         {
           headers: {
