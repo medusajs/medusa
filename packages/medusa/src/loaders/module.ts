@@ -50,7 +50,7 @@ export default async ({
         )
       }
 
-      console.warn("Couldn not resolve module: ", resolution.definition.label)
+      logger.warn(`Couldn not resolve module: ${resolution.definition.label}`)
     }
   }
 
