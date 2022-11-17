@@ -55,11 +55,14 @@ export async function runStep(
   return await manager.transaction(
     "SERIALIZABLE",
     async (transactionManager) => {
-      idempotencyKey = await idempotencyKeyService
+      const idempotencyKey_ = await idempotencyKeyService
         .withTransaction(transactionManager)
         .workStage(idempotencyKey.idempotency_key, async (stageManager) => {
           return await handler({ manager: stageManager })
         })
+      idempotencyKey.response_code = idempotencyKey_.response_code
+      idempotencyKey.response_body = idempotencyKey_.response_body
+      idempotencyKey.recovery_point = idempotencyKey_.recovery_point
     }
   )
 }
