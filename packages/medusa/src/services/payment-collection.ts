@@ -381,7 +381,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       await this.eventBusService_
         .withTransaction(manager)
-        .emit(PaymentCollectionService.Events.UPDATED, result)
+        .emit(PaymentCollectionService.Events.PAYMENT_AUTHORIZED, result)
 
       return result
     })
