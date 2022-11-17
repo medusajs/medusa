@@ -15,11 +15,9 @@ export async function initializeIdempotencyRequest(
   const headerKey = req.get("Idempotency-Key") || ""
 
   let idempotencyKey
-  await manager.transaction(async (transactionManager) => {
-    idempotencyKey = await idempotencyKeyService
-      .withTransaction(transactionManager)
-      .initializeRequest(headerKey, req.method, req.params, req.path)
-  })
+  idempotencyKey = await idempotencyKeyService
+    .withTransaction(manager)
+    .initializeRequest(headerKey, req.method, req.params, req.path)
 
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)

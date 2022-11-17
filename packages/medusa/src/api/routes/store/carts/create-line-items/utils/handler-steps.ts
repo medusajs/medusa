@@ -4,6 +4,8 @@ import { CartService, LineItemService } from "../../../../../../services"
 import { FlagRouter } from "../../../../../../utils/flag-router"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
+import { WithRequiredProperty } from "../../../../../../types/common"
+import { Cart } from "../../../../../../models"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
@@ -41,14 +43,22 @@ export async function handleAddOrUpdateLineItem(
     validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
-  if (cart.payment_sessions?.length) {
-    await txCartService.setPaymentSessions(cart.id)
-  }
-
   cart = await cartService.retrieveWithTotals(cart.id, {
     select: defaultStoreCartFields,
-    relations: defaultStoreCartRelations,
+    relations: [
+      ...defaultStoreCartRelations,
+      "billing_address",
+      "region.payment_providers",
+      "payment_sessions",
+      "customer",
+    ],
   })
+
+  if (cart.payment_sessions?.length) {
+    await txCartService.setPaymentSessions(
+      cart as WithRequiredProperty<Cart, "total">
+    )
+  }
 
   return {
     response_code: 200,
