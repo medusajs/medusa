@@ -6,7 +6,7 @@ export type CreateIdempotencyKeyInput = {
 }
 
 export type IdempotencyCallbackResult = {
-  recovery_point?: string | undefined
-  response_code?: number | undefined
-  response_body?: Record<string, unknown> | undefined
+  recovery_point?: string
+  response_code?: number
+  response_body?: Record<string, unknown>
 }
