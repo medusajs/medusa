@@ -1,4 +1,4 @@
-name: Staging Release
+name: Staging Release and Publish
 
 on:
   push:
@@ -15,17 +15,35 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Setup Node.js 12.x
+      - name: Setup Node.js 16.x
         uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: 16.x
+
+      - name: Creating .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Configure npm node prepend 
+        run: npm config set scripts-prepend-node-path auto
 
       - name: Install Dependencies
         run: yarn
 
-      - name: Create Release Pull Request
-        uses: changesets/action@v1
-        with: 
-          version: yarn version:staging
+      - name: Build all packages
+        run: yarn build
+
+      - name: Version staging packages
+        run: yarn version:staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Dependencies
+        run: yarn
+        
+      - name: Publish staging packages
+        run: yarn release:staging

@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
@@ -6,7 +6,11 @@ import { FindConfig, Selector } from "../types/common"
 import { PublishableApiKey } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined, isString } from "../utils"
+import {
+  CreatePublishableApiKeyInput,
+  UpdatePublishableApiKeyInput,
+} from "../types/publishable-api-key"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -45,17 +49,22 @@ class PublishableApiKeyService extends TransactionBaseService {
   /**
    * Create a PublishableApiKey record.
    *
-   * @params context - key creation context object
+   * @param data - partial data for creating the entity
+   * @param context - key creation context object
    */
-  async create(context: {
-    loggedInUserId: string
-  }): Promise<PublishableApiKey | never> {
+  async create(
+    data: CreatePublishableApiKeyInput,
+    context: {
+      loggedInUserId: string
+    }
+  ): Promise<PublishableApiKey | never> {
     return await this.atomicPhase_(async (manager) => {
       const publishableApiKeyRepo = manager.getCustomRepository(
         this.publishableApiKeyRepository_
       )
 
       const publishableApiKey = publishableApiKeyRepo.create({
+        ...data,
         created_by: context.loggedInUserId,
       })
 
@@ -122,7 +131,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    * @return an array containing publishable API keys and a total count of records that matches the query
    */
   async listAndCount(
-    selector: Selector<PublishableApiKey>,
+    selector: Selector<PublishableApiKey> & { q?: string },
     config: FindConfig<PublishableApiKey> = {
       skip: 0,
       take: 20,
@@ -133,9 +142,42 @@ class PublishableApiKeyService extends TransactionBaseService {
       this.publishableApiKeyRepository_
     )
 
+    let q
+    if (isString(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
 
+    if (q) {
+      query.where.title = ILike(`%${q}%`)
+    }
+
     return await pubKeyRepo.findAndCount(query)
+  }
+
+  async update(
+    publishableApiKeyId: string,
+    data: UpdatePublishableApiKeyInput
+  ): Promise<PublishableApiKey> {
+    {
+      return await this.atomicPhase_(async (manager) => {
+        const publishableApiKeyRepository = manager.getCustomRepository(
+          this.publishableApiKeyRepository_
+        )
+
+        const pubKey = await this.retrieve(publishableApiKeyId)
+
+        for (const key of Object.keys(data)) {
+          if (isDefined(data[key])) {
+            pubKey[key] = data[key]
+          }
+        }
+
+        return await publishableApiKeyRepository.save(pubKey)
+      })
+    }
   }
 
   /**
