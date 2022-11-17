@@ -1,13 +1,16 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
+import { validator } from "../../../../../utils/validator"
 import {
   CreateLineItemSteps,
   handleAddOrUpdateLineItem,
+} from "./utils/handler-steps"
+import { IdempotencyKey } from "../../../../../models"
+import {
   initializeIdempotencyRequest,
-  runStep,
-} from "./create-line-items/handler-steps"
-import { IdempotencyKey } from "../../../../models"
+  runIdempotencyStep,
+  RunIdempotencyStepOptions,
+} from "../../../../../utils/idempotency"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -83,16 +86,17 @@ export default async (req, res) => {
   let inProgress = true
   let err: unknown = false
 
-  const stepOptions = {
+  const stepOptions: RunIdempotencyStepOptions = {
     manager,
     idempotencyKey,
     container: req.scope,
+    isolationLevel: "SERIALIZABLE",
   }
 
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case CreateLineItemSteps.STARTED: {
-        await runStep(async ({ manager }) => {
+        await runIdempotencyStep(async ({ manager }) => {
           return await handleAddOrUpdateLineItem(
             id,
             {
