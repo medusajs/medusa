@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { Logger } from "../../types/global"
-import { formatException } from "../../utils";
+import { formatException } from "../../utils"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
 const TRANSACTION_STARTED = "TransactionAlreadyStartedError"

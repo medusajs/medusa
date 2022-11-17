@@ -9,7 +9,7 @@ type Options = {
   logger: Logger
 }
 
-const ModuleHelper = new ModulesHelper()
+export const moduleHelper = new ModulesHelper()
 
 export default async ({
   container,
@@ -54,9 +54,9 @@ export default async ({
     }
   }
 
-  ModuleHelper.setModules(moduleResolutions)
+  moduleHelper.setModules(moduleResolutions)
 
   container.register({
-    modulesHelper: asValue(ModuleHelper),
+    modulesHelper: asValue(moduleHelper),
   })
 }
