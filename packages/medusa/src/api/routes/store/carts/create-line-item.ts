@@ -1,11 +1,9 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import {
   CreateLineItemSteps,
   handleAddOrUpdateLineItem,
-  handleResetLineItemsHasShipping,
   initializeIdempotencyRequest,
   runStep,
 } from "./create-line-items/handler-steps"
@@ -72,7 +70,6 @@ export default async (req, res) => {
   const customerId: string | undefined = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
 
   let idempotencyKey!: IdempotencyKey
@@ -86,10 +83,6 @@ export default async (req, res) => {
   let inProgress = true
   let err: unknown = false
 
-  const cart = await cartService.retrieve(id, {
-    relations: ["items", "items.variant", "payment_sessions"],
-  })
-
   const stepOptions = {
     manager,
     idempotencyKey,
@@ -101,7 +94,7 @@ export default async (req, res) => {
       case CreateLineItemSteps.STARTED: {
         await runStep(async ({ manager }) => {
           return await handleAddOrUpdateLineItem(
-            cart,
+            id,
             {
               customer_id: customerId,
               metadata: validated.metadata,
@@ -113,19 +106,6 @@ export default async (req, res) => {
               container: req.scope,
             }
           )
-        }, stepOptions).catch((e) => {
-          inProgress = false
-          err = e
-        })
-        break
-      }
-
-      case CreateLineItemSteps.RESET_LINE_ITEMS_HAS_SHIPPING: {
-        await runStep(async ({ manager }) => {
-          return await handleResetLineItemsHasShipping(id, {
-            manager,
-            container: req.scope,
-          })
         }, stepOptions).catch((e) => {
           inProgress = false
           err = e

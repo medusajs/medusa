@@ -1,15 +1,15 @@
-import { Cart, IdempotencyKey } from "../../../../../models"
+import { IdempotencyKey } from "../../../../../models"
 import { AwilixContainer } from "awilix"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { CartService, LineItemService } from "../../../../../services"
 import { FlagRouter } from "../../../../../utils/flag-router"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../index"
 import IdempotencyKeyService from "../../../../../services/idempotency-key"
 import { Request, Response } from "express"
+import { IdempotencyCallbackResult } from "../../../../../types/idempotency-key"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
-  RESET_LINE_ITEMS_HAS_SHIPPING: "reset_line_items_has_shipping",
   FINISHED: "finished",
 }
 
@@ -38,11 +38,7 @@ export async function initializeIdempotencyRequest(
 }
 
 export async function runStep(
-  handler: ({ manager: EntityManager }) => Promise<{
-    recovery_point?: string | undefined
-    response_code?: number | undefined
-    response_body?: Record<string, unknown> | undefined
-  }>,
+  handler: ({ manager: EntityManager }) => Promise<IdempotencyCallbackResult>,
   {
     manager,
     idempotencyKey,
@@ -69,7 +65,7 @@ export async function runStep(
 }
 
 export async function handleAddOrUpdateLineItem(
-  cart: Cart,
+  cartId: string,
   data: {
     metadata?: Record<string, unknown>
     customer_id?: string
@@ -77,12 +73,16 @@ export async function handleAddOrUpdateLineItem(
     quantity: number
   },
   { container, manager }: { container: AwilixContainer; manager: EntityManager }
-): Promise<{ recovery_point: string }> {
+): Promise<IdempotencyCallbackResult> {
   const cartService: CartService = container.resolve("cartService")
   const lineItemService: LineItemService = container.resolve("lineItemService")
   const featureFlagRouter: FlagRouter = container.resolve("featureFlagRouter")
 
   const txCartService = cartService.withTransaction(manager)
+
+  let cart = await txCartService.retrieve(cartId, {
+    relations: ["items", "items.variant", "payment_sessions"],
+  })
 
   const line = await lineItemService
     .withTransaction(manager)
@@ -99,38 +99,7 @@ export async function handleAddOrUpdateLineItem(
     await txCartService.setPaymentSessions(cart.id)
   }
 
-  return {
-    recovery_point: CreateLineItemSteps.RESET_LINE_ITEMS_HAS_SHIPPING,
-  }
-}
-
-export async function handleResetLineItemsHasShipping(
-  cartId: string,
-  {
-    container,
-    manager,
-  }: {
-    container: AwilixContainer
-    manager: EntityManager
-  }
-) {
-  const cartService: CartService = container.resolve("cartService")
-  const lineItemService: LineItemService = container.resolve("lineItemService")
-
-  let cart = await cartService.withTransaction(manager).retrieve(cartId, {
-    relations: ["items"],
-  })
-
-  await lineItemService.withTransaction(manager).update(
-    {
-      id: In(cart.items.map((item) => item.id)),
-    },
-    {
-      has_shipping: false,
-    }
-  )
-
-  cart = await cartService.retrieveWithTotals(cartId, {
+  cart = await cartService.retrieveWithTotals(cart.id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })

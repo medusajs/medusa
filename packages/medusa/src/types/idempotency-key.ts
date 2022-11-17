@@ -4,3 +4,9 @@ export type CreateIdempotencyKeyInput = {
   request_path: string
   idempotency_key?: string
 }
+
+export type IdempotencyCallbackResult = {
+  recovery_point?: string | undefined
+  response_code?: number | undefined
+  response_body?: Record<string, unknown> | undefined
+}

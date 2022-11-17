@@ -645,6 +645,18 @@ class CartService extends TransactionBaseService {
             })
         }
 
+        const lineItemRepository = transactionManager.getCustomRepository(
+          this.lineItemRepository_
+        )
+        await lineItemRepository.update(
+          {
+            id: In(cart.items.map((item) => item.id)),
+          },
+          {
+            has_shipping: false,
+          }
+        )
+
         const result = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
         })
