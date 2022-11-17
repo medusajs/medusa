@@ -1,25 +1,13 @@
-import glob from "glob"
-import path from "path"
 import resolveCwd from "resolve-cwd"
 
-import {
-  ConfigModule,
-  ModuleDefinition,
-  ModuleResolution,
-} from "../../types/global"
+import { ConfigModule, ModuleResolution } from "../../types/global"
+import MODULE_DEFINITIONS from "./definitions"
 
 export default ({ modules }: ConfigModule) => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 
-  const definitionsDir = path.join(__dirname, "*.{j,t}s")
-  const definitions = glob.sync(definitionsDir, {
-    ignore: ["**/index.js", "**/index.ts", "**/*.d.ts"],
-  })
-
-  for (const def of definitions) {
-    const definition: ModuleDefinition = require(def).default
-
+  for (const definition of MODULE_DEFINITIONS) {
     let resolutionPath = definition.defaultPackage
 
     // If user added a module and it's overridable, we resolve that instead

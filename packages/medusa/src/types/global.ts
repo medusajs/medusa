@@ -48,6 +48,7 @@ export type ModuleDefinition = {
   defaultPackage: string
   label: string
   canOverride?: boolean
+  isRequired?: boolean
 }
 
 export type ConfigModule = {

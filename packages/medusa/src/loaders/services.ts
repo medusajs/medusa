@@ -14,11 +14,7 @@ type Options = {
 /**
  * Registers all services in the services directory
  */
-export default async ({
-  container,
-  configModule,
-  isTest,
-}: Options): Promise<void> => {
+export default ({ container, configModule, isTest }: Options): void => {
   const useMock = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock ? "../services/__mocks__/*.js" : "../services/*.js"

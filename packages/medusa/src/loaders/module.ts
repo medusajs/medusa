@@ -44,7 +44,13 @@ export default async ({
 
       trackInstallation(installation, "module")
     } catch (err) {
-      console.log("Couldn't resolve module: ", resolution.definition.label)
+      if (resolution.definition.isRequired) {
+        throw new Error(
+          `Could not resolve required module: ${resolution.definition.label}`
+        )
+      }
+
+      console.warn("Couldn not resolve module: ", resolution.definition.label)
     }
   }
 

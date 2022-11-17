@@ -92,13 +92,13 @@ export default async ({
 
   await redisLoader({ container, configModule, logger: Logger })
 
-  const modelsActivity = Logger.activity("Initializing models\n")
+  const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
   modelsLoader({ container })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
-  const pmActivity = Logger.activity("Initializing plugin models\n")
+  const pmActivity = Logger.activity("Initializing plugin models")
   track("PLUGIN_MODELS_INIT_STARTED")
   await registerPluginModels({
     rootDirectory,
@@ -108,13 +108,13 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity("Initializing repositories\n")
+  const repoActivity = Logger.activity("Initializing repositories")
   track("REPOSITORIES_INIT_STARTED")
   repositoriesLoader({ container })
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  const dbActivity = Logger.activity("Initializing database\n")
+  const dbActivity = Logger.activity("Initializing database")
   track("DATABASE_INIT_STARTED")
   const dbConnection = await databaseLoader({
     container,
@@ -125,19 +125,19 @@ export default async ({
 
   container.register({ manager: asValue(dbConnection.manager) })
 
-  const stratActivity = Logger.activity("Initializing strategies\n")
+  const stratActivity = Logger.activity("Initializing strategies")
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  const servicesActivity = Logger.activity("Initializing services\n")
+  const servicesActivity = Logger.activity("Initializing services")
   track("SERVICES_INIT_STARTED")
-  await servicesLoader({ container, configModule, isTest })
+  servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
-  const expActivity = Logger.activity("Initializing express\n")
+  const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
   await passportLoader({ app: expressApp, container, configModule })
@@ -151,7 +151,7 @@ export default async ({
     next()
   })
 
-  const pluginsActivity = Logger.activity("Initializing plugins\n")
+  const pluginsActivity = Logger.activity("Initializing plugins")
   track("PLUGINS_INIT_STARTED")
   await pluginsLoader({
     container,
@@ -163,7 +163,7 @@ export default async ({
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
-  const subActivity = Logger.activity("Initializing subscribers\n")
+  const subActivity = Logger.activity("Initializing subscribers")
   track("SUBSCRIBERS_INIT_STARTED")
   subscribersLoader({ container })
   const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
@@ -175,7 +175,7 @@ export default async ({
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
-  const defaultsActivity = Logger.activity("Initializing defaults\n")
+  const defaultsActivity = Logger.activity("Initializing defaults")
   track("DEFAULTS_INIT_STARTED")
   await defaultsLoader({ container })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
@@ -190,7 +190,7 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  const modulesActivity = Logger.activity("Resolving modules\n")
+  const modulesActivity = Logger.activity("Resolving modules")
   track("MODULES_INIT_STARTED")
   await moduleLoader({ container, configModule, logger: Logger })
   const modAct = Logger.success(modulesActivity, "Modules resolved") || {}
