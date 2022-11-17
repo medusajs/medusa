@@ -256,7 +256,10 @@ class LineItemService extends TransactionBaseService {
         const lineItemRepo = transactionManager.getCustomRepository(
           this.lineItemRepository_
         )
-        const lineItem = lineItemRepo.create(rawLineItem)
+        const lineItem = lineItemRepo.create({
+          ...rawLineItem,
+          variant,
+        })
 
         if (context.cart) {
           const adjustments = await this.lineItemAdjustmentService_

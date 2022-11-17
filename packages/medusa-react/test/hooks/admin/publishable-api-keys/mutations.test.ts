@@ -1,12 +1,13 @@
 import { renderHook } from "@testing-library/react-hooks"
 
-import { createWrapper } from "../../../utils"
 import {
   useAdminDeletePublishableApiKey,
   useAdminRevokePublishableApiKey,
+  useAdminUpdatePublishableApiKey,
+  useAdminCreatePublishableApiKey,
 } from "../../../../src"
+import { createWrapper } from "../../../utils"
 import { fixtures } from "../../../../mocks/data"
-import { useAdminCreatePublishableApiKey } from "../../../../src"
 
 describe("useAdminCreatePublishableApiKey hook", () => {
   test("Created a publishable api key", async () => {
@@ -17,7 +18,7 @@ describe("useAdminCreatePublishableApiKey hook", () => {
       }
     )
 
-    result.current.mutate({})
+    result.current.mutate({ title: "Mandatory title" })
 
     await waitFor(() => result.current.isSuccess)
 
@@ -25,8 +26,37 @@ describe("useAdminCreatePublishableApiKey hook", () => {
     expect(result.current.data).toEqual(
       expect.objectContaining({
         publishable_api_key: {
+          title: "Mandatory title",
           ...fixtures.get("publishable_api_key"),
         },
+      })
+    )
+  })
+})
+
+describe("useAdminUpdatePublishableApiKey hook", () => {
+  test("updates an publishable key and returns it", async () => {
+    const pubKey = {
+      title: "changed title",
+    }
+
+    const { result, waitFor } = renderHook(
+      () =>
+        useAdminUpdatePublishableApiKey(fixtures.get("publishable_api_key").id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate(pubKey)
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.publishable_api_key).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("publishable_api_key"),
+        ...pubKey,
       })
     )
   })

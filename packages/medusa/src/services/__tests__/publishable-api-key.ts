@@ -48,18 +48,35 @@ describe("PublishableApiKeyService", () => {
   })
 
   it("should create a publishable api key and call the repository with the right arguments as well as the event bus service", async () => {
-    await publishableApiKeyService.create({
-      loggedInUserId: IdMap.getId("admin_user"),
-    })
+    await publishableApiKeyService.create(
+      { title: "API key title" },
+      {
+        loggedInUserId: IdMap.getId("admin_user"),
+      }
+    )
 
     expect(publishableApiKeyRepository.create).toHaveBeenCalledTimes(1)
     expect(publishableApiKeyRepository.create).toHaveBeenCalledWith({
       created_by: IdMap.getId("admin_user"),
+      title: "API key title",
     })
     expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
     expect(EventBusServiceMock.emit).toHaveBeenCalledWith(
       PublishableApiKeyService.Events.CREATED,
       { id: expect.any(String) }
+    )
+  })
+
+  it("should update a publishable api key", async () => {
+    await publishableApiKeyService.update(pubKeyToRetrieve.id, {
+      title: "new title",
+    })
+
+    expect(publishableApiKeyRepository.save).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        id: pubKeyToRetrieve.id,
+        title: "new title",
+      })
     )
   })
 

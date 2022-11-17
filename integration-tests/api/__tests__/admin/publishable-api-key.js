@@ -82,9 +82,15 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
-      await simplePublishableApiKeyFactory(dbConnection, {})
-      await simplePublishableApiKeyFactory(dbConnection, {})
-      await simplePublishableApiKeyFactory(dbConnection, {})
+      await simplePublishableApiKeyFactory(dbConnection, {
+        title: "just a title",
+      })
+      await simplePublishableApiKeyFactory(dbConnection, {
+        title: "special title 1",
+      })
+      await simplePublishableApiKeyFactory(dbConnection, {
+        title: "special title 2",
+      })
     })
 
     afterEach(async () => {
@@ -105,6 +111,30 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.data.offset).toBe(0)
       expect(response.data.publishable_api_keys).toHaveLength(2)
     })
+
+    it("list publishable keys with query search", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/publishable-api-keys?q=special`,
+        adminHeaders
+      )
+
+      expect(response.data.count).toBe(2)
+      expect(response.data.limit).toBe(20)
+      expect(response.data.offset).toBe(0)
+      expect(response.data.publishable_api_keys).toHaveLength(2)
+      expect(response.data.publishable_api_keys).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "special title 1",
+          }),
+          expect.objectContaining({
+            title: "special title 2",
+          }),
+        ])
+      )
+    })
   })
 
   describe("POST /admin/publishable-api-keys", () => {
@@ -122,7 +152,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       const response = await api.post(
         `/admin/publishable-api-keys`,
-        {},
+        { title: "Store api key" },
         adminHeaders
       )
 
@@ -130,6 +160,45 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.data.publishable_api_key).toMatchObject({
         created_by: "admin_user",
         id: expect.any(String),
+        title: "Store api key",
+        revoked_by: null,
+        revoked_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
+  describe("POST /admin/publishable-api-keys/:id", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id-update")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        title: "Initial key title",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("update a publishable key", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}`,
+        { title: "Changed title" },
+        adminHeaders
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.publishable_api_key).toMatchObject({
+        id: pubKeyId,
+        title: "Changed title",
         revoked_by: null,
         revoked_at: null,
         created_at: expect.any(String),

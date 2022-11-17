@@ -1,25 +1,25 @@
 import { Request, Response } from "express"
+import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { IsString } from "class-validator"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys
- * operationId: "PostPublishableApiKeys"
- * summary: "Create a PublishableApiKey"
- * description: "Creates a PublishableApiKey."
+ * @oas [post] /publishable-api-key/{id}
+ * operationId: "PostPublishableApiKysPublishableApiKey"
+ * summary: "Updates a PublishableApiKey"
+ * description: "Updates a PublishableApiKey."
+ * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the PublishableApiKey.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - title
  *         properties:
  *           title:
- *             description: A title for the publishable api key
+ *             description: A title to update for the key.
  *             type: string
- * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -27,16 +27,21 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.create()
+ *       medusa.admin.publishableApiKey.update(publishable_key_id, {
+ *         title: "new title"
+ *       })
  *         .then(({ publishable_api_key }) => {
  *           console.log(publishable_api_key.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "created_by": "user_123" }'
+ *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-key/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "title": "updated title"
+ *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -65,25 +70,28 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const publishableApiKeyService = req.scope.resolve(
+  const { id } = req.params
+  const { validatedBody } = req as {
+    validatedBody: AdminPostPublishableApiKeysPublishableApiKeyReq
+  }
+
+  const publishableApiKeysService: PublishableApiKeyService = req.scope.resolve(
     "publishableApiKeyService"
-  ) as PublishableApiKeyService
+  )
 
-  const manager = req.scope.resolve("manager") as EntityManager
-  const data = req.validatedBody as AdminPostPublishableApiKeysReq
+  const manager: EntityManager = req.scope.resolve("manager")
 
-  const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
-
-  const pubKey = await manager.transaction(async (transactionManager) => {
-    return await publishableApiKeyService
+  const updatedKey = await manager.transaction(async (transactionManager) => {
+    return await publishableApiKeysService
       .withTransaction(transactionManager)
-      .create(data, { loggedInUserId })
+      .update(id, validatedBody)
   })
 
-  return res.status(200).json({ publishable_api_key: pubKey })
+  res.status(200).json({ publishable_api_key: updatedKey })
 }
 
-export class AdminPostPublishableApiKeysReq {
+export class AdminPostPublishableApiKeysPublishableApiKeyReq {
   @IsString()
-  title: string
+  @IsOptional()
+  title?: string
 }

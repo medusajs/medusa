@@ -5,6 +5,8 @@ import {
   AdminPublishableApiKeysRes,
   GetPublishableApiKeysParams,
   AdminPublishableApiKeysListRes,
+  AdminPostPublishableApiKeysReq,
+  AdminPostPublishableApiKeysPublishableApiKeyReq,
 } from "@medusajs/medusa"
 
 import { ResponsePromise } from "../../typings"
@@ -41,10 +43,19 @@ class AdminPublishableApiKeyResource extends BaseResource {
   }
 
   create(
-    payload: {},
+    payload: AdminPostPublishableApiKeysReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPublishableApiKeysRes> {
     const path = `/admin/publishable-api-keys`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  update(
+    id: string,
+    payload: AdminPostPublishableApiKeysPublishableApiKeyReq,
+    customHeaders: Record<string, any> = {}
+  ) {
+    const path = `/admin/publishable-api-keys/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 

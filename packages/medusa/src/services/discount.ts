@@ -10,6 +10,7 @@ import {
 } from "typeorm"
 import {
   EventBusService,
+  NewTotalsService,
   ProductService,
   RegionService,
   TotalsService,
@@ -57,6 +58,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly discountConditionService_: DiscountConditionService
   protected readonly totalsService_: TotalsService
+  protected readonly newTotalsService_: NewTotalsService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
   protected readonly eventBus_: EventBusService
@@ -70,6 +72,7 @@ class DiscountService extends TransactionBaseService {
     discountConditionRepository,
     discountConditionService,
     totalsService,
+    newTotalsService,
     productService,
     regionService,
     customerService,
@@ -86,6 +89,7 @@ class DiscountService extends TransactionBaseService {
     this.discountConditionRepository_ = discountConditionRepository
     this.discountConditionService_ = discountConditionService
     this.totalsService_ = totalsService
+    this.newTotalsService_ = newTotalsService
     this.productService_ = productService
     this.regionService_ = regionService
     this.customerService_ = customerService
@@ -571,7 +575,7 @@ class DiscountService extends TransactionBaseService {
     lineItem: LineItem,
     cart: Cart
   ): Promise<number> {
-    return await this.atomicPhase_(async () => {
+    return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0
 
       if (!lineItem.allow_discounts) {
@@ -589,15 +593,18 @@ class DiscountService extends TransactionBaseService {
         ) &&
         lineItem.includes_tax
       ) {
-        const lineItemTotals = await this.totalsService_.getLineItemTotals(
-          lineItem,
-          cart,
-          {
-            include_tax: true,
-            exclude_gift_cards: true,
-          }
-        )
-        fullItemPrice = lineItemTotals.subtotal
+        const calculationContext = await this.totalsService_
+          .withTransaction(transactionManager)
+          .getCalculationContext(cart, {
+            exclude_shipping: true,
+          })
+        const lineItemTotals = await this.newTotalsService_
+          .withTransaction(transactionManager)
+          .getLineItemTotals([lineItem], {
+            includeTax: true,
+            calculationContext,
+          })
+        fullItemPrice = lineItemTotals[lineItem.id].subtotal
       }
 
       if (type === DiscountRuleType.PERCENTAGE) {
