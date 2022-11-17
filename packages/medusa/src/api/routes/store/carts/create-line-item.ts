@@ -4,6 +4,15 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { FlagRouter } from "../../../../utils/flag-router"
+import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { AwilixContainer } from "awilix"
+import { Cart } from "../../../../models"
+
+const steps = {
+  STARTED: "started",
+  RESET_LINE_ITEMS_HAS_SHIPPING: "reset_line_items_has_shipping",
+  FINISHED: "finished",
+}
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -63,60 +72,181 @@ import { FlagRouter } from "../../../../utils/flag-router"
 export default async (req, res) => {
   const { id } = req.params
 
-  const customerId = req.user?.customer_id
+  const customerId: string | undefined = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
-
   const manager: EntityManager = req.scope.resolve("manager")
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  let cart = await cartService.retrieve(id, {
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
+  )
+
+  const headerKey = req.get("Idempotency-Key") || ""
+
+  let idempotencyKey
+  try {
+    await manager.transaction(async (transactionManager) => {
+      idempotencyKey = await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .initializeRequest(headerKey, req.method, req.params, req.path)
+    })
+  } catch (error) {
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
+
+  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
+  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
+
+  let inProgress = true
+  let err: unknown = false
+
+  const cart = await cartService.retrieve(id, {
     relations: ["items", "items.variant", "payment_sessions"],
   })
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
-
-    const line = await lineItemService
-      .withTransaction(m)
-      .generate(validated.variant_id, cart.region_id, validated.quantity, {
-        customer_id: customerId || cart.customer_id,
-        metadata: validated.metadata,
-      })
-
-    await txCartService.addLineItem(cart, line, {
-      validateSalesChannels:
-        featureFlagRouter.isFeatureEnabled("sales_channels"),
-    })
-
-    if (cart.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
-    }
-  })
-
-  // Reset all the other items has_shipping to false
-  await manager.transaction(async (m) => {
-    const cart = await cartService.withTransaction(m).retrieve(id, {
-      relations: ["items"],
-    })
-    await lineItemService.withTransaction(m).update(
-      {
-        id: In(cart.items.map((item) => item.id)),
-      },
-      {
-        has_shipping: false,
+  const runStep = async (
+    handler: ({ manager: EntityManager }) => Promise<{
+      recovery_point?: string | undefined
+      response_code?: number | undefined
+      response_body?: Record<string, unknown> | undefined
+    }>
+  ) => {
+    return await manager.transaction(
+      "SERIALIZABLE",
+      async (transactionManager) => {
+        idempotencyKey = await idempotencyKeyService
+          .withTransaction(transactionManager)
+          .workStage(idempotencyKey.idempotency_key, async (stageManager) => {
+            return await handler({ manager: stageManager })
+          })
       }
     )
+  }
+
+  while (inProgress) {
+    switch (idempotencyKey.recovery_point) {
+      case steps.STARTED: {
+        await runStep(async ({ manager }) => {
+          return await handleAddOrUpdateLineItem(
+            cart,
+            {
+              customer_id: customerId,
+              metadata: validated.metadata,
+              quantity: validated.quantity,
+              variant_id: validated.variant_id,
+            },
+            {
+              manager,
+              container: req.scope,
+            }
+          )
+        }).catch((e) => {
+          inProgress = false
+          err = e
+        })
+        break
+      }
+
+      case steps.RESET_LINE_ITEMS_HAS_SHIPPING: {
+        await runStep(async ({ manager }) => {
+          return await handleResetLineItemsHasShipping(id, {
+            manager,
+            container: req.scope,
+          })
+        }).catch((e) => {
+          inProgress = false
+          err = e
+        })
+        break
+      }
+
+      case steps.FINISHED: {
+        inProgress = false
+        break
+      }
+    }
+  }
+
+  if (err) {
+    throw err
+  }
+
+  res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+}
+
+async function handleAddOrUpdateLineItem(
+  cart: Cart,
+  data: {
+    metadata?: Record<string, unknown>
+    customer_id?: string
+    variant_id: string
+    quantity: number
+  },
+  { container, manager }: { container: AwilixContainer; manager: EntityManager }
+): Promise<{ recovery_point: string }> {
+  const cartService: CartService = container.resolve("cartService")
+  const lineItemService: LineItemService = container.resolve("lineItemService")
+  const featureFlagRouter: FlagRouter = container.resolve("featureFlagRouter")
+
+  const txCartService = cartService.withTransaction(manager)
+
+  const line = await lineItemService
+    .withTransaction(manager)
+    .generate(data.variant_id, cart.region_id, data.quantity, {
+      customer_id: data.customer_id || cart.customer_id,
+      metadata: data.metadata,
+    })
+
+  await txCartService.addLineItem(cart, line, {
+    validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
-  cart = await cartService.retrieveWithTotals(id, {
+  if (cart.payment_sessions?.length) {
+    await txCartService.setPaymentSessions(cart.id)
+  }
+
+  return {
+    recovery_point: steps.RESET_LINE_ITEMS_HAS_SHIPPING,
+  }
+}
+
+async function handleResetLineItemsHasShipping(
+  cartId: string,
+  {
+    container,
+    manager,
+  }: {
+    container: AwilixContainer
+    manager: EntityManager
+  }
+) {
+  const cartService: CartService = container.resolve("cartService")
+  const lineItemService: LineItemService = container.resolve("lineItemService")
+
+  let cart = await cartService.withTransaction(manager).retrieve(cartId, {
+    relations: ["items"],
+  })
+
+  await lineItemService.withTransaction(manager).update(
+    {
+      id: In(cart.items.map((item) => item.id)),
+    },
+    {
+      has_shipping: false,
+    }
+  )
+
+  cart = await cartService.retrieveWithTotals(cartId, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart })
+  return {
+    response_code: 200,
+    response_body: { cart },
+  }
 }
 
 export class StorePostCartsCartLineItemsReq {
