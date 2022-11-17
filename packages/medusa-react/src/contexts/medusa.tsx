@@ -20,16 +20,30 @@ interface MedusaProviderProps {
   baseUrl: string
   queryClientProviderProps: QueryClientProviderProps
   children: React.ReactNode
+  /**
+   * Authentication token
+   */
   apiKey?: string
+  /**
+   * PublishableApiKey identifier that defines the scope of resources
+   * available within the request
+   */
+  publishableApiKey?: string
 }
 
 export const MedusaProvider = ({
   queryClientProviderProps,
   baseUrl,
   apiKey,
+  publishableApiKey,
   children,
 }: MedusaProviderProps) => {
-  const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey })
+  const medusaClient = new Medusa({
+    baseUrl,
+    maxRetries: 0,
+    apiKey,
+    publishableApiKey,
+  })
   return (
     <QueryClientProvider {...queryClientProviderProps}>
       <MedusaContext.Provider
