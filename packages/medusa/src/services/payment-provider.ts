@@ -6,7 +6,7 @@ import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
 import { RefundRepository } from "../repositories/refund"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
-import { buildQuery, PostgresError } from "../utils"
+import { buildQuery } from "../utils"
 import { FindConfig, Selector } from "../types/common"
 import {
   Cart,
@@ -21,7 +21,6 @@ import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
 import { Logger } from "../types/global"
-import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -686,32 +685,5 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
 
     return refund
-  }
-
-  async handleWebHookEvent(
-    event: string,
-    handler: ({ transactionManager: EntityManager }) => Promise<void>,
-    isolationLevel?: IsolationLevel,
-    errorHandler?: (err: unknown) => Promise<void>
-  ): Promise<{ statusCode: number }> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        await handler({ transactionManager })
-        return { statusCode: 200 }
-      },
-      isolationLevel,
-      errorHandler ||
-        (async (err: any) => {
-          let message = `Payment webhook ${event} handling failed\n${
-            err?.detail ?? err?.message
-          }`
-          if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
-            message = `Payment webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
-              err?.detail ?? err?.message
-            }`
-          }
-          this.logger_.warn(message)
-        })
-    ).catch(() => ({ statusCode: 409 }))
   }
 }

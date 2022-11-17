@@ -1,3 +1,5 @@
+import { PostgresError } from "@medusajs/medusa/src/utils"
+
 export default async (req, res) => {
   const signature = req.headers["stripe-signature"]
 
@@ -34,18 +36,25 @@ export default async (req, res) => {
         }
         break
       case "payment_intent.amount_capturable_updated":
-        const { statusCode } = await paymentProviderService
-          .withTransaction(manager)
-          .handleWebHookEvent(
-            event.type,
-            paymentIntentAmountCapturableEventHandler({
-              order,
-              cartId,
-              container: req.scope,
-            })
-          )
-
-        return res.sendStatus(statusCode)
+        try {
+          await paymentIntentAmountCapturableEventHandler({
+            order,
+            cartId,
+            container: req.scope,
+          })
+        } catch (err) {
+          let message = `Stripe webhook ${event} handling failed\n${
+            err?.detail ?? err?.message
+          }`
+          if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
+            message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+              err?.detail ?? err?.message
+            }`
+          }
+          this.logger_.warn(message)
+          return res.sendStatus(409)
+        }
+        break
       default:
         res.sendStatus(204)
         return

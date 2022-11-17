@@ -2,7 +2,6 @@ import { MockManager, MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
 import { FlagRouter } from "../../utils/flag-router"
-import { PostgresError } from "../../utils"
 
 describe("PaymentProviderService", () => {
   describe("retrieveProvider", () => {
@@ -292,69 +291,5 @@ describe(`PaymentProviderService`, () => {
       50
     )
     expect(testPayServiceMock.refundPayment).toBeCalledTimes(1)
-  })
-
-  describe("handleWebHookEvent", () => {
-    let paymentProviderService
-    const loggerMock = { warn: jest.fn() }
-
-    beforeEach(() => {
-      const container = {
-        manager: MockManager,
-        logger: loggerMock,
-      }
-
-      paymentProviderService = new PaymentProviderService(container)
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should return statuCode 200", async () => {
-      const handler = () => Promise.resolve()
-
-      const { statusCode } = await paymentProviderService.handleWebHookEvent(
-        "test",
-        handler
-      )
-
-      expect(statusCode).toBe(200)
-    })
-
-    it("should return statusCode 409 and log a warning a message", async () => {
-      const event = "test"
-      const handler = () => Promise.reject(new Error(""))
-
-      const { statusCode } = await paymentProviderService
-        .withTransaction(MockManager)
-        .handleWebHookEvent(event, handler)
-
-      expect(statusCode).toBe(409)
-      expect(loggerMock.warn).toHaveBeenCalledTimes(1)
-      expect(loggerMock.warn).toHaveBeenCalledWith(
-        `Payment webhook ${event} handling failed\n`
-      )
-    })
-
-    it("should return statusCode 409 and log a SERIALIZATION_FAILURE warning a message", async () => {
-      const event = "test"
-      const handler = () => {
-        return Promise.reject({
-          code: PostgresError.SERIALIZATION_FAILURE,
-          message: "failed",
-        })
-      }
-
-      const { statusCode } = await paymentProviderService
-        .withTransaction(MockManager)
-        .handleWebHookEvent(event, handler)
-
-      expect(statusCode).toBe(409)
-      expect(loggerMock.warn).toHaveBeenCalledTimes(1)
-      expect(loggerMock.warn).toHaveBeenCalledWith(
-        `Payment webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\nfailed`
-      )
-    })
   })
 })
