@@ -17,6 +17,7 @@ import ReturnReasonsResource from "./resources/return-reasons"
 import ReturnsResource from "./resources/returns"
 import ShippingOptionsResource from "./resources/shipping-options"
 import SwapsResource from "./resources/swaps"
+import KeyManager from "./key-manager"
 
 class Medusa {
   private client: Client
@@ -63,8 +64,19 @@ class Medusa {
     this.paymentMethods = new PaymentMethodsResource(this.client)
     this.paymentCollections = new PaymentCollectionsResource(this.client)
   }
+
+  /**
+   * Set a PublishableApiKey that will be sent with each request
+   * to define the scope of available resources.
+   *
+   * @param key - PublishableApiKey identifier
+   */
+  setPublishableKey(key: string) {
+    KeyManager.registerPublishableApiKey(key)
+  }
 }
 
 export default Medusa
+export { default as KeyManager } from "./key-manager"
 
 export * from "./typings"
