@@ -28,7 +28,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -124,26 +124,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
 
       expect(response.status).toEqual(200)
     })
-
-    it("delete a payment collection", async () => {
-      const api = useApi()
-
-      const response = await api.delete(
-        `/admin/payment-collections/${payCol.id}`,
-        adminHeaders
-      )
-
-      expect(response.data).toEqual({
-        id: `${payCol.id}`,
-        deleted: true,
-        object: "payment_collection",
-      })
-
-      expect(response.status).toEqual(200)
-    })
   })
 
-  describe("POST /admin/payment-collections/:id", () => {
+  describe("POST /admin/payment-collections/:id/authorize", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -179,6 +162,62 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
       )
 
       expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("DELETE /admin/payment-collections/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      payCol = await simplePaymentCollectionFactory(dbConnection, {
+        description: "paycol description",
+        amount: 10000,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("delete a payment collection", async () => {
+      const api = useApi()
+
+      const response = await api.delete(
+        `/admin/payment-collections/${payCol.id}`,
+        adminHeaders
+      )
+
+      expect(response.data).toEqual({
+        id: `${payCol.id}`,
+        deleted: true,
+        object: "payment_collection",
+      })
+
+      expect(response.status).toEqual(200)
+    })
+
+    it("throws error when deleting an authorized payment collection", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/payment-collections/${payCol.id}/authorize`,
+        undefined,
+        adminHeaders
+      )
+
+      try {
+        await api.delete(
+          `/admin/payment-collections/${payCol.id}`,
+          adminHeaders
+        )
+
+        expect(1).toBe(2) // should be ignored
+      } catch (res) {
+        expect(res.response.data.message).toBe(
+          "Cannot delete payment collection with status authorized"
+        )
+      }
     })
   })
 })

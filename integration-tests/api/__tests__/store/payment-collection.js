@@ -250,7 +250,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     })
   })
 
-  describe("Authorize Payment Sessions", () => {
+  describe("Authorize a Payment Sessions", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
