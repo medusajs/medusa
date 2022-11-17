@@ -43,7 +43,7 @@ export async function handleAddOrUpdateLineItem(
     validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
-  cart = await cartService.retrieveWithTotals(cart.id, {
+  cart = await txCartService.retrieveWithTotals(cart.id, {
     select: defaultStoreCartFields,
     relations: [
       ...defaultStoreCartRelations,

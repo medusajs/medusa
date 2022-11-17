@@ -285,8 +285,7 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        const lineItem = lineItemRepository.create(data)
-        return await lineItemRepository.save(lineItem)
+        return await lineItemRepository.save(data)
       }
     )
   }
