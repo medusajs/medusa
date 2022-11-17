@@ -10,12 +10,14 @@ const unAuthenticatedAdminEndpoints = {
   "/admin/users/reset-password": "POST",
   "/admin/invites/accept": "POST",
 }
+
 export interface Config {
   baseUrl: string
   maxRetries: number
   apiKey?: string
   publishableApiKey?: string
 }
+
 export interface RequestOptions {
   timeout?: number
   numberOfRetries?: number
