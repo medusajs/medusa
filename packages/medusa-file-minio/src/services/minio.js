@@ -46,6 +46,7 @@ class MinioService extends AbstractFileService {
       Bucket: options.isProtected ? this.private_bucket_ : this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
+      ContentType: file.mimetype,
     }
 
     return new Promise((resolve, reject) => {

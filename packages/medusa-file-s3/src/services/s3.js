@@ -2,6 +2,7 @@ import fs from "fs"
 import aws from "aws-sdk"
 import { AbstractFileService } from "@medusajs/medusa"
 import stream from "stream"
+import { parse } from "path"
 
 class S3Service extends AbstractFileService {
   // eslint-disable-next-line no-empty-pattern
@@ -30,11 +31,16 @@ class S3Service extends AbstractFileService {
 
   uploadFile(file, options = { isProtected: false, acl: undefined }) {
     const s3 = new aws.S3()
+
+    const parsedFilename = parse(file.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
     const params = {
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
-      Key: `${file.originalname}`,
+      Key: fileKey,
+      ContentType: file.mimetype,
     }
 
     return new Promise((resolve, reject) => {
