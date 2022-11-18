@@ -365,6 +365,28 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  async markAsAuthorized(
+    paymentCollectionId: string
+  ): Promise<PaymentCollection> {
+    return await this.atomicPhase_(async (manager) => {
+      const paymentCollectionRepo = manager.getCustomRepository(
+        this.paymentCollectionRepository_
+      )
+
+      const paymentCollection = await this.retrieve(paymentCollectionId)
+      paymentCollection.status = PaymentCollectionStatus.AUTHORIZED
+      paymentCollection.authorized_amount = paymentCollection.amount
+
+      const result = await paymentCollectionRepo.save(paymentCollection)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(PaymentCollectionService.Events.PAYMENT_AUTHORIZED, result)
+
+      return result
+    })
+  }
+
   async authorize(
     paymentCollectionId: string,
     context: Record<string, unknown> = {}
