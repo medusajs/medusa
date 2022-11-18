@@ -610,18 +610,19 @@ class CartService extends TransactionBaseService {
           }
         }
 
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         let currentItem: LineItem | undefined
         if (lineItem.should_merge) {
-          const [existingItem] = await this.lineItemService_
-            .withTransaction(transactionManager)
-            .list(
-              {
-                cart_id: cart.id,
-                variant_id: lineItem.variant_id,
-                should_merge: true,
-              },
-              { take: 1, select: ["id", "metadata", "quantity"] }
-            )
+          const [existingItem] = await lineItemServiceTx.list(
+            {
+              cart_id: cart.id,
+              variant_id: lineItem.variant_id,
+              should_merge: true,
+            },
+            { take: 1, select: ["id", "metadata", "quantity"] }
+          )
           if (
             existingItem &&
             isEqual(existingItem.metadata, lineItem.metadata)
@@ -642,23 +643,18 @@ class CartService extends TransactionBaseService {
           .confirmInventory(lineItem.variant_id, quantity)
 
         if (currentItem) {
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .update(currentItem.id, {
-              quantity: currentItem.quantity,
-            })
+          await lineItemServiceTx.update(currentItem.id, {
+            quantity: currentItem.quantity,
+          })
         } else {
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .create({
-              ...lineItem,
-              has_shipping: false,
-              cart_id: cart.id,
-            })
+          await lineItemServiceTx.create({
+            ...lineItem,
+            has_shipping: false,
+            cart_id: cart.id,
+          })
         }
 
-        await this.lineItemService_
-          .withTransaction(transactionManager)
+        await lineItemServiceTx
           .update(
             { cart_id: cartId, has_shipping: true },
             { has_shipping: false }
