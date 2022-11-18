@@ -37,6 +37,12 @@ export const formatException = (err): MedusaError => {
         } ${matches[2]} does not exist.`
       )
     }
+    case PostgresError.SERIALIZATION_FAILURE: {
+      return new MedusaError(
+        MedusaError.Types.CONFLICT,
+        err?.detail ?? err?.message
+      )
+    }
     default:
       return err
   }
