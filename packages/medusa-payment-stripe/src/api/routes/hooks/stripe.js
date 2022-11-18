@@ -99,7 +99,7 @@ export default async (req, res) => {
   const resourceId = paymentIntent.metadata.resource_id
 
   if (isPaymentCollection(resourceId)) {
-    await handlePaymentCollection(event, req, res, resourceId, paymentIntentId)
+    await handlePaymentCollection(event, req, res, resourceId, paymentIntent.id)
   } else {
     await handleCartPayments(event, req, res, cartId ?? resourceId)
   }
