@@ -1,7 +1,6 @@
 import { Connection, EntityManager, QueryRunner } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 import formatRegistrationName from "../utils/format-registration-name"
-import resolveCwd from "resolve-cwd"
 import { resolve } from "path"
 
 type Handler<TOutput = unknown> = ({
@@ -9,13 +8,11 @@ type Handler<TOutput = unknown> = ({
 }) => Promise<TOutput>
 
 export default class DbTransactionService {
-  static RESOLUTION_KEY = formatRegistrationName(
-    resolveCwd(resolve(__dirname, this.name))
-  )
+  static RESOLUTION_KEY = formatRegistrationName(resolve(__dirname, this.name))
 
   protected connection_: Connection
 
-  protected constructor({ manager }: { manager: EntityManager }) {
+  constructor({ manager }: { manager: EntityManager }) {
     this.connection_ = manager.connection
   }
 
