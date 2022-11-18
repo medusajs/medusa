@@ -549,15 +549,15 @@ class CartService extends TransactionBaseService {
   /**
    * Check if line item's variant belongs to the cart's sales channel.
    *
-   * @param cart - the cart for the line item
+   * @param sales_channel_id - the cart for the line item
    * @param lineItem - the line item being added
    * @return a boolean indicating validation result
    */
   protected async validateLineItem(
-    cart: Cart,
+    { sales_channel_id }: { sales_channel_id: string | null },
     lineItem: LineItem
   ): Promise<boolean> {
-    if (!cart.sales_channel_id) {
+    if (!sales_channel_id) {
       return true
     }
 
@@ -570,7 +570,7 @@ class CartService extends TransactionBaseService {
         .withTransaction(this.manager_)
         .filterProductsBySalesChannel(
           [lineItemVariant.product_id],
-          cart.sales_channel_id
+          sales_channel_id
         )
     ).length
   }
@@ -588,21 +588,16 @@ class CartService extends TransactionBaseService {
     cartId: string,
     lineItem: LineItem,
     config = { validateSalesChannels: true }
-  ): Promise<Cart> {
+  ): Promise<void> {
+    const select: (keyof Cart)[] = ["id"]
+
+    if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
+      select.push("sales_channel_id")
+    }
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
-          relations: [
-            "shipping_methods",
-            "items",
-            "items.adjustments",
-            "payment_sessions",
-            "items.variant",
-            "items.variant.product",
-            "discounts",
-            "discounts.rule",
-          ],
-        })
+        let cart = await this.retrieve(cartId, { select })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -615,14 +610,25 @@ class CartService extends TransactionBaseService {
           }
         }
 
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         let currentItem: LineItem | undefined
         if (lineItem.should_merge) {
-          currentItem = cart.items.find((item) => {
-            if (item.should_merge && item.variant_id === lineItem.variant_id) {
-              return isEqual(item.metadata, lineItem.metadata)
-            }
-            return false
-          })
+          const [existingItem] = await lineItemServiceTx.list(
+            {
+              cart_id: cart.id,
+              variant_id: lineItem.variant_id,
+              should_merge: true,
+            },
+            { take: 1, select: ["id", "metadata", "quantity"] }
+          )
+          if (
+            existingItem &&
+            isEqual(existingItem.metadata, lineItem.metadata)
+          ) {
+            currentItem = existingItem
+          }
         }
 
         // If content matches one of the line items currently in the cart we can
@@ -637,44 +643,33 @@ class CartService extends TransactionBaseService {
           .confirmInventory(lineItem.variant_id, quantity)
 
         if (currentItem) {
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .update(currentItem.id, {
-              quantity: currentItem.quantity,
-            })
+          await lineItemServiceTx.update(currentItem.id, {
+            quantity: currentItem.quantity,
+          })
         } else {
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .create({
-              ...lineItem,
-              has_shipping: false,
-              cart_id: cartId,
-            })
+          await lineItemServiceTx.create({
+            ...lineItem,
+            has_shipping: false,
+            cart_id: cart.id,
+          })
         }
 
-        const lineItemRepository = transactionManager.getCustomRepository(
-          this.lineItemRepository_
-        )
-        await lineItemRepository.update(
-          {
-            id: In(cart.items.map((item) => item.id)),
-          },
-          {
-            has_shipping: false,
-          }
-        )
+        await lineItemServiceTx
+          .update(
+            { cart_id: cartId, has_shipping: true },
+            { has_shipping: false }
+          )
+          .catch(() => void 0)
 
-        const result = await this.retrieve(cartId, {
+        cart = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
-        await this.refreshAdjustments_(result)
+        await this.refreshAdjustments_(cart)
 
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, result)
-
-        return result
+          .emit(CartService.Events.UPDATED, { id: cart.id })
       }
     )
   }

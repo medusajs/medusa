@@ -4,7 +4,10 @@ import { TransactionBaseService } from "../interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
 import { IdempotencyKey } from "../models"
-import { CreateIdempotencyKeyInput } from "../types/idempotency-key"
+import {
+  CreateIdempotencyKeyInput,
+  IdempotencyCallbackResult,
+} from "../types/idempotency-key"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
@@ -163,14 +166,9 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async workStage(
     idempotencyKey: string,
-    callback: (transactionManager: EntityManager) => Promise<
-      | {
-          recovery_point?: string
-          response_code?: number
-          response_body?: Record<string, unknown>
-        }
-      | never
-    >
+    callback: (
+      transactionManager: EntityManager
+    ) => Promise<IdempotencyCallbackResult | never>
   ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
       const { recovery_point, response_code, response_body } = await callback(

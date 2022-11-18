@@ -284,7 +284,8 @@ describe("CartService", () => {
 
   describe("addLineItem", () => {
     const lineItemService = {
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(() => Promise.resolve()),
+      list: jest.fn().mockImplementation(() => Promise.resolve([])),
       create: jest.fn(),
       withTransaction: function () {
         return this
@@ -353,7 +354,27 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
-      lineItemService,
+      lineItemService: {
+        ...lineItemService,
+        list: jest.fn().mockImplementation((where) => {
+          if (
+            where.cart_id === IdMap.getId("cartWithLine") &&
+            where.variant_id === IdMap.getId("existing") &&
+            where.should_merge
+          ) {
+            return Promise.resolve([
+              {
+                ...where,
+                id: IdMap.getId("merger"),
+                quantity: 1,
+                metadata: {},
+              },
+            ])
+          }
+
+          return Promise.resolve([])
+        }),
+      },
       lineItemRepository: MockRepository(),
       newTotalsService: newTotalsServiceMock,
       eventBusService,
@@ -453,12 +474,14 @@ describe("CartService", () => {
         variant_id: IdMap.getId("existing"),
         should_merge: true,
         quantity: 1,
+        metadata: {},
       }
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-      expect(lineItemService.update).toHaveBeenCalledTimes(1)
-      expect(lineItemService.update).toHaveBeenCalledWith(
+      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenNthCalledWith(
+        1,
         IdMap.getId("merger"),
         {
           quantity: 2,
@@ -519,8 +542,9 @@ describe("CartService", () => {
 
   describe("addLineItem w. SalesChannel", () => {
     const lineItemService = {
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(() => Promise.resolve()),
       create: jest.fn(),
+      list: jest.fn().mockImplementation(() => Promise.resolve([])),
       withTransaction: function () {
         return this
       },
