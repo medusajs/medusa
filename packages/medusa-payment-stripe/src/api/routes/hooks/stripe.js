@@ -12,8 +12,6 @@ export default async (req, res) => {
     return
   }
 
-  const paymentProviderService = req.scope.resolve("paymentProviderService")
-
   function isPaymentCollection(id) {
     return id && id.startsWith("paycol")
   }
