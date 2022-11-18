@@ -1,5 +1,6 @@
 import { join, resolve } from "path"
-import { Connection, createConnection, getConnection } from "typeorm"
+import { Connection, createConnection } from "typeorm"
+import { createDatabase, dropDatabase } from "pg-god"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
@@ -15,7 +16,9 @@ export const pgGodCredentials = {
 }
 
 class DatabaseFactory {
+  protected connection: Connection
   protected masterConnectionName = "master"
+
   protected DB_NAME_ = DB_NAME
 
   constructor() {}
@@ -24,44 +27,32 @@ class DatabaseFactory {
     return this.DB_NAME_
   }
 
-  async getMasterConnection() {
-    try {
-      return await getConnection(this.masterConnectionName)
-    } catch (err) {
-      return await this.createMasterConnection()
-    }
+  async createDb() {
+    await createDatabase({ databaseName: DB_NAME }, pgGodCredentials)
   }
 
-  async createMasterConnection() {
-    return await createConnection({
-      type: "postgres",
-      name: this.masterConnectionName,
-      url: `${DB_URL}`,
-    })
-  }
-
-  async createFromTemplate(dbName) {
-    const connection = await this.getMasterConnection()
-
-    await connection.query(`DROP DATABASE IF EXISTS "${dbName}";`)
-    await connection.query(`CREATE DATABASE "${dbName}";`)
+  async dropDb() {
+    await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials).catch(
+      () => void 0
+    )
   }
 
   async initDb(): Promise<Connection> {
-    const modelsLoader = require("../../loaders/models").default
+    await this.createDb()
+
+    const modelsLoader = require("../../../loaders/models").default
 
     const entities = modelsLoader({}, { register: false, isTest: true })
 
-    await this.createFromTemplate(DB_NAME)
-
     const migrationDir = resolve(
-      join(__dirname, `..`, `..`, `migrations`, `*.ts`)
+      join(__dirname, `..`, `..`, "..", `migrations`, `*.ts`)
     )
 
     const { getEnabledMigrations } = require(join(
       __dirname,
       `..`,
       `..`,
+      "..",
       `commands`,
       `utils`,
       `get-migrations`
@@ -76,13 +67,15 @@ class DatabaseFactory {
       (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
     )
 
-    return await createConnection({
+    this.connection = await createConnection({
       type: "postgres",
       url: DB_FULL_URL,
       migrationsRun: true,
       entities: enabledEntities,
       migrations: enabledMigrations,
     })
+
+    return this.connection
   }
 }
 

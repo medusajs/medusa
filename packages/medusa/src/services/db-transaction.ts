@@ -4,7 +4,9 @@ import formatRegistrationName from "../utils/format-registration-name"
 import { resolve } from "path"
 
 type Handler<TOutput = unknown> = ({
-  transactionManager: EntityManager,
+  transactionManager,
+}: {
+  transactionManager: EntityManager
 }) => Promise<TOutput>
 
 export default class DbTransactionService {
@@ -38,30 +40,29 @@ export default class DbTransactionService {
       queryRunner = transactionManager.queryRunner!
     }
 
-    // No transactionManager means that we are at the higher level of transaction and we can commit/rollback everything under that level
-    return await handler({
-      transactionManager: queryRunner.manager,
-    })
-      .then(async (result) => {
-        if (!transactionManager) {
-          await queryRunner.commitTransaction()
-        }
-        return result
+    // No transactionManager means no parent and therefore no execution in a sub method relying on the parent transaction, at that point we are at  the higher level of transaction
+    // and we can commit/rollback everything under that level
+    try {
+      const result = await handler({
+        transactionManager: queryRunner.manager,
       })
-      .catch(async (error) => {
-        if (!transactionManager) {
-          await queryRunner.rollbackTransaction()
-        }
 
-        if (errorHandler) {
-          await errorHandler(error)
-        }
-        throw error
-      })
-      .finally(async () => {
-        if (!transactionManager) {
-          await queryRunner.release()
-        }
-      })
+      if (!transactionManager) {
+        await queryRunner.commitTransaction()
+        await queryRunner.release()
+      }
+
+      return result
+    } catch (error) {
+      if (!transactionManager) {
+        await queryRunner.rollbackTransaction()
+        await queryRunner.release()
+      }
+
+      if (errorHandler) {
+        await errorHandler(error)
+      }
+      throw error
+    }
   }
 }
