@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Cart,
   Order,
@@ -15,15 +16,14 @@ import { ShippingOptionRequirementRepository } from "../repositories/shipping-op
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
+  CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
-  CreateShippingOptionInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
-import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -409,6 +409,8 @@ class ShippingOptionService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
+      option.price_type = await this.validatePriceType_(data.price_type, option)
+
       const region = await this.regionService_
         .withTransaction(manager)
         .retrieve(option.region_id, {
@@ -426,9 +428,10 @@ class ShippingOptionService extends TransactionBaseService {
         )
       }
 
-      option.price_type = await this.validatePriceType_(data.price_type, option)
       option.amount =
-        data.price_type === "calculated" ? null : data.amount ?? null
+        data.price_type === ShippingOptionPriceType.CALCULATED
+          ? null
+          : data.amount ?? null
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -496,7 +499,8 @@ class ShippingOptionService extends TransactionBaseService {
   ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
-      (priceType !== "flat_rate" && priceType !== "calculated")
+      (priceType !== ShippingOptionPriceType.FLAT_RATE &&
+        priceType !== ShippingOptionPriceType.CALCULATED)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -504,14 +508,24 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    if (priceType === "calculated") {
-      const canCalculate = await this.providerService_.canCalculate(option)
+    if (priceType === ShippingOptionPriceType.CALCULATED) {
+      const canCalculate = await this.providerService_.canCalculate({
+        provider_id: option.provider_id,
+        data: option.data,
+      })
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "The fulfillment provider cannot calculate prices for this option"
         )
       }
+    }
+
+    if (priceType === ShippingOptionPriceType.FLAT_RATE && !option.amount) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Flat rate shipping options must have an amount"
+      )
     }
 
     return priceType
@@ -597,18 +611,19 @@ class ShippingOptionService extends TransactionBaseService {
         option.requirements = acc
       }
 
+      if (isDefined(update.amount)) {
+        option.amount = update.amount
+      }
+
       if (isDefined(update.price_type)) {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
         )
-        if (update.price_type === "calculated") {
+
+        if (update.price_type === ShippingOptionPriceType.CALCULATED) {
           option.amount = null
         }
-      }
-
-      if (isDefined(update.amount) && option.price_type !== "calculated") {
-        option.amount = update.amount
       }
 
       if (isDefined(update.name)) {
