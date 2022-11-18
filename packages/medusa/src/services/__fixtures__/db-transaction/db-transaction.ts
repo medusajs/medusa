@@ -25,20 +25,11 @@ export const fakeUserData2 = {
   password_hash: "password_hash",
 }
 
-export const fakeUserData3 = {
-  id: "test3",
-  email: "test3@email.com",
-  first_name: "firstname",
-  last_name: "lastname",
-  password_hash: "password_hash",
-}
-
 export async function retrieveUsers(connection: Connection): Promise<User[]> {
-  const users = await connection.manager
+  return await connection.manager
     .createQueryBuilder()
     .select()
     .from(User, "user")
     .orderBy("created_at", "ASC")
     .execute()
-  return users
 }
