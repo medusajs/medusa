@@ -35,10 +35,13 @@ export default async (req, res) => {
         break
       case "payment_intent.amount_capturable_updated":
         try {
-          await paymentIntentAmountCapturableEventHandler({
-            order,
-            cartId,
-            container: req.scope,
+          await manager.transaction(async (manager) => {
+            await paymentIntentAmountCapturableEventHandler({
+              order,
+              cartId,
+              container: req.scope,
+              transactionManager: manager,
+            })
           })
         } catch (err) {
           let message = `Stripe webhook ${event} handling failed\n${
@@ -102,22 +105,21 @@ export default async (req, res) => {
   }
 }
 
-function paymentIntentAmountCapturableEventHandler({
+async function paymentIntentAmountCapturableEventHandler({
   order,
   cartId,
   container,
+  transactionManager,
 }) {
-  return async function ({ transactionManager }) {
-    if (!order) {
-      const cartService = container.resolve("cartService")
-      const orderService = container.resolve("orderService")
+  if (!order) {
+    const cartService = container.resolve("cartService")
+    const orderService = container.resolve("orderService")
 
-      const cartServiceTx = cartService.withTransaction(transactionManager)
-      await cartServiceTx.setPaymentSession(cartId, "stripe")
-      await cartServiceTx.authorizePayment(cartId)
-      await orderService
-        .withTransaction(transactionManager)
-        .createFromCart(cartId)
-    }
+    const cartServiceTx = cartService.withTransaction(transactionManager)
+    await cartServiceTx.setPaymentSession(cartId, "stripe")
+    await cartServiceTx.authorizePayment(cartId)
+    await orderService
+      .withTransaction(transactionManager)
+      .createFromCart(cartId)
   }
 }
