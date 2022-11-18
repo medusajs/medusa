@@ -29,7 +29,7 @@ export async function handleAddOrUpdateLineItem(
   const txCartService = cartService.withTransaction(manager)
 
   let cart = await txCartService.retrieve(cartId, {
-    relations: ["items", "items.variant", "payment_sessions"],
+    select: ["id", "region_id", "customer_id"],
   })
 
   const line = await lineItemService
@@ -39,7 +39,7 @@ export async function handleAddOrUpdateLineItem(
       metadata: data.metadata,
     })
 
-  await txCartService.addLineItem(cart, line, {
+  await txCartService.addLineItem(cart.id, line, {
     validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
