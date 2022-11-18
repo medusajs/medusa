@@ -385,7 +385,7 @@ class ShippingOptionService extends TransactionBaseService {
       }
     )
 
-    if (!requirementResults.some(Boolean)) {
+    if (requirementResults.some((requirement) => !requirement)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The Cart does not satisfy the shipping option's requirements"
