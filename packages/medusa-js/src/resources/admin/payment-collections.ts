@@ -40,6 +40,14 @@ class AdminPaymentCollectionsResource extends BaseResource {
     const path = `/admin/payment-collections/${id}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
+
+  markAsAuthorized(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPaymentCollectionRes> {
+    const path = `/admin/payment-collections/${id}/authorize`
+    return this.client.request("POST", path, undefined, {}, customHeaders)
+  }
 }
 
 export default AdminPaymentCollectionsResource
