@@ -2,15 +2,15 @@ import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
+import querystring from "querystring"
 import "reflect-metadata"
 import supertest from "supertest"
-import querystring from "querystring"
 import apiLoader from "../loaders/api"
-import passportLoader from "../loaders/passport"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
+import { moduleHelper } from "../loaders/module"
+import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import logger from "../loaders/logger"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -38,6 +38,7 @@ const testApp = express()
 const container = createContainer()
 
 container.register("featureFlagRouter", asValue(featureFlagRouter))
+container.register("modulesHelper", asValue(moduleHelper))
 container.register("configModule", asValue(config))
 container.register({
   logger: asValue({

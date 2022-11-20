@@ -37,6 +37,20 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
+export type ModuleResolution = {
+  resolutionPath: string
+  definition: ModuleDefinition
+}
+
+export type ModuleDefinition = {
+  key: string
+  registrationName: string
+  defaultPackage: string
+  label: string
+  canOverride?: boolean
+  isRequired?: boolean
+}
+
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
@@ -56,6 +70,8 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
+  modules?: Record<string, string>
+  moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {
         resolve: string
