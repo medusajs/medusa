@@ -1913,47 +1913,47 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/apply-release-plan@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@changesets/apply-release-plan@npm:6.0.1"
+"@changesets/apply-release-plan@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@changesets/apply-release-plan@npm:6.1.2"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/config": ^2.0.1
+    "@changesets/config": ^2.2.0
     "@changesets/get-version-range-type": ^0.3.2
-    "@changesets/git": ^1.3.2
-    "@changesets/types": ^5.0.0
+    "@changesets/git": ^1.5.0
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     detect-indent: ^6.0.0
     fs-extra: ^7.0.1
     lodash.startcase: ^4.4.0
     outdent: ^0.5.0
-    prettier: ^1.19.1
+    prettier: ^2.7.1
     resolve-from: ^5.0.0
     semver: ^5.4.1
-  checksum: 5f0e2201e5d9f44530cd70e804e05322d5337120041ade0728c0d850c2394826aae2dc4feff98584837608061a070bfbe4360ec06d18c7b1fa6154ec74c5cec6
+  checksum: 375d59866c8ef6abc8dabb9b59effbe06f36ba40dc29f81d0fc80e6a16913479440fcc71aa85fc0dd9dae34cf6d86200d3eb2bed40bf1b8483ff3e7f72dfb66b
   languageName: node
   linkType: hard
 
-"@changesets/assemble-release-plan@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "@changesets/assemble-release-plan@npm:5.1.3"
+"@changesets/assemble-release-plan@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "@changesets/assemble-release-plan@npm:5.2.2"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.3.2
-    "@changesets/types": ^5.0.0
+    "@changesets/get-dependents-graph": ^1.3.4
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     semver: ^5.4.1
-  checksum: 068b70b570270cf6206a1960cf64bb06b9067e7cec736cc4114d696ce69a029a64974724abe6b7d1e34e3898e06c356540557db6d3bcb1d3176213e6f933d22b
+  checksum: c33736253ca100f237da4921bec39ee0204f39867fcdcf3bc9ccca71cce0db2ad603a1f581ba2f03612b05f5d892e29ffbb0aa179e5696392779e98dd93124dd
   languageName: node
   linkType: hard
 
-"@changesets/changelog-git@npm:^0.1.11":
-  version: 0.1.11
-  resolution: "@changesets/changelog-git@npm:0.1.11"
+"@changesets/changelog-git@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "@changesets/changelog-git@npm:0.1.13"
   dependencies:
-    "@changesets/types": ^5.0.0
-  checksum: a42b49e04a07086c30bc7c756a444cb3060baf4db739a5fd16412488af5e6afcb3d2efc4541aa4e8b4487ed552c6710409f425b34656aa1d2065a898a9edd4ff
+    "@changesets/types": ^5.2.0
+  checksum: a33b8a517c43ea262942b959a4c6659b4c8e5ed214323973ca2961557edd9983abee99e86815c9fdb540dbd590f5423237d8a07f76ca21f0c560d9d073ac11f9
   languageName: node
   linkType: hard
 
@@ -1968,24 +1968,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/cli@npm:^2.23.0":
-  version: 2.23.1
-  resolution: "@changesets/cli@npm:2.23.1"
+"@changesets/cli@npm:^2.25.2":
+  version: 2.25.2
+  resolution: "@changesets/cli@npm:2.25.2"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/apply-release-plan": ^6.0.1
-    "@changesets/assemble-release-plan": ^5.1.3
-    "@changesets/changelog-git": ^0.1.11
-    "@changesets/config": ^2.0.1
+    "@changesets/apply-release-plan": ^6.1.2
+    "@changesets/assemble-release-plan": ^5.2.2
+    "@changesets/changelog-git": ^0.1.13
+    "@changesets/config": ^2.2.0
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.3.2
-    "@changesets/get-release-plan": ^3.0.10
-    "@changesets/git": ^1.3.2
+    "@changesets/get-dependents-graph": ^1.3.4
+    "@changesets/get-release-plan": ^3.0.15
+    "@changesets/git": ^1.5.0
     "@changesets/logger": ^0.0.5
-    "@changesets/pre": ^1.0.11
-    "@changesets/read": ^0.5.5
-    "@changesets/types": ^5.0.0
-    "@changesets/write": ^0.1.8
+    "@changesets/pre": ^1.0.13
+    "@changesets/read": ^0.5.8
+    "@changesets/types": ^5.2.0
+    "@changesets/write": ^0.2.2
     "@manypkg/get-packages": ^1.1.3
     "@types/is-ci": ^3.0.0
     "@types/semver": ^6.0.0
@@ -2007,22 +2007,22 @@ __metadata:
     tty-table: ^4.1.5
   bin:
     changeset: bin.js
-  checksum: 65660692651507c5fbb0003aa10f3f24bbebcc5d63bc1cfe4199f4dfc677d8726a395cedf45204b8261cdf4d0a8b0c1b3fde597fef45790e2ce3540c9875b0b9
+  checksum: a8ab56f1000bbdd13ee0177cb92749456407237f2279c84d6894cca01041d70a36968349eadb095ed8735467f72bd3ca7001b649a75fcb50d5c0c229cc9025eb
   languageName: node
   linkType: hard
 
-"@changesets/config@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@changesets/config@npm:2.0.1"
+"@changesets/config@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@changesets/config@npm:2.2.0"
   dependencies:
     "@changesets/errors": ^0.1.4
-    "@changesets/get-dependents-graph": ^1.3.2
+    "@changesets/get-dependents-graph": ^1.3.4
     "@changesets/logger": ^0.0.5
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     fs-extra: ^7.0.1
     micromatch: ^4.0.2
-  checksum: f8b1d5f34a65f3661ecbe5717ac610be4506611a72f111f5fd6dcdf045e74dc94baf7233608e2aa0c1c850838778997bea90a4bd696c0510d686c871b326897e
+  checksum: 0e64da2a523f68cf0e2b8a7adb60ed4253d8a679767a6a79a9f16e9c11ef0067aeba740192e865718d0011fcf0e856e8fc0fedec5ff13f7c5a50ed18ee8ed4d7
   languageName: node
   linkType: hard
 
@@ -2035,16 +2035,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/get-dependents-graph@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "@changesets/get-dependents-graph@npm:1.3.2"
+"@changesets/get-dependents-graph@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "@changesets/get-dependents-graph@npm:1.3.4"
   dependencies:
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     chalk: ^2.1.0
     fs-extra: ^7.0.1
     semver: ^5.4.1
-  checksum: 07386324548a542264b3fccf2113d3d8b40378ceaa330123853e551607a5101aa3ad8d585979bf9bff0845c3282b23893923cc76650e881810445bdb997742f7
+  checksum: 2feb4dd2e92601fbb08cb11be0d320474fab4c4100139fe6380dbab7bd1846f4814d1207e66cdf7f95329d1f5774de630f1803cf767e2f377cb055bd1f9c76fb
   languageName: node
   linkType: hard
 
@@ -2058,18 +2058,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/get-release-plan@npm:^3.0.10":
-  version: 3.0.10
-  resolution: "@changesets/get-release-plan@npm:3.0.10"
+"@changesets/get-release-plan@npm:^3.0.15":
+  version: 3.0.15
+  resolution: "@changesets/get-release-plan@npm:3.0.15"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/assemble-release-plan": ^5.1.3
-    "@changesets/config": ^2.0.1
-    "@changesets/pre": ^1.0.11
-    "@changesets/read": ^0.5.5
-    "@changesets/types": ^5.0.0
+    "@changesets/assemble-release-plan": ^5.2.2
+    "@changesets/config": ^2.2.0
+    "@changesets/pre": ^1.0.13
+    "@changesets/read": ^0.5.8
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
-  checksum: 78da8567db14c680b8de5c7eb60b6f9862e209b7ea49fe83bde2db33cdf13cdf1161a6986f34dc3e837ab82f82c1cf82241a80453c9e7b3ffed0041764ffe867
+  checksum: 4514e6f6af30919badb2b564904857af0674ecbb64dba60fd520c1cd690f4d3546810d5bd7e4e1542704356987a30a02cbf1bd5e168414b714da3caa8a18e6b9
   languageName: node
   linkType: hard
 
@@ -2080,17 +2080,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/git@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "@changesets/git@npm:1.3.2"
+"@changesets/git@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@changesets/git@npm:1.5.0"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     is-subdir: ^1.1.1
     spawndamnit: ^2.0.0
-  checksum: a283e624e31367659d2b11508e299200afe6227c28255417cd4db65534f0d5c15c93f83546f2063ea5bffcb506ec3173095c4b9c8036addc124d55a360a2aa02
+  checksum: 573e9e1adffe24748e5cfdcfc62040937f2c15474eb5162db53f24971583b186948772fec50f1a1027aeca62f6564ad45d27043b029b38d44c31e8dc3208b7b8
   languageName: node
   linkType: hard
 
@@ -2103,42 +2103,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/parse@npm:^0.3.13":
-  version: 0.3.13
-  resolution: "@changesets/parse@npm:0.3.13"
+"@changesets/parse@npm:^0.3.15":
+  version: 0.3.15
+  resolution: "@changesets/parse@npm:0.3.15"
   dependencies:
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     js-yaml: ^3.13.1
-  checksum: 486fb0d51ca4ed1b42c95e921f05508392ccfd05dcda5c7e0e8038d74187056f58dd711d1ea02ec527367fcd3f20a6ed209f5ee144055b8a8b2368efd583f123
+  checksum: de6c1cd1b9f84cb06806bd7a66041ba099eb213f94a647ba6b1a18c66145976c8f3579a19fe24f9ca4bdece985fd8f4337a492ffbca862c08989932f03843dda
   languageName: node
   linkType: hard
 
-"@changesets/pre@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "@changesets/pre@npm:1.0.11"
+"@changesets/pre@npm:^1.0.13":
+  version: 1.0.13
+  resolution: "@changesets/pre@npm:1.0.13"
   dependencies:
     "@babel/runtime": ^7.10.4
     "@changesets/errors": ^0.1.4
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     "@manypkg/get-packages": ^1.1.3
     fs-extra: ^7.0.1
-  checksum: 543aad16c9d9adec69b40663db21302263190b0eee9682072d3a350023f1e3ec58fb7a1e43cd922c332f9cccd820111206b2a4b031e4fcaf8033e9bc1ab05109
+  checksum: ce9133d67bb232ab6754ed4a291f873437462cc2f3312d581a4b24d332589e4352994681e5d04cc9e7f8c9939d46b0c5f0bd5b1c0b9e32ec1d30879f9c026834
   languageName: node
   linkType: hard
 
-"@changesets/read@npm:^0.5.5":
-  version: 0.5.5
-  resolution: "@changesets/read@npm:0.5.5"
+"@changesets/read@npm:^0.5.8":
+  version: 0.5.8
+  resolution: "@changesets/read@npm:0.5.8"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/git": ^1.3.2
+    "@changesets/git": ^1.5.0
     "@changesets/logger": ^0.0.5
-    "@changesets/parse": ^0.3.13
-    "@changesets/types": ^5.0.0
+    "@changesets/parse": ^0.3.15
+    "@changesets/types": ^5.2.0
     chalk: ^2.1.0
     fs-extra: ^7.0.1
     p-filter: ^2.1.0
-  checksum: 0d2adc1504ba3b49a4988dd3431fe52dc43933132d3b40f043bdbf88a4cd726b59ba134cc71501b528f798939eaa7351eeadb41e8951d158451276946b2ff5b6
+  checksum: 26adf2e6c2ed645028fb1869678bd8b7da8869f363c7fb3ab1dbafb31d65a07df8f131b7b0c4dd6cf0e838d1d02a54e839211a16fa73e3848e55969783be1556
   languageName: node
   linkType: hard
 
@@ -2156,16 +2156,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/write@npm:^0.1.8":
-  version: 0.1.8
-  resolution: "@changesets/write@npm:0.1.8"
+"@changesets/types@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "@changesets/types@npm:5.2.0"
+  checksum: ded70cef0ae61e77d36392e0112f5f3e43f7125c9bcbb5fab7bb9400c82c105c117722f64a542c2727d7f01e1dc3bcced63ba8001d66a1e0df123e91b46a4e3d
+  languageName: node
+  linkType: hard
+
+"@changesets/write@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@changesets/write@npm:0.2.2"
   dependencies:
     "@babel/runtime": ^7.10.4
-    "@changesets/types": ^5.0.0
+    "@changesets/types": ^5.2.0
     fs-extra: ^7.0.1
     human-id: ^1.0.2
-    prettier: ^1.19.1
-  checksum: d35a725ca2dd46e0a8f3fe173ff36e1e9518ce00d2f30a379b9f39075c12e722ceb71df6de3d13788d3042f50e66c1f521495f0f679261f39de154b239d4cfab
+    prettier: ^2.7.1
+  checksum: 7c64c926deecaa39a384a60781f70d8437eddafd13bdff2fcdb93949e9ca427bcadb0f9468d1af013a4ff38d712bd6d2b7c8bb7f27b8173d9f27eebbafd86489
   languageName: node
   linkType: hard
 
@@ -2900,60 +2907,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/address@npm:^2.1.2":
-  version: 2.1.4
-  resolution: "@hapi/address@npm:2.1.4"
-  checksum: d43068dd090fa1cb9324232b8cbe3235cd9106d5b8f5280262bddff27e95f383bee887bd30931f7765e10b111169681b92ff6ae46cc608686e65a17315f5c4bb
-  languageName: node
-  linkType: hard
-
-"@hapi/formula@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@hapi/formula@npm:1.2.0"
-  checksum: dbd1b8747bbb219a09f2858b654ebdd0cf76d10b6aa583af967864e412bff75503df229b4888503768c7f9283b95831c4e3a661492298008a87f20fba97a99b4
-  languageName: node
-  linkType: hard
-
-"@hapi/hoek@npm:^8.2.4, @hapi/hoek@npm:^8.3.0":
-  version: 8.5.1
-  resolution: "@hapi/hoek@npm:8.5.1"
-  checksum: 3279747618d3be88e384af2be9aff8366dd0cbdba61d37f162d896fe4432f90b3986f96f0e5815429a72e7b6b7293429a4aaff42c234e42ee6a66bb1f9fb14dd
-  languageName: node
-  linkType: hard
-
 "@hapi/hoek@npm:^9.0.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
   checksum: a096063805051fb8bba4c947e293c664b05a32b47e13bc654c0dd43813a1cec993bdd8f29ceb838020299e1d0f89f68dc0d62a603c13c9cc8541963f0beca055
-  languageName: node
-  linkType: hard
-
-"@hapi/joi@npm:^16.1.8":
-  version: 16.1.8
-  resolution: "@hapi/joi@npm:16.1.8"
-  dependencies:
-    "@hapi/address": ^2.1.2
-    "@hapi/formula": ^1.2.0
-    "@hapi/hoek": ^8.2.4
-    "@hapi/pinpoint": ^1.0.2
-    "@hapi/topo": ^3.1.3
-  checksum: 1061e375dca6a9a63124af9ad4a372b2466ec5c84fb229e7a376aae12379138e12a8d6f739da9f523c9fb0378e87de14aa7b70a09be12d903c1d45822dccb607
-  languageName: node
-  linkType: hard
-
-"@hapi/pinpoint@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@hapi/pinpoint@npm:1.0.2"
-  checksum: 74c57283b0d7aff2f96d11183fde21188e41837d86a69be3853912309bb492c01143e60f0f147b21eea7d5d73470a26ba7cad8dc2bc4b50767e863b6bee51dad
-  languageName: node
-  linkType: hard
-
-"@hapi/topo@npm:^3.1.3":
-  version: 3.1.6
-  resolution: "@hapi/topo@npm:3.1.6"
-  dependencies:
-    "@hapi/hoek": ^8.3.0
-  checksum: 9948100dc6a3081bf29e88c7c2657a1612e46fe701d6f0cf5a5d3d656344c9cc6199d5489c563f231b65213288293673dec7d32845c59882a0f26c07dc461980
   languageName: node
   linkType: hard
 
@@ -23616,16 +23573,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-core-utils@npm:^0.1.27":
-  version: 0.1.39
-  resolution: "medusa-core-utils@npm:0.1.39"
-  dependencies:
-    "@hapi/joi": ^16.1.8
-    joi-objectid: ^3.0.1
-  checksum: 7c5d51de35e96312fd34e7c7b3b23cdcce197bbdad672234d766a44abe1b22cfccb28855d496b5e422558d72e87808e826ef2ef80189eaa45bdfba84942f2c8c
-  languageName: node
-  linkType: hard
-
 "medusa-dev-cli@workspace:packages/medusa-dev-cli":
   version: 0.0.0-use.local
   resolution: "medusa-dev-cli@workspace:packages/medusa-dev-cli"
@@ -24049,7 +23996,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^0.1.27
+    medusa-core-utils: ^1.1.34
     randomatic: ^3.1.1
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24176,7 +24123,7 @@ __metadata:
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": 1.4.0
+    "@medusajs/medusa": ^1.6.0
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -27977,15 +27924,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^1.19.1":
-  version: 1.19.1
-  resolution: "prettier@npm:1.19.1"
-  bin:
-    prettier: ./bin-prettier.js
-  checksum: 12efb4e486c1e1d006e9eadd3b6585fc6beb9481dc801080fc23d3e75ec599d88c6fea1b40aef167128069e8fe76b4205bb8306ad145575d1b051b8fa70cfaae
-  languageName: node
-  linkType: hard
-
 "prettier@npm:^2.5.1, prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
@@ -30069,7 +30007,7 @@ __metadata:
     "@babel/register": ^7.11.5
     "@babel/runtime": ^7.11.2
     "@changesets/changelog-github": ^0.4.5
-    "@changesets/cli": ^2.23.0
+    "@changesets/cli": ^2.25.2
     "@linear/sdk": ^1.22.0
     "@octokit/core": ^4.0.5
     "@redocly/cli": latest

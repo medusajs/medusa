@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Dependencies
-        run: yarn
+        run: yarn install --no-immutable
         
       - name: Publish staging packages
         run: yarn release:staging
