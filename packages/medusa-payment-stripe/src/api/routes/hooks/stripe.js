@@ -1,3 +1,5 @@
+import { PostgresError } from "@medusajs/medusa/src/utils"
+
 export default async (req, res) => {
   const signature = req.headers["stripe-signature"]
 
@@ -16,7 +18,6 @@ export default async (req, res) => {
 
   async function handleCartPayments(event, req, res, cartId) {
     const manager = req.scope.resolve("manager")
-    const cartService = req.scope.resolve("cartService")
     const orderService = req.scope.resolve("orderService")
 
     const order = await orderService
@@ -33,13 +34,26 @@ export default async (req, res) => {
         }
         break
       case "payment_intent.amount_capturable_updated":
-        if (!order) {
+        try {
           await manager.transaction(async (manager) => {
-            const cartServiceTx = cartService.withTransaction(manager)
-            await cartServiceTx.setPaymentSession(cartId, "stripe")
-            await cartServiceTx.authorizePayment(cartId)
-            await orderService.withTransaction(manager).createFromCart(cartId)
+            await paymentIntentAmountCapturableEventHandler({
+              order,
+              cartId,
+              container: req.scope,
+              transactionManager: manager,
+            })
           })
+        } catch (err) {
+          let message = `Stripe webhook ${event} handling failed\n${
+            err?.detail ?? err?.message
+          }`
+          if (err?.code === PostgresError.SERIALIZATION_FAILURE) {
+            message = `Stripe webhook ${event} handle failed. This can happen when this webhook is triggered during a cart completion and can be ignored. This event should be retried automatically.\n${
+              err?.detail ?? err?.message
+            }`
+          }
+          this.logger_.warn(message)
+          return res.sendStatus(409)
         }
         break
       default:
@@ -85,8 +99,27 @@ export default async (req, res) => {
   const resourceId = paymentIntent.metadata.resource_id
 
   if (isPaymentCollection(resourceId)) {
-    await handlePaymentCollection(event, req, res, resourceId, paymentIntentId)
+    await handlePaymentCollection(event, req, res, resourceId, paymentIntent.id)
   } else {
     await handleCartPayments(event, req, res, cartId ?? resourceId)
+  }
+}
+
+async function paymentIntentAmountCapturableEventHandler({
+  order,
+  cartId,
+  container,
+  transactionManager,
+}) {
+  if (!order) {
+    const cartService = container.resolve("cartService")
+    const orderService = container.resolve("orderService")
+
+    const cartServiceTx = cartService.withTransaction(transactionManager)
+    await cartServiceTx.setPaymentSession(cartId, "stripe")
+    await cartServiceTx.authorizePayment(cartId)
+    await orderService
+      .withTransaction(transactionManager)
+      .createFromCart(cartId)
   }
 }

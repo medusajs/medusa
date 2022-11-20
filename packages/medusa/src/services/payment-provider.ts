@@ -20,6 +20,7 @@ import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
+import { Logger } from "../types/global"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -30,6 +31,7 @@ type InjectedDependencies = {
   refundRepository: typeof RefundRepository
   paymentService: PaymentService
   featureFlagRouter: FlagRouter
+  logger: Logger
 } & {
   [key in `${PaymentProviderKey}`]:
     | AbstractPaymentService
@@ -48,6 +50,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly logger_: Logger
 
   protected readonly featureFlagRouter_: FlagRouter
 
@@ -61,6 +64,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
     this.featureFlagRouter_ = container.featureFlagRouter
+    this.logger_ = container.logger
   }
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
