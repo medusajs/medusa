@@ -1,5 +1,5 @@
-import http from "http"
 import { NextFunction, Request, RequestHandler, Response } from "express"
+import http from "http"
 import passport from "passport"
 
 export default (): RequestHandler => {
