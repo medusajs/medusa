@@ -62,10 +62,10 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(
+  const validated = (await validator(
     StorePostCustomersCustomerPasswordTokenReq,
     req.body
-  )
+  )) as StorePostCustomersCustomerPasswordTokenReq
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"

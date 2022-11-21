@@ -84,7 +84,7 @@ export default async (req, res) => {
   const validated = await validator(
     StorePostCustomersResetPasswordReq,
     req.body
-  )
+  ) as StorePostCustomersResetPasswordReq
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   let customer = await customerService.retrieveByEmail(validated.email, {
