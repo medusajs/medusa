@@ -798,5 +798,35 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
 
       expect(response.status).toEqual(400)
     })
+
+    it("correctly returns a product if passed PK has no associated SCs", async () => {
+      const api = useApi()
+
+      let response = await api
+        .get(`/store/products/${product1.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(200)
+
+      response = await api
+        .get(`/store/products/${product2.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(200)
+    })
   })
 })

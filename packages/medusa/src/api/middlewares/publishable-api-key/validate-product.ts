@@ -27,6 +27,7 @@ async function validateProduct(
       await publishableKeyService.getResourceScopes(pubKey)
 
     if (
+      salesChannelIds.length &&
       !(await productService.isProductInSalesChannels(
         req.params.id,
         salesChannelIds
