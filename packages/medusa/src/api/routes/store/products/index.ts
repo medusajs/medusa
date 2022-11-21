@@ -5,7 +5,7 @@ import { Product } from "../../../.."
 import middlewares from "../../../middlewares"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { PaginatedResponse } from "../../../../types/common"
-import { validateKeyScopes } from "../../../middlewares/publishable-api-key/validate-key-scopes"
+import { extendResourceFilters } from "../../../middlewares/publishable-api-key/extend-resource-filters"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 const route = Router()
@@ -16,7 +16,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
     route.get(
       "/",
-      validateKeyScopes as unknown as RequestHandler,
+      extendResourceFilters as unknown as RequestHandler,
       middlewares.wrap(require("./list-products").default)
     )
   } else {

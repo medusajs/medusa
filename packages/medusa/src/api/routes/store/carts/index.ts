@@ -11,7 +11,7 @@ import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import { validateKeyScopes } from "../../../middlewares/publishable-api-key/validate-key-scopes"
+import { extendResourceFilters } from "../../../middlewares/publishable-api-key/extend-resource-filters"
 
 const route = Router()
 
@@ -46,7 +46,7 @@ export default (app, container) => {
       "/",
       middlewareService.usePreCartCreation(),
       transformBody(StorePostCartReq),
-      validateKeyScopes as unknown as RequestHandler,
+      extendResourceFilters as unknown as RequestHandler,
       middlewares.wrap(require("./create-cart").default)
     )
   } else {

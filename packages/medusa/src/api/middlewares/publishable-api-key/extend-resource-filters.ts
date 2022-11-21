@@ -7,15 +7,14 @@ export type PublishableApiKeyScopes = {
 }
 
 /**
- * The middleware checks if a publishable api key is passed in the request header.
- * In case that a key is present in the request header, attach ids of resources
- * within the scope of the key to the req object.
+ * The middleware, in case that a key is present in the request header,
+ * attaches ids of resources within the scope of the key to the req object.
  *
  * @param req - request object
  * @param res - response object
  * @param next - next middleware call
  */
-async function validateKeyScopes(
+async function extendResourceFilters(
   req: Request & { publishableApiKeyScopes: PublishableApiKeyScopes },
   res: Response,
   next: NextFunction
@@ -35,4 +34,4 @@ async function validateKeyScopes(
   next()
 }
 
-export { validateKeyScopes }
+export { extendResourceFilters }
