@@ -328,20 +328,17 @@ class ProductService extends TransactionBaseService {
     id: string,
     salesChannelIds: string[]
   ): Promise<boolean> {
-    // try {
     const product = await this.retrieve_(
-      {
-        id,
-        // @ts-ignore
-        sales_channels: salesChannelIds,
-      },
+      { id },
       { relations: ["sales_channels"] }
     )
 
-    return !!product
-    // } catch (e) {
-    // return false
-    // }
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
   }
 
   /**

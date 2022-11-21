@@ -774,29 +774,29 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
     })
 
-    // it("return 404 because requested product is not in the SC associated with a publishable key", async () => {
-    //   const api = useApi()
-    //
-    //   await api.post(
-    //     `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
-    //     {
-    //       sales_channel_ids: [{ id: salesChannel1.id }],
-    //     },
-    //     adminHeaders
-    //   )
-    //
-    //   const response = await api
-    //     .get(`/store/products/${product2.id}`, {
-    //       headers: {
-    //         Authorization: "Bearer test_token",
-    //         "x-publishable-api-key": pubKeyId,
-    //       },
-    //     })
-    //     .catch((err) => {
-    //       return err.response
-    //     })
-    //
-    //   expect(response.status).toEqual(404)
-    // })
+    it("return 400 because requested product is not in the SC associated with a publishable key", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/products/${product2.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(400)
+    })
   })
 })
