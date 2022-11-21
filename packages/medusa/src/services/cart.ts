@@ -740,7 +740,7 @@ class CartService extends TransactionBaseService {
             variant_id: In([items.map((item) => item.variant_id)]),
             should_merge: true,
           },
-          { select: ["id", "metadata", "quantity"], relations: ["variant"] }
+          { select: ["id", "metadata", "quantity"] }
         )
 
         const existingItemsVariantMap = new Map()
@@ -776,15 +776,15 @@ class CartService extends TransactionBaseService {
               has_shipping: false,
             })
           } else {
-            await lineItemServiceTx.create({
+            /*await lineItemServiceTx.create({
               ...item,
               has_shipping: false,
               cart_id: cart.id,
-            })
+            })*/
           }
         }
 
-        await lineItemServiceTx
+        /*await lineItemServiceTx
           .update(
             {
               cart_id: cartId,
@@ -798,7 +798,7 @@ class CartService extends TransactionBaseService {
           relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
-        await this.refreshAdjustments_(cart)
+        await this.refreshAdjustments_(cart)*/
 
         await this.eventBus_
           .withTransaction(transactionManager)

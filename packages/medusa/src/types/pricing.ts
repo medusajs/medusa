@@ -1,5 +1,11 @@
 import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
-import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
+import {
+  MoneyAmount,
+  Product,
+  ProductVariant,
+  Region,
+  ShippingOption,
+} from "../models"
 import { TaxServiceRate } from "./tax-service"
 
 export type ProductVariantPricing = {
@@ -23,6 +29,7 @@ export type PricingContext = {
   price_selection: PriceSelectionContext
   automatic_taxes: boolean
   tax_rate: number | null
+  region?: Region
 }
 
 export type ShippingOptionPricing = {

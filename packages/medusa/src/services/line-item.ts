@@ -5,7 +5,13 @@ import { DeepPartial } from "typeorm/common/DeepPartial"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { Cart, LineItem, LineItemAdjustment, LineItemTaxLine } from "../models"
+import {
+  Cart,
+  LineItem,
+  LineItemAdjustment,
+  LineItemTaxLine,
+  Region,
+} from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
 import LineItemAdjustmentService from "./line-item-adjustment"
@@ -188,6 +194,7 @@ class LineItemService extends TransactionBaseService {
       metadata?: Record<string, unknown>
       customer_id?: string
       order_edit_id?: string
+      region?: Region
       cart?: Cart
     } = {}
   ): Promise<LineItem> {
@@ -205,21 +212,22 @@ class LineItemService extends TransactionBaseService {
 
         let shouldMerge = false
 
-        /*if (context.unit_price === undefined || context.unit_price === null) {
+        if (context.unit_price === undefined || context.unit_price === null) {
           shouldMerge = true
           const variantPricing = await this.pricingService_
             .withTransaction(transactionManager)
             .getProductVariantPricingById(variant.id, {
+              region: context.region,
               region_id: regionId,
               quantity: quantity,
               customer_id: context?.customer_id,
               include_discount_prices: true,
             })
 
-          unitPriceIncludesTax = !!variantPricing.calculated_price_includes_tax
+          unitPriceIncludesTax = !!variantPricing?.calculated_price_includes_tax
 
-          unit_price = variantPricing.calculated_price ?? undefined
-        }*/
+          unit_price = variantPricing?.calculated_price ?? undefined
+        }
 
         const rawLineItem: Partial<LineItem> = {
           unit_price: 1000, //unit_price,

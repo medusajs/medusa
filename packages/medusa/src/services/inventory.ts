@@ -75,7 +75,14 @@ class InventoryService extends TransactionBaseService {
     const variant = isString(variantOrId)
       ? await this.productVariantService_
           .withTransaction(this.manager_)
-          .retrieve(variantOrId)
+          .retrieve(variantOrId, {
+            select: [
+              "id",
+              "inventory_quantity",
+              "allow_backorder",
+              "manage_inventory",
+            ],
+          })
       : variantOrId
 
     const { inventory_quantity, allow_backorder, manage_inventory } = variant

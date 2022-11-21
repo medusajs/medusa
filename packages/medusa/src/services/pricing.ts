@@ -7,7 +7,7 @@ import {
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Product, ProductVariant, ShippingOption } from "../models"
+import { Product, ProductVariant, Region, ShippingOption } from "../models"
 import {
   PricedProduct,
   PricedShippingOption,
@@ -69,12 +69,13 @@ class PricingService extends TransactionBaseService {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    let automaticTaxes = false
-    let taxRate: number | null = null
-    let currencyCode = context.currency_code
+    let automaticTaxes = context.region?.automatic_taxes ?? false
+    let taxRate: number | null = context.region?.tax_rate ?? null
+    let currencyCode = context.region?.currency_code ?? context.currency_code
 
-    if (context.region_id) {
-      const region = await this.regionService
+    let region = context.region as Region
+    if (context.region_id && !region) {
+      region = await this.regionService
         .withTransaction(this.manager_)
         .retrieve(context.region_id, {
           select: ["id", "currency_code", "automatic_taxes", "tax_rate"],

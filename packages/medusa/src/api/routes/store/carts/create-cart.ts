@@ -14,10 +14,11 @@ import {
 import {
   CartService,
   LineItemService,
+  ProductVariantService,
   RegionService,
 } from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart, Region } from "../../../../models"
+import { Cart, LineItem, Region } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -119,6 +120,9 @@ export default async (req, res) => {
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const variantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
@@ -184,19 +188,20 @@ export default async (req, res) => {
 
     cart = await cartServiceTx.create(toCreate)
 
-    if (validated.items) {
-      const generatedLineItems = await Promise.all(
-        validated.items.map(async (i, index) => {
-          return await lineItemServiceTx.generate(
-            i.variant_id,
-            region.id,
-            i.quantity,
-            {
-              customer_id: req.user?.customer_id,
-            }
-          )
-        })
-      )
+    if (validated.items?.length) {
+      const generatedLineItems: LineItem[] = []
+      for (const item of validated.items) {
+        const generatedLineItem = await lineItemServiceTx.generate(
+          item.variant_id,
+          region.id,
+          item.quantity,
+          {
+            region,
+            customer_id: req.user?.customer_id,
+          }
+        )
+        generatedLineItems.push(generatedLineItem)
+      }
 
       await cartServiceTx.addLineItems(cart.id, generatedLineItems, {
         validateSalesChannels:
