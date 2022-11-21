@@ -66,7 +66,7 @@ class MinioService extends AbstractFileService {
     const s3 = new aws.S3()
     const params = {
       Bucket: this.bucket_,
-      Key: `${file.fileKey}`,
+      Key: file.fileKey,
     }
 
     return await Promise.all([

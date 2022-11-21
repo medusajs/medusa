@@ -55,7 +55,7 @@ class S3Service extends AbstractFileService {
     const s3 = new aws.S3()
     const params = {
       Bucket: this.bucket_,
-      Key: `${file}`,
+      Key: file,
     }
 
     return new Promise((resolve, reject) => {
@@ -98,7 +98,7 @@ class S3Service extends AbstractFileService {
 
     const params = {
       Bucket: this.bucket_,
-      Key: `${fileData.fileKey}`,
+      Key: fileData.fileKey,
     }
 
     return s3.getObject(params).createReadStream()
@@ -113,7 +113,7 @@ class S3Service extends AbstractFileService {
 
     const params = {
       Bucket: this.bucket_,
-      Key: `${fileData.fileKey}`,
+      Key: fileData.fileKey,
       Expires: this.downloadUrlDuration,
     }
 
