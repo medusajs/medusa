@@ -324,6 +324,26 @@ class ProductService extends TransactionBaseService {
     return await productTagRepo.listTagsByUsage(count)
   }
 
+  async isProductInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    // try {
+    const product = await this.retrieve_(
+      {
+        id,
+        // @ts-ignore
+        sales_channels: salesChannelIds,
+      },
+      { relations: ["sales_channels"] }
+    )
+
+    return !!product
+    // } catch (e) {
+    // return false
+    // }
+  }
+
   /**
    * Creates a product.
    * @param productObject - the product to create

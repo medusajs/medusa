@@ -711,4 +711,92 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
     })
   })
+
+  describe("GET /store/products/:id", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id")
+
+    let salesChannel1
+    let product1
+    let product2
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "salesChannel1",
+        description: "salesChannel1",
+      })
+
+      product1 = await simpleProductFactory(dbConnection, {
+        title: "prod 1",
+        status: "published",
+        sales_channels: [salesChannel1],
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        title: "prod 2",
+        status: "published",
+      })
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        created_by: adminUserId,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("retrieve a products from a specific channel associated with a publishable key", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api.get(`/store/products/${product1.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+          "x-publishable-api-key": pubKeyId,
+        },
+      })
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          id: product1.id,
+        })
+      )
+    })
+
+    // it("return 404 because requested product is not in the SC associated with a publishable key", async () => {
+    //   const api = useApi()
+    //
+    //   await api.post(
+    //     `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+    //     {
+    //       sales_channel_ids: [{ id: salesChannel1.id }],
+    //     },
+    //     adminHeaders
+    //   )
+    //
+    //   const response = await api
+    //     .get(`/store/products/${product2.id}`, {
+    //       headers: {
+    //         Authorization: "Bearer test_token",
+    //         "x-publishable-api-key": pubKeyId,
+    //       },
+    //     })
+    //     .catch((err) => {
+    //       return err.response
+    //     })
+    //
+    //   expect(response.status).toEqual(404)
+    // })
+  })
 })
