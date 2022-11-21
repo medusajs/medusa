@@ -132,6 +132,22 @@ describe("CustomerService", () => {
       })
     })
 
+    it("calls findOne with has_account", async () => {
+      await customerService.create({
+        email: "oliver@medusa.com",
+        first_name: "Oliver",
+        last_name: "Juhl",
+        password: "test",
+      })
+
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          email: "oliver@medusa.com",
+          has_account: true,
+        },
+      })
+    })
+
     it("successfully creates a one time customer", async () => {
       await customerService.create({
         email: "oliver@medusa.com",
