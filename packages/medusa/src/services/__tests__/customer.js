@@ -18,7 +18,7 @@ const customerGroupService = {
 describe("CustomerService", () => {
   describe("retrieve", () => {
     const customerRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+      find: () => Promise.resolve([{ id: IdMap.getId("ironman") }]),
     })
     const customerService = new CustomerService({
       manager: MockManager,
@@ -32,8 +32,8 @@ describe("CustomerService", () => {
     it("successfully retrieves a customer", async () => {
       const result = await customerService.retrieve(IdMap.getId("ironman"))
 
-      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(customerRepository.findOne).toHaveBeenCalledWith({
+      expect(customerRepository.find).toHaveBeenCalledTimes(1)
+      expect(customerRepository.find).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
       })
 
@@ -43,7 +43,7 @@ describe("CustomerService", () => {
 
   describe("retrieveByEmail", () => {
     const customerRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+      find: () => Promise.resolve([{ id: IdMap.getId("ironman") }]),
     })
     const customerService = new CustomerService({
       manager: MockManager,
@@ -57,8 +57,8 @@ describe("CustomerService", () => {
     it("successfully retrieves a customer by email", async () => {
       const result = await customerService.retrieveByEmail("tony@stark.com")
 
-      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(customerRepository.findOne).toHaveBeenCalledWith({
+      expect(customerRepository.find).toHaveBeenCalledTimes(1)
+      expect(customerRepository.find).toHaveBeenCalledWith({
         where: { email: "tony@stark.com" },
       })
 
@@ -68,7 +68,7 @@ describe("CustomerService", () => {
 
   describe("retrieveByPhone", () => {
     const customerRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("ironman") }),
+      find: () => Promise.resolve([{ id: IdMap.getId("ironman") }]),
     })
     const customerService = new CustomerService({
       manager: MockManager,
@@ -82,8 +82,8 @@ describe("CustomerService", () => {
     it("successfully retrieves a customer by email", async () => {
       const result = await customerService.retrieveByPhone("12341234")
 
-      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(customerRepository.findOne).toHaveBeenCalledWith({
+      expect(customerRepository.find).toHaveBeenCalledTimes(1)
+      expect(customerRepository.find).toHaveBeenCalledWith({
         where: { phone: "12341234" },
       })
 
@@ -93,14 +93,16 @@ describe("CustomerService", () => {
 
   describe("create", () => {
     const customerRepository = MockRepository({
-      findOne: (query) => {
+      find: (query) => {
         if (query.where.email === "tony@stark.com") {
-          return Promise.resolve({
-            id: IdMap.getId("exists"),
-            password_hash: "test",
-          })
+          return Promise.resolve([
+            {
+              id: IdMap.getId("exists"),
+              password_hash: "test",
+            },
+          ])
         }
-        return Promise.resolve({ id: IdMap.getId("ironman") })
+        return Promise.resolve([{ id: IdMap.getId("ironman") }])
       },
     })
 
@@ -148,8 +150,8 @@ describe("CustomerService", () => {
 
   describe("update", () => {
     const customerRepository = MockRepository({
-      findOne: (query) => {
-        return Promise.resolve({ id: IdMap.getId("ironman") })
+      find: (query) => {
+        return Promise.resolve([{ id: IdMap.getId("ironman") }])
       },
     })
 
@@ -234,8 +236,8 @@ describe("CustomerService", () => {
 
   describe("update customer groups", () => {
     const customerRepository = MockRepository({
-      findOne: (query) => {
-        return Promise.resolve({ id: IdMap.getId("ironman") })
+      find: (query) => {
+        return Promise.resolve([{ id: IdMap.getId("ironman") }])
       },
     })
 
