@@ -34,12 +34,7 @@ class StoreService extends TransactionBaseService {
     currencyRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      storeRepository,
-      currencyRepository,
-      eventBusService,
-    })
+    super(arguments[0])
 
     this.manager_ = manager
     this.storeRepository_ = storeRepository

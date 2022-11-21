@@ -1,4 +1,4 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ShippingProfileService from "../shipping-profile"
 
 describe("ShippingProfileService", () => {
@@ -188,7 +188,7 @@ describe("ShippingProfileService", () => {
           },
         ])
       }),
-      validateCartOption: jest.fn().mockImplementation((s) => s),
+      validateCartOption: jest.fn().mockImplementation(async (s) => s),
       withTransaction: function () {
         return this
       },
