@@ -59,7 +59,7 @@ describe("CustomerService", () => {
 
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
-        where: { email: "tony@stark.com" },
+        where: { email: "tony@stark.com", has_account: true },
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -100,7 +100,7 @@ describe("CustomerService", () => {
             password_hash: "test",
           })
         }
-        return Promise.resolve({ id: IdMap.getId("ironman") })
+        return undefined
       },
     })
 
@@ -114,7 +114,25 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully create a customer", async () => {
+    it("successfully creates a customer with password", async () => {
+      await customerService.create({
+        email: "oliver@medusa.com",
+        first_name: "Oliver",
+        last_name: "Juhl",
+        password: "test",
+      })
+
+      expect(customerRepository.create).toBeCalledTimes(1)
+      expect(customerRepository.create).toBeCalledWith({
+        email: "oliver@medusa.com",
+        first_name: "Oliver",
+        last_name: "Juhl",
+        has_account: true,
+        password_hash: expect.anything(),
+      })
+    })
+
+    it("successfully creates a one time customer", async () => {
       await customerService.create({
         email: "oliver@medusa.com",
         first_name: "Oliver",
@@ -129,20 +147,18 @@ describe("CustomerService", () => {
       })
     })
 
-    it("successfully updates an existing customer on create", async () => {
-      await customerService.create({
-        email: "tony@stark.com",
-        password: "stark123",
-        has_account: false,
-      })
-
-      expect(customerRepository.save).toBeCalledTimes(1)
-      expect(customerRepository.save).toBeCalledWith({
-        id: IdMap.getId("exists"),
-        email: "tony@stark.com",
-        password_hash: expect.anything(),
-        has_account: true,
-      })
+    it("Fails to create a customer with an existing account", async () => {
+      expect.assertions(1)
+      await customerService
+        .create({
+          email: "tony@stark.com",
+          password: "stark123",
+        })
+        .catch((err) => {
+          expect(err.message).toEqual(
+            "A customer with the given email already has an account. Log in instead"
+          )
+        })
     })
   })
 
