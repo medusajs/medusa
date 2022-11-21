@@ -221,7 +221,7 @@ class CustomerService extends TransactionBaseService {
     customerId: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer> {
-    return this.retrieve_({ id: customerId ?? null }, config)
+    return this.retrieve_({ id: customerId }, config)
   }
 
   /**

@@ -1,5 +1,4 @@
 import { Express } from "express"
-import { MedusaError } from "medusa-core-utils"
 import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
@@ -54,10 +53,6 @@ export default async ({
         secretOrKey: jwt_secret,
       },
       async (jwtPayload, done) => {
-        if (!jwtPayload.admin) {
-          done({ type: MedusaError.Types.UNAUTHORIZED }, false)
-        }
-
         return done(null, jwtPayload)
       }
     )
@@ -67,14 +62,10 @@ export default async ({
     "store-jwt",
     new JWTStrategy(
       {
-        jwtFromRequest: (req) => req.session.jwt,
+        jwtFromRequest: (req) => req.session.jwt_store,
         secretOrKey: jwt_secret,
       },
       async (jwtPayload, done) => {
-        if (jwtPayload.admin) {
-          done({ type: MedusaError.Types.UNAUTHORIZED }, false)
-        }
-
         return done(null, jwtPayload)
       }
     )

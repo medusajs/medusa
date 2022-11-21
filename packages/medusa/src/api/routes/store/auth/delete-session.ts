@@ -31,6 +31,6 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  req.session.jwt = {}
+  req.session.jwt_store = {}
   res.json({})
 }

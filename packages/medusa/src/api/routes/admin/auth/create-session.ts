@@ -1,10 +1,10 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 
-import AuthService from "../../../../services/auth"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import _ from "lodash"
 import jwt from "jsonwebtoken"
+import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -99,13 +99,9 @@ export default async (req, res) => {
 
   if (result.success && result.user) {
     // Add JWT to cookie
-    req.session.jwt = jwt.sign(
-      { userId: result.user.id, admin: true },
-      jwt_secret,
-      {
-        expiresIn: "24h",
-      }
-    )
+    req.session.jwt = jwt.sign({ userId: result.user.id }, jwt_secret, {
+      expiresIn: "24h",
+    })
 
     const cleanRes = _.omit(result.user, ["password_hash"])
 
