@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { Customer } from "./../../../.."
 import middlewares from "../../../middlewares"
+import { Customer } from "./../../../.."
 
 const route = Router()
 
@@ -9,7 +9,7 @@ export default (app) => {
 
   route.get(
     "/",
-    middlewares.authenticateCustomer(),
+    middlewares.authenticate(),
     middlewares.wrap(require("./get-session").default)
   )
   route.get("/:email", middlewares.wrap(require("./exists").default))
