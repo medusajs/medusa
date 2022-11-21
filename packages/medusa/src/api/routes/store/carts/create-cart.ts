@@ -17,7 +17,7 @@ import {
   RegionService,
 } from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart } from "../../../../models"
+import { Cart, Region } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -122,12 +122,12 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  let regionId!: string
-  if (isDefined(validated.region_id)) {
-    regionId = validated.region_id as string
-  } else {
-    const regions = await regionService.list({})
+  const regions = await regionService.list({}, { relations: ["countries"] })
 
+  let region: Region
+  if (isDefined(validated.region_id)) {
+    region = regions.find((r) => r.id === validated.region_id) as Region
+  } else {
     if (!regions?.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -135,11 +135,11 @@ export default async (req, res) => {
       )
     }
 
-    regionId = regions[0].id
+    region = regions[0]
   }
 
   const toCreate: Partial<CartCreateProps> = {
-    region_id: regionId,
+    region_id: region.id,
     sales_channel_id: validated.sales_channel_id,
     context: {
       ...reqContext,
@@ -179,24 +179,29 @@ export default async (req, res) => {
 
   let cart: Cart
   await entityManager.transaction(async (manager) => {
-    cart = await cartService.withTransaction(manager).create(toCreate)
+    const cartServiceTx = cartService.withTransaction(manager)
+    const lineItemServiceTx = lineItemService.withTransaction(manager)
+
+    cart = await cartServiceTx.create(toCreate)
 
     if (validated.items) {
-      await Promise.all(
-        validated.items.map(async (i) => {
-          const lineItem = await lineItemService
-            .withTransaction(manager)
-            .generate(i.variant_id, regionId, i.quantity, {
+      const generatedLineItems = await Promise.all(
+        validated.items.map(async (i, index) => {
+          return await lineItemServiceTx.generate(
+            i.variant_id,
+            region.id,
+            i.quantity,
+            {
               customer_id: req.user?.customer_id,
-            })
-          return await cartService
-            .withTransaction(manager)
-            .addLineItem(cart.id, lineItem, {
-              validateSalesChannels:
-                featureFlagRouter.isFeatureEnabled("sales_channels"),
-            })
+            }
+          )
         })
       )
+
+      await cartServiceTx.addLineItems(cart.id, generatedLineItems, {
+        validateSalesChannels:
+          featureFlagRouter.isFeatureEnabled("sales_channels"),
+      })
     }
   })
 

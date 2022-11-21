@@ -193,16 +193,11 @@ class LineItemService extends TransactionBaseService {
   ): Promise<LineItem> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const [variant, region] = await Promise.all([
-          this.productVariantService_
-            .withTransaction(transactionManager)
-            .retrieve(variantId, {
-              relations: ["product"],
-            }),
-          this.regionService_
-            .withTransaction(transactionManager)
-            .retrieve(regionId),
-        ])
+        const variant = await this.productVariantService_
+          .withTransaction(transactionManager)
+          .retrieve(variantId, {
+            relations: ["product"],
+          })
 
         let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
 
@@ -210,12 +205,12 @@ class LineItemService extends TransactionBaseService {
 
         let shouldMerge = false
 
-        if (context.unit_price === undefined || context.unit_price === null) {
+        /*if (context.unit_price === undefined || context.unit_price === null) {
           shouldMerge = true
           const variantPricing = await this.pricingService_
             .withTransaction(transactionManager)
             .getProductVariantPricingById(variant.id, {
-              region_id: region.id,
+              region_id: regionId,
               quantity: quantity,
               customer_id: context?.customer_id,
               include_discount_prices: true,
@@ -224,10 +219,10 @@ class LineItemService extends TransactionBaseService {
           unitPriceIncludesTax = !!variantPricing.calculated_price_includes_tax
 
           unit_price = variantPricing.calculated_price ?? undefined
-        }
+        }*/
 
         const rawLineItem: Partial<LineItem> = {
-          unit_price: unit_price,
+          unit_price: 1000, //unit_price,
           title: variant.product.title,
           description: variant.title,
           thumbnail: variant.product.thumbnail,
@@ -237,6 +232,7 @@ class LineItemService extends TransactionBaseService {
           is_giftcard: variant.product.is_giftcard,
           metadata: context?.metadata || {},
           should_merge: shouldMerge,
+          variant,
         }
 
         if (
@@ -256,10 +252,8 @@ class LineItemService extends TransactionBaseService {
         const lineItemRepo = transactionManager.getCustomRepository(
           this.lineItemRepository_
         )
-        const lineItem = lineItemRepo.create({
-          ...rawLineItem,
-          variant,
-        })
+
+        const lineItem = lineItemRepo.create(rawLineItem)
 
         if (context.cart) {
           const adjustments = await this.lineItemAdjustmentService_
@@ -326,14 +320,8 @@ class LineItemService extends TransactionBaseService {
         }
 
         lineItems = lineItems.map((item) => {
-          const lineItemMetadata = metadata
-            ? setMetadata(item, metadata)
-            : item.metadata
-
-          return Object.assign(item, {
-            ...rest,
-            metadata: lineItemMetadata,
-          })
+          item.metadata = metadata ? setMetadata(item, metadata) : item.metadata
+          return Object.assign(item, rest)
         })
 
         return await lineItemRepository.save(lineItems)

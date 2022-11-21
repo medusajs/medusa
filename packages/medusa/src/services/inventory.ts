@@ -3,6 +3,7 @@ import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 import ProductVariantService from "./product-variant"
 import { ProductVariant } from "../models"
+import { isDefined, isString } from "../utils"
 
 type InventoryServiceProps = {
   manager: EntityManager
@@ -57,23 +58,26 @@ class InventoryService extends TransactionBaseService {
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant
    * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @param variantId - the id of the variant to check
+   * @param variantOrId - the id of the variant to check
    * @param quantity - the number of units to check availability for
    * @return true if the inventory covers the quantity
    */
   async confirmInventory(
-    variantId: string | undefined | null,
+    variantOrId: ProductVariant | string | undefined | null,
     quantity: number
   ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
     // is a custom item that is not managed
-    if (typeof variantId === "undefined" || variantId === null) {
+    if (!isDefined(variantOrId) || variantOrId === null) {
       return true
     }
 
-    const variant = await this.productVariantService_
-      .withTransaction(this.manager_)
-      .retrieve(variantId)
+    const variant = isString(variantOrId)
+      ? await this.productVariantService_
+          .withTransaction(this.manager_)
+          .retrieve(variantOrId)
+      : variantOrId
+
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
       !manage_inventory || allow_backorder || inventory_quantity >= quantity

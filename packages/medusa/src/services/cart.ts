@@ -561,9 +561,11 @@ class CartService extends TransactionBaseService {
       return true
     }
 
-    const lineItemVariant = await this.productVariantService_
-      .withTransaction(this.manager_)
-      .retrieve(lineItem.variant_id)
+    const lineItemVariant = lineItem.variant?.product_id
+      ? lineItem.variant
+      : await this.productVariantService_
+          .withTransaction(this.manager_)
+          .retrieve(lineItem.variant_id, { select: ["id", "product_id"] })
 
     return !!(
       await this.productService_
@@ -657,6 +659,137 @@ class CartService extends TransactionBaseService {
         await lineItemServiceTx
           .update(
             { cart_id: cartId, has_shipping: true },
+            { has_shipping: false }
+          )
+          .catch(() => void 0)
+
+        cart = await this.retrieve(cart.id, {
+          relations: ["items", "discounts", "discounts.rule", "region"],
+        })
+
+        await this.refreshAdjustments_(cart)
+
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(CartService.Events.UPDATED, { id: cart.id })
+      }
+    )
+  }
+
+  /**
+   * Adds a line item to the cart.
+   * @param cartId - the id of the cart that we will add to
+   * @param lineItems - the line item to add.
+   * @param config
+   *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
+   *                            (if cart has associated sales channel)
+   * @return the result of the update operation
+   */
+  async addLineItems(
+    cartId: string,
+    lineItems: LineItem | LineItem[],
+    config = { validateSalesChannels: true }
+  ): Promise<void> {
+    const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
+
+    const select: (keyof Cart)[] = ["id"]
+
+    if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
+      select.push("sales_channel_id")
+    }
+
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        let cart = await this.retrieve(cartId, { select })
+
+        if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
+          if (config.validateSalesChannels) {
+            const areValid = await Promise.all(
+              items.map(async (item) => {
+                return await this.validateLineItem(cart, item)
+              })
+            )
+
+            const invalidProducts = areValid
+              .map((valid, index) => {
+                return !valid ? { title: items[index].title } : undefined
+              })
+              .filter((v): v is { title: string } => !!v)
+
+            if (invalidProducts.length) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `The products [${invalidProducts
+                  .map((item) => item.title)
+                  .join(
+                    " - "
+                  )}] must belongs to the sales channel on which the cart has been created.`
+              )
+            }
+          }
+        }
+
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+        const inventoryServiceTx =
+          this.inventoryService_.withTransaction(transactionManager)
+
+        const existingItems = await lineItemServiceTx.list(
+          {
+            cart_id: cart.id,
+            variant_id: In([items.map((item) => item.variant_id)]),
+            should_merge: true,
+          },
+          { select: ["id", "metadata", "quantity"], relations: ["variant"] }
+        )
+
+        const existingItemsVariantMap = new Map()
+        existingItems.forEach((item) => {
+          existingItemsVariantMap.set(item.variant_id, item)
+        })
+
+        for (const item of items) {
+          let currentItem: LineItem | undefined
+
+          const existingItem = existingItemsVariantMap.get(item.variant_id)
+          if (item.should_merge) {
+            if (existingItem && isEqual(existingItem.metadata, item.metadata)) {
+              currentItem = existingItem
+            }
+          }
+
+          // If content matches one of the line items currently in the cart we can
+          // simply update the quantity of the existing line item
+          item.quantity = currentItem
+            ? (currentItem.quantity += item.quantity)
+            : item.quantity
+
+          // Confirm inventory or throw error
+          await inventoryServiceTx.confirmInventory(
+            currentItem?.variant || item.variant_id,
+            item.quantity
+          )
+
+          if (currentItem) {
+            await lineItemServiceTx.update(currentItem.id, {
+              quantity: item.quantity,
+              has_shipping: false,
+            })
+          } else {
+            await lineItemServiceTx.create({
+              ...item,
+              has_shipping: false,
+              cart_id: cart.id,
+            })
+          }
+        }
+
+        await lineItemServiceTx
+          .update(
+            {
+              cart_id: cartId,
+              has_shipping: true,
+            },
             { has_shipping: false }
           )
           .catch(() => void 0)
