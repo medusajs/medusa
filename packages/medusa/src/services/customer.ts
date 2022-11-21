@@ -186,7 +186,7 @@ class CustomerService extends TransactionBaseService {
   }
 
   /**
-   * Gets a customer by email.
+   * Gets a registered customer by email.
    * @param {string} email - the email of the customer to get.
    * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
@@ -195,7 +195,10 @@ class CustomerService extends TransactionBaseService {
     email: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    return await this.retrieve_({ email: email.toLowerCase() }, config)
+    return await this.retrieve_(
+      { email: email.toLowerCase(), has_account: true },
+      config
+    )
   }
 
   /**
@@ -253,40 +256,28 @@ class CustomerService extends TransactionBaseService {
 
       const existing = await this.retrieveByEmail(email).catch(() => undefined)
 
-      if (existing && existing.has_account) {
+      if (existing) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
           "A customer with the given email already has an account. Log in instead"
         )
       }
 
-      if (existing && password && !existing.has_account) {
+      if (password) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
         customer.has_account = true
         delete customer.password
-
-        const toUpdate = { ...existing, ...customer }
-        const updated = await customerRepository.save(toUpdate)
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.UPDATED, updated)
-        return updated
-      } else {
-        if (password) {
-          const hashedPassword = await this.hashPassword_(password)
-          customer.password_hash = hashedPassword
-          customer.has_account = true
-          delete customer.password
-        }
-
-        const created = customerRepository.create(customer)
-        const result = await customerRepository.save(created)
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.CREATED, result)
-        return result
       }
+
+      const created = customerRepository.create(customer)
+      const result = await customerRepository.save(created)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(CustomerService.Events.CREATED, result)
+
+      return result
     })
   }
 
