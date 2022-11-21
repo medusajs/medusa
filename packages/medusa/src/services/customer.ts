@@ -170,9 +170,9 @@ class CustomerService extends TransactionBaseService {
     const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
     const query = buildQuery(selector, config)
-    const customer = await customerRepo.find(query)
+    const customer = await customerRepo.findOne(query)
 
-    if (!customer?.length) {
+    if (!customer) {
       const selectorConstraints = Object.entries(selector)
         .map((key, value) => `${key}: ${value}`)
         .join(", ")
@@ -182,7 +182,7 @@ class CustomerService extends TransactionBaseService {
       )
     }
 
-    return customer[0]
+    return customer
   }
 
   /**
@@ -221,7 +221,7 @@ class CustomerService extends TransactionBaseService {
     customerId: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer> {
-    return this.retrieve_({ id: customerId }, config)
+    return this.retrieve_({ id: customerId ?? null }, config)
   }
 
   /**

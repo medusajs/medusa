@@ -1,12 +1,11 @@
-import passport from "passport"
-import { AuthService } from "../services"
 import { Express } from "express"
-import { ConfigModule, MedusaContainer } from "../types/global"
+import { MedusaError } from "medusa-core-utils"
+import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
-import logger from "./logger"
-import { MedusaError } from "medusa-core-utils"
+import { AuthService } from "../services"
+import { ConfigModule, MedusaContainer } from "../types/global"
 
 export default async ({
   app,
