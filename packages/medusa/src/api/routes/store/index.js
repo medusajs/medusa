@@ -1,5 +1,6 @@
 import cors from "cors"
 import { Router } from "express"
+import middlewares from "../../middlewares"
 import productTypesRoutes from "../admin/product-types"
 import authRoutes from "./auth"
 import cartRoutes from "./carts"
@@ -28,6 +29,8 @@ export default (app, container, config) => {
       credentials: true,
     })
   )
+
+  route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
   collectionRoutes(route)

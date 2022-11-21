@@ -1,7 +1,8 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import CustomerService from "../../../../services/customer"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [delete] /customers/me/addresses/{address_id}
@@ -55,6 +56,10 @@ import { EntityManager } from "typeorm"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
+
+  if (!id) {
+    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
+  }
 
   const { address_id } = req.params
 

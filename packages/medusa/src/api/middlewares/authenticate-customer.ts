@@ -1,5 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response } from "express"
-import http from "http"
 import passport from "passport"
 
 export default (): RequestHandler => {
@@ -7,12 +6,9 @@ export default (): RequestHandler => {
     passport.authenticate(
       ["store-jwt", "bearer"],
       { session: false },
-      (err, user, challengesErrors) => {
-        const err_ = err ?? (challengesErrors?.length && challengesErrors[0])
-        if (err_) {
-          res.statusCode = 401
-          res.send(http.STATUS_CODES[res.statusCode])
-          return
+      (err, user) => {
+        if (err) {
+          next(err)
         }
         req.user = user
         return next()
