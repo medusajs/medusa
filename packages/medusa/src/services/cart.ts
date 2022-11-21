@@ -325,7 +325,16 @@ class CartService extends TransactionBaseService {
           ).id
         }
 
-        if (data.email) {
+        if (data.customer_id) {
+          const customer = await this.customerService_
+            .retrieve(data.customer_id)
+            .catch(() => undefined)
+          rawCart.customer = customer
+          rawCart.customer_id = customer?.id
+          rawCart.email = customer?.email
+        }
+
+        if (!rawCart.email && data.email) {
           const customer = await this.createOrFetchUserFromEmail_(data.email)
           rawCart.customer = customer
           rawCart.customer_id = customer.id
