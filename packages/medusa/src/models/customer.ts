@@ -18,7 +18,6 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-// @Unique(["shipping_option_id", "cart_id"])
 export class Customer extends SoftDeletableEntity {
   @Index({ unique: true, where: "has_acccount = true" })
   @Column()
