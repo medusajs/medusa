@@ -31,9 +31,9 @@ export default (app, container, config) => {
     })
   )
 
-  route.use(middlewares.authenticateCustomer())
-
   authRoutes(route)
+
+  route.use(middlewares.authenticateCustomer())
   collectionRoutes(route)
   customerRoutes(route, container)
   productRoutes(route)
