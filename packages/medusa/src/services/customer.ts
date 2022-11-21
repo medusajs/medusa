@@ -170,9 +170,9 @@ class CustomerService extends TransactionBaseService {
     const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
     const query = buildQuery(selector, config)
-    const customer = await customerRepo.findOne(query)
+    const customer = await customerRepo.find(query)
 
-    if (!customer) {
+    if (!customer?.length) {
       const selectorConstraints = Object.entries(selector)
         .map((key, value) => `${key}: ${value}`)
         .join(", ")
@@ -182,7 +182,7 @@ class CustomerService extends TransactionBaseService {
       )
     }
 
-    return customer
+    return customer[0]
   }
 
   /**
