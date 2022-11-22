@@ -1,9 +1,9 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
-import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}
@@ -69,6 +69,7 @@ import { EntityManager } from "typeorm"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
+
   const { address_id } = req.params
 
   const validated = await validator(

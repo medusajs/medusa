@@ -1,7 +1,7 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import CustomerService from "../../../../services/customer"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
 
 /**
  * @oas [delete] /customers/me/addresses/{address_id}

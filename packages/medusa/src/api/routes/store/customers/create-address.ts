@@ -1,10 +1,10 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { AddressCreatePayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers/me/addresses
