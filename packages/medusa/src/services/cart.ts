@@ -587,6 +587,7 @@ class CartService extends TransactionBaseService {
    *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
    *                            (if cart has associated sales channel)
    * @return the result of the update operation
+   * @deprecated Use {@link addLineItems} instead.
    */
   async addLineItem(
     cartId: string,
@@ -679,9 +680,9 @@ class CartService extends TransactionBaseService {
   }
 
   /**
-   * Adds a line item to the cart.
+   * Adds one or multiple line items to the cart.
    * @param cartId - the id of the cart that we will add to
-   * @param lineItems - the line item to add.
+   * @param lineItems - the line items to add.
    * @param config
    *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
    *                            (if cart has associated sales channel)
