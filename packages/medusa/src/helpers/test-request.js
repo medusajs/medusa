@@ -99,7 +99,7 @@ export async function request(method, url, opts = {}) {
   }
   if (opts.clientSession) {
     if (opts.clientSession.jwt) {
-      opts.clientSession.jwt = jwt.sign(
+      opts.clientSession.jwt_store = jwt.sign(
         opts.clientSession.jwt,
         config.projectConfig.jwt_secret,
         {
