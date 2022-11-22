@@ -331,7 +331,7 @@ class CartService extends TransactionBaseService {
           rawCart.email = customer.email
         }
 
-        if (!data.region_id) {
+        if (!data.region_id && !data.region) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `A region_id must be provided when creating a cart`
@@ -339,11 +339,13 @@ class CartService extends TransactionBaseService {
         }
 
         rawCart.region_id = data.region_id
-        const region = await this.regionService_
-          .withTransaction(transactionManager)
-          .retrieve(data.region_id, {
-            relations: ["countries"],
-          })
+        const region = data.region
+          ? data.region
+          : await this.regionService_
+              .withTransaction(transactionManager)
+              .retrieve(data.region_id!, {
+                relations: ["countries"],
+              })
         const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
         if (!data.shipping_address && !data.shipping_address_id) {
@@ -414,8 +416,8 @@ class CartService extends TransactionBaseService {
 
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
-        await this.eventBus_
-          .withTransaction(transactionManager)
+        this.eventBus_
+          .withTransaction(this.manager_)
           .emit(CartService.Events.CREATED, {
             id: cart.id,
           })
@@ -748,6 +750,7 @@ class CartService extends TransactionBaseService {
           existingItemsVariantMap.set(item.variant_id, item)
         })
 
+        const lineItemsToCreate: LineItem[] = []
         for (const item of items) {
           let currentItem: LineItem | undefined
 
@@ -776,15 +779,15 @@ class CartService extends TransactionBaseService {
               has_shipping: false,
             })
           } else {
-            /*await lineItemServiceTx.create({
-              ...item,
-              has_shipping: false,
-              cart_id: cart.id,
-            })*/
+            item.has_shipping = false
+            item.cart_id = cart.id
+            lineItemsToCreate.push(item)
           }
         }
 
-        /*await lineItemServiceTx
+        await lineItemServiceTx.create(lineItemsToCreate)
+
+        await lineItemServiceTx
           .update(
             {
               cart_id: cartId,
@@ -798,10 +801,10 @@ class CartService extends TransactionBaseService {
           relations: ["items", "discounts", "discounts.rule", "region"],
         })
 
-        await this.refreshAdjustments_(cart)*/
+        await this.refreshAdjustments_(cart)
 
-        await this.eventBus_
-          .withTransaction(transactionManager)
+        this.eventBus_
+          .withTransaction(this.manager_)
           .emit(CartService.Events.UPDATED, { id: cart.id })
       }
     )

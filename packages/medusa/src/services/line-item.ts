@@ -218,6 +218,7 @@ class LineItemService extends TransactionBaseService {
             .withTransaction(transactionManager)
             .getProductVariantPricingById(variant.id, {
               region: context.region,
+              variant,
               region_id: regionId,
               quantity: quantity,
               customer_id: context?.customer_id,
@@ -230,7 +231,7 @@ class LineItemService extends TransactionBaseService {
         }
 
         const rawLineItem: Partial<LineItem> = {
-          unit_price: 1000, //unit_price,
+          unit_price: unit_price,
           title: variant.product.title,
           description: variant.title,
           thumbnail: variant.product.thumbnail,
@@ -240,7 +241,6 @@ class LineItemService extends TransactionBaseService {
           is_giftcard: variant.product.is_giftcard,
           metadata: context?.metadata || {},
           should_merge: shouldMerge,
-          variant,
         }
 
         if (
@@ -262,6 +262,7 @@ class LineItemService extends TransactionBaseService {
         )
 
         const lineItem = lineItemRepo.create(rawLineItem)
+        lineItem.variant = variant
 
         if (context.cart) {
           const adjustments = await this.lineItemAdjustmentService_
@@ -280,15 +281,26 @@ class LineItemService extends TransactionBaseService {
    * @param data - the line item object to create
    * @return the created line item
    */
-  async create(data: Partial<LineItem>): Promise<LineItem> {
+  async create<T = Partial<LineItem> | Partial<LineItem>[]>(
+    data: T
+  ): Promise<T extends [] ? LineItem[] : LineItem> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const lineItemRepository = transactionManager.getCustomRepository(
           this.lineItemRepository_
         )
 
-        const item = lineItemRepository.create(data)
-        return await lineItemRepository.save(item)
+        if (!Array.isArray(data)) {
+          const item = lineItemRepository.create(data)
+          return (await lineItemRepository.save(item)) as T extends []
+            ? LineItem[]
+            : LineItem
+        }
+
+        const items = lineItemRepository.create(data)
+        return (await lineItemRepository.save(items)) as T extends []
+          ? LineItem[]
+          : LineItem
       }
     )
   }

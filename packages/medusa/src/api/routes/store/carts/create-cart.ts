@@ -144,6 +144,7 @@ export default async (req, res) => {
 
   const toCreate: Partial<CartCreateProps> = {
     region_id: region.id,
+    region,
     sales_channel_id: validated.sales_channel_id,
     context: {
       ...reqContext,
@@ -189,19 +190,19 @@ export default async (req, res) => {
     cart = await cartServiceTx.create(toCreate)
 
     if (validated.items?.length) {
-      const generatedLineItems: LineItem[] = []
-      for (const item of validated.items) {
-        const generatedLineItem = await lineItemServiceTx.generate(
-          item.variant_id,
-          region.id,
-          item.quantity,
-          {
-            region,
-            customer_id: req.user?.customer_id,
-          }
-        )
-        generatedLineItems.push(generatedLineItem)
-      }
+      const generatedLineItems: LineItem[] = await Promise.all(
+        validated.items.map(async (item) => {
+          return await lineItemServiceTx.generate(
+            item.variant_id,
+            region.id,
+            item.quantity,
+            {
+              region,
+              customer_id: req.user?.customer_id,
+            }
+          )
+        })
+      )
 
       await cartServiceTx.addLineItems(cart.id, generatedLineItems, {
         validateSalesChannels:

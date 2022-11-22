@@ -6,6 +6,7 @@ import {
   DateComparisonOperator,
   StringComparisonOperator,
 } from "./common"
+import { Region } from "../models"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isCart(object: any): object is Cart {
@@ -44,6 +45,7 @@ class Discount {
 
 export type CartCreateProps = {
   region_id?: string
+  region?: Region
   email?: string
   billing_address_id?: string
   billing_address?: Partial<AddressPayload>

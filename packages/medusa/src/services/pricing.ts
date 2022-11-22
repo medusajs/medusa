@@ -265,9 +265,11 @@ class PricingService extends TransactionBaseService {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      const { product_id } = await this.productVariantService
-        .withTransaction(this.manager_)
-        .retrieve(variantId, { select: ["id", "product_id"] })
+      const { product_id } =
+        context.variant ??
+        (await this.productVariantService
+          .withTransaction(this.manager_)
+          .retrieve(variantId, { select: ["id", "product_id"] }))
       productRates = await this.taxProviderService
         .withTransaction(this.manager_)
         .getRegionRatesForProduct(product_id, {

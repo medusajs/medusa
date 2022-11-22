@@ -30,6 +30,7 @@ export type PricingContext = {
   automatic_taxes: boolean
   tax_rate: number | null
   region?: Region
+  variant?: ProductVariant
 }
 
 export type ShippingOptionPricing = {
