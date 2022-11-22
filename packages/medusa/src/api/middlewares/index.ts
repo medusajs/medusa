@@ -2,7 +2,7 @@ import { default as authenticate } from "./authenticate"
 import { default as authenticateCustomer } from "./authenticate-customer"
 import { default as wrap } from "./await-middleware"
 import { default as normalizeQuery } from "./normalized-query"
-import { default as authenticateCustomerOrThrow } from "./require-customer-authentication"
+import { default as requireCustomerAuthentication } from "./require-customer-authentication"
 
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
@@ -13,7 +13,7 @@ export { transformQuery } from "./transform-query"
 export default {
   authenticate,
   authenticateCustomer,
-  authenticateCustomerOrThrow,
+  requireCustomerAuthentication,
   normalizeQuery,
   wrap,
 }
