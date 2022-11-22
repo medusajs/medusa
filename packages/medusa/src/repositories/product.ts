@@ -397,6 +397,22 @@ export class ProductRepository extends Repository<Product> {
     return [products, count]
   }
 
+  public async isProductInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    return (
+      (await this.createQueryBuilder("product")
+        .leftJoin(
+          "product.sales_channels",
+          "sales_channels",
+          "sales_channels.id IN (:...salesChannelIds)",
+          { salesChannelIds }
+        )
+        .getCount()) > 0
+    )
+  }
+
   private _cleanOptions(
     options: FindWithoutRelationsOptions
   ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {

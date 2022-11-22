@@ -324,21 +324,20 @@ class ProductService extends TransactionBaseService {
     return await productTagRepo.listTagsByUsage(count)
   }
 
+  /**
+   * Check if the product is assigned to at least one of the provided sales channels.
+   *
+   * @param id - product id
+   * @param salesChannelIds - an array of sales channel ids
+   */
   async isProductInSalesChannels(
     id: string,
     salesChannelIds: string[]
   ): Promise<boolean> {
-    const product = await this.retrieve_(
-      { id },
-      { relations: ["sales_channels"] }
-    )
+    const manager = this.manager_
+    const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    // TODO: reimplement this to use db level check
-    const productsSalesChannels = product.sales_channels.map(
-      (channel) => channel.id
-    )
-
-    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
+    return productRepo.isProductInSalesChannels(id, salesChannelIds)
   }
 
   /**
