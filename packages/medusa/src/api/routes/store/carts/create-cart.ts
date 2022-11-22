@@ -14,7 +14,6 @@ import {
 import {
   CartService,
   LineItemService,
-  ProductVariantService,
   RegionService,
 } from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
@@ -120,25 +119,24 @@ export default async (req, res) => {
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const variantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   const regions = await regionService.list({}, { relations: ["countries"] })
+  if (!regions?.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `A region is required to create a cart`
+    )
+  }
 
   let region: Region
   if (isDefined(validated.region_id)) {
     region = regions.find((r) => r.id === validated.region_id) as Region
-  } else {
-    if (!regions?.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `A region is required to create a cart`
-      )
+    if (!region) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Region not found`)
     }
-
+  } else {
     region = regions[0]
   }
 
