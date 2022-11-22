@@ -13,6 +13,7 @@ import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
 import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"
 import { AdminPostPublishableApiKeySalesChannelsBatchReq } from "./add-channels-batch"
+import { GetPublishableApiKeySalesChannelsParams } from "./list-publishable-api-key-sales-channels"
 
 const route = Router()
 
@@ -58,6 +59,14 @@ export default (app) => {
     middlewares.wrap(require("./list-publishable-api-keys").default)
   )
 
+  route.get(
+    "/:id/sales-channels",
+    transformQuery(GetPublishableApiKeySalesChannelsParams, { isList: true }),
+    middlewares.wrap(
+      require("./list-publishable-api-key-sales-channels").default
+    )
+  )
+
   route.post(
     "/:id/sales-channels/batch",
     transformBody(AdminPostPublishableApiKeySalesChannelsBatchReq),
@@ -82,5 +91,6 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 export * from "./add-channels-batch"
 export * from "./delete-channels-batch"
 export * from "./list-publishable-api-keys"
+export * from "./list-publishable-api-key-sales-channels"
 export * from "./create-publishable-api-key"
 export * from "./update-publishable-api-key"

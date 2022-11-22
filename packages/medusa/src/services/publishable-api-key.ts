@@ -3,7 +3,7 @@ import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
 import { FindConfig, Selector } from "../types/common"
-import { PublishableApiKey } from "../models"
+import { PublishableApiKey, SalesChannel } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
 import { buildQuery, isDefined, isString } from "../utils"
@@ -296,6 +296,24 @@ class PublishableApiKeyService extends TransactionBaseService {
         salesChannelIds
       )
     })
+  }
+
+  /**
+   * List SalesChannels associated with the PublishableKey
+   *
+   * @param publishableApiKeyId - id of the key SalesChannels are listed for
+   */
+  async listSalesChannels(
+    publishableApiKeyId: string
+  ): Promise<SalesChannel[]> {
+    const manager = this.manager_
+    const pubKeySalesChannelRepo = manager.getCustomRepository(
+      this.publishableApiKeySalesChannelRepository_
+    )
+
+    return await pubKeySalesChannelRepo.findPublishableKeySalesChannels(
+      publishableApiKeyId
+    )
   }
 
   /**

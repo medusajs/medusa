@@ -2,12 +2,11 @@ import {
   DateComparisonOperator,
   extendedFindParamsMixin,
 } from "../../../../types/common"
-import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
+import { IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 
 import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
-import { removeUndefinedProperties } from "../../../../utils"
 
 /**
  * @oas [get] /sales-channels

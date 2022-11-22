@@ -448,6 +448,82 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     })
   })
 
+  describe("GET /admin/publishable-api-keys/:id/sales-channels", () => {
+    const pubKeyId = IdMap.getId("pubkey-get-id-batch-v2")
+    let salesChannel1
+    let salesChannel2
+    let salesChannel3
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+      })
+
+      salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+
+      salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 2",
+        description: "test description 2",
+      })
+
+      salesChannel3 = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name 3",
+        description: "test description 3",
+      })
+
+      await dbConnection.manager.query(
+        `INSERT INTO
+             publishable_api_key_sales_channel
+             (publishable_key_id, sales_channel_id)
+         VALUES
+             ('${pubKeyId}', '${salesChannel1.id}'),
+             ('${pubKeyId}', '${salesChannel2.id}');`
+      )
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("list sales channels from the publishable api key", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels`,
+        adminHeaders
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.count).toBe(2)
+      expect(response.data.limit).toBe(20)
+      expect(response.data.offset).toBe(0)
+      expect(response.data.sales_channels).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: salesChannel1.id,
+            deleted_at: null,
+            name: "test name",
+            description: "test description",
+            is_disabled: false,
+          }),
+          expect.objectContaining({
+            id: salesChannel2.id,
+            deleted_at: null,
+            name: "test name 2",
+            description: "test description 2",
+            is_disabled: false,
+          }),
+        ])
+      )
+    })
+  })
+
   describe("GET /store/products", () => {
     const pubKeyId = IdMap.getId("pubkey-get-id")
 
