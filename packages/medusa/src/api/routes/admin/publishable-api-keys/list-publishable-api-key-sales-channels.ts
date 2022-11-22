@@ -35,10 +35,11 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
+ *          properties:
  *             sales_channels:
  *               type: array
- *               $ref: "#/components/schemas/sales_channels"
+ *               items:
+ *                 $ref: "#/components/schemas/sales_channel"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
