@@ -1,8 +1,9 @@
 import { NextFunction, Request, RequestHandler, Response } from "express"
 import passport from "passport"
 
+// Optional customer authentication
 // If authenticated, middleware attaches customer to request (as user) otherwise we pass through
-// As an implication of the latter unauthed case, we throw 401s in the controllers that require a customer
+// If you want to require authentication, use `authenticateCustomerOrThrow` in `packages/medusa/src/api/middlewares/require-customer-authentication.ts`
 export default (): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction): void => {
     passport.authenticate(
