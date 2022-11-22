@@ -500,9 +500,6 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
 
       expect(response.status).toBe(200)
-      expect(response.data.count).toBe(2)
-      expect(response.data.limit).toBe(20)
-      expect(response.data.offset).toBe(0)
       expect(response.data.sales_channels).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

@@ -334,10 +334,17 @@ class ProductService extends TransactionBaseService {
     id: string,
     salesChannelIds: string[]
   ): Promise<boolean> {
-    const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
+    const product = await this.retrieve_(
+      { id },
+      { relations: ["sales_channels"] }
+    )
 
-    return productRepo.isProductInSalesChannels(id, salesChannelIds)
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
   }
 
   /**
