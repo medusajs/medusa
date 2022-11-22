@@ -13,7 +13,6 @@ import {
 } from "../../../../models/order"
 
 import { Type } from "class-transformer"
-import { MedusaError } from "medusa-core-utils"
 import OrderService from "../../../../services/order"
 import { DateComparisonOperator } from "../../../../types/common"
 
@@ -193,10 +192,6 @@ import { DateComparisonOperator } from "../../../../types/common"
  */
 export default async (req: Request, res: Response) => {
   const id: string | undefined = req.user?.customer_id
-
-  if (!id) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
-  }
 
   const orderService: OrderService = req.scope.resolve("orderService")
 

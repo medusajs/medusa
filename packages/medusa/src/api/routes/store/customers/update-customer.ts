@@ -1,7 +1,6 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import CustomerService from "../../../../services/customer"
 import { AddressPayload } from "../../../../types/common"
@@ -93,11 +92,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const id = req?.user?.customer_id
-
-  if (!id) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
-  }
+  const id = req.user.customer_id
 
   const validated = await validator(StorePostCustomersCustomerReq, req.body)
 

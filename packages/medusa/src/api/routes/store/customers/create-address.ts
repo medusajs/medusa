@@ -1,6 +1,5 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
@@ -100,11 +99,7 @@ import { validator } from "../../../../utils/validator"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const id = req?.user?.customer_id
-
-  if (!id) {
-    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized")
-  }
+  const id = req.user.customer_id
 
   const validated = await validator(
     StorePostCustomersCustomerAddressesReq,

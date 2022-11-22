@@ -34,7 +34,7 @@ export default (app, container) => {
   )
 
   // Authenticated endpoints
-  route.use(middlewares.authenticate())
+  route.use(middlewares.authenticateCustomerOrThrow())
 
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))
