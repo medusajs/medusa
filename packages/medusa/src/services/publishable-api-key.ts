@@ -311,9 +311,7 @@ class PublishableApiKeyService extends TransactionBaseService {
       this.publishableApiKeySalesChannelRepository_
     )
 
-    return await pubKeySalesChannelRepo.findPublishableKeySalesChannels(
-      publishableApiKeyId
-    )
+    return await pubKeySalesChannelRepo.findSalesChannels(publishableApiKeyId)
   }
 
   /**

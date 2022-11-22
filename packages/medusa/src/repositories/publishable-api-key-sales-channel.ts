@@ -4,20 +4,28 @@ import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 
 @EntityRepository(PublishableApiKeySalesChannel)
 export class PublishableApiKeySalesChannelRepository extends Repository<PublishableApiKeySalesChannel> {
-  public async findPublishableKeySalesChannels(
+  /**
+   * Query a list of sales channels that are assigned to the publishable key scope
+   *
+   * @param publishableApiKeyId - id of the key to retrieve channels for
+   */
+  public async findSalesChannels(
     publishableApiKeyId: string
   ): Promise<SalesChannel[]> {
-    const data = await this.createQueryBuilder("pksc")
-      .select("pksc.sales_channel_id")
-      .leftJoinAndMapOne(
-        "pksc.sales_channel_id",
+    const data = await this.createQueryBuilder("PublishableKeySalesChannel")
+      .select("PublishableKeySalesChannel.sales_channel_id")
+      .innerJoinAndMapOne(
+        "PublishableKeySalesChannel.sales_channel_id",
         SalesChannel,
-        "sales_channel",
-        "pksc.sales_channel_id = sales_channel.id"
+        "SalesChannel",
+        "PublishableKeySalesChannel.sales_channel_id = SalesChannel.id"
       )
-      .where("pksc.publishable_key_id = :publishableApiKeyId", {
-        publishableApiKeyId,
-      })
+      .where(
+        "PublishableKeySalesChannel.publishable_key_id = :publishableApiKeyId",
+        {
+          publishableApiKeyId,
+        }
+      )
       .getMany()
 
     return data.map(
@@ -25,6 +33,12 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
     )
   }
 
+  /**
+   * Assign (multiple) sales channels to the Publishable Key scope
+   *
+   * @param publishableApiKeyId - publishable key id
+   * @param salesChannelIds - an array of SC ids
+   */
   public async addSalesChannels(
     publishableApiKeyId: string,
     salesChannelIds: string[]
@@ -42,6 +56,12 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
       .execute()
   }
 
+  /**
+   * Remove multiple sales channels from the PK scope
+   *
+   * @param publishableApiKeyId -publishable key id
+   * @param salesChannelIds - an array of SC ids
+   */
   public async removeSalesChannels(
     publishableApiKeyId: string,
     salesChannelIds: string[]
