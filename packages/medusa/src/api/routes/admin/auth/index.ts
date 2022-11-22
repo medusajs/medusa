@@ -12,11 +12,7 @@ export default (app) => {
     middlewares.authenticate(),
     middlewares.wrap(require("./get-session").default)
   )
-  route.post(
-    "/",
-    middlewares.wrap(require("./create-session").default),
-    (req: any, res) => req.session.destroy()
-  )
+  route.post("/", middlewares.wrap(require("./create-session").default))
 
   route.delete(
     "/",
