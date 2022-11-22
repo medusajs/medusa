@@ -84,16 +84,16 @@ class UserService extends TransactionBaseService {
     const userRepo = manager.getCustomRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
 
-    const user = await userRepo.find(query)
+    const user = await userRepo.findOne(query)
 
-    if (!user?.length) {
+    if (!user) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `User with id: ${userId} was not found`
       )
     }
 
-    return user[0]
+    return user
   }
 
   /**
