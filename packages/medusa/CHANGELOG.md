@@ -1,5 +1,16 @@
 # Change Log
 
+## 0.0.0-snapshot-20221122110108
+
+### Patch Changes
+
+- [`8bde8c0b0`](https://github.com/medusajs/medusa/commit/8bde8c0b0eb475822176f0d6f7e930ca6ae23dd2) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Performance improvements of listing shipping options
+
+* [#2646](https://github.com/medusajs/medusa/pull/2646) [`47cce03d1`](https://github.com/medusajs/medusa/commit/47cce03d1f07bcf52648ecee8b59dfa54cd32ef8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - jwt fix
+
+* Updated dependencies [[`47cce03d1`](https://github.com/medusajs/medusa/commit/47cce03d1f07bcf52648ecee8b59dfa54cd32ef8)]:
+  - medusa-core-utils@0.0.0-snapshot-20221122110108
+
 ## 1.6.3
 
 ### Patch Changes

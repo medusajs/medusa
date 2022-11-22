@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.0-snapshot-20221122110108
+
+### Patch Changes
+
+- [#2646](https://github.com/medusajs/medusa/pull/2646) [`47cce03d1`](https://github.com/medusajs/medusa/commit/47cce03d1f07bcf52648ecee8b59dfa54cd32ef8) Thanks [@pKorsholm](https://github.com/pKorsholm)! - jwt fix
+
 ## 1.1.34
 
 ### Patch Changes
