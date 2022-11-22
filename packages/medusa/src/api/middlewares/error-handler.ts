@@ -43,6 +43,9 @@ export default () => {
         errObj.message =
           "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
         break
+      case MedusaError.Types.UNAUTHORIZED:
+        statusCode = 401
+        break
       case MedusaError.Types.DUPLICATE_ERROR:
         statusCode = 422
         errObj.code = INVALID_REQUEST_ERROR

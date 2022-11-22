@@ -1,11 +1,11 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
-import CustomerService from "../../../../services/customer"
-import { IsType } from "../../../../utils/validators/is-type"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /customers/me
