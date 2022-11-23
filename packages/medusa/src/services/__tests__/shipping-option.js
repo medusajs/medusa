@@ -158,10 +158,10 @@ describe("ShippingOptionService", () => {
     })
 
     it("throws on flat rate but no amount", async () => {
+      expect.assertions(1)
       try {
         await optionService.update(IdMap.getId("flat-rate-no-amount"), {
           price_type: "flat_rate",
-          amount: 100,
         })
       } catch (error) {
         expect(error.message).toEqual(
