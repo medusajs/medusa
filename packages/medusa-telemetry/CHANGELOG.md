@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.15-alpha.0
+
+### Patch Changes
+
+- [#2642](https://github.com/medusajs/medusa/pull/2642) [`a76762418`](https://github.com/medusajs/medusa/commit/a76762418877e675977540dc95e095492873af44) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Add missing changeset
+
 ## 0.0.14
 
 ### Patch Changes
