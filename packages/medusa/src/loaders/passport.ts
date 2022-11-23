@@ -1,10 +1,10 @@
-import passport from "passport"
-import { AuthService } from "../services"
 import { Express } from "express"
-import { ConfigModule, MedusaContainer } from "../types/global"
+import passport from "passport"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
+import { AuthService } from "../services"
+import { ConfigModule, MedusaContainer } from "../types/global"
 
 export default async ({
   app,
@@ -46,9 +46,23 @@ export default async ({
   // calls will be authenticated based on the JWT
   const { jwt_secret } = configModule.projectConfig
   passport.use(
+    "admin-jwt",
     new JWTStrategy(
       {
         jwtFromRequest: (req) => req.session.jwt,
+        secretOrKey: jwt_secret,
+      },
+      async (jwtPayload, done) => {
+        return done(null, jwtPayload)
+      }
+    )
+  )
+
+  passport.use(
+    "store-jwt",
+    new JWTStrategy(
+      {
+        jwtFromRequest: (req) => req.session.jwt_store,
         secretOrKey: jwt_secret,
       },
       async (jwtPayload, done) => {

@@ -52,6 +52,7 @@ describe("/admin/store", () => {
             code: "usd",
           },
         ],
+        modules: expect.any(Array),
         feature_flags: expect.any(Array),
         default_currency_code: "usd",
         created_at: expect.any(String),

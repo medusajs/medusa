@@ -3,6 +3,7 @@ import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
+  CustomShippingOption,
   ShippingOption,
   ShippingProfile,
   ShippingProfileType,
@@ -422,10 +423,14 @@ class ShippingProfileService extends TransactionBaseService {
 
       // if there are custom shipping options associated with the cart, return cart shipping options with custom price
       if (hasCustomShippingOptions) {
+        const customShippingOptionsMap = new Map<string, CustomShippingOption>()
+
+        customShippingOptions.forEach((option) => {
+          customShippingOptionsMap.set(option.shipping_option_id, option)
+        })
+
         return rawOpts.map((so) => {
-          const customOption = customShippingOptions.find(
-            (cso) => cso.shipping_option_id === so.id
-          )
+          const customOption = customShippingOptionsMap.get(so.id)
 
           return {
             ...so,
@@ -434,24 +439,16 @@ class ShippingProfileService extends TransactionBaseService {
         }) as ShippingOption[]
       }
 
-      const options = await Promise.all(
-        rawOpts.map(async (so) => {
-          try {
-            const option = await this.shippingOptionService_
+      return (
+        await Promise.all(
+          rawOpts.map(async (so) => {
+            return await this.shippingOptionService_
               .withTransaction(manager)
               .validateCartOption(so, cart)
-            if (option) {
-              return option
-            }
-            return null
-          } catch (err) {
-            // if validateCartOption fails it means the option is not valid
-            return null
-          }
-        })
-      )
-
-      return options.filter(Boolean) as ShippingOption[]
+              .catch(() => null) // if validateCartOption fails it means the option is not valid
+          })
+        )
+      ).filter((option): option is ShippingOption => !!option)
     })
   }
 
@@ -461,16 +458,15 @@ class ShippingProfileService extends TransactionBaseService {
    * @return a list of product ids
    */
   protected getProfilesInCart(cart: Cart): string[] {
-    return cart.items.reduce((acc, next) => {
-      // We may have line items that are not associated with a product
-      if (next.variant && next.variant.product) {
-        if (!acc.includes(next.variant.product.profile_id)) {
-          acc.push(next.variant.product.profile_id)
-        }
-      }
+    const profileIds = new Set<string>()
 
-      return acc
-    }, [] as string[])
+    cart.items.forEach((item) => {
+      if (item.variant?.product) {
+        profileIds.add(item.variant.product.profile_id)
+      }
+    })
+
+    return [...profileIds]
   }
 }
 
