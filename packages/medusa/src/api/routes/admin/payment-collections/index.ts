@@ -36,6 +36,11 @@ export default (app, container) => {
     middlewares.wrap(require("./update-payment-collection").default)
   )
 
+  route.post(
+    "/:id/authorize",
+    middlewares.wrap(require("./mark-authorized-payment-collection").default)
+  )
+
   route.delete(
     "/:id",
     middlewares.wrap(require("./delete-payment-collection").default)

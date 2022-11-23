@@ -1,9 +1,16 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, LineItemService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { validator } from "../../../../../utils/validator"
+import {
+  CreateLineItemSteps,
+  handleAddOrUpdateLineItem,
+} from "./utils/handler-steps"
+import { IdempotencyKey } from "../../../../../models"
+import {
+  initializeIdempotencyRequest,
+  runIdempotencyStep,
+  RunIdempotencyStepOptions,
+} from "../../../../../utils/idempotency"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -63,46 +70,65 @@ import { FlagRouter } from "../../../../utils/flag-router"
 export default async (req, res) => {
   const { id } = req.params
 
-  const customerId = req.user?.customer_id
+  const customerId: string | undefined = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
-  const cartService: CartService = req.scope.resolve("cartService")
-
   const manager: EntityManager = req.scope.resolve("manager")
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
-    const cart = await txCartService.retrieve(id)
+  let idempotencyKey!: IdempotencyKey
+  try {
+    idempotencyKey = await initializeIdempotencyRequest(req, res)
+  } catch {
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
 
-    const line = await lineItemService
-      .withTransaction(m)
-      .generate(validated.variant_id, cart.region_id, validated.quantity, {
-        customer_id: customerId || cart.customer_id,
-        metadata: validated.metadata,
-      })
+  let inProgress = true
+  let err: unknown = false
 
-    await txCartService.addLineItem(id, line, {
-      validateSalesChannels:
-        featureFlagRouter.isFeatureEnabled("sales_channels"),
-    })
+  const stepOptions: RunIdempotencyStepOptions = {
+    manager,
+    idempotencyKey,
+    container: req.scope,
+    isolationLevel: "SERIALIZABLE",
+  }
 
-    const updated = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
-    })
+  while (inProgress) {
+    switch (idempotencyKey.recovery_point) {
+      case CreateLineItemSteps.STARTED: {
+        await runIdempotencyStep(async ({ manager }) => {
+          return await handleAddOrUpdateLineItem(
+            id,
+            {
+              customer_id: customerId,
+              metadata: validated.metadata,
+              quantity: validated.quantity,
+              variant_id: validated.variant_id,
+            },
+            {
+              manager,
+              container: req.scope,
+            }
+          )
+        }, stepOptions).catch((e) => {
+          inProgress = false
+          err = e
+        })
+        break
+      }
 
-    if (updated.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
+      case CreateLineItemSteps.FINISHED: {
+        inProgress = false
+        break
+      }
     }
-  })
+  }
 
-  const data = await cartService.retrieveWithTotals(id, {
-    select: defaultStoreCartFields,
-    relations: defaultStoreCartRelations,
-  })
+  if (err) {
+    throw err
+  }
 
-  res.status(200).json({ cart: data })
+  res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
 export class StorePostCartsCartLineItemsReq {

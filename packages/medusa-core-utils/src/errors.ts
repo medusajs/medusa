@@ -8,6 +8,7 @@ export const MedusaErrorTypes = {
   DUPLICATE_ERROR: "duplicate_error",
   INVALID_ARGUMENT: "invalid_argument",
   INVALID_DATA: "invalid_data",
+  UNAUTHORIZED: "unauthorized",
   NOT_FOUND: "not_found",
   NOT_ALLOWED: "not_allowed",
   UNEXPECTED_STATE: "unexpected_state",

@@ -10053,13 +10053,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.2
+  resolution: "loader-utils@npm:1.4.2"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: b3f383612c23c0adf535d61709fb3eaf864afa54dae45608e3831156b89b4b05a0a4ddc6db7d742071babe872750ba3f4f9ce89326d94f6e096dbed978fa424e
+  checksum: 2b726088b5526f7605615e3e28043ae9bbd2453f4a85898e1151f3c39dbf7a2b65d09f3996bc588d92ac7e717ded529d3e1ea3ea42c433393be84a58234a2f53
   languageName: node
   linkType: hard
 
@@ -14547,13 +14547,13 @@ __metadata:
   linkType: hard
 
 "socket.io-parser@npm:~4.0.3, socket.io-parser@npm:~4.0.4":
-  version: 4.0.4
-  resolution: "socket.io-parser@npm:4.0.4"
+  version: 4.0.5
+  resolution: "socket.io-parser@npm:4.0.5"
   dependencies:
     "@types/component-emitter": ^1.2.10
     component-emitter: ~1.3.0
     debug: ~4.3.1
-  checksum: bd4fc7a640141626954122a8becadf040931e19a7b2650e2d24f12168015ff87edcc42481d8cd4f169edb01effff3a27a5072a172179067a195efb39d9dbd763
+  checksum: 9db9d2d190b6b0b3e5b0e830b6068219929280fbaa348d155ead420a1f4f3f43a9cacd628dda93ac09295f74fd2aa48447b2c53c00deb4f9204146e9bd43c594
   languageName: node
   linkType: hard
 

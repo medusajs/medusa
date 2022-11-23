@@ -12,6 +12,10 @@ export const simplePaymentCollectionFactory = async (
 
   const defaultData = {
     currency_code: data.currency_code ?? "usd",
+    type: data.type ?? "order_edit",
+    status: data.status ?? "not_paid",
+    amount: data.amount ?? 1000,
+    created_by: data.created_by ?? "admin_user",
   }
 
   if (!data.region && !data.region_id) {
